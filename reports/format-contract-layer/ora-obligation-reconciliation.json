@@ -10,6 +10,14 @@
       "truth_boundary": "86 tests pass against the four mapped capabilities, written RED before the source existed. Updated 2026-08-05: ORA-SEC-001 adds 17 tests against already-existing source (no new production code this slice). ORA suite is now 189 passed with no failures. The remaining 15 capabilities have no source and no suite; their obligations stay `missing` rather than borrowing this result. No ORA obligation is `implemented`; ORA-SEC-001's obligations move to `partial` on this evidence, not higher.\n2026-08-06: ORA-ISOLATION-001 adds 15 tests against already-existing source (no new production code this slice either). ORA suite is now 204 passed with no failures. The remaining 9 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-ISOLATION-001's obligations move to `partial` only.\n2026-08-06 (later): ORA-PRESERVE-001 adds a new module (preservation.py, check_preservation()) plus 9 tests -- genuinely new production code this time, not only tests against existing behavior. ORA suite is now 213 passed with no failures. The remaining 8 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-PRESERVE-001's obligations move to `partial` only.\n2026-08-06 (later still): ORA-LAYER-001/ORA-GROUP-001 add __post_init__ validation (validate_opacity/validate_visibility/validate_src) to every node type in model/stack.py, and codec/stack_xml.py now delegates to those same functions instead of keeping its own copies. All 213 pre-existing tests still pass unchanged (parser behavior and error types are identical). 38 new tests. ORA suite is now 251 passed with no failures. The remaining 6 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-LAYER-001/ORA-GROUP-001's obligations move to `partial` only.\n2026-08-06 (later still): ORA-EDIT-001 adds a new module (transaction.py, apply_transaction()) plus 10 tests, covering only its \"transaction rollback\" required-proof area (three others -- reference repair, stale-view invalidation, independent application reopen -- remain unattempted, see the dated note above for why). ORA suite is now 261 passed with no failures. The remaining 5 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-EDIT-001's obligations move to `partial` only.\n2026-08-06 (later still): first ORA `implemented` promotions -- pure evidence-citation correction, zero new production code or tests. codec/container.py's OraContainer._check_mimetype/ALLOWED_COMPRESSION and model/stack.py's validate_src already fully and exactly implement four ORA-MIMETYPE-001 obligations (mimetype sentinel position/compression/exact-bytes, ZIP-member compression-method restriction, and archive-root-relative src referencing), each with existing on-point positive and negative tests in tests/python/ora/test_obligation_container_and_mimetype.py and test_obligation_stack_and_document.py -- but every one was citing the same three generic placeholder selectors (test_a_well_formed_archive_opens/test_missing_mimetype_is_rejected/test_mimetype_must_be_the_first_member) with no negative selectors at all, left over from this file's original codex-authored ledger-map mapping. Corrected each obligation's citation to its own precise, differentiated selector set. ORA suite unchanged at 261 passed (0 new tests, 0 source changes) -- proves this was a citation fix, not product work. Four ORA-MIMETYPE-001 obligations move from `partial` to `implemented`.\n2026-08-06 (later still): ORA-DOCUMENT-001 closes. model/document.py's OraDocument had no __post_init__ at all -- every w/h/version/xres/yres domain invariant was enforced only by codec/stack_xml.py's parser, so direct model construction (bypassing XML) could build an invalid document with no refusal. Added OraDocument.__post_init__ (positive width/height/xres/yres, non-empty version), matching model/stack.py's OraNode precedent exactly, plus tests/python/ora/test_obligation_document_model_construction.py (14 new tests) proving the same invariants hold for direct construction and for dataclasses.replace()-based editing, not only parsing. ORA suite: 261 -> 275 passed, ruff and mypy clean. Three ORA-DOCUMENT-001 obligations move from `partial` to `implemented`."
     },
     {
+      "evidence_id": "ORA-BASELINEASSET-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-baselineasset-001.json",
+      "sha256": "e9fd4c00c4aabd1861f785b719efb3715dbad33c5cb8d09292091eda4ebe7f32",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact positive and negative test selectors proving mergedimage.png is mandatory (strict mode rejects its absence) and must carry 8 or 16 bits per channel (other depths rejected), and Thumbnails/thumbnail.png is mandatory, non-interlaced, 8-bit, and at most 256x256 (each violation individually rejected: too wide, too tall, wrong bit depth, interlaced), all validated through a code path (_baseline_asset_diagnostics) entirely separate from layer-source resolution, so a baseline asset is never confused with an editable layer src. Does NOT cover \"generate[ing]\" or \"replac[ing]\" these assets -- this package has no image-generation capability, read/validate only. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-0CF770969FA42DB5 and SAL-ORA-OBL-48761EB31C2C2F7D fully, and SAL-ORA-OBL-52746ABC41B3E790 partially (the read/validate/no-confusion half only); it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "ORA-DOCUMENT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -45,7 +53,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "57713e7563770a4bd95b02bc2fa9d6d2774c0625bcbf64af7583c995afc271c9",
+    "implementation_evidence": "6ab287b7c1e57bc2d4bfee91e870631a6c5b547d706eed5421c16c544cc7974f",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -345,20 +353,19 @@
     {
       "capability_id": "ORA-BASELINEASSET-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-BASELINEASSET-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "_baseline_asset_diagnostics requires mergedimage.png to be present (ORA_MERGED_IMAGE_MISSING when absent) and to carry 8 or 16 bits per channel (ORA_MERGED_IMAGE_NON_CONFORMING otherwise), mandatory since profile 0.0.2, checked on every load in strict mode and reported as a diagnostic in tolerant/validate mode."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_non_conforming_merged_image"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-0CF770969FA42DB5",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_raster_assets.py::test_merged_image_accepts_only_8_or_16_bits"
       ],
       "proof_requirements": {
         "negative": [
@@ -368,16 +375,12 @@
           "Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
         "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
         "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-RESOLUTION-001",
@@ -1044,20 +1047,20 @@
     {
       "capability_id": "ORA-BASELINEASSET-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-BASELINEASSET-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "The mandatory-and-conforming mergedimage.png (a rendered fallback for baseline-only viewers) and thumbnail.png assets are read and validated -- this is the concrete mechanism baseline reading/viewing support rests on. Editing round trips are proven generally elsewhere in the suite (layer/group editing tests), but this obligation's own \"baseline support level\" framing has not been directly tested as a distinct concept."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices."
+        "No dedicated test exercises \"baseline support\" as an explicit, queryable concept (e.g. a capability/compliance-level API) -- coverage here is inferred from the underlying asset read/validate mechanism and the general edit-round-trip suite, not from a test naming this obligation's spec-philosophy claim directly."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-2BFD0DF67723D491",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_raster_assets.py::test_a_conforming_thumbnail_is_accepted",
+        "tests/python/ora/test_obligation_raster_assets.py::test_merged_image_accepts_only_8_or_16_bits"
       ],
       "proof_requirements": {
         "negative": [
@@ -1069,11 +1072,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
         "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
         "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata"
       ],
       "status": "partial"
@@ -1721,20 +1720,21 @@
     {
       "capability_id": "ORA-BASELINEASSET-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-BASELINEASSET-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "_baseline_asset_diagnostics requires Thumbnails/thumbnail.png to be present (ORA_THUMBNAIL_MISSING when absent) and to satisfy every conformance rule individually -- non-interlaced, 8 bits per channel, at most 256x256 pixels (ORA_THUMBNAIL_NON_CONFORMING on any single violation: too wide, too tall, wrong bit depth, or interlaced) -- checked on every load in strict mode and reported as a diagnostic in tolerant/validate mode."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_mode_rejects_a_document_missing_its_thumbnail",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_non_conforming_thumbnail",
+        "tests/python/ora/test_obligation_raster_assets.py::test_non_conforming_thumbnails_are_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-48761EB31C2C2F7D",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_raster_assets.py::test_a_conforming_thumbnail_is_accepted"
       ],
       "proof_requirements": {
         "negative": [
@@ -1744,16 +1744,12 @@
           "Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
         "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
         "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-VALIDATE-001",
@@ -1890,20 +1886,23 @@
     {
       "capability_id": "ORA-BASELINEASSET-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-BASELINEASSET-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Thumbnail and merged-image assets are read and validated via _baseline_asset_diagnostics, a code path entirely separate from _layer_png_diagnostics/iter_layers (which resolves editable layer src references) -- the two asset classes are never conflated because they are checked by different functions against different member-name constants (THUMBNAIL_MEMBER/MERGED_IMAGE_MEMBER vs. per-layer src paths)."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices."
+        "\"Generate\" and \"replace\" are not implemented -- this package has no image-generation capability (no flattening/thumbnailing renderer); it can only read and validate baseline assets a caller supplies, not produce or refresh a stale one."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_mode_rejects_a_document_missing_its_thumbnail",
+        "tests/python/ora/test_obligation_raster_assets.py::test_non_conforming_thumbnails_are_rejected"
+      ],
       "obligation_id": "SAL-ORA-OBL-52746ABC41B3E790",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_raster_assets.py::test_a_conforming_thumbnail_is_accepted",
+        "tests/python/ora/test_obligation_raster_assets.py::test_merged_image_accepts_only_8_or_16_bits"
       ],
       "proof_requirements": {
         "negative": [
@@ -1915,12 +1914,9 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
         "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata"
+        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata",
+        "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers"
       ],
       "status": "partial"
     },
@@ -4618,6 +4614,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json": "ff1e276701cd182ef6dbf39d21d7fbeb7d841bc5d12209ab938ae304e341abdc",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-baselineasset-001.json": "e9fd4c00c4aabd1861f785b719efb3715dbad33c5cb8d09292091eda4ebe7f32",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-document-model-construction-001.json": "e722f98266ec914ed9f2aca1d75695070ed123949b66335d7d572ba4e7c05171",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-mimetype-001.json": "c4af01879db0867dbc3deec2c4ecbb85112c7aa2a3283b2a2b24c28d6eb155cd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-preservation-baseline-001.json": "66670b6131f704d6bd441c2fd8a8e83dc51b29d415fdfcb7bff998ec953a047e",
@@ -4647,12 +4644,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 13,
+      "implemented": 15,
       "missing": 21,
-      "partial": 100
+      "partial": 98
     },
     "total": 134,
-    "unresolved": 121
+    "unresolved": 119
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

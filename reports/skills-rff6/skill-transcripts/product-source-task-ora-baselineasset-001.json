@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-baselineasset-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T16:00:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_BASELINEASSET_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "ORA-BASELINEASSET-001's 4 obligations (mergedimage.png mandatory/8-16-bit; thumbnail.png mandatory/non-interlaced/8-bit/<=256px; read-validate-generate-replace without confusing baseline assets with layer sources; general baseline-support spec-philosophy) all cited generic lifecycle-load symbols/tests instead of the actual implementing function (lifecycle.py's _baseline_asset_diagnostics) and its dedicated test files (test_obligation_raster_assets.py, test_obligation_lifecycle_and_write.py's validate/strict-mode tests).",
+    "obligation_targeted": "SAL-ORA-OBL-0CF770969FA42DB5, SAL-ORA-OBL-2BFD0DF67723D491, SAL-ORA-OBL-48761EB31C2C2F7D, SAL-ORA-OBL-52746ABC41B3E790",
+    "acceptance_evidence": "tests/python/ora/test_obligation_raster_assets.py, test_obligation_lifecycle_and_write.py",
+    "regression_tier": "full ORA package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Rotated to ora's ORA-BASELINEASSET-001 after nrrd's remaining capabilities were found already-triaged and xliff/ubl's PRESERVE-001 pair was closed. Found lifecycle.py's _baseline_asset_diagnostics (identified earlier this session while investigating ORA-ISOLATION-001/COMPOSITE-001) already fully implements mergedimage.png/thumbnail.png presence and conformance checking, with dedicated tests in test_obligation_raster_assets.py and validate-mode tests in test_obligation_lifecycle_and_write.py -- neither file was cited against any of these 4 obligations.",
+    "2. Ran all 12 candidate tests directly before citing any of them: all passed (thumbnail acceptance/rejection matrix -- too wide, too tall, wrong bit depth, interlaced; merged-image bit-depth matrix; strict-mode missing-thumbnail rejection; validate-mode non-fatal diagnostics for both assets).",
+    "3. Promoted SAL-ORA-OBL-0CF770969FA42DB5 (mergedimage mandatory + 8/16-bit) and SAL-ORA-OBL-48761EB31C2C2F7D (thumbnail mandatory + non-interlaced/8-bit/<=256px) fully to implemented, citing the specific per-violation negative tests for each.",
+    "4. Investigated SAL-ORA-OBL-52746ABC41B3E790's 'generate, replace' clause: grepped the whole package for any image-generation/thumbnailing capability and found none -- this package reads and validates baseline assets a caller supplies but cannot produce or refresh one. Kept partial, citing the proven read/validate/no-confusion half and narrowing missing_behavior to name exactly the unbuilt generate/replace half.",
+    "5. Investigated SAL-ORA-OBL-2BFD0DF67723D491 (general baseline-support spec-philosophy statement): found no dedicated test treats 'baseline support level' as an explicit, queryable concept -- coverage is inferential (asset read/validate mechanism plus the general edit-round-trip suite elsewhere). Corrected the citation to the real underlying mechanism but kept partial and honestly noted the inferential nature rather than claiming a direct test of the obligation's own framing."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_mode_rejects_a_document_missing_its_thumbnail tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_non_conforming_thumbnail tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_non_conforming_merged_image tests/python/ora/test_obligation_raster_assets.py::test_a_conforming_thumbnail_is_accepted tests/python/ora/test_obligation_raster_assets.py::test_non_conforming_thumbnails_are_rejected tests/python/ora/test_obligation_raster_assets.py::test_merged_image_accepts_only_8_or_16_bits -v -- 12 passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 134,
+    "ora_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against an external OpenRaster reader/writer. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_only_two_of_four_promoted": "The other two obligations bundle a proven read/validate half with an unbuilt half (image generation; an explicit baseline-support-level concept) -- both corrected for citation accuracy and narrowed honestly rather than force-promoted or left generic."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -132,6 +132,27 @@ execution_evidence:
     SAL-ORA-OBL-07B4638C09251BE1, SAL-ORA-OBL-1527BE3306AC38F2, and
     SAL-ORA-OBL-24BEC87CE09AB2DD only; it supports no other obligation and
     promotes no product state.
+- evidence_id: ORA-BASELINEASSET-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-baselineasset-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact positive
+    and negative test selectors proving mergedimage.png is mandatory
+    (strict mode rejects its absence) and must carry 8 or 16 bits per
+    channel (other depths rejected), and Thumbnails/thumbnail.png is
+    mandatory, non-interlaced, 8-bit, and at most 256x256 (each violation
+    individually rejected: too wide, too tall, wrong bit depth,
+    interlaced), all validated through a code path (_baseline_asset_diagnostics)
+    entirely separate from layer-source resolution, so a baseline asset is
+    never confused with an editable layer src. Does NOT cover
+    "generate[ing]" or "replac[ing]" these assets -- this package has no
+    image-generation capability, read/validate only. SELF-CONSISTENT
+    format_factory-only evidence per the execution-recovery directive's
+    GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-0CF770969FA42DB5 and
+    SAL-ORA-OBL-48761EB31C2C2F7D fully, and SAL-ORA-OBL-52746ABC41B3E790
+    partially (the read/validate/no-confusion half only); it supports no
+    other obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -357,27 +378,24 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-0CF770969FA42DB5
   capability_id: ORA-BASELINEASSET-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
   - src/python/ora/src/format_factory/ora/lifecycle.py::load
-  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
   - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_raster_assets.py::test_merged_image_accepts_only_8_or_16_bits
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_non_conforming_merged_image
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-BASELINEASSET-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Raster-depth, dimension,
-    aspect, interlace, path, XML-reference, and stale-view regeneration matrices.'
+  - '_baseline_asset_diagnostics requires mergedimage.png to be present
+    (ORA_MERGED_IMAGE_MISSING when absent) and to carry 8 or 16 bits per
+    channel (ORA_MERGED_IMAGE_NON_CONFORMING otherwise), mandatory since
+    profile 0.0.2, checked on every load in strict mode and reported as a
+    diagnostic in tolerant/validate mode.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices.
@@ -909,25 +927,29 @@ obligations:
   capability_id: ORA-BASELINEASSET-001
   status: partial
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
   - src/python/ora/src/format_factory/ora/lifecycle.py::load
-  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
   - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
+  - tests/python/ora/test_obligation_raster_assets.py::test_a_conforming_thumbnail_is_accepted
+  - tests/python/ora/test_obligation_raster_assets.py::test_merged_image_accepts_only_8_or_16_bits
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-BASELINEASSET-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - The mandatory-and-conforming mergedimage.png (a rendered fallback for
+    baseline-only viewers) and thumbnail.png assets are read and validated
+    -- this is the concrete mechanism baseline reading/viewing support
+    rests on. Editing round trips are proven generally elsewhere in the
+    suite (layer/group editing tests), but this obligation's own
+    "baseline support level" framing has not been directly tested as a
+    distinct concept.
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Raster-depth, dimension,
-    aspect, interlace, path, XML-reference, and stale-view regeneration matrices.'
+  - No dedicated test exercises "baseline support" as an explicit,
+    queryable concept (e.g. a capability/compliance-level API) -- coverage
+    here is inferred from the underlying asset read/validate mechanism and
+    the general edit-round-trip suite, not from a test naming this
+    obligation's spec-philosophy claim directly.
   proof_requirements:
     positive:
     - Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices.
@@ -1429,27 +1451,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-48761EB31C2C2F7D
   capability_id: ORA-BASELINEASSET-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
   - src/python/ora/src/format_factory/ora/lifecycle.py::load
-  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
   - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_raster_assets.py::test_a_conforming_thumbnail_is_accepted
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_mode_rejects_a_document_missing_its_thumbnail
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_non_conforming_thumbnail
+  - tests/python/ora/test_obligation_raster_assets.py::test_non_conforming_thumbnails_are_rejected
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-BASELINEASSET-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Raster-depth, dimension,
-    aspect, interlace, path, XML-reference, and stale-view regeneration matrices.'
+  - '_baseline_asset_diagnostics requires Thumbnails/thumbnail.png to be
+    present (ORA_THUMBNAIL_MISSING when absent) and to satisfy every
+    conformance rule individually -- non-interlaced, 8 bits per channel,
+    at most 256x256 pixels (ORA_THUMBNAIL_NON_CONFORMING on any single
+    violation: too wide, too tall, wrong bit depth, or interlaced) --
+    checked on every load in strict mode and reported as a diagnostic in
+    tolerant/validate mode.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices.
@@ -1560,25 +1583,31 @@ obligations:
   capability_id: ORA-BASELINEASSET-001
   status: partial
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
   - src/python/ora/src/format_factory/ora/lifecycle.py::load
-  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
   - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  - src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_raster_assets.py::test_a_conforming_thumbnail_is_accepted
+  - tests/python/ora/test_obligation_raster_assets.py::test_merged_image_accepts_only_8_or_16_bits
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_mode_rejects_a_document_missing_its_thumbnail
+  - tests/python/ora/test_obligation_raster_assets.py::test_non_conforming_thumbnails_are_rejected
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-BASELINEASSET-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - Thumbnail and merged-image assets are read and validated via
+    _baseline_asset_diagnostics, a code path entirely separate from
+    _layer_png_diagnostics/iter_layers (which resolves editable layer src
+    references) -- the two asset classes are never conflated because they
+    are checked by different functions against different member-name
+    constants (THUMBNAIL_MEMBER/MERGED_IMAGE_MEMBER vs. per-layer src
+    paths).
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Raster-depth, dimension,
-    aspect, interlace, path, XML-reference, and stale-view regeneration matrices.'
+  - '"Generate" and "replace" are not implemented -- this package has no
+    image-generation capability (no flattening/thumbnailing renderer); it
+    can only read and validate baseline assets a caller supplies, not
+    produce or refresh a stale one.'
   proof_requirements:
     positive:
     - Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices.
