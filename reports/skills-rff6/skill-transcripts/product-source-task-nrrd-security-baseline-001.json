@@ -1,0 +1,60 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-security-baseline-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T21:33:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_SEC_001_SECURITY_BASELINE_001",
+    "task_kind": "new-security-test-file-plus-bug-fix",
+    "root_cause": "NRRD-SEC-001's 4 obligations each carried a precise, individually-diagnosed gap (no resolver policy proof, no hostile-blob test matrix, no record-count surface proof, no complexity-budget proof), but no dedicated security test file existed for nrrd at all -- the never-audited-security-baseline pattern already found and closed for ubl/xliff/ipynb this session, applied to nrrd for the first time.",
+    "obligation_targeted": "SAL-NRRD-OBL-24B57E6A78478DB0, SAL-NRRD-OBL-9AB0A32906D88688, SAL-NRRD-OBL-2A95CBAA35F7BB05, SAL-NRRD-OBL-38C2DECC64DF5145 (all NRRD-SEC-001), plus SAL-NRRD-OBL-807586E5B4D0EDB2 (NRRD-MULTIFILE-001, stays partial with an updated, narrower missing_behavior)",
+    "acceptance_evidence": "4 obligations promoted to implemented via 6 new tests in a new file, test_obligation_security_baseline.py, plus 1 new test in test_obligation_detached_forms_production.py. 1 genuine, confirmed algorithmic-complexity bug found and fixed: a detached printf multi-file sequence's declared file count was never bounded before allocating its filename list.",
+    "regression_tier": "full nrrd package suite (tests/python/nrrd)"
+  },
+  "execution_steps": [
+    "1. Read all 4 NRRD-SEC-001 obligations' precise missing_behavior text and grepped the whole nrrd package for socket/urllib/http/ftplib/smtplib/subprocess/importlib/pkgutil/ctypes imports -- zero hits, confirming structurally that no network, plugin, or dynamic-execution capability exists anywhere in the package (matching the same 'no attack surface' pattern already found for ubl/xliff SEC-001 this session).",
+    "2. Investigated the one real external-reference mechanism NRRD has, detached data files, in codec/reader/reader.py: _safe_detached_payload already resolves paths relative to the header's own directory and refuses to escape it (confirmed real, working traversal protection).",
+    "3. While investigating multi-file printf sequences (data file: name %d start stop step) for the complexity-budget obligation, found a genuine, confirmed algorithmic-complexity bug: the filename list (names = [parts[0] % item for item in range(start, stop+1, step)]) was built with ZERO bound check on the declared file count before this slice -- a header declaring e.g. a billion-file range would attempt to materialize a billion-element list before any file was ever opened, a real memory/CPU exhaustion vector. Verified interactively (a declared range of 0 to 999999999 step 1) before writing any fix.",
+    "4. Fixed reader.py: compute the declared file count and check it against limits.max_entries before building the filename list, raising the shared format_factory.core.ResourceLimitError (matching this package's existing convention in payload.py) instead of allowing unbounded allocation. Verified interactively that both the pathological case (rejected) and normal small ranges (still accepted) behave correctly before writing a formal test.",
+    "5. Added test_printf_sequence_file_count_is_bounded_before_allocation to the existing test_obligation_detached_forms_production.py (no backing files needed, since rejection happens before any would be read) and confirmed test_list_and_printf_detached_payload_forms's existing small-range case still passes unchanged.",
+    "6. Verified interactively that key-value pairs and comments are stored as plain dict[str, str]/list[str] with zero interpretation, using shell-command-substitution syntax and script-tag content as concrete hostile examples, before writing test_hostile_key_value_content_survives_as_opaque_string and test_hostile_comment_content_survives_as_opaque_string.",
+    "7. Verified interactively that checked_element_count's len(sizes) > limits.max_entries check and its checked_product-based overflow protection both work as expected against real hostile headers (a 3-axis header over a caller-supplied max_entries=2; three individually-plausible axis sizes that multiply past the decompressed-byte ceiling) before writing test_axis_count_is_bounded_by_max_entries and test_element_count_multiplication_is_checked_against_the_decompressed_ceiling.",
+    "8. Wrote test_no_source_file_imports_networking_execution_or_plugin_modules as a whole-package AST-based static scan (ast.walk over every .py file under src/python/nrrd/src, checking Import/ImportFrom nodes against the forbidden-module set) -- a precise, durable structural proof rather than a one-off grep.",
+    "9. Hit and fixed 2 self-inflicted header-construction bugs in the new test file's own _header() helper while getting the tests to pass: a missing blank-line header/payload terminator, and comments being placed before rather than after the mandatory NRRD0005 magic line -- both caught by running the tests and reading the actual failures, not assumed correct on first write.",
+    "10. Ran ruff and mypy on the one changed source file (clean), the full nrrd suite (481 passed, was 474) before writing any evidence claim. Ran the skills-first resolve/manifest/receipt/closeout sequence since src/ was touched, then patched the evidence YAML (nrrd.yaml's flow-style, anchor-based format required precise whole-line replacement, not the block-splitting pattern used for other formats) and ran the reconciler."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_security_baseline.py",
+    "tests/python/nrrd/test_obligation_detached_forms_production.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_security_baseline.py",
+    "tests/python/nrrd/test_obligation_detached_forms_production.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_security_baseline.py tests/python/nrrd/test_obligation_detached_forms_production.py -q -- 8 passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 481 passed, 1 skipped, was 474 passed",
+    ".venv/Scripts/python -m ruff check <3 changed files> -- all checks passed",
+    ".venv/Scripts/python -m mypy src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py -- no issues"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 4,
+    "obligations_total_for_format": 65,
+    "oracle": "The absence of network/plugin/execution imports was verified via a whole-package AST scan, not a sample grep. The printf file-count bug was confirmed interactively against real source behavior before any fix was written. SELF-CONSISTENT format_factory-only evidence per GAP-008 otherwise, not cross-checked against a reference NRRD implementation for these specific claims.",
+    "obligations_moved_breakdown": "4 of NRRD-SEC-001's obligations promoted to implemented via 7 new tests (6 in a new dedicated security test file, 1 in the existing detached-forms file). 1 more obligation (NRRD-MULTIFILE-001's file-count clause) partially closed via the same fix, narrowing its missing_behavior without force-promoting it past its remaining genuine gaps (writer, profile gate, subdimension, per-file byte validation).",
+    "genuine_bug_found_and_fixed": "A detached printf multi-file sequence's declared file count was never bounded against limits.max_entries before building its filename list, a real memory/CPU exhaustion vector for a header declaring an astronomically large range."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

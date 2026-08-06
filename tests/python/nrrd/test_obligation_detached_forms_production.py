@@ -2,6 +2,8 @@
 
 from pathlib import Path
 
+import pytest
+from format_factory.core import ResourceLimitError, ResourceLimits
 from format_factory.nrrd import load
 
 
@@ -19,3 +21,16 @@ def test_list_and_printf_detached_payload_forms(tmp_path: Path) -> None:
     pattern_header = tmp_path / "pattern.nhdr"
     pattern_header.write_bytes(_header("part-%d.raw 0 1 1"))
     assert load(pattern_header).array == [1, 2, 3, 4]
+
+
+def test_printf_sequence_file_count_is_bounded_before_allocation(tmp_path: Path) -> None:
+    """A declared printf range's file count is checked against max_entries
+    before any filename string is built or any file is opened -- a header
+    claiming a billion-file sequence must fail fast, not attempt to allocate
+    a billion-element list first. No backing files exist here on purpose:
+    the rejection must happen before any of them would be needed."""
+    pattern_header = tmp_path / "pathological.nhdr"
+    pattern_header.write_bytes(_header("part-%d.raw 0 999999999 1"))
+
+    with pytest.raises(ResourceLimitError, match="over the limit"):
+        load(pattern_header, limits=ResourceLimits(max_entries=64))

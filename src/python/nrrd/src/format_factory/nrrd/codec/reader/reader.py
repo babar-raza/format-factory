@@ -6,7 +6,12 @@ import re
 from os import PathLike
 from pathlib import Path
 
-from format_factory.core import BinarySource, ProbeResult, ResourceLimits
+from format_factory.core import (
+    BinarySource,
+    ProbeResult,
+    ResourceLimitError,
+    ResourceLimits,
+)
 
 from ...errors import NrrdParseError
 from ...model import NrrdDocument
@@ -165,6 +170,12 @@ def _safe_detached_payload(
             raise NrrdParseError("invalid detached printf range") from exc
         if step == 0 or (stop - start) * step < 0:
             raise NrrdParseError("invalid detached printf range")
+        file_count = abs(stop - start) // abs(step) + 1
+        if file_count > limits.max_entries:
+            raise ResourceLimitError(
+                f"detached printf sequence declares {file_count} files, over the "
+                f"limit of {limits.max_entries}"
+            )
         names = [parts[0] % item for item in range(start, stop + (1 if step > 0 else -1), step)]
     else:
         names = [value]

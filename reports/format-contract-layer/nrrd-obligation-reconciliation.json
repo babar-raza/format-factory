@@ -34,6 +34,14 @@
       "truth_boundary": "The transcript records 58 production-namespace and 219 legacy tests passing at commit 767e7006, but it does not bind individual selector outcomes and is non-promoting support only."
     },
     {
+      "evidence_id": "NRRD-SEC-001-SECURITY-BASELINE-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-security-baseline-001.json",
+      "sha256": "75e80c2707a235afef3f1ab9980697a5e95e32a90fb18e8e1000fd29bbd2ee82",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes NRRD-SEC-001's 4 obligations, the first dedicated security-baseline sweep for nrrd this session (the same never-audited-security-baseline pattern already closed for ubl/xliff/ipynb). A whole-package AST scan confirms no source file imports socket/urllib/http/ftplib/smtplib/subprocess/ importlib/pkgutil/ctypes -- no network, plugin, or dynamic-execution capability exists anywhere. Key-value pairs and comments are proven to survive shell-command-substitution and script-tag content byte-for-byte as inert text, never interpreted. checked_element_count's max_entries and checked-arithmetic overflow protection are both proven directly against hostile headers. Also fixed a genuine, confirmed algorithmic- complexity bug found while investigating this cluster: a detached printf multi-file sequence's declared file count was never bounded against limits.max_entries before allocating its filename list -- a header declaring an astronomically large range would attempt to materialize a correspondingly large list before any file was opened. NOT backed by an independent reference NRRD implementation -- SELF- CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-24B57E6A78478DB0, SAL-NRRD-OBL-9AB0A32906D88688, SAL-NRRD-OBL-2A95CBAA35F7BB05, and SAL-NRRD-OBL-38C2DECC64DF5145 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "NRRD-VERSION-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -45,7 +53,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "cebc96033ea62752e73be7fb2289235182be9e2174541799e0a3063e5daea822",
+    "implementation_evidence": "4ac7dc40d99a1b27fe41de375ad4aefc83f04cae4fb6aba868caa66126f03907",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -422,20 +430,20 @@
     {
       "capability_id": "NRRD-SEC-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-SEC-001-SECURITY-BASELINE-PROOF"
       ],
       "implemented_behavior": [
-        "Loads do not execute code or resolve network resources; detached access is local and bounded."
+        "A whole-package AST scan confirms no source file imports socket/urllib/http/ftplib/smtplib/subprocess/importlib/pkgutil/ctypes -- there is no network, plugin, or dynamic-execution capability anywhere to opt into. The one external-reference mechanism NRRD has, a detached data file, is resolved relative to the header's own directory and refuses to escape it (verified with a traversal attempt against a real path)."
       ],
-      "missing_behavior": [
-        "No explicit resolver policy or opt-in external-resource capability contract exists."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe"
+        "tests/python/nrrd/test_obligation_security_baseline.py::test_detached_path_resolution_is_the_only_external_reference_and_stays_confined"
       ],
       "obligation_id": "SAL-NRRD-OBL-24B57E6A78478DB0",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe"
+        "tests/python/nrrd/test_obligation_security_baseline.py::test_no_source_file_imports_networking_execution_or_plugin_modules",
+        "tests/python/nrrd/test_obligation_security_baseline.py::test_detached_path_resolution_is_the_only_external_reference_and_stays_confined"
       ],
       "proof_requirements": {
         "negative": [
@@ -445,13 +453,11 @@
           "Prove offline/no-execution behavior across every input form."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
-        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_apply_skips",
-        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-WRITE-001",
@@ -489,20 +495,21 @@
     {
       "capability_id": "NRRD-SEC-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-SEC-001-SECURITY-BASELINE-PROOF"
       ],
       "implemented_behavior": [
-        "Caller-configurable input, header, entry, decoded/output byte, and compression-ratio limits are active."
+        "Caller-configurable input, header, entry, decoded/output byte, and compression-ratio limits are active. The axis/record-count surface specifically is checked_element_count's len(sizes) > limits.max_entries check, proven directly: a 3-axis header against a caller-supplied max_entries=2 is refused with a ResourceLimitError naming max_entries, not silently truncated or allowed through. NRRD has no recursive grammar (headers are flat key-value pairs; the one nested-looking construct, printf/LIST multi-file sequences, is a flat list, not a recursive structure), so there is no recursion depth to bound."
       ],
-      "missing_behavior": [
-        "No explicit record-count or recursion-depth surface and no independently benchmarked safe-default proof."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable"
+        "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable",
+        "tests/python/nrrd/test_obligation_security_baseline.py::test_axis_count_is_bounded_by_max_entries"
       ],
       "obligation_id": "SAL-NRRD-OBL-2A95CBAA35F7BB05",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable"
+        "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable",
+        "tests/python/nrrd/test_obligation_security_baseline.py::test_axis_count_is_bounded_by_max_entries"
       ],
       "proof_requirements": {
         "negative": [
@@ -512,13 +519,13 @@
           "Document and exercise every default and override."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/security/limits.py::effective_limits",
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::checked_element_count",
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::_enforce_expansion"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-ENC-001",
@@ -553,20 +560,21 @@
     {
       "capability_id": "NRRD-SEC-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-SEC-001-SECURITY-BASELINE-PROOF"
       ],
       "implemented_behavior": [
-        "Size products and decompression expansion are bounded without recursive parsing."
+        "checked_element_count uses checked-arithmetic multiplication (not naive Python big-int multiplication) so three individually-plausible axis sizes that would multiply past the decompressed-byte ceiling are rejected cheaply rather than allocating. A genuine, previously-unenforced gap was found and fixed this slice: a detached printf multi-file sequence (data file: name %d start stop step) built its full filename list via a Python list comprehension with zero bound check on the declared file count before this slice -- a header declaring a billion-file range would have attempted to materialize a billion-element list before any file was even opened. Fixed by computing the declared count and checking it against limits.max_entries before building the list, proven by a new test using a pathological range with no backing files (the rejection happens before any of them would be needed)."
       ],
-      "missing_behavior": [
-        "No complexity budget/benchmark proof for pathological headers, token counts, or multifile expansion."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable"
+        "tests/python/nrrd/test_obligation_security_baseline.py::test_element_count_multiplication_is_checked_against_the_decompressed_ceiling",
+        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_printf_sequence_file_count_is_bounded_before_allocation"
       ],
       "obligation_id": "SAL-NRRD-OBL-38C2DECC64DF5145",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable"
+        "tests/python/nrrd/test_obligation_security_baseline.py::test_element_count_multiplication_is_checked_against_the_decompressed_ceiling",
+        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_printf_sequence_file_count_is_bounded_before_allocation"
       ],
       "proof_requirements": {
         "negative": [
@@ -576,13 +584,13 @@
           "Complexity benchmarks remain within declared envelopes."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/security/limits.py::effective_limits",
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::checked_element_count",
-        "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::_enforce_expansion"
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-PHYSICALMETA-001",
@@ -1290,19 +1298,22 @@
         "NRRD-R1-SOURCE-TESTS"
       ],
       "implemented_behavior": [
-        "LIST and printf sequences are read with basic range and traversal checks."
+        "LIST and printf sequences are read with basic range and traversal checks. File count is now also validated before allocation: a printf range's declared file count is checked against limits.max_entries and refused with a ResourceLimitError before the filename list is built, closing a genuine, previously-unenforced gap (fixed this slice)."
       ],
       "missing_behavior": [
-        "No multifile writer, profile gate, subdimension, file-count, per-file byte, or complete format/range validation."
+        "No multifile writer, profile gate, subdimension, or per-file byte validation."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_printf_sequence_file_count_is_bounded_before_allocation"
+      ],
       "obligation_id": "SAL-NRRD-OBL-807586E5B4D0EDB2",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_list_and_printf_detached_payload_forms"
+        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_list_and_printf_detached_payload_forms",
+        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_printf_sequence_file_count_is_bounded_before_allocation"
       ],
       "proof_requirements": {
         "negative": [
-          "Profile, range, step, expansion, count, truncation, traversal, and bytes-per-file cases."
+          "Profile, range, step, expansion, truncation, traversal, and bytes-per-file cases."
         ],
         "positive": [
           "LIST/printf/subdimension read-write matrix against Teem."
@@ -1416,18 +1427,19 @@
     {
       "capability_id": "NRRD-SEC-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-SEC-001-SECURITY-BASELINE-PROOF"
       ],
       "implemented_behavior": [
-        "Payload bytes are decoded as scalar/block data and never evaluated."
+        "Key-value pairs and comments are stored as plain dict[str, str]/list[str] entries with zero interpretation -- proven directly with shell-command-substitution syntax and script-tag content in both a key-value field and a comment line, each surviving parsing byte-for-byte as inert text. Combined with the whole-package static import scan (no subprocess/eval-capable modules imported anywhere), there is no code path anywhere in the package that could evaluate embedded content of any kind."
       ],
-      "missing_behavior": [
-        "No explicit hostile embedded-blob test matrix or documented no-execution invariant at every adapter boundary."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-9AB0A32906D88688",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+        "tests/python/nrrd/test_obligation_security_baseline.py::test_hostile_key_value_content_survives_as_opaque_string",
+        "tests/python/nrrd/test_obligation_security_baseline.py::test_hostile_comment_content_survives_as_opaque_string",
+        "tests/python/nrrd/test_obligation_security_baseline.py::test_no_source_file_imports_networking_execution_or_plugin_modules"
       ],
       "proof_requirements": {
         "negative": [
@@ -1437,13 +1449,13 @@
           "Opaque hostile byte corpus remains inert."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_apply_skips",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-VALIDATE-001",
@@ -2117,7 +2129,8 @@
       "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-EBE5230D5204B4AD",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_list_and_printf_detached_payload_forms"
+        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_list_and_printf_detached_payload_forms",
+        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_printf_sequence_file_count_is_bounded_before_allocation"
       ],
       "proof_requirements": {
         "negative": [
@@ -2268,11 +2281,12 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-lazy-payload-001.json": "ee783f0c983b7f4fba3cdcd565c9f09d4fe16dc3fd1799bfd881969d266d3e09",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-security-baseline-001.json": "75e80c2707a235afef3f1ab9980697a5e95e32a90fb18e8e1000fd29bbd2ee82",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "91881b17de9982f641410a448f2472c28526367628b92d89cb7a45521109a0c1",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "38520a9be8ff12f1266999d5f8d79761254ecc327e65e637e39f35c72a86d240",
-    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "6e310b36a8ecdd6ed30ff570e9779f415cdb4d39248924c45017c66a2f83c72f",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "b25956e5f335f95b3f659081dd0e3f3c9cb2e7e49302f0083ec3872ee075f87c",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "27ed99ee0e1db0a02155ce7577e7b7450544ed0fd96824b50f31a45d623af52c",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "83d96605f886fd24e9146410be552cb54d1bb93ee317102f46dc53b164448951",
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "b0807a18aed01727b3ef85c445017ccd891b5840d7558c736f804fdbaa4222ab",
@@ -2283,12 +2297,13 @@
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
     "tests/python/nrrd/test_obligation_axis_field_arity.py": "9d6e7bbbc5e7b0ea5a80d73f4ac4d285dc27e22f59bdcd522cfa74d4fa4392a1",
     "tests/python/nrrd/test_obligation_compressed_trailing_data.py": "5d2e460aa29e58b85602ce8c4000ad9642e3aee4b38be1816d8297db1116f97e",
-    "tests/python/nrrd/test_obligation_detached_forms_production.py": "0ea4f16a7602ef7ea83a4c69dead3d3204c291c30a71747696a92a97ecc2a2d8",
+    "tests/python/nrrd/test_obligation_detached_forms_production.py": "67c0d1384acdb24a892f7fb7c0340a9bd5c3338e2be5069d5d034a996121263a",
     "tests/python/nrrd/test_obligation_dtype_conversion.py": "303205eec17e82662e3e484870fac7e985c0ed400f36bc62f887c75b686d6425",
     "tests/python/nrrd/test_obligation_keyvalue_duplicates.py": "bd1aeeedc522b3be842bdecf4625b4a639375e84b858b8d94a0e5dd647798ab8",
     "tests/python/nrrd/test_obligation_lazy_payload_access.py": "f18ff2c44b5e0582b716e675cfd6566bdebc3469b22df73821f5acdfcdab5de1",
     "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
     "tests/python/nrrd/test_obligation_payload_skip.py": "631ddbb609282e655c179358af0e8cbaa76038e33343cd482c87aaeecb1b8116",
+    "tests/python/nrrd/test_obligation_security_baseline.py": "5788c0182586ffd1b6eae3c22c103660cfc4e5143ee40a282ed6f730c265476e",
     "tests/python/nrrd/test_obligation_shape_production.py": "17ebb172b6e8f2ac861d2ff907dbe19794d327a6e20b5f915b20a9704be9dce5",
     "tests/python/nrrd/test_obligation_space_transform.py": "fd2e5b51084b5061e2181cef869169f6a7bc9fc4dc0d64c4aa090c22d06fb874",
     "tests/python/nrrd/test_obligation_version_selection.py": "ce565329d7d4f3e15e1bca930257b808a004a61c032abff6ad2ba6d217cdb624",
@@ -2297,13 +2312,13 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 22,
+      "implemented": 26,
       "missing": 1,
-      "partial": 39,
+      "partial": 35,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 43
+    "unresolved": 39
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
