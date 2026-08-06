@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-preservation-baseline-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T14:50:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_PRESERVE_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "ORA-PRESERVE-001's 4 obligations (LOSSLESS-vs-CANONICAL as explicit caller choice, a loss-report API before saving, unknown/future constructs survive a lossless round trip, absent-vs-explicit-default distinction) already had 3 of 4 obligations fully built and covered by a dedicated, thoughtfully-scoped 9-test file (test_obligation_preservation_baseline.py, whose own docstring explicitly maps each test group to an obligation and explains the fourth was deliberately deferred), but all 4 obligations carried an identical generic 7-symbol citation with the same 3 test selectors reused verbatim regardless of which obligation each actually supports.",
+    "obligation_targeted": "SAL-ORA-OBL-07B4638C09251BE1, SAL-ORA-OBL-1527BE3306AC38F2, SAL-ORA-OBL-24BEC87CE09AB2DD, SAL-ORA-OBL-9C467C6DD59DFEE7",
+    "acceptance_evidence": "tests/python/ora/test_obligation_preservation_baseline.py",
+    "regression_tier": "full ORA package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Continued the ora sweep after ORA-RESOLUTION-001/ORA-ISOLATION-001. ORA-PRESERVE-001's own test file docstring stated its scope explicitly: obligations 1 and 3 were already implemented before that file existed (lifecycle.PreservationMode, dumps()'s member handling), obligation 2 (loss report) was built as preservation.check_preservation() in an earlier tick, and obligation 4 (absent-vs-explicit-default) was explicitly declared NOT attempted -- OraNode applies defaults at construction time by design, so the model cannot distinguish 'absent' from 'explicitly default'.",
+    "2. Ran all 9 tests directly before citing any of them: all passed. Confirmed the module docstring's self-report against the actual test bodies -- each of the three built obligations has a positive test plus, where applicable, a control/negative test (CANONICAL dropping the same attribute LOSSLESS preserves; a positive-control document with only modeled attributes reporting no loss).",
+    "3. Split source_symbols and test selectors per obligation by which test group actually supports it, rather than reusing the same generic set for all four: obligation 1 (explicit-choice-defaulting-to-lossless) cites PreservationMode/dumps and its two mode-selection tests; obligation 2 (loss report API) cites preservation.py's LossItem/LossReport/check_preservation and its five report-behavior tests; obligation 3 (unknown constructs survive lossless) cites the same lifecycle symbols plus its lossless-preserves/canonical-drops test pair.",
+    "4. For obligation 4, corrected the citation from the same misapplied 7-symbol set to an honest `missing` status with empty source/tests and a specific missing_behavior text naming the exact gap (nullable defaults would need to thread through OraNode/OraStack/OraLayer and every consumer including is_isolated_group -- real, larger-scoped work). `missing` (not `partial`) was chosen because the reconciler's schema requires partial status to cite genuine, if incomplete, positive proof -- none exists for this specific claim, so citing anything would misrepresent it.",
+    "5. Promoted 3 of 4 obligations to implemented, fully closing ORA-PRESERVE-001's buildable scope while leaving the model-refactor-sized fourth obligation honestly unpromoted. Zero source or test changes -- pure evidence correction."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_preservation_baseline.py -v -- 9 passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 3,
+    "obligations_total_for_format": 134,
+    "ora_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against an external OpenRaster reader/writer. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_the_fourth_obligation_was_not_promoted": "The absent-vs-explicit-default distinction genuinely requires nullable defaults threaded through the entire node/stack/layer model and every consumer of is_isolated_group -- a real, larger-scoped refactor, not a citation gap. Not force-promoted, and status corrected from a misleading `partial` (citing evidence that does not support this specific claim) to an honest `missing`."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

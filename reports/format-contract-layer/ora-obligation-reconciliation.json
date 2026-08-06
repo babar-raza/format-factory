@@ -26,6 +26,14 @@
       "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact positive and negative test selectors for the mimetype sentinel (position, compression, exact bytes, forbidden whitespace), the ZIP-member compression-method restriction, and archive-root-relative layer/text src referencing. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED -- not cross-checked against an independent OpenRaster reader/writer. Covers SAL-ORA-OBL-2F587C16337355AD, SAL-ORA-OBL-55DE1B78BE5C2722, SAL-ORA-OBL-6F8C875E6EA535C4, and SAL-ORA-OBL-A24565BEF82FCD78 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "ORA-PRESERVATION-BASELINE-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-preservation-baseline-001.json",
+      "sha256": "66670b6131f704d6bd441c2fd8a8e83dc51b29d415fdfcb7bff998ec953a047e",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact positive test selectors proving LOSSLESS-versus-CANONICAL is an explicit dumps() caller choice defaulting to LOSSLESS, that a lossless round trip survives a vendor/future-profile attribute the model does not know about (with a CANONICAL control proving the same attribute is genuinely unmodeled, not a fixture defect), and that check_preservation() reports every construct CANONICAL regeneration would drop -- including a positive control (no loss for a spec-only document) and a deeply-nested-attribute location test. Does NOT cover the fourth ORA-PRESERVE-001 obligation (preserving the absent-vs-explicit-default distinction) -- OraNode/OraStack apply attribute defaults at construction time by design, so the in-memory model cannot currently answer \"was this value explicit or defaulted\"; that clause remains honestly unpromoted. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-07B4638C09251BE1, SAL-ORA-OBL-1527BE3306AC38F2, and SAL-ORA-OBL-24BEC87CE09AB2DD only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -37,7 +45,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "2ce1ce9ddb71e21e9dcba122efb3a4d22a9b475237f0a8fdced1ab9d4f1f859e",
+    "implementation_evidence": "57713e7563770a4bd95b02bc2fa9d6d2774c0625bcbf64af7583c995afc271c9",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -283,20 +291,18 @@
     {
       "capability_id": "ORA-PRESERVE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-PRESERVATION-BASELINE-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "dumps() takes preservation as an explicit PreservationMode parameter (LOSSLESS re-emits original members verbatim; CANONICAL regenerates stack.xml from the model), defaulting to LOSSLESS since defaulting to CANONICAL would silently discard unmodeled content on every load-then-save."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-07B4638C09251BE1",
       "positive_test_selectors": [
         "tests/python/ora/test_obligation_preservation_baseline.py::test_preservation_mode_is_an_explicit_dumps_parameter",
-        "tests/python/ora/test_obligation_preservation_baseline.py::test_dumps_defaults_to_lossless_not_canonical",
-        "tests/python/ora/test_obligation_preservation_baseline.py::test_lossless_round_trip_preserves_an_unmodeled_stack_attribute"
+        "tests/python/ora/test_obligation_preservation_baseline.py::test_dumps_defaults_to_lossless_not_canonical"
       ],
       "proof_requirements": {
         "negative": [
@@ -306,17 +312,12 @@
           "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/preservation.py::LossItem",
-        "src/python/ora/src/format_factory/ora/preservation.py::LossReport",
-        "src/python/ora/src/format_factory/ora/preservation.py::check_preservation",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
         "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::load"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-RENDER-001",
@@ -603,20 +604,21 @@
     {
       "capability_id": "ORA-PRESERVE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-PRESERVATION-BASELINE-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "check_preservation(image, target=...) returns a structured LossReport (is_lossless flag plus per-construct LossItem entries carrying element, attribute, value, and a diagnostic message) computed before saving -- a caller can inspect exactly what CANONICAL regeneration would drop, including at any nesting depth, rather than discovering loss only after writing."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-1527BE3306AC38F2",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_preservation_baseline.py::test_preservation_mode_is_an_explicit_dumps_parameter",
-        "tests/python/ora/test_obligation_preservation_baseline.py::test_dumps_defaults_to_lossless_not_canonical",
-        "tests/python/ora/test_obligation_preservation_baseline.py::test_lossless_round_trip_preserves_an_unmodeled_stack_attribute"
+        "tests/python/ora/test_obligation_preservation_baseline.py::test_lossless_target_reports_no_loss",
+        "tests/python/ora/test_obligation_preservation_baseline.py::test_canonical_target_reports_the_unmodeled_stack_attribute",
+        "tests/python/ora/test_obligation_preservation_baseline.py::test_loss_report_items_carry_element_and_value_for_diagnostics",
+        "tests/python/ora/test_obligation_preservation_baseline.py::test_canonical_target_reports_no_loss_for_a_document_with_only_modeled_attributes",
+        "tests/python/ora/test_obligation_preservation_baseline.py::test_loss_report_locates_a_deeply_nested_unmodeled_attribute"
       ],
       "proof_requirements": {
         "negative": [
@@ -626,17 +628,13 @@
           "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ora/src/format_factory/ora/preservation.py::LossItem",
         "src/python/ora/src/format_factory/ora/preservation.py::LossReport",
-        "src/python/ora/src/format_factory/ora/preservation.py::check_preservation",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::load"
+        "src/python/ora/src/format_factory/ora/preservation.py::check_preservation"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-EDIT-001",
@@ -938,19 +936,18 @@
     {
       "capability_id": "ORA-PRESERVE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-PRESERVATION-BASELINE-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "In LOSSLESS mode, a vendor/future-profile stack or layer attribute this library does not model (e.g. data-vendor-tag, vendor-blend-mode) survives a round trip verbatim in the re-emitted stack.xml, proven against a CANONICAL control that confirms the same attribute is genuinely unmodeled -- regeneration cannot re-emit what the model never captured -- ruling out a coincidentally-passing fixture."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_preservation_baseline.py::test_canonical_round_trip_drops_the_unmodeled_attribute"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-24BEC87CE09AB2DD",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_preservation_baseline.py::test_preservation_mode_is_an_explicit_dumps_parameter",
-        "tests/python/ora/test_obligation_preservation_baseline.py::test_dumps_defaults_to_lossless_not_canonical",
         "tests/python/ora/test_obligation_preservation_baseline.py::test_lossless_round_trip_preserves_an_unmodeled_stack_attribute"
       ],
       "proof_requirements": {
@@ -961,17 +958,12 @@
           "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/preservation.py::LossItem",
-        "src/python/ora/src/format_factory/ora/preservation.py::LossReport",
-        "src/python/ora/src/format_factory/ora/preservation.py::check_preservation",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
         "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::load"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-LIFECYCLE-001",
@@ -3337,22 +3329,14 @@
     },
     {
       "capability_id": "ORA-PRESERVE-001",
-      "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+        "model/stack.py's OraNode applies attribute defaults (opacity, visibility, composite-op, isolation) at construction time by deliberate design -- its own docstring states this is correct for compositing but means the in-memory model cannot currently answer \"was this value written explicitly, or just defaulted?\" Fixing this would need nullable defaults threaded through OraNode/OraStack/OraLayer and every consumer of them (is_isolated_group included) -- real, larger-scoped work not yet attempted. The archive-level round trip is unaffected: LOSSLESS mode keeps the original bytes verbatim regardless of what the model captures, but that is container-level preservation, not this obligation's model-level distinction."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-9C467C6DD59DFEE7",
-      "positive_test_selectors": [
-        "tests/python/ora/test_obligation_preservation_baseline.py::test_preservation_mode_is_an_explicit_dumps_parameter",
-        "tests/python/ora/test_obligation_preservation_baseline.py::test_dumps_defaults_to_lossless_not_canonical",
-        "tests/python/ora/test_obligation_preservation_baseline.py::test_lossless_round_trip_preserves_an_unmodeled_stack_attribute"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3361,17 +3345,9 @@
           "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ora/src/format_factory/ora/preservation.py::LossItem",
-        "src/python/ora/src/format_factory/ora/preservation.py::LossReport",
-        "src/python/ora/src/format_factory/ora/preservation.py::check_preservation",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::load"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "ORA-EDIT-001",
@@ -4644,6 +4620,7 @@
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json": "ff1e276701cd182ef6dbf39d21d7fbeb7d841bc5d12209ab938ae304e341abdc",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-document-model-construction-001.json": "e722f98266ec914ed9f2aca1d75695070ed123949b66335d7d572ba4e7c05171",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-mimetype-001.json": "c4af01879db0867dbc3deec2c4ecbb85112c7aa2a3283b2a2b24c28d6eb155cd",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-preservation-baseline-001.json": "66670b6131f704d6bd441c2fd8a8e83dc51b29d415fdfcb7bff998ec953a047e",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-resolution-isolation-001.json": "1a8d632812f95c0c628a894ccf0d2a6e1cc96c7784e6a38506cf576c66d67c59",
     "src/python/ora/src/format_factory/ora/codec/assets.py": "daa355728ed65a92d69c3178f91af4075501bde0549fb0ce9755a944206b9091",
     "src/python/ora/src/format_factory/ora/codec/container.py": "02dd620d7c5f405a2a63222a686cc77a102ad8da95893b43716684bc1c2fbde5",
@@ -4670,12 +4647,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 10,
-      "missing": 20,
-      "partial": 104
+      "implemented": 13,
+      "missing": 21,
+      "partial": 100
     },
     "total": 134,
-    "unresolved": 124
+    "unresolved": 121
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
