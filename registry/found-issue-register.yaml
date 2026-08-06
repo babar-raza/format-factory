@@ -2400,6 +2400,7 @@ issues:
   affected_paths:
     - tools/ff6/build_evidence_ledger.py
     - shared/format-contracts/implementation-evidence/nrrd.yaml
+    - shared/format-contracts/implementation-evidence/xliff.yaml
   observed_behavior: >-
     tools/ff6/build_evidence_ledger.py fully regenerates and overwrites the
     entire shared/format-contracts/implementation-evidence/{format}.yaml
@@ -2425,6 +2426,16 @@ issues:
     either by refusing to touch obligations already at `implemented`
     (leaving them for a human/agent to reconcile by hand), or by failing
     loudly if the rebuild would regress any obligation's status.
+  update_20260806_later: >-
+    xliff now has the same exposure: SAL-XLIFF-OBL-95E74FFC0501843B and
+    SAL-XLIFF-OBL-AF86B77156C7C1E2 (XLIFF-STATE-001) were promoted to
+    `implemented` with selector-level evidence
+    (XLIFF-STATE-SELECTOR-PROOF), the same way as nrrd's axis-arity
+    obligation, and by the same reasoning are equally exposed to being
+    silently downgraded if `python -m tools.ff6.build_evidence_ledger
+    --format-id xliff` is ever re-run. Two formats now carry this risk;
+    the remediation below applies to both and should be generalized to
+    "any format", not scoped to nrrd specifically.
   severity: HIGH
   reproducibility: ALWAYS_REPRODUCIBLE
   root_cause_id: RC-FF6-LEDGER-REBUILD-DESTRUCTIVE-001

@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-state-transitions-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T08:10:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC-FF6-XLIFF-STATE-TRANSITIONS-001",
+    "task_kind": "obligation-closure",
+    "root_cause": "XLIFF-STATE-001's two obligations both cite generic round-trip tests (test_typed_core_and_inline_content_load etc.) as their only evidence, even though test_production_namespace.py already contains dedicated, unattributed tests for the core enum/target-required rule (test_advanced_translation_state_requires_target, test_initial_state_and_advanced_state_with_target_are_valid), and nothing anywhere implements the second half of SAL-XLIFF-00018 -- 'allow configurable workflow transition validation'. No API let a caller check whether a state change between two document snapshots was legal under a workflow's own rules.",
+    "obligations_targeted": [
+      "SAL-XLIFF-OBL-AF86B77156C7C1E2",
+      "SAL-XLIFF-OBL-95E74FFC0501843B"
+    ],
+    "acceptance_evidence": "tests/python/xliff/test_obligation_state_transitions.py",
+    "regression_tier": "full XLIFF package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Read SAL-XLIFF-00018 (verified, 'XLIFF core - translation state') directly from shared/sal-facts/xliff.yaml before writing anything.",
+    "2. Checked validation/validator.py: _STATES = {'', 'initial', 'translated', 'reviewed', 'final'} and _TARGET_REQUIRED_STATES = {'translated', 'reviewed', 'final'} already implement the core enum + target-required rule exactly. Checked test_production_namespace.py: test_advanced_translation_state_requires_target and test_initial_state_and_advanced_state_with_target_are_valid already prove the target-required half positively and negatively -- but neither obligation's evidence row cited them. No test anywhere proved the enum-membership half (an invalid state VALUE being rejected).",
+    "3. Checked for any existing transition-policy mechanism: none. validate()'s signature takes no policy parameter and nothing compares two document snapshots' segment states at all.",
+    "4. Added tests/python/xliff/test_obligation_state_transitions.py::test_an_invalid_state_value_is_rejected and test_every_spec_defined_state_value_is_accepted to close the enum-membership gap.",
+    "5. Built state_transitions.py: check_state_transitions(before, after, *, policy) compares segment states between two document snapshots (matched by segment id) against a caller-supplied policy (from_state -> permitted to_states). Deliberately ships no default policy -- XLIFF does not mandate transition legality, and inventing one would be the exact proprietary semantics SAL-XLIFF-00018 forbids. An unmentioned from_state fails closed (permits nothing), which required a dedicated test to make explicit rather than assumed.",
+    "6. Wrote 8 more tests: legal/illegal transitions, fail-closed for an unmentioned from-state, no-change is never a violation even under an empty policy, the wire-form empty state ('' , not the literal string 'initial') normalizes correctly, added/removed segments between snapshots are not transitions, multiple independent violations are all reported, and a type check on non-XliffDocument inputs.",
+    "7. All 10 new tests passed on first run. Full xliff suite: 265 -> 275 passed. ruff and mypy clean on the full package (23 source files).",
+    "8. Re-read both obligations' own rule_text against what is now proven: SAL-XLIFF-OBL-AF86B77156C7C1E2's rule (enum values + target-required) is fully covered, positive and negative, now correctly cited. SAL-XLIFF-OBL-95E74FFC0501843B's rule ('expose state ... allow configurable workflow transition validation') is fully covered: state was already exposed, and the transition mechanism is now built and tested. Both obligations' missing_behavior is genuinely empty; promoted both to implemented. Note: both rows' proof_requirements text ('Transition-policy fixtures') is identical, shared capability-level boilerplate rather than obligation-specific -- each obligation's promotion is justified against its own distinct rule_text, not against the shared boilerplate text alone, and this distinction is recorded in each row's truth_boundary rather than silently glossed over."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/state_transitions.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_obligation_state_transitions.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/state_transitions.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_obligation_state_transitions.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_state_transitions.py -v -- 10 passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 275 passed (265 baseline + 10 new, 0 regressions)",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/ tests/python/xliff/test_obligation_state_transitions.py -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/xliff/src/format_factory/xliff/ -- Success: no issues found in 23 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 142,
+    "xliff_remains": "UNASSESSED",
+    "oracle": "none -- format_factory's own self-consistent test evidence. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED; XLIFF has no independent reference implementation wired into this repository for state/transition behavior specifically.",
+    "misattributed_evidence_found_and_corrected": "Both obligations previously cited only generic round-trip tests (test_typed_core_and_inline_content_load, test_semantic_roundtrip_preserves_unknown_namespace_and_order, test_stream_and_path_lifecycle) despite dedicated, on-point tests already existing in the same test file under different names. Corrected the citation rather than leaving stale evidence in place."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

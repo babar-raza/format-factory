@@ -72,6 +72,13 @@ from .qa import (
     run_qa_checks,
 )
 from .security import XLIFF_DEFAULT_LIMITS
+from .state_transitions import (
+    DEFAULT_STATE,
+    TransitionPolicy,
+    TransitionReport,
+    TransitionViolation,
+    check_state_transitions,
+)
 from .validation import validate
 
 __all__ = [
@@ -82,6 +89,10 @@ __all__ = [
     "STANDARD_MODULES",
     "SUPPORTED_VERSIONS",
     "TemplateMergeAdapter",
+    "DEFAULT_STATE",
+    "TransitionPolicy",
+    "TransitionReport",
+    "TransitionViolation",
     "XLIFF_DEFAULT_LIMITS",
     "XLIFF_NAMESPACE",
     "ExtensionNode",
@@ -104,6 +115,7 @@ __all__ = [
     "check_drift",
     "check_missing_targets",
     "check_placeholder_mismatch",
+    "check_state_transitions",
     "check_target_language_compatibility",
     "check_translation_consistency",
     "check_unchanged_targets",

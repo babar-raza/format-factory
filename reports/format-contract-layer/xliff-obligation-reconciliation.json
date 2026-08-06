@@ -8,12 +8,20 @@
       "path": "reports/skills-rff6/skill-transcripts/build-evidence-ledger-xliff-001.json",
       "sha256": "bb85918b335cbc4c82b7993cdbb1506f2e87c77626e871628989ce6fc87ac4d4",
       "truth_boundary": "SOURCE READ 2026-08-04 under the GAP-022 rule, updated 2026-08-05. Unlike ubl, xliff's CORE is genuine work: segmentation.py (217 LOC) implements split_segment, join_segments, SegmentMapping, spanning-code closure checks and fresh-id enforcement; inline.py, text_editing.py and the reader/writer are real. Those `partial` entries are defensible pending audit.\n2026-08-05 correction: the prior note here named the eight XLIFF 2.1 modules as \"...Resource Data, Change Tracking, Size and Length Restriction, Validation\" -- Change Tracking is not one of the eight the contract's own normative_rules name; the eighth is ITS (http://www.w3.org/2005/11/its). That error is fixed here rather than carried forward.\nmodules.py now gives XLIFF-MODULE-001 a programmatic coverage manifest covering all eight (Translation Candidates, Glossary, Format Style, Metadata, Resource Data, Size and Length Restriction, Validation, ITS), each PRESERVATION_ONLY with round-trip fixtures proving lossless preservation (see notes above). No typed per-module accessor exists yet, so no XLIFF-MODULE-001 obligation may be recorded above `partial`; this deepens the evidence behind `partial`, exactly like the UBL slices that moved zero obligations while making the evidence real rather than fictional. validation/validator.py still performs no schema validation, so the schema-validation clauses inside XLIFF-VALIDATE-001's `partial` entries remain overstated and still need per-obligation correction -- unchanged by this slice.\nXLIFF-NOTE-001, same session: no source change. Direct experiment first (before writing any test) showed reader.py's _parse_inline is generic over every inline tag, so mrk/sm/em already survive with their exact attributes and document-order position -- which is what an overlapping span requires, since it cannot be a nested element pair. The gap was proof, not implementation; XLIFF-NOTE-001 could not be recorded `partial` before because it had zero shipped-namespace selectors, not because the behavior was absent.\nXLIFF-QA-001, same session: qa.py is new source (unlike NOTE-001). Five of six named QA categories implemented with dedicated tests each; length violations explicitly left undone pending Size/Length module modeling, documented rather than stubbed. No QA-001 obligation may be recorded above `partial` -- a check existing is not the same as it being verified against every fixture the required_tests line names, and length is a real, acknowledged gap in the category set itself.\nXLIFF-MERGE-001, same session: real new source (merge.py), unlike NOTE-001. SHOULD-level, and it stays SHOULD-level satisfied at `partial`: the reference adapter proves the protocol works end to end (extraction, reversible skeleton, translated merge, drift detection and refusal) but is deliberately not a real-world format adapter -- the obligation's \"never claim generic extraction\" clause is precisely why no such claim is made here.\nSuite-level and NON-PROMOTING. The xliff suite is 265 passed with no failures (193 baseline + 22 + 11 + 25 + 14 new), but that number is still dominated by the ten shadow-package files; the shipped-namespace files now contribute 87 tests (15 + 22 + 11 + 25 + 14). A green suite here says very little about the package that would be released. Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most."
+    },
+    {
+      "evidence_id": "XLIFF-STATE-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json",
+      "sha256": "368a286339e4990afa645543f86d2b1968bfc693706a6c170b366fecc18f432b",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors for both XLIFF-STATE-001 obligations (the core state enum/target-required rule, and the configurable transition-validation mechanism). NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-AF86B77156C7C1E2 and SAL-XLIFF-OBL-95E74FFC0501843B only; it supports no other obligation and promotes no product state."
     }
   ],
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "bf91e81323cb513e146f648262246d4ac9d7e4db5865bcbdc7a0c80946cf3c1f",
+    "implementation_evidence": "91f1abde381df415a4c29a3e71c31c0b63aaec70f1e610f3695d302c70a85d71",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -3111,20 +3119,25 @@
     {
       "capability_id": "XLIFF-STATE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-STATE-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Target state is exposed via Segment.state without inventing proprietary values (the existing model field, unchanged). Configurable workflow transition validation is now built: check_state_transitions(before, after, policy) compares segment states between two document snapshots, matched by segment id, against a caller-supplied from_state -> permitted-to_states policy. No default policy is shipped -- XLIFF itself does not mandate transition legality, and inventing one would be exactly the proprietary semantics this obligation forbids. An unmentioned from_state fails closed (permits nothing away from it); added/removed segments between snapshots are not evaluated as transitions."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Transition-policy fixtures (legal and illegal transitions)."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_state_transitions.py::test_a_transition_the_policy_forbids_is_a_violation",
+        "tests/python/xliff/test_obligation_state_transitions.py::test_a_from_state_absent_from_the_policy_permits_no_transition",
+        "tests/python/xliff/test_obligation_state_transitions.py::test_multiple_independent_violations_are_all_reported",
+        "tests/python/xliff/test_obligation_state_transitions.py::test_check_state_transitions_requires_xliff_documents"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-95E74FFC0501843B",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_state_transitions.py::test_a_transition_the_policy_permits_is_not_a_violation",
+        "tests/python/xliff/test_obligation_state_transitions.py::test_no_state_change_is_never_a_violation_even_under_an_empty_policy",
+        "tests/python/xliff/test_obligation_state_transitions.py::test_the_wire_default_empty_state_is_normalized_to_initial",
+        "tests/python/xliff/test_obligation_state_transitions.py::test_a_segment_added_or_removed_between_snapshots_is_not_a_transition"
       ],
       "proof_requirements": {
         "negative": [
@@ -3134,15 +3147,14 @@
           "Transition-policy fixtures (legal and illegal transitions)."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
         "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/state_transitions.py::check_state_transitions",
+        "src/python/xliff/src/format_factory/xliff/state_transitions.py::TransitionReport",
+        "src/python/xliff/src/format_factory/xliff/state_transitions.py::TransitionViolation"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODULE-001",
@@ -3528,20 +3540,21 @@
     {
       "capability_id": "XLIFF-STATE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-STATE-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Segment state accepts exactly initial, translated, reviewed, and final (validator.py's _STATES), defaulting to initial when the wire attribute is absent; any other value is rejected (xliff.segment.state.invalid). translated/reviewed/final each require a target child (xliff.segment.state.target_required); initial does not. This obligation's own rule_text (the core enum + target-required rule) was already fully implemented before this slice -- the gap was that its positive/negative proof already existed in test_production_namespace.py under different, uncited test names, and the enum-membership half (an invalid value, not just a missing target) had no test anywhere. Both are now correctly cited and the missing case is covered."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Transition-policy fixtures (legal and illegal transitions)."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_production_namespace.py::test_advanced_translation_state_requires_target",
+        "tests/python/xliff/test_obligation_state_transitions.py::test_an_invalid_state_value_is_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-AF86B77156C7C1E2",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_initial_state_and_advanced_state_with_target_are_valid",
+        "tests/python/xliff/test_obligation_state_transitions.py::test_every_spec_defined_state_value_is_accepted"
       ],
       "proof_requirements": {
         "negative": [
@@ -3551,15 +3564,12 @@
           "Transition-policy fixtures (legal and illegal transitions)."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -4916,6 +4926,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-xliff-001.json": "bb85918b335cbc4c82b7993cdbb1506f2e87c77626e871628989ce6fc87ac4d4",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json": "368a286339e4990afa645543f86d2b1968bfc693706a6c170b366fecc18f432b",
     "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py": "8b779c48ad2de4c057d320ff45fc13869dec024edbf5c76f7c60d9be40a1b1ec",
     "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py": "41c5a9168d0e2bb725faaa820dd7793b5e76a6935d8bc81ada0629ebd3210b6b",
     "src/python/xliff/src/format_factory/xliff/merge.py": "c16a0916c2a7ddaeb49dd200fbe89e4a0b08f0ca19dd5177f7001733c0882c1b",
@@ -4926,20 +4937,23 @@
     "src/python/xliff/src/format_factory/xliff/modules.py": "ec0f6e5b2439d064c8c9347704d234064a11aa7f7ebd58f0740dfafbb62fabbd",
     "src/python/xliff/src/format_factory/xliff/qa.py": "e538fb53fb952dc03dcf4faa1bf5d89de1d0f8232595407902937675d2a5a2c0",
     "src/python/xliff/src/format_factory/xliff/security/limits.py": "8cec6ffd2ccd8fe17fa6d76ab19b2deeda3578d558925d862b15494b3b06665a",
+    "src/python/xliff/src/format_factory/xliff/state_transitions.py": "6b12476e31076a788cef37fb476e1b5eda7365e6eb640bbb7bedcebabb9d49ea",
     "src/python/xliff/src/format_factory/xliff/validation/validator.py": "9ed437e179bfa8b927e080940bc0d40c967183c4569de89c8f453c958fc1cca1",
     "tests/python/xliff/test_obligation_merge_adapter.py": "8ab808796f526b4497037ff207d9924382fe6833689529377210a80e60d95e88",
     "tests/python/xliff/test_obligation_module_coverage.py": "b83ec2190483e437fc5bac89611cdbefb85dbc1481fd6d936ad97edf2acd38ed",
     "tests/python/xliff/test_obligation_notes_and_annotations.py": "357ae9aace9aab3cbb6bcda064a928b4934ccd7b6720094452aaedd75b69e587",
     "tests/python/xliff/test_obligation_qa_checks.py": "41662c596cd1ccae6ad779fadccad83b97a5263e2b8db4cca28f00d126de8f4c",
+    "tests/python/xliff/test_obligation_state_transitions.py": "eb2fb6fa0f4503175da1904986563ca1a1ee97f317067a2d29466c5c35c9c1bf",
     "tests/python/xliff/test_production_namespace.py": "907de371555ded7c152d23d9748884e27915eb7ca93ffde5e10659e6266448d6"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "partial": 142
+      "implemented": 2,
+      "partial": 140
     },
     "total": 142,
-    "unresolved": 142
+    "unresolved": 140
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

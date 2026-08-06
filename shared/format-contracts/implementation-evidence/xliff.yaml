@@ -50,6 +50,19 @@ execution_evidence:
     files now contribute 87 tests (15 + 22 + 11 + 25 + 14). A green suite here says very little about
     the package that would be released. Binds no individual selector outcome to an obligation, so nothing
     here is verification; every obligation is recorded `partial` at most.'
+- evidence_id: XLIFF-STATE-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive
+    and negative test selectors for both XLIFF-STATE-001 obligations (the
+    core state enum/target-required rule, and the configurable
+    transition-validation mechanism). NOT backed by an independent reference
+    implementation -- SELF-CONSISTENT format_factory-only evidence per the
+    execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
+    SAL-XLIFF-OBL-AF86B77156C7C1E2 and SAL-XLIFF-OBL-95E74FFC0501843B only;
+    it supports no other obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-XLIFF-OBL-009F2EB91831B248
   capability_id: XLIFF-SEC-001
@@ -2356,26 +2369,34 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-95E74FFC0501843B
   capability_id: XLIFF-STATE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
-  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
-  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
   - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
-  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
+  - src/python/xliff/src/format_factory/xliff/state_transitions.py::check_state_transitions
+  - src/python/xliff/src/format_factory/xliff/state_transitions.py::TransitionReport
+  - src/python/xliff/src/format_factory/xliff/state_transitions.py::TransitionViolation
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_state_transitions.py::test_a_transition_the_policy_permits_is_not_a_violation
+  - tests/python/xliff/test_obligation_state_transitions.py::test_no_state_change_is_never_a_violation_even_under_an_empty_policy
+  - tests/python/xliff/test_obligation_state_transitions.py::test_the_wire_default_empty_state_is_normalized_to_initial
+  - tests/python/xliff/test_obligation_state_transitions.py::test_a_segment_added_or_removed_between_snapshots_is_not_a_transition
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_state_transitions.py::test_a_transition_the_policy_forbids_is_a_violation
+  - tests/python/xliff/test_obligation_state_transitions.py::test_a_from_state_absent_from_the_policy_permits_no_transition
+  - tests/python/xliff/test_obligation_state_transitions.py::test_multiple_independent_violations_are_all_reported
+  - tests/python/xliff/test_obligation_state_transitions.py::test_check_state_transitions_requires_xliff_documents
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-STATE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Transition-policy fixtures
-    (legal and illegal transitions).'
+  - 'Target state is exposed via Segment.state without inventing proprietary values (the existing model
+    field, unchanged). Configurable workflow transition validation is now built: check_state_transitions(before,
+    after, policy) compares segment states between two document snapshots, matched by segment id, against
+    a caller-supplied from_state -> permitted-to_states policy. No default policy is shipped -- XLIFF
+    itself does not mandate transition legality, and inventing one would be exactly the proprietary semantics
+    this obligation forbids. An unmentioned from_state fails closed (permits nothing away from it); added/removed
+    segments between snapshots are not evaluated as transitions.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Transition-policy fixtures (legal and illegal transitions).
@@ -2669,26 +2690,29 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-AF86B77156C7C1E2
   capability_id: XLIFF-STATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
-  - src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode
-  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
   - src/python/xliff/src/format_factory/xliff/model/document.py::Segment
-  - src/python/xliff/src/format_factory/xliff/model/document.py::Unit
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - tests/python/xliff/test_production_namespace.py::test_initial_state_and_advanced_state_with_target_are_valid
+  - tests/python/xliff/test_obligation_state_transitions.py::test_every_spec_defined_state_value_is_accepted
+  negative_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_advanced_translation_state_requires_target
+  - tests/python/xliff/test_obligation_state_transitions.py::test_an_invalid_state_value_is_rejected
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-STATE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Transition-policy fixtures
-    (legal and illegal transitions).'
+  - 'Segment state accepts exactly initial, translated, reviewed, and final (validator.py''s _STATES),
+    defaulting to initial when the wire attribute is absent; any other value is rejected
+    (xliff.segment.state.invalid). translated/reviewed/final each require a target child
+    (xliff.segment.state.target_required); initial does not. This obligation''s own rule_text (the
+    core enum + target-required rule) was already fully implemented before this slice -- the gap was
+    that its positive/negative proof already existed in test_production_namespace.py under different,
+    uncited test names, and the enum-membership half (an invalid value, not just a missing target) had
+    no test anywhere. Both are now correctly cited and the missing case is covered.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Transition-policy fixtures (legal and illegal transitions).
