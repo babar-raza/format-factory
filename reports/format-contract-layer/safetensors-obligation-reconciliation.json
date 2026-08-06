@@ -69,7 +69,7 @@
   "format_id": "safetensors",
   "input_digests": {
     "compiled_contract": "0c75ec78971819ea2d679482ea8b81334f594632bf79cdb0c4ec465c8a3bcfbb",
-    "implementation_evidence": "4e7d5bd20cb52213e91efc0af92b7905edbd863d505f818b70cdcc9758e58f11",
+    "implementation_evidence": "bb6ff3bcf488aac9f0baee198817b0b124d30253b87fd36fabbbdbe2eb11382c",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "acaf4a88cf5aee24cc52b3da71013932a0573d1fc834b9e79adf7489fc393b80",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -612,11 +612,9 @@
         "SAFETENSORS-MODEL-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Each named case has its own real, independently verified test: the complete dtype inventory (test_complete_dtype_inventory), a scalar (test_scalar_roundtrip_is_deterministic), an empty tensor (test_empty_tensor_is_valid), an aligned sub-byte tensor (test_byte_aligned_sub_byte_tensor_is_accepted), and framework-independence of the base import surface (test_base_and_adapter_imports_do_not_load_optional_frameworks)."
+        "Each named case has its own real, independently verified test: the complete dtype inventory (test_complete_dtype_inventory), a scalar (test_scalar_roundtrip_is_deterministic), an empty tensor (test_empty_tensor_is_valid), an aligned sub-byte tensor (test_byte_aligned_sub_byte_tensor_is_accepted), and framework-independence of the base import surface (test_base_and_adapter_imports_do_not_load_optional_frameworks). Added this slice: test_every_dtype_tensor_descriptor_metadata_scalar_empty_and_subbyte_tensor_coexist_in_one_document constructs a single safetensors document containing a __metadata__ file metadata entry, a scalar tensor, a zero-dimension empty tensor, and a byte-aligned F4 sub-byte tensor together, loads it, and asserts every sub-claim (dtype identity, tensor descriptor typing, metadata dict contents, scalar byte-exactness, empty byte_length, sub-byte byte_length and payload) in one place -- using only DType/TensorDescriptor/loads from the base package, closing the \"combined claim, never unified\" gap and the previously-uncovered file-metadata-entry representation specifically."
       ],
-      "missing_behavior": [
-        "No single test unifies all five sub-claims (dtype, tensor descriptor, file metadata entry, scalar, empty tensor, and aligned sub-byte tensor, all independent of framework types) into one proof -- each is proven individually but the \"represent every X independently of framework types\" claim as a combined whole is not asserted in one place. File-metadata-entry representation specifically is not covered by any of the five selectors above."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-3158D0EBF275EADC",
       "positive_test_selectors": [
@@ -624,7 +622,8 @@
         "tests/python/safetensors/test_production_namespace.py::test_scalar_roundtrip_is_deterministic",
         "tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid",
         "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_byte_aligned_sub_byte_tensor_is_accepted",
-        "tests/python/safetensors/test_obligation_optional_adapters.py::test_base_and_adapter_imports_do_not_load_optional_frameworks"
+        "tests/python/safetensors/test_obligation_optional_adapters.py::test_base_and_adapter_imports_do_not_load_optional_frameworks",
+        "tests/python/safetensors/test_obligation_unified_model_representation.py::test_every_dtype_tensor_descriptor_metadata_scalar_empty_and_subbyte_tensor_coexist_in_one_document"
       ],
       "proof_requirements": {
         "negative": [
@@ -634,12 +633,12 @@
           "Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned sub-byte cases."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/safetensors/src/format_factory/safetensors/model/document.py::DType",
         "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
@@ -2940,6 +2939,7 @@
     "tests/python/safetensors/test_obligation_real_torch_adapter.py": "ccda8efc941f2a74a1c2c8106ce132827505bea0e475f1cf99ab494ea3c92aac",
     "tests/python/safetensors/test_obligation_sharded_index.py": "59556d1e6880d539de1e6d91cd0c9c58b2ea8e1ab8b5a10ae11d0ec6f1e66283",
     "tests/python/safetensors/test_obligation_tensor_regions.py": "d9ae98ff5d17fc90652fb782ba70faaf8c33f5135faf130e378156451cf7c375",
+    "tests/python/safetensors/test_obligation_unified_model_representation.py": "7cb5066920435417c6c33e8dd4da7b16af20c971526a497e596c3b47906b98c9",
     "tests/python/safetensors/test_obligation_validation_contract.py": "8a5721ef13568f95cead94d15d2d65fc221769861f9342d489d3c1924976f9ea",
     "tests/python/safetensors/test_obligation_writer_matrix.py": "770ccbefaaa12d47af534db5eb1069995c5c7bfc16a7272130d46e3fa620ab40",
     "tests/python/safetensors/test_official_interop.py": "cd72df073c684651d3083c28cfe3c52181ed8e60a13a8bcb3297d4dd03abdc3a",
@@ -2949,11 +2949,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 84,
-      "partial": 2
+      "implemented": 85,
+      "partial": 1
     },
     "total": 86,
-    "unresolved": 2
+    "unresolved": 1
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

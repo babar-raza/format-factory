@@ -570,7 +570,7 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-SAFETENSORS-OBL-3158D0EBF275EADC
   capability_id: SAFETENSORS-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
   - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
@@ -580,14 +580,14 @@ obligations:
   - tests/python/safetensors/test_production_namespace.py::test_empty_tensor_is_valid
   - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_byte_aligned_sub_byte_tensor_is_accepted
   - tests/python/safetensors/test_obligation_optional_adapters.py::test_base_and_adapter_imports_do_not_load_optional_frameworks
+  - tests/python/safetensors/test_obligation_unified_model_representation.py::test_every_dtype_tensor_descriptor_metadata_scalar_empty_and_subbyte_tensor_coexist_in_one_document
   negative_test_selectors: []
   execution_evidence_ids:
   - SAFETENSORS-BASELINE-SUITE
   - SAFETENSORS-MODEL-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - 'Each named case has its own real, independently verified test: the complete dtype inventory (test_complete_dtype_inventory), a scalar (test_scalar_roundtrip_is_deterministic), an empty tensor (test_empty_tensor_is_valid), an aligned sub-byte tensor (test_byte_aligned_sub_byte_tensor_is_accepted), and framework-independence of the base import surface (test_base_and_adapter_imports_do_not_load_optional_frameworks).'
-  missing_behavior:
-  - 'No single test unifies all five sub-claims (dtype, tensor descriptor, file metadata entry, scalar, empty tensor, and aligned sub-byte tensor, all independent of framework types) into one proof -- each is proven individually but the "represent every X independently of framework types" claim as a combined whole is not asserted in one place. File-metadata-entry representation specifically is not covered by any of the five selectors above.'
+  - 'Each named case has its own real, independently verified test: the complete dtype inventory (test_complete_dtype_inventory), a scalar (test_scalar_roundtrip_is_deterministic), an empty tensor (test_empty_tensor_is_valid), an aligned sub-byte tensor (test_byte_aligned_sub_byte_tensor_is_accepted), and framework-independence of the base import surface (test_base_and_adapter_imports_do_not_load_optional_frameworks). Added this slice: test_every_dtype_tensor_descriptor_metadata_scalar_empty_and_subbyte_tensor_coexist_in_one_document constructs a single safetensors document containing a __metadata__ file metadata entry, a scalar tensor, a zero-dimension empty tensor, and a byte-aligned F4 sub-byte tensor together, loads it, and asserts every sub-claim (dtype identity, tensor descriptor typing, metadata dict contents, scalar byte-exactness, empty byte_length, sub-byte byte_length and payload) in one place -- using only DType/TensorDescriptor/loads from the base package, closing the "combined claim, never unified" gap and the previously-uncovered file-metadata-entry representation specifically.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Complete dtype inventory plus rank, scalar, zero-dimension, unknown-field, and aligned/misaligned
