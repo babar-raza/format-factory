@@ -1,0 +1,53 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-header-grammar-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T00:10:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_HEADER_GRAMMAR_001",
+    "task_kind": "genuine-small-gap-closure",
+    "root_cause": "SAL-NRRD-OBL-C13492B6879B6E90 (NRRD-HEADER-001) requires the pinned spec's explicit ordinary-field grammar: 'a colon followed by a single space' and 'whitespace ... is not allowed before a field identifier' (SAL-NRRD-00008, confirmed word-for-word against the pinned src-nrrd-001.bin spec source). reader.py's ordinary-field branch unconditionally stripped both key and value, silently accepting leading whitespace before the identifier, a missing space after the colon, or multiple spaces after the colon -- all spec violations.",
+    "obligation_targeted": "SAL-NRRD-OBL-C13492B6879B6E90 (NRRD-HEADER-001)",
+    "acceptance_evidence": "reader.py._parse_header now rejects (a) any line with leading whitespace before an ordinary field identifier and (b) a colon not followed by exactly one space, both with dedicated NrrdParseError messages. 6 new tests in test_obligation_header_field_grammar.py prove: single-space-after-colon parses; trailing value whitespace remains correctly ignored (spec explicitly permits this, unaffected by the new checks); and 4 parametrized grammar violations (leading space, leading tab, no space after colon, two spaces after colon) are each rejected.",
+    "regression_tier": "full nrrd package suite (tests/python/nrrd) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the pinned spec source directly (.local/format-contracts/acquired/nrrd/src-nrrd-001.bin, SRC-NRRD-001) rather than trusting the obligation's paraphrase: confirmed verbatim 'a colon followed by a single space ... and then the [field descriptor]', 'Whitespace (that is not part of the previous line's termination) is not allowed before a field identifier', and 'Extra whitespace after the field descriptor and before the line termination is ignored' -- the last clause meaning trailing value whitespace must stay permissive.",
+    "2. Read reader.py's _parse_header ordinary-field branch (lines 109-117 before this slice): key.strip() and value.strip() both silently absorbed leading-key whitespace and any colon-spacing variant, contradicting the confirmed spec text.",
+    "3. Checked no existing test fixture across tests/python/nrrd relies on non-conformant spacing (grepped for header field lines without a single space after the colon) -- none found, all hand-built fixtures already use 'field: value'.",
+    "4. Added two explicit checks before the existing malformed/duplicate checks: reject line[0].isspace(), and reject a colon not immediately followed by exactly one space. Verified interactively against 4 hostile cases plus 2 valid cases before writing any test.",
+    "5. Wrote 6 new tests in a new file (2 positive, 4 negative parametrized) proving the exact grammar boundary, including that trailing whitespace remains ignored per the spec's own permissive clause.",
+    "6. Ran ruff (clean) and the full nrrd suite (490 passed, was 484, +6) before writing any evidence claim. Ran the full 6-format regression (2961 passed, was 2955, +6; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_header_field_grammar.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_header_field_grammar.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_header_field_grammar.py -q -- 6 passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 490 passed, 1 skipped, was 484 passed",
+    ".venv/Scripts/python -m ruff check tests/python/nrrd/test_obligation_header_field_grammar.py src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 2961 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 2955 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 65,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not cross-checked against a reference NRRD implementation. The spec text itself was read directly from the pinned, authority-locked source rather than paraphrased.",
+    "obligations_moved_breakdown": "1 obligation promoted to implemented by adding a genuine, small, spec-mandated grammar check (colon-space, leading-whitespace) to the header field parser, confirmed against the pinned Teem spec text word-for-word, with 6 new tests proving both the new rejections and the surviving permissive trailing-whitespace behavior."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

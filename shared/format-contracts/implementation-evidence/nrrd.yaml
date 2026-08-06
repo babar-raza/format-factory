@@ -3,6 +3,26 @@ format_id: nrrd
 visibility: generated
 generated_by: codex
 execution_evidence:
+  - evidence_id: NRRD-HEADER-GRAMMAR-PROOF
+    path: reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-grammar-001.json
+    expected_result: PASS
+    granularity: selector
+    truth_boundary: >-
+      Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-C13492B6879B6E90
+      (NRRD-HEADER-001) only. The pinned spec source (src-nrrd-001.bin, SRC-NRRD-001)
+      was read directly and confirms word-for-word: "a colon followed by a single
+      space ... and then the [field descriptor]"; "Whitespace (that is not part of
+      the previous line's termination) is not allowed before a field identifier";
+      and "Extra whitespace after the field descriptor and before the line
+      termination is ignored." reader.py._parse_header's ordinary-field branch now
+      rejects leading whitespace before the field identifier and any colon spacing
+      other than exactly one space, while still ignoring trailing value whitespace
+      per the spec's own permissive clause. 6 new tests confirm both the rejections
+      and the surviving permissive behavior. nrrd suite: 484 -> 490 passed. NOT
+      backed by an independent reference NRRD implementation -- SELF-CONSISTENT
+      format_factory-only evidence per the execution-recovery directive's GAP-008
+      rule, not VERIFIED. Covers SAL-NRRD-OBL-C13492B6879B6E90 only; it supports no
+      other obligation and promotes no product state.
   - evidence_id: NRRD-R1-SOURCE-TESTS
     path: reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json
     expected_result: PASS
@@ -195,7 +215,7 @@ obligations:
   - {obligation_id: SAL-NRRD-OBL-AC287AED0DD842A5, capability_id: NRRD-HEADER-001, status: implemented, source_symbols: *HEADER, positive_test_selectors: *TENC, negative_test_selectors: [], execution_evidence_ids: *EXEC, implemented_behavior: ["Hash-prefixed header comments are parsed separately and deterministically serialized."], missing_behavior: [], proof_requirements: {positive: ["Empty/multiple comments with both line endings and lossless replay."], negative: ["Prove comments never acquire field semantics."]}}
   - {obligation_id: SAL-NRRD-OBL-ADAC45BDF110C59C, capability_id: NRRD-PRESERVE-001, status: partial, source_symbols: *PRES, positive_test_selectors: *TMETA, negative_test_selectors: [], execution_evidence_ids: *EXEC, implemented_behavior: ["Header dictionary presence distinguishes absent fields from explicitly empty quoted raw values."], missing_behavior: ["Typed defaults and empty values are not modeled, so semantic absence distinctions are only lexical."], proof_requirements: {positive: ["Absent/default/empty matrix for every optional field."], negative: ["Canonical output must not invent absent values."]}}
   - {obligation_id: SAL-NRRD-OBL-BAAE59FC398A9D6C, capability_id: NRRD-FRAME-001, status: preservation_only, source_symbols: *META, positive_test_selectors: *TMETA, negative_test_selectors: [], execution_evidence_ids: *EXEC, implemented_behavior: ["Raw measurement-frame content can be carried through canonical serialization."], missing_behavior: ["No NRRD0005 gate, typed vectors, arity validation, or separate measurement-to-world transform."], rationale: "Lexical carry-through is safe but is not semantic frame support.", proof_requirements: {positive: ["Typed frame and transform reference fixtures."], negative: ["Earlier-profile and vector/space-dimension mismatch cases."]}}
-  - {obligation_id: SAL-NRRD-OBL-C13492B6879B6E90, capability_id: NRRD-HEADER-001, status: partial, source_symbols: *HEADER, positive_test_selectors: *TENC, negative_test_selectors: *TDUP, execution_evidence_ids: *EXEC, implemented_behavior: ["Ordinary colon-delimited fields parse and canonical writer emits colon-space."], missing_behavior: ["Reader accepts missing colon-space and leading whitespace because keys/values are stripped."], proof_requirements: {positive: ["Exact legal lexical form corpus."], negative: ["Leading whitespace, missing single space, empty identifier, and malformed separators."]}}
+  - {obligation_id: SAL-NRRD-OBL-C13492B6879B6E90, capability_id: NRRD-HEADER-001, status: implemented, source_symbols: *HEADER, positive_test_selectors: ['tests/python/nrrd/test_obligation_header_field_grammar.py::test_a_single_space_after_the_colon_parses', 'tests/python/nrrd/test_obligation_header_field_grammar.py::test_trailing_value_whitespace_is_still_ignored'], negative_test_selectors: ['tests/python/nrrd/test_obligation_header_field_grammar.py::test_grammar_violations_are_rejected'], execution_evidence_ids: [NRRD-R1-SOURCE-TESTS, NRRD-HEADER-GRAMMAR-PROOF], implemented_behavior: ['Ordinary colon-delimited fields parse and canonical writer emits colon-space. The reader now enforces the pinned spec''s exact grammar (SAL-NRRD-00008, confirmed word-for-word against the pinned spec source): a line with any whitespace before the field identifier is rejected, and a colon not followed by exactly one space is rejected. Trailing whitespace after the field descriptor remains correctly ignored, per the spec''s own explicit permissive clause for that case.'], missing_behavior: [], proof_requirements: {positive: ["Exact legal lexical form corpus."], negative: ["Leading whitespace, missing single space, empty identifier, and malformed separators."]}}
   - {obligation_id: SAL-NRRD-OBL-C853EB5591524EF9, capability_id: NRRD-SPACE-001, status: preservation_only, source_symbols: *META, positive_test_selectors: *TENC, negative_test_selectors: [], execution_evidence_ids: *EXEC, implemented_behavior: ["Space-related fields are retained as raw header values."], missing_behavior: ["No typed space dimension, units, origin, directions, version gates, or measurement-frame separation."], rationale: "Raw field preservation is present without spatial semantics.", proof_requirements: {positive: ["NRRD0004-NRRD0005 typed spatial metadata fixtures."], negative: ["Earlier-profile, arity, vector-length, and frame-version cases."]}}
   - obligation_id: SAL-NRRD-OBL-D137EAE6ED40E8B8
     capability_id: NRRD-LAZY-001

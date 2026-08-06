@@ -108,7 +108,16 @@ def _parse_header(
             continue
         if ":" not in line:
             raise NrrdParseError(f"malformed header line {line_number}")
+        if line[0].isspace():
+            raise NrrdParseError(
+                f"whitespace is not allowed before the field identifier at line {line_number}"
+            )
         key, value = line.split(":", 1)
+        if not value.startswith(" ") or value.startswith("  "):
+            raise NrrdParseError(
+                f"field identifier at line {line_number} must be followed by a colon "
+                "and a single space"
+            )
         normalized = key.strip().lower()
         if not normalized or not value.strip():
             raise NrrdParseError(f"malformed header field at line {line_number}")

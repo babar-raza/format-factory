@@ -18,6 +18,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact test files and per-selector outcomes for the endian obligations, and is backed by bidirectional evidence from Teem 1.12.0, a genuinely independent C reference implementation that shares no code with format_factory. Covers TC-FF6-NRRD-GOLDEN-SLICE-001 (raw scalar payload guards) and TC-FF6-NRRD-ASCII-ENDIAN-001 (endian/encoding scoping) only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-HEADER-GRAMMAR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-grammar-001.json",
+      "sha256": "34ff1e271e63f2ceb26c72ebe47b1f44e9be6b2ddde57a06068be324b1383229",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-C13492B6879B6E90 (NRRD-HEADER-001) only. The pinned spec source (src-nrrd-001.bin, SRC-NRRD-001) was read directly and confirms word-for-word: \"a colon followed by a single space ... and then the [field descriptor]\"; \"Whitespace (that is not part of the previous line's termination) is not allowed before a field identifier\"; and \"Extra whitespace after the field descriptor and before the line termination is ignored.\" reader.py._parse_header's ordinary-field branch now rejects leading whitespace before the field identifier and any colon spacing other than exactly one space, while still ignoring trailing value whitespace per the spec's own permissive clause. 6 new tests confirm both the rejections and the surviving permissive behavior. nrrd suite: 484 -> 490 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-C13492B6879B6E90 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "NRRD-LAZY-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -53,7 +61,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "c0632834f2caf70d8c5c394e94a916481ee120e04555ad87bee3e083371428ca",
+    "implementation_evidence": "25337234de4c7e1bd0a1e787da23b833d68bd3c60c716b677d398e4db656b621",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1710,20 +1718,20 @@
     {
       "capability_id": "NRRD-HEADER-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-HEADER-GRAMMAR-PROOF"
       ],
       "implemented_behavior": [
-        "Ordinary colon-delimited fields parse and canonical writer emits colon-space."
+        "Ordinary colon-delimited fields parse and canonical writer emits colon-space. The reader now enforces the pinned spec's exact grammar (SAL-NRRD-00008, confirmed word-for-word against the pinned spec source): a line with any whitespace before the field identifier is rejected, and a colon not followed by exactly one space is rejected. Trailing whitespace after the field descriptor remains correctly ignored, per the spec's own explicit permissive clause for that case."
       ],
-      "missing_behavior": [
-        "Reader accepts missing colon-space and leading whitespace because keys/values are stripped."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed"
+        "tests/python/nrrd/test_obligation_header_field_grammar.py::test_grammar_violations_are_rejected"
       ],
       "obligation_id": "SAL-NRRD-OBL-C13492B6879B6E90",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+        "tests/python/nrrd/test_obligation_header_field_grammar.py::test_a_single_space_after_the_colon_parses",
+        "tests/python/nrrd/test_obligation_header_field_grammar.py::test_trailing_value_whitespace_is_still_ignored"
       ],
       "proof_requirements": {
         "negative": [
@@ -1733,13 +1741,13 @@
           "Exact legal lexical form corpus."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_split_header",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-SPACE-001",
@@ -2300,13 +2308,14 @@
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-grammar-001.json": "34ff1e271e63f2ceb26c72ebe47b1f44e9be6b2ddde57a06068be324b1383229",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-lazy-payload-001.json": "ee783f0c983b7f4fba3cdcd565c9f09d4fe16dc3fd1799bfd881969d266d3e09",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-security-baseline-001.json": "75e80c2707a235afef3f1ab9980697a5e95e32a90fb18e8e1000fd29bbd2ee82",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "91881b17de9982f641410a448f2472c28526367628b92d89cb7a45521109a0c1",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "38520a9be8ff12f1266999d5f8d79761254ecc327e65e637e39f35c72a86d240",
-    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "b25956e5f335f95b3f659081dd0e3f3c9cb2e7e49302f0083ec3872ee075f87c",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "2d5f5b8a9f1839cb8a90cfcc3565525f3ba9c771110f587577a01d92899e7207",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "27ed99ee0e1db0a02155ce7577e7b7450544ed0fd96824b50f31a45d623af52c",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "83d96605f886fd24e9146410be552cb54d1bb93ee317102f46dc53b164448951",
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "b0807a18aed01727b3ef85c445017ccd891b5840d7558c736f804fdbaa4222ab",
@@ -2319,6 +2328,7 @@
     "tests/python/nrrd/test_obligation_compressed_trailing_data.py": "5d2e460aa29e58b85602ce8c4000ad9642e3aee4b38be1816d8297db1116f97e",
     "tests/python/nrrd/test_obligation_detached_forms_production.py": "67c0d1384acdb24a892f7fb7c0340a9bd5c3338e2be5069d5d034a996121263a",
     "tests/python/nrrd/test_obligation_dtype_conversion.py": "303205eec17e82662e3e484870fac7e985c0ed400f36bc62f887c75b686d6425",
+    "tests/python/nrrd/test_obligation_header_field_grammar.py": "e70dc004b9be05c2828ba1b1fa99de76484c1190d1abf0ac59d1bd320e89fdee",
     "tests/python/nrrd/test_obligation_keyvalue_duplicates.py": "bd1aeeedc522b3be842bdecf4625b4a639375e84b858b8d94a0e5dd647798ab8",
     "tests/python/nrrd/test_obligation_lazy_payload_access.py": "f18ff2c44b5e0582b716e675cfd6566bdebc3469b22df73821f5acdfcdab5de1",
     "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
@@ -2332,13 +2342,13 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 29,
+      "implemented": 30,
       "missing": 1,
-      "partial": 32,
+      "partial": 31,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 36
+    "unresolved": 35
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
