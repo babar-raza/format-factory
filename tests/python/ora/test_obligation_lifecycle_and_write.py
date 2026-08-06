@@ -256,6 +256,28 @@ def test_validate_reports_a_non_conforming_merged_image() -> None:
     assert any("MERGED" in diagnostic.code for diagnostic in report.diagnostics)
 
 
+def test_validate_reports_a_missing_merged_image() -> None:
+    """"mergedimage.png is mandatory since profile 0.0.2" -- absence itself
+    is a distinct, named finding (ORA_MERGED_IMAGE_MISSING), not just a
+    side effect of the non-conforming-content check above, which requires
+    the member to exist at all before it can inspect its bit depth."""
+    report = validate(archive(thumbnail=png(16, 16)))
+
+    assert report.is_valid is False
+    assert any(
+        diagnostic.code == "ORA_MERGED_IMAGE_MISSING" for diagnostic in report.diagnostics
+    )
+
+
+def test_strict_mode_rejects_a_document_missing_its_mergedimage() -> None:
+    """Mirrors test_strict_mode_rejects_a_document_missing_its_thumbnail --
+    both required assets enforce identically in strict mode."""
+    with pytest.raises(OraValidationError) as raised:
+        loads(archive(thumbnail=png(16, 16)), mode=ReadMode.STRICT)
+
+    assert "mergedimage" in str(raised.value).lower()
+
+
 # ── Deterministic serialization ────────────────────────────────────────────
 
 

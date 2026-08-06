@@ -2,6 +2,14 @@
   "contract_id": "FC-ORA-V1",
   "execution_evidence": [
     {
+      "evidence_id": "ORA-ASSET-CITATION-AUDIT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-asset-citation-audit-001.json",
+      "sha256": "3758939b774568de093e6cc9239fcd24131fd2c5d8db9497f570d33a617f70dd",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: ORA-ASSET-001's 12 obligations all shared one over-specific citation (the raster-asset metadata tests) attached uniformly to every obligation regardless of what its own rule_text actually named -- the inverse of the generic- under-citation pattern found in ORA-STACK-001/EDIT-001/CONTAINER-001, but the same root symptom (never individually audited). 6 of the 12 rule_texts are exact cross-capability duplicates of facts already resolved under ORA-STACK-001/ORA-CONTAINER-001, reassigned to their correct existing evidence. The genuinely asset-specific obligation (resolve references safely; expose metadata before decode; validate existence/media-type/dimensions/channel-depth/budgets) keeps and extends the original citation, now proven against every named clause individually rather than as one bundle. The thumbnail and mergedimage requirement obligations are cross-capability duplicates of ORA-BASELINEASSET-001's already-implemented equivalents -- extended this slice with 2 new tests closing a real, narrow gap found while verifying the duplicate claim: ORA_MERGED_IMAGE_MISSING (the mandatory- presence diagnostic, already implemented in lifecycle.py) had zero test coverage, unlike its thumbnail-missing counterpart. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-10B73685E6FDA374, SAL-ORA-OBL-700F3D214D9573FB, SAL-ORA-OBL-894A8A7FE25717DA, SAL-ORA-OBL-8E371EA83EEB75CF, SAL-ORA-OBL-99738EDD922E7F5E, SAL-ORA-OBL-D9D70C82BBB1808C, SAL-ORA-OBL-3A738D65887DDAA0, SAL-ORA-OBL-80901F8E09F17910, and SAL-ORA-OBL-849EDE79FBAE125D only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "ORA-BASELINE-SUITE",
       "expected_result": "PARTIAL_IMPLEMENTATION_PRESENT",
       "granularity": "suite",
@@ -85,7 +93,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "64f23f06369f7c1b1ca4b1e2cb79f81242b5dbc5e87a8af00b8387994ac3d9c5",
+    "implementation_evidence": "c65e4e12c93f861f313d877f8a5c4022cedac6292f2a133d8b2d7edb353a025f",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -446,17 +454,15 @@
         "ORA-BASELINE-SUITE"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of already-implemented SAL-ORA-OBL-035B53B843FF49F9 (identical rule_text): .ora archives are parsed as a ZIP container; non-ZIP input is refused."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_non_zip_input_is_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-10B73685E6FDA374",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header",
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable",
-        "tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed"
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens"
       ],
       "proof_requirements": {
         "negative": [
@@ -466,17 +472,11 @@
           "Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets",
         "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-LIFECYCLE-001",
@@ -1381,20 +1381,27 @@
     {
       "capability_id": "ORA-ASSET-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-ASSET-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Asset references resolve archive-root-relative, case-sensitively, and safely (proven against an absent member, naming both the layer and the missing path); raster metadata (width, height, bit depth, colour type, channel count, interlace, declared byte size) is read from the PNG IHDR chunk alone, proven available even when the pixel data is garbage and even when only the first 25 bytes past the signature are present -- metadata never requires a successful decode. Media type, dimensions, and channel depth are validated (non-PNG signatures, zero dimensions, and invalid bit depths/colour types/interlace methods all refused), and a declared surface that would exceed the caller's resource budget is refused before any decode is attempted. Resolution across a nested group tree proceeds in visual order and fails on the first missing layer rather than silently returning a partial result."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_raster_assets.py::test_a_layer_referencing_an_absent_member_is_reported",
+        "tests/python/ora/test_obligation_raster_assets.py::test_asset_lookup_is_case_sensitive",
+        "tests/python/ora/test_obligation_raster_assets.py::test_a_non_png_asset_is_refused",
+        "tests/python/ora/test_obligation_raster_assets.py::test_an_asset_declaring_an_enormous_surface_is_refused",
+        "tests/python/ora/test_obligation_raster_assets.py::test_resolution_fails_on_the_first_missing_layer_rather_than_returning_part"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-3A738D65887DDAA0",
       "positive_test_selectors": [
         "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header",
         "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable",
-        "tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed"
+        "tests/python/ora/test_obligation_raster_assets.py::test_a_layer_resolves_to_its_raster",
+        "tests/python/ora/test_obligation_raster_assets.py::test_all_assets_resolve_in_visual_order_across_nested_groups",
+        "tests/python/ora/test_obligation_raster_assets.py::test_the_declared_byte_size_accounts_for_depth_and_channels"
       ],
       "proof_requirements": {
         "negative": [
@@ -1404,17 +1411,17 @@
           "Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata",
         "src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset",
         "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset",
         "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers",
         "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets",
+        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata",
+        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
         "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-VALIDATE-001",
@@ -2442,20 +2449,28 @@
     {
       "capability_id": "ORA-ASSET-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of already-implemented SAL-ORA-OBL-B7B7362D7DBCA9A2 (identical rule_text): mimetype member requirements proven against every named clause."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-700F3D214D9573FB",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header",
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable",
-        "tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed"
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values"
       ],
       "proof_requirements": {
         "negative": [
@@ -2465,17 +2480,11 @@
           "Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets",
         "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-LAYER-001",
@@ -2609,20 +2618,21 @@
     {
       "capability_id": "ORA-ASSET-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-ASSET-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate (this exact clause) of ORA-BASELINEASSET-001's already-implemented SAL-ORA-OBL-48761EB31C2C2F7D: Thumbnails/thumbnail.png is required (missing is refused in strict mode), and non-conforming thumbnails (wider or taller than 256, 16-bit, or interlaced) are each proven rejected via satisfies_thumbnail_constraints() and reported as a structured diagnostic through validate()."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_mode_rejects_a_document_missing_its_thumbnail",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_non_conforming_thumbnail"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-80901F8E09F17910",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header",
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable",
-        "tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed"
+        "tests/python/ora/test_obligation_raster_assets.py::test_a_conforming_thumbnail_is_accepted",
+        "tests/python/ora/test_obligation_raster_assets.py::test_non_conforming_thumbnails_are_rejected"
       ],
       "proof_requirements": {
         "negative": [
@@ -2632,17 +2642,12 @@
           "Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets",
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::_baseline_asset_diagnostics",
+        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-LAYER-001",
@@ -2679,20 +2684,21 @@
     {
       "capability_id": "ORA-ASSET-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-ASSET-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate (this exact clause) of ORA-BASELINEASSET-001's already-implemented SAL-ORA-OBL-0CF770969FA42DB5, extended this slice: mergedimage.png accepting only 8 or 16 bits per channel was already proven (test_merged_image_accepts_only_8_or_16_bits, test_validate_reports_a_non_conforming_merged_image), but its mandatory presence (ORA_MERGED_IMAGE_MISSING, a real diagnostic code already implemented in lifecycle.py) had zero test coverage -- unlike the analogous thumbnail-missing case, which was already tested. Closed with 2 new tests this slice: validate() reports the missing-member diagnostic, and strict mode refuses to load at all."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_missing_merged_image",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_mode_rejects_a_document_missing_its_mergedimage"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-849EDE79FBAE125D",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header",
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable",
-        "tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed"
+        "tests/python/ora/test_obligation_raster_assets.py::test_merged_image_accepts_only_8_or_16_bits",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_non_conforming_merged_image"
       ],
       "proof_requirements": {
         "negative": [
@@ -2702,17 +2708,12 @@
           "Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets",
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::_baseline_asset_diagnostics",
+        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-GROUP-001",
@@ -2780,20 +2781,20 @@
     {
       "capability_id": "ORA-ASSET-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of already-implemented SAL-ORA-OBL-047E5523BB0D85D5 (identical rule_text): layer src is archive-root-relative and traversal is refused."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-894A8A7FE25717DA",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header",
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable",
-        "tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed"
+        "tests/python/ora/test_obligation_stack_and_document.py::test_layer_src_is_archive_root_relative",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused"
       ],
       "proof_requirements": {
         "negative": [
@@ -2803,35 +2804,27 @@
           "Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets",
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
+        "src/python/ora/src/format_factory/ora/model/stack.py::validate_src"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-ASSET-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of already-implemented SAL-ORA-OBL-6491749388BB6731 (identical rule_text): member names are case-sensitive; non-ASCII UTF-8 names round-trip."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-8E371EA83EEB75CF",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header",
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable",
-        "tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed"
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_member_names_are_case_sensitive",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_non_ascii_member_names_round_trip"
       ],
       "proof_requirements": {
         "negative": [
@@ -2841,17 +2834,11 @@
           "Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets",
         "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-STREAM-001",
@@ -3081,20 +3068,20 @@
     {
       "capability_id": "ORA-ASSET-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of already-implemented SAL-ORA-OBL-12247F430B50BEF0 (identical rule_text): DEFLATED/STORED accepted, other methods refused."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_unsupported_compression_method_is_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-99738EDD922E7F5E",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header",
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable",
-        "tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed"
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_unsupported_compression_method_is_rejected",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_deflated_and_stored_members_are_both_accepted"
       ],
       "proof_requirements": {
         "negative": [
@@ -3104,17 +3091,11 @@
           "Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets",
         "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-VALIDATE-001",
@@ -4006,20 +3987,22 @@
     {
       "capability_id": "ORA-ASSET-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of already-implemented SAL-ORA-OBL-D76D780D4D9DA699 (identical rule_text): root image element requires w, h, and version."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-D9D70C82BBB1808C",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header",
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable",
-        "tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed"
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers"
       ],
       "proof_requirements": {
         "negative": [
@@ -4029,17 +4012,11 @@
           "Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets",
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-STACK-001",
@@ -4549,6 +4526,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json": "ff1e276701cd182ef6dbf39d21d7fbeb7d841bc5d12209ab938ae304e341abdc",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-asset-citation-audit-001.json": "3758939b774568de093e6cc9239fcd24131fd2c5d8db9497f570d33a617f70dd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-baselineasset-001.json": "e9fd4c00c4aabd1861f785b719efb3715dbad33c5cb8d09292091eda4ebe7f32",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-container-citation-audit-001.json": "a8da421c2df540a82a0ebcca93b5642299a8ad71ee0100a9b64ac808e58b1d63",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-document-model-construction-001.json": "e722f98266ec914ed9f2aca1d75695070ed123949b66335d7d572ba4e7c05171",
@@ -4572,7 +4550,7 @@
     "tests/python/ora/test_obligation_document_model_construction.py": "478139c90d4beeda8b8c4759b42bee88f29cc769fbbd1f1e9d70adf436224987",
     "tests/python/ora/test_obligation_isolation_semantics.py": "1d41a5f6f432a48cc8cb46967ed1287f186bea87f302de1c7b89cf42bdbf9b6f",
     "tests/python/ora/test_obligation_layer_and_group_editing.py": "508cabfb53c92fa7c4f8d2922aec0756ba76315ccac8ac3fd584a51f56dca9e3",
-    "tests/python/ora/test_obligation_lifecycle_and_write.py": "cc89d000bfeb459226214523e0423485b7cf8001414149cf09c7227643b23dfa",
+    "tests/python/ora/test_obligation_lifecycle_and_write.py": "be1fb76093075037f5e094a06e90ca9518ca4adacc4d56017ff1bb745d30f6ff",
     "tests/python/ora/test_obligation_preservation_baseline.py": "c0086dc6953839002dbce61cd826e280d17d8f673ffd5ed7f3651c5d9d72bf7a",
     "tests/python/ora/test_obligation_raster_assets.py": "9688c9e5e46223bc81ced1b49e9369fab113abcf6d52803011cb1e0eaa2d230b",
     "tests/python/ora/test_obligation_resolution_profile_detection.py": "606e3e87b8f4e80dae82c894df8e22ef492048b8cae15b9355b42363d89fe550",
@@ -4583,12 +4561,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 57,
+      "implemented": 66,
       "missing": 20,
-      "partial": 57
+      "partial": 48
     },
     "total": 134,
-    "unresolved": 77
+    "unresolved": 68
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

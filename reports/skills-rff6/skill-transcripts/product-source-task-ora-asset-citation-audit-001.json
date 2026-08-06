@@ -1,0 +1,53 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-asset-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T19:20:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_ASSET_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure-with-one-small-genuine-gap-closed",
+    "root_cause": "ORA-ASSET-001's 12 obligations all shared one citation -- but unlike the under-specific generic citations found in ORA-STACK-001/EDIT-001/CONTAINER-001, this one was the rich, correct citation for the capability's genuinely asset-specific obligation, applied uniformly to all 12 regardless of what each one's own rule_text actually named. 6 are exact cross-capability duplicates of facts already resolved. 2 (thumbnail, mergedimage requirements) are cross-capability duplicates of ORA-BASELINEASSET-001's already-implemented equivalents. 1 is the genuine asset-resolution/metadata-before-decode capability itself.",
+    "obligation_targeted": "SAL-ORA-OBL-10B73685E6FDA374, SAL-ORA-OBL-700F3D214D9573FB, SAL-ORA-OBL-894A8A7FE25717DA, SAL-ORA-OBL-8E371EA83EEB75CF, SAL-ORA-OBL-99738EDD922E7F5E, SAL-ORA-OBL-D9D70C82BBB1808C, SAL-ORA-OBL-3A738D65887DDAA0, SAL-ORA-OBL-80901F8E09F17910, SAL-ORA-OBL-849EDE79FBAE125D",
+    "acceptance_evidence": "tests/python/ora/test_obligation_raster_assets.py, test_obligation_container_and_mimetype.py, test_obligation_stack_and_document.py, test_obligation_lifecycle_and_write.py (test_obligation_lifecycle_and_write.py extended this slice with 2 new tests)",
+    "regression_tier": "full ORA package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Pulled all 12 ORA-ASSET-001 rule_texts. Found 6 are exact cross-capability duplicates of already-resolved ORA-STACK-001/ORA-CONTAINER-001 facts (ZIP wrapper, mimetype requirements, layer data path, member-name case/UTF-8, compression methods, root w/h/version), all currently mis-citing the same asset-metadata test trio regardless of what they actually describe.",
+    "2. Investigated the genuinely asset-specific obligation (resolve references safely, expose metadata before decode, validate existence/media-type/dimensions/channel-depth/budgets) against test_obligation_raster_assets.py in full: every named clause has a direct, specific test (metadata-from-header even with unreadable pixels and truncated files, media-type/dimension/bit-depth/colour-type/interlace refusal, resource-budget refusal before decode, safe archive-root-relative case-sensitive resolution with named-diagnostics on absent members, and fail-fast resolution order across nested groups).",
+    "3. Found the remaining 2 obligations (thumbnail requirements, mergedimage requirements) are cross-capability duplicates of ORA-BASELINEASSET-001's SAL-ORA-OBL-48761EB31C2C2F7D and SAL-ORA-OBL-0CF770969FA42DB5, both already implemented earlier this session. Verified the duplicate claim by reading lifecycle.py's _baseline_asset_diagnostics function (explicitly tagged 'ORA-BASELINEASSET-001' in its own docstring) directly rather than assuming.",
+    "4. While verifying the mergedimage duplicate, found a real, narrow gap: lifecycle.py implements ORA_MERGED_IMAGE_MISSING (mandatory-presence enforcement) correctly, but grepping the entire test suite for that diagnostic code found zero references -- unlike ORA_THUMBNAIL_MISSING, which has a dedicated test (test_strict_mode_rejects_a_document_missing_its_thumbnail). The non-conforming-bit-depth half of mergedimage was tested; the missing-entirely half was not.",
+    "5. Closed that gap with 2 new tests in test_obligation_lifecycle_and_write.py, mirroring the existing thumbnail-missing test's structure exactly: test_validate_reports_a_missing_merged_image (validate() reports the diagnostic) and test_strict_mode_rejects_a_document_missing_its_mergedimage (strict-mode load refuses). Ran both directly before citing: passed.",
+    "6. Applied all 9 evidence edits via the same obligation_id-delimited text-block script pattern used across the prior five ora/ipynb ticks, first re-verifying this capability's actual proof_requirements boilerplate against the file directly (differs from other capabilities' boilerplate -- caught before running the script this time, having been burned by an assumed-wrong boilerplate in an earlier tick).",
+    "7. Ran the reconciler: clean pass, no errors, first attempt. Ran the full ora suite: 283 passed (281 baseline + 2 new), 0 regressions."
+  ],
+  "allowed_files": [
+    "tests/python/ora/test_obligation_lifecycle_and_write.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ora/test_obligation_lifecycle_and_write.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_lifecycle_and_write.py -k \"merged_image or mergedimage\" -v -- 3 passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 283 passed (281 baseline + 2 new), 0 regressions",
+    ".venv/Scripts/python -m ruff check tests/python/ora/test_obligation_lifecycle_and_write.py -- All checks passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 9,
+    "obligations_total_for_format": 134,
+    "ora_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against an independent OpenRaster reader/writer. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_9_of_12_moved_and_3_left_untouched": "9 obligations were either exact cross-capability duplicates or the genuinely asset-specific capability itself, all fully provable. 3 (baseline-support-levels, stack.xml UTF-8 conformance, baseline-intent/extensions statements) mirror their still-unaudited counterparts elsewhere in the obligation set and were left untouched for consistency, not force-promoted.",
+    "small_genuine_gap_closed": "2 new tests close a real, narrow, previously-unnoticed coverage gap (mandatory mergedimage.png presence enforcement) found only because this tick verified the cross-capability duplicate claim by reading the actual source function rather than assuming the citation was accurate."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
