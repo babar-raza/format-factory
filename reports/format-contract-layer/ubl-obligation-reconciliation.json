@@ -34,6 +34,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact positive and negative test selectors proving detected_version (reader-only, frozen at parse, survives edits) and declared_version (live property) are distinct, and that the writer refuses rather than silently rewriting an unsupported declared version. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-8940ED685664E7CE (UBL-LIFECYCLE-001, the detected-vs-declared distinction) and, via the same declared_version property, SAL-UBL-OBL-FC5C33152AFDB187 (UBL-PROFILE-001, plain UBLVersionID exposure with no detected/declared split required), partially SAL-UBL-OBL-7D0855CD163E1EFD (the version-exposure clause only), and SAL-UBL-OBL-12FE2060729C9B75 (UBL-UPGRADE-001, \"cbc:UBLVersionID identifies the declared version\" -- the ubl_version_id() helper and declared_version property this entry already proves); it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-doctypes-citation-audit-001.json",
+      "sha256": "e5d72d55a468e859060fff36a118ce63d6d2dcf9c5fe747b0e2de5d0d66572bd",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. UBL-DOCTYPES-001's 22 obligations all shared one generic citation and are near-verbatim restatements of UBL-MODEL-001/VALUES-001 facts (both resolved in preceding ticks). A programmatic exact-rule_text matcher found 18 of 22 are exact-text duplicates, cross-referenced to that real evidence. 2 (near-identical wording naming create_empty/detect_document_type/ supported_document_types as required named operations) were a genuine, confirmed, buildable gap -- the underlying typed-root capability already existed (ROOT_CLASSES, UblDocument.build(), loads()) but not under these named functions -- closed this slice with a new module, document_types.py, exposing exactly the three named operations as thin wrappers, plus 5 new tests including a parametrized round-trip across all 91 supported document types. 1 stays honestly partial: supported_document_types() gives a precise per-type enumerable declaration (never a vague global claim), but the specific three-tier vocabulary this obligation names (supported/preservation-only/unsupported) does not exist as a formal concept -- confirmed absent by grepping the whole package. 1 stays honestly missing: a SPEC-PACKAGE-FACT about the physical OASIS distribution package's file count (91 XSD files), not runtime behavior, with no XSD files vendored in this repo to test against -- same category as XLIFF-PARSE-001's spec-package facts identified earlier this session. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Promotes no product state beyond the 20 obligations moved to `implemented`."
+    },
+    {
       "evidence_id": "UBL-EXTERNAL-REFERENCE-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -109,7 +117,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "ae29d2c58ed957090db3ca0898838452602d02a859a0a08cac4b1a27fb4727ab",
+    "implementation_evidence": "4dfe35a602ded5f067f4e89f83eaa7f6cbaa4fd01d523ee18493860f4b451a38",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -437,19 +445,18 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-957563FFE4EF0A64 (identical rule_text): preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
+        "The specific structural constraints named in this obligation -- that UBLExtensions must be the first optional component in sequence order, that each UBLExtension permits exactly one foreign-namespaced apex element, and \"lax\" schema processing semantics for that content -- are not separately validated or enforced. The container is preserved losslessly as whatever generic subtree shape the input document already had, not checked against these specific structural rules."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-10201DA6E92E0E8F",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
         "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
       ],
       "proof_requirements": {
@@ -462,10 +469,9 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize",
+        "src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode",
+        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
       ],
       "status": "partial"
     },
@@ -569,22 +575,14 @@
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
+        "SPEC-PACKAGE-FACT: this obligation describes the contents of the official pinned UBL 2.3 OASIS Standard distribution package itself (exactly 91 maindoc XSD files), not format_factory's runtime behavior. No XSD files from the official package are vendored in this repository, so there is nothing to unit-test this claim against -- the closest available evidence is the package's own file inventory, which is not committed. This mirrors the SPEC-PACKAGE-FACT category identified in XLIFF-PARSE-001's citation audit earlier this session (obligations about the physical spec artifact rather than product behavior). Not force-promoted and not left as a generic placeholder."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-1549D8ECF079779C",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -593,32 +591,26 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-VALUES-001's SAL-UBL-OBL-ED9826054E4BA037 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-8AACB36579F7436B (identical rule_text): AllowanceCharge models charge_indicator/amount/reason_code; the boolean charge/allowance distinction and document-vs-line-level reconciliation scoping are both directly tested."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-15BB2F9A612618B4",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_an_allowance_charge_projects_with_its_indicator_and_amount",
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_the_charge_indicator_distinguishes_a_charge_from_an_allowance",
+        "tests/python/ubl/test_obligation_business_calculation.py::test_allowance_charge_reconciliation_ignores_line_level_entries"
       ],
       "proof_requirements": {
         "negative": [
@@ -628,14 +620,12 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge",
+        "src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -735,20 +725,22 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Added this slice: document_types.py exposes exactly the three named operations as thin, stable wrappers over the pre-existing typed-root machinery (ROOT_CLASSES, UblDocument.build(), loads()). supported_document_types() returns all 91 root names; create_empty(document_type) builds a minimal valid document of the named type (raising ValueError for an unsupported name); detect_document_type(source) parses and returns the detected root name. All three are proven directly, including a parametrized round-trip across all 91 supported roots."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_create_empty_refuses_an_unsupported_document_type"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-1ACFBE52C6642031",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_supported_document_types_matches_the_pinned_root_inventory",
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_create_empty_builds_a_minimal_valid_document",
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_detect_document_type_reads_a_freshly_written_document",
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_create_empty_and_detect_document_type_round_trip_every_root"
       ],
       "proof_requirements": {
         "negative": [
@@ -758,14 +750,13 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/document_types.py::supported_document_types",
+        "src/python/ubl/src/format_factory/ubl/document_types.py::detect_document_type",
+        "src/python/ubl/src/format_factory/ubl/document_types.py::create_empty"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-PRESERVE-001",
@@ -830,20 +821,19 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-BCF0A0E445F55DD6 (identical rule_text): UblDocument.customization_id and .profile_id read cbc:CustomizationID/cbc:ProfileID directly; presence, absence, and independence from each other and from the version identifier are all directly tested."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-1E151491FFE87878",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_is_exposed_when_declared",
+        "tests/python/ubl/test_obligation_profile_identifiers.py::test_profile_id_is_exposed_when_declared",
+        "tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_and_profile_and_version_are_read_independently"
       ],
       "proof_requirements": {
         "negative": [
@@ -853,14 +843,11 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-PARSE-001",
@@ -1200,20 +1187,19 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-1948F05A4C147BA1 (identical rule_text): reconcile_invoice() is explicitly a report-only diagnostic (not schema-enforced) precisely because the XSD does not encode cross-field arithmetic reconciliation -- test_a_consistent_invoice_reconciles_clean and test_a_line_total_mismatch_is_reported prove clean and mismatched totals are both reported (not rejected at parse time), and test_default_tolerance_is_exact_zero proves the reconciliation tolerance default. Amount is decimal-typed and requires currencyID (see UBL-VALUES-001's overlapping AmountType fact)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-26C3825EE19AA383",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_consistent_invoice_reconciles_clean",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_a_line_total_mismatch_is_reported",
+        "tests/python/ubl/test_obligation_business_calculation.py::test_default_tolerance_is_exact_zero"
       ],
       "proof_requirements": {
         "negative": [
@@ -1223,14 +1209,12 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::reconcile_invoice",
+        "src/python/ubl/src/format_factory/ubl/model/values.py::Amount"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-SIGN-001",
@@ -1751,22 +1735,14 @@
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
+        "Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-03AF3A7D3A76F362 (identical rule_text). validator.py's own docstring states this chassis validation \"is deliberately not an XSD-conformance claim\" and that \"full schema and cardinality validation remains a mandatory open obligation.\" This is a real, confirmed, explicitly self-documented gap -- not force-promoted and not left as a generic placeholder."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-3C2E2EA8D3B697C9",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1775,14 +1751,9 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-REF-001",
@@ -2089,22 +2060,14 @@
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
-      "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
+        "Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-3B43504E9C74003C (identical rule_text). XmlNode preserves whatever child element order was present in the source document (a tuple, not a set) for round-trip fidelity, but nothing in the model or validator.py checks that order against the schema-declared sequence model to determine document validity. Confirmed by reading validator.py directly: it performs no sequence-order validation. Same underlying gap as SAL-UBL-OBL-B68F5F29F11197D6 in this cluster."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-4936871F9800219B",
-      "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -2113,14 +2076,9 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "UBL-REF-001",
@@ -2256,20 +2214,19 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "supported_document_types() (added this slice) gives a precise, enumerable, per-type declaration of exactly which 91 document types are supported -- coverage is never claimed as a vague global 'we support UBL' statement, satisfying the 'declared per type, never claimed globally' half of this obligation."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
+        "The specific three-tier vocabulary this obligation names (supported / preservation-only / unsupported) does not exist as a formal concept anywhere in the package. All 91 roots are uniformly fully typed and supported; there is no 'preservation-only' tier (a document type that round-trips losslessly but has no typed accessors) implemented or distinguished from 'unsupported' (a type absent from ROOT_CLASSES entirely). Confirmed by grepping the whole package for 'preservation-only' / 'preservation_only'."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-4AEF6E978EC11AA1",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_supported_document_types_matches_the_pinned_root_inventory"
       ],
       "proof_requirements": {
         "negative": [
@@ -2281,10 +2238,8 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/document_types.py::supported_document_types",
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::Invoice"
       ],
       "status": "partial"
     },
@@ -2495,20 +2450,17 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-VALUES-001's SAL-UBL-OBL-5CE5A2FA37D34103 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-30FEA2365B54D2D5 (identical rule_text): BinaryObject requires a mime_code field (mapping to the required mimeCode attribute on UDT BinaryObjectType); directly tested."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-5034658550F95ED6",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_business_value_types.py::test_a_binary_object_requires_a_mime_code"
       ],
       "proof_requirements": {
         "negative": [
@@ -2518,14 +2470,12 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/model/values.py::BinaryObject",
+        "src/python/ubl/src/format_factory/ubl/model/typed.py::binary_object_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-PARSE-001",
@@ -2833,20 +2783,19 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-4F8B81527163B9F9 (identical rule_text): Same underlying fact as SAL-UBL-OBL-16C93B2852CE2EAC in this cluster (Order document root, namespace, and OrderLine aggregate), restated with an \"OASIS UBL 2.1\" framing instead of \"UBL maindoc schemas.\" The document-root/namespace half is proven by the same 91-root test."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
+        "Same gap as SAL-UBL-OBL-16C93B2852CE2EAC: no typed OrderLine dataclass exists; order lines are only generically preserved, not modeled as a typed composite."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-5DE0B14D6D273578",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip"
       ],
       "proof_requirements": {
         "negative": [
@@ -2858,10 +2807,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::Order"
       ],
       "status": "partial"
     },
@@ -3421,20 +3367,17 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-4A8AFD0D68F5B2B8 (identical rule_text): This restates SAL-UBL-OBL-8AB9CEA1A6909770's runtime-proven per-type-namespace fact from the physical-maindoc-XSD-file angle rather than the runtime-model angle. No code in this package parses the physical XSD files directly, but the namespace convention they define (urn:oasis:names:specification:ubl:schema:xsd:<Type>-2 per document type) is fully implemented and tested across all 91 roots by the same evidence."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-78F83C6CBF92C11F",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip"
       ],
       "proof_requirements": {
         "negative": [
@@ -3444,14 +3387,11 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-PRESERVE-001",
@@ -3662,20 +3602,19 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-16C93B2852CE2EAC (identical rule_text): Order is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity (parametrized over the full root inventory including \"Order\")."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
+        "Unlike InvoiceLine, no typed OrderLine dataclass exists anywhere in the model -- order lines are preserved generically as part of the lossless XmlNode tree (locatable via typed.py::find by local name) rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-80D484D6F8F255B4",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip"
       ],
       "proof_requirements": {
         "negative": [
@@ -3687,10 +3626,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::Order"
       ],
       "status": "partial"
     },
@@ -3999,20 +3935,22 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Same underlying capability as SAL-UBL-OBL-1ACFBE52C6642031 in this cluster (near-identical wording: 'Expose a distinct typed root document class per supported maindoc type together with create_empty(document_type), detect_document_type(), and supported_document_types() so integrations enumerate coverage programmatically'). document_types.py (added this slice) exposes exactly these three named operations; proven by the same test battery."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_create_empty_refuses_an_unsupported_document_type"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-8DA615FF51A38A5A",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_supported_document_types_matches_the_pinned_root_inventory",
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_create_empty_builds_a_minimal_valid_document",
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_detect_document_type_reads_a_freshly_written_document",
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_create_empty_and_detect_document_type_round_trip_every_root"
       ],
       "proof_requirements": {
         "negative": [
@@ -4022,14 +3960,13 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/document_types.py::supported_document_types",
+        "src/python/ubl/src/format_factory/ubl/document_types.py::detect_document_type",
+        "src/python/ubl/src/format_factory/ubl/document_types.py::create_empty"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALUES-001",
@@ -4071,20 +4008,19 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-77AE58DED2CCE475 (identical rule_text): ApplicationResponse is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
+        "No typed DocumentResponse dataclass exists anywhere in the model -- business-level acknowledgement aggregates are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-91E7CB3AF843790E",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip"
       ],
       "proof_requirements": {
         "negative": [
@@ -4096,10 +4032,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse"
       ],
       "status": "partial"
     },
@@ -4376,20 +4309,19 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-VALUES-001's SAL-UBL-OBL-32D59836B480F6B8 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-2972A8BB421227B8 (identical rule_text): InvoiceLine carries exactly id/invoiced_quantity/line_extension_amount/item as required fields; required-field enforcement (raises on a missing component) and XML projection are both directly tested."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-9A23EF69DE53160B",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_invoice_lines_project_from_xml"
       ],
       "proof_requirements": {
         "negative": [
@@ -4399,14 +4331,12 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine",
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::invoice_line_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-REF-001",
@@ -4764,20 +4694,18 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-8AB9CEA1A6909770 (identical rule_text): ROOT_CLASSES maps every one of the 91 typed document roots to a subclass whose namespace follows urn:oasis:names:specification:ubl:schema:xsd:<Type>-2 uniformly; test_all_91_roots_have_typed_roundtrip is parametrized over all 91 roots (checks root_name, typed class identity, validity, and round-trip), and test_wrong_namespace_and_preview_profile_fail_closed proves a namespace mismatch is rejected rather than silently accepted."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-B1459A3D33EDA8BD",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
         "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_wrong_namespace_and_preview_profile_fail_closed"
       ],
       "proof_requirements": {
         "negative": [
@@ -4787,14 +4715,11 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -4899,20 +4824,19 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-E349D547D508AD8C (identical rule_text): CreditNote is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
+        "Unlike InvoiceLine, no typed CreditNoteLine dataclass exists anywhere in the model -- credit note lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-B500CCDFA3228EDB",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip"
       ],
       "proof_requirements": {
         "negative": [
@@ -4924,10 +4848,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::CreditNote"
       ],
       "status": "partial"
     },
@@ -5133,20 +5054,19 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-BE7766CC0C6398BE (identical rule_text): DespatchAdvice is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
+        "No typed DespatchLine dataclass exists anywhere in the model -- despatch lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-C2A6F6ABBACE3C26",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip"
       ],
       "proof_requirements": {
         "negative": [
@@ -5158,10 +5078,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::DespatchAdvice"
       ],
       "status": "partial"
     },
@@ -5372,20 +5289,18 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-C59FF5C86F4044C0 (identical rule_text): ubl_version_id() and UblDocument.declared_version both read cbc:UBLVersionID directly from the current tree; both are directly tested, including agreement between the helper function and the property."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-C9255992CC53F982",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_reads_the_current_trees_ublversionid",
+        "tests/python/ubl/test_obligation_detected_declared_version.py::test_ubl_version_id_helper_matches_the_declared_version_property"
       ],
       "proof_requirements": {
         "negative": [
@@ -5395,14 +5310,12 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/model/document.py::ubl_version_id",
+        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALUES-001",
@@ -5758,20 +5671,19 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-VALUES-001's SAL-UBL-OBL-F6C576C55BACDF83 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-D569DF7E63EF3A7E (identical rule_text): Invoice is one of the 91 typed document roots (proven by test_all_91_roots_have_typed_roundtrip, parametrized over the root inventory including \"Invoice\") rooted in the UBL-Invoice-2 namespace; its InvoiceLine aggregate is separately fully typed (id/invoiced_quantity/line_extension_amount, tested for both required-field enforcement and XML projection). Unlike the Order/CreditNote/DespatchAdvice/ApplicationResponse siblings in this cluster, Invoice is the one root where both the document-root half and the named-line-aggregate half of the claim are fully typed and tested, not just the root half."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-DDE72D7F54246254",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
         "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components",
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_invoice_lines_project_from_xml"
       ],
       "proof_requirements": {
         "negative": [
@@ -5781,14 +5693,12 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/model/root_types.py::Invoice",
+        "src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-CODELIST-001",
@@ -6433,20 +6343,18 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of UBL-VALUES-001's SAL-UBL-OBL-D25D2CB8429753F9 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001's SAL-UBL-OBL-1D41106A5EF340AB (identical rule_text): ExternalReference is a dataclass with exactly URI/DocumentHash/MimeCode/FileName/Description, all independently optional; test_every_field_is_independently_settable proves each field can be set alone and test_projecting_a_partial_element_leaves_the_rest_none proves a partial XML element leaves unset fields None rather than raising."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-F79C106EE20386B9",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable",
-        "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceConstruction::test_every_field_is_independently_settable",
+        "tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceProjection::test_projecting_a_partial_element_leaves_the_rest_none"
       ],
       "proof_requirements": {
         "negative": [
@@ -6456,14 +6364,12 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AttachedDocument",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::AwardedNotification",
-        "src/python/ubl/src/format_factory/ubl/model/root_types.py::BillOfLading"
+        "src/python/ubl/src/format_factory/ubl/model/reference.py::ExternalReference",
+        "src/python/ubl/src/format_factory/ubl/model/reference.py::external_reference_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -6606,6 +6512,7 @@
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ubl-001.json": "1e7b783cd545d3fcc56de100cfbd37c2d62ad9bf226093f940808de488756200",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-codelist-citation-audit-001.json": "e86ec085304fda4650c0a8e685459487d3fdf3ada7c4eab9b5d8b444c2222302",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-detected-declared-version-001.json": "1059a4d232058af1d560fc0e1e0732ad04bfe0079ef93b03de24f3f4ddfb61b0",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-doctypes-citation-audit-001.json": "e5d72d55a468e859060fff36a118ce63d6d2dcf9c5fe747b0e2de5d0d66572bd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lifecycle-io-001.json": "ed787921f2225a81573186c4cd81377a417d211b447444ba0807685ba1e837b8",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-model-citation-audit-001.json": "d2c7dfa39a36272ee884db3f991425e0013760681491767abedad051028572e6",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-preservation-mode-001.json": "088e0985934fa48774b39f185c541d9d3c3f038b561d70bb1d30359755986909",
@@ -6617,6 +6524,7 @@
     "src/python/ubl/src/format_factory/ubl/codec/preservation.py": "dab616ced8f5104f5bee89db229a32d14000f486b061ace0e7a29dd934f5ab99",
     "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "254743ef56212db8aebabac970793fee188634466b6907145e25b1b662e8f9fc",
     "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py": "e352a3442d0a31389f177c9a206d3a5d857c9a2d4f724833e9af90e31d5b4a7d",
+    "src/python/ubl/src/format_factory/ubl/document_types.py": "3d2c4333b1544a3f45b4c6dd52b759aa528c5dd9ac2a1d102607688b8722819c",
     "src/python/ubl/src/format_factory/ubl/model/__init__.py": "9e80ee4ab23c7bbdee54673f1bf8920aa358866de5ac5005ff7752e7578be925",
     "src/python/ubl/src/format_factory/ubl/model/aggregates.py": "c0f02a00ad6065ea0359dd379f30d0db94b95d63f772d2247ab521ea7a49886a",
     "src/python/ubl/src/format_factory/ubl/model/charges.py": "2832078eb56abae974a7e549b8b58d8a486105c36ed7302fe099efe6f9c0f8ef",
@@ -6637,6 +6545,7 @@
     "tests/python/ubl/test_obligation_codelist_registry.py": "703e263896b28695ffac86f281b1588ed65e46c80c11e8a98ac465c3d3a7d657",
     "tests/python/ubl/test_obligation_detected_declared_version.py": "8833196d78820749344abc5f9b17f93393b7ccdce587fb434f7430032bb69bec",
     "tests/python/ubl/test_obligation_document_query.py": "43151bb1577f2c57f8f9782753d37cac8595d3e2efde33bf25d03d71705b3f21",
+    "tests/python/ubl/test_obligation_document_type_coverage.py": "71bc1369b8359defe87e2deb2584569c1f6b87f3db4c9578e91cd34473f253b0",
     "tests/python/ubl/test_obligation_external_reference.py": "6ba99de8b1dab95aacf884176da6e3c59cf698d3017df4c95748f834fe854901",
     "tests/python/ubl/test_obligation_lifecycle_io.py": "6189da6be51a33cbe60b72e6d98b632dfda9232838d41788dfd7547ec824f7ed",
     "tests/python/ubl/test_obligation_preservation_mode.py": "b6a47fe647cd9e42641d45aafa2991fe60dc7f6372b2c738c239953a793a6182",
@@ -6652,12 +6561,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 59,
-      "missing": 6,
-      "partial": 129
+      "implemented": 71,
+      "missing": 9,
+      "partial": 114
     },
     "total": 194,
-    "unresolved": 135
+    "unresolved": 123
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

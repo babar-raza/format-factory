@@ -27,6 +27,7 @@ from .codec import (
     probe,
     semantic_sha256,
 )
+from .document_types import create_empty, detect_document_type, supported_document_types
 from .errors import UblError, UblParseError, UblValidationError, UblWriteError
 from .model import (
     ROOT_CLASSES,
@@ -90,6 +91,9 @@ from .security import UBL_DEFAULT_LIMITS
 from .validation import ProfileValidator, ProfileValidatorRegistry, validate, validate_profile
 
 __all__ = [
+    "create_empty",
+    "detect_document_type",
+    "supported_document_types",
     "CodeList",
     "CodeListRegistry",
     "CodeListValidation",
