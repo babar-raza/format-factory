@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-merge-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T13:30:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_MERGE_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "XLIFF-MERGE-001's two obligations (skeleton carries non-translatable data; extraction/merge adapter interfaces with reversible skeleton mappings and source-drift detection) already had complete, thoughtfully-designed production source in a dedicated module (merge.py, whose own docstring names this exact obligation) and a comprehensive 14-test suite, but were both cited against the same three generic protocol-conformance selectors with no negative selectors, left at partial with the boilerplate placeholder.",
+    "obligation_targeted": "SAL-XLIFF-OBL-4F9A3D539840CB12, SAL-XLIFF-OBL-6C1F7F44A337674B",
+    "acceptance_evidence": "tests/python/xliff/test_obligation_merge_adapter.py",
+    "regression_tier": "full XLIFF package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Continued the xliff sweep after XLIFF-LIFECYCLE-001, checking the next-smallest remaining capability. merge.py's own module docstring opens with 'XLIFF-MERGE-001 -- extraction/merge adapters with reversible skeleton mappings and source-drift detection' and quotes the obligation's own rule_text -- a strong signal the module was purpose-built for it.",
+    "2. Read merge.py in full: Skeleton (template bytes with translatable spans replaced by placeholders, plus a source_digest and placeholder-to-unit-id mapping), MergeAdapter (a runtime_checkable Protocol -- deliberately no built-in generic extraction, since the module's own docstring explains XLIFF core does not define format-specific extraction, only the skeleton concept and merge contract), check_drift()/merge_with_drift_check() (digest comparison, refusal via SourceDriftError with a report naming both digests, correctly skipping the check when no live source is given to compare against), and TemplateMergeAdapter (a genuine, working reference adapter for a minimal marker-delimited template format, explicitly documented as proving the contract rather than claiming real-world format coverage).",
+    "3. Read tests/python/xliff/test_obligation_merge_adapter.py in full (14 tests): protocol conformance for both the reference adapter AND a genuinely independent third-party adapter, extraction finding every translatable block, skeleton structure and digest correctness, reversible mapping without edits, merge applying translated targets and falling back to source when untranslated, drift detection both directions (unchanged and changed source), and merge_with_drift_check's three behaviors (succeeds against intact source, refuses a drifted one, skips the check entirely when no live source is supplied).",
+    "4. Ran all 14 tests directly before citing any of them: all passed.",
+    "5. Split the two obligations by their distinct emphasis rather than citing identical evidence: the first (skeleton-carries-structure) cites the extraction/skeleton/merge-application tests; the second (adapter-interface-plus-drift-detection, the broader capability statement) cites the protocol-conformance and full drift-detection test set. Corrected source_symbols for each accordingly (the first citing Skeleton/TemplateMergeAdapter; the second citing MergeAdapter/SourceDriftError/compute_source_digest/check_drift/merge_with_drift_check). Promoted both to implemented. Zero source or test changes -- pure evidence correction."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_merge_adapter.py -v -- 14 passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 142,
+    "xliff_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against an external XLIFF merge-back tool. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_no_new_production_source": "The skeleton/adapter/drift-detection design was already complete, correct, and covered by 14 dedicated tests -- this slice audited and cited that existing proof, it did not build anything new."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

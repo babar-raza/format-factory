@@ -18,6 +18,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors proving load() across path/stream/bytes, dump()/dumps() across path/text-stream/bytes with the library's own loader accepting every save form's output, deterministic serialization (repeated calls, separate destinations, and a load-save-load cycle all identical), validate() as a callable returning a structured report rather than raising, and detected vs. declared version (reader-only detected_version distinct from the mutable version field). SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-0CC8F5642F766D78, SAL-XLIFF-OBL-3901EF20FB3A778F, SAL-XLIFF-OBL-4847555DF5FC018E, SAL-XLIFF-OBL-7CC73B48A2DDD6E2, and SAL-XLIFF-OBL-A8BDC1BEFD51DF8A only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-MERGE-ADAPTER-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-merge-audit-001.json",
+      "sha256": "ad52bf9234b0abdb222fca9ca32f9fca835f0d73f2cab7e0709aca7a81e9c29a",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors proving Skeleton carries non-translatable structure verbatim, MergeAdapter is a genuine runtime Protocol (a third-party adapter conforms without inheriting from anything in this module), TemplateMergeAdapter's extract()/merge() round trip end to end, and check_drift()/merge_with_drift_check() detect and refuse a live source that no longer matches the skeleton's extraction digest (reporting both digests), correctly skipping the check only when no live source is supplied. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-4F9A3D539840CB12 and SAL-XLIFF-OBL-6C1F7F44A337674B only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-QA-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -37,7 +45,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "855ed070d2bf977dabc2e453022a94f13a0e5ecef0da2e68772a127f7a6a3c59",
+    "implementation_evidence": "34ac174e86cc68edd8e6546dc7927c365843e89c1f531d0f359a0059ca78c69c",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1850,20 +1858,20 @@
     {
       "capability_id": "XLIFF-MERGE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-MERGE-ADAPTER-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Skeleton.template carries the non-translatable source bytes verbatim (headers, footers, surrounding structure) with translatable spans replaced by placeholders; TemplateMergeAdapter.extract()/merge() prove the round trip end to end -- extracted units' translated (or, absent a target, source) text is substituted back into the exact skeleton bytes at merge time, reconstructing the original file shape."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Merge with intact and drifted sources; drift refused with report."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-4F9A3D539840CB12",
       "positive_test_selectors": [
-        "tests/python/xliff/test_obligation_merge_adapter.py::test_template_adapter_satisfies_the_merge_adapter_protocol",
-        "tests/python/xliff/test_obligation_merge_adapter.py::test_custom_adapter_conforming_to_protocol_works",
-        "tests/python/xliff/test_obligation_merge_adapter.py::test_extraction_finds_every_translatable_block"
+        "tests/python/xliff/test_obligation_merge_adapter.py::test_skeleton_carries_the_non_translatable_structure",
+        "tests/python/xliff/test_obligation_merge_adapter.py::test_extraction_finds_every_translatable_block",
+        "tests/python/xliff/test_obligation_merge_adapter.py::test_merge_applies_translated_targets",
+        "tests/python/xliff/test_obligation_merge_adapter.py::test_merge_falls_back_to_source_when_no_target_set"
       ],
       "proof_requirements": {
         "negative": [
@@ -1873,14 +1881,12 @@
           "Merge with intact and drifted sources; drift refused with report."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/xliff/src/format_factory/xliff/merge.py::Skeleton",
-        "src/python/xliff/src/format_factory/xliff/merge.py::SourceDriftError",
-        "src/python/xliff/src/format_factory/xliff/merge.py::MergeAdapter",
-        "src/python/xliff/src/format_factory/xliff/merge.py::compute_source_digest"
+        "src/python/xliff/src/format_factory/xliff/merge.py::TemplateMergeAdapter"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PRESERVE-001",
@@ -2374,20 +2380,27 @@
     {
       "capability_id": "XLIFF-MERGE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-MERGE-ADAPTER-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "MergeAdapter is a runtime_checkable Protocol (proven by a third-party ad-hoc adapter conforming without inheriting from anything in this module) -- deliberately with no built-in generic extract-anything function, since XLIFF itself does not define how to pull translatable text out of an arbitrary source format; TemplateMergeAdapter is one honest, working reference implementation, not a claim of general coverage. check_drift()/merge_with_drift_check() detect and refuse (raising SourceDriftError with a report naming both digests) a live source that no longer matches the digest the skeleton was extracted from, and correctly skip the check (not silently pass it) when no live source is supplied to compare against."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Merge with intact and drifted sources; drift refused with report."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_merge_adapter.py::test_check_drift_reports_when_source_has_changed",
+        "tests/python/xliff/test_obligation_merge_adapter.py::test_merge_with_drift_check_refuses_a_drifted_source",
+        "tests/python/xliff/test_obligation_merge_adapter.py::test_drift_report_names_both_digests"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-6C1F7F44A337674B",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_merge_adapter.py::test_template_adapter_satisfies_the_merge_adapter_protocol",
         "tests/python/xliff/test_obligation_merge_adapter.py::test_custom_adapter_conforming_to_protocol_works",
-        "tests/python/xliff/test_obligation_merge_adapter.py::test_extraction_finds_every_translatable_block"
+        "tests/python/xliff/test_obligation_merge_adapter.py::test_skeleton_mapping_is_reversible_without_edits",
+        "tests/python/xliff/test_obligation_merge_adapter.py::test_check_drift_is_none_when_source_is_unchanged",
+        "tests/python/xliff/test_obligation_merge_adapter.py::test_skeleton_digest_matches_compute_source_digest",
+        "tests/python/xliff/test_obligation_merge_adapter.py::test_merge_with_drift_check_succeeds_against_intact_source",
+        "tests/python/xliff/test_obligation_merge_adapter.py::test_merge_with_drift_check_skips_the_check_when_no_live_source_given"
       ],
       "proof_requirements": {
         "negative": [
@@ -2397,14 +2410,15 @@
           "Merge with intact and drifted sources; drift refused with report."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/merge.py::Skeleton",
-        "src/python/xliff/src/format_factory/xliff/merge.py::SourceDriftError",
         "src/python/xliff/src/format_factory/xliff/merge.py::MergeAdapter",
-        "src/python/xliff/src/format_factory/xliff/merge.py::compute_source_digest"
+        "src/python/xliff/src/format_factory/xliff/merge.py::SourceDriftError",
+        "src/python/xliff/src/format_factory/xliff/merge.py::compute_source_digest",
+        "src/python/xliff/src/format_factory/xliff/merge.py::check_drift",
+        "src/python/xliff/src/format_factory/xliff/merge.py::merge_with_drift_check"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -4949,6 +4963,7 @@
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-xliff-001.json": "bb85918b335cbc4c82b7993cdbb1506f2e87c77626e871628989ce6fc87ac4d4",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-lifecycle-io-001.json": "02856c6f0ad09cf7b0352b9b777331dc5f6e2096e5f6576dbfe39f997669372d",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-merge-audit-001.json": "ad52bf9234b0abdb222fca9ca32f9fca835f0d73f2cab7e0709aca7a81e9c29a",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-checks-001.json": "00a6d7c1b4d2fc48359f0484a08d0d639ee8fe136b11904870bd1acdda0e4d5c",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json": "368a286339e4990afa645543f86d2b1968bfc693706a6c170b366fecc18f432b",
     "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py": "a9c296cbdfb6da4d2ba4d4621cb1d69e002f5ce85047aca1a77a3426c55ded7c",
@@ -4974,11 +4989,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 8,
-      "partial": 134
+      "implemented": 10,
+      "partial": 132
     },
     "total": 142,
-    "unresolved": 134
+    "unresolved": 132
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

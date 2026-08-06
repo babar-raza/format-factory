@@ -100,6 +100,24 @@ execution_evidence:
     SAL-XLIFF-OBL-4847555DF5FC018E, SAL-XLIFF-OBL-7CC73B48A2DDD6E2, and
     SAL-XLIFF-OBL-A8BDC1BEFD51DF8A only; it supports no other obligation
     and promotes no product state.
+- evidence_id: XLIFF-MERGE-ADAPTER-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-merge-audit-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact
+    positive and negative test selectors proving Skeleton carries
+    non-translatable structure verbatim, MergeAdapter is a genuine runtime
+    Protocol (a third-party adapter conforms without inheriting from
+    anything in this module), TemplateMergeAdapter's extract()/merge()
+    round trip end to end, and check_drift()/merge_with_drift_check()
+    detect and refuse a live source that no longer matches the skeleton's
+    extraction digest (reporting both digests), correctly skipping the
+    check only when no live source is supplied. SELF-CONSISTENT
+    format_factory-only evidence per the execution-recovery directive's
+    GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-4F9A3D539840CB12 and
+    SAL-XLIFF-OBL-6C1F7F44A337674B only; it supports no other obligation
+    and promotes no product state.
 obligations:
 - obligation_id: SAL-XLIFF-OBL-009F2EB91831B248
   capability_id: XLIFF-SEC-001
@@ -1458,25 +1476,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-4F9A3D539840CB12
   capability_id: XLIFF-MERGE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/merge.py::Skeleton
-  - src/python/xliff/src/format_factory/xliff/merge.py::SourceDriftError
-  - src/python/xliff/src/format_factory/xliff/merge.py::MergeAdapter
-  - src/python/xliff/src/format_factory/xliff/merge.py::compute_source_digest
+  - src/python/xliff/src/format_factory/xliff/merge.py::TemplateMergeAdapter
   positive_test_selectors:
-  - tests/python/xliff/test_obligation_merge_adapter.py::test_template_adapter_satisfies_the_merge_adapter_protocol
-  - tests/python/xliff/test_obligation_merge_adapter.py::test_custom_adapter_conforming_to_protocol_works
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_skeleton_carries_the_non_translatable_structure
   - tests/python/xliff/test_obligation_merge_adapter.py::test_extraction_finds_every_translatable_block
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_merge_applies_translated_targets
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_merge_falls_back_to_source_when_no_target_set
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-MERGE-ADAPTER-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Merge with intact and drifted
-    sources; drift refused with report.'
+  - 'Skeleton.template carries the non-translatable source bytes verbatim (headers, footers, surrounding
+    structure) with translatable spans replaced by placeholders; TemplateMergeAdapter.extract()/merge()
+    prove the round trip end to end -- extracted units'' translated (or, absent a target, source) text
+    is substituted back into the exact skeleton bytes at merge time, reconstructing the original file
+    shape.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Merge with intact and drifted sources; drift refused with report.
@@ -1853,25 +1872,38 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-6C1F7F44A337674B
   capability_id: XLIFF-MERGE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/merge.py::Skeleton
-  - src/python/xliff/src/format_factory/xliff/merge.py::SourceDriftError
   - src/python/xliff/src/format_factory/xliff/merge.py::MergeAdapter
+  - src/python/xliff/src/format_factory/xliff/merge.py::SourceDriftError
   - src/python/xliff/src/format_factory/xliff/merge.py::compute_source_digest
+  - src/python/xliff/src/format_factory/xliff/merge.py::check_drift
+  - src/python/xliff/src/format_factory/xliff/merge.py::merge_with_drift_check
   positive_test_selectors:
   - tests/python/xliff/test_obligation_merge_adapter.py::test_template_adapter_satisfies_the_merge_adapter_protocol
   - tests/python/xliff/test_obligation_merge_adapter.py::test_custom_adapter_conforming_to_protocol_works
-  - tests/python/xliff/test_obligation_merge_adapter.py::test_extraction_finds_every_translatable_block
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_skeleton_mapping_is_reversible_without_edits
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_check_drift_is_none_when_source_is_unchanged
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_skeleton_digest_matches_compute_source_digest
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_merge_with_drift_check_succeeds_against_intact_source
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_merge_with_drift_check_skips_the_check_when_no_live_source_given
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_check_drift_reports_when_source_has_changed
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_merge_with_drift_check_refuses_a_drifted_source
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_drift_report_names_both_digests
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-MERGE-ADAPTER-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Merge with intact and drifted
-    sources; drift refused with report.'
+  - 'MergeAdapter is a runtime_checkable Protocol (proven by a third-party ad-hoc adapter conforming
+    without inheriting from anything in this module) -- deliberately with no built-in generic
+    extract-anything function, since XLIFF itself does not define how to pull translatable text out of
+    an arbitrary source format; TemplateMergeAdapter is one honest, working reference implementation,
+    not a claim of general coverage. check_drift()/merge_with_drift_check() detect and refuse (raising
+    SourceDriftError with a report naming both digests) a live source that no longer matches the digest
+    the skeleton was extracted from, and correctly skip the check (not silently pass it) when no live
+    source is supplied to compare against.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Merge with intact and drifted sources; drift refused with report.
