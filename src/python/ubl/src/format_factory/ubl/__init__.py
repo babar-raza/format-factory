@@ -16,6 +16,10 @@ from ._generated import (
 from .analytics import element_count, qname_histogram
 from .codec import (
     SUPPORTED_PROFILE,
+    LossReport,
+    PreservationMode,
+    canonicalize,
+    check_preservation,
     dump,
     dumps,
     load,
@@ -124,6 +128,8 @@ __all__ = [
     "Amount",
     "ARCHIVE_MEMBER_NAMES_SHA256",
     "AUTHORITY_SHA256",
+    "LossReport",
+    "PreservationMode",
     "ROOT_CLASSES",
     "ROOT_NAMES",
     "ROOT_NAMESPACES",
@@ -136,6 +142,8 @@ __all__ = [
     "UblValidationError",
     "UblWriteError",
     "XmlNode",
+    "canonicalize",
+    "check_preservation",
     "dump",
     "dumps",
     "ubl_version_id",

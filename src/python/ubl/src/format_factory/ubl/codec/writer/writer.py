@@ -15,6 +15,7 @@ from ...errors import UblWriteError
 from ...model import UblDocument, XmlNode
 from ...security import effective_limits
 from ...validation import validate
+from ..preservation import PreservationMode, canonicalize
 
 
 def _to_element(node: XmlNode) -> ET.Element:
@@ -29,10 +30,22 @@ def _to_element(node: XmlNode) -> ET.Element:
 def dumps(
     document: UblDocument,
     *,
+    mode: PreservationMode = PreservationMode.LOSSLESS,
     profile: str | None = None,
     limits: ResourceLimits | None = None,
 ) -> bytes:
-    """Serialize a document with stable attribute and child ordering."""
+    """Serialize a document with stable attribute and child ordering.
+
+    ``mode`` selects LOSSLESS (default; unchanged from this function's
+    historical behavior) or CANONICAL (a root-level ``ext:UBLExtensions``
+    container is dropped before validating and serializing -- see
+    ``codec.preservation`` for what is and is not eligible to drop).
+    """
+
+    if mode == PreservationMode.CANONICAL:
+        document, _dropped = canonicalize(document)
+    elif mode != PreservationMode.LOSSLESS:
+        raise UblWriteError(f"unknown preservation mode: {mode!r}")
 
     selected_profile = profile or "UBL-2.3"
     report = validate(document, profile=selected_profile, limits=limits)
@@ -70,12 +83,13 @@ def dump(
     document: UblDocument,
     destination: BinaryDestination,
     *,
+    mode: PreservationMode = PreservationMode.LOSSLESS,
     profile: str | None = None,
     limits: ResourceLimits | None = None,
 ) -> None:
     """Serialize to a path or binary stream."""
 
-    data = dumps(document, profile=profile, limits=limits)
+    data = dumps(document, mode=mode, profile=profile, limits=limits)
     if isinstance(destination, (str, PathLike)):
         path = Path(destination)
         try:

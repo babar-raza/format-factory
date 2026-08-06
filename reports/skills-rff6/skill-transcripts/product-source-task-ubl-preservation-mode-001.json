@@ -1,0 +1,66 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-preservation-mode-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T17:15:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_PRESERVATION_MODE_001",
+    "task_kind": "genuine-new-capability",
+    "root_cause": "UBL-PRESERVE-001's two obligations were confirmed genuinely unbuilt earlier this session: dumps()/dump() had exactly one output path with no LOSSLESS-vs-CANONICAL caller choice, and no LossReport/check_preservation-style API existed anywhere in the package. The identical gap was independently confirmed in XLIFF's parallel obligation and closed there first (Event 138) using the model's ExtensionNode typed slot. UBL has no equivalent typed slot, so this tick required a different, honestly-scoped design rather than reusing XLIFF's code directly.",
+    "obligation_targeted": "SAL-UBL-OBL-5A831127B0AA359F, SAL-UBL-OBL-79F230CE7F5852E9",
+    "acceptance_evidence": "tests/python/ubl/test_obligation_preservation_mode.py (new, 19 tests)",
+    "regression_tier": "full UBL package suite (tests/python/ubl)"
+  },
+  "execution_steps": [
+    "1. Read model/document.py and codec/writer/writer.py in full. Confirmed UBL's XmlNode tree is fully generic (frozen dataclass: qname/attributes/text/children/tail) with no modeled/unmodeled distinction anywhere -- every element, known or not, is stored identically. This ruled out directly reusing XLIFF's ExtensionNode-based design (there is no equivalent typed slot to key off of).",
+    "2. Searched the codebase for any existing extension/canonical concept before designing one from scratch. Found writer.py already registers an 'ext' XML namespace prefix for urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2 but does not otherwise treat it specially. Confirmed via grep this is the UBL 2.x schema family's own dedicated, spec-defined ext:UBLExtensions container -- the one place the UBL specification itself (not this codebase) draws a line between core business-document content and vendor/national-customization content (digital signatures, CEN/PEPPOL extensions).",
+    "3. Verified the design would not silently break dumps()'s existing validate()-before-serialize step: read validator.py in full and confirmed ext:UBLExtensions presence/absence is never checked (no rule requires or forbids it), and the one signature-related diagnostic it can raise (ubl.signature.invalidated) is Severity.WARNING, not ERROR/FATAL, so it never blocks dumps()'s is_valid gate even when CANONICAL mode's tree edit invalidates a prior signature assertion.",
+    "4. Built codec/preservation.py: PreservationMode (StrEnum: LOSSLESS/CANONICAL, matching the naming convention used for XLIFF and originally safetensors' PayloadAccessMode), LossReport (frozen slotted dataclass: is_lossless, dropped_count, dropped_tags, detail -- identical shape to XLIFF's for consistency), canonicalize() (drops a root-level ext:UBLExtensions direct child via XmlNode.with_children() + UblDocument.with_root(), an existing model method whose own docstring already documents that it invalidates source_sha256/signed_content_sha256 -- correct behavior reused, not fought), and check_preservation().",
+    "5. Threaded a keyword-only mode: PreservationMode = PreservationMode.LOSSLESS parameter through the actual exported codec/writer/writer.py dumps()/dump() (not a parallel unused API), applying canonicalize() before the existing validate()+serialize logic runs when CANONICAL is selected.",
+    "6. Smoke-tested manually before writing formal tests: built an Invoice with an ext:UBLExtensions container plus core fields, confirmed check_preservation() reports it, confirmed CANONICAL output omits it while core content (ID, IssueDate) survives, confirmed CANONICAL output still round-trips through loads() and reports lossless afterward, confirmed a clean document with no extensions container is a byte-identical no-op between modes, confirmed the original document's root.children is untouched after canonicalize() (list length unchanged), and specifically tested that an element merely sharing the ext:UBLExtensions QName but nested deeper than a direct root child is left untouched -- proving the boundary is root-level-only, not a namespace-wide strip.",
+    "7. Applied the same StrEnum equality fix proactively that XLIFF's tick caught reactively (Event 138): used ==/!= rather than is for the mode comparison in writer.py from the start, plus a regression test for the plain-string path.",
+    "8. Ran ruff and mypy: both clean on the first pass.",
+    "9. Wrote test_obligation_preservation_mode.py (19 tests): default-mode identity, LOSSLESS preserving the extensions container, LOSSLESS dump/load roundtrip, unknown-mode rejection (enum and plain-string paths), CANONICAL dropping the root container while preserving sibling business fields, CANONICAL output still loading and validating cleanly, CANONICAL as a no-op on extension-free documents, a dedicated nested-vs-root-level boundary test, canonicalize() not mutating the original document, canonicalize() returning the same document object (identity, not just equality) when there is nothing to drop, canonicalize() invalidating a genuinely-set signature assertion (built via a document with source_sha256 explicitly set, not relying on the default-None case), check_preservation() on clean and lossy documents, check_preservation() matching canonicalize()'s drop count, and two tests against documents produced by the real loads() reader.",
+    "10. Ran the full ubl suite: 586 passed (567 baseline + 19 new), 0 regressions. Promoted both UBL-PRESERVE-001 obligations to implemented -- the fourth genuinely new (not citation-corrected) capability closure this session, after the ipynb execution adapter, nrrd lazy payload access, and xliff preservation mode."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/codec/preservation.py",
+    "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py",
+    "src/python/ubl/src/format_factory/ubl/codec/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_preservation_mode.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/codec/preservation.py",
+    "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py",
+    "src/python/ubl/src/format_factory/ubl/codec/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_preservation_mode.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_preservation_mode.py -v -- 19 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 586 passed (567 baseline + 19 new), 0 regressions",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/ubl/src/format_factory/ubl/ -- Success: no issues found in 27 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 194,
+    "ubl_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference UBL implementation for canonical-regeneration or loss-reporting semantics specifically. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_this_is_genuine_new_capability_not_evidence_correction": "codec/preservation.py (new module, ~100 lines) plus a real signature change to the exported dumps()/dump() and 19 new tests are new production source and test coverage this slice -- the fourth non-citation-correction closure this session.",
+    "why_design_differs_from_xliffs": "UBL's XmlNode tree has no ExtensionNode-equivalent typed slot -- every element is stored identically regardless of whether any typed accessor understands it. Rather than inventing an arbitrary modeled/unmodeled split this model does not have, CANONICAL mode targets the one boundary the UBL specification itself defines: the root-level ext:UBLExtensions container. A dedicated test proves this is root-level-only, not a same-named-element-anywhere strip.",
+    "scope_limitations_documented_honestly": "CANONICAL mode drops only a root-level ext:UBLExtensions container, if present as a direct child of the document root. Every other element -- the entire core business-document tree the typed cac:/cbc: accessors project over -- is preserved in both modes. Stated explicitly in the module's own docstring, not silently narrowed."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

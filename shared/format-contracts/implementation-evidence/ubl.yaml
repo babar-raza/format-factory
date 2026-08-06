@@ -154,6 +154,29 @@ execution_evidence:
     and SAL-UBL-OBL-452B9C973F40966B partially (the report-before-saving
     and never-rewrite-subtrees halves only); it supports no other
     obligation and promotes no product state.
+- evidence_id: UBL-PRESERVATION-MODE-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-preservation-mode-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact
+    positive test selectors proving codec/writer/writer.py's dumps()/
+    dump() now accept a keyword-only mode: PreservationMode parameter
+    (LOSSLESS, the unchanged historical default; CANONICAL, which drops
+    a root-level ext:UBLExtensions container before validating and
+    serializing) and that codec.preservation.check_preservation()
+    returns a LossReport disclosing exactly what CANONICAL mode would
+    drop, without serializing. Scope is explicit and tested as a
+    boundary, not just documented: unlike XLIFF's ExtensionNode-based
+    equivalent, this model's XmlNode tree is fully generic with no
+    modeled/unmodeled split, so CANONICAL mode acts on the one place the
+    UBL specification itself draws that line -- the root-level
+    ext:UBLExtensions container -- and a same-named element nested
+    deeper than a direct root child is proven NOT to be treated as that
+    container. SELF-CONSISTENT format_factory-only evidence per the
+    execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
+    SAL-UBL-OBL-5A831127B0AA359F and SAL-UBL-OBL-79F230CE7F5852E9 only;
+    it supports no other obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -2699,23 +2722,36 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-5A831127B0AA359F
   capability_id: UBL-PRESERVE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: dumps()/dump() take no
-    preservation-mode parameter at all -- there is exactly one output
-    path, which always serializes the XmlNode tree exactly as
-    constructed. There is no separate CANONICAL regeneration path that
-    could drop unmodeled content, so there is nothing for an explicit
-    LOSSLESS-vs-CANONICAL caller choice to select between. The identical
-    architecture and the same confirmed-absent API were independently
-    found in XLIFF''s parallel obligation this session
-    (SAL-XLIFF-OBL-A9AF9198E92EA6F9) -- both packages serialize a raw tree
-    with a single output path and no separate canonical-regeneration mode.'
+  status: implemented
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps
+  - src/python/ubl/src/format_factory/ubl/codec/preservation.py::PreservationMode
+  - src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_preservation_mode.py::TestPreservationModeDefault::test_default_mode_is_lossless
+  - tests/python/ubl/test_obligation_preservation_mode.py::TestPreservationModeCanonical::test_canonical_mode_drops_root_extensions_container
+  - tests/python/ubl/test_obligation_preservation_mode.py::TestPreservationModeCanonical::test_canonical_mode_preserves_non_extension_siblings
+  - tests/python/ubl/test_obligation_preservation_mode.py::TestPreservationModeCanonical::test_canonical_mode_only_drops_root_level_extensions_not_nested
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_preservation_mode.py::TestPreservationModeDefault::test_unknown_mode_string_rejected
+  execution_evidence_ids:
+  - UBL-PRESERVATION-MODE-SELECTOR-PROOF
+  implemented_behavior:
+  - 'dumps()/dump() now accept a keyword-only mode: PreservationMode
+    parameter (codec/preservation.py). LOSSLESS is the default and is
+    byte-identical to this function''s pre-existing behavior -- no
+    existing caller''s output changes. CANONICAL drops a root-level
+    ext:UBLExtensions container, if present, before validating and
+    serializing, giving callers the explicit LOSSLESS-vs-CANONICAL
+    choice the obligation requires. Scope is documented, not silently
+    narrowed: unlike XLIFF''s ExtensionNode-typed model, this model''s
+    XmlNode tree is fully generic with no modeled/unmodeled split
+    anywhere in it; CANONICAL mode acts on the one place the UBL
+    specification itself draws that line -- its own dedicated
+    vendor/customization extension container -- and proven (via a
+    dedicated boundary test) to leave a same-named element nested
+    deeper than a direct root child untouched.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
@@ -3372,21 +3408,30 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-79F230CE7F5852E9
   capability_id: UBL-PRESERVE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: implemented
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/codec/preservation.py::check_preservation
+  - src/python/ubl/src/format_factory/ubl/codec/preservation.py::LossReport
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_preservation_mode.py::TestCheckPreservation::test_clean_document_reports_lossless
+  - tests/python/ubl/test_obligation_preservation_mode.py::TestCheckPreservation::test_document_with_extensions_reports_lossy
+  - tests/python/ubl/test_obligation_preservation_mode.py::TestCheckPreservation::test_check_preservation_matches_canonicalize_drop_count
+  - tests/python/ubl/test_obligation_preservation_mode.py::TestLoadedDocumentPreservationReport::test_real_parsed_extensions_container_reports_lossy
+  - tests/python/ubl/test_obligation_preservation_mode.py::TestLoadedDocumentPreservationReport::test_real_document_without_extensions_reports_lossless
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: no LossReport/check_preservation-style
-    API exists anywhere in this package. Since dumps()/dump() always
-    serialize the tree exactly as constructed (see SAL-UBL-OBL-5A831127B0AA359F),
-    there is currently no regeneration path capable of losing content for
-    such a report to describe -- but the obligation requires the reporting
-    API to exist as a first-class callable, which it does not. The same
-    gap was independently confirmed for XLIFF''s parallel obligation this
-    session (SAL-XLIFF-OBL-F920057AE26D1B4F).'
+  execution_evidence_ids:
+  - UBL-PRESERVATION-MODE-SELECTOR-PROOF
+  implemented_behavior:
+  - 'check_preservation(document) -> LossReport is now a first-class
+    callable (codec/preservation.py), closing the gap this obligation
+    named directly: dumps()/dump() gained a real CANONICAL regeneration
+    path (SAL-UBL-OBL-5A831127B0AA359F) for check_preservation() to
+    describe. It walks the in-memory tree (no serialization) and reports
+    is_lossless, dropped_count, dropped_tags, and a human-readable
+    detail string naming exactly what CANONICAL mode would drop --
+    proven against both hand-built documents and documents produced by
+    the real reader (loads()).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
