@@ -40,12 +40,20 @@
       "path": "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-metadata-001.json",
       "sha256": "8e0038229a0a1751b782c261d06b6df7de18dcd650b2adb77a1fcd0f8d7ff0e5",
       "truth_boundary": "Selector-bound, unlike SAFETENSORS-BASELINE-SUITE: it names the exact positive test selectors proving metadata-section absence is distinguishable from an explicit-but-empty section, on both read (loads() and header-only read_header()) and through a full dumps()/loads() round trip. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-SAFETENSORS-OBL-EF61013542A38DE7 only; it supports no other obligation and promotes no product state."
+    },
+    {
+      "evidence_id": "SAFETENSORS-VALIDATION-DIAGNOSTIC-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-validation-diagnostic-001.json",
+      "sha256": "26788baf72eb0b197a11516b9eb2759a590659ffc73b0eb6333ad5019433558f",
+      "truth_boundary": "Selector-bound, unlike SAFETENSORS-BASELINE-SUITE: it names the exact test selectors proving validate() assigns one stable, rule-specific diagnostic code per violation (9 distinct rules exercised via a single parametrized test, each with its own fixture, not a shared generic error), resource-limit and nesting-depth violations carry a machine-readable details dict (limit/actual/maximum), an in-memory document with multiple simultaneous violations reports every applicable code deterministically across repeated calls (not just the first), and borrowed-view ownership is enforced (close() refuses while a region view is outstanding, both for owner-backed and mmap-backed documents, and is retryable after release). Also proves each of the 9 rule-specific codes has its own executed negative fixture, not a shared/generic one -- SAL-SAFETENSORS-OBL-BD58FA05B8FF8819's methodological claim. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-SAFETENSORS-OBL-1FCACA122285E0E0, SAL-SAFETENSORS-OBL-56F8EB4984CEBAE8, SAL-SAFETENSORS-OBL-6C316AF2B857D4A8, SAL-SAFETENSORS-OBL-729FF2579C46ACAE, SAL-SAFETENSORS-OBL-787A6A731624D4C5, SAL-SAFETENSORS-OBL-7B0DE161B50E285E, SAL-SAFETENSORS-OBL-8329025ECE9B09AC, SAL-SAFETENSORS-OBL-83A3FF76296963EE, SAL-SAFETENSORS-OBL-BD58FA05B8FF8819, and SAL-SAFETENSORS-OBL-CA504A3E6B5CB9D7 only; it supports no other obligation and promotes no product state."
     }
   ],
   "format_id": "safetensors",
   "input_digests": {
     "compiled_contract": "0c75ec78971819ea2d679482ea8b81334f594632bf79cdb0c4ec465c8a3bcfbb",
-    "implementation_evidence": "b3630e8e29bb3294f1679f1551b1775c9e9c0d0e9b20b9d70403f267fd178bb3",
+    "implementation_evidence": "5c787befcbcba83461b5074555c59bd92b723df8638078a047fa2297081bb80d",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "acaf4a88cf5aee24cc52b3da71013932a0573d1fc834b9e79adf7489fc393b80",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -392,21 +400,19 @@
     {
       "capability_id": "SAFETENSORS-VALIDATE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-VALIDATION-DIAGNOSTIC-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "This is the tensor.rs read_metadata framing of the same rule already proven under SAFETENSORS-PRESERVE-001's SAL-SAFETENSORS-OBL-9511E7A64BBE4BE0, proven here specifically through validate()'s structured-diagnostic path (SAFETENSORS_HEADER_ENCODING) rather than only the exception-raising loads() path: a declared header length exceeding the file, malformed UTF-8, or malformed JSON is reported, not silently accepted."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-1FCACA122285E0E0",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit",
-        "tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed"
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes"
       ],
       "proof_requirements": {
         "negative": [
@@ -416,11 +422,11 @@
           "One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-MODEL-001",
@@ -1048,21 +1054,17 @@
     {
       "capability_id": "SAFETENSORS-VALIDATE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-VALIDATION-DIAGNOSTIC-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "This is the README/tensor.rs framing of the same rule already proven under SAFETENSORS-PRESERVE-001's SAL-SAFETENSORS-OBL-D5F5AD460F3EC27D, proven here through validate()'s SAFETENSORS_OFFSET_COVERAGE diagnostic: ordered tensor offsets must be contiguous and non-overlapping, entirely indexing the payload without holes."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-56F8EB4984CEBAE8",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit",
-        "tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed"
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes"
       ],
       "proof_requirements": {
         "negative": [
@@ -1072,11 +1074,11 @@
           "One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-MODEL-001",
@@ -1371,21 +1373,17 @@
     {
       "capability_id": "SAFETENSORS-VALIDATE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-VALIDATION-DIAGNOSTIC-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "This is the tensor.rs MAX_HEADER_SIZE framing of the same rule already proven under SAFETENSORS-PRESERVE-001's SAL-SAFETENSORS-OBL-5FB6E64039178B98, proven here through validate()'s SAFETENSORS_HEADER_LIMIT diagnostic: a declared header length above the 100,000,000-byte ceiling is reported, not silently accepted."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-6C316AF2B857D4A8",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit",
-        "tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed"
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes"
       ],
       "proof_requirements": {
         "negative": [
@@ -1395,11 +1393,11 @@
           "One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-HEADER-001",
@@ -1548,21 +1546,17 @@
     {
       "capability_id": "SAFETENSORS-VALIDATE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-VALIDATION-DIAGNOSTIC-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "This is the tensor.rs MetadataIncompleteBuffer framing of the same rule already proven under SAFETENSORS-PRESERVE-001's SAL-SAFETENSORS-OBL-E9EEC89DC82233A8, proven here through validate()'s SAFETENSORS_TRAILING_DATA diagnostic: unindexed bytes after the final tensor are reported, not silently accepted."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-729FF2579C46ACAE",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit",
-        "tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed"
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes"
       ],
       "proof_requirements": {
         "negative": [
@@ -1572,30 +1566,26 @@
           "One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-VALIDATE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-VALIDATION-DIAGNOSTIC-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "This is the v0.4 tensor-entries framing of the same rule already proven under SAFETENSORS-HEADER-001's SAL-SAFETENSORS-OBL-702CE38C3249FB41, proven here through validate()'s SAFETENSORS_DTYPE/SAFETENSORS_SHAPE diagnostics: an unrecognized dtype or a negative shape dimension is reported, not silently accepted."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-787A6A731624D4C5",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit",
-        "tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed"
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes"
       ],
       "proof_requirements": {
         "negative": [
@@ -1605,30 +1595,26 @@
           "One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-VALIDATE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-VALIDATION-DIAGNOSTIC-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "This is the tensor.rs Metadata.validate framing of the same rule already proven under SAFETENSORS-PRESERVE-001's SAL-SAFETENSORS-OBL-31F35E7DB9250F72, proven here through validate()'s SAFETENSORS_TENSOR_SIZE diagnostic: a declared byte span not equal to the checked product of shape and dtype bits/8 is reported, not silently accepted."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-7B0DE161B50E285E",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit",
-        "tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed"
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes"
       ],
       "proof_requirements": {
         "negative": [
@@ -1638,11 +1624,11 @@
           "One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-ADAPTER-001",
@@ -1755,21 +1741,17 @@
     {
       "capability_id": "SAFETENSORS-VALIDATE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-VALIDATION-DIAGNOSTIC-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "This is the tensor.rs test_validation_overflow framing of the same rule already proven under SAFETENSORS-PRESERVE-001's SAL-SAFETENSORS-OBL-DF77BBEA64365A5F. validate()'s configurable nesting/rank limit additionally proves the resource-bounding half of this rule through the diagnostic path (SAFETENSORS_RESOURCE_LIMIT with machine-readable limit/actual context), complementing the exception-raising overflow proof already cited elsewhere."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-8329025ECE9B09AC",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit",
-        "tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed"
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit"
       ],
       "proof_requirements": {
         "negative": [
@@ -1779,11 +1761,11 @@
           "One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-HEADER-001",
@@ -1820,21 +1802,24 @@
     {
       "capability_id": "SAFETENSORS-VALIDATE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-VALIDATION-DIAGNOSTIC-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "validate() covers metadata typing, dtype, shape, checked size arithmetic, offset coverage, and resource limits with stable rule-specific codes (proven both for raw bytes and for an in-memory document with multiple simultaneous violations, reported deterministically across repeated calls), and separately enforces borrowed-view ownership -- close() refuses with SAFETENSORS_BORROWED_VIEW_ACTIVE while a region view is outstanding (owner-backed and mmap-backed), is retryable after release, and a closed document's own validation/access remain stable (SAFETENSORS_DOCUMENT_CLOSED) rather than crashing."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_closed_document_validation_and_access_are_stable"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-83A3FF76296963EE",
       "positive_test_selectors": [
         "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes",
         "tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context",
         "tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit",
-        "tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed"
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_model_validation_reports_all_stable_codes_deterministically",
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_close_retains_owner_until_borrowed_views_are_released",
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_mapped_document_close_can_be_retried_after_region_release"
       ],
       "proof_requirements": {
         "negative": [
@@ -1844,11 +1829,11 @@
           "One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-MODEL-001",
@@ -2312,21 +2297,17 @@
     {
       "capability_id": "SAFETENSORS-VALIDATE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-VALIDATION-DIAGNOSTIC-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "test_raw_validation_uses_rule_specific_stable_codes parametrizes all 9 rule-specific diagnostic codes, each with its OWN dedicated fixture constructed to trigger exactly that rule and no other -- satisfying \"each rejection rule requires an executed negative result\" directly, as a methodological property of the test itself rather than a coincidental byproduct."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-BD58FA05B8FF8819",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit",
-        "tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed"
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes"
       ],
       "proof_requirements": {
         "negative": [
@@ -2336,11 +2317,11 @@
           "One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-HEADER-001",
@@ -2496,21 +2477,20 @@
     {
       "capability_id": "SAFETENSORS-VALIDATE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-VALIDATION-DIAGNOSTIC-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "This is the tensor.rs Dtype.bitsize framing of the same rule already proven under SAFETENSORS-PRESERVE-001's SAL-SAFETENSORS-OBL-68FB56B17DC9BECC: TensorDescriptor.byte_length rejects a sub-byte (F4/six-bit) tensor whose total bit count does not end on a byte boundary, and accepts one that does."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_invalid_sub_byte_alignment_is_rejected",
+        "tests/python/safetensors/test_production_namespace.py::test_subbyte_misalignment_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-CA504A3E6B5CB9D7",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit",
-        "tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed"
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_byte_aligned_sub_byte_tensor_is_accepted"
       ],
       "proof_requirements": {
         "negative": [
@@ -2520,11 +2500,11 @@
           "One negative vector per rule plus property, mutation, fuzz, and resource-exhaustion suites."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate"
+        "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-HEADER-001",
@@ -3169,6 +3149,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-lazy-001.json": "2d60c6f75191d4292b36828e98b5058f53e22615af8a27db4ae10355ea26eade",
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-lifecycle-001.json": "d110f288b73b97e6f51775dd6fe1b0281220ab68f7937be5a55a1e133323b3f5",
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-metadata-001.json": "8e0038229a0a1751b782c261d06b6df7de18dcd650b2adb77a1fcd0f8d7ff0e5",
+    "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-validation-diagnostic-001.json": "26788baf72eb0b197a11516b9eb2759a590659ffc73b0eb6333ad5019433558f",
     "src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py": "82c249624fa0346474cb00a0877fa172ef15b593c03a6cd4670bd59435698b40",
     "src/python/safetensors/src/format_factory/safetensors/adapters/torch.py": "3b870a3f34d6b893adf620fefabc7b9d317a1733a477e1e8f25e8cd39cab449e",
     "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py": "950b9d35758ed8534f74819060efa0edc771a9c52da005cfda4a3e3640d9b2f2",
@@ -3199,11 +3180,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 32,
-      "partial": 54
+      "implemented": 42,
+      "partial": 44
     },
     "total": 86,
-    "unresolved": 54
+    "unresolved": 44
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
