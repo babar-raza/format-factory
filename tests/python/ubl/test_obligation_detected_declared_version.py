@@ -96,6 +96,15 @@ def test_declared_version_is_none_when_ublversionid_is_absent() -> None:
     assert document.declared_version is None
 
 
+def test_declared_version_is_an_empty_string_when_explicitly_empty() -> None:
+    """Distinct from absence: an explicitly present but empty
+    cbc:UBLVersionID is not collapsed to None."""
+    document = loads(_invoice(""))
+
+    assert document.declared_version == ""
+    assert document.declared_version is not None
+
+
 def test_editing_the_version_element_changes_declared_but_not_detected() -> None:
     """The obligation's own distinction, directly: an edit changes what is
     declared without silently rewriting what was detected."""

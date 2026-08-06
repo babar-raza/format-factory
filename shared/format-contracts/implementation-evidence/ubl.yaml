@@ -4286,29 +4286,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-E872079BFB45EC57
   capability_id: UBL-PRESERVE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
+  - src/python/ubl/src/format_factory/ubl/model/document.py::_first_child_text
   positive_test_selectors:
   - tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_is_none_when_absent
   - tests/python/ubl/test_obligation_profile_identifiers.py::test_profile_id_is_none_when_absent
   - tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_is_none_when_ublversionid_is_absent
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_is_an_empty_string_when_explicitly_empty
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_profile_id_is_an_empty_string_when_explicitly_empty
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_is_an_empty_string_when_explicitly_empty
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   implemented_behavior:
-  - '_first_child_text returns None when a matching optional child element
-    is genuinely absent, distinguishable from an explicit-but-empty text
-    value (which would strip to ""), proven for customization_id,
-    profile_id, and declared_version. Verified for these three
-    None-on-absence accessors specifically; not yet swept against a
-    present-but-empty fixture to directly exercise the explicit-empty half
-    of the distinction, nor against every other optional field in the
-    model.'
-  missing_behavior:
-  - Not yet verified against a present-but-empty-element fixture (only the
-    absent-vs-present-with-value cases are directly tested), and not swept
-    across every other optional field beyond customization_id/profile_id/declared_version.
+  - '_first_child_text returns None when a matching optional child element is genuinely absent, distinguishable from an explicit-but-empty text value (which strips to "") -- now proven both ways for all three accessors that use it (customization_id, profile_id, declared_version): 3 new tests this slice construct an explicitly present but empty element (e.g. <cbc:CustomizationID></cbc:CustomizationID>) and assert the accessor returns '''' while explicitly asserting it is not None, directly exercising the previously-untested explicit-empty half of the distinction alongside the existing absent-returns-None tests. The three accessors share one underlying primitive (_first_child_text, used nowhere else in the model), so this closes the distinction for the mechanism itself, not merely three call sites coincidentally sharing a pattern.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative

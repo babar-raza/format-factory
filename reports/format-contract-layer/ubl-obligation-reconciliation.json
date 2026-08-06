@@ -133,7 +133,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "e4dd23df84e29f92ab3bdc35c307fccaf3a949579e5ed724d9b822b904abf4f8",
+    "implementation_evidence": "04e7a202b0c545823569ece5d632ce3ff20822bc77c23b74fc4ed54c0f4fb424",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -5653,17 +5653,18 @@
         "UBL-BASELINE-SUITE"
       ],
       "implemented_behavior": [
-        "_first_child_text returns None when a matching optional child element is genuinely absent, distinguishable from an explicit-but-empty text value (which would strip to \"\"), proven for customization_id, profile_id, and declared_version. Verified for these three None-on-absence accessors specifically; not yet swept against a present-but-empty fixture to directly exercise the explicit-empty half of the distinction, nor against every other optional field in the model."
+        "_first_child_text returns None when a matching optional child element is genuinely absent, distinguishable from an explicit-but-empty text value (which strips to \"\") -- now proven both ways for all three accessors that use it (customization_id, profile_id, declared_version): 3 new tests this slice construct an explicitly present but empty element (e.g. <cbc:CustomizationID></cbc:CustomizationID>) and assert the accessor returns '' while explicitly asserting it is not None, directly exercising the previously-untested explicit-empty half of the distinction alongside the existing absent-returns-None tests. The three accessors share one underlying primitive (_first_child_text, used nowhere else in the model), so this closes the distinction for the mechanism itself, not merely three call sites coincidentally sharing a pattern."
       ],
-      "missing_behavior": [
-        "Not yet verified against a present-but-empty-element fixture (only the absent-vs-present-with-value cases are directly tested), and not swept across every other optional field beyond customization_id/profile_id/declared_version."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-E872079BFB45EC57",
       "positive_test_selectors": [
         "tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_is_none_when_absent",
         "tests/python/ubl/test_obligation_profile_identifiers.py::test_profile_id_is_none_when_absent",
-        "tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_is_none_when_ublversionid_is_absent"
+        "tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_is_none_when_ublversionid_is_absent",
+        "tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_is_an_empty_string_when_explicitly_empty",
+        "tests/python/ubl/test_obligation_profile_identifiers.py::test_profile_id_is_an_empty_string_when_explicitly_empty",
+        "tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_is_an_empty_string_when_explicitly_empty"
       ],
       "proof_requirements": {
         "negative": [
@@ -5673,11 +5674,12 @@
           "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument"
+        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument",
+        "src/python/ubl/src/format_factory/ubl/model/document.py::_first_child_text"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-EXT-001",
@@ -6192,13 +6194,13 @@
     "tests/python/ubl/test_obligation_business_calculation.py": "ebf8352d49b7d0bc6bf5aa4bfa0d034f6f98f896ba34aceb95cfe38efeeee150",
     "tests/python/ubl/test_obligation_business_value_types.py": "aefb8749170d03e5310add4d3ec5d183830eebbacce9dcabcc0e08f2893a83c5",
     "tests/python/ubl/test_obligation_codelist_registry.py": "703e263896b28695ffac86f281b1588ed65e46c80c11e8a98ac465c3d3a7d657",
-    "tests/python/ubl/test_obligation_detected_declared_version.py": "8833196d78820749344abc5f9b17f93393b7ccdce587fb434f7430032bb69bec",
+    "tests/python/ubl/test_obligation_detected_declared_version.py": "303950d7c328d8673c9d6d5546892afdba38c52653a5bb7b45a86eea37ea7991",
     "tests/python/ubl/test_obligation_document_query.py": "43151bb1577f2c57f8f9782753d37cac8595d3e2efde33bf25d03d71705b3f21",
     "tests/python/ubl/test_obligation_document_type_coverage.py": "71bc1369b8359defe87e2deb2584569c1f6b87f3db4c9578e91cd34473f253b0",
     "tests/python/ubl/test_obligation_external_reference.py": "6ba99de8b1dab95aacf884176da6e3c59cf698d3017df4c95748f834fe854901",
     "tests/python/ubl/test_obligation_lifecycle_io.py": "6189da6be51a33cbe60b72e6d98b632dfda9232838d41788dfd7547ec824f7ed",
     "tests/python/ubl/test_obligation_preservation_mode.py": "b6a47fe647cd9e42641d45aafa2991fe60dc7f6372b2c738c239953a793a6182",
-    "tests/python/ubl/test_obligation_profile_identifiers.py": "4a755868d52bba01f7023b09b5fff94d43582d496367eb287ec83ad184379738",
+    "tests/python/ubl/test_obligation_profile_identifiers.py": "dd1a6ee497466d8a62d1ab81a91e478328d3ac2a1cec48e90461cadbe7ea8e77",
     "tests/python/ubl/test_obligation_profile_validator_registry.py": "b874e4d0c934f0496470bb854a6d90fafd98dc39f0ff744daac780909e2f2cb1",
     "tests/python/ubl/test_obligation_qname_resolution.py": "0ec24fd32c63ecb5c4b758c9f3d47321deaaaee31f76c77ddb14c9b7a3bde611",
     "tests/python/ubl/test_obligation_query_index_agreement.py": "9c593f19f18c25e0db6d4cbb75d31b9d8ec26f7fa80a5db7562263e5fcd58112",
@@ -6212,12 +6214,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 112,
+      "implemented": 113,
       "missing": 29,
-      "partial": 53
+      "partial": 52
     },
     "total": 194,
-    "unresolved": 82
+    "unresolved": 81
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

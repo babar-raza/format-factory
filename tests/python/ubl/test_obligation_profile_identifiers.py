@@ -49,6 +49,16 @@ def test_customization_id_is_none_when_absent() -> None:
     assert document.customization_id is None
 
 
+def test_customization_id_is_an_empty_string_when_explicitly_empty() -> None:
+    """Distinct from absence: an explicitly present but empty element is not
+    collapsed to None -- '' and "the element was never there" are two
+    different, independently observable states."""
+    document = loads(_invoice(customization=""))
+
+    assert document.customization_id == ""
+    assert document.customization_id is not None
+
+
 def test_customization_id_on_a_freshly_built_document_is_none() -> None:
     document = Invoice.build(children=(XmlNode.create(f"{{{CBC}}}ID", text="INV-1"),))
 
@@ -68,6 +78,13 @@ def test_profile_id_is_none_when_absent() -> None:
     document = loads(_invoice())
 
     assert document.profile_id is None
+
+
+def test_profile_id_is_an_empty_string_when_explicitly_empty() -> None:
+    document = loads(_invoice(profile=""))
+
+    assert document.profile_id == ""
+    assert document.profile_id is not None
 
 
 # ── Both identifiers are independent of each other and of the version ──────
