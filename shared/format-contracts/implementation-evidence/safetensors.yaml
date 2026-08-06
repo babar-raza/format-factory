@@ -32,6 +32,23 @@ execution_evidence:
     execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
     SAL-SAFETENSORS-OBL-EF61013542A38DE7 only; it supports no other
     obligation and promotes no product state.
+- evidence_id: SAFETENSORS-LIFECYCLE-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-safetensors-lifecycle-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike SAFETENSORS-BASELINE-SUITE: it names the exact
+    test selectors proving the full production-namespace lifecycle surface
+    (probe, load/loads, dump/dumps across path/stream/bytes forms, validate)
+    and all three declared modes (strict rejects invalid input, preservation
+    retains unknown descriptor fields, recovery is explicitly excluded
+    rather than silently falling back to undefined behavior). NOT backed by
+    an independent reference implementation for these specific behaviors --
+    SELF-CONSISTENT format_factory-only evidence per the execution-recovery
+    directive's GAP-008 rule, not VERIFIED. Covers
+    SAL-SAFETENSORS-OBL-59F9F25F677A2C4F and
+    SAL-SAFETENSORS-OBL-695A339CFF62830F only; it supports no other
+    obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-SAFETENSORS-OBL-00A5D5CAF3AEF4AD
   capability_id: SAFETENSORS-PRESERVE-001
@@ -901,26 +918,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-SAFETENSORS-OBL-59F9F25F677A2C4F
   capability_id: SAFETENSORS-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::probe
   - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
   - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
   - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
   - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
   - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
   - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
+  - src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate
   positive_test_selectors:
   - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
-  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
   negative_test_selectors: []
   execution_evidence_ids:
   - SAFETENSORS-BASELINE-SUITE
+  - SAFETENSORS-LIFECYCLE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Lifecycle source matrix,
-    strict rejection, preservation, and deterministic serialization tests.'
+  - 'test_path_stream_and_bytes_lifecycle proves every named surface in one flow: probe() and validate()
+    on raw bytes, loads()/dumps() (bytes), load()/dump() to both a filesystem path and a BytesIO stream,
+    and a full round trip confirming re-loaded tensor bytes match the original across every source form
+    -- the production namespace''s complete lifecycle matrix in a single test.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Lifecycle source matrix, strict rejection, preservation, and deterministic serialization tests.
@@ -1049,26 +1068,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-SAFETENSORS-OBL-695A339CFF62830F
   capability_id: SAFETENSORS-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
   - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
   - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load
-  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open
-  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
-  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
   positive_test_selectors:
-  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
   - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
-  negative_test_selectors: []
+  negative_test_selectors:
+  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
   execution_evidence_ids:
   - SAFETENSORS-BASELINE-SUITE
+  - SAFETENSORS-LIFECYCLE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Lifecycle source matrix,
-    strict rejection, preservation, and deterministic serialization tests.'
+  - 'test_strict_preservation_and_excluded_recovery_modes proves all three mode semantics this obligation
+    names in one test: strict mode raises SafeTensorsParseError on a duplicate-key header rather than
+    silently accepting the last value; preservation mode retains an unknown descriptor field
+    (vendor.revision) across a load/dumps/reload round trip rather than dropping it; and mode="recovery"
+    is explicitly rejected with ValueError, matching "no recovery mode exists without separately
+    specified deterministic rules" -- there is no silent fallback to a recovery behavior nobody defined.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Lifecycle source matrix, strict rejection, preservation, and deterministic serialization tests.

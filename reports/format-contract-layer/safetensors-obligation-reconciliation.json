@@ -10,6 +10,14 @@
       "truth_boundary": "Suite-level and NON-PROMOTING. Records that the mapped shipped-namespace suites run and that the mapped source symbols exist. The declared result is deliberately not PASS: 4 of the 390 tests fail in the shared dev venv on the known GAP-002 shadow-package name collision, and pass only in an isolated wheel-install environment. They are not counted as passing. This binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most.\n2026-08-06: no source or test change this slice, only this map. safetensors suite unchanged at 385 passed / 1 skipped / 4 deselected (the same 4 pre-existing GAP-002 interop failures). Obligation status unchanged at 86 partial / 0 missing -- this slice deepens selector evidence within already- `partial` obligations, it does not move any obligation's status."
     },
     {
+      "evidence_id": "SAFETENSORS-LIFECYCLE-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-lifecycle-001.json",
+      "sha256": "d110f288b73b97e6f51775dd6fe1b0281220ab68f7937be5a55a1e133323b3f5",
+      "truth_boundary": "Selector-bound, unlike SAFETENSORS-BASELINE-SUITE: it names the exact test selectors proving the full production-namespace lifecycle surface (probe, load/loads, dump/dumps across path/stream/bytes forms, validate) and all three declared modes (strict rejects invalid input, preservation retains unknown descriptor fields, recovery is explicitly excluded rather than silently falling back to undefined behavior). NOT backed by an independent reference implementation for these specific behaviors -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-SAFETENSORS-OBL-59F9F25F677A2C4F and SAL-SAFETENSORS-OBL-695A339CFF62830F only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "SAFETENSORS-METADATA-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -21,7 +29,7 @@
   "format_id": "safetensors",
   "input_digests": {
     "compiled_contract": "0c75ec78971819ea2d679482ea8b81334f594632bf79cdb0c4ec465c8a3bcfbb",
-    "implementation_evidence": "e7e1f7dfeef213ee74dc84aa8c2156c987f5d09eebade2f28836813b30c41433",
+    "implementation_evidence": "e80d6de9b5662d6d56b694620670f64dfdf76b9a88476a484554a0c9cc7dcfbc",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "acaf4a88cf5aee24cc52b3da71013932a0573d1fc834b9e79adf7489fc393b80",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1134,19 +1142,17 @@
     {
       "capability_id": "SAFETENSORS-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-LIFECYCLE-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "test_path_stream_and_bytes_lifecycle proves every named surface in one flow: probe() and validate() on raw bytes, loads()/dumps() (bytes), load()/dump() to both a filesystem path and a BytesIO stream, and a full round trip confirming re-loaded tensor bytes match the original across every source form -- the production namespace's complete lifecycle matrix in a single test."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Lifecycle source matrix, strict rejection, preservation, and deterministic serialization tests."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-59F9F25F677A2C4F",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle",
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes"
+        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle"
       ],
       "proof_requirements": {
         "negative": [
@@ -1156,16 +1162,18 @@
           "Lifecycle source matrix, strict rejection, preservation, and deterministic serialization tests."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::probe",
         "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header",
         "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads",
         "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load",
         "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open",
         "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps",
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump"
+        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump",
+        "src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
@@ -1325,18 +1333,18 @@
     {
       "capability_id": "SAFETENSORS-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-LIFECYCLE-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "test_strict_preservation_and_excluded_recovery_modes proves all three mode semantics this obligation names in one test: strict mode raises SafeTensorsParseError on a duplicate-key header rather than silently accepting the last value; preservation mode retains an unknown descriptor field (vendor.revision) across a load/dumps/reload round trip rather than dropping it; and mode=\"recovery\" is explicitly rejected with ValueError, matching \"no recovery mode exists without separately specified deterministic rules\" -- there is no silent fallback to a recovery behavior nobody defined."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Lifecycle source matrix, strict rejection, preservation, and deterministic serialization tests."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-695A339CFF62830F",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle",
         "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes"
       ],
       "proof_requirements": {
@@ -1347,16 +1355,12 @@
           "Lifecycle source matrix, strict rejection, preservation, and deterministic serialization tests."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header",
         "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads",
-        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load",
-        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::safe_open",
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps",
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump"
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::load"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-PAYLOAD-001",
@@ -3270,6 +3274,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-safetensors-001.json": "0c4341a9828b89799ba47aeba0932e99bda659dc424a982d3e42ebe57adc270b",
+    "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-lifecycle-001.json": "d110f288b73b97e6f51775dd6fe1b0281220ab68f7937be5a55a1e133323b3f5",
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-metadata-001.json": "8e0038229a0a1751b782c261d06b6df7de18dcd650b2adb77a1fcd0f8d7ff0e5",
     "src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py": "82c249624fa0346474cb00a0877fa172ef15b593c03a6cd4670bd59435698b40",
     "src/python/safetensors/src/format_factory/safetensors/adapters/torch.py": "3b870a3f34d6b893adf620fefabc7b9d317a1733a477e1e8f25e8cd39cab449e",
@@ -3301,11 +3306,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 1,
-      "partial": 85
+      "implemented": 3,
+      "partial": 83
     },
     "total": 86,
-    "unresolved": 85
+    "unresolved": 83
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

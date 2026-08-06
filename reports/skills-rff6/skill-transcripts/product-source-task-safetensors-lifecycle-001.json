@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-safetensors-lifecycle-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T10:35:00Z",
+  "inputs": {
+    "format_id": "safetensors",
+    "task_id": "TC_FF6_SAFETENSORS_LIFECYCLE_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "safetensors was the format with the lowest implemented ratio this session (1/86) and had not yet had a systematic sweep for the misattributed-evidence pattern already proven productive on ipynb/xliff/ora/ubl. SAFETENSORS-LIFECYCLE-001's two obligations both carried the generic 'Not yet audited' missing_behavior placeholder despite already citing the two exact, on-point, comprehensive tests that prove them -- test_path_stream_and_bytes_lifecycle (probe/validate/load/loads/dump/dumps across path/stream/bytes forms) and test_strict_preservation_and_excluded_recovery_modes (strict rejection, preservation retention, recovery exclusion).",
+    "obligation_targeted": "SAL-SAFETENSORS-OBL-59F9F25F677A2C4F, SAL-SAFETENSORS-OBL-695A339CFF62830F",
+    "acceptance_evidence": "tests/python/safetensors/test_obligation_lifecycle_modes.py",
+    "regression_tier": "full safetensors package suite (tests/python/safetensors)"
+  },
+  "execution_steps": [
+    "1. Surveyed safetensors' single- and small-obligation capabilities after the nrrd/ora/ubl work this tick. Checked SAFETENSORS-WRITE-001, SAFETENSORS-INTEROP-001, and SAFETENSORS-SHARD-001 (each requiring 'official-reader acceptance' / 'pinned official release' / 'Official index examples' respectively) against samples/by-format/safetensors/_provenance.yaml: confirmed every local safetensors sample is project-owned-synthetic, matching the now-familiar UBL/nrrd data-blocked pattern -- none of these three are honestly closeable without genuine official reference data or corpus this environment does not have (consistent with the 4 pre-existing GAP-002 safetensors interop test failures already documented as environment-blocked).",
+    "2. Checked SAFETENSORS-LIFECYCLE-001 (2 obligations) instead: 'Provide probe, path/stream/bytes load, path/stream dump, bytes serialization, and structured validation through the production namespace' and 'Strict mode rejects invalid input; preservation mode retains safe unknown descriptor fields; no recovery mode exists without separately specified deterministic rules' -- neither clause depends on an external reference implementation; both are pure API-surface and mode-semantics claims about format_factory's own code.",
+    "3. Read tests/python/safetensors/test_obligation_lifecycle_modes.py in full: test_path_stream_and_bytes_lifecycle already exercises probe(), validate(), loads()/dumps() (bytes), load()/dump() to a filesystem path, load()/dump() to a BytesIO stream, and a full round trip confirming re-loaded tensor bytes match across every source form -- the complete lifecycle matrix in one test. test_strict_preservation_and_excluded_recovery_modes already proves all three mode semantics: strict raises SafeTensorsParseError on a duplicate-key header, preservation retains an unknown vendor.revision field across a load/dumps/reload round trip, and mode='recovery' raises ValueError rather than silently falling back to undefined behavior.",
+    "4. Ran both tests directly before citing: both passed. The evidence rows already cited both tests correctly as positive selectors (unlike the generic-placeholder pattern seen in ora/xliff/ipynb) but left status at partial with the boilerplate missing_behavior text, and left negative_test_selectors empty despite test_strict_preservation_and_excluded_recovery_modes containing two explicit pytest.raises assertions.",
+    "5. Corrected both obligations: added probe and validate to the first obligation's source_symbols (both were missing despite being directly named in the rule_text and directly exercised by the cited test); split test_strict_preservation_and_excluded_recovery_modes into both positive AND negative selector lists for the second obligation, since it genuinely proves both a positive claim (preservation retention) and negative claims (strict rejection, recovery exclusion) in one function. Promoted both to implemented. Zero source or test changes -- pure evidence correction, verified via an unchanged full safetensors suite run."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/safetensors.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/safetensors.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/safetensors/test_obligation_lifecycle_modes.py -v -- 2 passed",
+    ".venv/Scripts/pytest tests/python/safetensors/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 86,
+    "safetensors_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against the official safetensors reference implementation for these specific mode-semantics behaviors. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_the_three_data_blocked_capabilities_were_declined": "SAFETENSORS-WRITE-001, SAFETENSORS-INTEROP-001, and SAFETENSORS-SHARD-001 each explicitly require official-reader acceptance, a pinned official release, or official index examples respectively as part of their declared required_tests. samples/by-format/safetensors/_provenance.yaml confirms every locally available safetensors sample is project-owned-synthetic (generated via Python stdlib), not sourced from an official corpus -- matching UBL-CODELIST-001's and UBL-WRITE-001's established data-blocked framing this same session. Forcing a claim against synthetic-only evidence for an obligation that specifically names official data would violate GAP-008's anti-fabrication rule."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
