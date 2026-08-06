@@ -74,6 +74,7 @@ from .model import (
     Rounding,
     UblDocument,
     XmlNode,
+    ubl_version_id,
 )
 from .security import UBL_DEFAULT_LIMITS
 from .validation import validate
@@ -137,6 +138,7 @@ __all__ = [
     "XmlNode",
     "dump",
     "dumps",
+    "ubl_version_id",
     "element_count",
     "load",
     "loads",

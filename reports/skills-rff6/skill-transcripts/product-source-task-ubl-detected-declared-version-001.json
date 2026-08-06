@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-detected-declared-version-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T12:35:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_DETECTED_DECLARED_VERSION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "UblDocument had no version-related field or accessor at all: cbc:UBLVersionID was checked inline, ad hoc, only inside validate() (hardcoded to require exactly '2.3'), with no way for a caller to read the declared version as a first-class value, and no distinction between what a file originally declared and what the in-memory tree currently says after an edit. Identified as a concrete next candidate in FF6 Event 116, reusing the exact detected_version/declared_version design already built for NRRD-LIFECYCLE-001 earlier this session.",
+    "obligation_targeted": "SAL-UBL-OBL-8940ED685664E7CE",
+    "acceptance_evidence": "tests/python/ubl/test_obligation_detected_declared_version.py",
+    "regression_tier": "full UBL package suite (tests/python/ubl)"
+  },
+  "execution_steps": [
+    "1. Read model/document.py's UblDocument and model/__init__.py's document_from_root() (the parser's sole document constructor) in full, and confirmed all 91 generated root subclasses (model/root_types.py) are plain UblDocument subclasses with no extra fields, so a new base-class field propagates to every root type automatically.",
+    "2. Added ubl_version_id(root) -- a module-level helper in model/document.py scanning root.children for the first cbc:UBLVersionID child and returning its text -- and a new detected_version: str | None = None field on UblDocument.",
+    "3. Added UblDocument.declared_version as a live property calling ubl_version_id(self.root) -- always reflects the CURRENT tree, distinct from detected_version which is frozen at parse time.",
+    "4. Updated document_from_root() to compute detected_version = ubl_version_id(root) and pass it through to the document constructor -- the only call site of document_from_root() in the shipped namespace is the real XML parser (reader.py), so detected_version is correctly populated on every real load and left None on any hand-built document (UblDocument.build()), mirroring NRRD's reader-only assignment exactly.",
+    "5. Fixed with_root() (previously reset every edited document to source_sha256=None, signed_content_sha256=None with no detected_version parameter at all, which would have silently defaulted the new field to None on every edit): now explicitly carries detected_version=self.detected_version forward, so editing a document does not erase the memory of what was originally read.",
+    "6. Exported ubl_version_id from model/__init__.py and the top-level package __init__.py (matching the export pattern for other helpers like local_name/find).",
+    "7. Ran ruff, mypy, and the full ubl suite before writing any new tests to confirm zero regressions from the new field: 539 passed, unchanged (no existing test relies on UblDocument equality in a way the new defaulted field could break).",
+    "8. Wrote tests/python/ubl/test_obligation_detected_declared_version.py (10 tests): detected_version None on fresh construction, set correctly from a real parse (including a non-'2.3' value, proving it is not hardcoded), surviving a with_root() edit unchanged; declared_version reading the live tree, None when absent, changing independently of detected_version after an edit; the ubl_version_id helper matching the property. One test initially assumed dumps() would round-trip a non-'2.3' declared version byte-for-byte -- it actually raises UblWriteError, since dumps() validates before writing and the stable profile accepts only '2.3'. Corrected the test to prove REFUSAL rather than round-trip preservation: dumps() has no code path that could coerce an unsupported version to '2.3' and write anyway, which rules out silent substitution structurally, not just avoids it by convention -- an equally valid, arguably stronger, proof of 'never silently rewrite.'",
+    "9. All 10 passed after the correction. Re-ran the full UBL suite: 549 passed (539 baseline + 10 new, 0 regressions). ruff and mypy clean (25 source files)."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/model/document.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_detected_declared_version.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/model/document.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_detected_declared_version.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_detected_declared_version.py -v -- 10 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 549 passed (539 baseline + 10 new, 0 regressions)",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/model/document.py src/python/ubl/src/format_factory/ubl/model/__init__.py src/python/ubl/src/format_factory/ubl/__init__.py tests/python/ubl/test_obligation_detected_declared_version.py -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/ubl/src/format_factory/ubl/ -- Success: no issues found in 25 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 194,
+    "ubl_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against an external UBL library. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_this_is_real_new_code_not_evidence_correction": "UblDocument had zero version-related fields or accessors before this slice. detected_version, declared_version, and ubl_version_id are all new production code, plus a bug fix to with_root() (which would have silently dropped detected_version on every edit had it been added without this fix)."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

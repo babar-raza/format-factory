@@ -7,6 +7,24 @@ from typing import ClassVar, Iterator, Mapping
 
 from .._generated import ROOT_NAMESPACES
 
+#: cbc:UBLVersionID identifies the UBL specification version a document
+#: instance declares (UBL-PROFILE-001 / SAL-UBL-OBL-FC5C33152AFDB187).
+_CBC_NAMESPACE = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+_UBL_VERSION_QNAME = f"{{{_CBC_NAMESPACE}}}UBLVersionID"
+
+
+def ubl_version_id(root: "XmlNode") -> str | None:
+    """The document's own declared cbc:UBLVersionID text, or None if absent.
+
+    Reads the first matching child (a spec-conformant document has exactly
+    one; validate() separately flags more than one as an error -- this
+    accessor does not itself adjudicate that ambiguity).
+    """
+    for child in root.children:
+        if child.qname == _UBL_VERSION_QNAME:
+            return child.text.strip()
+    return None
+
 
 @dataclass(frozen=True, slots=True)
 class XmlNode:
@@ -62,6 +80,7 @@ class UblDocument:
     root: XmlNode
     source_sha256: str | None = None
     signed_content_sha256: str | None = None
+    detected_version: str | None = None
 
     ROOT_NAME: ClassVar[str] = ""
 
@@ -77,6 +96,19 @@ class UblDocument:
         return self.root.qname.rsplit("}", 1)[-1]
 
     @property
+    def declared_version(self) -> str | None:
+        """The version this document's tree currently declares (live).
+
+        Distinct from `detected_version`, which is set only once by the
+        reader from the file that was actually parsed and never changes
+        afterward -- editing the tree (e.g. via `with_root`) changes what
+        is declared without touching what was detected. UBL-LIFECYCLE-001:
+        "expose the detected format version and any declared version
+        separately; never silently rewrite a declared version."
+        """
+        return ubl_version_id(self.root)
+
+    @property
     def namespace(self) -> str:
         if not self.root.qname.startswith("{"):
             return ""
@@ -90,9 +122,19 @@ class UblDocument:
         )
 
     def with_root(self, root: XmlNode) -> "UblDocument":
-        """Return an edited document and invalidate any signature assertion."""
+        """Return an edited document and invalidate any signature assertion.
 
-        return type(self)(root=root, source_sha256=None, signed_content_sha256=None)
+        `detected_version` is carried forward unchanged: it records what the
+        originally-read file declared, which an in-memory edit does not
+        alter, even when the edit itself changes `declared_version`.
+        """
+
+        return type(self)(
+            root=root,
+            source_sha256=None,
+            signed_content_sha256=None,
+            detected_version=self.detected_version,
+        )
 
     @classmethod
     def build(

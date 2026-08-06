@@ -79,6 +79,19 @@ execution_evidence:
     SAL-UBL-OBL-6A1C725166031BD0, SAL-UBL-OBL-6B8BC440C33EE3B5, and
     SAL-UBL-OBL-F3EF323A48F1EB8A only; it supports no other obligation and
     promotes no product state.
+- evidence_id: UBL-DETECTED-DECLARED-VERSION-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-detected-declared-version-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact positive
+    and negative test selectors proving detected_version (reader-only,
+    frozen at parse, survives edits) and declared_version (live property)
+    are distinct, and that the writer refuses rather than silently
+    rewriting an unsupported declared version. SELF-CONSISTENT
+    format_factory-only evidence per the execution-recovery directive's
+    GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-8940ED685664E7CE only;
+    it supports no other obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -3579,27 +3592,38 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-8940ED685664E7CE
   capability_id: UBL-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
+  - src/python/ubl/src/format_factory/ubl/model/document.py::ubl_version_id
+  - src/python/ubl/src/format_factory/ubl/model/__init__.py::document_from_root
   - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dump
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::semantic_sha256
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_a_freshly_built_document_has_no_detected_version
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_loading_a_file_records_its_actual_declared_version_as_detected
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_detected_version_reflects_whatever_the_source_actually_said
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_detected_version_survives_a_with_root_edit_unchanged
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_reads_the_current_trees_ublversionid
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_editing_the_version_element_changes_declared_but_not_detected
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_ubl_version_id_helper_matches_the_declared_version_property
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_repeated_round_trips_never_drift_the_declared_version
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_is_none_when_ublversionid_is_absent
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_dumps_refuses_rather_than_silently_rewriting_an_unsupported_version
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-DETECTED-DECLARED-VERSION-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'UblDocument.detected_version is set once, only by document_from_root() (the parser''s own document
+    constructor), from the source file''s actual cbc:UBLVersionID; it survives with_root()-based edits
+    unchanged (carried forward explicitly, not reset to a default). UblDocument.declared_version is a
+    live property reading the current tree''s UBLVersionID, so an edit changes what is declared without
+    touching what was detected -- the obligation''s own distinction, directly. A freshly hand-built
+    document (build(), no parsing) has detected_version=None. dumps() never silently rewrites an
+    unsupported declared version to the stable profile''s required "2.3": it refuses to write at all
+    (existing validate()-gated behavior), which structurally rules out silent substitution rather than
+    merely avoiding it by convention.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative

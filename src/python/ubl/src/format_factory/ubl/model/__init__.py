@@ -1,6 +1,6 @@
 """Public UBL model types."""
 
-from .document import UblDocument, XmlNode
+from .document import UblDocument, XmlNode, ubl_version_id
 from .root_types import ROOT_CLASSES
 from .aggregates import (
     InvoiceLine,
@@ -63,6 +63,7 @@ def document_from_root(
         root,
         source_sha256=source_sha256,
         signed_content_sha256=signed_content_sha256,
+        detected_version=ubl_version_id(root),
     )
 
 __all__ = [
@@ -108,4 +109,5 @@ __all__ = [
     "Identifier",
     "Code",
     "BinaryObject",
-    "Amount","ROOT_CLASSES", "UblDocument", "XmlNode", "document_from_root"]
+    "Amount","ROOT_CLASSES", "UblDocument", "XmlNode", "document_from_root",
+    "ubl_version_id"]
