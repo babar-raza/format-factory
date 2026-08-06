@@ -183,6 +183,13 @@ class OraContainer:
             raise OraArchiveError(
                 f"input is not a readable ZIP archive: {exc}"
             ) from exc
+        except UnicodeDecodeError as exc:
+            # A member declares the UTF-8 filename flag but its name bytes are
+            # not valid UTF-8; zipfile decodes eagerly while reading the
+            # central directory, so this surfaces here rather than per-member.
+            raise OraArchiveError(
+                f"archive contains a malformed Unicode member name: {exc}"
+            ) from exc
 
         infos = archive.infolist()
         _check_limits(infos, limits)

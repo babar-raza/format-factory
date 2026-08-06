@@ -21,7 +21,9 @@ The assertions come from the contract's normative rules, quoted where they bind:
 from __future__ import annotations
 
 import io
+import struct
 import zipfile
+import zlib
 
 import pytest
 
@@ -180,6 +182,45 @@ def test_backslash_separators_are_rejected() -> None:
     "data\\..\\..\\evil" escapes on one platform and not another."""
     with pytest.raises(OraArchiveError):
         OraContainer.from_bytes(build_archive(members={"data\\..\\..\\evil.png": b"x"}))
+
+
+def _archive_with_raw_member_name(name_bytes: bytes, content: bytes) -> bytes:
+    """Build a minimal ZIP by hand so the member name can be arbitrary bytes --
+    zipfile's own writer API only ever accepts a valid Python str, so it can
+    never produce a name that fails UTF-8 decoding."""
+    flags = 0x800  # UTF-8 filename flag
+    crc = zlib.crc32(content) & 0xFFFFFFFF
+    local = (
+        struct.pack(
+            "<IHHHHHIIIHH",
+            0x04034B50, 20, flags, 0, 0, 0, crc,
+            len(content), len(content), len(name_bytes), 0,
+        )
+        + name_bytes
+        + content
+    )
+    central = (
+        struct.pack(
+            "<IHHHHHHIIIHHHHHII",
+            0x02014B50, 20, 20, flags, 0, 0, 0, crc,
+            len(content), len(content), len(name_bytes), 0, 0, 0, 0, 0, 0,
+        )
+        + name_bytes
+    )
+    eocd = struct.pack("<IHHHHIIH", 0x06054B50, 0, 0, 1, 1, len(central), len(local), 0)
+    return local + central + eocd
+
+
+def test_malformed_unicode_member_names_are_rejected() -> None:
+    """A member declaring the UTF-8 filename flag but carrying bytes that are
+    not valid UTF-8 must be refused with a diagnostic, not leak a raw
+    UnicodeDecodeError past the container boundary."""
+    payload = _archive_with_raw_member_name(b"\xff\xfeinvalid.png", b"x")
+
+    with pytest.raises(OraArchiveError) as raised:
+        OraContainer.from_bytes(payload)
+
+    assert "unicode" in str(raised.value).lower()
 
 
 def test_duplicate_member_names_are_rejected() -> None:

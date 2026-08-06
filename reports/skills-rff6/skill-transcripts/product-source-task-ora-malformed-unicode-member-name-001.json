@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-malformed-unicode-member-name-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T21:16:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_MALFORMED_UNICODE_MEMBER_NAME_001",
+    "task_kind": "bug-fix-plus-citation-corrections",
+    "root_cause": "ORA-CONTAINER-001's SAL-ORA-OBL-5F86B60E46B035A9 was precisely characterized as a confirmed gap: no test exercised a ZIP member name declaring the UTF-8 filename flag but carrying invalid UTF-8 bytes.",
+    "obligation_targeted": "SAL-ORA-OBL-5F86B60E46B035A9 (ORA-CONTAINER-001), SAL-ORA-OBL-2BFD0DF67723D491 (ORA-BASELINEASSET-001), SAL-ORA-OBL-96D74D42B49F8C8B (ORA-GROUP-001, stays partial with an updated precise characterization)",
+    "acceptance_evidence": "1 genuine, confirmed bug found and fixed (a raw UnicodeDecodeError leaking past the container boundary), proven by 1 new hand-built-ZIP test. 1 obligation closed via cross-capability citation reuse of an already-established LOSSLESS/CANONICAL PreservationMode proof. 1 obligation's stale missing_behavior corrected: 2 tests added in an earlier tick this session already closed its 'root restrictions untested' finding but had never been cited against it.",
+    "regression_tier": "full ora package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Read model/document.py's cited source and Python's own zipfile module source (inspect.getsource) to confirm exactly how ZIP member filenames are decoded: filename.decode('utf-8') with no error handling when the UTF-8 filename flag (0x800) is set, meaning invalid UTF-8 bytes in a UTF-8-flagged entry raise UnicodeDecodeError during ZipFile construction.",
+    "2. Confirmed OraContainer.from_bytes() only catches zipfile.BadZipFile, not UnicodeDecodeError -- meaning a malformed-Unicode member name would currently crash with a raw stdlib exception type rather than the package's own OraArchiveError, violating the obligation's 'reject ... before payload use' requirement via an unhandled crash rather than a clean, typed rejection.",
+    "3. zipfile's own writer API (ZipFile.writestr, ZipInfo) only ever accepts a valid Python str for a filename, so no test using it could ever construct an invalid-UTF-8 name. Hand-built a minimal ZIP byte-for-byte with struct.pack (local file header + central directory record + end-of-central-directory record) carrying an explicitly invalid UTF-8 byte sequence as the filename, with the UTF-8 flag bit set, and confirmed interactively that zipfile.ZipFile() raises UnicodeDecodeError on it before writing any fix.",
+    "4. Added an except UnicodeDecodeError clause around the zipfile.ZipFile() construction in from_bytes(), converting it into a clean OraArchiveError, and verified interactively that the fix produces the correct, typed error.",
+    "5. Wrote test_malformed_unicode_member_names_are_rejected using the same hand-built-ZIP technique as a reusable helper (_archive_with_raw_member_name), and ran it plus the full container test file and full ora suite before writing any evidence claim.",
+    "6. Separately, re-swept ora's remaining unresolved obligations for stale or reusable citations from this session's earlier ticks. Found SAL-ORA-OBL-2BFD0DF67723D491 (ORA-BASELINEASSET-001) carries the identical 'full baseline support for reading and editing and viewing... editing may damage the result' rule_text already resolved for 4 other obligations at event 175 via the LOSSLESS-vs-CANONICAL PreservationMode evidence -- closed via the same cross-capability citation reuse, zero new code. Found SAL-ORA-OBL-96D74D42B49F8C8B (ORA-GROUP-001)'s missing_behavior claiming 'root restrictions... not tested' was stale: event 175 already added test_an_image_with_no_root_stack_is_refused and test_an_image_with_multiple_root_stacks_is_refused to test_obligation_stack_and_document.py, but they had never been cited against this specific obligation. Added them, keeping the obligation honestly partial since its other 2 findings (composite-op open vocabulary, unknown-extension preservation) remain genuine, unresolved gaps.",
+    "7. Ran ruff and mypy on the one changed source file (clean), the full ora suite (289 passed, was 288), ran the skills-first resolve/manifest/receipt/closeout sequence since src/ was touched, then patched the evidence YAML and ran the reconciler."
+  ],
+  "allowed_files": [
+    "src/python/ora/src/format_factory/ora/codec/container.py",
+    "tests/python/ora/test_obligation_container_and_mimetype.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/src/format_factory/ora/codec/container.py",
+    "tests/python/ora/test_obligation_container_and_mimetype.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_container_and_mimetype.py -q -- 38 passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 289 passed, was 288",
+    ".venv/Scripts/python -m ruff check <2 changed files> -- all checks passed",
+    ".venv/Scripts/python -m mypy src/python/ora/src/format_factory/ora/codec/container.py -- no issues"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 134,
+    "oracle": "The UnicodeDecodeError-on-invalid-UTF-8-filename behavior was verified directly against CPython's own zipfile module source and confirmed interactively with a hand-built ZIP before any fix or test was written. SELF-CONSISTENT format_factory-only evidence per GAP-008 otherwise.",
+    "obligations_moved_breakdown": "2 obligations promoted to implemented (1 via a genuine bug fix, 1 via honest cross-capability citation reuse). 1 obligation's stale missing_behavior corrected (2 of its 3 findings were already resolved and simply uncited; stays partial since 2 genuine gaps remain).",
+    "genuine_bug_found_and_fixed": "OraContainer.from_bytes() let a raw stdlib UnicodeDecodeError escape uncaught when a ZIP member declared the UTF-8 filename flag but carried invalid UTF-8 bytes, instead of the package's own typed OraArchiveError."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

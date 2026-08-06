@@ -3,6 +3,11 @@ format_id: ora
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: ORA-MALFORMED-UNICODE-MEMBER-NAME-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-malformed-unicode-member-name-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike ORA-BASELINE-SUITE. A member declaring the ZIP UTF-8 filename flag but carrying invalid UTF-8 bytes made zipfile.ZipFile() raise a raw, uncaught UnicodeDecodeError during construction -- confirmed directly against CPython zipfile module source (filename.decode(''utf-8'') with no error handling when the flag is set) and interactively with a hand-built ZIP before any fix was written; zipfile''s own writer API cannot construct an invalid-UTF-8 name, so no test using it could ever have caught this. Fixed by catching UnicodeDecodeError around the ZipFile() construction in OraContainer.from_bytes() and raising the package''s own typed OraArchiveError instead. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, not VERIFIED for anything beyond the confirmed CPython zipfile decode behavior. Covers SAL-ORA-OBL-5F86B60E46B035A9 only; it supports no other obligation and promotes no product state.'
 - evidence_id: ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ora-utf8-baseline-citation-audit-001.json
   expected_result: PASS
@@ -1156,31 +1161,26 @@ obligations:
       yet identified.
 - obligation_id: SAL-ORA-OBL-2BFD0DF67723D491
   capability_id: ORA-BASELINEASSET-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::dumps
   - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
   positive_test_selectors:
   - tests/python/ora/test_obligation_raster_assets.py::test_a_conforming_thumbnail_is_accepted
   - tests/python/ora/test_obligation_raster_assets.py::test_merged_image_accepts_only_8_or_16_bits
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_lossless_is_the_default_preservation_mode
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_canonical_mode_regenerates_the_stack_and_drops_unmodelled_content
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_the_written_archive_is_accepted_by_our_own_loader
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   - ORA-BASELINEASSET-SELECTOR-PROOF
+  - ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF
   implemented_behavior:
-  - The mandatory-and-conforming mergedimage.png (a rendered fallback for
-    baseline-only viewers) and thumbnail.png assets are read and validated
-    -- this is the concrete mechanism baseline reading/viewing support
-    rests on. Editing round trips are proven generally elsewhere in the
-    suite (layer/group editing tests), but this obligation's own
-    "baseline support level" framing has not been directly tested as a
-    distinct concept.
-  missing_behavior:
-  - No dedicated test exercises "baseline support" as an explicit,
-    queryable concept (e.g. a capability/compliance-level API) -- coverage
-    here is inferred from the underlying asset read/validate mechanism and
-    the general edit-round-trip suite, not from a test naming this
-    obligation's spec-philosophy claim directly.
+  - 'Cross-capability duplicate of the identical rule_text already resolved this session for ORA-ASSET-001/ORA-VALIDATE-001/ORA-EDIT-001/ORA-STACK-001 (e.g. SAL-ORA-OBL-2B5CB90B7C3E7512): OpenRaster''s full-vs-baseline implementation-level concept is modeled directly by this library''s two PreservationMode values. LOSSLESS (the default) reads, edits in memory, and writes back without damaging content it does not model -- proven by test_lossless_is_the_default_preservation_mode. CANONICAL is the explicit, opt-in ''baseline save'' path that regenerates stack.xml purely from the typed model, so anything the model does not represent is visibly dropped rather than accidentally lost -- proven by test_canonical_mode_regenerates_the_stack_and_drops_unmodelled_content. This is the concrete implementation of ''full baseline support for reading and editing and viewing'' (LOSSLESS, safe by default) versus ''baseline support for visualization where editing may damage the result'' (CANONICAL). Full read-edit-write viability is proven by test_the_written_archive_is_accepted_by_our_own_loader. The mandatory-and-conforming mergedimage.png and thumbnail.png assets are separately read and validated, proven by this obligation''s own already-cited raster-asset tests.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices.
@@ -1979,7 +1979,7 @@ obligations:
       yet identified.
 - obligation_id: SAL-ORA-OBL-5F86B60E46B035A9
   capability_id: ORA-CONTAINER-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
   positive_test_selectors:
@@ -1990,22 +1990,24 @@ obligations:
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_truncated_archive_is_rejected
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_too_many_members_is_a_limit_error
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_total_declared_size_over_the_limit_is_refused_before_reading
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_malformed_unicode_member_names_are_rejected
   negative_test_selectors:
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_duplicate_member_names_are_rejected
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_traversal_and_absolute_member_names_are_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_malformed_unicode_member_names_are_rejected
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   - ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF
+  - ORA-MALFORMED-UNICODE-MEMBER-NAME-PROOF
   implemented_behavior:
-  - 'Six of the seven named entry classes are proven refused before payload use: duplicate names, path traversal (parent, nested-parent, absolute, drive-letter, dot-parent, bare-parent, and backslash-separator forms), unsupported compression, truncation, entry-count limits, and declared-size limits (checked from the central directory, before decompression). Non-ASCII member names are separately proven to round-trip correctly when valid.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: "malformed Unicode" member names specifically are not tested -- every existing non-ASCII test (test_non_ascii_member_names_round_trip) uses a valid UTF-8 name and asserts it is accepted, not a name containing an invalid/malformed byte sequence that should be refused. Not attempted this slice.'
+  - 'All seven named hostile-entry classes are now proven refused before payload use: duplicate names, path traversal (parent, nested-parent, absolute, drive-letter, dot-parent, bare-parent, backslash-separator forms), unsupported compression, truncation, entry-count limits, declared-size limits, and malformed Unicode member names. The last was a genuine, confirmed bug fixed this slice, not just a missing test: a member declaring the ZIP UTF-8 filename flag but carrying invalid UTF-8 bytes made zipfile.ZipFile() raise a raw, uncaught UnicodeDecodeError during construction -- confirmed by hand-building a minimal ZIP byte-for-byte (zipfile''s own writer API cannot produce invalid UTF-8 names, so no existing test could have caught this). from_bytes() now catches UnicodeDecodeError and converts it into a clean OraArchiveError, proven by the new test_malformed_unicode_member_names_are_rejected. Non-ASCII (but valid) member names continue to round-trip correctly.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation,
       and expansion limits.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for every named hostile-entry class.
 - obligation_id: SAL-ORA-OBL-602CAC51A3A29653
   capability_id: ORA-RENDER-001
   status: implemented
@@ -2642,24 +2644,27 @@ obligations:
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_removing_a_child_drops_only_that_child
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_removing_a_nested_child_group_preserves_its_siblings
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_group_to_an_invalid_opacity_is_refused_and_original_survives
+  - tests/python/ora/test_obligation_stack_and_document.py::test_an_image_with_no_root_stack_is_refused
+  - tests/python/ora/test_obligation_stack_and_document.py::test_an_image_with_multiple_root_stacks_is_refused
   negative_test_selectors:
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_group_with_invalid_opacity_is_refused
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_group_with_invalid_visibility_is_refused
+  - tests/python/ora/test_obligation_stack_and_document.py::test_an_image_with_no_root_stack_is_refused
+  - tests/python/ora/test_obligation_stack_and_document.py::test_an_image_with_multiple_root_stacks_is_refused
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   - ORA-LAYER-GROUP-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - 'Create (OraStack with a children tuple), edit (dataclasses.replace() on a group''s own attributes, proven to leave children untouched by identity, not just equality -- renamed.children is group.children), move (reordering children via replace(), proven to reorder without losing any child), and remove (dropping one child from the tuple, proven both for a leaf layer and a nested child group, in each case proven the original document is untouched) are all proven. Group attributes (opacity, visibility) are validated identically to layers via the same shared validators, both at construction and edit time.'
+  - 'Create, edit, move, and remove are all proven (see the 6 already-cited tests). Group attributes (opacity, visibility) are validated identically to layers at both construction and edit time. Root restrictions are now also proven: root-versus-non-root constraints (exactly one root <stack> under <image>) were confirmed enforced in source but untested by any test in the whole ora suite in an earlier tick this session, and 2 new tests closed that gap (test_an_image_with_no_root_stack_is_refused, test_an_image_with_multiple_root_stacks_is_refused, in test_obligation_stack_and_document.py) -- added directly to this obligation''s citation, which had gone stale (its own docstring wrongly claimed this was already re-proven).'
   missing_behavior:
-  - 'Confirmed gap, not an audit backlog, and already documented by this file''s own docstring from an earlier tick this session: composite-op has no validated enum anywhere in this package, so "enforcing group attributes" does not extend to compositing-operation values (open vocabulary by design).'
-  - 'Confirmed gap found during this audit, correcting the docstring''s own claim: "root restrictions" is enforced in source (codec/stack_xml.py raises when <image> does not contain exactly one root <stack>) but no test in this package exercises the zero-stacks or multiple-stacks rejection path -- the docstring asserted this was "re-proven here" but no such test exists in this file or elsewhere in the ora suite. Not attempted this slice.'
-  - '"Unknown-extension preservation" (this obligation''s own required_tests line) is not tested either -- this model has no ExtensionNode-style typed slot for unrecognized content (everything is a plain OraStack/OraLayer/OraText), so what "unknown extension" means for a group specifically was not investigated this slice.'
+  - 'Confirmed gap, not an audit backlog, and already documented by this file''s own docstring from an earlier tick this session: composite-op has no validated enum anywhere in this package, so ''enforcing group attributes'' does not extend to compositing-operation values (open vocabulary by design; no committed verified SAL fact enumerates the OpenRaster composite-op inventory, so building one now would risk fabricating spec content from memory).'
+  - '''Unknown-extension preservation'' (this obligation''s own required_tests line) is not tested either -- this model has no ExtensionNode-style typed slot for unrecognized content (everything is a plain OraStack/OraLayer/OraText), so what ''unknown extension'' means for a group specifically was not investigated this slice.'
   proof_requirements:
     positive:
     - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
       root restriction, and unknown-extension preservation tests.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for invalid attribute construction and root-count violations.
 - obligation_id: SAL-ORA-OBL-96DAD1AD6C297273
   capability_id: ORA-MASK-001
   status: missing
