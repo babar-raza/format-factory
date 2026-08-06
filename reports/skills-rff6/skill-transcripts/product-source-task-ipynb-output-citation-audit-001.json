@@ -1,0 +1,49 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-output-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T18:45:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_OUTPUT_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "Diversified from four consecutive ora ticks to check whether the same generic-shared-citation signature exists in ipynb. Confirmed it does, systemically: nearly every multi-obligation IPYNB capability shares exactly one citation set across all its obligations. Picked IPYNB-OUTPUT-001 (7 obligations, the largest cluster) first. Unlike ora's clusters, these are NOT cross-capability duplicates of each other -- each of the 7 rule_texts is genuinely distinct (output-type field declarations, MIME-bundle structure, error triple, execution_count typing, the full-matrix test requirement itself) -- but test_obligation_output_mime_matrix.py already proves each one individually and precisely; its own docstring even lists all 7 obligation ID suffixes by name, strongly suggesting a prior tick built this test file with per-obligation intent but never updated the evidence YAML to cite it that way.",
+    "obligation_targeted": "SAL-IPYNB-OBL-2558D9E311DA3594, SAL-IPYNB-OBL-679A623D14CBF763, SAL-IPYNB-OBL-77C54BA16B30D129, SAL-IPYNB-OBL-B2FA0BFF8CA07D78, SAL-IPYNB-OBL-B3EFD046C72D3E4B, SAL-IPYNB-OBL-BBE5B3445AD56F9C, SAL-IPYNB-OBL-CDB7DEE07F2275F7",
+    "acceptance_evidence": "tests/python/ipynb/test_obligation_output_mime_matrix.py (pre-existing; no new tests this slice)",
+    "regression_tier": "full IPYNB package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Pulled all 7 IPYNB-OUTPUT-001 rule_texts from the obligation register and read test_obligation_output_mime_matrix.py in full (330 lines, already exceptionally well-organized into clearly-labeled sections matching each obligation's own required_tests dimensions).",
+    "2. Mapped each obligation to its own precise positive and negative selectors: output-type field declarations (survives-roundtrip + recognized-as-own-kind + three malformed-bundle refusal tests); the broad support-every-type-and-preserve-everything capability statement (all-four-coexist + execution-count-preserved + error-triple + per-mime-metadata + vendor/unknown-mime preservation); MIME-bundle data/metadata structure specifically for display_data/execute_result (exposes-every-mime-type + vendor-structure + base64-byte-exact); the four-type code-cell restriction (a fifth type is refused inside a code cell -- proven by a dedicated negative test distinguishing 'unknown output type' from 'unknown MIME type inside the bundle'); the error ename/evalue/traceback triple (full-triple + list-not-joined-string + two malformed-traceback refusals); execution_count integer-or-null typing (accepts-integer-or-null + non-integer-refused + outputs-must-be-array); and the full-matrix idempotence/byte-exactness requirement itself (schema-valid + stable-across-two-roundtrips + large-payload-byte-exact + vendor-structure + all-four-coexist).",
+    "3. Ran every candidate test directly before citing any of them: all passed, no surprises.",
+    "4. Verified output.py's cited functions (get_output_representation, add_output_representation, remove_output_mime_type) and document.py's output_from_dict/NotebookOutput exist as real, AST-resolvable def/class symbols before citing them as source_symbols (avoiding the known contract_reconciler.py module-constant pitfall).",
+    "5. All 7 obligations promoted to fully implemented -- unlike every ora cluster audited this session, none required a partial/honest-gap correction; the test coverage here is genuinely complete for what each obligation's own rule_text asks.",
+    "6. Applied all 7 edits via the same obligation_id-delimited text-block script pattern used across four ora ticks, including proof_requirements boilerplate from the start. Ran the reconciler: clean pass, no errors, first attempt. Ran the full ipynb suite to confirm zero regressions (no source or test files changed this slice) -- unchanged from baseline."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_output_mime_matrix.py -q -- all passed",
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 7,
+    "obligations_total_for_format": 68,
+    "ipynb_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against nbformat's own reference validator or Jupyter itself. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_all_7_moved_cleanly": "Unlike ora's citation-audit clusters (which repeatedly surfaced a real composite-op validation gap), IPYNB-OUTPUT-001's test file was already comprehensive and precisely organized per-obligation from an earlier tick this session -- every clause of every rule_text had a directly matching test, positive and negative. No corrections or narrowed partials were needed.",
+    "pattern_confirmed_in_second_format": "Confirms the citation-audit opportunity found in ora (event 140-143) is not ora-specific -- the same signature (one shared citation across all obligations in a capability, despite real per-clause test coverage already existing) recurs in ipynb too, and likely in the other four formats not yet checked."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -58,6 +58,14 @@
       "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact positive and negative test selectors for merge_notebooks()'s full conflict matrix (move/edit, delete/edit, output, metadata) plus base-fallback behavior on a genuine source conflict and multiple-simultaneous-conflict reporting. NOT backed by an independent reference implementation -- format_factory's merge semantics are its own design, not a reimplementation of nbdime or another existing notebook-merge tool -- SELF-CONSISTENT per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-03A1429F7B7AF3E1 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "IPYNB-OUTPUT-CITATION-AUDIT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-output-citation-audit-001.json",
+      "sha256": "f04a02748969db3a18e6289e53513a6c13fe2eef0ea03a49f630ee24b39a3e95",
+      "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE: IPYNB-OUTPUT-001's 7 obligations all cited the same 3-test citation despite test_obligation_output_mime_matrix.py already being an exceptionally thorough, per-obligation-organized test file (its own docstring explicitly lists all 7 obligation ID suffixes and quotes the two declared proof-requirement dimensions verbatim). This audit maps each obligation's specific rule_text to its own precise positive and negative selectors within that file: output-type field declarations, the broad support-every-type-and-preserve-everything capability statement, MIME-bundle data/metadata structure, the four-type code-cell restriction (a fifth type is refused inside a code cell), the error ename/evalue/traceback triple, execution_count integer-or- null typing, and the full-matrix idempotence/byte-exactness tests. All seven are fully, directly provable by existing tests -- unlike the ora clusters, no clause here required a partial/honest-gap correction. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-2558D9E311DA3594, SAL-IPYNB-OBL-679A623D14CBF763, SAL-IPYNB-OBL-77C54BA16B30D129, SAL-IPYNB-OBL-B2FA0BFF8CA07D78, SAL-IPYNB-OBL-B3EFD046C72D3E4B, SAL-IPYNB-OBL-BBE5B3445AD56F9C, and SAL-IPYNB-OBL-CDB7DEE07F2275F7 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "IPYNB-STRUCTURE-DIFF-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -77,7 +85,7 @@
   "format_id": "ipynb",
   "input_digests": {
     "compiled_contract": "070e7486feb32cb69e64bf9bb040bb47e4671f0034835d78d081c39ae2c05903",
-    "implementation_evidence": "93ddb1b67bab979a6ac1f8d6834159baf228f17bace3e070de2a374baf6a0644",
+    "implementation_evidence": "e4ad780c0968cb77e2a5157148f50a31c84f32e6e45e949be53827a8077ea43c",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "04340fa8bde6468fa648cb60fce3d50876a39c187d5b9ad3b0329fe0a29850a8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -571,20 +579,22 @@
     {
       "capability_id": "IPYNB-OUTPUT-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-OUTPUT-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Each of the four output_type values (stream, display_data, execute_result, error) is proven to round-trip intact and to be recognized as its own kind; an output missing output_type, a display_data missing data, and an error missing traceback are all refused with structured diagnostics rather than silently accepted."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: MIME-bundle matrix round-trips including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact payload verification."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_output_without_output_type_fails_closed",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_display_data_without_data_fails_closed",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_error_output_missing_traceback_fails_closed"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-2558D9E311DA3594",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact",
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind",
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order"
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind"
       ],
       "proof_requirements": {
         "negative": [
@@ -595,17 +605,12 @@
           "MIME matrix fixtures per output type with byte-exact payload verification."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation",
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation",
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::remove_output_mime_type",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::output_from_dict",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::NotebookOutput"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-PARSE-001",
@@ -1054,20 +1059,22 @@
     {
       "capability_id": "IPYNB-OUTPUT-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-OUTPUT-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "All four output types coexist in one cell in document order; execution counts, error tracebacks, per-MIME metadata, and vendor/unknown MIME bundle entries are all proven preserved across a round-trip. A wholly unknown output_type at the model layer (output_from_dict, not inside a code-cell parse) is preserved and marked preservation_only rather than dropped."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: MIME-bundle matrix round-trips including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact payload verification."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-679A623D14CBF763",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact",
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind",
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order"
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_execute_result_execution_count_is_preserved_independently",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_error_output_preserves_the_full_triple",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_per_mime_output_metadata_is_preserved",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_unknown_mime_types_inside_the_bundle_are_the_preserved_surface",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_unknown_output_type_is_preserved_and_marked_preservation_only"
       ],
       "proof_requirements": {
         "negative": [
@@ -1078,17 +1085,12 @@
           "MIME matrix fixtures per output type with byte-exact payload verification."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation",
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation",
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::remove_output_mime_type",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::output_from_dict",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::NotebookOutput"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-PRESERVE-001",
@@ -1246,20 +1248,20 @@
     {
       "capability_id": "IPYNB-OUTPUT-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-OUTPUT-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "display_data and execute_result outputs carry a data mime-bundle mapping every declared MIME type to its content (proven for text, HTML, base64 binary, and vendor JSON types simultaneously) and a metadata object with per-MIME rendering hints, proven preserved across a round-trip."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: MIME-bundle matrix round-trips including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact payload verification."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-77C54BA16B30D129",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact",
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind",
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order"
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_mime_bundle_exposes_every_declared_mime_type",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_per_mime_output_metadata_is_preserved",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_vendor_mime_type_structure_is_preserved_exactly",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_base64_binary_payload_is_byte_exact_after_roundtrip"
       ],
       "proof_requirements": {
         "negative": [
@@ -1270,17 +1272,12 @@
           "MIME matrix fixtures per output type with byte-exact payload verification."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation",
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation",
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::remove_output_mime_type",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::output_from_dict",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::NotebookOutput"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-DIFF-001",
@@ -1791,20 +1788,20 @@
     {
       "capability_id": "IPYNB-OUTPUT-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-OUTPUT-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Code-cell outputs are typed with output_type restricted to exactly {execute_result, display_data, stream, error} -- a fifth, unknown output_type inside a code cell is refused at parse time (the nbformat 4.5 schema does not admit unrecognized_output inside a code cell's outputs array). Each named field set (data mime-bundle for execute_result/display_data, name+text for stream, ename/evalue/traceback for error) is proven populated and round-tripping correctly."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: MIME-bundle matrix round-trips including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact payload verification."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_unknown_output_type_is_rejected_inside_a_code_cell"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-B2FA0BFF8CA07D78",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact",
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind",
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order"
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_error_output_preserves_the_full_triple"
       ],
       "proof_requirements": {
         "negative": [
@@ -1815,35 +1812,31 @@
           "MIME matrix fixtures per output type with byte-exact payload verification."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation",
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation",
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::remove_output_mime_type",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::output_from_dict",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::NotebookOutput"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-OUTPUT-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-OUTPUT-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "error outputs carry ename, evalue, and a traceback that stays a list of strings (not joined into one string) across a round-trip. A missing traceback and a traceback containing a non-string element are both refused with structured diagnostics."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: MIME-bundle matrix round-trips including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact payload verification."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_error_output_missing_traceback_fails_closed",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_error_traceback_of_wrong_element_type_fails_closed"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-B3EFD046C72D3E4B",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact",
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind",
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order"
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_error_output_preserves_the_full_triple",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_error_traceback_stays_a_list_of_strings_not_a_joined_string"
       ],
       "proof_requirements": {
         "negative": [
@@ -1854,17 +1847,12 @@
           "MIME matrix fixtures per output type with byte-exact payload verification."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation",
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation",
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::remove_output_mime_type",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::output_from_dict",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::NotebookOutput"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-CLEAN-001",
@@ -1903,20 +1891,21 @@
     {
       "capability_id": "IPYNB-OUTPUT-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-OUTPUT-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "A code cell's execution_count accepts an integer (including 0) or null, proven across a round-trip; a string, float, or list value is refused. outputs must be an array -- a non-array value (e.g. an object) is refused rather than coerced."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: MIME-bundle matrix round-trips including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact payload verification."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_non_integer_execution_count_fails_closed",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_outputs_must_be_an_array"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-BBE5B3445AD56F9C",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact",
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind",
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order"
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_execution_count_accepts_integer_or_null",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_outputs_must_be_an_array"
       ],
       "proof_requirements": {
         "negative": [
@@ -1927,17 +1916,11 @@
           "MIME matrix fixtures per output type with byte-exact payload verification."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation",
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation",
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::remove_output_mime_type",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-EDIT-001",
@@ -2226,19 +2209,24 @@
     {
       "capability_id": "IPYNB-OUTPUT-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-OUTPUT-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "A notebook containing all four output types together is schema-valid and stable across two consecutive round-trips (idempotence, not just one-pass correctness). Vendor MIME types and a large (100KB+) base64 binary payload are both proven byte-exact after round-trip, and no output entry is lost or reordered in the combined-type test. Malformed bundles (missing output_type, non-array outputs, display_data missing data) all fail closed."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: MIME-bundle matrix round-trips including vendor types and binary payloads.; MIME matrix fixtures per output type with byte-exact payload verification."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_output_without_output_type_fails_closed",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_outputs_must_be_an_array",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_display_data_without_data_fails_closed"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-CDB7DEE07F2275F7",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_survives_roundtrip_intact",
-        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_each_output_type_is_recognized_as_its_own_kind",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_full_matrix_notebook_is_schema_valid",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_full_matrix_is_stable_across_two_roundtrips",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_large_base64_payload_is_byte_exact",
+        "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_vendor_mime_type_structure_is_preserved_exactly",
         "tests/python/ipynb/test_obligation_output_mime_matrix.py::test_all_four_types_coexist_in_one_cell_in_order"
       ],
       "proof_requirements": {
@@ -2250,17 +2238,12 @@
           "MIME matrix fixtures per output type with byte-exact payload verification."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::get_output_representation",
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::add_output_representation",
-        "src/python/ipynb/src/format_factory/ipynb/model/output.py::remove_output_mime_type",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::output_from_dict",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::NotebookOutput"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-TRUST-001",
@@ -2602,6 +2585,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-execution-adapter-001.json": "cb763153a0ce13978e1e29e1620d3aaa2bae4ed83b792ef83e54fec2f36bce86",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-export-001.json": "53d61ffd27a6d7f9b7b1fee61a02de20972f1d98a3baf1849360f7c750153ebc",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-merge-001.json": "f12e54e0372e13214347eb90ccb68f87c8abd19f95df34465dc6c3cd2a83804d",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-output-citation-audit-001.json": "f04a02748969db3a18e6289e53513a6c13fe2eef0ea03a49f630ee24b39a3e95",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-structure-diff-001.json": "4ab6abdf71526d76d0d213be161888e759169470d15bea9839995b1009524004",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-write-001.json": "2e1e1d5493518b7330f43d91639efa5839d91e11b4a13ba32f5b83abfd125675",
     "src/python/ipynb/src/format_factory/ipynb/adapters/execute.py": "5900091eb00d9009b429055a46b703803c491cb861180f0baca6777c6fd9e87d",
@@ -2616,7 +2600,6 @@
     "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py": "5ddd4ff5ec6fbc34685d4ffd067b73fe4cf9ffa84bf8baf52ac222e23e30e9c9",
     "src/python/ipynb/src/format_factory/ipynb/model/merge.py": "9c4c20c21c409e8f3d9a992ec9b78b3d08821f10808cc12f8e64da4e8d1ffd7d",
     "src/python/ipynb/src/format_factory/ipynb/model/metadata.py": "18aead211c9b92441c7daa63de4743f85caa1233f04a0f8ef81e20a3c69e443c",
-    "src/python/ipynb/src/format_factory/ipynb/model/output.py": "8abef47971e7d7bbc6279c2708f5d33e3b5fa5c75b1ce2e3a54708d036870568",
     "src/python/ipynb/src/format_factory/ipynb/security/limits.py": "5364a2b1e91a1057c68602bb2cf52086829c3120ce53a304ebbf8df59e4d926a",
     "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py": "0f51806e23d61ab614c1bd314c41929b9ae186186c358a55ea015f0a87cc7a69",
     "src/python/ipynb/src/format_factory/ipynb/security/trust.py": "731a7c39e84d3142fbdeb4111849db4cf9c12473be5bbd54c0bc032d7c25c087",
@@ -2651,11 +2634,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 13,
-      "partial": 55
+      "implemented": 20,
+      "partial": 48
     },
     "total": 68,
-    "unresolved": 55
+    "unresolved": 48
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
