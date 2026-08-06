@@ -1,0 +1,48 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-ignorable-elements-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T22:35:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_IGNORABLE_ELEMENTS_001",
+    "task_kind": "citation-correction-plus-new-tests-for-already-working-feature",
+    "root_cause": "Two XLIFF-PARSE-001 obligations (SAL-XLIFF-OBL-194AC86AD7F54920, SAL-XLIFF-OBL-6216215A0A7D5A20) both flagged that 'ignorable' elements are never exercised by any shipped-namespace test, despite the reader/model already fully supporting kind='ignorable'.",
+    "obligation_targeted": "SAL-XLIFF-OBL-194AC86AD7F54920, SAL-XLIFF-OBL-6216215A0A7D5A20 (both XLIFF-PARSE-001)",
+    "acceptance_evidence": "5 new tests in a new file, test_obligation_ignorable_elements.py, proving <ignorable> elements parse with kind='ignorable', carry source/target text, satisfy the unit cardinality constraint on their own, round-trip through dumps()/loads(), and that a unit with neither segment nor ignorable is refused -- all exercised through the real loads()/dumps()/validate() pipeline, not direct model construction.",
+    "regression_tier": "full xliff package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Read codec/reader/reader.py directly: _parse_unit already accepts <ignorable> exactly like <segment> (same code path, _parse_segment), and _parse_segment already sets kind=_local(element.tag), so an <ignorable> element correctly produces a Segment with kind='ignorable' -- a real, already-working feature, confirmed by reading the source, not assumed from the obligation's own framing.",
+    "2. Read model/document.py's Unit.segments property: it returns every child that isinstance(value, Segment), which includes ignorable-kind Segments -- confirming the xliff.unit.segment.required check added to validator.py at an earlier tick this session (for a different, XLIFF-SEG-001 obligation pair) already correctly treats an ignorable-only unit as satisfying the cardinality constraint, with zero additional source changes needed.",
+    "3. Wrote 5 new tests exercising this through the real loads()/dumps()/validate() pipeline (not direct Unit/Segment construction, which a prior tick this session already covered for the model-level obligation pair): ignorable parses with the right kind, source/target text is readable, an ignorable-only unit validates, the element round-trips through a full dumps()/loads() cycle, and a genuinely empty unit (neither segment nor ignorable) is refused with the exact diagnostic code.",
+    "4. Ran ruff on the new test file (clean) and the full xliff suite (350 passed, was 345) before writing any evidence claim. No src/ files changed this slice -- test file and evidence YAML only -- so skills-first governance was correctly skipped."
+  ],
+  "allowed_files": [
+    "tests/python/xliff/test_obligation_ignorable_elements.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/xliff/test_obligation_ignorable_elements.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_ignorable_elements.py -q -- 5 passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 350 passed, was 345",
+    ".venv/Scripts/python -m ruff check tests/python/xliff/test_obligation_ignorable_elements.py -- all checks passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not cross-checked against a reference XLIFF implementation.",
+    "obligations_moved_breakdown": "2 obligations promoted to implemented purely by testing an already-correct, already-working feature (ignorable-element parsing and the unit cardinality constraint) that had simply never been exercised through the real reader/writer pipeline. Zero new production source code."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

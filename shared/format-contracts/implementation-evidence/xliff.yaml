@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-IGNORABLE-ELEMENT-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-ignorable-elements-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes 2 XLIFF-PARSE-001 obligations about ''ignorable'' elements and the unit-cardinality constraint, exercised through the real loads()/dumps()/validate() pipeline for the first time. Both underlying mechanisms were already real and correct before this slice -- codec/reader/reader.py''s _parse_unit already accepted <ignorable> exactly like <segment>, and validator.py''s xliff.unit.segment.required check (added at an earlier tick this session for a different, model-construction-level obligation pair) already correctly treats an ignorable-only unit as satisfying ''at least one segment or ignorable'' -- simply never tested through the actual reader. 5 new tests prove: an <ignorable> element parses with kind=''ignorable''; its source/target text is readable via flatten_inline_content exactly like a regular segment; a unit containing only an ignorable child validates; the element round-trips through a full dumps()/loads() cycle; and a genuinely empty unit (neither segment nor ignorable) is refused with the exact diagnostic code. xliff suite: 345 -> 350 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-194AC86AD7F54920 and SAL-XLIFF-OBL-6216215A0A7D5A20 only; it supports no other obligation and promotes no product state.'
 - evidence_id: XLIFF-QA-SOURCE-LANGUAGE-COMPATIBILITY-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-source-language-001.json
   expected_result: PASS
@@ -737,24 +742,31 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-194AC86AD7F54920
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_parse_segment
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  negative_test_selectors: []
+  - 'tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load'
+  - 'tests/python/xliff/test_obligation_ignorable_elements.py::test_an_ignorable_element_parses_with_kind_ignorable'
+  - 'tests/python/xliff/test_obligation_ignorable_elements.py::test_ignorable_source_and_target_carry_text'
+  - 'tests/python/xliff/test_obligation_ignorable_elements.py::test_a_unit_with_only_an_ignorable_child_is_valid'
+  - 'tests/python/xliff/test_obligation_ignorable_elements.py::test_an_ignorable_element_round_trips_through_dumps_and_loads'
+  negative_test_selectors:
+  - 'tests/python/xliff/test_obligation_ignorable_elements.py::test_a_unit_with_neither_segment_nor_ignorable_is_invalid'
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-IGNORABLE-ELEMENT-PROOF
   implemented_behavior:
-  - 'A unit''s segment carrying exactly one source followed by at most one target is proven directly.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: no shipped-namespace test exercises "ignorable" elements at all (the reader/writer support kind="ignorable" but zero tests construct one), and the "a unit contains AT LEAST ONE segment or ignorable" cardinality constraint (zero-children refusal) is untested as a negative case. Not attempted this slice.'
+  - 'A unit''s segment carrying exactly one source followed by at most one target is proven directly. The cardinality constraint (''at least one segment or ignorable'') is now proven both ways at the loads()/validate() level: a unit containing only an <ignorable> child (no <segment>) is valid, and a unit with neither is refused via the xliff.unit.segment.required diagnostic (already real, added at an earlier tick this session for a different, model-construction-level obligation pair; now also proven through the actual XML reader, not just direct Unit/Segment construction).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for the zero-children cardinality violation.
 - obligation_id: SAL-XLIFF-OBL-1FE4640A3CD2FDAD
   capability_id: XLIFF-WRITE-001
   status: partial
@@ -1724,24 +1736,31 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-6216215A0A7D5A20
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_parse_segment
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  negative_test_selectors: []
+  - 'tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load'
+  - 'tests/python/xliff/test_obligation_ignorable_elements.py::test_an_ignorable_element_parses_with_kind_ignorable'
+  - 'tests/python/xliff/test_obligation_ignorable_elements.py::test_ignorable_source_and_target_carry_text'
+  - 'tests/python/xliff/test_obligation_ignorable_elements.py::test_a_unit_with_only_an_ignorable_child_is_valid'
+  - 'tests/python/xliff/test_obligation_ignorable_elements.py::test_an_ignorable_element_round_trips_through_dumps_and_loads'
+  negative_test_selectors:
+  - 'tests/python/xliff/test_obligation_ignorable_elements.py::test_a_unit_with_neither_segment_nor_ignorable_is_invalid'
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-IGNORABLE-ELEMENT-PROOF
   implemented_behavior:
-  - 'segment source/target carrying translatable text and translations is well proven.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: "ignorable" elements (also a valid unit child per the model, alongside segment) are never exercised by any shipped-namespace test. Not attempted this slice.'
+  - 'Segment source/target carrying translatable text and translations is well proven. ''ignorable'' elements are now also directly exercised: loads() correctly sets kind=''ignorable'' from the element''s own local tag name (_parse_segment already did this correctly; it was untested), source/target text is readable via flatten_inline_content exactly like a regular segment, and the element round-trips through dumps()/loads().'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for the zero-children cardinality violation.
 - obligation_id: SAL-XLIFF-OBL-65BD1FDA110AD94A
   capability_id: XLIFF-TEXT-001
   status: partial
