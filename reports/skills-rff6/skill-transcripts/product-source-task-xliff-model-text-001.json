@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-model-text-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T05:15:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_MODEL_TEXT_001",
+    "task_kind": "real-gap-fix-plus-honest-partial-closure",
+    "root_cause": "Following event 169's exact_next_action (continue xliff's remaining 5 event-154-flagged obligations), investigated the last 3: XLIFF-MODEL-001's document-hierarchy obligations (2) and XLIFF-TEXT-001's target-creation obligation (1). XLIFF-VALIDATE-001's 2 remaining obligations (multi-scope/comprehensive validation matrices) were assessed as too large in scope for this tick and deliberately left untouched.",
+    "obligation_targeted": "SAL-XLIFF-OBL-7DA078717EA60881, SAL-XLIFF-OBL-867500AA0AC3D2C1 (XLIFF-MODEL-001), SAL-XLIFF-OBL-7E36DEBEB4162BA3 (XLIFF-TEXT-001).",
+    "acceptance_evidence": "XLIFF-TEXT-001 fully closed with 4 new tests for the untested code_copy_policy='none' path. XLIFF-MODEL-001 closed for tree order/ID preservation at nesting depth (3 new tests) but stays honestly partial: attribute-inheritance resolution is confirmed genuinely unbuilt.",
+    "regression_tier": "full xliff package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Read text_editing.py's copy_source_to_target() directly and found it has exactly 2 policies ('all', 'none') plus an 'invalid' rejection path -- distinct from the already-fully-tested Segment.create_target_from_source(code_policy='copy'|'strip'|'empty'). Grepped the whole test suite for 'code_copy_policy' and confirmed only 'all' and 'invalid' were exercised; 'none' (plain-text-only target, discarding source code structure) was completely untested.",
+    "2. Read the 'none' branch's exact behavior (target_attributes filtered to only xml:space, xml:lang never copied unless target_language explicitly passed) and wrote 4 tests proving the plain-text-only structure, the xml:space/xml:lang asymmetry, explicit target_language handling, and a direct 'all' vs 'none' structural comparison.",
+    "3. Read document.py's Group/Unit/XliffFile classes directly and confirmed Group.children already supports Group | Unit | ExtensionNode (real nested-group support) with iter_units() already recursing correctly -- but grepped the whole shipped-namespace test suite and found every existing fixture used at most one level of group nesting. The only fixture with actual nested groups, test_xliff_structural_fidelity.py, imports the deprecated bare xliff.models/xliff.xliff_codec shadow package (confirmed via its import statements) and does not count as shipped-namespace evidence per this session's established exclusion rule.",
+    "4. Wrote 3 new tests using a group-within-group XML fixture, proving typed Group objects at every nesting level, document-order traversal via iter_units() across nested groups, and ID/order preservation through a full round trip.",
+    "5. Checked whether attribute-inheritance resolution (the rule_text's 'inherited attributes resolved' clause) exists at all, not just whether it's tested -- grepped model/document.py for inherit/effective_/resolved_ and found nothing. Confirmed this is a genuine, unbuilt gap: each typed class stores only its own local attributes dict; nothing walks ancestors to resolve an effective xml:space/xml:lang for a descendant that doesn't declare it locally. Recorded both XLIFF-MODEL-001 obligations as honestly partial with this precise reason rather than force-promoted to implemented.",
+    "6. Ran both new test files in isolation (3+4=7 passed), ruff clean, full xliff suite (330 passed, was 323, +7, zero regressions -- no production source changed this slice, both fixes were test-file-only additions proving already-correct existing behavior).",
+    "7. Applied the patch-script pattern. Added the new XLIFF-MODEL-TEXT-SELECTOR-PROOF execution_evidence entry, validated the YAML parses (142 total obligations), and ran the reconciler."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml",
+    "tests/python/xliff/test_obligation_target_creation_policies.py",
+    "tests/python/xliff/test_obligation_nested_group_hierarchy.py"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml",
+    "tests/python/xliff/test_obligation_target_creation_policies.py",
+    "tests/python/xliff/test_obligation_nested_group_hierarchy.py"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_target_creation_policies.py tests/python/xliff/test_obligation_nested_group_hierarchy.py -q -- 7 passed (new)",
+    ".venv/Scripts/python -m ruff check tests/python/xliff/test_obligation_target_creation_policies.py tests/python/xliff/test_obligation_nested_group_hierarchy.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 330 passed (was 323, +7, 0 regressions)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 142,
+    "xliff_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference XLIFF implementation. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "obligations_moved_breakdown": "1 of 3 obligations moved to implemented (XLIFF-TEXT-001's target-creation obligation, fully closed). 2 stay honestly partial (XLIFF-MODEL-001's document-hierarchy obligations) -- tree order/ID preservation now proven at depth, but attribute-inheritance resolution is a real, confirmed, unbuilt gap, not force-promoted.",
+    "session_pattern_note": "This closes 4 of xliff's original 13 event-154-flagged obligations across this tick and the prior XLIFF-INLINE-001 tick (event 169). Only XLIFF-VALIDATE-001's 2 obligations (multi-scope/comprehensive validation matrices) remain from that original list -- deliberately deferred as the largest-scope item, not yet investigated."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

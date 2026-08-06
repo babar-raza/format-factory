@@ -42,6 +42,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors proving Skeleton carries non-translatable structure verbatim, MergeAdapter is a genuine runtime Protocol (a third-party adapter conforms without inheriting from anything in this module), TemplateMergeAdapter's extract()/merge() round trip end to end, and check_drift()/merge_with_drift_check() detect and refuse a live source that no longer matches the skeleton's extraction digest (reporting both digests), correctly skipping the check only when no live source is supplied. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-4F9A3D539840CB12 and SAL-XLIFF-OBL-6C1F7F44A337674B only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-MODEL-TEXT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-model-text-001.json",
+      "sha256": "8b2159725c4b4b8307a0a7585f56f1592614172ef1bb5f950913e7215f40a95f",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Investigated the last 3 of xliff's 13 obligations flagged genuinely distinct since event 154 (2 in XLIFF-MODEL-001, document hierarchy; 1 in XLIFF-TEXT-001, target-from-source creation), all still carrying the original generic 3-test citation. XLIFF-TEXT-001's obligation is now fully implemented: copy_source_to_target's 'none' policy (plain-text-only target, discarding source code structure) was never exercised before -- 4 new tests prove it, including that xml:space is preserved while xml:lang is never copied from source unless explicitly provided. XLIFF-MODEL-001's 2 obligations stay honestly partial: tree order and ID preservation are now proven at real nesting depth (added 3 tests using a group-within-group document; the only prior nested-group fixture, test_xliff_structural_fidelity.py, imports the deprecated bare xliff.* shadow package and does not count), but attribute-inheritance resolution (an inheritable attribute like xml:space/xml:lang resolving to its nearest ancestor's value when a descendant does not declare it locally) is confirmed genuinely unbuilt -- grepped model/document.py for any inherit/effective_/resolved_ logic and found none; each typed class stores only its own local attributes. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED."
+    },
+    {
       "evidence_id": "XLIFF-MODULE-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -109,7 +117,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "6cb90630a9e65bccde38d0e543d7d3cb833c1a96d3c2b1910aaa5bf03a07fd54",
+    "implementation_evidence": "b7914a24ae14f61f76ad7fa381f145af1dc79e5657429883c5c8f8b06cc8d1e0",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2546,20 +2554,23 @@
     {
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-MODEL-TEXT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "XliffDocument/XliffFile/Group/Unit/Segment (Group and Unit ship without the Xliff-prefixed name the rule_text uses descriptively -- format-prefixed names are deliberately not the canonical implementation target per this repo's naming convention) are fully typed, and tree order/ID preservation through load, nested traversal, and a full round trip are proven at depth: added this slice, test_iter_units_visits_nested_group_units_in_document_order and test_nested_group_and_unit_ids_survive_a_full_round_trip exercise a group-within-group document (the only prior nested-group fixture, test_xliff_structural_fidelity.py, imports the deprecated bare xliff.* shadow package and does not count as shipped-namespace evidence)."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
+        "Confirmed genuinely unbuilt, not merely untested: grepped model/document.py for any inheritance/effective-attribute-resolution logic (inherit, effective_, resolved_) and found none. XliffDocument/XliffFile/Group/Unit/Segment each store only their own local attributes dict -- nothing walks up the tree to resolve an effective xml:space/xml:lang (or any other inheritable attribute) for a descendant that does not declare it locally. A caller must do this resolution themselves by walking ancestors manually."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-7DA078717EA60881",
       "positive_test_selectors": [
         "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
         "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_nested_group_hierarchy.py::test_nested_groups_parse_as_typed_group_objects_at_every_level",
+        "tests/python/xliff/test_obligation_nested_group_hierarchy.py::test_iter_units_visits_nested_group_units_in_document_order",
+        "tests/python/xliff/test_obligation_nested_group_hierarchy.py::test_nested_group_and_unit_ids_survive_a_full_round_trip"
       ],
       "proof_requirements": {
         "negative": [
@@ -2571,30 +2582,33 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument",
+        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffFile",
+        "src/python/xliff/src/format_factory/xliff/model/document.py::Group",
+        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit",
+        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment"
       ],
       "status": "partial"
     },
     {
       "capability_id": "XLIFF-TEXT-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-MODEL-TEXT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "copy_source_to_target's 'all' policy (full inline-code copy) was already proven; added this slice: the 'none' policy (plain-text-only target, explicitly discarding source code structure) was never exercised before -- 4 new tests prove it creates a structure-free target, preserves xml:space while never copying xml:lang from source (proven directly by reading and testing the source), and correctly sets an explicitly-provided target_language. text_slots/replace_text_slots (token-aware plain-text projection and edit) and inline-code position preservation during editing were already proven by test_target_creation_and_token_aware_edit_preserve_inline_codes_and_xml_attributes and test_text_editing_rejects_implicit_code_loss_or_slot_mismatch."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-7E36DEBEB4162BA3",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_target_creation_and_token_aware_edit_preserve_inline_codes_and_xml_attributes",
+        "tests/python/xliff/test_production_namespace.py::test_text_editing_rejects_implicit_code_loss_or_slot_mismatch",
+        "tests/python/xliff/test_obligation_target_creation_policies.py::test_none_policy_creates_a_plain_text_only_target",
+        "tests/python/xliff/test_obligation_target_creation_policies.py::test_none_policy_preserves_xml_space_but_never_copies_xml_lang",
+        "tests/python/xliff/test_obligation_target_creation_policies.py::test_none_policy_sets_an_explicitly_provided_target_language",
+        "tests/python/xliff/test_obligation_target_creation_policies.py::test_all_and_none_policies_agree_on_flattened_text_but_differ_on_structure"
       ],
       "proof_requirements": {
         "negative": [
@@ -2604,13 +2618,13 @@
           "Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots",
+        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target",
         "src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target"
+        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
@@ -2681,20 +2695,23 @@
     {
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-MODEL-TEXT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Same evidence as SAL-XLIFF-OBL-7DA078717EA60881 in this cluster: tree order and IDs are proven at nesting depth through load, traversal, and round trip. References (startRef/dataRef) are proven by XLIFF-INLINE-001's paired-code tests; scope preservation through edits is proven by the target-creation and text-editing tests in this and the XLIFF-TEXT-001 cluster."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
+        "Confirmed genuinely unbuilt, not merely untested: grepped model/document.py for any inheritance/effective-attribute-resolution logic (inherit, effective_, resolved_) and found none. XliffDocument/XliffFile/Group/Unit/Segment each store only their own local attributes dict -- nothing walks up the tree to resolve an effective xml:space/xml:lang (or any other inheritable attribute) for a descendant that does not declare it locally. A caller must do this resolution themselves by walking ancestors manually."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-867500AA0AC3D2C1",
       "positive_test_selectors": [
         "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
         "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_nested_group_hierarchy.py::test_nested_groups_parse_as_typed_group_objects_at_every_level",
+        "tests/python/xliff/test_obligation_nested_group_hierarchy.py::test_iter_units_visits_nested_group_units_in_document_order",
+        "tests/python/xliff/test_obligation_nested_group_hierarchy.py::test_nested_group_and_unit_ids_survive_a_full_round_trip"
       ],
       "proof_requirements": {
         "negative": [
@@ -2706,10 +2723,9 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/model/document.py::Group",
+        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit",
+        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment"
       ],
       "status": "partial"
     },
@@ -4480,6 +4496,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-cross-cluster-citation-audit-001.json": "a13c27fe5a277fc1cbda003532f02792fee40b10bdafe966c4052601e8f9ae6e",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-lifecycle-io-001.json": "02856c6f0ad09cf7b0352b9b777331dc5f6e2096e5f6576dbfe39f997669372d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-merge-audit-001.json": "ad52bf9234b0abdb222fca9ca32f9fca835f0d73f2cab7e0709aca7a81e9c29a",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-model-text-001.json": "8b2159725c4b4b8307a0a7585f56f1592614172ef1bb5f950913e7215f40a95f",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-module-citation-audit-001.json": "1034d53323ce68762453b90f8c08084c140a8e738aa82d5fd17f8ba086df65d8",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-notes-annotations-001.json": "0a5ffae1a5449741f166f644c5fce33059572098a8ab9624573162869da8eefd",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-paired-code-integrity-001.json": "6b16b781c4d9f2bf3962817c754e384e54a313cc9200d82e311b5acda712c31d",
@@ -4505,23 +4522,25 @@
     "tests/python/xliff/test_obligation_lifecycle_io.py": "5d9973d4c931cea5f36247ac8f22b05ff57b335ab3dccf2d6c878da7b529c62b",
     "tests/python/xliff/test_obligation_merge_adapter.py": "8ab808796f526b4497037ff207d9924382fe6833689529377210a80e60d95e88",
     "tests/python/xliff/test_obligation_module_coverage.py": "b83ec2190483e437fc5bac89611cdbefb85dbc1481fd6d936ad97edf2acd38ed",
+    "tests/python/xliff/test_obligation_nested_group_hierarchy.py": "cb31f8d5782f920685c804e6283a44aa2196107d0069c8c3ed011c7d4003e122",
     "tests/python/xliff/test_obligation_notes_and_annotations.py": "357ae9aace9aab3cbb6bcda064a928b4934ccd7b6720094452aaedd75b69e587",
     "tests/python/xliff/test_obligation_paired_code_integrity.py": "d9da9bd02837f6da941067d1507e3431b3f5e9318af57759d72aecb7e04112f4",
     "tests/python/xliff/test_obligation_preservation_mode.py": "f30f484eed1a8585828f01fb325a79f22eb0138633afbc872629a67841f140fe",
     "tests/python/xliff/test_obligation_qa_checks.py": "41662c596cd1ccae6ad779fadccad83b97a5263e2b8db4cca28f00d126de8f4c",
     "tests/python/xliff/test_obligation_security_limits.py": "cee5018bd3af729036aaa146067f1d37932992869a27e825dc93b4b3f703b051",
     "tests/python/xliff/test_obligation_state_transitions.py": "eb2fb6fa0f4503175da1904986563ca1a1ee97f317067a2d29466c5c35c9c1bf",
+    "tests/python/xliff/test_obligation_target_creation_policies.py": "d6693ffb55e6c735194503d14f9f4ba6dd46564391aeb13ee5189b9d94cb85ef",
     "tests/python/xliff/test_production_namespace.py": "907de371555ded7c152d23d9748884e27915eb7ca93ffde5e10659e6266448d6"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 56,
+      "implemented": 57,
       "missing": 28,
-      "partial": 58
+      "partial": 57
     },
     "total": 142,
-    "unresolved": 86
+    "unresolved": 85
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
