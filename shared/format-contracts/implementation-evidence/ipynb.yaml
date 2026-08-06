@@ -20,6 +20,37 @@ execution_evidence:
     genuinely new production code, closing ipynb''s one remaining `missing` obligation. ipynb suite is
     now 670 passed with no failures. No ipynb obligation is `implemented`; IPYNB-MERGE-001''s obligation
     moves to `partial` only. ipynb obligations: 67 partial/1 missing -> 68 partial/0 missing.'
+- evidence_id: IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cluster-citation-audit-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike IPYNB-BASELINE-SUITE. Found 31 obligations across 11 capability clusters
+    (IPYNB-MODEL-001, IPYNB-ATTACH-001, IPYNB-VALIDATE-001, IPYNB-META-001, IPYNB-DOCMETA-001,
+    IPYNB-SANITIZE-001, IPYNB-TRUST-001, IPYNB-EXECMETA-001, IPYNB-HIDDEN-001, IPYNB-UPGRADE-001,
+    IPYNB-CLEAN-001) still carrying the generic 'not yet audited' placeholder despite each cluster
+    already citing 2-5 specific-looking dedicated test files. Delegated initial per-obligation mapping to
+    a research subagent (instructed to read every cited test file in full, not just function names, and
+    verify shipped-namespace imports), then independently re-verified every claim: grepped all 18
+    distinct STRONG-verdict test function names to confirm they exist, confirmed all 10 involved test
+    files import format_factory.ipynb (not a shadow package), and corrected several wrong source-symbol
+    paths the initial draft guessed (model/cells.py does not exist -- MarkdownCell/CodeCell/RawCell live
+    in model/document.py; cleanup lives in model/cleanup.py; upgrade/downgrade live in model/lifecycle.py)
+    by grepping the actual source tree before finalizing. Of the 22 obligations closed this slice
+    (across IPYNB-MODEL-001, IPYNB-ATTACH-001, IPYNB-VALIDATE-001, IPYNB-META-001, IPYNB-SANITIZE-001,
+    IPYNB-TRUST-001, IPYNB-EXECMETA-001, IPYNB-UPGRADE-001, IPYNB-CLEAN-001): 14 were proven directly by
+    existing tests and promoted to implemented; 8 stay honestly partial with precise reasons (e.g. a test
+    proves a schema field is accepted at its floor value but never proves the floor is enforced by
+    rejecting a value below it; an execution-timing fixture asserts only 1 of 4 standard fields).
+    The subagent's research also surfaced 2 systematic mis-citations left DELIBERATELY untouched this
+    slice for a dedicated follow-up: IPYNB-PRESERVE-001's 4 obligations cite a corpus-fixture-integrity
+    test file that verifies committed test bytes haven't been tampered with -- an entirely different
+    sense of 'preserve' than the obligations' actual codec round-trip claims; IPYNB-DOCMETA-001's 2 and
+    IPYNB-HIDDEN-001's 2 obligations cite a metadata-adapters file whose fixtures never touch notebook
+    title/authors or Jupyter source_hidden/outputs_hidden, and model/metadata.py has no typed model for
+    any of those four fields at all. NOT backed by an independent reference implementation --
+    SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not
+    VERIFIED. Promotes no product state beyond the 14 obligations moved to implemented.
 - evidence_id: IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-security-limits-001.json
   expected_result: PASS
@@ -275,27 +306,18 @@ execution_evidence:
 obligations:
 - obligation_id: SAL-IPYNB-OBL-02A00C213D2B0190
   capability_id: IPYNB-ATTACH-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentReferencePolicy
-  - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentChange
-  - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentReport
-  - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentManager
+  - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::manage_attachments
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_attachments.py::test_attachment_mapping_and_references_roundtrip_with_official_oracle
-  - tests/python/ipynb/test_obligation_attachments.py::test_attachment_proof_uses_installed_production_namespace
-  - tests/python/ipynb/test_obligation_attachment_management.py::test_add_resolves_missing_reference_and_preserves_unknown_metadata
-  - tests/python/ipynb/test_obligation_attachment_management.py::test_add_rejects_invalid_cells_bundles_and_accidental_replacement
-  - tests/python/ipynb/test_obligation_attachment_management.py::test_rename_rewrites_encoded_references_and_preserves_source_shape
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Orphan and missing-target
-    fixtures produce diagnostics.'
+  - 'Builds a markdown cell and a raw cell each carrying an attachments map (filename to MIME bundle) referenced from source, round-trips through the official nbformat validator and the factory loads/dumps, and asserts the reference resolves into the map.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Orphan and missing-target fixtures produce diagnostics.
@@ -401,29 +423,17 @@ obligations:
   capability_id: IPYNB-VALIDATE-001
   status: partial
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate
-  - src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook_schema
-  - src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook
-  - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::SelectedProfile
-  - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::diagnostic
-  - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::select_profile
-  - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::validate_model
+  - src/python/ipynb/src/format_factory/ipynb/validation/schema.py::schema_diagnostics
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_validation_profiles.py::test_future_declared_profile_is_valid_with_separate_forward_warnings
-  - tests/python/ipynb/test_obligation_validation_profiles.py::test_attachment_reference_integrity_and_mime_bundles
-  - tests/python/ipynb/test_obligation_validation_profiles.py::test_malformed_cells_outputs_tags_and_mime_bundles_have_exact_diagnostics
-  - tests/python/ipynb/test_obligation_official_schema_validation.py::test_factory_rejects_every_official_schema_rejection
   - tests/python/ipynb/test_obligation_official_schema_validation.py::test_exact_supported_minor_schema_accepts_valid_document
-  - tests/python/ipynb/test_obligation_official_schema_validation.py::test_schema_diagnostics_expose_stable_codes_and_precise_paths
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Parametrized over minor 0-5, confirms each pinned schema accepts a document whose nbformat_minor equals that schema''s own floor value.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Both validation modes on
-    fixtures per schema construct; unknown-field separation asserted.'
+  - 'The test never sets nbformat_minor BELOW a schema''s floor to prove the stated minimum is actually enforced/rejected -- only the accept side of the floor claim is proven, not the reject side.'
   proof_requirements:
     positive:
     - Both validation modes on fixtures per schema construct; unknown-field separation asserted.
@@ -453,25 +463,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-13F3815D0E5C95E6
   capability_id: IPYNB-META-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError
   - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata
   - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating
   - tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Unknown-metadata round trip;
-    typed adapter reads on real fixtures.'
+  - 'Both directly exercise typed kernelspec/language_info adapters over real notebook metadata (name/display_name/language, name/version/codemirror_mode).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Unknown-metadata round trip; typed adapter reads on real fixtures.
@@ -577,31 +582,18 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-1F8C3D9742EBC830
   capability_id: IPYNB-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate
-  - src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook_schema
-  - src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook
-  - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::SelectedProfile
-  - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::diagnostic
-  - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::select_profile
-  - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::validate_model
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_validation_profiles.py::test_future_declared_profile_is_valid_with_separate_forward_warnings
-  - tests/python/ipynb/test_obligation_validation_profiles.py::test_attachment_reference_integrity_and_mime_bundles
-  - tests/python/ipynb/test_obligation_validation_profiles.py::test_malformed_cells_outputs_tags_and_mime_bundles_have_exact_diagnostics
-  - tests/python/ipynb/test_obligation_official_schema_validation.py::test_factory_rejects_every_official_schema_rejection
-  - tests/python/ipynb/test_obligation_official_schema_validation.py::test_exact_supported_minor_schema_accepts_valid_document
-  - tests/python/ipynb/test_obligation_official_schema_validation.py::test_schema_diagnostics_expose_stable_codes_and_precise_paths
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Both validation modes on
-    fixtures per schema construct; unknown-field separation asserted.'
+  - 'The same document validates as valid-with-warnings under profile=''declared'' (IPYNB_FORWARD_* WARNING codes for unknown forward-compatible fields) and as invalid under profile=''current'' (IPYNB_PROFILE ERROR) -- an exact match to ''validate against the schema matching declared version and optionally current minor; report unknown forward-compatible fields separately from errors''.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Both validation modes on fixtures per schema construct; unknown-field separation asserted.
@@ -687,25 +679,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-346FB023299D218E
   capability_id: IPYNB-META-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata
+  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::NotebookMetadataAdapter
+  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::CellMetadataAdapter
+  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::OutputMetadataAdapter
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating
   - tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces
   - tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces
+  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_adapters_are_defensive_snapshots_and_roundtrip_is_lossless
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Unknown-metadata round trip;
-    typed adapter reads on real fixtures.'
+  - 'The first two prove unknown-namespace (''org.example'') metadata is preserved and readable via .extras at notebook, cell, and output level alongside typed common-namespace adapters; the third round-trips via dumps()/loads() and asserts the raw document -- including the unknown namespace -- is byte-for-byte unchanged.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Unknown-metadata round trip; typed adapter reads on real fixtures.
@@ -713,27 +702,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-356297A15A50C85B
   capability_id: IPYNB-ATTACH-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentReferencePolicy
-  - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentChange
-  - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentReport
-  - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentManager
+  - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::manage_attachments
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_attachments.py::test_attachment_mapping_and_references_roundtrip_with_official_oracle
-  - tests/python/ipynb/test_obligation_attachments.py::test_attachment_proof_uses_installed_production_namespace
-  - tests/python/ipynb/test_obligation_attachment_management.py::test_add_resolves_missing_reference_and_preserves_unknown_metadata
-  - tests/python/ipynb/test_obligation_attachment_management.py::test_add_rejects_invalid_cells_bundles_and_accidental_replacement
   - tests/python/ipynb/test_obligation_attachment_management.py::test_rename_rewrites_encoded_references_and_preserves_source_shape
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Orphan and missing-target
-    fixtures produce diagnostics.'
+  - 'test_attachment_mapping_and_references_roundtrip_with_official_oracle shows attachment:pixel.png resolving to the pixel.png key; test_rename_rewrites_encoded_references_and_preserves_source_shape proves percent-encoded URI variants (attachment:plot%2Epng) still resolve to the same key.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Orphan and missing-target fixtures produce diagnostics.
@@ -741,24 +722,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-3B3B7588125383AB
   capability_id: IPYNB-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
+  - src/python/ipynb/src/format_factory/ipynb/model/document.py::IpynbDocument
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
+  - src/python/ipynb/src/format_factory/ipynb/model/document.py::CodeCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_typed_model.py::test_typed_cells_outputs_and_logical_sources_preserve_raw_form
-  - tests/python/ipynb/test_obligation_typed_model.py::test_typed_search_avoids_raw_dictionary_access
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access per cell type;
-    unknown-cell-type preservation fixture.'
+  - 'Builds markdown/raw/code cells in document order and unpacks document.cell_objects in that exact order with each isinstance-checked against MarkdownCell/RawCell/CodeCell, directly proving ordered cells of the three declared types.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access per cell type; unknown-cell-type preservation fixture.
@@ -768,22 +746,17 @@ obligations:
   capability_id: IPYNB-MODEL-001
   status: partial
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
+  - src/python/ipynb/src/format_factory/ipynb/model/document.py::CodeCell
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_typed_model.py::test_typed_cells_outputs_and_logical_sources_preserve_raw_form
-  - tests/python/ipynb/test_obligation_typed_model.py::test_typed_search_avoids_raw_dictionary_access
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Exercises cell_type/metadata/source (str-or-list)/execution_count/outputs as present fields on a real code cell.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access per cell type;
-    unknown-cell-type preservation fixture.'
+  - 'The test never OMITS a required key to prove the schema actually enforces it as required -- the ''required keys'' half of the claim (as opposed to the fields simply being present when supplied) is unproven by this test alone; schema-level required-key enforcement is covered separately under IPYNB-VALIDATE-001.'
   proof_requirements:
     positive:
     - Typed access per cell type; unknown-cell-type preservation fixture.
@@ -793,23 +766,18 @@ obligations:
   capability_id: IPYNB-META-001
   status: partial
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata
+  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::CellMetadataAdapter
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces
   - tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces
+  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_malformed_known_metadata_fails_explicitly
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Tags read as a typed tuple; duplicate tags proven to raise MetadataShapeError (''unique''); arbitrary extra JSON properties preserved via .extras.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Unknown-metadata round trip;
-    typed adapter reads on real fixtures.'
+  - 'No test in this cluster exercises the comma-free constraint on individual tag strings (a tag containing a comma is never constructed and checked for rejection).'
   proof_requirements:
     positive:
     - Unknown-metadata round trip; typed adapter reads on real fixtures.
@@ -819,25 +787,19 @@ obligations:
   capability_id: IPYNB-ATTACH-001
   status: partial
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentReferencePolicy
-  - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentChange
-  - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentReport
+  - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::manage_attachments
   - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentManager
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_attachments.py::test_attachment_mapping_and_references_roundtrip_with_official_oracle
-  - tests/python/ipynb/test_obligation_attachments.py::test_attachment_proof_uses_installed_production_namespace
-  - tests/python/ipynb/test_obligation_attachment_management.py::test_add_resolves_missing_reference_and_preserves_unknown_metadata
   - tests/python/ipynb/test_obligation_attachment_management.py::test_add_rejects_invalid_cells_bundles_and_accidental_replacement
-  - tests/python/ipynb/test_obligation_attachment_management.py::test_rename_rewrites_encoded_references_and_preserves_source_shape
+  - tests/python/ipynb/test_obligation_attachment_management.py::test_remove_refuses_dangling_reference_unless_explicitly_allowed
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'MIME-bundle validation (rejects invalid cells/bundles/accidental replacement) and missing-target detection (remove refuses a dangling reference unless explicitly allowed) are both directly tested.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Orphan and missing-target
-    fixtures produce diagnostics.'
+  - 'Orphan detection (an attachment present in the map but never referenced from any cell source) is not tested anywhere in this cluster''s own files -- it appears only incidentally in the differently-cited test_obligation_validation_profiles.py, not as a dedicated AttachmentManager guarantee.'
   proof_requirements:
     positive:
     - Orphan and missing-target fixtures produce diagnostics.
@@ -845,25 +807,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-499CD4389B386A40
   capability_id: IPYNB-SANITIZE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationMode
-  - src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationPolicy
-  - src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationFinding
-  - src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationReport
+  - src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::sanitize
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_sanitization.py::test_lossless_mode_reports_without_mutating_or_marking
   - tests/python/ipynb/test_obligation_sanitization.py::test_remove_mode_drops_only_the_unsafe_renderable_payloads
-  - tests/python/ipynb/test_obligation_sanitization.py::test_quarantine_mode_moves_payloads_out_of_renderable_locations
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Hostile active-content fixtures
-    per mode; lossless mode leaves content intact and reported.'
+  - 'The shared hostile-document fixture carries an HTML <script> in markdown source, an image/svg+xml output, and an application/javascript output; both tests detect/operate on them as MIME-bundle payloads.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Hostile active-content fixtures per mode; lossless mode leaves content intact and reported.
@@ -1203,25 +1159,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-80272AC687E3FBED
   capability_id: IPYNB-TRUST-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/security/trust.py::SignatureStore
-  - src/python/ipynb/src/format_factory/ipynb/security/trust.py::TrustNotary
-  - src/python/ipynb/src/format_factory/ipynb/security/trust.py::TrustStatus
-  - src/python/ipynb/src/format_factory/ipynb/security/trust.py::TrustRecord
+  - src/python/ipynb/src/format_factory/ipynb/security/trust.py::HmacNotebookNotary
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_trust_notary.py::test_signature_matches_the_pinned_official_nbformat_notary
   - tests/python/ipynb/test_obligation_trust_notary.py::test_content_edit_invalidates_trust_without_affecting_validity
-  - tests/python/ipynb/test_obligation_trust_notary.py::test_reverting_exact_content_restores_content_addressed_trust
+  - tests/python/ipynb/test_obligation_trust_notary.py::test_signature_store_is_pluggable_and_uses_official_method_contract
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Edit-invalidates-trust fixture;
-    notary plug-in contract test.'
+  - 'test_content_edit_invalidates_trust_without_affecting_validity proves an edited notebook is never auto-trusted (verify() returns UNTRUSTED) while validate() stays true both before and after the edit; test_signature_store_is_pluggable_and_uses_official_method_contract proves the store backend is pluggable via a custom store honoring the store/check/remove contract.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Edit-invalidates-trust fixture; notary plug-in contract test.
@@ -1263,23 +1213,17 @@ obligations:
   capability_id: IPYNB-EXECMETA-001
   status: partial
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata
+  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::ExecutionMetadata
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces
   - tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'The execution-timing fixture and adapter are exercised, proving shell.execute_reply plus an additional string-valued timing entry (via .extras) are both handled.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Four standard timing keys,
-    additional string keys, and non-string negatives are covered.'
+  - 'The test fixture omits iopub.status.idle entirely, and iopub.execute_input / iopub.status.busy are present in the fixture but never individually asserted -- only 1 of the 4 standard timing fields is actually checked.'
   proof_requirements:
     positive:
     - Four standard timing keys, additional string keys, and non-string negatives are covered.
@@ -1420,24 +1364,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-A416086282D30BB9
   capability_id: IPYNB-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
+  - src/python/ipynb/src/format_factory/ipynb/model/document.py::IpynbDocument
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_typed_model.py::test_typed_cells_outputs_and_logical_sources_preserve_raw_form
   - tests/python/ipynb/test_obligation_typed_model.py::test_typed_search_avoids_raw_dictionary_access
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access per cell type;
-    unknown-cell-type preservation fixture.'
+  - 'test_typed_cells_outputs_and_logical_sources_preserve_raw_form proves typed Cell/Output/MimeBundle objects exist; test_typed_search_avoids_raw_dictionary_access proves search by cell_id, cell_type, tag, and source_text -- an exact match to ''search by ID, type, tag, source text''.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access per cell type; unknown-cell-type preservation fixture.
@@ -1607,24 +1547,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-BB3A2A8AA8E143B3
   capability_id: IPYNB-CLEAN-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::CleanupPolicy
-  - src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::Change
-  - src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::ChangeReport
   - src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::cleanup
+  - src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::CleanupPolicy
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_cleanup.py::test_dry_run_report_equals_actual_selective_cleanup_and_does_not_mutate
   - tests/python/ipynb/test_obligation_cleanup.py::test_default_cleanup_clears_all_outputs_and_counts_but_not_metadata
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Dry-run report matches actual
-    mutation; selective clearing fixtures.'
+  - 'A CleanupPolicy selecting specific cells/output types/metadata keys with reset_execution_counts is proven dry-runnable (a preview report doesn''t mutate the document, and matches the applied result) and idempotent (a second cleanup run reports no further changes).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Dry-run report matches actual mutation; selective clearing fixtures.
@@ -1722,23 +1658,17 @@ obligations:
   capability_id: IPYNB-EXECMETA-001
   status: partial
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::MetadataShapeError
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::KernelSpecMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::LanguageInfoMetadata
-  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::SlideshowMetadata
+  - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::ExecutionMetadata
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_real_fixture_kernelspec_adapter_is_exact_and_non_mutating
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_notebook_metadata_typed_fields_preserve_unknown_namespaces
   - tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Same evidence as SAL-IPYNB-OBL-8546D71A9E3916E7 in this cluster: the execution-timing adapter and one standard field plus an additional string-valued entry are proven.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Four standard timing keys,
-    additional string keys, and non-string negatives are covered.'
+  - 'Same gap as SAL-IPYNB-OBL-8546D71A9E3916E7: only 1 of the 4 standard timing fields is asserted, and iopub.status.idle never appears in any fixture in this cluster''s cited file.'
   proof_requirements:
     positive:
     - Four standard timing keys, additional string keys, and non-string negatives are covered.
@@ -1748,23 +1678,20 @@ obligations:
   capability_id: IPYNB-UPGRADE-001
   status: partial
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition
+  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::upgrade
+  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::downgrade
   positive_test_selectors:
+  - tests/python/ipynb/test_obligation_version_conversion.py::test_upgrade_from_every_supported_older_minor_validates_officially
   - tests/python/ipynb/test_obligation_version_conversion.py::test_downgrade_plan_reports_loss_and_preserved_extensions
   - tests/python/ipynb/test_obligation_version_conversion.py::test_lossy_downgrade_requires_explicit_acceptance
-  - tests/python/ipynb/test_obligation_version_conversion.py::test_accepted_downgrade_is_valid_for_every_supported_older_minor
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Upgrade from every supported older minor produces an id_rewrites ledger and validates officially; downgrade is gated behind an explicit accept_loss after the plan reports losses -- both strongly proven.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Fixtures at each supported
-    older version upgrade with ledger assertions; downgrade-loss reporting fixture.'
+  - 'No test shows unknown future additions preserved when merely READING (not downgrading) a higher-minor document -- the ''preserve unknown future additions when reading higher minors'' clause specifically is unproven by this cluster''s tests.'
   proof_requirements:
     positive:
     - Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting
@@ -1817,24 +1744,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-C7460C113E33FAE7
   capability_id: IPYNB-CLEAN-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::CleanupPolicy
-  - src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::Change
-  - src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::ChangeReport
   - src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::cleanup
+  - src/python/ipynb/src/format_factory/ipynb/model/cleanup.py::CleanupPolicy
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_cleanup.py::test_dry_run_report_equals_actual_selective_cleanup_and_does_not_mutate
   - tests/python/ipynb/test_obligation_cleanup.py::test_default_cleanup_clears_all_outputs_and_counts_but_not_metadata
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Dry-run report matches actual
-    mutation; selective clearing fixtures.'
+  - 'The selective test clears outputs by type (''stream'' only) and by cell (''selected'' only, ''untouched'' left byte-identical) while stripping only the configured ''transient'' key and resetting execution counts with dry-run reporting; the default test covers the ''clear everything'' case.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Dry-run report matches actual mutation; selective clearing fixtures.
@@ -1842,24 +1765,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-CA94E60DA1A97571
   capability_id: IPYNB-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
+  - src/python/ipynb/src/format_factory/ipynb/model/document.py::CodeCell
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_typed_model.py::test_typed_cells_outputs_and_logical_sources_preserve_raw_form
-  - tests/python/ipynb/test_obligation_typed_model.py::test_typed_search_avoids_raw_dictionary_access
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Typed access per cell type;
-    unknown-cell-type preservation fixture.'
+  - 'Asserts typed MarkdownCell/RawCell/CodeCell for all three specified cell types plus an UnknownCell/UnknownOutput (from a synthetic ''future_cell''/''future_output'') with preservation_only=True.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access per cell type; unknown-cell-type preservation fixture.
@@ -1895,25 +1814,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-D9ECFCF32654F42A
   capability_id: IPYNB-TRUST-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/security/trust.py::SignatureStore
-  - src/python/ipynb/src/format_factory/ipynb/security/trust.py::TrustNotary
-  - src/python/ipynb/src/format_factory/ipynb/security/trust.py::TrustStatus
-  - src/python/ipynb/src/format_factory/ipynb/security/trust.py::TrustRecord
+  - src/python/ipynb/src/format_factory/ipynb/security/trust.py::HmacNotebookNotary
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_trust_notary.py::test_signature_matches_the_pinned_official_nbformat_notary
+  - tests/python/ipynb/test_obligation_trust_notary.py::test_signature_store_is_pluggable_and_uses_official_method_contract
   - tests/python/ipynb/test_obligation_trust_notary.py::test_content_edit_invalidates_trust_without_affecting_validity
-  - tests/python/ipynb/test_obligation_trust_notary.py::test_reverting_exact_content_restores_content_addressed_trust
+  - tests/python/ipynb/test_obligation_trust_notary.py::test_revoke_removes_only_the_selected_content_signature
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Edit-invalidates-trust fixture;
-    notary plug-in contract test.'
+  - 'Together the four tests cover compute (matches the reference notary), store (pluggable backend), verify (an edit invalidates trust; validity stays a separate concern), and revoke (removes only the targeted signature) -- the full compute/store/verify/revoke lifecycle the claim names.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Edit-invalidates-trust fixture; notary plug-in contract test.
@@ -2038,25 +1953,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-F581800E69395375
   capability_id: IPYNB-SANITIZE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationMode
-  - src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationPolicy
-  - src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationFinding
-  - src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::SanitizationReport
+  - src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py::sanitize
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_sanitization.py::test_lossless_mode_reports_without_mutating_or_marking
   - tests/python/ipynb/test_obligation_sanitization.py::test_remove_mode_drops_only_the_unsafe_renderable_payloads
   - tests/python/ipynb/test_obligation_sanitization.py::test_quarantine_mode_moves_payloads_out_of_renderable_locations
+  - tests/python/ipynb/test_obligation_sanitization.py::test_mark_untrusted_preserves_payload_and_is_idempotent
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Hostile active-content fixtures
-    per mode; lossless mode leaves content intact and reported.'
+  - 'All four modes are exercised: lossless reports without mutating/marking, remove strips only unsafe payloads, quarantine relocates them into metadata, mark_untrusted preserves-but-marks -- matching remove/quarantine/preserve-but-mark plus ''never sanitize silently in lossless mode'' exactly.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Hostile active-content fixtures per mode; lossless mode leaves content intact and reported.
@@ -2088,29 +1999,18 @@ obligations:
   capability_id: IPYNB-VALIDATE-001
   status: partial
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate
-  - src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook_schema
-  - src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate_notebook
-  - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::SelectedProfile
-  - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::diagnostic
-  - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::select_profile
-  - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::validate_model
+  - src/python/ipynb/src/format_factory/ipynb/validation/schema.py::schema_diagnostics
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_validation_profiles.py::test_future_declared_profile_is_valid_with_separate_forward_warnings
-  - tests/python/ipynb/test_obligation_validation_profiles.py::test_attachment_reference_integrity_and_mime_bundles
-  - tests/python/ipynb/test_obligation_validation_profiles.py::test_malformed_cells_outputs_tags_and_mime_bundles_have_exact_diagnostics
-  - tests/python/ipynb/test_obligation_official_schema_validation.py::test_factory_rejects_every_official_schema_rejection
   - tests/python/ipynb/test_obligation_official_schema_validation.py::test_exact_supported_minor_schema_accepts_valid_document
-  - tests/python/ipynb/test_obligation_official_schema_validation.py::test_schema_diagnostics_expose_stable_codes_and_precise_paths
+  - tests/python/ipynb/test_obligation_official_schema_validation.py::test_factory_rejects_every_official_schema_rejection
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Both tests call the official nbformat.validator.iter_validate() with explicit (version, version_minor) pairs across minors 0-5, proving schema selection by declared version/minor and rejection parity with the official validator.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Both validation modes on
-    fixtures per schema construct; unknown-field separation asserted.'
+  - 'Neither test exercises a minor beyond the pinned schemas (e.g. minor 6) to prove official relaxation for genuinely future minor versions specifically -- only the pinned 0-5 range is covered.'
   proof_requirements:
     positive:
     - Both validation modes on fixtures per schema construct; unknown-field separation asserted.

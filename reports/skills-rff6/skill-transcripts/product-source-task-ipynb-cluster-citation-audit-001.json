@@ -1,0 +1,49 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-cluster-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T06:15:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_CLUSTER_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure-at-scale-delegated-research",
+    "root_cause": "Following event 171's exact_next_action (continue toward high-leverage opportunities or other tractable gaps), swept all six formats for remaining generic-placeholder obligations and found ipynb had 31 completely untouched this session (compared to 0 in nrrd/safetensors, 1 in ubl, 8 in xliff, 22 in ora) -- the largest remaining same-pattern opportunity by far.",
+    "obligation_targeted": "31 obligations across 11 IPYNB clusters; 22 resolved this slice -- see the IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF execution_evidence entry.",
+    "acceptance_evidence": "14 promoted to implemented via verified existing test coverage; 8 stay honestly partial with precise reasons; 9 (across IPYNB-PRESERVE-001, IPYNB-DOCMETA-001, IPYNB-HIDDEN-001) deliberately deferred as systematic mis-citations needing dedicated follow-up.",
+    "regression_tier": "full ipynb package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Delegated initial per-obligation research to an Explore subagent covering all 31 obligations across 11 clusters, instructed to read each cluster's already-cited test file(s) IN FULL (not just function names) and cite the SPECIFIC test(s) proving each individual obligation, distinguishing STRONG/PARTIAL/NONE per obligation rather than repeating a cluster-wide placeholder.",
+    "2. The subagent's report was unusually thorough: it identified 14 STRONG, 8 PARTIAL, and 9 NONE verdicts, and additionally surfaced two systematic mis-citation patterns on its own initiative -- IPYNB-PRESERVE-001's cited test file verifies committed corpus-fixture byte integrity (a completely different meaning of 'preserve' than the obligations' codec round-trip claims), and IPYNB-DOCMETA-001/IPYNB-HIDDEN-001's cited file never touches the fields (title/authors/source_hidden/outputs_hidden) those obligations are about, with no typed model for any of the four fields existing in model/metadata.py at all.",
+    "3. Independently verified before trusting any of it: grepped all 18 distinct STRONG-verdict test function names to confirm they exist (all 18 found); grepped all 10 involved test files' imports to confirm format_factory.ipynb (shipped namespace), not a shadow package (all 10 confirmed).",
+    "4. Discovered and fixed several wrong source-symbol module paths in my own draft patch before running it: model/cells.py does not exist (MarkdownCell/CodeCell/RawCell actually live in model/document.py), lifecycle/version_conversion.py and lifecycle/cleanup.py do not exist (upgrade/downgrade live in model/lifecycle.py, cleanup lives in model/cleanup.py) -- caught by listing the actual source tree and grepping for the real class/function definitions rather than guessing plausible-sounding paths.",
+    "5. Applied the patch for the 22 obligations with STRONG or PARTIAL verdicts across 9 clusters (IPYNB-MODEL-001, IPYNB-ATTACH-001, IPYNB-VALIDATE-001, IPYNB-META-001, IPYNB-SANITIZE-001, IPYNB-TRUST-001, IPYNB-EXECMETA-001, IPYNB-UPGRADE-001, IPYNB-CLEAN-001), deliberately leaving the 9 NONE-verdict obligations (IPYNB-PRESERVE-001's 4, IPYNB-DOCMETA-001's 2, IPYNB-HIDDEN-001's 2, IPYNB-UPGRADE-001's 1) untouched for dedicated future investigation rather than force-matching them.",
+    "6. Hit the same 'every obligation in this cluster is being edited, no untouched sibling for proof_requirements extraction' problem encountered twice before this session (safetensors SEC-001/WRITE-001, ubl SEC-001/WRITE-001) for 9 of the 9 target clusters -- fixed the patch script with the same proven second-pass fallback (extract from the original pre-edit block when no untouched sibling exists).",
+    "7. Validated the YAML parses (68 total obligations, ipynb now 51 implemented / 17 partial), zero source or test files changed this slice (pure evidence-YAML citation correction reusing already-existing, already-passing test coverage), and ran the reconciler."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 14,
+    "obligations_total_for_format": 68,
+    "ipynb_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference nbformat implementation. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "obligations_moved_breakdown": "14 of 22 targeted obligations moved to implemented via verified existing test coverage. 8 stay honestly partial with precise, specific reasons (not the generic placeholder). 9 obligations across 3 clusters were deliberately left untouched -- IPYNB-PRESERVE-001's citation is a genuine mismatch (different sense of 'preserve') needing real codec-behavior tests written from scratch; IPYNB-DOCMETA-001/IPYNB-HIDDEN-001 need typed model additions (Title/Author, source_hidden/outputs_hidden) that don't exist yet, not just new tests against existing code.",
+    "largest_ipynb_sweep_this_session": "This is the largest single-tick obligation movement for ipynb this session (37 -> 51 implemented, +14), closing 22 of ipynb's 31 remaining fully-generic obligations in one pass via delegated research plus independent verification."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
