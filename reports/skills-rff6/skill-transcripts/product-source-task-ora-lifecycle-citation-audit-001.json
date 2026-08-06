@@ -1,0 +1,46 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-lifecycle-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T20:05:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_LIFECYCLE_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "ORA-LIFECYCLE-001's 6 obligations all cited the same 3 load-from-source tests, proving only one of the six distinct clauses each obligation's own rule_text names (load, save, validate-as-callable, deterministic serialization, strict/tolerant modes, detected-vs-declared version). This is the eighth and final ora cluster to show the shared-citation pattern this session, and unlike every prior cluster, none of these six are cross-capability duplicates of each other -- each is genuinely its own distinct LIFECYCLE-001 fact.",
+    "obligation_targeted": "SAL-ORA-OBL-10D5EA62EEE3CC1A, SAL-ORA-OBL-2755B9376EC8CEF6, SAL-ORA-OBL-326BF47F7EE42769, SAL-ORA-OBL-478DE18CD1B84DD4, SAL-ORA-OBL-5495E8C27E9DFFCE, SAL-ORA-OBL-F969AF770A7D350A",
+    "acceptance_evidence": "tests/python/ora/test_obligation_lifecycle_and_write.py (pre-existing; no new tests this slice)",
+    "regression_tier": "full ORA package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Pulled all 6 ORA-LIFECYCLE-001 rule_texts and confirmed via the current evidence YAML that all 6 shared the identical 3-test citation (load from bytes/stream/path), which only actually proves one of the six distinct clauses named across the cluster.",
+    "2. Mapped each of the remaining 5 clauses to its specific, already-passing test(s) in test_obligation_lifecycle_and_write.py: strict/tolerant read modes (tolerant recovery reported, tolerant control case, strict-is-default, tolerant still refuses structurally broken input); save to path/stream/bytes with own-loader acceptance (a fixed-point round trip); validate() as a first-class callable returning structured diagnostics rather than raising (conforming, non-conforming, and worst-case broken-archive inputs); deterministic serialization (byte-identical across repeated calls, stable across separate loads, independent of input member order); and detected-versus-declared version (proven to diverge on a real document using 0.0.4-only features while declaring 0.0.1, proven not to diverge by default, and proven the declared value survives verbatim through a full dump() even when non-default).",
+    "3. Ran every candidate test directly before citing: all already passing, no changes needed.",
+    "4. Applied all 6 evidence edits via the same obligation_id-delimited text-block script pattern used across the seven prior ora ticks, extracting the actual proof_requirements boilerplate from an untouched sibling programmatically (all six obligations in this cluster needed editing, so the sibling extraction read the original unmodified block text before any replacement, verified safe by construction).",
+    "5. Ran the reconciler: clean pass, no errors, first attempt. Ran the full ora suite to confirm zero regressions (no source or test files changed this slice) -- 283 passed, identical to before. This completes the ora citation-audit sweep across all eight capability clusters that showed the shared-citation signature this session."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 283 passed, unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 6,
+    "obligations_total_for_format": 134,
+    "ora_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against an independent OpenRaster reader/writer. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_all_6_moved_cleanly": "Unlike most other ora clusters audited this session, none of these six rule_texts are cross-capability duplicates requiring citation reassignment, and none surfaced a genuine unbuilt gap -- test_obligation_lifecycle_and_write.py already had complete, specific coverage for every clause, simply never individually cited. This closes the ora citation-audit sweep: eight clusters (STACK, EDIT, CONTAINER, LAYER+GROUP, ASSET, WRITE, VALIDATE, LIFECYCLE) closed 73 obligations total across the session with only 4 new test lines needed."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -50,6 +50,14 @@
       "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: ORA-LAYER-001 (7 obligations) and ORA-GROUP-001 (8 obligations) each shared one identical generic citation despite real, extensive existing coverage in test_obligation_layer_and_group_editing.py -- same pattern as ORA-STACK-001/ORA-EDIT-001/ORA-CONTAINER-001. 11 of the 15 combined obligations are cross-capability duplicates of facts already resolved this session, closed by citation (2 of those 11 mirror the still-honest composite-op partial rather than promoting fully). The two genuinely capability-specific obligations (model-and-edit-a-layer's-own- attributes; create/edit/move/remove nested groups) are corrected to accurate partial: both are extensively proven (src/opacity/visibility validated identically at construction and edit time via __post_init__, edits proven to leave the original untouched by dataclasses immutability, move/remove proven to preserve every other child), but composite-op has no validated enum anywhere in this package (a standing, already-known gap), and for the group obligation specifically this audit also found and corrected an inaccurate claim in the test file's own docstring: the docstring asserted \"root restriction\" was re-proven in this file, but no test anywhere in the ora suite exercises the zero-stacks or multiple-stacks rejection path that codec/stack_xml.py's root-stack-count check enforces -- corrected rather than propagated. \"Unknown-extension preservation\" for groups also remains untested (this model has no ExtensionNode-style typed slot). SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-029A8C8544788060, SAL-ORA-OBL-071A5F40BB2F4A17, SAL-ORA-OBL-073651B7B9C5FB06, SAL-ORA-OBL-3EFB60C80F84675D, SAL-ORA-OBL-691A965DDDA97CD2, SAL-ORA-OBL-7160DCD53E7DAA43, SAL-ORA-OBL-82D6411176AA5599, SAL-ORA-OBL-3463B445DE0899EC, SAL-ORA-OBL-41F8137CE8D8479A, SAL-ORA-OBL-85588089484A20F7, SAL-ORA-OBL-96D74D42B49F8C8B, SAL-ORA-OBL-9BC27656F2BAD9EF, SAL-ORA-OBL-B090B52032547696, SAL-ORA-OBL-B8CC12330026DE56, and SAL-ORA-OBL-FEAED74E05E73C86 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "ORA-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-lifecycle-citation-audit-001.json",
+      "sha256": "0da740721908a1871474ec18c8790f54228235cba7bb60c2c7c0292b31018096",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: ORA-LIFECYCLE-001's 6 obligations all cited only the three load-from-source tests, proving one of the six distinct clauses (load from path/stream/ bytes) while leaving strict/tolerant modes, save-to-path/stream, validate-as-callable, deterministic serialization, and detected- versus-declared version completely uncited despite each having direct, dedicated, already-passing tests in test_obligation_lifecycle_and_write.py. This is the eighth and final ora citation-audit cluster this session; unlike every other cluster, none of these six rule_texts are cross-capability duplicates -- each is genuinely LIFECYCLE-001-specific, and all six are fully, directly provable. No new source or test code this slice. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-10D5EA62EEE3CC1A, SAL-ORA-OBL-2755B9376EC8CEF6, SAL-ORA-OBL-326BF47F7EE42769, SAL-ORA-OBL-478DE18CD1B84DD4, SAL-ORA-OBL-5495E8C27E9DFFCE, and SAL-ORA-OBL-F969AF770A7D350A only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "ORA-MIMETYPE-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -109,7 +117,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "a839d3e9b0be887acad962062e65ad6ec1bd7bbaa21deb62abe6963b6e8d0f38",
+    "implementation_evidence": "d516acf5f14578ae4d7464451ecf0fb26f3096360243bc5eb3dded3e0cb62497",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -497,20 +505,22 @@
     {
       "capability_id": "ORA-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "STRICT (the default) rejects malformed input with diagnostics naming what is wrong; TOLERANT recovers where the format permits and reports every recovery action taken (proven both when recovery is needed and, as a control, when it is not); TOLERANT still refuses a structurally broken (non-ZIP) input rather than accepting anything."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_mode_rejects_a_document_missing_its_thumbnail",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_tolerant_mode_still_refuses_structurally_broken_input"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-10D5EA62EEE3CC1A",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_tolerant_mode_recovers_and_reports_the_recovery",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_tolerant_mode_reports_nothing_when_nothing_needed_recovery",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_is_the_default_mode"
       ],
       "proof_requirements": {
         "negative": [
@@ -520,17 +530,16 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
         "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
         "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dump",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-WRITE-001",
@@ -976,20 +985,19 @@
     {
       "capability_id": "ORA-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Save is proven to a writable stream and a filesystem path, plus in-memory bytes via dumps(); the written output is proven accepted by this package's own loader (a fixed-point round trip), directly satisfying \"producing output the library's own loader accepts.\""
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-2755B9376EC8CEF6",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_dump_writes_to_a_stream",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_dump_writes_to_a_path",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_the_written_archive_is_accepted_by_our_own_loader"
       ],
       "proof_requirements": {
         "negative": [
@@ -999,17 +1007,16 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
         "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
         "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dump",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-ASSET-001",
@@ -1201,20 +1208,20 @@
     {
       "capability_id": "ORA-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "validate() is a first-class callable returning a structured ValidationReport (is_valid plus a diagnostics tuple) rather than raising -- proven against a non-conforming document (structured diagnostics, no exception), a conforming document (is_valid True, empty diagnostics), and the worst input this package accepts (a non-ZIP payload still returns a report, not a raised exception)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_does_not_raise_on_a_broken_archive"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-326BF47F7EE42769",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_returns_structured_diagnostics_rather_than_raising",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_conforming_document_as_valid"
       ],
       "proof_requirements": {
         "negative": [
@@ -1224,17 +1231,16 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
         "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
         "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dump",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-STACK-001",
@@ -1701,20 +1707,19 @@
     {
       "capability_id": "ORA-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "dumps() is proven byte-identical across repeated calls on the same loaded document, stable across independently loading the same archive twice, and independent of the input archive's own member ordering -- all in the same (default LOSSLESS) mode, as the obligation specifies."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-478DE18CD1B84DD4",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_serialization_is_byte_identical_across_repeated_calls",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_serialization_is_stable_across_separate_loads",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_output_does_not_depend_on_input_member_order"
       ],
       "proof_requirements": {
         "negative": [
@@ -1724,17 +1729,16 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
         "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
         "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dump",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-BASELINEASSET-001",
@@ -1996,15 +2000,16 @@
     {
       "capability_id": "ORA-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "load()/loads() accept a filesystem path, a readable stream, and in-memory bytes, each proven to return the same OraImage root model object; an unsupported source type (not path/stream/bytes) is refused with TypeError rather than silently coerced."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_rejects_an_unsupported_source_type"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-5495E8C27E9DFFCE",
       "positive_test_selectors": [
         "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
@@ -2019,17 +2024,16 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
         "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
         "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dump",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-MIMETYPE-001",
@@ -4348,20 +4352,19 @@
     {
       "capability_id": "ORA-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "declared_version (what the file says) and detected_version (inferred from features actually used) are exposed as separate properties, proven to diverge on a real document (declares 0.0.1, uses 0.0.4-only isolation features) and proven NOT to diverge by default (a plain document detects as baseline). A declared version is never silently rewritten: a document declaring the non-default 0.0.3 is proven to still declare 0.0.3 verbatim in its serialized stack.xml member after a full dump()."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-F969AF770A7D350A",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_declared_version_is_preserved_verbatim",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_detected_version_is_separate_from_the_declared_one",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_detected_version_of_a_plain_document_is_the_baseline"
       ],
       "proof_requirements": {
         "negative": [
@@ -4371,17 +4374,16 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
         "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
         "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dump",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-VALIDATE-001",
@@ -4526,6 +4528,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-container-citation-audit-001.json": "a8da421c2df540a82a0ebcca93b5642299a8ad71ee0100a9b64ac808e58b1d63",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-document-model-construction-001.json": "e722f98266ec914ed9f2aca1d75695070ed123949b66335d7d572ba4e7c05171",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-layer-group-citation-audit-001.json": "5947a5b1537dec0f8af2e84da905a1678ddaa1d995e739f890be90806f215ae1",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-lifecycle-citation-audit-001.json": "0da740721908a1871474ec18c8790f54228235cba7bb60c2c7c0292b31018096",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-mimetype-001.json": "c4af01879db0867dbc3deec2c4ecbb85112c7aa2a3283b2a2b24c28d6eb155cd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-preservation-baseline-001.json": "66670b6131f704d6bd441c2fd8a8e83dc51b29d415fdfcb7bff998ec953a047e",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-resolution-isolation-001.json": "1a8d632812f95c0c628a894ccf0d2a6e1cc96c7784e6a38506cf576c66d67c59",
@@ -4558,12 +4561,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 81,
+      "implemented": 87,
       "missing": 20,
-      "partial": 33
+      "partial": 27
     },
     "total": 134,
-    "unresolved": 53
+    "unresolved": 47
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
