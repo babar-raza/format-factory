@@ -189,6 +189,33 @@ execution_evidence:
     SAL-IPYNB-OBL-B3EFD046C72D3E4B, SAL-IPYNB-OBL-BBE5B3445AD56F9C, and
     SAL-IPYNB-OBL-CDB7DEE07F2275F7 only; it supports no other obligation
     and promotes no product state.
+- evidence_id: IPYNB-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-parse-citation-audit-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike IPYNB-BASELINE-SUITE: IPYNB-PARSE-001's 6
+    obligations all cited the same 5-test citation drawn from two
+    different test files, under-proving several of the six distinct
+    rule_texts (top-level structure x2, version+multiline parsing,
+    source-shape preservation, forward compatibility, unknown-field/
+    numeric/Unicode fidelity). This entry names each obligation's own
+    precise selectors: forward compatibility is proven by a dedicated
+    file (test_obligation_forward_compatibility.py) that cross-validates
+    against the official nbformat library itself, not just this
+    package's own tests -- an unrecognized cell type, an unrecognized
+    output type, and unknown dictionary constructs at every level all
+    round-trip identically through both implementations. Numeric/Unicode
+    fidelity is proven at real edge cases (float64-exactness boundary,
+    u64 boundary, negative zero via copysign since == cannot detect a
+    lost sign, NaN/Infinity failing closed at write time). No new source
+    or test code this slice. SELF-CONSISTENT format_factory-only
+    evidence per the execution-recovery directive's GAP-008 rule, not
+    VERIFIED. Covers SAL-IPYNB-OBL-06EFB1D8AC058AC6,
+    SAL-IPYNB-OBL-121BE1F7FB462D30, SAL-IPYNB-OBL-2B44543CA510ED94,
+    SAL-IPYNB-OBL-6DCE21F7DD6D971B, SAL-IPYNB-OBL-9A6A2B857F357379, and
+    SAL-IPYNB-OBL-A87B92BEB23E3B35 only; it supports no other obligation
+    and promotes no product state.
 obligations:
 - obligation_id: SAL-IPYNB-OBL-02A00C213D2B0190
   capability_id: IPYNB-ATTACH-001
@@ -266,27 +293,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-06EFB1D8AC058AC6
   capability_id: IPYNB-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id
+  - src/python/ipynb/src/format_factory/ipynb/model/document.py::IpynbDocument
   - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace
-  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string
-  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list
-  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Fixtures for string vs list-of-strings
-    sources, unknown fields, and numeric edge values round-trip.'
+  - 'A notebook document is proven to be a single JSON object whose top level carries nbformat, nbformat_minor, metadata, and cells -- the complete core vector round-trips through both this package and the official nbformat library, and the top-level keys are exercised directly (serialized == source proves every top-level key survives exactly).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
@@ -355,27 +375,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-121BE1F7FB462D30
   capability_id: IPYNB-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id
   - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb
+  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution
-  - tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace
   - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string
   - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list
-  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Fixtures for string vs list-of-strings
-    sources, unknown fields, and numeric edge values round-trip.'
+  - 'Version fields (nbformat, nbformat_minor) parse and round-trip via the core vector test; both multiline text representations (a single string, and a list of strings that concatenate to the logical text) parse, are exposed identically through the object API regardless of which shape was declared, and preserve round-trip fidelity without normalizing one shape into the other.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
@@ -601,27 +615,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-2B44543CA510ED94
   capability_id: IPYNB-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id
   - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb
+  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution
-  - tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace
   - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string
   - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list
   - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Fixtures for string vs list-of-strings
-    sources, unknown fields, and numeric edge values round-trip.'
+  - 'Cell source content is proven valid as either a single string or a list of strings; a dedicated test proves the two shapes are never converted into each other (a writer that normalized both to one shape would pass the two shape-specific tests in isolation but fail this one).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
@@ -1009,27 +1017,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-6DCE21F7DD6D971B
   capability_id: IPYNB-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id
+  - src/python/ipynb/src/format_factory/ipynb/model/document.py::UnknownOutput
   - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution
-  - tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace
-  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string
-  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list
-  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other
-  negative_test_selectors: []
+  - tests/python/ipynb/test_obligation_forward_compatibility.py::test_future_minor_unknown_constructs_match_official_preservation
+  - tests/python/ipynb/test_obligation_forward_compatibility.py::test_default_writer_profile_requires_explicit_upgrade_to_45
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_forward_compatibility.py::test_future_minor_remains_outside_strict_supported_profile
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Fixtures for string vs list-of-strings
-    sources, unknown fields, and numeric edge values round-trip.'
+  - 'A future nbformat 4.6 minor is preservation-only in this package: strict mode refuses it (matching "supports nbformat 4.0 through 4.5" exactly), while preservation mode round-trips an unrecognized cell type, an unrecognized output type, and unknown dictionary constructs at every level (root, cell, output) byte-for-byte -- cross-validated against the official nbformat library itself (not just self-consistent): the official library independently accepts and preserves the same unknown constructs from the same source document, proving this package does not silently claim to understand fields nbformat itself treats as opaque.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
@@ -1348,27 +1350,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-9A6A2B857F357379
   capability_id: IPYNB-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id
   - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb
+  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps
   positive_test_selectors:
+  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_unknown_notebook_metadata_is_preserved
+  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_unknown_cell_metadata_is_preserved
+  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_all_numeric_edges_survive_together_and_idempotently
+  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_negative_zero_keeps_its_sign
+  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_large_integers_do_not_degrade_to_float
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution
-  - tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace
-  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string
-  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list
-  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other
-  negative_test_selectors: []
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_non_finite_numbers_fail_closed_rather_than_emitting_invalid_json
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Fixtures for string vs list-of-strings
-    sources, unknown fields, and numeric edge values round-trip.'
+  - 'Unknown fields and vendor metadata namespaces survive round-trips at both notebook and cell level, idempotently across two passes. Numeric values are never coerced lossily: int stays int (never silently becomes float, proven at the float64-exactness boundary 2**53+1 and the u64 boundary), negative zero keeps its sign (proven with math.copysign, since == cannot detect this defect), and non-finite floats (NaN/Infinity, which are not valid JSON) fail closed at write time rather than emitting a file no conforming reader could load. Unicode content is proven exactly preserved as part of the complete core vector (a lambda character in both metadata and cell source survives serialized == source).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.
@@ -1401,27 +1401,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-A87B92BEB23E3B35
   capability_id: IPYNB-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id
+  - src/python/ipynb/src/format_factory/ipynb/model/document.py::IpynbDocument
   - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load
-  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution
   - tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace
-  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string
-  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list
-  - tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Fixtures for string vs list-of-strings
-    sources, unknown fields, and numeric edge values round-trip.'
+  - 'A Jupyter notebook document is proven to be a single JSON object with required top-level keys nbformat (int), nbformat_minor (int), metadata (object), and cells (list) -- the complete core vector validates against both this package and the official nbformat library and round-trips every top-level key exactly.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip.

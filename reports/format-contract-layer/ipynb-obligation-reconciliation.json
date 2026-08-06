@@ -66,6 +66,14 @@
       "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE: IPYNB-OUTPUT-001's 7 obligations all cited the same 3-test citation despite test_obligation_output_mime_matrix.py already being an exceptionally thorough, per-obligation-organized test file (its own docstring explicitly lists all 7 obligation ID suffixes and quotes the two declared proof-requirement dimensions verbatim). This audit maps each obligation's specific rule_text to its own precise positive and negative selectors within that file: output-type field declarations, the broad support-every-type-and-preserve-everything capability statement, MIME-bundle data/metadata structure, the four-type code-cell restriction (a fifth type is refused inside a code cell), the error ename/evalue/traceback triple, execution_count integer-or- null typing, and the full-matrix idempotence/byte-exactness tests. All seven are fully, directly provable by existing tests -- unlike the ora clusters, no clause here required a partial/honest-gap correction. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-2558D9E311DA3594, SAL-IPYNB-OBL-679A623D14CBF763, SAL-IPYNB-OBL-77C54BA16B30D129, SAL-IPYNB-OBL-B2FA0BFF8CA07D78, SAL-IPYNB-OBL-B3EFD046C72D3E4B, SAL-IPYNB-OBL-BBE5B3445AD56F9C, and SAL-IPYNB-OBL-CDB7DEE07F2275F7 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "IPYNB-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-parse-citation-audit-001.json",
+      "sha256": "05a573d1aef638ad84c2c8182f3d894dfdfa8dec90ffccf82a1f4fd66b66b754",
+      "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE: IPYNB-PARSE-001's 6 obligations all cited the same 5-test citation drawn from two different test files, under-proving several of the six distinct rule_texts (top-level structure x2, version+multiline parsing, source-shape preservation, forward compatibility, unknown-field/ numeric/Unicode fidelity). This entry names each obligation's own precise selectors: forward compatibility is proven by a dedicated file (test_obligation_forward_compatibility.py) that cross-validates against the official nbformat library itself, not just this package's own tests -- an unrecognized cell type, an unrecognized output type, and unknown dictionary constructs at every level all round-trip identically through both implementations. Numeric/Unicode fidelity is proven at real edge cases (float64-exactness boundary, u64 boundary, negative zero via copysign since == cannot detect a lost sign, NaN/Infinity failing closed at write time). No new source or test code this slice. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-06EFB1D8AC058AC6, SAL-IPYNB-OBL-121BE1F7FB462D30, SAL-IPYNB-OBL-2B44543CA510ED94, SAL-IPYNB-OBL-6DCE21F7DD6D971B, SAL-IPYNB-OBL-9A6A2B857F357379, and SAL-IPYNB-OBL-A87B92BEB23E3B35 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "IPYNB-STRUCTURE-DIFF-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -85,7 +93,7 @@
   "format_id": "ipynb",
   "input_digests": {
     "compiled_contract": "070e7486feb32cb69e64bf9bb040bb47e4671f0034835d78d081c39ae2c05903",
-    "implementation_evidence": "e4ad780c0968cb77e2a5157148f50a31c84f32e6e45e949be53827a8077ea43c",
+    "implementation_evidence": "e3c8951b24a1e92ae709cfa06a01d778e1751e1038e8abd012a2113b5b4879bc",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "04340fa8bde6468fa648cb60fce3d50876a39c187d5b9ad3b0329fe0a29850a8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -181,22 +189,18 @@
     {
       "capability_id": "IPYNB-PARSE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "A notebook document is proven to be a single JSON object whose top level carries nbformat, nbformat_minor, metadata, and cells -- the complete core vector round-trips through both this package and the official nbformat library, and the top-level keys are exercised directly (serialized == source proves every top-level key survives exactly)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-06EFB1D8AC058AC6",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
-        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
-        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string",
-        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list",
-        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other"
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace"
       ],
       "proof_requirements": {
         "negative": [
@@ -206,14 +210,12 @@
           "Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb"
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::IpynbDocument",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-CELLNAME-001",
@@ -294,22 +296,19 @@
     {
       "capability_id": "IPYNB-PARSE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Version fields (nbformat, nbformat_minor) parse and round-trip via the core vector test; both multiline text representations (a single string, and a list of strings that concatenate to the logical text) parse, are exposed identically through the object API regardless of which shape was declared, and preserve round-trip fidelity without normalizing one shape into the other."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-121BE1F7FB462D30",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
-        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
         "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string",
-        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list",
-        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other"
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list"
       ],
       "proof_requirements": {
         "negative": [
@@ -319,14 +318,12 @@
           "Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
         "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb"
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-META-001",
@@ -615,19 +612,16 @@
     {
       "capability_id": "IPYNB-PARSE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cell source content is proven valid as either a single string or a list of strings; a dedicated test proves the two shapes are never converted into each other (a writer that normalized both to one shape would pass the two shape-specific tests in isolation but fail this one)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-2B44543CA510ED94",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
-        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
         "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string",
         "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list",
         "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other"
@@ -640,14 +634,12 @@
           "Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
         "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb"
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-META-001",
@@ -1134,22 +1126,20 @@
     {
       "capability_id": "IPYNB-PARSE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "A future nbformat 4.6 minor is preservation-only in this package: strict mode refuses it (matching \"supports nbformat 4.0 through 4.5\" exactly), while preservation mode round-trips an unrecognized cell type, an unrecognized output type, and unknown dictionary constructs at every level (root, cell, output) byte-for-byte -- cross-validated against the official nbformat library itself (not just self-consistent): the official library independently accepts and preserves the same unknown constructs from the same source document, proving this package does not silently claim to understand fields nbformat itself treats as opaque."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_forward_compatibility.py::test_future_minor_remains_outside_strict_supported_profile"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-6DCE21F7DD6D971B",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
-        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
-        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string",
-        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list",
-        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other"
+        "tests/python/ipynb/test_obligation_forward_compatibility.py::test_future_minor_unknown_constructs_match_official_preservation",
+        "tests/python/ipynb/test_obligation_forward_compatibility.py::test_default_writer_profile_requires_explicit_upgrade_to_45"
       ],
       "proof_requirements": {
         "negative": [
@@ -1159,14 +1149,12 @@
           "Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb"
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::UnknownOutput",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-ID-001",
@@ -1567,22 +1555,24 @@
     {
       "capability_id": "IPYNB-PARSE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Unknown fields and vendor metadata namespaces survive round-trips at both notebook and cell level, idempotently across two passes. Numeric values are never coerced lossily: int stays int (never silently becomes float, proven at the float64-exactness boundary 2**53+1 and the u64 boundary), negative zero keeps its sign (proven with math.copysign, since == cannot detect this defect), and non-finite floats (NaN/Infinity, which are not valid JSON) fail closed at write time rather than emitting a file no conforming reader could load. Unicode content is proven exactly preserved as part of the complete core vector (a lambda character in both metadata and cell source survives serialized == source)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_non_finite_numbers_fail_closed_rather_than_emitting_invalid_json"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-9A6A2B857F357379",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
-        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
-        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string",
-        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list",
-        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other"
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_unknown_notebook_metadata_is_preserved",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_unknown_cell_metadata_is_preserved",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_all_numeric_edges_survive_together_and_idempotently",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_negative_zero_keeps_its_sign",
+        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_large_integers_do_not_degrade_to_float",
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution"
       ],
       "proof_requirements": {
         "negative": [
@@ -1592,14 +1582,12 @@
           "Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
         "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb"
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-MODEL-001",
@@ -1638,22 +1626,18 @@
     {
       "capability_id": "IPYNB-PARSE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "A Jupyter notebook document is proven to be a single JSON object with required top-level keys nbformat (int), nbformat_minor (int), metadata (object), and cells (list) -- the complete core vector validates against both this package and the official nbformat library and round-trips every top-level key exactly."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-A87B92BEB23E3B35",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_nbformat_core.py::test_complete_core_vector_validates_and_roundtrips_without_execution",
-        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace",
-        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_string_source_is_valid_and_preserved_as_a_string",
-        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_list_source_is_valid_and_preserved_as_a_list",
-        "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py::test_the_two_shapes_are_not_converted_into_each_other"
+        "tests/python/ipynb/test_obligation_nbformat_core.py::test_core_proof_uses_installed_production_namespace"
       ],
       "proof_requirements": {
         "negative": [
@@ -1663,14 +1647,12 @@
           "Fixtures for string vs list-of-strings sources, unknown fields, and numeric edge values round-trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
-        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load_ipynb"
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::IpynbDocument",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-EXPORT-001",
@@ -2586,6 +2568,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-export-001.json": "53d61ffd27a6d7f9b7b1fee61a02de20972f1d98a3baf1849360f7c750153ebc",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-merge-001.json": "f12e54e0372e13214347eb90ccb68f87c8abd19f95df34465dc6c3cd2a83804d",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-output-citation-audit-001.json": "f04a02748969db3a18e6289e53513a6c13fe2eef0ea03a49f630ee24b39a3e95",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-parse-citation-audit-001.json": "05a573d1aef638ad84c2c8182f3d894dfdfa8dec90ffccf82a1f4fd66b66b754",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-structure-diff-001.json": "4ab6abdf71526d76d0d213be161888e759169470d15bea9839995b1009524004",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-write-001.json": "2e1e1d5493518b7330f43d91639efa5839d91e11b4a13ba32f5b83abfd125675",
     "src/python/ipynb/src/format_factory/ipynb/adapters/execute.py": "5900091eb00d9009b429055a46b703803c491cb861180f0baca6777c6fd9e87d",
@@ -2615,6 +2598,7 @@
     "tests/python/ipynb/test_obligation_corpus_integrity.py": "18e1f870e1f2ae1ccd4c9d4e5c35929f7cf3168b2a4f4d0017c88f83d48cc418",
     "tests/python/ipynb/test_obligation_execution_adapter.py": "42f1f95620fa741a01ad17896091bc0d6c5789420405b1614fea982e25c7a510",
     "tests/python/ipynb/test_obligation_export_adapter.py": "56cee7bffd675815c99c9539fde17ca1290f80b426a9201398f6098652e497ba",
+    "tests/python/ipynb/test_obligation_forward_compatibility.py": "81897b973ce37ca98e23177b0c5eee62fa29e9d19f38702b28635f3f55ffe295",
     "tests/python/ipynb/test_obligation_lifecycle_modes.py": "d42d19938843e94ec7743cd606c3bee1b704b534a98ce0fd72e4763126585651",
     "tests/python/ipynb/test_obligation_metadata_adapters.py": "71d2436bcba090d36fd9a8b1ca5a8109e08fb2d095b0408b29d7e871d8650056",
     "tests/python/ipynb/test_obligation_nbformat_core.py": "318949e9652c41f2276d84abb296b43752d7a0097c85c412d8c84f6e8730cef0",
@@ -2634,11 +2618,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 20,
-      "partial": 48
+      "implemented": 26,
+      "partial": 42
     },
     "total": 68,
-    "unresolved": 48
+    "unresolved": 42
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

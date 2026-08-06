@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-parse-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T20:20:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_PARSE_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "IPYNB-PARSE-001's 6 obligations shared one 5-test citation drawn from two test files, proving some but not all of the six genuinely distinct rule_texts each obligation names (top-level structure stated twice, version+multiline-text parsing, source-shape non-conversion, forward compatibility, and unknown-field/numeric/Unicode fidelity). Second ipynb citation-audit tick, following the pattern first confirmed productive in IPYNB-OUTPUT-001 and across eight ora ticks.",
+    "obligation_targeted": "SAL-IPYNB-OBL-06EFB1D8AC058AC6, SAL-IPYNB-OBL-121BE1F7FB462D30, SAL-IPYNB-OBL-2B44543CA510ED94, SAL-IPYNB-OBL-6DCE21F7DD6D971B, SAL-IPYNB-OBL-9A6A2B857F357379, SAL-IPYNB-OBL-A87B92BEB23E3B35",
+    "acceptance_evidence": "tests/python/ipynb/test_obligation_nbformat_core.py, test_obligation_parse_source_and_numeric_fidelity.py, test_obligation_forward_compatibility.py (all pre-existing; no new tests this slice)",
+    "regression_tier": "full IPYNB package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Pulled all 6 IPYNB-PARSE-001 rule_texts. Recognized two (06EFB1D8AC058AC6, A87B92BEB23E3B35) as near-identical within-capability restatements of the same top-level-JSON-object-structure fact, both cited with the identical core-vector test evidence rather than treated as cross-capability duplicates (they are already the same capability).",
+    "2. Read test_obligation_parse_source_and_numeric_fidelity.py in full (its own docstring explicitly names the three declared proof dimensions: string-vs-list sources, unknown fields, numeric edge values) and mapped source-shape preservation, version+multiline parsing, and unknown-field/numeric/Unicode fidelity to their precise tests.",
+    "3. Searched specifically for forward-compatibility test coverage (relaxed additionalProperties, unrecognized cell/output types permitted for future minors) and found a dedicated file, test_obligation_forward_compatibility.py, not part of the originally-cited 5-test set at all. Read it in full: it builds a synthetic nbformat 4.6 notebook with an unrecognized cell type and unrecognized output type, then proves BOTH this package (preservation mode) AND the official nbformat library independently accept and preserve the same unknown constructs from the same source -- cross-validation against a real external implementation, not just self-consistency.",
+    "4. Checked Unicode fidelity specifically (the numeric-fidelity test file's docstring only names 'numeric edge values' as one of its three dimensions, not Unicode): found the core-vector fixture in test_obligation_nbformat_core.py includes a lambda character in both metadata and cell source, and the test asserts serialized == source, proving Unicode content round-trips exactly as part of that fixture.",
+    "5. Ran every candidate test directly before citing: all already passing, no changes needed.",
+    "6. Applied all 6 evidence edits via the same obligation_id-delimited text-block script pattern used across eight ora ticks and the prior ipynb tick, extracting the actual proof_requirements boilerplate from an untouched sibling programmatically. Ran the reconciler: clean pass, no errors, first attempt. Ran the full ipynb suite to confirm zero regressions (no source or test files changed this slice) -- unchanged from baseline."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 6,
+    "obligations_total_for_format": 68,
+    "ipynb_remains": "UNASSESSED",
+    "oracle": "The forward-compatibility obligation's evidence is unusually strong for this session: cross-validated against the real nbformat reference library, not just this package's own self-consistent tests. The other five remain SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_all_6_moved_cleanly": "All six rule_texts were fully, directly provable once mapped individually -- no clause required a partial/honest-gap correction, matching IPYNB-OUTPUT-001's pattern rather than ora's frequent composite-op-style gaps. This is the second consecutive ipynb citation-audit cluster to close cleanly."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
