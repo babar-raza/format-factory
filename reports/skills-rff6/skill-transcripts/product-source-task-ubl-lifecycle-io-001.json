@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-lifecycle-io-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T11:45:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_LIFECYCLE_IO_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "UBL-LIFECYCLE-001's six obligations govern load/save/validate/mode/version basics. Four of the six (load path/stream/bytes; save path/stream/bytes with own-loader acceptance; deterministic serialization; validate as a first-class callable) have fully complete, correct production source (codec/reader/reader.py's load()/loads(), codec/writer/writer.py's dump()/dumps(), validation/validator.py's validate()) -- but the shipped-namespace test suite only proved bytes-form load/save (test_production_namespace.py's 91-root round-trip) plus one incidental path-form load (a parse-error negative test), with no explicit stream-form load/save test, no explicit determinism test, and no dedicated validate()-as-callable test. The evidence rows for all four obligations cited the same three generic selectors with no negative selectors and the boilerplate placeholder.",
+    "obligation_targeted": "SAL-UBL-OBL-020F06E51DE6AB65, SAL-UBL-OBL-6A1C725166031BD0, SAL-UBL-OBL-6B8BC440C33EE3B5, SAL-UBL-OBL-F3EF323A48F1EB8A",
+    "acceptance_evidence": "tests/python/ubl/test_obligation_lifecycle_io.py",
+    "regression_tier": "full UBL package suite (tests/python/ubl)"
+  },
+  "execution_steps": [
+    "1. Surveyed ubl's UBL-LIFECYCLE-001 (6 obligations) as the next sweep target, ubl being the sole format still at only 2 implemented. Read codec/reader/reader.py's _read_source (path/stream/bytes dispatch already implemented for load()), codec/writer/writer.py's dump()/dumps() (path/stream/bytes already implemented, deterministic tree walk with no unordered-collection iteration), and validation/validator.py's validate() (already returns a structured ValidationReport, never raises for a semantic finding).",
+    "2. Found the other two of six obligations under this capability are genuine, unbuilt gaps, not evidence gaps: mode='preservation' is accepted by loads()/load() but has zero effect on parsing (no distinct tolerant/recovery behavior, no recovery_actions field) -- the obligation requiring 'a tolerant read mode that recovers where the format permits, with recovery actions reported' is not met. Separately, no model-level accessor exposes UBLVersionID as a detected-vs-declared pair (validator.py checks it inline during validation only, hardcoded to require exactly '2.3'); the obligation requiring 'detected format version and declared version separately' is not met. Both left untouched this slice -- deliberately not forced.",
+    "3. Confirmed via grep that test_ubl_roundtrip.py imports from the shadow `ubl` package, not `format_factory.ubl` -- its extensive round-trip coverage does not count as shipped-namespace evidence per this session's established discipline.",
+    "4. Wrote tests/python/ubl/test_obligation_lifecycle_io.py (15 new tests, zero source changes): load() from path/stream/bytes plus loads() from bytes, cross-form agreement; dump() to path/stream plus dumps() to bytes, each form's output proven accepted by the library's own load()/loads() and re-validated; three separate determinism proofs (repeated dumps() calls, repeated dump()-to-separate-files, and byte-identical output across a load-save-load cycle); and three validate()-as-callable tests (structured report not exception, a semantic finding reported not raised, callable independently of load/dump).",
+    "5. All 15 passed on first run. ruff clean. Re-ran the full UBL suite: 539 passed (524 baseline + 15 new, 0 regressions).",
+    "6. Corrected all four obligations' source_symbols/positive/negative selectors to their own precise subset and promoted all four to implemented, citing both the new tests and the pre-existing relevant test_production_namespace.py selectors where applicable."
+  ],
+  "allowed_files": [
+    "tests/python/ubl/test_obligation_lifecycle_io.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ubl/test_obligation_lifecycle_io.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_lifecycle_io.py -v -- 15 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 539 passed (524 baseline + 15 new, 0 regressions)",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_lifecycle_io.py -- All checks passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 4,
+    "obligations_total_for_format": 194,
+    "ubl_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against an external UBL library. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_only_four_of_six_lifecycle_obligations_promoted": "The two remaining obligations (tolerant/recovery read mode with reported recovery actions; detected-vs-declared version exposed separately) are genuine, unbuilt product gaps -- mode='preservation' currently has no distinct effect from 'strict', and no model-level version accessor exists. Both require real new source, not test coverage, and were left untouched rather than forced or misrepresented as tested."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

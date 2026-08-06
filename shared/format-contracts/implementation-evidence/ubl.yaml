@@ -62,30 +62,46 @@ execution_evidence:
     UBL query implementation. Covers SAL-UBL-OBL-31F4F60BFB40D4DE and
     SAL-UBL-OBL-A11BEEAF8604759A only; it supports no other obligation and
     promotes no product state.
+- evidence_id: UBL-LIFECYCLE-IO-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-lifecycle-io-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact positive
+    and negative test selectors proving load() across path/stream/bytes,
+    dump()/dumps() across path/stream/bytes with the library's own loader
+    accepting every save form's output, deterministic serialization
+    (repeated calls, separate destinations, and a load-save-load cycle all
+    byte-identical), and validate() as a callable returning a structured
+    report rather than raising. SELF-CONSISTENT format_factory-only
+    evidence per the execution-recovery directive's GAP-008 rule, not
+    VERIFIED. Covers SAL-UBL-OBL-020F06E51DE6AB65,
+    SAL-UBL-OBL-6A1C725166031BD0, SAL-UBL-OBL-6B8BC440C33EE3B5, and
+    SAL-UBL-OBL-F3EF323A48F1EB8A only; it supports no other obligation and
+    promotes no product state.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
   - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps
   - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dump
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::semantic_sha256
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
+  - tests/python/ubl/test_obligation_lifecycle_io.py::test_dump_to_a_filesystem_path_and_reload
+  - tests/python/ubl/test_obligation_lifecycle_io.py::test_dump_to_a_writable_stream_and_reload
+  - tests/python/ubl/test_obligation_lifecycle_io.py::test_dumps_to_bytes_and_reload
+  - tests/python/ubl/test_obligation_lifecycle_io.py::test_the_librarys_own_loader_accepts_every_save_forms_output
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-LIFECYCLE-IO-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'dump() writes to a filesystem path or a writable binary stream; dumps() serializes to bytes.
+    Each of the three save forms'' output is proven accepted by load() (or loads()) and re-validated,
+    matching the obligation''s own wording that the library''s own loader must accept the output -- not
+    merely that the output is well-formed XML in the abstract.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -2822,27 +2838,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-6A1C725166031BD0
   capability_id: UBL-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dump
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::semantic_sha256
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
+  - tests/python/ubl/test_obligation_lifecycle_io.py::test_validate_returns_a_structured_report_not_an_exception
+  - tests/python/ubl/test_obligation_lifecycle_io.py::test_validate_is_callable_independently_of_load_or_dump
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  negative_test_selectors: []
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_lifecycle_io.py::test_validate_reports_a_diagnostic_rather_than_raising_for_a_semantic_issue
+  - tests/python/ubl/test_production_namespace.py::test_wrong_namespace_and_preview_profile_fail_closed
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-LIFECYCLE-IO-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'validate() is a plain callable taking an already-in-memory UblDocument and returning a
+    ValidationReport (a tuple of Diagnostic records plus an is_valid property) -- a semantic problem
+    (e.g. an unsupported profile) is a reported finding a caller reads from the result, never an
+    exception raised out of validate() itself. It is invocable independently of load()/dump(), on any
+    document a caller already holds, matching "not only as exceptions raised during parsing."'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -2900,27 +2915,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-6B8BC440C33EE3B5
   capability_id: UBL-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
   - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dump
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::semantic_sha256
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
+  - tests/python/ubl/test_obligation_lifecycle_io.py::test_load_from_a_filesystem_path
+  - tests/python/ubl/test_obligation_lifecycle_io.py::test_load_from_a_readable_stream
+  - tests/python/ubl/test_obligation_lifecycle_io.py::test_load_from_in_memory_bytes
+  - tests/python/ubl/test_obligation_lifecycle_io.py::test_loads_from_in_memory_bytes
+  - tests/python/ubl/test_obligation_lifecycle_io.py::test_all_three_load_forms_agree
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-LIFECYCLE-IO-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'load() accepts a filesystem path, a readable binary stream, or in-memory bytes (via _read_source''s
+    three-way dispatch); loads() accepts in-memory bytes or str directly. All forms return the same
+    root document/model type for identical input, proven by comparing the resulting XmlNode trees for
+    equality across load forms.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -5945,27 +5960,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-F3EF323A48F1EB8A
   capability_id: UBL-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
-  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
   - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps
   - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dump
   - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::semantic_sha256
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_lifecycle_io.py::test_repeated_dumps_calls_on_one_unchanged_document_are_byte_identical
+  - tests/python/ubl/test_obligation_lifecycle_io.py::test_repeated_dump_to_path_calls_are_byte_identical
+  - tests/python/ubl/test_obligation_lifecycle_io.py::test_a_freshly_reloaded_document_serializes_identically_to_the_original
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-LIFECYCLE-IO-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'dumps()/dump() walk a fixed, ordered XmlNode tree (namespace prefixes registered once, children in
+    declaration order) with no unordered-collection iteration in the serialization path, so repeated
+    calls on one unchanged document -- whether to bytes, or independently to two separate files -- are
+    byte-identical. Determinism holds across a load-save-load cycle too, not merely within one in-memory
+    object: a freshly reloaded document serializes to the exact same bytes as the original, which is
+    what makes semantic_sha256''s edit-tracking digest trustworthy.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
