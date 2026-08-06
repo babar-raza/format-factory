@@ -1,0 +1,46 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-safetensors-header-duplicate-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T14:35:00Z",
+  "inputs": {
+    "format_id": "safetensors",
+    "task_id": "TC_FF6_SAFETENSORS_HEADER_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "SAFETENSORS-HEADER-001's 16 obligations are near-duplicate framings (README-sourced and tensor.rs-sourced) of the exact same wire-format facts already proven and closed under SAFETENSORS-PRESERVE-001 this session (commit 46833571): 8-byte LE prefix, UTF-8 JSON header, non-object roots rejected, __metadata__ reservation/typing, 100M-byte header ceiling, checked shape/element-bit overflow, sub-byte alignment, contiguous/non-overlapping/hole-free offsets, no trailing bytes, whitespace-tolerant-but-semantic-only preservation, plus two obligations broader than any single PRESERVE-001 obligation (per-tensor-entry dtype/shape/offsets as a combined statement, and a catch-all 'reject duplicate keys/malformed UTF-8-JSON/invalid metadata/truncated metadata/header-limit' statement). All 16 carried an identical generic four-symbol public-API citation (read_header/loads/load/safe_open) with the same boilerplate missing_behavior text reused verbatim across every obligation.",
+    "obligation_targeted": "SAL-SAFETENSORS-OBL-0DEA50E8E2B34729, SAL-SAFETENSORS-OBL-12CE1029701DCBC7, SAL-SAFETENSORS-OBL-377A9F5A17518F30, SAL-SAFETENSORS-OBL-3D1240179879C5E9, SAL-SAFETENSORS-OBL-52673B6F1B81CF00, SAL-SAFETENSORS-OBL-6EFF7A75CBD532C3, SAL-SAFETENSORS-OBL-702CE38C3249FB41, SAL-SAFETENSORS-OBL-833E2C047D1E5C91, SAL-SAFETENSORS-OBL-B68C9D6BA2E9CD7A, SAL-SAFETENSORS-OBL-BE8662FE1EBACCB0, SAL-SAFETENSORS-OBL-CDE64072C971930F, SAL-SAFETENSORS-OBL-E2162E342C223666, SAL-SAFETENSORS-OBL-E660EF82CD4D2393, SAL-SAFETENSORS-OBL-E6746D33069218B9, SAL-SAFETENSORS-OBL-ED74F75166FC6AFF, SAL-SAFETENSORS-OBL-FDDD4B0E4F1CD81F",
+    "acceptance_evidence": "Same test surface as SAFETENSORS-PRESERVE-001's closure: tests/python/safetensors/test_reference_header_layout_lazy_slice.py, test_obligation_invalid_headers.py, test_obligation_integer_overflow.py, test_obligation_offset_layout.py, test_obligation_prefix_encoding.py, test_obligation_header_whitespace.py, test_obligation_metadata_preservation.py, test_obligation_validation_contract.py, test_production_namespace.py",
+    "regression_tier": "full SafeTensors package suite (tests/python/safetensors)"
+  },
+  "execution_steps": [
+    "1. After closing SAFETENSORS-PRESERVE-001 in the prior tick, surveyed the next safetensors capability and found SAFETENSORS-HEADER-001's 16 obligations' rule_text near-identical in substance to what had just been proven, differing only in which spec source (README vs tensor.rs) each SAL fact was extracted from -- confirming these are genuine duplicate encodings of the same underlying facts, not distinct unbuilt capabilities.",
+    "2. Compared each HEADER-001 obligation's rule_text against the 12 PRESERVE-001 obligations' rule_text one by one; 12 of the 16 matched an existing PRESERVE-001 obligation's claim almost verbatim (allowing for source-citation-only differences), 2 were broader combined statements (per-tensor-entry dtype/shape/offsets; a catch-all reject-list), and 2 were narrower single-clause restatements of the wire-format layout (exact prefix framing, fixed-width-prefix-plus-declared-bytes framing).",
+    "3. Zero new production code or tests were needed for 14 of the 16 (the direct duplicates and narrower restatements) -- reused the exact source_symbols and test selectors already established for the matching PRESERVE-001 obligation, with implemented_behavior text explicitly cross-referencing which PRESERVE-001 obligation ID proves the same fact, so the reconciliation record documents the duplication honestly rather than presenting it as independently-audited new work.",
+    "4. For the two broader/combined obligations (SAL-SAFETENSORS-OBL-702CE38C3249FB41: dtype/shape/offsets as one statement; SAL-SAFETENSORS-OBL-BE8662FE1EBACCB0: the catch-all reject-list), verified each named individual claim within the combined statement is covered by an existing test -- dtype enumeration via test_obligation_validation_contract.py's SAFETENSORS_DTYPE case, shape non-negativity via SAFETENSORS_SHAPE/test_negative_dimension_is_rejected, and the catch-all's five distinct failure modes (duplicate key, malformed UTF-8, malformed JSON, non-string metadata, header limit) all appear as distinct parametrized cases in the same rule-specific-diagnostic-code matrix test plus two supplementary targeted tests.",
+    "5. Ran every candidate test directly before citing: 401 tests across the full safetensors suite (unchanged from the prior tick, 0 new source or test files this slice). Promoted all 16 to implemented, fully closing SAFETENSORS-HEADER-001 -- safetensors's second fully-closed capability."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/safetensors.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/safetensors.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/safetensors/ -q -- 401 passed, unchanged from the prior (SAFETENSORS-PRESERVE-001) tick, 0 source or test changes this slice"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 16,
+    "obligations_total_for_format": 86,
+    "safetensors_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against the official Rust safetensors implementation for these specific negative fixtures. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_no_new_production_source_or_tests": "Every claim in all 16 obligations was already proven by the same test surface closed under SAFETENSORS-PRESERVE-001 in the immediately prior tick -- this slice is a pure cross-capability citation correction, explicitly documented as such in each obligation's implemented_behavior text rather than presented as independently new verification."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
