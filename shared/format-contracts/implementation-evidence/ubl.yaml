@@ -38,7 +38,30 @@ execution_evidence:
 
     2026-08-06 (UBL-QUERY-001): model/query.py is new source, real and tested, not a remap of an existing
     stub. ubl suite: 488 -> 507 passed, ruff and mypy clean. Obligations: 163 partial/31 missing -> 165
-    partial/29 missing.'
+    partial/29 missing.
+
+    2026-08-06 (later still): UBL''s first `implemented` promotions. UBL-QUERY-001''s two obligations
+    both required "indexed and linear scans agree" -- proof that DocumentIndex''s pre-built dict lookups
+    return exactly what an independent, freshly-written linear scan finds, not proof the module merely
+    exists. Added tests/python/ubl/test_obligation_query_index_agreement.py (10 new tests, zero source
+    changes): a from-scratch linear-scan implementation (different traversal shape, no shared code with
+    DocumentIndex._walk) cross-checked against by_qname/by_local_name/by_id/by_business_role across two
+    structurally distinct fixtures. ubl suite: 514 -> 524 passed, ruff clean. Obligations: 182 partial/12
+    missing -> 180 partial/12 missing, 2 implemented (was 0).'
+- evidence_id: UBL-QUERY-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-query-index-agreement-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact positive
+    and negative test selectors proving DocumentIndex's by_qname/by_local_name/by_id/by_business_role
+    results agree with an independently written linear scan over the same
+    tree, across two structurally distinct fixtures. SELF-CONSISTENT
+    format_factory-only evidence per the execution-recovery directive's
+    GAP-008 rule, not VERIFIED -- not cross-checked against an independent
+    UBL query implementation. Covers SAL-UBL-OBL-31F4F60BFB40D4DE and
+    SAL-UBL-OBL-A11BEEAF8604759A only; it supports no other obligation and
+    promotes no product state.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -1461,25 +1484,37 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-31F4F60BFB40D4DE
   capability_id: UBL-QUERY-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
-  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
   - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
   - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
   positive_test_selectors:
   - tests/python/ubl/test_obligation_document_query.py::test_by_qname_finds_every_matching_element_anywhere_in_the_tree
   - tests/python/ubl/test_obligation_document_query.py::test_by_local_name_matches_regardless_of_namespace
+  - tests/python/ubl/test_obligation_document_query.py::test_by_id_finds_a_node_whose_own_id_child_matches
+  - tests/python/ubl/test_obligation_document_query.py::test_matches_carry_a_path_from_the_root
+  - tests/python/ubl/test_obligation_document_query.py::test_paths_distinguish_two_matches_at_different_positions
+  - tests/python/ubl/test_obligation_document_query.py::test_index_reuse_does_not_require_rewalking_the_tree
+  - tests/python/ubl/test_obligation_query_index_agreement.py::test_by_qname_agrees_with_a_linear_scan
+  - tests/python/ubl/test_obligation_query_index_agreement.py::test_by_local_name_agrees_with_a_linear_scan
+  - tests/python/ubl/test_obligation_query_index_agreement.py::test_by_id_agrees_with_a_linear_scan
+  - tests/python/ubl/test_obligation_query_index_agreement.py::test_the_linear_scan_itself_visits_every_node_exactly_once
+  negative_test_selectors:
   - tests/python/ubl/test_obligation_document_query.py::test_by_qname_returns_empty_for_a_component_not_present
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_document_query.py::test_by_id_returns_empty_for_an_identifier_not_present
+  - tests/python/ubl/test_obligation_query_index_agreement.py::test_a_query_for_an_absent_identifier_agrees_on_emptiness
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-QUERY-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Query result paths verified
-    against fixtures; indexed and linear scans agree.'
+  - 'DocumentIndex builds a read-only index in one tree walk (by_qname/by_local_name/by_id/by_business_role),
+    each match carrying a path from the root that disambiguates same-named siblings by position. A
+    dedicated cross-check (test_obligation_query_index_agreement.py) proves every one of these indexed
+    lookups returns exactly what an independently written linear scan over the same tree finds, across
+    two structurally distinct fixtures -- the required proof this obligation names by name (''indexed
+    and linear scans agree'').'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Query result paths verified against fixtures; indexed and linear scans agree.
@@ -4097,25 +4132,37 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-A11BEEAF8604759A
   capability_id: UBL-QUERY-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch
-  - src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId
   - src/python/ubl/src/format_factory/ubl/model/query.py::business_role
   - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
   positive_test_selectors:
-  - tests/python/ubl/test_obligation_document_query.py::test_by_qname_finds_every_matching_element_anywhere_in_the_tree
-  - tests/python/ubl/test_obligation_document_query.py::test_by_local_name_matches_regardless_of_namespace
-  - tests/python/ubl/test_obligation_document_query.py::test_by_qname_returns_empty_for_a_component_not_present
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_document_query.py::test_business_role_classifies_party_shaped_components
+  - tests/python/ubl/test_obligation_document_query.py::test_business_role_classifies_item
+  - tests/python/ubl/test_obligation_document_query.py::test_business_role_classifies_line
+  - tests/python/ubl/test_obligation_document_query.py::test_business_role_classifies_document_reference
+  - tests/python/ubl/test_obligation_document_query.py::test_by_business_role_finds_all_parties
+  - tests/python/ubl/test_obligation_document_query.py::test_by_business_role_finds_all_lines
+  - tests/python/ubl/test_obligation_document_query.py::test_by_business_role_finds_all_document_references
+  - tests/python/ubl/test_obligation_document_query.py::test_finds_every_line_referencing_an_item_identifier
+  - tests/python/ubl/test_obligation_document_query.py::test_index_reuse_does_not_require_rewalking_the_tree
+  - tests/python/ubl/test_obligation_query_index_agreement.py::test_by_business_role_agrees_with_a_linear_scan
+  - tests/python/ubl/test_obligation_query_index_agreement.py::test_the_linear_scan_itself_visits_every_node_exactly_once
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_document_query.py::test_business_role_is_none_for_an_unrelated_component
+  - tests/python/ubl/test_obligation_document_query.py::test_lines_referencing_item_id_returns_empty_for_an_unused_item
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-QUERY-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Query result paths verified
-    against fixtures; indexed and linear scans agree.'
+  - 'business_role classifies every component by the four business roles this obligation names -- party,
+    item, line, document reference -- by local-name suffix with an own-identifier guard against
+    wrapper-only containers (see business_role''s own docstring for why cac:BillingReference is
+    correctly excluded). by_business_role and lines_referencing_item_id answer the obligation''s own
+    worked example directly. test_obligation_query_index_agreement.py proves by_business_role''s indexed
+    results agree with an independent linear scan across two structurally distinct fixtures.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Query result paths verified against fixtures; indexed and linear scans agree.

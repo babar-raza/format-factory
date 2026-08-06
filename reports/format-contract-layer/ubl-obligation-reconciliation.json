@@ -7,13 +7,21 @@
       "granularity": "suite",
       "path": "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ubl-001.json",
       "sha256": "1e7b783cd545d3fcc56de100cfbd37c2d62ad9bf226093f940808de488756200",
-      "truth_boundary": "OVERSTATED -- READ GAP-022 BEFORE TRUSTING ANY `partial` HERE. The whole ubl package is 1,480 LOC, of which model/root_types.py is 652 comprising 91 five-line stubs that carry only a ROOT_NAME constant. Searching the package for the typed value components its obligations name -- AmountType, currencyID, CodeType, listID, LegalMonetaryTotal, TaxTotal, InvoiceLine -- returns nothing, and validator.py states that full schema and cardinality validation remains a mandatory open obligation. A large share of the 137 `partial` entries below therefore assert implemented behavior that does not exist. They were produced by mapping capabilities to modules that EXIST; the builder cannot check that a module IMPLEMENTS its obligation. Correcting them needs per-obligation judgement, not a wholesale demotion.\nSuite-level and NON-PROMOTING. The ubl suite is 334 passed with no failures, but that figure is dominated by the ten shadow-package files; only test_production_namespace.py exercises the shipped namespace. Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most.\n2026-08-05 (post events 74-82 and this session's UBL-CALC-001 slice): the OVERSTATED framing above is no longer the current state of the package -- model/aggregates.py, model/values.py, model/temporal.py and model/charges.py now hold real typed components (InvoiceLine, Item, TaxTotal/TaxSubtotal, LegalMonetaryTotal, Amount/Quantity with Rounding policies, UblDate/UblTime/ UblDateTime, AllowanceCharge/Price/PaymentMeans) that did not exist when this truth_boundary was written, and reconcile_invoice() now performs tolerance- aware line-extension, tax-subtotal and allowance/charge reconciliation. This text is preserved as the historical record of the overstatement GAP-022 was written to catch, not as a current assessment -- see the capabilities section below and the notes above for what is actually mapped today. ubl suite: 488 passed.\n2026-08-06: UBL-QUERY-001 (model/query.py, DocumentIndex) and UBL-REF-001 (DocumentIndex.duplicate_line_ids()) add genuinely new source and tests since the 2026-08-05 addendum above. ubl suite: 507 -> 514 passed, ruff clean, mypy clean. ubl obligations: 165 partial/29 missing -> 182 partial/12 missing. No obligation reaches `implemented`.\n2026-08-06 (UBL-QUERY-001): model/query.py is new source, real and tested, not a remap of an existing stub. ubl suite: 488 -> 507 passed, ruff and mypy clean. Obligations: 163 partial/31 missing -> 165 partial/29 missing."
+      "truth_boundary": "OVERSTATED -- READ GAP-022 BEFORE TRUSTING ANY `partial` HERE. The whole ubl package is 1,480 LOC, of which model/root_types.py is 652 comprising 91 five-line stubs that carry only a ROOT_NAME constant. Searching the package for the typed value components its obligations name -- AmountType, currencyID, CodeType, listID, LegalMonetaryTotal, TaxTotal, InvoiceLine -- returns nothing, and validator.py states that full schema and cardinality validation remains a mandatory open obligation. A large share of the 137 `partial` entries below therefore assert implemented behavior that does not exist. They were produced by mapping capabilities to modules that EXIST; the builder cannot check that a module IMPLEMENTS its obligation. Correcting them needs per-obligation judgement, not a wholesale demotion.\nSuite-level and NON-PROMOTING. The ubl suite is 334 passed with no failures, but that figure is dominated by the ten shadow-package files; only test_production_namespace.py exercises the shipped namespace. Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most.\n2026-08-05 (post events 74-82 and this session's UBL-CALC-001 slice): the OVERSTATED framing above is no longer the current state of the package -- model/aggregates.py, model/values.py, model/temporal.py and model/charges.py now hold real typed components (InvoiceLine, Item, TaxTotal/TaxSubtotal, LegalMonetaryTotal, Amount/Quantity with Rounding policies, UblDate/UblTime/ UblDateTime, AllowanceCharge/Price/PaymentMeans) that did not exist when this truth_boundary was written, and reconcile_invoice() now performs tolerance- aware line-extension, tax-subtotal and allowance/charge reconciliation. This text is preserved as the historical record of the overstatement GAP-022 was written to catch, not as a current assessment -- see the capabilities section below and the notes above for what is actually mapped today. ubl suite: 488 passed.\n2026-08-06: UBL-QUERY-001 (model/query.py, DocumentIndex) and UBL-REF-001 (DocumentIndex.duplicate_line_ids()) add genuinely new source and tests since the 2026-08-05 addendum above. ubl suite: 507 -> 514 passed, ruff clean, mypy clean. ubl obligations: 165 partial/29 missing -> 182 partial/12 missing. No obligation reaches `implemented`.\n2026-08-06 (UBL-QUERY-001): model/query.py is new source, real and tested, not a remap of an existing stub. ubl suite: 488 -> 507 passed, ruff and mypy clean. Obligations: 163 partial/31 missing -> 165 partial/29 missing.\n2026-08-06 (later still): UBL's first `implemented` promotions. UBL-QUERY-001's two obligations both required \"indexed and linear scans agree\" -- proof that DocumentIndex's pre-built dict lookups return exactly what an independent, freshly-written linear scan finds, not proof the module merely exists. Added tests/python/ubl/test_obligation_query_index_agreement.py (10 new tests, zero source changes): a from-scratch linear-scan implementation (different traversal shape, no shared code with DocumentIndex._walk) cross-checked against by_qname/by_local_name/by_id/by_business_role across two structurally distinct fixtures. ubl suite: 514 -> 524 passed, ruff clean. Obligations: 182 partial/12 missing -> 180 partial/12 missing, 2 implemented (was 0)."
+    },
+    {
+      "evidence_id": "UBL-QUERY-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-query-index-agreement-001.json",
+      "sha256": "5dae056fd7ab94b20a63eca83daf6843420a30132ee2875991917e251d7a85a3",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact positive and negative test selectors proving DocumentIndex's by_qname/by_local_name/by_id/by_business_role results agree with an independently written linear scan over the same tree, across two structurally distinct fixtures. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED -- not cross-checked against an independent UBL query implementation. Covers SAL-UBL-OBL-31F4F60BFB40D4DE and SAL-UBL-OBL-A11BEEAF8604759A only; it supports no other obligation and promotes no product state."
     }
   ],
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "2972b1a1590e2b7b9347905ef9f79b7e2bf45480667c158b46071c1279e5f325",
+    "implementation_evidence": "4b99ccbb058e5c5d38007c545a5f0462191f4df57224a1c58ea312a788316f40",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1810,20 +1818,30 @@
     {
       "capability_id": "UBL-QUERY-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-QUERY-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "DocumentIndex builds a read-only index in one tree walk (by_qname/by_local_name/by_id/by_business_role), each match carrying a path from the root that disambiguates same-named siblings by position. A dedicated cross-check (test_obligation_query_index_agreement.py) proves every one of these indexed lookups returns exactly what an independently written linear scan over the same tree finds, across two structurally distinct fixtures -- the required proof this obligation names by name ('indexed and linear scans agree')."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Query result paths verified against fixtures; indexed and linear scans agree."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_document_query.py::test_by_qname_returns_empty_for_a_component_not_present",
+        "tests/python/ubl/test_obligation_document_query.py::test_by_id_returns_empty_for_an_identifier_not_present",
+        "tests/python/ubl/test_obligation_query_index_agreement.py::test_a_query_for_an_absent_identifier_agrees_on_emptiness"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-31F4F60BFB40D4DE",
       "positive_test_selectors": [
         "tests/python/ubl/test_obligation_document_query.py::test_by_qname_finds_every_matching_element_anywhere_in_the_tree",
         "tests/python/ubl/test_obligation_document_query.py::test_by_local_name_matches_regardless_of_namespace",
-        "tests/python/ubl/test_obligation_document_query.py::test_by_qname_returns_empty_for_a_component_not_present"
+        "tests/python/ubl/test_obligation_document_query.py::test_by_id_finds_a_node_whose_own_id_child_matches",
+        "tests/python/ubl/test_obligation_document_query.py::test_matches_carry_a_path_from_the_root",
+        "tests/python/ubl/test_obligation_document_query.py::test_paths_distinguish_two_matches_at_different_positions",
+        "tests/python/ubl/test_obligation_document_query.py::test_index_reuse_does_not_require_rewalking_the_tree",
+        "tests/python/ubl/test_obligation_query_index_agreement.py::test_by_qname_agrees_with_a_linear_scan",
+        "tests/python/ubl/test_obligation_query_index_agreement.py::test_by_local_name_agrees_with_a_linear_scan",
+        "tests/python/ubl/test_obligation_query_index_agreement.py::test_by_id_agrees_with_a_linear_scan",
+        "tests/python/ubl/test_obligation_query_index_agreement.py::test_the_linear_scan_itself_visits_every_node_exactly_once"
       ],
       "proof_requirements": {
         "negative": [
@@ -1833,14 +1851,13 @@
           "Query result paths verified against fixtures; indexed and linear scans agree."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
         "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
         "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALUES-001",
@@ -5141,20 +5158,30 @@
     {
       "capability_id": "UBL-QUERY-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-QUERY-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "business_role classifies every component by the four business roles this obligation names -- party, item, line, document reference -- by local-name suffix with an own-identifier guard against wrapper-only containers (see business_role's own docstring for why cac:BillingReference is correctly excluded). by_business_role and lines_referencing_item_id answer the obligation's own worked example directly. test_obligation_query_index_agreement.py proves by_business_role's indexed results agree with an independent linear scan across two structurally distinct fixtures."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Query result paths verified against fixtures; indexed and linear scans agree."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_document_query.py::test_business_role_is_none_for_an_unrelated_component",
+        "tests/python/ubl/test_obligation_document_query.py::test_lines_referencing_item_id_returns_empty_for_an_unused_item"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-A11BEEAF8604759A",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_document_query.py::test_by_qname_finds_every_matching_element_anywhere_in_the_tree",
-        "tests/python/ubl/test_obligation_document_query.py::test_by_local_name_matches_regardless_of_namespace",
-        "tests/python/ubl/test_obligation_document_query.py::test_by_qname_returns_empty_for_a_component_not_present"
+        "tests/python/ubl/test_obligation_document_query.py::test_business_role_classifies_party_shaped_components",
+        "tests/python/ubl/test_obligation_document_query.py::test_business_role_classifies_item",
+        "tests/python/ubl/test_obligation_document_query.py::test_business_role_classifies_line",
+        "tests/python/ubl/test_obligation_document_query.py::test_business_role_classifies_document_reference",
+        "tests/python/ubl/test_obligation_document_query.py::test_by_business_role_finds_all_parties",
+        "tests/python/ubl/test_obligation_document_query.py::test_by_business_role_finds_all_lines",
+        "tests/python/ubl/test_obligation_document_query.py::test_by_business_role_finds_all_document_references",
+        "tests/python/ubl/test_obligation_document_query.py::test_finds_every_line_referencing_an_item_identifier",
+        "tests/python/ubl/test_obligation_document_query.py::test_index_reuse_does_not_require_rewalking_the_tree",
+        "tests/python/ubl/test_obligation_query_index_agreement.py::test_by_business_role_agrees_with_a_linear_scan",
+        "tests/python/ubl/test_obligation_query_index_agreement.py::test_the_linear_scan_itself_visits_every_node_exactly_once"
       ],
       "proof_requirements": {
         "negative": [
@@ -5164,14 +5191,13 @@
           "Query result paths verified against fixtures; indexed and linear scans agree."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/model/query.py::QueryMatch",
-        "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId",
         "src/python/ubl/src/format_factory/ubl/model/query.py::business_role",
         "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALUES-001",
@@ -7780,6 +7806,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ubl-001.json": "1e7b783cd545d3fcc56de100cfbd37c2d62ad9bf226093f940808de488756200",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-query-index-agreement-001.json": "5dae056fd7ab94b20a63eca83daf6843420a30132ee2875991917e251d7a85a3",
     "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "254743ef56212db8aebabac970793fee188634466b6907145e25b1b662e8f9fc",
     "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py": "628de81ba8521c8214c41c4f508ce3fbcd9515329d245d9589b6dd9dc6f15d1e",
     "src/python/ubl/src/format_factory/ubl/model/aggregates.py": "c0f02a00ad6065ea0359dd379f30d0db94b95d63f772d2247ab521ea7a49886a",
@@ -7796,6 +7823,7 @@
     "tests/python/ubl/test_obligation_business_calculation.py": "ebf8352d49b7d0bc6bf5aa4bfa0d034f6f98f896ba34aceb95cfe38efeeee150",
     "tests/python/ubl/test_obligation_business_value_types.py": "aefb8749170d03e5310add4d3ec5d183830eebbacce9dcabcc0e08f2893a83c5",
     "tests/python/ubl/test_obligation_document_query.py": "43151bb1577f2c57f8f9782753d37cac8595d3e2efde33bf25d03d71705b3f21",
+    "tests/python/ubl/test_obligation_query_index_agreement.py": "9c593f19f18c25e0db6d4cbb75d31b9d8ec26f7fa80a5db7562263e5fcd58112",
     "tests/python/ubl/test_obligation_referential_integrity.py": "ca3bf25af599e5624a7ac0b3d3973724d2f4580aad8f03d2dcb2c0cce412379c",
     "tests/python/ubl/test_obligation_temporal_projection_and_charges.py": "f9e50f7d338f9a96764972761953b1859153a10aff0e1c08668a5d5b179c1920",
     "tests/python/ubl/test_obligation_temporal_values.py": "6b280cba533c6d6370f06149257900b005784ff6702a10412c1d307a6a54f986",
@@ -7805,11 +7833,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
+      "implemented": 2,
       "missing": 12,
-      "partial": 182
+      "partial": 180
     },
     "total": 194,
-    "unresolved": 194
+    "unresolved": 192
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

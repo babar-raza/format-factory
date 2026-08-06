@@ -1,0 +1,52 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-query-index-agreement-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T10:05:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_QUERY_INDEX_AGREEMENT_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "UBL-QUERY-001's two obligations both required_tests: 'Query result paths verified against fixtures; indexed and linear scans agree.' model/query.py's DocumentIndex (built 2026-08-06 earlier this session, real source and tests) already fully satisfied the first clause (test_obligation_document_query.py proves paths against fixtures extensively), but no test proved the second, narrower clause -- that the index's pre-built dict lookups agree with an independent linear scan. Both obligations were left `partial` with the literal required_tests text copied into missing_behavior verbatim.",
+    "obligation_targeted": "SAL-UBL-OBL-31F4F60BFB40D4DE, SAL-UBL-OBL-A11BEEAF8604759A",
+    "acceptance_evidence": "tests/python/ubl/test_obligation_query_index_agreement.py",
+    "regression_tier": "full UBL package suite (tests/python/ubl)"
+  },
+  "execution_steps": [
+    "1. Surveyed ubl's smallest partial capabilities after ora's first implemented promotions this session, since ubl was the only format left at zero implemented rows. UBL-QUERY-001 (2 obligations) stood out: its evidence rows already cited real DocumentIndex source symbols (not the generic placeholder pattern seen elsewhere), and its own truth_boundary history showed model/query.py was built as genuine new work earlier this session -- meaning the format's own note said 'No obligation reaches implemented' as of that entry, an open invitation to close the gap, not a dead end.",
+    "2. Read model/query.py in full: DocumentIndex builds by_qname/by_local_name/by_id/by_business_role dict indexes in one tree walk. Read tests/python/ubl/test_obligation_document_query.py in full: extensive path-verified-against-fixtures coverage already existed for every query dimension, the four business roles, the worked 'lines referencing an item' example, and index reuse -- but nothing that independently re-derives results via a separate linear scan and compares.",
+    "3. Designed the cross-check to be genuinely independent, not two call sites for the same code: a from-scratch recursive path-builder (different traversal shape than DocumentIndex._walk's iterative stack-plus-counts-dict), and per-dimension linear filters written directly against XmlNode.iter() using only public exports (business_role) or a self-contained 3-line own-identifier reimplementation, not DocumentIndex's private helpers.",
+    "4. Built two fixtures: the existing INVOICE shape (reused as a comparable, not imported, since cross-file test fixture imports aren't this codebase's convention) plus a second, more adversarial NESTED_ORDER fixture with three same-named OrderLine/LineItem siblings at one level, to stress sibling-index numbering beyond a same-pair case.",
+    "5. Wrote tests/python/ubl/test_obligation_query_index_agreement.py (10 tests): by_qname/by_local_name/by_id/by_business_role agreement across both fixtures (parametrized), an absent-identifier agreement check, and a sanity check that the linear scan itself visits every node exactly once (so an under/over-counting bug in the comparator couldn't make every other assertion vacuously pass).",
+    "6. All 10 passed on first run. Cleaned up initially-verbose pytest parametrize IDs (full XML strings) to short fixture names for readable output. Re-ran the full UBL suite: 524 passed (514 baseline + 10 new, 0 regressions). ruff clean. No source files changed -- mypy not re-run.",
+    "7. Corrected both obligations' source_symbols/positive/negative selectors (removing DuplicateId, a UBL-REF-001-scoped symbol not part of either obligation's own proof) and promoted both to implemented, each citing its own precise selector subset matching its specific emphasis (the first obligation's general qname/type/id query; the second's business-identifier/typed-role emphasis)."
+  ],
+  "allowed_files": [
+    "tests/python/ubl/test_obligation_query_index_agreement.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ubl/test_obligation_query_index_agreement.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_query_index_agreement.py -v -- 10 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 524 passed (514 baseline + 10 new, 0 regressions)",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_query_index_agreement.py -- All checks passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 194,
+    "ubl_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against an external UBL query implementation. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_no_new_production_source": "DocumentIndex was already complete and correct -- this slice's job was proving it, specifically the one required_tests clause ('indexed and linear scans agree') the existing test suite had not yet exercised. Adding a test-only cross-check is the proportionate closure for a gap that was in the proof, not the implementation."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
