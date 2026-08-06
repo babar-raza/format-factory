@@ -1,0 +1,45 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-module-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T20:45:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_MODULE_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "XLIFF-MODULE-001's 18 obligations shared one generic citation, the second xliff citation-audit cluster this session, following directly from the just-completed XLIFF-PARSE-001 tick. Pulled all 18 rule_texts and found 16 are exact-text duplicates of obligations already individually audited under XLIFF-PARSE-001 in the immediately preceding tick -- confirmed by direct text comparison, not assumption. The remaining 2 are genuinely XLIFF-MODULE-001-specific (the module-coverage declaration API itself) and were investigated fresh.",
+    "obligation_targeted": "All 18 SAL-XLIFF-OBL-* obligations under XLIFF-MODULE-001 (see execution_evidence entry XLIFF-MODULE-CITATION-AUDIT-SELECTOR-PROOF for the 2 genuinely new ones; the other 16 cite XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF directly).",
+    "acceptance_evidence": "tests/python/xliff/test_obligation_module_coverage.py, plus every test file already cited in the XLIFF-PARSE-001 tick (all pre-existing; no new tests this slice)",
+    "regression_tier": "full XLIFF package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Pulled all 18 XLIFF-MODULE-001 rule_texts and directly compared each against the 36 rule_texts just individually audited under XLIFF-PARSE-001. Confirmed 16 are exact-text duplicates (modules overview, conformance, Glossary, Metadata, Validation, ITS, Format Style, Translation Candidates, Resource Data, Size and Length Restriction, notes, sc isolation, document/file structure, and the three spec-package-inventory facts) -- reused the identical evidence and status (implemented or precisely-gapped partial/missing) found in that tick, cross-referencing each duplicate's XLIFF-PARSE-001 obligation_id in its implemented_behavior or missing_behavior text.",
+    "2. Investigated the 2 genuinely MODULE-001-specific obligations ('Declare per-module coverage programmatically... production-complete status requires all modules modeled' and 'Declare per-module coverage... never drop module data silently') against modules.py and test_obligation_module_coverage.py directly. Found module_coverage_manifest() and ModuleCoverage (MODELED/PRESERVATION_ONLY/UNSUPPORTED enum) declare all eight standard modules, with dedicated tests proving no module is silently absent from the manifest, none is falsely reported MODELED, and is_production_complete() honestly reports False while any module remains PRESERVATION_ONLY (which is currently true for all eight) -- the obligation's own honesty clause is itself proven honest, not just present.",
+    "3. Ran the candidate tests directly before citing: all already passing, no changes needed.",
+    "4. Applied all 18 evidence edits via the same obligation_id-delimited text-block script pattern used across eleven prior ora/ipynb/xliff ticks, extracting the actual proof_requirements boilerplate from an untouched sibling programmatically. Ran the reconciler: clean pass, no errors, first attempt. Ran the full xliff suite to confirm zero regressions (no source or test files changed this slice) -- unchanged from baseline."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 5,
+    "obligations_total_for_format": 142,
+    "xliff_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference XLIFF implementation. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_5_of_18_moved_and_9_corrected_4_kept_honest_missing": "3 of the 16 cross-capability duplicates were themselves fully implemented (matching their XLIFF-PARSE-001 counterparts), plus the 2 genuinely MODULE-001-specific obligations, for 5 total promotions. 9 duplicates carried over their XLIFF-PARSE-001 counterpart's precise partial gap unchanged. 4 duplicates carried over their XLIFF-PARSE-001 counterpart's spec-package-fact non-applicability, corrected from generic to honest missing_behavior text."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
