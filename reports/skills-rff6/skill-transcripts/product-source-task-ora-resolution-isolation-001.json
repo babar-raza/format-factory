@@ -1,0 +1,54 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-resolution-isolation-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T13:50:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_RESOLUTION_ISOLATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "ORA-RESOLUTION-001 (2 obligations) had zero test-file mapping at all despite the resolution model, parser enforcement, and profile-0.0.3 detection logic already being fully built in document.py/stack_xml.py/lifecycle.py. ORA-ISOLATION-001 (2 obligations) had generic three-selector citations despite a dedicated 15-test file (test_obligation_isolation_semantics.py) already proving declared/inferred isolation and profile-0.0.4 detection; its own docstring explicitly scopes out actual pixel rendering as unbuilt.",
+    "obligation_targeted": "SAL-ORA-OBL-0E1F1D54159FEFCC, SAL-ORA-OBL-FBBF45A773C7C0C9, SAL-ORA-OBL-97CE271E3DD6D883, SAL-ORA-OBL-ABDDB437C86DC22F",
+    "acceptance_evidence": "tests/python/ora/test_obligation_resolution_profile_detection.py (new), tests/python/ora/test_obligation_isolation_semantics.py, tests/python/ora/test_obligation_stack_and_document.py, tests/python/ora/test_obligation_document_model_construction.py",
+    "regression_tier": "full ORA package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Surveyed ora's remaining capabilities by unresolved-obligation count. ORA-RESOLUTION-001 (2) and ORA-ISOLATION-001 (2) were the two smallest, both concerning lifecycle.py's _detect_version -- the profile-drift detector this session already relied on for XLIFF/UBL/NRRD's detected-vs-declared version work.",
+    "2. Read model/document.py (OraDocument.xres/yres, DEFAULT_RESOLUTION_PPI, __post_init__ positivity checks), codec/stack_xml.py's _resolution (specified-together enforcement, defaulting to 72 only when BOTH absent), and lifecycle.py's _detect_version/_uses_isolation (priority-ordered profile inference: isolation -> 0.0.4, non-default resolution -> 0.0.3, mergedimage-only -> 0.0.2, else 0.0.1).",
+    "3. Confirmed via existing tests (test_obligation_stack_and_document.py, test_obligation_document_model_construction.py) that pairing/positivity/defaulting were already fully proven at both parse time and direct-construction time. The one genuinely untested slice: a non-default resolution ALONE (no isolation used) is detected as profile 0.0.3, distinct from the 0.0.4 and 0.0.2 triggers -- every existing detected-version test either used isolation (triggering 0.0.4 first, since isolation is checked before resolution in _detect_version) or used no non-default resolution at all.",
+    "4. Wrote tests/python/ora/test_obligation_resolution_profile_detection.py (4 new tests): non-default resolution alone detects as 0.0.3; resolution outranks the mergedimage-only 0.0.2 trigger; declaring 0.0.3 with non-default resolution has no version drift; and a control proving default resolution (xres=yres=72, explicit but indistinguishable from absent) does NOT trigger 0.0.3. All 4 passed on first run.",
+    "5. Read test_obligation_isolation_semantics.py in full (15 tests, its own docstring already scoped to this exact obligation pair): declared isolation via the isolation attribute, inferred isolation via opacity<1 and non-default composite-op (each with its boundary control), declared-vs-inferred distinguishability, per-stack (non-inherited) evaluation, and profile-0.0.4 detection for both declared and inferred triggers. The docstring explicitly states 'render isolated groups against a transparent intermediate backdrop' is unbuilt (no rendering engine) and not claimed.",
+    "6. Ran all 15 isolation tests plus the 8 resolution parse-time tests plus the 5 resolution construction tests directly: all passed, unchanged.",
+    "7. Promoted SAL-ORA-OBL-0E1F1D54159FEFCC and SAL-ORA-OBL-FBBF45A773C7C0C9 (both ORA-RESOLUTION-001, neither obligation's rule_text mentions rendering) to implemented. Promoted SAL-ORA-OBL-97CE271E3DD6D883 (the compositing-TRIGGER rule -- isolation/opacity/composite-op conditions, no rendering language) to implemented. Left SAL-ORA-OBL-ABDDB437C86DC22F (the broader statement explicitly including 'render... against a transparent intermediate backdrop') at partial, narrowing missing_behavior to name exactly that unbuilt rendering clause -- the modeling and profile-enforcement halves it shares with its sibling are credited via updated source_symbols/tests, but the obligation as a whole is not force-closed."
+  ],
+  "allowed_files": [
+    "tests/python/ora/test_obligation_resolution_profile_detection.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ora/test_obligation_resolution_profile_detection.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_resolution_profile_detection.py -v -- 4 passed",
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_isolation_semantics.py -v -- 15 passed",
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_stack_and_document.py -v -k resolution -- 8 passed",
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_document_model_construction.py -v -k \"resolution or xres or yres\" -- 5 passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- full suite, 0 regressions expected"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 3,
+    "obligations_total_for_format": 134,
+    "ora_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against an external OpenRaster reader/writer. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_one_of_four_obligations_stayed_partial": "SAL-ORA-OBL-ABDDB437C86DC22F's rule_text explicitly requires rendering isolated groups against a transparent backdrop -- actual pixel compositing this package has no rendering engine for. Forcing this to implemented would misrepresent an unbuilt capability; narrowed instead, matching this session's established GAP-008 discipline (NRRD kind-value enums, UBL/XLIFF tolerant-mode, XLIFF version-downgrade-loss were all declined on the same principle)."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

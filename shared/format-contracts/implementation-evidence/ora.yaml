@@ -88,6 +88,27 @@ execution_evidence:
     SAL-ORA-OBL-55DE1B78BE5C2722, SAL-ORA-OBL-6F8C875E6EA535C4, and
     SAL-ORA-OBL-A24565BEF82FCD78 only; it supports no other obligation and
     promotes no product state.
+- evidence_id: ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-resolution-isolation-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact positive
+    test selectors proving paired/positive/defaulting-to-72 resolution
+    modeling at both parse and direct-construction time, non-default
+    resolution alone (isolation absent) detected as profile 0.0.3 distinctly
+    from the 0.0.4 (isolation) and 0.0.2 (mergedimage-only) triggers, and
+    declared-versus-inferred group isolation (isolation attribute, opacity
+    below one, non-default composite-op) modeled separately with profile
+    0.0.4 detection. Does NOT cover actual pixel compositing/rendering of
+    isolated groups against a transparent backdrop -- this package has no
+    rendering engine, and that clause of ORA-ISOLATION-001's broader
+    obligation remains unpromoted. SELF-CONSISTENT format_factory-only
+    evidence per the execution-recovery directive's GAP-008 rule, not
+    VERIFIED -- not cross-checked against an independent OpenRaster
+    reader/writer. Covers SAL-ORA-OBL-0E1F1D54159FEFCC,
+    SAL-ORA-OBL-FBBF45A773C7C0C9, and SAL-ORA-OBL-97CE271E3DD6D883 only; it
+    supports no other obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -346,16 +367,37 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-0E1F1D54159FEFCC
   capability_id: ORA-RESOLUTION-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Absent/default/pairing/minimum/profile-boundary
-    round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  status: implemented
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/document.py::OraDocument
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_resolution
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_detect_version
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_defaults_to_72_when_absent
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_is_read_when_present
+  - tests/python/ora/test_obligation_document_model_construction.py::test_explicit_resolution_is_retained_on_direct_construction
+  - tests/python/ora/test_obligation_resolution_profile_detection.py::test_non_default_resolution_alone_is_detected_as_profile_0_0_3
+  - tests/python/ora/test_obligation_resolution_profile_detection.py::test_resolution_trigger_outranks_the_mergedimage_only_trigger
+  - tests/python/ora/test_obligation_resolution_profile_detection.py::test_declaring_0_0_3_with_non_default_resolution_has_no_version_drift
+  - tests/python/ora/test_obligation_resolution_profile_detection.py::test_default_resolution_alone_does_not_trigger_0_0_3
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_attributes_must_be_specified_together
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_must_be_positive_integers
+  - tests/python/ora/test_obligation_document_model_construction.py::test_non_positive_xres_is_refused_on_direct_construction
+  - tests/python/ora/test_obligation_document_model_construction.py::test_non_positive_yres_is_refused_on_direct_construction
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  - ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF
+  implemented_behavior:
+  - Resolution values are modeled as a paired, positive, defaulting-to-72
+    attribute of OraDocument, enforced both at XML parse time and at direct
+    model construction. Absent xres/yres default to 72; one present without
+    the other is a construction error, not a half-default. Non-default
+    resolution alone (isolation absent) is detected as profile 0.0.3,
+    distinct from the 0.0.4 (isolation) and 0.0.2 (mergedimage-only)
+    detection triggers, satisfying "enforce the profiles in which resolution
+    is defined".
+  missing_behavior: []
   proof_requirements:
     positive:
     - Absent/default/pairing/minimum/profile-boundary round trips.
@@ -2415,29 +2457,35 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-97CE271E3DD6D883
   capability_id: ORA-ISOLATION-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_uses_isolation
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_detect_version
   positive_test_selectors:
   - tests/python/ora/test_obligation_isolation_semantics.py::test_declared_isolate_makes_a_stack_isolated
   - tests/python/ora/test_obligation_isolation_semantics.py::test_declared_auto_alone_is_not_isolated
   - tests/python/ora/test_obligation_isolation_semantics.py::test_isolation_defaults_to_auto_and_is_not_isolated
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_opacity_below_one_infers_isolation_even_without_the_attribute
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_opacity_of_exactly_one_does_not_infer_isolation
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_non_default_composite_op_infers_isolation
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_default_composite_op_does_not_infer_isolation
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_isolation_usage_is_detected_as_profile_0_0_4
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_inferred_isolation_via_opacity_is_also_detected_as_0_0_4
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_neither_declared_nor_inferred_is_not_isolated
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Declared/inferred isolation
-    pixel vectors and pre-profile rejection/preservation cases.'
+  - 'Since profile 0.0.4, a non-root stack is isolated when isolation is
+    "isolate", opacity is below one, or composite-op differs from
+    svg:src-over -- all three triggers modeled independently
+    (OraStack.is_isolated_group), each proven to fire alone and proven not
+    to fire at the trigger''s own boundary (opacity exactly 1.0, default
+    composite-op). Any of the three triggers firing on an older-declared
+    document is detected as profile 0.0.4 by lifecycle.py''s _detect_version.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Declared/inferred isolation pixel vectors and pre-profile rejection/preservation cases.
@@ -2731,27 +2779,32 @@ obligations:
   capability_id: ORA-ISOLATION-001
   status: partial
   source_symbols:
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_uses_isolation
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_detect_version
   positive_test_selectors:
-  - tests/python/ora/test_obligation_isolation_semantics.py::test_declared_isolate_makes_a_stack_isolated
-  - tests/python/ora/test_obligation_isolation_semantics.py::test_declared_auto_alone_is_not_isolated
-  - tests/python/ora/test_obligation_isolation_semantics.py::test_isolation_defaults_to_auto_and_is_not_isolated
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_declared_and_inferred_isolation_are_distinguishable
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_nested_stack_isolation_is_evaluated_per_stack_not_inherited
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_isolation_usage_is_detected_as_profile_0_0_4
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_a_document_declaring_0_0_4_with_isolation_has_no_version_drift
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_a_document_using_no_isolation_features_detects_as_baseline
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_neither_declared_nor_inferred_is_not_isolated
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - '"Model declared and inferred group isolation separately" (OraStack.is_isolated_group
+    reports THAT a stack is isolated; the isolation attribute and opacity/composite-op
+    fields remain independently inspectable to tell WHY) and "enforce profile
+    availability" (isolation usage on an older-declared document is surfaced
+    as declared/detected version drift via lifecycle.py''s _detect_version)
+    are both proven, per-stack, non-inherited.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Declared/inferred isolation
-    pixel vectors and pre-profile rejection/preservation cases.'
+  - '"Render isolated groups against a transparent intermediate backdrop" is
+    actual pixel compositing this package has no rendering engine for at
+    all -- ORA-RENDER-001''s obligations (also unbuilt) cover rendering
+    generally; this specific clause has no dedicated implementation to cite.'
   proof_requirements:
     positive:
     - Declared/inferred isolation pixel vectors and pre-profile rejection/preservation cases.
@@ -3528,16 +3581,31 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-FBBF45A773C7C0C9
   capability_id: ORA-RESOLUTION-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Absent/default/pairing/minimum/profile-boundary
-    round trips.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  status: implemented
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/document.py::OraDocument
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_resolution
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_detect_version
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_defaults_to_72_when_absent
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_is_read_when_present
+  - tests/python/ora/test_obligation_resolution_profile_detection.py::test_non_default_resolution_alone_is_detected_as_profile_0_0_3
+  - tests/python/ora/test_obligation_resolution_profile_detection.py::test_declaring_0_0_3_with_non_default_resolution_has_no_version_drift
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_attributes_must_be_specified_together
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_must_be_positive_integers
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  - ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF
+  implemented_behavior:
+  - Since profile 0.0.3, xres and yres are modeled as optional positive
+    integer pixels-per-inch values that must be specified together and
+    default to 72 -- enforced by the parser (_resolution) and re-enforced at
+    direct construction (OraDocument.__post_init__). Their use is detected
+    as profile 0.0.3 by lifecycle.py's _detect_version, making the declared
+    version and actual profile visible separately rather than silently
+    picking one.
+  missing_behavior: []
   proof_requirements:
     positive:
     - Absent/default/pairing/minimum/profile-boundary round trips.
