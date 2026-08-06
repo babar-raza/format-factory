@@ -1,0 +1,49 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-layer-group-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T18:35:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_LAYER_GROUP_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "ORA-LAYER-001 (7 obligations) and ORA-GROUP-001 (8 obligations) each shared one identical generic citation, the fourth and fifth clusters this session to show the pattern first found in ORA-STACK-001. Combined 11 of 15 obligations are cross-capability duplicates of facts already resolved. The 2 genuinely capability-specific rules (model-and-edit-a-layer; create/edit/move/remove groups) turned out to already have extensive, high-quality proof in test_obligation_layer_and_group_editing.py from an earlier tick this session -- that file's own docstring already documents a careful honesty analysis of scope, including an explicit note that composite-op validation is a deliberately unattempted standing gap.",
+    "obligation_targeted": "SAL-ORA-OBL-029A8C8544788060, SAL-ORA-OBL-071A5F40BB2F4A17, SAL-ORA-OBL-073651B7B9C5FB06, SAL-ORA-OBL-3EFB60C80F84675D, SAL-ORA-OBL-691A965DDDA97CD2, SAL-ORA-OBL-7160DCD53E7DAA43, SAL-ORA-OBL-82D6411176AA5599, SAL-ORA-OBL-3463B445DE0899EC, SAL-ORA-OBL-41F8137CE8D8479A, SAL-ORA-OBL-85588089484A20F7, SAL-ORA-OBL-96D74D42B49F8C8B, SAL-ORA-OBL-9BC27656F2BAD9EF, SAL-ORA-OBL-B090B52032547696, SAL-ORA-OBL-B8CC12330026DE56, SAL-ORA-OBL-FEAED74E05E73C86",
+    "acceptance_evidence": "tests/python/ora/test_obligation_layer_and_group_editing.py, test_obligation_stack_and_document.py, test_obligation_isolation_semantics.py, test_obligation_container_and_mimetype.py (all pre-existing; no new tests this slice)",
+    "regression_tier": "full ORA package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Pulled all 15 rule_texts (7 ORA-LAYER-001, 8 ORA-GROUP-001) from the obligation register. Found 11 are cross-capability duplicates of rule_texts already resolved this session (layer src, x/y, visibility, opacity, isolation trigger, composite-op, mimetype requirements, member-name case/UTF-8) under ORA-STACK-001/ORA-ISOLATION-001/ORA-CONTAINER-001, and 2 are the genuinely capability-specific rules each cluster's required_tests line points at.",
+    "2. Read test_obligation_layer_and_group_editing.py in full (previously only skimmed). Its own docstring, written during an earlier tick this session investigating ORA-ISOLATION-001/ORA-PRESERVE-001, already documents exactly what is and is not proven: 'Deliberately NOT attempted: composite-op and isolation have no validated enum anywhere in this package... This is a real, standing gap in reject invalid values, not something this slice closes.' Respected this prior honest assessment rather than re-deriving a different conclusion.",
+    "3. Mapped the layer-specific obligation (model and edit source/name/offsets/opacity/visibility/composite-op, reject invalid values) to its proving tests: modeling (test_a_layer_models_source_name_offsets_opacity_visibility_and_blend), edit-is-replace-and-leaves-original-untouched, and per-field construction+edit refusal for opacity/visibility/src, plus both boundary matrices. Composite-op is modeled but not validated (the known gap) -- kept partial with that precise, already-documented gap named.",
+    "4. Mapped the group-specific obligation (create/edit/move/remove nested groups, enforce group attributes/root restrictions/lossless child preservation) similarly: create, edit-preserves-children-by-identity-not-just-equality, move-without-losing-any-child, remove (both leaf and nested-group cases, proven the original is untouched), and group attribute validation (opacity/visibility, same shared validators as layers).",
+    "5. Investigated the 'root restrictions' clause specifically before citing it, since the file's docstring claims it is 're-proven here.' Grepped the entire ora test suite for any test exercising the zero-stacks or multiple-root-stacks rejection path that codec/stack_xml.py's 'must contain exactly one root <stack>' check enforces -- found none. The docstring's claim does not hold; corrected rather than propagated a citation that would not survive scrutiny. Also found 'unknown-extension preservation' (the obligation's own required_tests line) is untested -- this model has no ExtensionNode-style typed slot for unrecognized content, unlike XLIFF.",
+    "6. Applied all 15 edits via the same obligation_id-delimited text-block script pattern used the prior three ticks, including proof_requirements boilerplate from the start.",
+    "7. Ran the reconciler: clean pass, no errors, first attempt. Ran the full ora suite to confirm zero regressions (no source or test files changed this slice) -- 281 passed, identical to before."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 281 passed, unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 11,
+    "obligations_total_for_format": 134,
+    "ora_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against an independent OpenRaster reader/writer. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_11_of_15_moved_and_4_stayed_partial": "9 obligations were exact cross-capability duplicates of already-fully-proven facts, closed by citation. 2 more duplicates of the composite-op fact were corrected to match their already-honest partial counterpart. The 2 genuinely capability-specific obligations are extensively proven but each retain the same known composite-op-validation gap; the group obligation additionally surfaced and corrected an inaccurate self-claim in the test file's own docstring (root-restriction rejection paths are not actually tested anywhere in the suite, despite the docstring asserting they were re-proven).",
+    "self_correction_note": "This tick found and corrected a claim in prior-session-authored test documentation (not evidence YAML) that did not hold up under verification -- the docstring's 're-proven here' assertion about root restrictions was checked against the actual test suite and found unsupported. Corrected the evidence citation to reflect reality rather than propagate the docstring's claim, consistent with this session's discipline of verifying before citing."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

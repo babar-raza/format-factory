@@ -253,6 +253,44 @@ execution_evidence:
     SAL-ORA-OBL-9AA35CB2D4A8868E, SAL-ORA-OBL-9B4C91C0E07B379E, and
     SAL-ORA-OBL-B7B7362D7DBCA9A2 only; it supports no other obligation and
     promotes no product state.
+- evidence_id: ORA-LAYER-GROUP-CITATION-AUDIT-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-layer-group-citation-audit-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike ORA-BASELINE-SUITE: ORA-LAYER-001 (7 obligations)
+    and ORA-GROUP-001 (8 obligations) each shared one identical generic
+    citation despite real, extensive existing coverage in
+    test_obligation_layer_and_group_editing.py -- same pattern as
+    ORA-STACK-001/ORA-EDIT-001/ORA-CONTAINER-001. 11 of the 15 combined
+    obligations are cross-capability duplicates of facts already resolved
+    this session, closed by citation (2 of those 11 mirror the still-honest
+    composite-op partial rather than promoting fully). The two genuinely
+    capability-specific obligations (model-and-edit-a-layer's-own-
+    attributes; create/edit/move/remove nested groups) are corrected to
+    accurate partial: both are extensively proven (src/opacity/visibility
+    validated identically at construction and edit time via __post_init__,
+    edits proven to leave the original untouched by dataclasses immutability,
+    move/remove proven to preserve every other child), but composite-op has
+    no validated enum anywhere in this package (a standing, already-known
+    gap), and for the group obligation specifically this audit also found
+    and corrected an inaccurate claim in the test file's own docstring: the
+    docstring asserted "root restriction" was re-proven in this file, but no
+    test anywhere in the ora suite exercises the zero-stacks or
+    multiple-stacks rejection path that codec/stack_xml.py's root-stack-count
+    check enforces -- corrected rather than propagated. "Unknown-extension
+    preservation" for groups also remains untested (this model has no
+    ExtensionNode-style typed slot). SELF-CONSISTENT format_factory-only
+    evidence per the execution-recovery directive's GAP-008 rule, not
+    VERIFIED. Covers SAL-ORA-OBL-029A8C8544788060, SAL-ORA-OBL-071A5F40BB2F4A17,
+    SAL-ORA-OBL-073651B7B9C5FB06, SAL-ORA-OBL-3EFB60C80F84675D,
+    SAL-ORA-OBL-691A965DDDA97CD2, SAL-ORA-OBL-7160DCD53E7DAA43,
+    SAL-ORA-OBL-82D6411176AA5599, SAL-ORA-OBL-3463B445DE0899EC,
+    SAL-ORA-OBL-41F8137CE8D8479A, SAL-ORA-OBL-85588089484A20F7,
+    SAL-ORA-OBL-96D74D42B49F8C8B, SAL-ORA-OBL-9BC27656F2BAD9EF,
+    SAL-ORA-OBL-B090B52032547696, SAL-ORA-OBL-B8CC12330026DE56, and
+    SAL-ORA-OBL-FEAED74E05E73C86 only; it supports no other obligation and
+    promotes no product state.
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -276,30 +314,24 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-029A8C8544788060
   capability_id: ORA-LAYER-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_every_layer_requires_a_src
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_every_layer_requires_a_src
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Full attribute boundary matrix
-    and add/edit/move/remove semantic round trips.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-23D0207100C46AD9 (identical rule_text); citing the same proof.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Full attribute boundary matrix and add/edit/move/remove semantic round trips.
+    - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
+      root restriction, and unknown-extension preservation tests.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-035B53B843FF49F9
@@ -370,56 +402,54 @@ obligations:
   capability_id: ORA-LAYER-001
   status: partial
   source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
   - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
   - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
   - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_to_an_invalid_opacity_is_refused_and_original_survives
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_to_an_invalid_visibility_is_refused_and_original_survives
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_to_an_unsafe_src_is_refused_and_original_survives
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_opacity_boundary_values_are_both_accepted
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_both_visibility_values_are_accepted
+  negative_test_selectors:
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_visibility_is_refused
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_an_unsafe_or_empty_src_is_refused
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_no_src_argument_is_refused
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-LAYER-GROUP-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'source/name/x/y/opacity/visibility/composite_op are all modeled on OraLayer. dataclasses.replace() is the sole edit path on this frozen dataclass, so the original is untouched by construction, not convention -- proven directly. src, opacity, and visibility are validated identically at both construction and edit time via __post_init__ (which replace() re-runs), refusing invalid values and leaving the original survives in every refusal case; opacity and visibility boundary matrices are both proven.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Full attribute boundary matrix
-    and add/edit/move/remove semantic round trips.'
+  - 'Confirmed gap, not an audit backlog, and already documented by this file''s own docstring from an earlier tick this session: composite-op has no validated enum anywhere in this package (parser or model) -- it is deliberately an open, unpoliced vocabulary (see SAL-ORA-OBL-3EFB60C80F84675D / SAL-ORA-OBL-930CACD129A5CC40), so "reject invalid values" is not proven for the compositing-operation clause specifically. Not attempted this slice for the same reason: no committed verified SAL fact enumerates the permitted composite-op value set.'
   proof_requirements:
     positive:
-    - Full attribute boundary matrix and add/edit/move/remove semantic round trips.
+    - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
+      root restriction, and unknown-extension preservation tests.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-073651B7B9C5FB06
   capability_id: ORA-LAYER-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
+  - tests/python/ora/test_obligation_stack_and_document.py::test_positions_default_to_zero_and_accept_negative_values
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Full attribute boundary matrix
-    and add/edit/move/remove semantic round trips.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-F6424763BCEC7266 (identical rule_text); citing the same proof.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Full attribute boundary matrix and add/edit/move/remove semantic round trips.
+    - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
+      root restriction, and unknown-extension preservation tests.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-07B4638C09251BE1
@@ -1183,28 +1213,32 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-3463B445DE0899EC
   capability_id: ORA-GROUP-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
   positive_test_selectors:
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
-    root restriction, and unknown-extension preservation tests.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-B7B7362D7DBCA9A2 (identical rule_text); citing the same proof.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.
+    - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
+      root restriction, and unknown-extension preservation tests.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-349C38CC0AFF836B
@@ -1355,28 +1389,22 @@ obligations:
   capability_id: ORA-LAYER-001
   status: partial
   source_symbols:
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
+  - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_defaults_to_src_over
+  - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_is_preserved_verbatim
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Cross-capability duplicate of SAL-ORA-OBL-930CACD129A5CC40 (identical rule_text): default value and verbatim preservation are proven.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Full attribute boundary matrix
-    and add/edit/move/remove semantic round trips.'
+  - 'Same confirmed gap as SAL-ORA-OBL-930CACD129A5CC40: no registry maps composite-op values to a documented blend function/Porter-Duff operator; not attempted, no committed verified SAL fact enumerates the OpenRaster composite-op inventory. '
   proof_requirements:
     positive:
-    - Full attribute boundary matrix and add/edit/move/remove semantic round trips.
+    - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
+      root restriction, and unknown-extension preservation tests.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-3FBCDC073FF0F58B
@@ -1428,26 +1456,22 @@ obligations:
   capability_id: ORA-GROUP-001
   status: partial
   source_symbols:
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
   positive_test_selectors:
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
+  - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_defaults_to_src_over
+  - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_is_preserved_verbatim
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Cross-capability duplicate of SAL-ORA-OBL-930CACD129A5CC40 (identical rule_text): default value and verbatim preservation are proven.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
-    root restriction, and unknown-extension preservation tests.'
+  - 'Same confirmed gap as SAL-ORA-OBL-930CACD129A5CC40: no registry maps composite-op values to a documented blend function/Porter-Duff operator; not attempted, no committed verified SAL fact enumerates the OpenRaster composite-op inventory. '
   proof_requirements:
     positive:
-    - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.
+    - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
+      root restriction, and unknown-extension preservation tests.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-46734DBF545B4DD3
@@ -2003,30 +2027,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-691A965DDDA97CD2
   capability_id: ORA-LAYER-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
   - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_visibility_defaults_to_visible_and_accepts_only_two_values
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_unknown_visibility_values_are_refused
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Full attribute boundary matrix
-    and add/edit/move/remove semantic round trips.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-9007B671A8FCFF7D (identical rule_text); citing the same proof.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Full attribute boundary matrix and add/edit/move/remove semantic round trips.
+    - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
+      root restriction, and unknown-extension preservation tests.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-6B6D7BEE18077E8A
@@ -2134,30 +2151,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-7160DCD53E7DAA43
   capability_id: ORA-LAYER-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_uses_isolation
   positive_test_selectors:
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_declared_isolate_makes_a_stack_isolated
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_opacity_below_one_infers_isolation_even_without_the_attribute
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_non_default_composite_op_infers_isolation
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_opacity_of_exactly_one_does_not_infer_isolation
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_default_composite_op_does_not_infer_isolation
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Full attribute boundary matrix
-    and add/edit/move/remove semantic round trips.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-97CE271E3DD6D883 (identical rule_text); citing the same proof.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Full attribute boundary matrix and add/edit/move/remove semantic round trips.
+    - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
+      root restriction, and unknown-extension preservation tests.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-744596C8B4CE79E4
@@ -2263,30 +2278,24 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-82D6411176AA5599
   capability_id: ORA-LAYER-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_opacity_defaults_to_one_and_accepts_the_inclusive_range
+  - tests/python/ora/test_obligation_stack_and_document.py::test_opacity_outside_zero_through_one_is_refused
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_opacity_outside_zero_through_one_is_refused
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Full attribute boundary matrix
-    and add/edit/move/remove semantic round trips.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-1BCC64FF1DFE8AE5 (identical rule_text); citing the same proof.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Full attribute boundary matrix and add/edit/move/remove semantic round trips.
+    - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
+      root restriction, and unknown-extension preservation tests.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-849EDE79FBAE125D
@@ -2320,28 +2329,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-85588089484A20F7
   capability_id: ORA-GROUP-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
   positive_test_selectors:
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
+  - tests/python/ora/test_obligation_stack_and_document.py::test_positions_default_to_zero_and_accept_negative_values
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
-    root restriction, and unknown-extension preservation tests.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-F6424763BCEC7266 (identical rule_text); citing the same proof.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.
+    - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
+      root restriction, and unknown-extension preservation tests.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-86178CC1AEECB389
@@ -2530,26 +2533,31 @@ obligations:
   capability_id: ORA-GROUP-001
   status: partial
   source_symbols:
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_creating_a_nested_group_with_child_layers
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_group_attributes_preserves_children_losslessly
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_moving_a_child_reorders_without_losing_any_child
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_removing_a_child_drops_only_that_child
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_removing_a_nested_child_group_preserves_its_siblings
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_group_to_an_invalid_opacity_is_refused_and_original_survives
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_group_with_invalid_opacity_is_refused
+  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_group_with_invalid_visibility_is_refused
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-LAYER-GROUP-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Create (OraStack with a children tuple), edit (dataclasses.replace() on a group''s own attributes, proven to leave children untouched by identity, not just equality -- renamed.children is group.children), move (reordering children via replace(), proven to reorder without losing any child), and remove (dropping one child from the tuple, proven both for a leaf layer and a nested child group, in each case proven the original document is untouched) are all proven. Group attributes (opacity, visibility) are validated identically to layers via the same shared validators, both at construction and edit time.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
-    root restriction, and unknown-extension preservation tests.'
+  - 'Confirmed gap, not an audit backlog, and already documented by this file''s own docstring from an earlier tick this session: composite-op has no validated enum anywhere in this package, so "enforcing group attributes" does not extend to compositing-operation values (open vocabulary by design).'
+  - 'Confirmed gap found during this audit, correcting the docstring''s own claim: "root restrictions" is enforced in source (codec/stack_xml.py raises when <image> does not contain exactly one root <stack>) but no test in this package exercises the zero-stacks or multiple-stacks rejection path -- the docstring asserted this was "re-proven here" but no such test exists in this file or elsewhere in the ora suite. Not attempted this slice.'
+  - '"Unknown-extension preservation" (this obligation''s own required_tests line) is not tested either -- this model has no ExtensionNode-style typed slot for unrecognized content (everything is a plain OraStack/OraLayer/OraText), so what "unknown extension" means for a group specifically was not investigated this slice.'
   proof_requirements:
     positive:
-    - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.
+    - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
+      root restriction, and unknown-extension preservation tests.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-96DAD1AD6C297273
@@ -2724,28 +2732,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-9BC27656F2BAD9EF
   capability_id: ORA-GROUP-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
   - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
   positive_test_selectors:
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_visibility_defaults_to_visible_and_accepts_only_two_values
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_unknown_visibility_values_are_refused
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
-    root restriction, and unknown-extension preservation tests.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-9007B671A8FCFF7D (identical rule_text); citing the same proof.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.
+    - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
+      root restriction, and unknown-extension preservation tests.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-9C467C6DD59DFEE7
@@ -2959,28 +2962,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-B090B52032547696
   capability_id: ORA-GROUP-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
   positive_test_selectors:
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_member_names_are_case_sensitive
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_non_ascii_member_names_round_trip
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
-    root restriction, and unknown-extension preservation tests.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-6491749388BB6731 (identical rule_text); citing the same proof.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.
+    - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
+      root restriction, and unknown-extension preservation tests.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-B225E41E5403D960
@@ -3065,28 +3063,24 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-B8CC12330026DE56
   capability_id: ORA-GROUP-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
   positive_test_selectors:
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_opacity_defaults_to_one_and_accepts_the_inclusive_range
+  - tests/python/ora/test_obligation_stack_and_document.py::test_opacity_outside_zero_through_one_is_refused
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_opacity_outside_zero_through_one_is_refused
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
-    root restriction, and unknown-extension preservation tests.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-1BCC64FF1DFE8AE5 (identical rule_text); citing the same proof.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.
+    - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
+      root restriction, and unknown-extension preservation tests.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-BF7AD4693704AF6A
@@ -3720,27 +3714,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-FEAED74E05E73C86
   capability_id: ORA-GROUP-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
-  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
-  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_uses_isolation
   positive_test_selectors:
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
-  - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_declared_isolate_makes_a_stack_isolated
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_opacity_below_one_infers_isolation_even_without_the_attribute
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_non_default_composite_op_infers_isolation
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_opacity_of_exactly_one_does_not_infer_isolation
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_default_composite_op_does_not_infer_isolation
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Group create/edit/move/remove,
-    root restriction, and unknown-extension preservation tests.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-97CE271E3DD6D883 (identical rule_text); citing the same proof.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Group create/edit/move/remove, root restriction, and unknown-extension preservation tests.
+    - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
+      root restriction, and unknown-extension preservation tests.
     negative:
     - Selector-bound negative cases are not yet identified.
