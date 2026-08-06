@@ -38,6 +38,21 @@ execution_evidence:
     blanket VERIFIED. Covers SAL-IPYNB-OBL-6F4551856EC21F7B and
     SAL-IPYNB-OBL-83A15CABF90C4B84 only; it supports no other obligation
     and promotes no product state.
+- evidence_id: IPYNB-MERGE-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-merge-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact positive
+    and negative test selectors for merge_notebooks()'s full conflict
+    matrix (move/edit, delete/edit, output, metadata) plus base-fallback
+    behavior on a genuine source conflict and multiple-simultaneous-conflict
+    reporting. NOT backed by an independent reference implementation --
+    format_factory's merge semantics are its own design, not a
+    reimplementation of nbdime or another existing notebook-merge tool --
+    SELF-CONSISTENT per the execution-recovery directive's GAP-008 rule,
+    not VERIFIED. Covers SAL-IPYNB-OBL-03A1429F7B7AF3E1 only; it supports
+    no other obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-IPYNB-OBL-02A00C213D2B0190
   capability_id: IPYNB-ATTACH-001
@@ -69,29 +84,45 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-03A1429F7B7AF3E1
   capability_id: IPYNB-MERGE-001
-  status: partial
+  status: implemented
   source_symbols:
+  - src/python/ipynb/src/format_factory/ipynb/model/merge.py::merge_notebooks
   - src/python/ipynb/src/format_factory/ipynb/model/merge.py::ConflictKind
   - src/python/ipynb/src/format_factory/ipynb/model/merge.py::CellConflict
   - src/python/ipynb/src/format_factory/ipynb/model/merge.py::MergeReport
   - src/python/ipynb/src/format_factory/ipynb/model/merge.py::MergeResult
-  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::CellField
-  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::PatchPreconditionError
-  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::DiffPolicy
-  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::FieldChange
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_notebook_merge.py::test_identical_ours_and_theirs_produce_no_conflicts
   - tests/python/ipynb/test_obligation_notebook_merge.py::test_change_on_only_one_side_is_applied_without_conflict
   - tests/python/ipynb/test_obligation_notebook_merge.py::test_identical_change_on_both_sides_is_applied_without_conflict
-  negative_test_selectors: []
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_addition_on_one_side_is_carried_into_the_merge
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_delete_without_any_edit_on_the_other_side_is_not_a_conflict
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_both_sides_deleting_the_same_cell_is_not_a_conflict
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_output_change_on_only_one_side_is_not_a_conflict
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_move_on_only_one_side_is_not_a_conflict
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_both_sides_reordering_without_content_changes_is_not_flagged
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_report_and_conflict_types_are_the_shipped_namespace_types
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_multiple_independent_conflicts_are_all_reported_together
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_edit_edit_conflict_on_source_is_reported
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_conflicting_source_falls_back_to_base_not_either_side
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_delete_edit_conflict_is_reported
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_output_conflict_is_reported
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_metadata_conflict_is_reported
+  - tests/python/ipynb/test_obligation_notebook_merge.py::test_move_edit_conflict_is_reported
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-MERGE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Conflict-matrix fixtures
-    (move/edit, delete/edit, output, metadata).'
+  - 'merge_notebooks() merges by stable cell identity (matching cells across ours/theirs/base by ID, not
+    position), detecting all four conflict categories this obligation names: move/edit (a cell reordered
+    on one side while edited on the other), delete/edit (deleted on one side, edited on the other),
+    output conflicts, and metadata conflicts -- each independently tested for both the conflicting and
+    non-conflicting case, and for multiple simultaneous conflicts reported together in one MergeReport.
+    A genuine edit/edit source conflict falls back to the base version rather than picking either side
+    or naively concatenating them into the cell source, so a conflict is never hidden inside executable
+    code.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Conflict-matrix fixtures (move/edit, delete/edit, output, metadata).

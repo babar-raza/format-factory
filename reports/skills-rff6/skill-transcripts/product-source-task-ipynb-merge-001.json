@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-merge-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T11:15:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_MERGE_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "IPYNB-MERGE-001's real production source (model/merge.py, merge_notebooks()) and its full test suite (tests/python/ipynb/test_obligation_notebook_merge.py, 17 tests) were built in commit 670f1f09 ('feat(ipynb): three-way notebook merge with conflict detection'), a prior session/tick, and closed FF6 Event 100 ('ipynb reaches 0 missing obligations'). Reaching 0 missing moved this obligation from missing to partial, but it was never subsequently audited against its own declared proof requirements -- the evidence row still cited only 3 of the 17 tests (the simplest no-conflict cases), no negative selectors, and diff.py symbols that belong to a different obligation (IPYNB-DIFF-001), left at partial with the generic 'not yet audited' placeholder.",
+    "obligation_targeted": "SAL-IPYNB-OBL-03A1429F7B7AF3E1",
+    "acceptance_evidence": "tests/python/ipynb/test_obligation_notebook_merge.py",
+    "regression_tier": "full IPYNB package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Surveyed ipynb's single-obligation capabilities after xliff, since ipynb and ubl were tied for fewest implemented obligations (2 each) this tick. IPYNB-MERGE-001 stood out: `git log --oneline --grep=IPYNB-MERGE` shows real production source and a full test suite were already built in commit 670f1f09, a prior tick that closed Event 100 ('ipynb reaches 0 missing obligations') -- but the evidence row was never subsequently promoted or corrected past its original partial mapping.",
+    "2. Read model/merge.py in full: merge_notebooks() matches cells across ours/theirs/base by stable cell ID (not position), and detects all four conflict categories the obligation names by comparing per-field changes on each side against the base. A genuine source-level edit/edit conflict falls back to the base version rather than picking a side or concatenating -- the obligation's 'never hide conflicts inside executable source' clause.",
+    "3. Read tests/python/ipynb/test_obligation_notebook_merge.py in full: 17 tests already exist covering every conflict category (move/edit, delete/edit, output, metadata) in both directions (conflicting and non-conflicting variants), the source-conflict base-fallback behavior specifically, multiple simultaneous conflicts reported together, and that the exported report/conflict types are the shipped-namespace types (not an internal-only representation).",
+    "4. Ran all 17 tests directly before citing any of them: all passed.",
+    "5. Corrected source_symbols to the merge module's actual public surface (added merge_notebooks itself, which was missing; removed four diff.py symbols that belong to IPYNB-DIFF-001, a different obligation, and were carried over from a generic ledger-map mapping). Corrected positive/negative selectors to cite all 17 tests split by whether each proves a conflict IS reported (negative -- a refusal/report case) or is NOT reported (positive -- an allowed-merge case), matching this session's established negative-selector convention. Promoted to implemented. Zero source or test changes -- pure evidence correction, verified via an unchanged full ipynb suite run."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_notebook_merge.py -v -- 17 passed",
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 68,
+    "ipynb_remains": "UNASSESSED",
+    "oracle": "none -- format_factory's notebook-merge semantics are its own design, not a reimplementation of nbdime or another existing notebook-merge tool, so this is SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED against an independent merge implementation.",
+    "why_this_was_purely_a_citation_fix": "The production source and its comprehensive test suite were built in a prior session tick (commit 670f1f09) closing FF6 Event 100. This slice's contribution is entirely in auditing that existing work against the obligation's declared proof requirements and correcting the evidence citation to match -- no new capability was added."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
