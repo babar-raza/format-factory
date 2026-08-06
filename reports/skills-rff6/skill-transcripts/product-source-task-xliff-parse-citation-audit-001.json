@@ -1,0 +1,48 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-parse-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T21:15:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_PARSE_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure-at-scale",
+    "root_cause": "A per-capability distinct-citation-set survey across xliff/safetensors/nrrd (never checked this session before now) found XLIFF-PARSE-001 with 36 obligations all sharing one generic 3-test citation -- by far the largest single unaudited cluster found this session, larger than any full ora or ipynb capability. Delegated the initial mapping research to an Explore agent (36 rule_texts against the full shipped-namespace xliff test suite), then personally verified every cited test name exists via grep and confirmed the full xliff suite (313 tests) passes before writing any evidence.",
+    "obligation_targeted": "All 36 SAL-XLIFF-OBL-* obligations under XLIFF-PARSE-001 (see execution_evidence entry XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF for the full id list).",
+    "acceptance_evidence": "tests/python/xliff/test_production_namespace.py, test_obligation_merge_adapter.py, test_obligation_notes_and_annotations.py, test_obligation_module_coverage.py, test_obligation_qa_checks.py, test_obligation_state_transitions.py, test_obligation_preservation_mode.py (all pre-existing; no new tests this slice)",
+    "regression_tier": "full XLIFF package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Ran a per-capability distinct-citation-set survey across xliff/safetensors/nrrd (a quick Python script counting unique positive_test_selector tuples per capability_id) -- confirmed the same shared-generic-citation signature found repeatedly in ora and ipynb this session also exists in xliff, at much larger scale: XLIFF-PARSE-001 (36), XLIFF-MODULE-001 (18), XLIFF-MODEL-001 (17), XLIFF-VALIDATE-001 (14), XLIFF-TEXT-001 (14), XLIFF-INLINE-001 (9), XLIFF-SEC-001 (5).",
+    "2. Delegated the research phase to an Explore subagent given the volume (36 distinct rule_texts): read every rule_text, cross-referenced the obligation register for exact-duplicate rule_text under other capability_ids, read the shipped-namespace test suite in full, and explicitly excluded every test file importing the deprecated bare `xliff.*` shadow package (confirmed via import-statement grep) per this codebase's own GAP-017/018 rule -- this correctly excluded test_xliff_structural_fidelity.py and 8 other files that looked relevant by name but do not count as shipped-namespace evidence.",
+    "3. The agent classified each obligation into STRONG (12: fully proven), PARTIAL (7 core-XLIFF clauses: real but incomplete evidence, precise gap identified), DUPLICATE (8: exact-duplicate rule_text of a still-unresolved XLIFF-MODULE-001 obligation, real but incomplete module-coverage evidence), SPEC-PACKAGE-FACT (4: describes the official XLIFF 2.1 spec distribution's own bundled files, not product behavior -- no such files vendored in this repo), or NONE (5: confirmed genuinely unbuilt).",
+    "4. Personally verified every cited test function name exists via grep across the actual test files (not trusted from the agent's report alone) -- all confirmed present on the first check, no corrections needed. Ran the full xliff suite (313 passed) to confirm the baseline before writing any evidence, since every cited test is already part of that passing suite.",
+    "5. Applied the 12 STRONG classifications as full promotions to implemented. Applied the 15 PARTIAL/DUPLICATE classifications as corrected partial status with precise, specific missing_behavior text naming the exact confirmed gap (not the generic 'not yet audited' placeholder) -- following this session's established honesty discipline for real, deliberately-unattempted gaps. Applied the 4 SPEC-PACKAGE-FACT and 5 NONE classifications as corrected missing_behavior text on obligations that remain status=missing, replacing the generic placeholder with a specific, honest explanation of why (spec-distribution-package fact not applicable to product runtime; or a precisely named confirmed gap) rather than force-promoting or leaving a misleading generic audit-backlog note.",
+    "6. Applied all 36 evidence edits via the same obligation_id-delimited text-block script pattern used across ten prior ora/ipynb ticks, extracting the actual proof_requirements boilerplate from an untouched sibling programmatically. Hit one script bug (a KeyError on obligations whose edit dict omitted the optional 'missing' key) caught and fixed before any file write occurred (the script builds the full output in memory before writing, so the crash left the source file untouched -- confirmed via git status before re-running). Ran the reconciler: clean pass, no errors, second attempt (after the script fix). Ran the full xliff suite to confirm zero regressions (no source or test files changed this slice) -- 313 passed, identical to before."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 313 passed, unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 12,
+    "obligations_total_for_format": 142,
+    "xliff_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference XLIFF implementation. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_only_12_of_36_moved_to_implemented": "This cluster mixed genuinely fully-proven core facts (12) with facts that are real but only partially proven (15, mostly single-optional-module namespace/round-trip proof without the module's specific cardinality/attribute constraints, or core clauses missing one sub-case like 'ignorable' elements), facts about the spec distribution package itself rather than product behavior (4), and genuinely unbuilt behavior (5). Scale did not change the discipline: every promotion required a directly matching, verified test; every non-promotion got a precise, honest reason rather than either a forced promotion or a stale generic placeholder.",
+    "cross_capability_note": "8 of the 15 partial corrections are exact-duplicate rule_text also registered under XLIFF-MODULE-001, which itself has 18 obligations all sharing one still-unresolved generic citation -- the SAME evidence found here (module_coverage.py's namespace and round-trip tests) will apply directly when XLIFF-MODULE-001 is audited in a future tick, and each corrected obligation's implemented_behavior text explicitly cross-references its MODULE-001 duplicate obligation_id for that future reconciliation."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

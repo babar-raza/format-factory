@@ -183,6 +183,62 @@ execution_evidence:
     VERIFIED. Covers SAL-XLIFF-OBL-A9AF9198E92EA6F9 and
     SAL-XLIFF-OBL-F920057AE26D1B4F only; it supports no other obligation
     and promotes no product state.
+- evidence_id: XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-parse-citation-audit-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike XLIFF-BASELINE-SUITE: XLIFF-PARSE-001's 36
+    obligations all cited the same generic 3-test citation despite the
+    package having a rich, thorough shipped-namespace test suite this
+    citation never individually audited against. A dedicated research
+    pass (excluding every test file that imports the deprecated bare
+    `xliff.*` shadow package rather than `format_factory.xliff`, per
+    this codebase's own GAP-017/018 rule) classified each of the 36
+    rule_texts individually: 12 are fully, directly proven and promoted
+    to implemented; 15 (7 core-XLIFF clauses plus 8 single-optional-
+    module clauses that are exact-text cross-capability duplicates of
+    still-unresolved XLIFF-MODULE-001 obligations) are corrected to
+    accurate partial, each with a precisely named, confirmed, and
+    deliberately-unattempted gap (e.g. "ignorable" elements never
+    exercised by any test; the required-id constraint on inline codes
+    unenforced; originalData/data element resolution unimplemented;
+    true XSD/Schematron validation not implemented since no schema
+    files are bundled; module-specific cardinality/attribute constraints
+    unmodeled beyond opaque-extension preservation); 4 describe the
+    contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION PACKAGE itself
+    (bundled schema/Schematron/NVDL files) rather than product runtime
+    behavior, and no such files are vendored in this repository, so
+    these remain missing with an honest, specific explanation rather
+    than a generic "not yet audited" placeholder; 5 are confirmed
+    genuine gaps (source-language compatibility mirroring the already-
+    built target-language check; sc/ec isolation semantics; multi-file
+    file-id uniqueness; trgLang-required-when-target-present) named
+    precisely and left honestly missing. No new source or test code
+    this slice -- pure citation correction and evidence-honesty
+    correction at unprecedented scale for this session (36 obligations
+    individually audited in one pass). SELF-CONSISTENT format_factory-
+    only evidence per the execution-recovery directive's GAP-008 rule,
+    not VERIFIED. Covers SAL-XLIFF-OBL-06483C363273E614,
+    SAL-XLIFF-OBL-2F91536E68D9FA7E, SAL-XLIFF-OBL-30C00B0420087A37,
+    SAL-XLIFF-OBL-3542C2C04BA1B521, SAL-XLIFF-OBL-51C619B4441B8CC8,
+    SAL-XLIFF-OBL-6F58FAA98D63DCE0, SAL-XLIFF-OBL-856D00DE735B6951,
+    SAL-XLIFF-OBL-91FEB76442382843, SAL-XLIFF-OBL-B8C7FD041A1F7450,
+    SAL-XLIFF-OBL-E90A3420AFA03CC2, SAL-XLIFF-OBL-F32E0F48ABC2675D,
+    SAL-XLIFF-OBL-F5619E33106888AC, SAL-XLIFF-OBL-194AC86AD7F54920,
+    SAL-XLIFF-OBL-3A70AA27631A594D, SAL-XLIFF-OBL-6216215A0A7D5A20,
+    SAL-XLIFF-OBL-67ED3618EE6C709A, SAL-XLIFF-OBL-C1BB9934B09B3B70,
+    SAL-XLIFF-OBL-D2BB0F0D8018D601, SAL-XLIFF-OBL-EC188D4F6DD138A0,
+    SAL-XLIFF-OBL-234A057EBC798099, SAL-XLIFF-OBL-3C4EB05F176E240D,
+    SAL-XLIFF-OBL-57668EDF714BE172, SAL-XLIFF-OBL-8CD918D3D6C70981,
+    SAL-XLIFF-OBL-B2E26CC031AF32ED, SAL-XLIFF-OBL-CC8F94A8623CA191,
+    SAL-XLIFF-OBL-D8C6CC9733716C74, SAL-XLIFF-OBL-E3F1C46FFD77CD5B,
+    SAL-XLIFF-OBL-191B67AD2A05CA4E, SAL-XLIFF-OBL-194616F7A49381E8,
+    SAL-XLIFF-OBL-21B94445F4216B94, SAL-XLIFF-OBL-B90CB93CF07C9917,
+    SAL-XLIFF-OBL-087892B36F8591FF, SAL-XLIFF-OBL-1FF54C0CDEC82951,
+    SAL-XLIFF-OBL-7508113EBF7E4457, SAL-XLIFF-OBL-C6C67E6C253C9EAB, and
+    SAL-XLIFF-OBL-C96F6CB613A6F95D only; it supports no other obligation
+    and promotes no product state.
 obligations:
 - obligation_id: SAL-XLIFF-OBL-009F2EB91831B248
   capability_id: XLIFF-SEC-001
@@ -262,24 +318,18 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-06483C363273E614
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/merge.py::Skeleton
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_skeleton_carries_the_non_translatable_structure
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Skeleton (merge.py) carries the non-translatable document structure (header/footer) needed to reconstruct the original file on merge, proven directly: the skeleton template carries non-translatable content but not the translatable spans themselves.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -338,24 +388,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-087892B36F8591FF
   capability_id: XLIFF-PARSE-001
-  status: partial
-  source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
-  positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - XLIFF-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: no shipped-namespace test builds a multi-file document, so file-id-unique-within-document is never exercised (the validator has a duplicate-id check, but only unit/segment-id duplicates are tested, never file-id). Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -596,24 +636,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-191B67AD2A05CA4E
   capability_id: XLIFF-PARSE-001
-  status: partial
-  source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
-  positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - XLIFF-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff''s own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -621,24 +651,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-194616F7A49381E8
   capability_id: XLIFF-PARSE-001
-  status: partial
-  source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
-  positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - XLIFF-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff''s own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -648,22 +668,17 @@ obligations:
   capability_id: XLIFF-PARSE-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'A unit''s segment carrying exactly one source followed by at most one target is proven directly.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: no shipped-namespace test exercises "ignorable" elements at all (the reader/writer support kind="ignorable" but zero tests construct one), and the "a unit contains AT LEAST ONE segment or ignorable" cardinality constraint (zero-children refusal) is untested as a negative case. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -695,24 +710,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-1FF54C0CDEC82951
   capability_id: XLIFF-PARSE-001
-  status: partial
-  source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
-  positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - XLIFF-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: no check_source_language_compatibility (or equivalent) exists anywhere in qa.py/validator.py -- only the mirror-image target-language check (check_target_language_compatibility, SAL-XLIFF-OBL-E90A3420AFA03CC2) is implemented. The source-side compatibility check this obligation names is genuinely unbuilt. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -771,24 +776,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-21B94445F4216B94
   capability_id: XLIFF-PARSE-001
-  status: partial
-  source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
-  positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - XLIFF-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff''s own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -822,22 +817,18 @@ obligations:
   capability_id: XLIFF-PARSE-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
+  - tests/python/xliff/test_obligation_module_coverage.py::test_metadata_module_round_trips
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'The Metadata module namespace (urn:oasis:names:tc:xliff:metadata:2.0) and metaGroup/meta round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-5450B2DB4BF7B672), same evidence applies there.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: "meta elements require a type attribute" is not enforced or tested -- Metadata is preserved only as opaque extension content, with no typed accessor to validate a required attribute against. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -947,24 +938,18 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-2F91536E68D9FA7E
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'An XLIFF 2.0 document rooted at <xliff> (core namespace) with required version and srcLang, containing one or more <file> elements holding translation units, is proven directly against a real fixture matching this exact shape.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -997,24 +982,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-30C00B0420087A37
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
   - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  negative_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Supported version namespaces are recognized and round-trip; namespace/version consistency is validated (an unsupported forward version 2.2 and a legacy 1.2 namespace are both refused); custom extension namespaces and attributes are proven preserved across a round trip.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -1022,24 +1004,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-3542C2C04BA1B521
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
   - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  negative_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'The core namespace (urn:oasis:names:tc:xliff:document:2.0) and version="2.0"/"2.1" are proven to round-trip through loads()/dump(profile=...)/load(); a legacy/unsupported profile is proven refused rather than silently accepted.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -1153,22 +1132,19 @@ obligations:
   capability_id: XLIFF-PARSE-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_production_namespace.py::test_segment_split_join_reports_mapping_and_preserves_inline_content
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_sm_em_span_survives_overlap_with_another_inline_element
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'ph/pc/sc/ec inline elements are modeled and proven to round-trip with their ids present.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: the "required id" MUST-constraint itself is unenforced and untested -- no test constructs a ph/pc/sc lacking an id and confirms refusal; the validator only checks id duplicates and ec-without-matching-sc, not id presence. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -1202,22 +1178,18 @@ obligations:
   capability_id: XLIFF-PARSE-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
+  - tests/python/xliff/test_obligation_module_coverage.py::test_glossary_module_round_trips
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'The Glossary module namespace (urn:oasis:names:tc:xliff:glossary:2.0) and glossEntry/term round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-0F4BED4809335F28), same evidence applies there.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: the "one or more glossEntry / zero-or-more translation / at most one definition" cardinality constraints are not enforced or tested -- Glossary is preserved only as opaque extension content. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -1587,24 +1559,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-51C619B4441B8CC8
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_notes_attach_at_file_group_and_unit_level
+  - tests/python/xliff/test_obligation_merge_adapter.py::test_extraction_finds_every_translatable_block
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'file elements containing unit elements nested in group elements is proven by the first two tests; the merge-adapter test builds file->unit directly with no group, proving the "optionally nested" half -- both shapes of the structural tree are exercised.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -1666,22 +1634,17 @@ obligations:
   capability_id: XLIFF-PARSE-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_obligation_module_coverage.py::test_size_and_length_restriction_module_round_trips
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'slr:profiles round-trips as opaque extension content, proving the Size and Length Restriction module namespace is preserved. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-EEA9C58A385F7C96), same evidence applies there.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: no typed sizeRestriction/storageRestriction attribute parsing exists to test -- the module is preserved only as opaque extension content, not modeled. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -1803,22 +1766,17 @@ obligations:
   capability_id: XLIFF-PARSE-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'segment source/target carrying translatable text and translations is well proven.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: "ignorable" elements (also a valid unit child per the model, alongside segment) are never exercised by any shipped-namespace test. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -1853,22 +1811,18 @@ obligations:
   capability_id: XLIFF-PARSE-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
+  negative_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused).'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: "Inline original-data references must resolve to data elements in the same unit" is entirely unimplemented -- there is no originalData/data element model or dataRef resolution check anywhere in this package. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -1966,24 +1920,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-6F58FAA98D63DCE0
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/state_transitions.py::check_state_transitions
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - tests/python/xliff/test_production_namespace.py::test_advanced_translation_state_requires_target
+  - tests/python/xliff/test_production_namespace.py::test_initial_state_and_advanced_state_with_target_are_valid
+  - tests/python/xliff/test_obligation_state_transitions.py::test_every_spec_defined_state_value_is_accepted
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_state_transitions.py::test_an_invalid_state_value_is_rejected
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Segment state defaults to initial and accepts initial/translated/reviewed/final; translated/reviewed/final are proven to require a target child, and an unrecognized state value is refused. This proof already existed in test_production_namespace.py but this obligation_id had never been cited against it -- test_obligation_state_transitions.py''s own docstring already documented that discrepancy.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -2145,24 +2096,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-7508113EBF7E4457
   capability_id: XLIFF-PARSE-001
-  status: partial
-  source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
-  positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - XLIFF-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: no "isolated" attribute handling exists anywhere in format_factory.xliff (the only occurrence of "isolated" in the entire xliff source tree is in the deprecated shadow package''s docstring, which does not count as shipped-namespace coverage). The sc/ec isolation semantics this obligation names are genuinely unbuilt. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -2340,24 +2281,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-856D00DE735B6951
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/codec/preservation.py::check_preservation
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
   - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
+  - tests/python/xliff/test_obligation_preservation_mode.py::TestPreservationModeCanonical::test_canonical_mode_drops_all_extension_levels
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-PRESERVATION-MODE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Foreign-namespace elements/attributes at wildcard extension points are preserved by default (LOSSLESS mode, proven by the round-trip test); the CANONICAL preservation mode (built earlier this session) explicitly drops them, directly matching this obligation''s "unless... removed under applicable processing requirements" clause -- proven by test_obligation_preservation_mode.py::TestPreservationModeCanonical::test_canonical_mode_drops_all_extension_levels.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -2419,22 +2358,18 @@ obligations:
   capability_id: XLIFF-PARSE-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
+  - tests/python/xliff/test_obligation_module_coverage.py::test_translation_candidates_module_round_trips
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'The Translation Candidates module namespace (urn:oasis:names:tc:xliff:matches:2.0) and matches/match round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-D1E0B4FE10EAE4E3), same evidence applies there.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: "each match requires ref plus one source and one target" is not enforced or tested -- no typed Match accessor exists; the module is preserved only as opaque extension content. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -2492,24 +2427,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-91FEB76442382843
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_notes_attach_at_file_group_and_unit_level
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'notes elements carry note children with optional priority and category attributes, proven directly; attachment at file, group, and unit level is proven for all three.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -2880,22 +2810,17 @@ obligations:
   capability_id: XLIFF-PARSE-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_obligation_module_coverage.py::test_resource_data_module_round_trips_despite_unconfirmed_namespace
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'resourceData/resourceItemRef round-trips as opaque extension content, proving the Resource Data module is preserved. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-BF29D4CDCFB61497), same evidence applies there.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: "a reference element requires href" and the optional href on source/target resource payloads are not enforced or tested -- no typed accessor exists for this module''s content. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -2967,24 +2892,18 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-B8C7FD041A1F7450
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'module_coverage_manifest() is proven to name exactly the eight XLIFF 2.1 modules (Translation Candidates, Glossary, Format Style, Metadata, Resource Data, Size and Length Restriction, Validation, ITS) in their own namespaces.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -2992,24 +2911,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-B90CB93CF07C9917
   capability_id: XLIFF-PARSE-001
-  status: partial
-  source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
-  positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - XLIFF-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff''s own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -3070,22 +2979,20 @@ obligations:
   capability_id: XLIFF-PARSE-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected
+  - tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated
+  negative_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected
+  - tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'The "well-formed XML" half is proven (DTD/entity declarations refused; unsupported namespace/version refused).'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: "valid against the core schema with module content valid against its module schema" (true XSD/Schematron validation) is not implemented -- no schema files are bundled in this package, and the optional xmlschema dependency declared in pyproject.toml is never imported anywhere in the source. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -3144,24 +3051,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-C6C67E6C253C9EAB
   capability_id: XLIFF-PARSE-001
-  status: partial
-  source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
-  positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - XLIFF-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: no originalData/data element modeling exists -- InlineElement.data_ref merely reads a dataRef/dataRefStart/dataRefEnd/startRef attribute value generically, without any originalData/data element representing or resolving to the referenced native code data. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -3194,24 +3091,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-C96F6CB613A6F95D
   capability_id: XLIFF-PARSE-001
-  status: partial
-  source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
-  positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - XLIFF-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: no shipped test exercises a document with version or srcLang omitted (only that they are read when present). More significantly, "trgLang required by the core Schematron when target elements are present" has zero implementation -- validator.py contains no reference to trgLang at all. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -3246,22 +3133,18 @@ obligations:
   capability_id: XLIFF-PARSE-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
+  - tests/python/xliff/test_obligation_module_coverage.py::test_validation_module_round_trips
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'The Validation module namespace (urn:oasis:names:tc:xliff:validation:2.0) and validation/rule round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-251C3608521B6A97), same evidence applies there.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: the specific constraint types this module defines (presence, occurrence, boundary, source-existence, case, normalization, disabled) are not modeled or tested individually -- the module is preserved only as opaque extension content. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -3376,22 +3259,17 @@ obligations:
   capability_id: XLIFF-PARSE-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_production_namespace.py::test_target_creation_and_token_aware_edit_preserve_inline_codes_and_xml_attributes
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'source and target permitting optional xml:lang and xml:space as generic passthrough attributes is proven.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: "the xliff root declares xml:space with default value default" is untested and not actually modeled -- the reader never synthesizes a default xml:space on the root; if absent from the source XML it is simply absent from the parsed attributes rather than defaulted. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -3427,22 +3305,17 @@ obligations:
   capability_id: XLIFF-PARSE-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_obligation_module_coverage.py::test_format_style_attributes_round_trip_on_a_unit
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'fs:fs and fs:subFs attributes round-trip on a unit, proving the Format Style module namespace and its two named attributes are preserved (a stronger result than most other single-module obligations: these attributes ARE typed and read generically, not only preserved as opaque extension content). Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-CF05EFE9DC2D7502), same evidence applies there.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: "fs values are constrained by the module schema" is untested -- no enum or validation of fs attribute values exists; any string value round-trips unchecked. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -3554,22 +3427,18 @@ obligations:
   capability_id: XLIFF-PARSE-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
+  - tests/python/xliff/test_obligation_module_coverage.py::test_its_mapping_attributes_round_trip_on_a_unit
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Both the W3C ITS namespace and the itsm:2.1 mapping''s domains attribute are proven to round-trip on a unit. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-725053FB0A47E78D), same evidence applies there.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: the itsm:2.1 mapping''s "language" attribute specifically is not separately confirmed round-tripping in the cited test (only domains is asserted) -- not attempted this slice to verify precisely rather than assume it behaves identically to domains.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -3627,24 +3496,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-E90A3420AFA03CC2
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_target_language_compatibility
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_requires_exact_language_match
+  - tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_exact_match_passes
+  - tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_accepts_more_specific_language
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_reverse_specific_language
+  - tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_incompatible_language
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'check_target_language_compatibility()''s own docstring quotes this exact rule_text verbatim. All four language-relation branches (exact match, more-specific accepted under 2.1, reverse-specific reported, incompatible reported) are individually proven for both XLIFF 2.0 (exact-only) and 2.1 (relaxed) semantics.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -3654,22 +3521,18 @@ obligations:
   capability_id: XLIFF-PARSE-001
   status: partial
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
+  negative_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'Confirmed gap, not an audit backlog: file-id duplicate detection exists in validator.py but is untested; group-id duplicate detection does not exist in the validator at all; broader "references must resolve" (e.g. mrk ref, dataRef) is unimplemented beyond the ec/sc case. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -3753,24 +3616,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-F32E0F48ABC2675D
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated
+  negative_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'An unsupported forward version (2.2, core namespace) and a legacy version (1.2, its own namespace) are both proven to raise XliffParseError rather than being silently coerced to a supported target version -- satisfies the "refuse with diagnostics" branch this obligation offers as an alternative to an explicit compatibility adapter.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -3804,24 +3662,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-F5619E33106888AC
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::probe
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
-  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::load
+  - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_mrk_annotation_wraps_a_span
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_overlapping_span_uses_sm_and_em_markers_not_nesting
+  - tests/python/xliff/test_obligation_notes_and_annotations.py::test_sm_em_span_survives_overlap_with_another_inline_element
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Version/namespace consistency
-    fixtures per supported version; legacy-version refusal fixture.'
+  - 'mrk elements annotating inline spans are proven directly; sm/em elements marking span boundaries where spans overlap element structure (which mrk, a paired element, cannot represent) are proven both for a simple overlap and for overlap with another inline element.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
