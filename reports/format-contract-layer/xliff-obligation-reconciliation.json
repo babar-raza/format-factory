@@ -10,6 +10,14 @@
       "truth_boundary": "SOURCE READ 2026-08-04 under the GAP-022 rule, updated 2026-08-05. Unlike ubl, xliff's CORE is genuine work: segmentation.py (217 LOC) implements split_segment, join_segments, SegmentMapping, spanning-code closure checks and fresh-id enforcement; inline.py, text_editing.py and the reader/writer are real. Those `partial` entries are defensible pending audit.\n2026-08-05 correction: the prior note here named the eight XLIFF 2.1 modules as \"...Resource Data, Change Tracking, Size and Length Restriction, Validation\" -- Change Tracking is not one of the eight the contract's own normative_rules name; the eighth is ITS (http://www.w3.org/2005/11/its). That error is fixed here rather than carried forward.\nmodules.py now gives XLIFF-MODULE-001 a programmatic coverage manifest covering all eight (Translation Candidates, Glossary, Format Style, Metadata, Resource Data, Size and Length Restriction, Validation, ITS), each PRESERVATION_ONLY with round-trip fixtures proving lossless preservation (see notes above). No typed per-module accessor exists yet, so no XLIFF-MODULE-001 obligation may be recorded above `partial`; this deepens the evidence behind `partial`, exactly like the UBL slices that moved zero obligations while making the evidence real rather than fictional. validation/validator.py still performs no schema validation, so the schema-validation clauses inside XLIFF-VALIDATE-001's `partial` entries remain overstated and still need per-obligation correction -- unchanged by this slice.\nXLIFF-NOTE-001, same session: no source change. Direct experiment first (before writing any test) showed reader.py's _parse_inline is generic over every inline tag, so mrk/sm/em already survive with their exact attributes and document-order position -- which is what an overlapping span requires, since it cannot be a nested element pair. The gap was proof, not implementation; XLIFF-NOTE-001 could not be recorded `partial` before because it had zero shipped-namespace selectors, not because the behavior was absent.\nXLIFF-QA-001, same session: qa.py is new source (unlike NOTE-001). Five of six named QA categories implemented with dedicated tests each; length violations explicitly left undone pending Size/Length module modeling, documented rather than stubbed. No QA-001 obligation may be recorded above `partial` -- a check existing is not the same as it being verified against every fixture the required_tests line names, and length is a real, acknowledged gap in the category set itself.\nXLIFF-MERGE-001, same session: real new source (merge.py), unlike NOTE-001. SHOULD-level, and it stays SHOULD-level satisfied at `partial`: the reference adapter proves the protocol works end to end (extraction, reversible skeleton, translated merge, drift detection and refusal) but is deliberately not a real-world format adapter -- the obligation's \"never claim generic extraction\" clause is precisely why no such claim is made here.\nSuite-level and NON-PROMOTING. The xliff suite is 265 passed with no failures (193 baseline + 22 + 11 + 25 + 14 new), but that number is still dominated by the ten shadow-package files; the shipped-namespace files now contribute 87 tests (15 + 22 + 11 + 25 + 14). A green suite here says very little about the package that would be released. Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most."
     },
     {
+      "evidence_id": "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-cross-cluster-citation-audit-001.json",
+      "sha256": "a13c27fe5a277fc1cbda003532f02792fee40b10bdafe966c4052601e8f9ae6e",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: a programmatic exact- rule_text-match sweep across XLIFF-MODEL-001 (17), XLIFF-VALIDATE-001 (14), XLIFF-TEXT-001 (14), XLIFF-INLINE-001 (9), and XLIFF-SEC-001 (5) -- the five remaining unaudited xliff clusters after XLIFF-PARSE-001 and XLIFF-MODULE-001 -- against the pool of obligations already individually resolved (implemented, honest partial, or honest missing) in those two prior ticks found 46 of the 59 obligations are exact-text duplicates. Each is cross-referenced to its already-resolved counterpart with the identical status, citations, and reasoning, prefixed with an explicit cross-capability duplicate note naming the source obligation_id -- no new source or test investigation was needed or performed for any of these 46. The remaining 13 obligations (2 in XLIFF-MODEL-001 about the typed document-hierarchy object model itself, 2 in XLIFF-VALIDATE-001 about multi-scope validation and comprehensive validation matrices, 1 in XLIFF-TEXT-001 about inline-code-position-preserving editing, 3 in XLIFF-INLINE-001 about paired-code integrity guarantees, and all 5 in XLIFF-SEC-001 about security baseline behavior) are genuinely distinct facts not yet investigated -- deliberately left untouched this slice for a dedicated future investigation rather than rushed. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers the 46 cross-referenced obligation_ids named in this slice's transcript only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-LIFECYCLE-IO-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -85,7 +93,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "2b38a7b41c461e02dc72ef2739c9f654df851a41e64e7d00eecf48034f84bff9",
+    "implementation_evidence": "95ab82c2b01c298e49f6bba9c544aec94e994fd5ee9ee2a533c215564b411ef9",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -126,20 +134,19 @@
     {
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-57668EDF714BE172 (identical rule_text): slr:profiles round-trips as opaque extension content, proving the Size and Length Restriction module namespace is preserved. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-EEA9C58A385F7C96), same evidence applies there."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
+        "Confirmed gap, not an audit backlog: no typed sizeRestriction/storageRestriction attribute parsing exists to test -- the module is preserved only as opaque extension content, not modeled. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-05547046CBCB57F7",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_size_and_length_restriction_module_round_trips"
       ],
       "proof_requirements": {
         "negative": [
@@ -151,10 +158,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
       ],
       "status": "partial"
     },
@@ -253,22 +257,14 @@
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
+        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-21B94445F4216B94 (identical rule_text). Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff's own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-07A1F5F6A9B3A95F",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -278,11 +274,9 @@
           "Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -308,22 +302,14 @@
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
+        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-191B67AD2A05CA4E (identical rule_text). Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff's own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-0ACBD19A4F183811",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -333,11 +319,9 @@
           "Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-LIFECYCLE-001",
@@ -475,20 +459,21 @@
     {
       "capability_id": "XLIFF-INLINE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-67ED3618EE6C709A (identical rule_text): The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused)."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data."
+        "Confirmed gap, not an audit backlog: \"Inline original-data references must resolve to data elements in the same unit\" is entirely unimplemented -- there is no originalData/data element model or dataRef resolution check anywhere in this package. Not attempted this slice."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+      ],
       "obligation_id": "SAL-XLIFF-OBL-1097A25E15901A47",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
       ],
       "proof_requirements": {
         "negative": [
@@ -500,8 +485,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement",
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content"
+        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument"
       ],
       "status": "partial"
     },
@@ -724,22 +708,14 @@
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
+        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-1FF54C0CDEC82951 (identical rule_text). Confirmed gap, not an audit backlog: no check_source_language_compatibility (or equivalent) exists anywhere in qa.py/validator.py -- only the mirror-image target-language check (check_target_language_compatibility, SAL-XLIFF-OBL-E90A3420AFA03CC2) is implemented. The source-side compatibility check this obligation names is genuinely unbuilt. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-20D653BB993E2687",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -749,11 +725,9 @@
           "Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-MODULE-001",
@@ -904,22 +878,14 @@
     },
     {
       "capability_id": "XLIFF-MODEL-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
+        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-7508113EBF7E4457 (identical rule_text). Confirmed gap, not an audit backlog: no \"isolated\" attribute handling exists anywhere in format_factory.xliff (the only occurrence of \"isolated\" in the entire xliff source tree is in the deprecated shadow package's docstring, which does not count as shipped-namespace coverage). The sc/ec isolation semantics this obligation names are genuinely unbuilt. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-25A6AEE1EE8FA679",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -928,33 +894,20 @@
           "Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-TEXT-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
+        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-C96F6CB613A6F95D (identical rule_text). Confirmed gap, not an audit backlog: no shipped test exercises a document with version or srcLang omitted (only that they are read when present). More significantly, \"trgLang required by the core Schematron when target elements are present\" has zero implementation -- validator.py contains no reference to trgLang at all. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-2602F9167F95464B",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -963,32 +916,20 @@
           "Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
+        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-7508113EBF7E4457 (identical rule_text). Confirmed gap, not an audit backlog: no \"isolated\" attribute handling exists anywhere in format_factory.xliff (the only occurrence of \"isolated\" in the entire xliff source tree is in the deprecated shadow package's docstring, which does not count as shipped-namespace coverage). The sc/ec isolation semantics this obligation names are genuinely unbuilt. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-2D08D42095E5EFD9",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -998,11 +939,9 @@
           "Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -1035,22 +974,14 @@
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
+        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-B90CB93CF07C9917 (identical rule_text). Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff's own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-3059D36881034046",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1060,11 +991,9 @@
           "Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -1167,20 +1096,20 @@
     {
       "capability_id": "XLIFF-INLINE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-3A70AA27631A594D (identical rule_text): ph/pc/sc/ec inline elements are modeled and proven to round-trip with their ids present."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data."
+        "Confirmed gap, not an audit backlog: the \"required id\" MUST-constraint itself is unenforced and untested -- no test constructs a ph/pc/sc lacking an id and confirms refusal; the validator only checks id duplicates and ec-without-matching-sc, not id presence. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-378A1E5A93B9F0E1",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_segment_split_join_reports_mapping_and_preserves_inline_content",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_sm_em_span_survives_overlap_with_another_inline_element"
       ],
       "proof_requirements": {
         "negative": [
@@ -1192,8 +1121,8 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement",
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
+        "src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement"
       ],
       "status": "partial"
     },
@@ -1235,20 +1164,21 @@
     {
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-6F58FAA98D63DCE0 (identical rule_text): Segment state defaults to initial and accepts initial/translated/reviewed/final; translated/reviewed/final are proven to require a target child, and an unrecognized state value is refused. This proof already existed in test_production_namespace.py but this obligation_id had never been cited against it -- test_obligation_state_transitions.py's own docstring already documented that discrepancy."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_state_transitions.py::test_an_invalid_state_value_is_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-39B22C28CEE813EC",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_advanced_translation_state_requires_target",
+        "tests/python/xliff/test_production_namespace.py::test_initial_state_and_advanced_state_with_target_are_valid",
+        "tests/python/xliff/test_obligation_state_transitions.py::test_every_spec_defined_state_value_is_accepted"
       ],
       "proof_requirements": {
         "negative": [
@@ -1258,14 +1188,11 @@
           "Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/state_transitions.py::check_state_transitions"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -1399,20 +1326,23 @@
     {
       "capability_id": "XLIFF-VALIDATE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-C1BB9934B09B3B70 (identical rule_text): The \"well-formed XML\" half is proven (DTD/entity declarations refused; unsupported namespace/version refused)."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
+        "Confirmed gap, not an audit backlog: \"valid against the core schema with module content valid against its module schema\" (true XSD/Schematron validation) is not implemented -- no schema files are bundled in this package, and the optional xmlschema dependency declared in pyproject.toml is never imported anywhere in the source. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected",
+        "tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated"
+      ],
       "obligation_id": "SAL-XLIFF-OBL-43570A6F4917147B",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected",
+        "tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated"
       ],
       "proof_requirements": {
         "negative": [
@@ -1425,7 +1355,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
       ],
       "status": "partial"
     },
@@ -1464,20 +1394,21 @@
     {
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-EC188D4F6DD138A0 (identical rule_text): unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
+        "Confirmed gap, not an audit backlog: file-id duplicate detection exists in validator.py but is untested; group-id duplicate detection does not exist in the validator at all; broader \"references must resolve\" (e.g. mrk ref, dataRef) is unimplemented beyond the ec/sc case. Not attempted this slice."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+      ],
       "obligation_id": "SAL-XLIFF-OBL-441E7C6F7C341B12",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
       ],
       "proof_requirements": {
         "negative": [
@@ -1489,30 +1420,28 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
       ],
       "status": "partial"
     },
     {
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-67ED3618EE6C709A (identical rule_text): The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused)."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
+        "Confirmed gap, not an audit backlog: \"Inline original-data references must resolve to data elements in the same unit\" is entirely unimplemented -- there is no originalData/data element model or dataRef resolution check anywhere in this package. Not attempted this slice."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+      ],
       "obligation_id": "SAL-XLIFF-OBL-44634C4175D505D0",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
       ],
       "proof_requirements": {
         "negative": [
@@ -1524,31 +1453,20 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument"
       ],
       "status": "partial"
     },
     {
       "capability_id": "XLIFF-INLINE-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data."
+        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-7508113EBF7E4457 (identical rule_text). Confirmed gap, not an audit backlog: no \"isolated\" attribute handling exists anywhere in format_factory.xliff (the only occurrence of \"isolated\" in the entire xliff source tree is in the deprecated shadow package's docstring, which does not count as shipped-namespace coverage). The sc/ec isolation semantics this obligation names are genuinely unbuilt. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-452A66EC673B7518",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1557,12 +1475,9 @@
           "Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement",
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-LIFECYCLE-001",
@@ -1634,20 +1549,22 @@
     {
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-E90A3420AFA03CC2 (identical rule_text): check_target_language_compatibility()'s own docstring quotes this exact rule_text verbatim. All four language-relation branches (exact match, more-specific accepted under 2.1, reverse-specific reported, incompatible reported) are individually proven for both XLIFF 2.0 (exact-only) and 2.1 (relaxed) semantics."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_reverse_specific_language",
+        "tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_incompatible_language"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-489D80AD89F6B68E",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_requires_exact_language_match",
+        "tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_exact_match_passes",
+        "tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_accepts_more_specific_language"
       ],
       "proof_requirements": {
         "negative": [
@@ -1657,14 +1574,11 @@
           "Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/qa.py::check_target_language_compatibility"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-SEG-001",
@@ -1928,20 +1842,19 @@
     {
       "capability_id": "XLIFF-INLINE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-F5619E33106888AC (identical rule_text): mrk elements annotating inline spans are proven directly; sm/em elements marking span boundaries where spans overlap element structure (which mrk, a paired element, cannot represent) are proven both for a simple overlap and for overlap with another inline element."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-59F6650110AB14C0",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_mrk_annotation_wraps_a_span",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_overlapping_span_uses_sm_and_em_markers_not_nesting",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_sm_em_span_survives_overlap_with_another_inline_element"
       ],
       "proof_requirements": {
         "negative": [
@@ -1951,12 +1864,11 @@
           "Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement",
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content"
+        "src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-QA-001",
@@ -2095,20 +2007,19 @@
     {
       "capability_id": "XLIFF-TEXT-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-194AC86AD7F54920 (identical rule_text): A unit's segment carrying exactly one source followed by at most one target is proven directly."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
+        "Confirmed gap, not an audit backlog: no shipped-namespace test exercises \"ignorable\" elements at all (the reader/writer support kind=\"ignorable\" but zero tests construct one), and the \"a unit contains AT LEAST ONE segment or ignorable\" cardinality constraint (zero-children refusal) is untested as a negative case. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-65BD1FDA110AD94A",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load"
       ],
       "proof_requirements": {
         "negative": [
@@ -2120,9 +2031,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
       ],
       "status": "partial"
     },
@@ -2196,20 +2105,19 @@
     {
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-194AC86AD7F54920 (identical rule_text): A unit's segment carrying exactly one source followed by at most one target is proven directly."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
+        "Confirmed gap, not an audit backlog: no shipped-namespace test exercises \"ignorable\" elements at all (the reader/writer support kind=\"ignorable\" but zero tests construct one), and the \"a unit contains AT LEAST ONE segment or ignorable\" cardinality constraint (zero-children refusal) is untested as a negative case. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-6B5E0355D5E6E57A",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load"
       ],
       "proof_requirements": {
         "negative": [
@@ -2221,10 +2129,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
       ],
       "status": "partial"
     },
@@ -2307,20 +2212,22 @@
     {
       "capability_id": "XLIFF-TEXT-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-E90A3420AFA03CC2 (identical rule_text): check_target_language_compatibility()'s own docstring quotes this exact rule_text verbatim. All four language-relation branches (exact match, more-specific accepted under 2.1, reverse-specific reported, incompatible reported) are individually proven for both XLIFF 2.0 (exact-only) and 2.1 (relaxed) semantics."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_reverse_specific_language",
+        "tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_incompatible_language"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-6FE48E3DF2354994",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_requires_exact_language_match",
+        "tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_exact_match_passes",
+        "tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_accepts_more_specific_language"
       ],
       "proof_requirements": {
         "negative": [
@@ -2330,13 +2237,11 @@
           "Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target"
+        "src/python/xliff/src/format_factory/xliff/qa.py::check_target_language_compatibility"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODULE-001",
@@ -2373,20 +2278,17 @@
     {
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-2F91536E68D9FA7E (identical rule_text): An XLIFF 2.0 document rooted at <xliff> (core namespace) with required version and srcLang, containing one or more <file> elements holding translation units, is proven directly against a real fixture matching this exact shape."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-72732CB4C19EDD8B",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load"
       ],
       "proof_requirements": {
         "negative": [
@@ -2396,32 +2298,29 @@
           "Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-234A057EBC798099 (identical rule_text): The Metadata module namespace (urn:oasis:names:tc:xliff:metadata:2.0) and metaGroup/meta round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-5450B2DB4BF7B672), same evidence applies there."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
+        "Confirmed gap, not an audit backlog: \"meta elements require a type attribute\" is not enforced or tested -- Metadata is preserved only as opaque extension content, with no typed accessor to validate a required attribute against. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-72895F34A373C243",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
+        "tests/python/xliff/test_obligation_module_coverage.py::test_metadata_module_round_trips"
       ],
       "proof_requirements": {
         "negative": [
@@ -2433,10 +2332,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
       ],
       "status": "partial"
     },
@@ -2479,20 +2375,20 @@
     {
       "capability_id": "XLIFF-TEXT-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-8CD918D3D6C70981 (identical rule_text): The Translation Candidates module namespace (urn:oasis:names:tc:xliff:matches:2.0) and matches/match round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-D1E0B4FE10EAE4E3), same evidence applies there."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
+        "Confirmed gap, not an audit backlog: \"each match requires ref plus one source and one target\" is not enforced or tested -- no typed Match accessor exists; the module is preserved only as opaque extension content. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-73868B0E3F5A4C22",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
+        "tests/python/xliff/test_obligation_module_coverage.py::test_translation_candidates_module_round_trips"
       ],
       "proof_requirements": {
         "negative": [
@@ -2504,9 +2400,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
       ],
       "status": "partial"
     },
@@ -2615,20 +2509,19 @@
     {
       "capability_id": "XLIFF-TEXT-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-B2E26CC031AF32ED (identical rule_text): resourceData/resourceItemRef round-trips as opaque extension content, proving the Resource Data module is preserved. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-BF29D4CDCFB61497), same evidence applies there."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
+        "Confirmed gap, not an audit backlog: \"a reference element requires href\" and the optional href on source/target resource payloads are not enforced or tested -- no typed accessor exists for this module's content. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-7CED833579FE91A4",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_resource_data_module_round_trips_despite_unconfirmed_namespace"
       ],
       "proof_requirements": {
         "negative": [
@@ -2640,9 +2533,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
       ],
       "status": "partial"
     },
@@ -2718,20 +2609,20 @@
     {
       "capability_id": "XLIFF-VALIDATE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-CC8F94A8623CA191 (identical rule_text): The Validation module namespace (urn:oasis:names:tc:xliff:validation:2.0) and validation/rule round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-251C3608521B6A97), same evidence applies there."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
+        "Confirmed gap, not an audit backlog: the specific constraint types this module defines (presence, occurrence, boundary, source-existence, case, normalization, disabled) are not modeled or tested individually -- the module is preserved only as opaque extension content. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-7ECA9CEDFF1B2B42",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
+        "tests/python/xliff/test_obligation_module_coverage.py::test_validation_module_round_trips"
       ],
       "proof_requirements": {
         "negative": [
@@ -2744,7 +2635,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
       ],
       "status": "partial"
     },
@@ -2819,20 +2710,19 @@
     {
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-6216215A0A7D5A20 (identical rule_text): segment source/target carrying translatable text and translations is well proven."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
+        "Confirmed gap, not an audit backlog: \"ignorable\" elements (also a valid unit child per the model, alongside segment) are never exercised by any shipped-namespace test. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-89C4966EE4D2E9A9",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load"
       ],
       "proof_requirements": {
         "negative": [
@@ -2844,10 +2734,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
       ],
       "status": "partial"
     },
@@ -2886,20 +2773,21 @@
     {
       "capability_id": "XLIFF-TEXT-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-6F58FAA98D63DCE0 (identical rule_text): Segment state defaults to initial and accepts initial/translated/reviewed/final; translated/reviewed/final are proven to require a target child, and an unrecognized state value is refused. This proof already existed in test_production_namespace.py but this obligation_id had never been cited against it -- test_obligation_state_transitions.py's own docstring already documented that discrepancy."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_state_transitions.py::test_an_invalid_state_value_is_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-8FC79A65912785AF",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_advanced_translation_state_requires_target",
+        "tests/python/xliff/test_production_namespace.py::test_initial_state_and_advanced_state_with_target_are_valid",
+        "tests/python/xliff/test_obligation_state_transitions.py::test_every_spec_defined_state_value_is_accepted"
       ],
       "proof_requirements": {
         "negative": [
@@ -2909,13 +2797,11 @@
           "Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target"
+        "src/python/xliff/src/format_factory/xliff/state_transitions.py::check_state_transitions"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-SEG-001",
@@ -3046,20 +2932,17 @@
     {
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-06483C363273E614 (identical rule_text): Skeleton (merge.py) carries the non-translatable document structure (header/footer) needed to reconstruct the original file on merge, proven directly: the skeleton template carries non-translatable content but not the translatable spans themselves."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-98F31DD5B2444B6F",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_merge_adapter.py::test_skeleton_carries_the_non_translatable_structure"
       ],
       "proof_requirements": {
         "negative": [
@@ -3069,32 +2952,30 @@
           "Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/merge.py::Skeleton"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-67ED3618EE6C709A (identical rule_text): The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused)."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
+        "Confirmed gap, not an audit backlog: \"Inline original-data references must resolve to data elements in the same unit\" is entirely unimplemented -- there is no originalData/data element model or dataRef resolution check anywhere in this package. Not attempted this slice."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+      ],
       "obligation_id": "SAL-XLIFF-OBL-9A24FE03004035AC",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
       ],
       "proof_requirements": {
         "negative": [
@@ -3107,28 +2988,20 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
+        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument"
       ],
       "status": "partial"
     },
     {
       "capability_id": "XLIFF-TEXT-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
+        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-B90CB93CF07C9917 (identical rule_text). Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff's own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-9B0DC026A5B8E587",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3137,31 +3010,24 @@
           "Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-TEXT-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-B8C7FD041A1F7450 (identical rule_text): module_coverage_manifest() is proven to name exactly the eight XLIFF 2.1 modules (Translation Candidates, Glossary, Format Style, Metadata, Resource Data, Size and Length Restriction, Validation, ITS) in their own namespaces."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-9F2D0EECD6AFC125",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared"
       ],
       "proof_requirements": {
         "negative": [
@@ -3171,32 +3037,22 @@
           "Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODEL-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
+        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-1FF54C0CDEC82951 (identical rule_text). Confirmed gap, not an audit backlog: no check_source_language_compatibility (or equivalent) exists anywhere in qa.py/validator.py -- only the mirror-image target-language check (check_target_language_compatibility, SAL-XLIFF-OBL-E90A3420AFA03CC2) is implemented. The source-side compatibility check this obligation names is genuinely unbuilt. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-A062E07DF7D59EBB",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3205,33 +3061,20 @@
           "Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-TEXT-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
+        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-1FF54C0CDEC82951 (identical rule_text). Confirmed gap, not an audit backlog: no check_source_language_compatibility (or equivalent) exists anywhere in qa.py/validator.py -- only the mirror-image target-language check (check_target_language_compatibility, SAL-XLIFF-OBL-E90A3420AFA03CC2) is implemented. The source-side compatibility check this obligation names is genuinely unbuilt. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-A4C4AAF3B757A07B",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3240,13 +3083,9 @@
           "Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-LIFECYCLE-001",
@@ -3321,22 +3160,14 @@
     },
     {
       "capability_id": "XLIFF-MODEL-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
+        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-087892B36F8591FF (identical rule_text). Confirmed gap, not an audit backlog: no shipped-namespace test builds a multi-file document, so file-id-unique-within-document is never exercised (the validator has a duplicate-id check, but only unit/segment-id duplicates are tested, never file-id). Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-AD191413B05A60ED",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3345,14 +3176,9 @@
           "Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-INLINE-001",
@@ -3499,20 +3325,22 @@
     {
       "capability_id": "XLIFF-VALIDATE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-E90A3420AFA03CC2 (identical rule_text): check_target_language_compatibility()'s own docstring quotes this exact rule_text verbatim. All four language-relation branches (exact match, more-specific accepted under 2.1, reverse-specific reported, incompatible reported) are individually proven for both XLIFF 2.0 (exact-only) and 2.1 (relaxed) semantics."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_reverse_specific_language",
+        "tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_reports_incompatible_language"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-B8938A5BDAE6104E",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_requires_exact_language_match",
+        "tests/python/xliff/test_obligation_qa_checks.py::test_xliff_20_exact_match_passes",
+        "tests/python/xliff/test_obligation_qa_checks.py::test_xliff_21_accepts_more_specific_language"
       ],
       "proof_requirements": {
         "negative": [
@@ -3523,11 +3351,11 @@
           "Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
+        "src/python/xliff/src/format_factory/xliff/qa.py::check_target_language_compatibility"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -3682,20 +3510,18 @@
     {
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-91FEB76442382843 (identical rule_text): notes elements carry note children with optional priority and category attributes, proven directly; attachment at file, group, and unit level is proven for all three."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-C5906B426F26A9CC",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented",
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_notes_attach_at_file_group_and_unit_level"
       ],
       "proof_requirements": {
         "negative": [
@@ -3705,33 +3531,22 @@
           "Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/model/document.py::Note"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-INLINE-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data."
+        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-C6C67E6C253C9EAB (identical rule_text). Confirmed gap, not an audit backlog: no originalData/data element modeling exists -- InlineElement.data_ref merely reads a dataRef/dataRefStart/dataRefEnd/startRef attribute value generically, without any originalData/data element representing or resolving to the referenced native code data. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-C632C43201760C05",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3740,12 +3555,9 @@
           "Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement",
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -3827,20 +3639,19 @@
     {
       "capability_id": "XLIFF-VALIDATE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-856D00DE735B6951 (identical rule_text): Foreign-namespace elements/attributes at wildcard extension points are preserved by default (LOSSLESS mode, proven by the round-trip test); the CANONICAL preservation mode (built earlier this session) explicitly drops them, directly matching this obligation's \"unless... removed under applicable processing requirements\" clause -- proven by test_obligation_preservation_mode.py::TestPreservationModeCanonical::test_canonical_mode_drops_all_extension_levels."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-CBB9181BAE7226EA",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
         "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
+        "tests/python/xliff/test_obligation_preservation_mode.py::TestPreservationModeCanonical::test_canonical_mode_drops_all_extension_levels"
       ],
       "proof_requirements": {
         "negative": [
@@ -3851,11 +3662,12 @@
           "Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
+        "src/python/xliff/src/format_factory/xliff/codec/preservation.py::check_preservation"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -4155,20 +3967,21 @@
     {
       "capability_id": "XLIFF-VALIDATE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-EC188D4F6DD138A0 (identical rule_text): unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
+        "Confirmed gap, not an audit backlog: file-id duplicate detection exists in validator.py but is untested; group-id duplicate detection does not exist in the validator at all; broader \"references must resolve\" (e.g. mrk ref, dataRef) is unimplemented beyond the ec/sc case. Not attempted this slice."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+      ],
       "obligation_id": "SAL-XLIFF-OBL-DA738080DC614E67",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
       ],
       "proof_requirements": {
         "negative": [
@@ -4181,27 +3994,24 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
       ],
       "status": "partial"
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-B8C7FD041A1F7450 (identical rule_text): module_coverage_manifest() is proven to name exactly the eight XLIFF 2.1 modules (Translation Candidates, Glossary, Format Style, Metadata, Resource Data, Size and Length Restriction, Validation, ITS) in their own namespaces."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-E196265BC02520A3",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_all_eight_standard_modules_are_declared"
       ],
       "proof_requirements": {
         "negative": [
@@ -4212,29 +4022,29 @@
           "Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-TEXT-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-CC8F94A8623CA191 (identical rule_text): The Validation module namespace (urn:oasis:names:tc:xliff:validation:2.0) and validation/rule round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-251C3608521B6A97), same evidence applies there."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
+        "Confirmed gap, not an audit backlog: the specific constraint types this module defines (presence, occurrence, boundary, source-existence, case, normalization, disabled) are not modeled or tested individually -- the module is preserved only as opaque extension content. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-E1BDD2E8A5F0F84B",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
+        "tests/python/xliff/test_obligation_module_coverage.py::test_validation_module_round_trips"
       ],
       "proof_requirements": {
         "negative": [
@@ -4246,9 +4056,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
       ],
       "status": "partial"
     },
@@ -4287,20 +4095,19 @@
     {
       "capability_id": "XLIFF-TEXT-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-6216215A0A7D5A20 (identical rule_text): segment source/target carrying translatable text and translations is well proven."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
+        "Confirmed gap, not an audit backlog: \"ignorable\" elements (also a valid unit child per the model, alongside segment) are never exercised by any shipped-namespace test. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-E428FA846AA270C8",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load"
       ],
       "proof_requirements": {
         "negative": [
@@ -4312,30 +4119,20 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
       ],
       "status": "partial"
     },
     {
       "capability_id": "XLIFF-TEXT-001",
-      "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
-      ],
-      "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
-      ],
+      "execution_evidence_ids": [],
+      "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
+        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-7508113EBF7E4457 (identical rule_text). Confirmed gap, not an audit backlog: no \"isolated\" attribute handling exists anywhere in format_factory.xliff (the only occurrence of \"isolated\" in the entire xliff source tree is in the deprecated shadow package's docstring, which does not count as shipped-namespace coverage). The sc/ec isolation semantics this obligation names are genuinely unbuilt. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-E8055B0103E9E5CD",
-      "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
-      ],
+      "positive_test_selectors": [],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -4344,13 +4141,9 @@
           "Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
-      "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target"
-      ],
-      "status": "partial"
+      "proof_status": "MISSING",
+      "source_symbols": [],
+      "status": "missing"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -4422,20 +4215,19 @@
     {
       "capability_id": "XLIFF-TEXT-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-D2BB0F0D8018D601 (identical rule_text): source and target permitting optional xml:lang and xml:space as generic passthrough attributes is proven."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
+        "Confirmed gap, not an audit backlog: \"the xliff root declares xml:space with default value default\" is untested and not actually modeled -- the reader never synthesizes a default xml:space on the root; if absent from the source XML it is simply absent from the parsed attributes rather than defaulted. Not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-ECC84F12FA1BCBCC",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_target_creation_and_token_aware_edit_preserve_inline_codes_and_xml_attributes"
       ],
       "proof_requirements": {
         "negative": [
@@ -4447,9 +4239,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::replace_text_slots",
-        "src/python/xliff/src/format_factory/xliff/model/text_editing.py::copy_source_to_target"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
       ],
       "status": "partial"
     },
@@ -4487,20 +4277,21 @@
     {
       "capability_id": "XLIFF-INLINE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-EC188D4F6DD138A0 (identical rule_text): unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data."
+        "Confirmed gap, not an audit backlog: file-id duplicate detection exists in validator.py but is untested; group-id duplicate detection does not exist in the validator at all; broader \"references must resolve\" (e.g. mrk ref, dataRef) is unimplemented beyond the ec/sc case. Not attempted this slice."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+      ],
       "obligation_id": "SAL-XLIFF-OBL-F20C2CA429BA381B",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
       ],
       "proof_requirements": {
         "negative": [
@@ -4512,8 +4303,7 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement",
-        "src/python/xliff/src/format_factory/xliff/model/inline.py::flatten_inline_content"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
       ],
       "status": "partial"
     },
@@ -4551,20 +4341,19 @@
     {
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-51C619B4441B8CC8 (identical rule_text): file elements containing unit elements nested in group elements is proven by the first two tests; the merge-adapter test builds file->unit directly with no group, proving the \"optionally nested\" half -- both shapes of the structural tree are exercised."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-F441AFCBA027FDAB",
       "positive_test_selectors": [
         "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_notes_attach_at_file_group_and_unit_level",
+        "tests/python/xliff/test_obligation_merge_adapter.py::test_extraction_finds_every_translatable_block"
       ],
       "proof_requirements": {
         "negative": [
@@ -4574,14 +4363,11 @@
           "Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::ExtensionNode",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Segment",
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Unit"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -4684,6 +4470,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-xliff-001.json": "bb85918b335cbc4c82b7993cdbb1506f2e87c77626e871628989ce6fc87ac4d4",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-cross-cluster-citation-audit-001.json": "a13c27fe5a277fc1cbda003532f02792fee40b10bdafe966c4052601e8f9ae6e",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-lifecycle-io-001.json": "02856c6f0ad09cf7b0352b9b777331dc5f6e2096e5f6576dbfe39f997669372d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-merge-audit-001.json": "ad52bf9234b0abdb222fca9ca32f9fca835f0d73f2cab7e0709aca7a81e9c29a",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-module-citation-audit-001.json": "1034d53323ce68762453b90f8c08084c140a8e738aa82d5fd17f8ba086df65d8",
@@ -4718,12 +4505,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 37,
-      "missing": 13,
-      "partial": 92
+      "implemented": 50,
+      "missing": 27,
+      "partial": 65
     },
     "total": 142,
-    "unresolved": 105
+    "unresolved": 92
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
