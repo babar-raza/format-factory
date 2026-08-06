@@ -10,6 +10,14 @@
       "truth_boundary": "Suite-level and NON-PROMOTING. Records that the mapped shipped-namespace suites run and that the mapped source symbols exist. The declared result is deliberately not PASS: 4 of the 390 tests fail in the shared dev venv on the known GAP-002 shadow-package name collision, and pass only in an isolated wheel-install environment. They are not counted as passing. This binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most.\n2026-08-06: no source or test change this slice, only this map. safetensors suite unchanged at 385 passed / 1 skipped / 4 deselected (the same 4 pre-existing GAP-002 interop failures). Obligation status unchanged at 86 partial / 0 missing -- this slice deepens selector evidence within already- `partial` obligations, it does not move any obligation's status."
     },
     {
+      "evidence_id": "SAFETENSORS-HEADER-VALIDATION-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-header-validation-001.json",
+      "sha256": "e834cb40f20f34cb58e660d09b960318f01f95ce18f59c53f1ccf087a7ec80db",
+      "truth_boundary": "Selector-bound, unlike SAFETENSORS-BASELINE-SUITE: it names the exact positive and negative test selectors proving the wire format (8-byte little-endian length prefix, UTF-8 JSON header, non-object roots rejected, __metadata__ reserved and string-to-string-only), every header-level resource limit (100,000,000-byte header ceiling, declared extent exceeding the file, malformed UTF-8/JSON), every tensor-level domain invariant (shape/element-bit unsigned-64-bit overflow rejected via checked arithmetic rather than wrapping, sub-byte F4/six-bit types must end on a byte boundary, declared byte span must equal shape x dtype-bits/8), and the offset-coverage invariant (contiguous, non-overlapping, no holes, no unindexed trailing bytes) -- both via the exception-raising loads() path and the structured-diagnostic validate() path. Also proves \"semantic preservation is the default; exact original JSON spelling is not claimed\" (whitespace-padded input round-trips losing its padding while tensor data survives byte-exact). NOT backed by an independent reference implementation for these specific negative fixtures -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-SAFETENSORS-OBL-00A5D5CAF3AEF4AD, SAL-SAFETENSORS-OBL-2E14EAEFAB630C7F, SAL-SAFETENSORS-OBL-31F35E7DB9250F72, SAL-SAFETENSORS-OBL-5FB6E64039178B98, SAL-SAFETENSORS-OBL-68FB56B17DC9BECC, SAL-SAFETENSORS-OBL-9511E7A64BBE4BE0, SAL-SAFETENSORS-OBL-D5F5AD460F3EC27D, SAL-SAFETENSORS-OBL-DF77BBEA64365A5F, SAL-SAFETENSORS-OBL-E9EEC89DC82233A8, SAL-SAFETENSORS-OBL-F0DCFF6F75B9402D, and SAL-SAFETENSORS-OBL-F9966564B791F01F only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "SAFETENSORS-LAZY-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -37,7 +45,7 @@
   "format_id": "safetensors",
   "input_digests": {
     "compiled_contract": "0c75ec78971819ea2d679482ea8b81334f594632bf79cdb0c4ec465c8a3bcfbb",
-    "implementation_evidence": "f91b4cb1a7e55e3eb37efd6e6288a29c8c39d1624de37b14cc18e659162cd249",
+    "implementation_evidence": "d6447c47846929c46c14f3b6a30b79d6c9ccecab1efaea1e36de85ae39d23034",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "acaf4a88cf5aee24cc52b3da71013932a0573d1fc834b9e79adf7489fc393b80",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -46,22 +54,21 @@
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-HEADER-VALIDATION-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "_decode_header parses the header as UTF-8 JSON, requires the root to be an object (rejecting arrays/strings/numbers/null), maps each non-__metadata__ key to a TensorDescriptor with duplicate keys rejected, and reserves __metadata__ for file-level metadata rather than treating it as a tensor entry."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_duplicate_tensor_key_is_rejected",
+        "tests/python/safetensors/test_obligation_invalid_headers.py::test_non_object_header_root_is_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-00A5D5CAF3AEF4AD",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle",
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes",
         "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected"
+        "tests/python/safetensors/test_obligation_metadata_preservation.py::test_non_empty_metadata_is_declared"
       ],
       "proof_requirements": {
         "negative": [
@@ -71,16 +78,11 @@
           "Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps",
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::DType",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess"
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::_decode_header"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-MODEL-001",
@@ -618,22 +620,18 @@
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-HEADER-VALIDATION-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "A header padded with leading/trailing/mixed whitespace parses and round-trips the tensor data byte-exact, but the rewritten header is the writer's own canonical (whitespace-stripped) rendering, not a verbatim copy of the original bytes -- proving semantic preservation is the default rather than exact-spelling preservation. The writer is also deterministic -- three clean runs over the same document produce identical bytes."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-2E14EAEFAB630C7F",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle",
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected"
+        "tests/python/safetensors/test_obligation_header_whitespace.py::test_whitespace_padded_header_roundtrips_semantically",
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_writer_produces_identical_bytes_over_three_clean_runs"
       ],
       "proof_requirements": {
         "negative": [
@@ -643,16 +641,12 @@
           "Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps",
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::DType",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess"
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::_decode_header",
+        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-MODEL-001",
@@ -696,22 +690,19 @@
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-HEADER-VALIDATION-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "A tensor's declared data_offsets span (end - start) must equal TensorDescriptor.byte_length, the checked product of its shape and dtype bit width divided by eight; a declared span of the wrong size is rejected with SAFETENSORS_TENSOR_SIZE rather than silently trusted."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_byte_span_mismatch_is_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-31F35E7DB9250F72",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle",
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected"
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes"
       ],
       "proof_requirements": {
         "negative": [
@@ -721,16 +712,12 @@
           "Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps",
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::DType",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess"
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::_decode_header",
+        "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-HEADER-001",
@@ -1186,22 +1173,21 @@
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-HEADER-VALIDATION-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "_header_extent enforces the official 100,000,000-byte header ceiling (matching tensor.rs MAX_HEADER_SIZE) as an upper bound, rejects before any allocation happens, and additionally honors a caller-configured limit stricter than that ceiling -- proving both bounds are real and independently enforceable, not just one hardcoded value."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_official_header_limit_100_000_000_bytes_enforced",
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_default_limit_is_stricter_than_the_official_ceiling",
+        "tests/python/safetensors/test_production_namespace.py::test_upstream_header_limit_rejected_before_allocation"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-5FB6E64039178B98",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle",
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected"
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_configurable_stricter_header_limit_enforced"
       ],
       "proof_requirements": {
         "negative": [
@@ -1211,16 +1197,11 @@
           "Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps",
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::DType",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess"
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::_header_extent"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-PAYLOAD-001",
@@ -1302,22 +1283,20 @@
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-HEADER-VALIDATION-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "TensorDescriptor.byte_length computes element_count * dtype.bits and rejects the descriptor when that bit count does not end on a byte boundary -- proven for both a sub-byte F4 tensor and a six-bit (I4-class) tensor whose element count times bit width is not a multiple of eight."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_invalid_sub_byte_alignment_is_rejected",
+        "tests/python/safetensors/test_production_namespace.py::test_subbyte_misalignment_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-68FB56B17DC9BECC",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle",
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected"
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_byte_aligned_sub_byte_tensor_is_accepted"
       ],
       "proof_requirements": {
         "negative": [
@@ -1327,16 +1306,11 @@
           "Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps",
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::DType",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess"
+        "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-LIFECYCLE-001",
@@ -2025,22 +1999,23 @@
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-HEADER-VALIDATION-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "A declared header length that would extend past the end of the input (truncated prefix or an extent beyond the file), malformed UTF-8, or malformed JSON is rejected by _header_extent/_decode_header rather than read past the buffer or parsed leniently."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected",
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected",
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_malformed_json_header_is_rejected",
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_invalid_utf8_header_is_rejected",
+        "tests/python/safetensors/test_obligation_invalid_headers.py::test_declared_extent_utf8_and_json_fail_closed"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-9511E7A64BBE4BE0",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle",
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected"
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header"
       ],
       "proof_requirements": {
         "negative": [
@@ -2050,16 +2025,12 @@
           "Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps",
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::DType",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess"
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::_header_extent",
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::_decode_header"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-LAZY-001",
@@ -2663,22 +2634,21 @@
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-HEADER-VALIDATION-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "_decode_header sorts tensor spans by data_offsets and walks them, requiring each span to start exactly where the previous one ended -- catching both a hole (a gap between spans) and an overlap (a span starting before the previous one ended) regardless of the tensors' declaration order in the JSON, since validation is keyed by the offsets themselves, not declaration order."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_obligation_offset_layout.py::test_gap_and_overlap_are_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-D5F5AD460F3EC27D",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle",
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected"
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_contiguous_offsets_accepted_gap_and_overlap_rejected",
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_out_of_order_region_declaration_still_validated_by_actual_offsets",
+        "tests/python/safetensors/test_obligation_offset_layout.py::test_contiguous_non_overlapping_offsets_are_accepted"
       ],
       "proof_requirements": {
         "negative": [
@@ -2688,16 +2658,11 @@
           "Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps",
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::DType",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess"
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::_decode_header"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-ADAPTER-001",
@@ -2738,22 +2703,22 @@
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-HEADER-VALIDATION-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "TensorDescriptor computes shape element count and element-bit count via checked_product (raising rather than wrapping) against an unsigned 64-bit ceiling, at three distinct overflow points -- a single dimension exceeding the ceiling, the product of dimensions exceeding it, and the element count times dtype bit width exceeding it -- each rejected with a distinct, stable message, both at direct model construction and through the reader."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_shape_element_overflow_is_rejected",
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_negative_dimension_is_rejected",
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_model_rejects_unsigned_64_bit_size_overflow",
+        "tests/python/safetensors/test_obligation_integer_overflow.py::test_reader_rejects_unsigned_64_bit_size_overflow"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-DF77BBEA64365A5F",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle",
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected"
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header"
       ],
       "proof_requirements": {
         "negative": [
@@ -2763,16 +2728,11 @@
           "Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps",
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::DType",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess"
+        "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-HEADER-001",
@@ -2966,22 +2926,21 @@
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-HEADER-VALIDATION-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "After the last tensor's declared span, _decode_header requires the covered extent to equal the full payload size exactly -- any bytes after the final indexed tensor (including a full second, unrelated payload appended after a complete file) are rejected as incomplete metadata coverage rather than silently ignored."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_unindexed_trailing_payload_is_rejected",
+        "tests/python/safetensors/test_obligation_offset_layout.py::test_unindexed_trailing_bytes_are_rejected",
+        "tests/python/safetensors/test_production_namespace.py::test_trailing_polyglot_data_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-E9EEC89DC82233A8",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle",
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected"
+        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_contiguous_offsets_accepted_gap_and_overlap_rejected"
       ],
       "proof_requirements": {
         "negative": [
@@ -2991,16 +2950,11 @@
           "Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps",
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::DType",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess"
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::_decode_header"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-HEADER-001",
@@ -3085,22 +3039,22 @@
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-HEADER-VALIDATION-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "_header_extent unpacks the first eight bytes as an unsigned little-endian 64-bit integer N (a big-endian-encoded prefix is not misinterpreted -- it is read as a huge N and rejected via the header limit, not silently byte-swapped) and requires exactly N following bytes of UTF-8 JSON header before the payload begins; the writer's own prefix always equals the exact byte length of its rendered header."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_obligation_prefix_encoding.py::test_big_endian_prefix_is_not_misinterpreted_as_little_endian",
+        "tests/python/safetensors/test_obligation_prefix_encoding.py::test_prefix_shorter_than_eight_bytes_is_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-F0DCFF6F75B9402D",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle",
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes",
         "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected"
+        "tests/python/safetensors/test_obligation_prefix_encoding.py::test_exact_eight_byte_little_endian_prefix_is_accepted",
+        "tests/python/safetensors/test_obligation_prefix_encoding.py::test_writer_prefix_equals_exact_padded_json_header_extent"
       ],
       "proof_requirements": {
         "negative": [
@@ -3110,16 +3064,12 @@
           "Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps",
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::DType",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess"
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::_header_extent",
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::_decode_header"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-MODEL-001",
@@ -3163,22 +3113,20 @@
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-HEADER-VALIDATION-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "_decode_header requires __metadata__, when present, to be a JSON object whose keys and values are all strings -- a non-string value (nested JSON, a number, etc.) anywhere in the map is rejected with SAFETENSORS_METADATA_TYPE, both via the exception-raising and the structured-diagnostic validation paths."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_production_namespace.py::test_metadata_must_be_strings",
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-F9966564B791F01F",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle",
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected"
+        "tests/python/safetensors/test_obligation_metadata_preservation.py::test_non_empty_metadata_is_declared"
       ],
       "proof_requirements": {
         "negative": [
@@ -3188,16 +3136,11 @@
           "Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps",
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::DType",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess"
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::_decode_header"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-PAYLOAD-001",
@@ -3282,6 +3225,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-safetensors-001.json": "0c4341a9828b89799ba47aeba0932e99bda659dc424a982d3e42ebe57adc270b",
+    "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-header-validation-001.json": "e834cb40f20f34cb58e660d09b960318f01f95ce18f59c53f1ccf087a7ec80db",
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-lazy-001.json": "2d60c6f75191d4292b36828e98b5058f53e22615af8a27db4ae10355ea26eade",
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-lifecycle-001.json": "d110f288b73b97e6f51775dd6fe1b0281220ab68f7937be5a55a1e133323b3f5",
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-metadata-001.json": "8e0038229a0a1751b782c261d06b6df7de18dcd650b2adb77a1fcd0f8d7ff0e5",
@@ -3297,7 +3241,7 @@
     "tests/python/safetensors/test_obligation_bidirectional_interop.py": "46c35926955c4612678f46f5609b2ffcd89f075c893cc93e5d8d4c528b5a7860",
     "tests/python/safetensors/test_obligation_header_whitespace.py": "85c76854cc9829952ab9793118ea061aa2f3d7bbc797b80ba98535cd5b0c3ad1",
     "tests/python/safetensors/test_obligation_integer_overflow.py": "c69f57906f5bfa6f015d44e5d58a34b697801a75c443168b1d3563bb2c2c0c48",
-    "tests/python/safetensors/test_obligation_invalid_headers.py": "e8ed963201fcc6b2c84411f5ab446bdb439fbdafd80e9a02e110e586a4873ebc",
+    "tests/python/safetensors/test_obligation_invalid_headers.py": "e043ae52bc9789e54d6e0e9d60d9fdc8e6a9d7173a86133e46af1343a7894be9",
     "tests/python/safetensors/test_obligation_lifecycle_modes.py": "29292f855fd97599712eb7055e7813efdf45269b807f1feda342f9545ff7531f",
     "tests/python/safetensors/test_obligation_metadata_preservation.py": "76d5ccb485fd137ffea772880fb496ffbd508fa31287b189073beb65f3681e72",
     "tests/python/safetensors/test_obligation_offset_layout.py": "93dad8a3bb1ff97fac6eb8aaf3cb829eef6fba505563c8ea84006ea1e6596d7b",
@@ -3310,16 +3254,16 @@
     "tests/python/safetensors/test_obligation_writer_matrix.py": "770ccbefaaa12d47af534db5eb1069995c5c7bfc16a7272130d46e3fa620ab40",
     "tests/python/safetensors/test_official_interop.py": "cd72df073c684651d3083c28cfe3c52181ed8e60a13a8bcb3297d4dd03abdc3a",
     "tests/python/safetensors/test_production_namespace.py": "48c847dcbcb6a3b7c2e6f1a818f4d75e177fe87826607036ca44055f62d450dc",
-    "tests/python/safetensors/test_reference_header_layout_lazy_slice.py": "1f208d5da61aa86f409ae840d51c37c844ea91e5c9fe38a16cbd1057e7cd1f89"
+    "tests/python/safetensors/test_reference_header_layout_lazy_slice.py": "816f68521a6ff11c4fcfcd98fba859269655b754c2e18c9a564d1b20bba576e2"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 5,
-      "partial": 81
+      "implemented": 16,
+      "partial": 70
     },
     "total": 86,
-    "unresolved": 81
+    "unresolved": 70
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

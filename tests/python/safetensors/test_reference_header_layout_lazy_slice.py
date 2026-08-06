@@ -131,6 +131,14 @@ def test_invalid_sub_byte_alignment_is_rejected():
         loads(raw)
 
 
+def test_byte_aligned_sub_byte_tensor_is_accepted():
+    # F4 is a 4-bit dtype; 2 elements = 8 bits, a whole byte -- valid.
+    header = {"x": {"dtype": "F4", "shape": [2], "data_offsets": [0, 1]}}
+    raw = _file(header, b"\x00")
+    with loads(raw) as document:
+        assert document.tensors["x"].byte_length == 1
+
+
 # ── SAL-SAFETENSORS-OBL-56F8EB4984CEBAE8: contiguous, non-overlapping, hole-free coverage ──
 
 def test_contiguous_offsets_accepted_gap_and_overlap_rejected():
