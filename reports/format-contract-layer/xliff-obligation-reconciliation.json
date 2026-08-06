@@ -42,18 +42,26 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors for target-language compatibility (exact/more-specific/reverse-specific/incompatible BCP-47 relations, version-gated between XLIFF 2.0 and 2.1) and for five of the six named pluggable QA check categories (missing/unchanged targets, placeholder mismatches, whitespace/punctuation drift, translation consistency), each proven separate from validate()'s conformance report. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-5B4DF04385350948 (fully) and SAL-XLIFF-OBL-7764F24576A4DC32 (partially -- length violations are not implemented) only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-SEGMENT-SPLIT-JOIN-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-segment-split-join-001.json",
+      "sha256": "16e92d9df77d60b1ffb85830f63759c78034e3b5168faabc58102b168c1c904d",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors proving split_segment()/ join_segments() maintain segment ids (old id replaced by the caller- supplied new id(s)), state, and inline-code validity (a boundary that would orphan a spanning sc/ec pair is refused with a diagnostic naming the paired-code rule), preserve source and target inline content across the split point, and both return a SegmentMapping (operation/replacements) a downstream tool can use to rebind references after re-segmentation -- proven for both directions (split, then join back). SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-420141532D90D385 and SAL-XLIFF-OBL-49484112588B088B only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-STATE-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
       "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json",
       "sha256": "368a286339e4990afa645543f86d2b1968bfc693706a6c170b366fecc18f432b",
-      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors for both XLIFF-STATE-001 obligations (the core state enum/target-required rule, and the configurable transition-validation mechanism). NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-AF86B77156C7C1E2 and SAL-XLIFF-OBL-95E74FFC0501843B only; it supports no other obligation and promotes no product state."
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors for both XLIFF-STATE-001 obligations (the core state enum/target-required rule, and the configurable transition-validation mechanism). NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Originally scoped to XLIFF-STATE-001's 2 obligations; extended to also cover XLIFF-SEG-001's SAL-XLIFF-OBL-3B805BEF996C1B70, which restates the identical state-enum/target-required rule under a different capability (the \"Segment elements carry an optional state attribute...\" framing is the same fact as XLIFF-STATE-001's core rule, not a distinct unbuilt behavior). Covers SAL-XLIFF-OBL-AF86B77156C7C1E2, SAL-XLIFF-OBL-95E74FFC0501843B, and SAL-XLIFF-OBL-3B805BEF996C1B70 only; it supports no other obligation and promotes no product state."
     }
   ],
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "7b67e99fbba35fbe00813e3f70bfd4b740d55a5e32eb6e0685f5eb6b055c2fb8",
+    "implementation_evidence": "ae90fc1d6e8fca2eef5a1f7c5f32c5893ff71f7fe16433b7d98c728df07dccda",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1380,20 +1388,19 @@
     {
       "capability_id": "XLIFF-SEG-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-STATE-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "This is the \"segment element carries an optional state attribute\" framing of the exact rule already proven under XLIFF-STATE-001's SAL-XLIFF-OBL-AF86B77156C7C1E2: state defaults to initial, and translated/reviewed/final each require a target child (xliff.segment.state.target_required when absent)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Split/join fixtures verify code validity and mapping-report accuracy."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_production_namespace.py::test_advanced_translation_state_requires_target"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-3B805BEF996C1B70",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_initial_state_and_advanced_state_with_target_are_valid"
       ],
       "proof_requirements": {
         "negative": [
@@ -1403,13 +1410,11 @@
           "Split/join fixtures verify code validity and mapping-report accuracy."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping",
-        "src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment",
-        "src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments"
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -1448,20 +1453,19 @@
     {
       "capability_id": "XLIFF-SEG-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-SEGMENT-SPLIT-JOIN-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "split_segment()/join_segments() maintain id continuity (caller-supplied ids on split, a caller-supplied id on join), preserve state, refuse a split boundary that would orphan a paired inline code (sc/ec spanning the cut point), and preserve source/target inline content across the split -- the resulting document remains valid, proven for a full split-then-join round trip."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Split/join fixtures verify code validity and mapping-report accuracy."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_production_namespace.py::test_segment_split_rejects_boundary_that_orphans_a_spanning_code"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-420141532D90D385",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_segment_split_join_reports_mapping_and_preserves_inline_content"
       ],
       "proof_requirements": {
         "negative": [
@@ -1471,13 +1475,13 @@
           "Split/join fixtures verify code validity and mapping-report accuracy."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping",
         "src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment",
         "src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
@@ -1752,20 +1756,17 @@
     {
       "capability_id": "XLIFF-SEG-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-SEGMENT-SPLIT-JOIN-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Every split/join call returns a SegmentMapping (operation label plus a replacements dict from old id(s) to new id(s)) -- machine-readable by construction, proven for both split (one id maps to a tuple of two) and join (two ids each map to a tuple containing the merged id)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Split/join fixtures verify code validity and mapping-report accuracy."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-49484112588B088B",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
-        "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_segment_split_join_reports_mapping_and_preserves_inline_content"
       ],
       "proof_requirements": {
         "negative": [
@@ -1775,13 +1776,11 @@
           "Split/join fixtures verify code validity and mapping-report accuracy."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping",
-        "src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment",
-        "src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments"
+        "src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODULE-001",
@@ -4907,6 +4906,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-merge-audit-001.json": "ad52bf9234b0abdb222fca9ca32f9fca835f0d73f2cab7e0709aca7a81e9c29a",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-notes-annotations-001.json": "0a5ffae1a5449741f166f644c5fce33059572098a8ab9624573162869da8eefd",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-checks-001.json": "00a6d7c1b4d2fc48359f0484a08d0d639ee8fe136b11904870bd1acdda0e4d5c",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-segment-split-join-001.json": "16e92d9df77d60b1ffb85830f63759c78034e3b5168faabc58102b168c1c904d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json": "368a286339e4990afa645543f86d2b1968bfc693706a6c170b366fecc18f432b",
     "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py": "a9c296cbdfb6da4d2ba4d4621cb1d69e002f5ce85047aca1a77a3426c55ded7c",
     "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py": "41c5a9168d0e2bb725faaa820dd7793b5e76a6935d8bc81ada0629ebd3210b6b",
@@ -4931,12 +4931,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 15,
+      "implemented": 18,
       "missing": 2,
-      "partial": 125
+      "partial": 122
     },
     "total": 142,
-    "unresolved": 127
+    "unresolved": 124
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

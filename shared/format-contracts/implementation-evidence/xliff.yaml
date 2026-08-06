@@ -60,9 +60,15 @@ execution_evidence:
     core state enum/target-required rule, and the configurable
     transition-validation mechanism). NOT backed by an independent reference
     implementation -- SELF-CONSISTENT format_factory-only evidence per the
-    execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
-    SAL-XLIFF-OBL-AF86B77156C7C1E2 and SAL-XLIFF-OBL-95E74FFC0501843B only;
-    it supports no other obligation and promotes no product state.
+    execution-recovery directive's GAP-008 rule, not VERIFIED. Originally
+    scoped to XLIFF-STATE-001's 2 obligations; extended to also cover
+    XLIFF-SEG-001's SAL-XLIFF-OBL-3B805BEF996C1B70, which restates the
+    identical state-enum/target-required rule under a different capability
+    (the "Segment elements carry an optional state attribute..." framing
+    is the same fact as XLIFF-STATE-001's core rule, not a distinct
+    unbuilt behavior). Covers SAL-XLIFF-OBL-AF86B77156C7C1E2,
+    SAL-XLIFF-OBL-95E74FFC0501843B, and SAL-XLIFF-OBL-3B805BEF996C1B70
+    only; it supports no other obligation and promotes no product state.
 - evidence_id: XLIFF-QA-SELECTOR-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-checks-001.json
   expected_result: PASS
@@ -137,6 +143,24 @@ execution_evidence:
     SAL-XLIFF-OBL-B3D1B1A5CBD86240, SAL-XLIFF-OBL-CF6EB3C804324A1C, and
     SAL-XLIFF-OBL-DA68F5DEF1A61582 only; it supports no other obligation
     and promotes no product state.
+- evidence_id: XLIFF-SEGMENT-SPLIT-JOIN-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-segment-split-join-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact
+    positive and negative test selectors proving split_segment()/
+    join_segments() maintain segment ids (old id replaced by the caller-
+    supplied new id(s)), state, and inline-code validity (a boundary that
+    would orphan a spanning sc/ec pair is refused with a diagnostic naming
+    the paired-code rule), preserve source and target inline content
+    across the split point, and both return a SegmentMapping
+    (operation/replacements) a downstream tool can use to rebind
+    references after re-segmentation -- proven for both directions (split,
+    then join back). SELF-CONSISTENT format_factory-only evidence per the
+    execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
+    SAL-XLIFF-OBL-420141532D90D385 and SAL-XLIFF-OBL-49484112588B088B
+    only; it supports no other obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-XLIFF-OBL-009F2EB91831B248
   capability_id: XLIFF-SEC-001
@@ -1130,24 +1154,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-3B805BEF996C1B70
   capability_id: XLIFF-SEG-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping
-  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
-  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - tests/python/xliff/test_production_namespace.py::test_initial_state_and_advanced_state_with_target_are_valid
+  negative_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_advanced_translation_state_requires_target
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-STATE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Split/join fixtures verify
-    code validity and mapping-report accuracy.'
+  - 'This is the "segment element carries an optional state attribute"
+    framing of the exact rule already proven under XLIFF-STATE-001''s
+    SAL-XLIFF-OBL-AF86B77156C7C1E2: state defaults to initial, and
+    translated/reviewed/final each require a target child
+    (xliff.segment.state.target_required when absent).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Split/join fixtures verify code validity and mapping-report accuracy.
@@ -1180,24 +1203,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-420141532D90D385
   capability_id: XLIFF-SEG-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping
   - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
   - src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - tests/python/xliff/test_production_namespace.py::test_segment_split_join_reports_mapping_and_preserves_inline_content
+  negative_test_selectors:
+  - tests/python/xliff/test_production_namespace.py::test_segment_split_rejects_boundary_that_orphans_a_spanning_code
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-SEGMENT-SPLIT-JOIN-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Split/join fixtures verify
-    code validity and mapping-report accuracy.'
+  - split_segment()/join_segments() maintain id continuity (caller-supplied
+    ids on split, a caller-supplied id on join), preserve state, refuse a
+    split boundary that would orphan a paired inline code (sc/ec spanning
+    the cut point), and preserve source/target inline content across the
+    split -- the resulting document remains valid, proven for a full
+    split-then-join round trip.
+  missing_behavior: []
   proof_requirements:
     positive:
     - Split/join fixtures verify code validity and mapping-report accuracy.
@@ -1414,24 +1439,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-49484112588B088B
   capability_id: XLIFF-SEG-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/model/segmentation.py::SegmentMapping
-  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::split_segment
-  - src/python/xliff/src/format_factory/xliff/model/segmentation.py::join_segments
   positive_test_selectors:
-  - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
-  - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
-  - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
+  - tests/python/xliff/test_production_namespace.py::test_segment_split_join_reports_mapping_and_preserves_inline_content
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-SEGMENT-SPLIT-JOIN-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Split/join fixtures verify
-    code validity and mapping-report accuracy.'
+  - Every split/join call returns a SegmentMapping (operation label plus a
+    replacements dict from old id(s) to new id(s)) -- machine-readable by
+    construction, proven for both split (one id maps to a tuple of two)
+    and join (two ids each map to a tuple containing the merged id).
+  missing_behavior: []
   proof_requirements:
     positive:
     - Split/join fixtures verify code validity and mapping-report accuracy.

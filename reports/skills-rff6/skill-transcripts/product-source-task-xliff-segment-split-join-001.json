@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-segment-split-join-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T16:35:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_SEG_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "XLIFF-SEG-001's 7 obligations all cited an identical generic 3-selector citation despite model/segmentation.py's split_segment()/join_segments()/SegmentMapping already being fully built and tested. One obligation (segment state) is a cross-capability duplicate of the already-closed XLIFF-STATE-001 rule; two obligations (split/join mechanics, mapping-report format) are directly proven by two existing tests. The remaining four (unit/segment/ignorable structure, xml:lang compatibility) were left unaudited pending further investigation.",
+    "obligation_targeted": "SAL-XLIFF-OBL-3B805BEF996C1B70, SAL-XLIFF-OBL-420141532D90D385, SAL-XLIFF-OBL-49484112588B088B",
+    "acceptance_evidence": "tests/python/xliff/test_production_namespace.py (test_advanced_translation_state_requires_target, test_initial_state_and_advanced_state_with_target_are_valid, test_segment_split_join_reports_mapping_and_preserves_inline_content, test_segment_split_rejects_boundary_that_orphans_a_spanning_code)",
+    "regression_tier": "full XLIFF package suite (tests/python/xliff)"
+  },
+  "execution_steps": [
+    "1. Surveyed xliff's next capability, XLIFF-SEG-001 (7 obligations, all partial with a shared generic citation despite real source_symbols already pointing at model/segmentation.py -- a mixed-signal state suggesting an earlier tick had started but not finished this capability's audit).",
+    "2. Compared SAL-XLIFF-OBL-3B805BEF996C1B70's rule_text ('segment elements carry an optional state attribute defaulting to initial...') against the already-closed XLIFF-STATE-001's core rule and found them identical in substance -- a cross-capability duplicate matching the pattern found repeatedly this session (safetensors HEADER-001/PRESERVE-001, UBL/XLIFF PRESERVE-001). Extended XLIFF-STATE-SELECTOR-PROOF's covered-obligations list rather than re-proving the same fact from scratch.",
+    "3. Read model/segmentation.py and test_segment_split_join_reports_mapping_and_preserves_inline_content in full: split_segment()/join_segments() maintain id continuity, preserve state and inline content across the cut, and both return a SegmentMapping (operation + replacements dict) -- directly satisfying both the general split/join obligation and the specific machine-readable-mapping-report obligation. test_segment_split_rejects_boundary_that_orphans_a_spanning_code proves the inline-code-validity refusal case.",
+    "4. Ran all 6 candidate tests directly before citing any of them: all passed.",
+    "5. Promoted 3 of 7 obligations. Left the remaining 4 (unit/segment/ignorable structural containment rules; xml:lang compatibility on segment/ignorable source/target children) unaudited rather than force-citing incomplete evidence -- deferred to a future tick with dedicated investigation time, consistent with this session's practice of not rushing partial verification into a promotion."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_production_namespace.py::test_advanced_translation_state_requires_target tests/python/xliff/test_production_namespace.py::test_initial_state_and_advanced_state_with_target_are_valid tests/python/xliff/test_production_namespace.py::test_segment_split_join_reports_mapping_and_preserves_inline_content tests/python/xliff/test_production_namespace.py::test_segment_split_rejects_boundary_that_orphans_a_spanning_code -v -- 6 passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 3,
+    "obligations_total_for_format": 142,
+    "xliff_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against an external XLIFF segmentation tool. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_only_three_of_seven_promoted": "The remaining four obligations (structural unit/segment/ignorable containment; xml:lang compatibility on segment/ignorable children) were not yet investigated with sufficient confidence this tick -- left honestly unaudited rather than force-promoted or citing weak evidence."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
