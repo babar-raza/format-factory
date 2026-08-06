@@ -106,6 +106,14 @@
       "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: ORA-STACK-001's 14 obligations shared one identical generic \"not yet audited\" citation despite real source_symbols already pointing at model/stack.py and codec/stack_xml.py. This audit names the exact positive/negative test selector proving each obligation's own specific rule_text individually (layer src path convention and traversal refusal, opacity range, required layer src, stack/layer/text nesting and visual order, xres/yres pairing and defaulting, visibility enum, root w/h/version requirement, x/y signed-position defaulting) rather than citing the three shared root-attribute tests for all fourteen. One obligation (SAL-ORA-OBL-BFEC595E47C33BE7) is a cross-capability duplicate of ORA-ISOLATION-001's already-implemented SAL-ORA-OBL-97CE271E3DD6D883 (identical rule_text) and is closed by citation, not new proof. Two obligations (SAL-ORA-OBL-930CACD129A5CC40 here and ORA-COMPOSITE-001's duplicate SAL-ORA-OBL-4EC8C1CC747F7FC6) are corrected to accurate `partial` -- default-value and verbatim-preservation behavior is proven, but no registry maps a composite-op value to its documented blend function/Porter-Duff operator, a confirmed gap not attempted this slice because the OpenRaster specification's actual composite-op inventory is not yet a committed, verified SAL fact. New test coverage added this slice: two tests proving a <text> element parses via the real XML walker (previously proven only at direct model-construction time, never through the parser). SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-047E5523BB0D85D5, SAL-ORA-OBL-1BCC64FF1DFE8AE5, SAL-ORA-OBL-23D0207100C46AD9, SAL-ORA-OBL-329D93743655752D, SAL-ORA-OBL-6078C4F67F33C8E4, SAL-ORA-OBL-9007B671A8FCFF7D, SAL-ORA-OBL-930CACD129A5CC40, SAL-ORA-OBL-BFEC595E47C33BE7, SAL-ORA-OBL-D76D780D4D9DA699, SAL-ORA-OBL-F6424763BCEC7266, and (cross-capability, ORA-COMPOSITE-001) SAL-ORA-OBL-4EC8C1CC747F7FC6; it supports no other obligation and promotes no product state. Extended in a follow-up slice the same session to also cover ORA-EDIT-001's ten near-verbatim rule_text duplicates of the ORA-STACK-001/ORA-ISOLATION-001 facts above: SAL-ORA-OBL-022F37EEA74EC1BB, SAL-ORA-OBL-631448F8E906BB89, SAL-ORA-OBL-86178CC1AEECB389, SAL-ORA-OBL-94713E68352E9199, SAL-ORA-OBL-9F423271F79A4954, SAL-ORA-OBL-AE0A21E0921EB0B1, SAL-ORA-OBL-BF7AD4693704AF6A, SAL-ORA-OBL-E8D9E4F183B12145, SAL-ORA-OBL-F41BA93CE84AA0F6, and SAL-ORA-OBL-6B6D7BEE18077E8A (composite-op, kept partial like its duplicate) -- same citation discipline, no additional new tests for this extension."
     },
     {
+      "evidence_id": "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-utf8-baseline-citation-audit-001.json",
+      "sha256": "e1fbdf4d897140b53aba9713ab841640b185deddc8b89c68e1022e26f4baf551",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE. Closes 15 of the 22 generic-placeholder obligations event 174 flagged as ora's largest remaining opportunity -- the other 7 (ORA-COMPOSITE-001, ORA-MASK-001, ORA-STREAM-001, ORA-RENDER-001) had no citation at all and remain genuine, confirmed unbuilt features (mask extensions: zero hits for \"mask\" anywhere in src/; streaming: load() eagerly reads every archive member into memory in one dict comprehension, the opposite of lazy/bounded access; rendering: the only render() in the codebase generates XML text, not pixels). 6 obligations sharing one identical rule_text (\"the required stack.xml archive member is a UTF-8 encoded XML document\") were cited against unrelated tests (PNG-header reads, in-memory-only transaction edits, mimetype-presence checks) -- closed with 2 new tests proving both directions: a non-ASCII layer name round-trips through write and read with the emitted bytes carrying the UTF-8 XML declaration, and a byte sequence that is not valid UTF-8 inside a document declaring encoding=\"UTF-8\" is refused (verified interactively against ElementTree.fromstring's real behavior before writing the test, not assumed). 4 obligations sharing another identical rule_text (\"full baseline support for reading/editing/viewing... baseline support for visualization where editing may damage the result\") were promoted via a reasoned, explicitly-documented mapping onto this library's existing LOSSLESS-vs-CANONICAL PreservationMode design, not a literal citation match -- the reasoning is written into each obligation's implemented_behavior for independent audit. 4 more obligations closed individually: baseline-intent extension safety for stack.xml attributes (cross-file citation to already-existing preservation tests), interop/non-destructive-saving (cross-file citation to already-existing round-trip tests), tree modeling (existing visual-order/nesting/child-kind tests plus 2 new tests closing the one untested clause, root-versus-non-root constraints -- parse_stack already correctly enforced exactly-one-root-stack but had zero test coverage), and extension safety for raster/archive assets specifically (1 new test proving an unrecognized vendor archive member survives round-trip in both preservation modes). 1 obligation (transactional add/replace/move/rename/remove for groups/layers/assets/metadata) stays honestly partial: only add is genuinely tested; replace/move/remove/groups/metadata/reference-maintenance/stale-view-invalidation are not -- its generic placeholder was replaced with this precise characterization rather than force-promoted. ora suite: 283 -> 288 passed. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-11A840CCAC773C4F, SAL-ORA-OBL-FAE67484E14C50B4, SAL-ORA-OBL-68519A171D58F7D6, SAL-ORA-OBL-46734DBF545B4DD3, SAL-ORA-OBL-587789B06338BF94, SAL-ORA-OBL-E371B8F2C428AB4C, SAL-ORA-OBL-2B5CB90B7C3E7512, SAL-ORA-OBL-3B127E22A6A75F82, SAL-ORA-OBL-11C60333E6524D1B, SAL-ORA-OBL-A9ED959901671553, SAL-ORA-OBL-4C5ADF883687656E, SAL-ORA-OBL-D4098FD6A2610B3F, SAL-ORA-OBL-D430DAB9BD55A80C, SAL-ORA-OBL-D7C9E9B6208C49AF, and SAL-ORA-OBL-EC8D65524EB96820 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "ORA-VALIDATE-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -125,7 +133,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "c98d6dbd37ee19efd746c518feb509fec4c991b86abdf8c2cda4d4daff662865",
+    "implementation_evidence": "9b24777ef933bb65614e072df9164a6ccf6bdbf854960edbbebf4cc04fcb46f6",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -569,70 +577,72 @@
     {
       "capability_id": "ORA-WRITE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "stack.xml's UTF-8-conformance claim, verified directly: parse_stack() feeds the raw archive member bytes to ElementTree.fromstring(), which raises on invalid UTF-8 inside a document declaring encoding=\"UTF-8\" (verified interactively before writing a test), caught and re-raised as OraValidationError -- test_invalid_utf8_in_a_declared_utf8_stack_xml_is_refused proves this. On the write side, _canonical_stack_xml() always emits the literal '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' declaration and encodes the whole document with .encode(\"utf-8\") -- test_written_stack_xml_declares_and_uses_utf8_encoding proves a non-ASCII layer name survives a full read/write/read round trip and that the written bytes carry both the declaration and the correctly UTF-8-encoded name. 'Conforming to the OpenRaster Layer Stack format' beyond encoding is proven by test_malformed_xml_is_refused, test_a_doctype_is_refused (both in the same parser), the required-member presence check in test_stack_xml_is_required, and a full write-then-reload acceptance test."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension preservation."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_invalid_utf8_in_a_declared_utf8_stack_xml_is_refused"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-11A840CCAC773C4F",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_written_stack_xml_declares_and_uses_utf8_encoding",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_malformed_xml_is_refused",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_doctype_is_refused",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_the_written_archive_is_accepted_by_our_own_loader",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_stack_xml_is_required"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet identified."
         ],
         "positive": [
-          "Three-run byte determinism, installed-wheel writes, independent application reopen, and unknown-extension preservation."
+          "Each distinct clause of this obligation has a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::load"
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::_canonical_stack_xml",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-EDIT-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "OpenRaster's full-vs-baseline implementation-level concept is modeled directly by this library's two PreservationMode values: LOSSLESS (the default) reads, edits in memory, and writes back without damaging content it does not model -- proven by test_lossless_is_the_default_preservation_mode, an unknown vendor attribute survives an unmodified save. CANONICAL is the explicit, opt-in 'baseline save' path that regenerates stack.xml purely from the typed model, so anything the model does not represent is visibly dropped rather than accidentally lost -- test_canonical_mode_regenerates_the_stack_and_drops_unmodelled_content proves exactly this: an unmodeled mypaint:locked extension attribute is absent from the regenerated output. This is the concrete implementation of 'full baseline support for reading and editing and viewing' (LOSSLESS, safe by default) versus 'baseline support for visualization where editing may damage the result' (CANONICAL, the caller-chosen path where editing can discard what the model does not understand). Full read-edit-write viability is proven by test_the_written_archive_is_accepted_by_our_own_loader."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Transaction rollback, reference repair, stale-view invalidation, and independent application reopen tests."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-11C60333E6524D1B",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result",
-        "tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially",
-        "tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_lossless_is_the_default_preservation_mode",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_canonical_mode_regenerates_the_stack_and_drops_unmodelled_content",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_the_written_archive_is_accepted_by_our_own_loader"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet identified."
         ],
         "positive": [
-          "Transaction rollback, reference repair, stale-view invalidation, and independent application reopen tests."
+          "Each distinct clause of this obligation has a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/transaction.py::TransactionResult",
-        "src/python/ora/src/format_factory/ora/transaction.py::apply_transaction"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::load"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-CONTAINER-001",
@@ -1067,40 +1077,35 @@
     {
       "capability_id": "ORA-ASSET-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "OpenRaster's full-vs-baseline implementation-level concept is modeled directly by this library's two PreservationMode values: LOSSLESS (the default) reads, edits in memory, and writes back without damaging content it does not model -- proven by test_lossless_is_the_default_preservation_mode, an unknown vendor attribute survives an unmodified save. CANONICAL is the explicit, opt-in 'baseline save' path that regenerates stack.xml purely from the typed model, so anything the model does not represent is visibly dropped rather than accidentally lost -- test_canonical_mode_regenerates_the_stack_and_drops_unmodelled_content proves exactly this: an unmodeled mypaint:locked extension attribute is absent from the regenerated output. This is the concrete implementation of 'full baseline support for reading and editing and viewing' (LOSSLESS, safe by default) versus 'baseline support for visualization where editing may damage the result' (CANONICAL, the caller-chosen path where editing can discard what the model does not understand). Full read-edit-write viability is proven by test_the_written_archive_is_accepted_by_our_own_loader."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-2B5CB90B7C3E7512",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header",
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable",
-        "tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_lossless_is_the_default_preservation_mode",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_canonical_mode_regenerates_the_stack_and_drops_unmodelled_content",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_the_written_archive_is_accepted_by_our_own_loader"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet identified."
         ],
         "positive": [
-          "Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
+          "Each distinct clause of this obligation has a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets",
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::load"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-BASELINEASSET-001",
@@ -1482,39 +1487,35 @@
     {
       "capability_id": "ORA-VALIDATE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "OpenRaster's full-vs-baseline implementation-level concept is modeled directly by this library's two PreservationMode values: LOSSLESS (the default) reads, edits in memory, and writes back without damaging content it does not model -- proven by test_lossless_is_the_default_preservation_mode, an unknown vendor attribute survives an unmodified save. CANONICAL is the explicit, opt-in 'baseline save' path that regenerates stack.xml purely from the typed model, so anything the model does not represent is visibly dropped rather than accidentally lost -- test_canonical_mode_regenerates_the_stack_and_drops_unmodelled_content proves exactly this: an unmodeled mypaint:locked extension attribute is absent from the regenerated output. This is the concrete implementation of 'full baseline support for reading and editing and viewing' (LOSSLESS, safe by default) versus 'baseline support for visualization where editing may damage the result' (CANONICAL, the caller-chosen path where editing can discard what the model does not understand). Full read-edit-write viability is proven by test_the_written_archive_is_accepted_by_our_own_loader."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One discriminating negative per normative and security obligation plus multi-error aggregation."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-3B127E22A6A75F82",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_lossless_is_the_default_preservation_mode",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_canonical_mode_regenerates_the_stack_and_drops_unmodelled_content",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_the_written_archive_is_accepted_by_our_own_loader"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet identified."
         ],
         "positive": [
-          "One discriminating negative per normative and security obligation plus multi-error aggregation."
+          "Each distinct clause of this obligation has a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
         "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::load"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-WRITE-001",
@@ -1701,40 +1702,39 @@
     {
       "capability_id": "ORA-ASSET-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "stack.xml's UTF-8-conformance claim, verified directly: parse_stack() feeds the raw archive member bytes to ElementTree.fromstring(), which raises on invalid UTF-8 inside a document declaring encoding=\"UTF-8\" (verified interactively before writing a test), caught and re-raised as OraValidationError -- test_invalid_utf8_in_a_declared_utf8_stack_xml_is_refused proves this. On the write side, _canonical_stack_xml() always emits the literal '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' declaration and encodes the whole document with .encode(\"utf-8\") -- test_written_stack_xml_declares_and_uses_utf8_encoding proves a non-ASCII layer name survives a full read/write/read round trip and that the written bytes carry both the declaration and the correctly UTF-8-encoded name. 'Conforming to the OpenRaster Layer Stack format' beyond encoding is proven by test_malformed_xml_is_refused, test_a_doctype_is_refused (both in the same parser), the required-member presence check in test_stack_xml_is_required, and a full write-then-reload acceptance test."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_invalid_utf8_in_a_declared_utf8_stack_xml_is_refused"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-46734DBF545B4DD3",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header",
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable",
-        "tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_written_stack_xml_declares_and_uses_utf8_encoding",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_malformed_xml_is_refused",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_doctype_is_refused",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_the_written_archive_is_accepted_by_our_own_loader",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_stack_xml_is_required"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet identified."
         ],
         "positive": [
-          "Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
+          "Each distinct clause of this obligation has a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets",
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::_canonical_stack_xml",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-RENDER-001",
@@ -1844,39 +1844,33 @@
     {
       "capability_id": "ORA-VALIDATE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "A custom/vendor stack.xml attribute this library does not model (e.g. a vendor blend-mode or data attribute) survives a full load-then-save round trip because LOSSLESS is the default PreservationMode -- test_dumps_defaults_to_lossless_not_canonical proves a caller gets this safety without opting in, and test_lossless_round_trip_preserves_an_unmodeled_stack_attribute proves the unmodeled attribute specifically survives byte-for-byte. This is exactly 'baseline intent... custom extensions that remain safe for baseline consumers': a consumer of this library does not need to understand a vendor extension to avoid destroying it."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One discriminating negative per normative and security obligation plus multi-error aggregation."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-4C5ADF883687656E",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_preservation_baseline.py::test_lossless_round_trip_preserves_an_unmodeled_stack_attribute",
+        "tests/python/ora/test_obligation_preservation_baseline.py::test_dumps_defaults_to_lossless_not_canonical"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet identified."
         ],
         "positive": [
-          "One discriminating negative per normative and security obligation plus multi-error aggregation."
+          "Each distinct clause of this obligation has a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
         "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-VALIDATE-001",
@@ -2147,38 +2141,40 @@
     {
       "capability_id": "ORA-CONTAINER-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "stack.xml's UTF-8-conformance claim, verified directly: parse_stack() feeds the raw archive member bytes to ElementTree.fromstring(), which raises on invalid UTF-8 inside a document declaring encoding=\"UTF-8\" (verified interactively before writing a test), caught and re-raised as OraValidationError -- test_invalid_utf8_in_a_declared_utf8_stack_xml_is_refused proves this. On the write side, _canonical_stack_xml() always emits the literal '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' declaration and encodes the whole document with .encode(\"utf-8\") -- test_written_stack_xml_declares_and_uses_utf8_encoding proves a non-ASCII layer name survives a full read/write/read round trip and that the written bytes carry both the declaration and the correctly UTF-8-encoded name. 'Conforming to the OpenRaster Layer Stack format' beyond encoding is proven by test_malformed_xml_is_refused, test_a_doctype_is_refused (both in the same parser), the required-member presence check in test_stack_xml_is_required, and a full write-then-reload acceptance test."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_invalid_utf8_in_a_declared_utf8_stack_xml_is_refused"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-587789B06338BF94",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens",
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected",
-        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_written_stack_xml_declares_and_uses_utf8_encoding",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_malformed_xml_is_refused",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_doctype_is_refused",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_the_written_archive_is_accepted_by_our_own_loader",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_stack_xml_is_required"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet identified."
         ],
         "positive": [
-          "Valid and hostile archive matrices cover member naming, compression, duplicates, traversal, truncation, and expansion limits."
+          "Each distinct clause of this obligation has a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
-        "src/python/ora/src/format_factory/ora/errors.py::OraError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraArchiveError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraValidationError",
-        "src/python/ora/src/format_factory/ora/errors.py::OraLimitError"
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::_canonical_stack_xml",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps",
+        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-CONTAINER-001",
@@ -2382,35 +2378,39 @@
     {
       "capability_id": "ORA-EDIT-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "stack.xml's UTF-8-conformance claim, verified directly: parse_stack() feeds the raw archive member bytes to ElementTree.fromstring(), which raises on invalid UTF-8 inside a document declaring encoding=\"UTF-8\" (verified interactively before writing a test), caught and re-raised as OraValidationError -- test_invalid_utf8_in_a_declared_utf8_stack_xml_is_refused proves this. On the write side, _canonical_stack_xml() always emits the literal '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' declaration and encodes the whole document with .encode(\"utf-8\") -- test_written_stack_xml_declares_and_uses_utf8_encoding proves a non-ASCII layer name survives a full read/write/read round trip and that the written bytes carry both the declaration and the correctly UTF-8-encoded name. 'Conforming to the OpenRaster Layer Stack format' beyond encoding is proven by test_malformed_xml_is_refused, test_a_doctype_is_refused (both in the same parser), the required-member presence check in test_stack_xml_is_required, and a full write-then-reload acceptance test."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Transaction rollback, reference repair, stale-view invalidation, and independent application reopen tests."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_invalid_utf8_in_a_declared_utf8_stack_xml_is_refused"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-68519A171D58F7D6",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result",
-        "tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially",
-        "tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_written_stack_xml_declares_and_uses_utf8_encoding",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_malformed_xml_is_refused",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_doctype_is_refused",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_the_written_archive_is_accepted_by_our_own_loader",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_stack_xml_is_required"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet identified."
         ],
         "positive": [
-          "Transaction rollback, reference repair, stale-view invalidation, and independent application reopen tests."
+          "Each distinct clause of this obligation has a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/transaction.py::TransactionResult",
-        "src/python/ora/src/format_factory/ora/transaction.py::apply_transaction"
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::_canonical_stack_xml",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-LAYER-001",
@@ -3489,39 +3489,35 @@
     {
       "capability_id": "ORA-STACK-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "OpenRaster's full-vs-baseline implementation-level concept is modeled directly by this library's two PreservationMode values: LOSSLESS (the default) reads, edits in memory, and writes back without damaging content it does not model -- proven by test_lossless_is_the_default_preservation_mode, an unknown vendor attribute survives an unmodified save. CANONICAL is the explicit, opt-in 'baseline save' path that regenerates stack.xml purely from the typed model, so anything the model does not represent is visibly dropped rather than accidentally lost -- test_canonical_mode_regenerates_the_stack_and_drops_unmodelled_content proves exactly this: an unmodeled mypaint:locked extension attribute is absent from the regenerated output. This is the concrete implementation of 'full baseline support for reading and editing and viewing' (LOSSLESS, safe by default) versus 'baseline support for visualization where editing may damage the result' (CANONICAL, the caller-chosen path where editing can discard what the model does not understand). Full read-edit-write viability is proven by test_the_written_archive_is_accepted_by_our_own_loader."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-A9ED959901671553",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses",
-        "tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required",
-        "tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_lossless_is_the_default_preservation_mode",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_canonical_mode_regenerates_the_stack_and_drops_unmodelled_content",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_the_written_archive_is_accepted_by_our_own_loader"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet identified."
         ],
         "positive": [
-          "Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips."
+          "Each distinct clause of this obligation has a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity",
-        "src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility",
-        "src/python/ora/src/format_factory/ora/model/stack.py::validate_src",
-        "src/python/ora/src/format_factory/ora/model/stack.py::OraNode",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::load"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-ISOLATION-001",
@@ -3930,76 +3926,75 @@
     {
       "capability_id": "ORA-STACK-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Interoperability between applications and non-destructive saving, the Layer Stack authority's two stated goals, map directly onto two proven behaviors: an archive this library writes is accepted by its own loader (test_the_written_archive_is_accepted_by_our_own_loader, the interoperability floor), and repeated saves of an unmodified load are byte-identical rather than drifting (test_a_round_trip_is_a_fixed_point). Non-destructive saving specifically is proven by test_lossless_mode_preserves_unknown_stack_attributes: a vendor extension attribute this library does not model still survives an unmodified save."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-D4098FD6A2610B3F",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses",
-        "tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required",
-        "tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_lossless_mode_preserves_unknown_stack_attributes",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_the_written_archive_is_accepted_by_our_own_loader",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_a_round_trip_is_a_fixed_point"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet identified."
         ],
         "positive": [
-          "Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips."
+          "Each distinct clause of this obligation has a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity",
-        "src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility",
-        "src/python/ora/src/format_factory/ora/model/stack.py::validate_src",
-        "src/python/ora/src/format_factory/ora/model/stack.py::OraNode",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::load"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-STACK-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Every clause of this obligation is now individually proven: the root stack is exposed as a typed OraStack (test_the_root_stack_is_exposed); child order is preserved exactly as declared, topmost-first (test_document_order_is_visual_order_topmost_first); nested stacks form a real tree, not a flat list (test_nested_stacks_are_modelled_as_a_tree); all three permitted child kinds -- stack, layer, text -- parse correctly (test_a_text_element_parses_as_a_stack_child covers the one not exercised elsewhere); and the previously-untested root-versus-non-root constraint (exactly one root <stack> under <image>) is now proven both ways by two new tests added this slice, test_an_image_with_no_root_stack_is_refused and test_an_image_with_multiple_root_stacks_is_refused -- parse_stack's own '<image> must contain exactly one root <stack>' check was real and working but had zero test coverage anywhere in the suite before this slice."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_an_image_with_no_root_stack_is_refused",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_an_image_with_multiple_root_stacks_is_refused"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-D430DAB9BD55A80C",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses",
-        "tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required",
-        "tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers"
+        "tests/python/ora/test_obligation_stack_and_document.py::test_the_root_stack_is_exposed",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_document_order_is_visual_order_topmost_first",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_nested_stacks_are_modelled_as_a_tree",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_text_element_parses_as_a_stack_child",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_an_image_with_no_root_stack_is_refused",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_an_image_with_multiple_root_stacks_is_refused"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet identified."
         ],
         "positive": [
-          "Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips."
+          "Each distinct clause of this obligation has a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity",
-        "src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility",
-        "src/python/ora/src/format_factory/ora/model/stack.py::validate_src",
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack",
         "src/python/ora/src/format_factory/ora/model/stack.py::OraNode",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/model/stack.py::OraStack",
+        "src/python/ora/src/format_factory/ora/model/stack.py::OraText"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-WRITE-001",
@@ -4070,40 +4065,32 @@
     {
       "capability_id": "ORA-ASSET-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "load() reads every member present in the archive into image.members (not only the known sentinels and layer sources it interprets), and dumps() re-emits the full member dict unless a specific member is deliberately regenerated -- so an archive member this library has no model for at all (e.g. a vendor-specific extension file) survives a round trip byte-for-byte in both LOSSLESS and CANONICAL preservation modes. test_an_unrecognized_archive_member_survives_every_preservation_mode (new this slice) proves this directly with a vendor/notes.txt member absent from any known schema location, which is precisely 'custom extensions that remain safe for baseline consumers' applied to raster/archive assets rather than stack.xml attributes."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-D7C9E9B6208C49AF",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_read_from_the_header",
-        "tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable",
-        "tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_an_unrecognized_archive_member_survives_every_preservation_mode"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet identified."
         ],
         "positive": [
-          "Missing, aliased, hostile-path, malformed-raster, huge-dimension, and replacement round trips."
+          "Each distinct clause of this obligation has a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata",
-        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::ResolvedAsset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets",
-        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::load",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-ASSET-001",
@@ -4142,39 +4129,39 @@
     {
       "capability_id": "ORA-STACK-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "stack.xml's UTF-8-conformance claim, verified directly: parse_stack() feeds the raw archive member bytes to ElementTree.fromstring(), which raises on invalid UTF-8 inside a document declaring encoding=\"UTF-8\" (verified interactively before writing a test), caught and re-raised as OraValidationError -- test_invalid_utf8_in_a_declared_utf8_stack_xml_is_refused proves this. On the write side, _canonical_stack_xml() always emits the literal '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' declaration and encodes the whole document with .encode(\"utf-8\") -- test_written_stack_xml_declares_and_uses_utf8_encoding proves a non-ASCII layer name survives a full read/write/read round trip and that the written bytes carry both the declaration and the correctly UTF-8-encoded name. 'Conforming to the OpenRaster Layer Stack format' beyond encoding is proven by test_malformed_xml_is_refused, test_a_doctype_is_refused (both in the same parser), the required-member presence check in test_stack_xml_is_required, and a full write-then-reload acceptance test."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_invalid_utf8_in_a_declared_utf8_stack_xml_is_refused"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-E371B8F2C428AB4C",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses",
-        "tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required",
-        "tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_written_stack_xml_declares_and_uses_utf8_encoding",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_malformed_xml_is_refused",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_doctype_is_refused",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_the_written_archive_is_accepted_by_our_own_loader",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_stack_xml_is_required"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet identified."
         ],
         "positive": [
-          "Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips."
+          "Each distinct clause of this obligation has a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity",
-        "src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility",
-        "src/python/ora/src/format_factory/ora/model/stack.py::validate_src",
-        "src/python/ora/src/format_factory/ora/model/stack.py::OraNode",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::_canonical_stack_xml",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-SEC-001",
@@ -4285,24 +4272,27 @@
         "ORA-BASELINE-SUITE"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "apply_transaction genuinely provides atomic multi-step commit/rollback (proven: all-succeed commits, any failure rolls back completely, layer and asset-member edits commit or roll back together as one unit) -- but the obligation's specific claim is broader than what is tested. Only add (via test-local _add_layer/_add_member helpers) is exercised as a named operation; replace, move, and remove are never exercised by any test in this file or elsewhere in the suite. \"Groups\" and \"metadata\" are never targeted by any transaction test -- and no \"metadata\" concept exists anywhere in the ora model at all, so that half of the claim cannot be tested against current source without first building it. Reference maintenance and stale- derived-view invalidation have zero test coverage; the test file's own module docstring states this scope limitation explicitly (\"reference repair, invalidate stale derived views, independent application reopen are NOT attempted\")."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Transaction rollback, reference repair, stale-view invalidation, and independent application reopen tests."
+        "replace, move, and remove operations are not exercised by any test; group and metadata targets are not exercised (no metadata concept exists in the model at all); reference maintenance and stale-derived-view invalidation on edit have zero test coverage anywhere in the suite."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image",
+        "tests/python/ora/test_obligation_transactional_edit.py::test_a_validation_error_from_an_invalid_edit_also_rolls_back"
+      ],
       "obligation_id": "SAL-ORA-OBL-EC8D65524EB96820",
       "positive_test_selectors": [
         "tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result",
-        "tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially",
-        "tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image"
+        "tests/python/ora/test_obligation_transactional_edit.py::test_asset_and_layer_edits_commit_together",
+        "tests/python/ora/test_obligation_transactional_edit.py::test_asset_edit_rolls_back_together_with_a_later_failing_layer_edit"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited for rollback-on-failure; per-operation negative cases (e.g. removing a nonexistent target) are not yet identified."
         ],
         "positive": [
-          "Transaction rollback, reference repair, stale-view invalidation, and independent application reopen tests."
+          "Each named operation (add, replace, move, rename, remove) against each named target kind (groups, layers, assets, metadata) has a focused positive test, plus reference-maintenance and stale-derived-view-invalidation coverage."
         ]
       },
       "proof_status": "PARTIAL_NONPROMOTING",
@@ -4505,39 +4495,39 @@
     {
       "capability_id": "ORA-VALIDATE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "stack.xml's UTF-8-conformance claim, verified directly: parse_stack() feeds the raw archive member bytes to ElementTree.fromstring(), which raises on invalid UTF-8 inside a document declaring encoding=\"UTF-8\" (verified interactively before writing a test), caught and re-raised as OraValidationError -- test_invalid_utf8_in_a_declared_utf8_stack_xml_is_refused proves this. On the write side, _canonical_stack_xml() always emits the literal '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' declaration and encodes the whole document with .encode(\"utf-8\") -- test_written_stack_xml_declares_and_uses_utf8_encoding proves a non-ASCII layer name survives a full read/write/read round trip and that the written bytes carry both the declaration and the correctly UTF-8-encoded name. 'Conforming to the OpenRaster Layer Stack format' beyond encoding is proven by test_malformed_xml_is_refused, test_a_doctype_is_refused (both in the same parser), the required-member presence check in test_stack_xml_is_required, and a full write-then-reload acceptance test."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One discriminating negative per normative and security obligation plus multi-error aggregation."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_invalid_utf8_in_a_declared_utf8_stack_xml_is_refused"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-FAE67484E14C50B4",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_written_stack_xml_declares_and_uses_utf8_encoding",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_malformed_xml_is_refused",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_doctype_is_refused",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_the_written_archive_is_accepted_by_our_own_loader",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_stack_xml_is_required"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet identified."
         ],
         "positive": [
-          "One discriminating negative per normative and security obligation plus multi-error aggregation."
+          "Each distinct clause of this obligation has a focused positive test proving the specific claim, not a generic cluster-wide citation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::_canonical_stack_xml",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-RESOLUTION-001",
@@ -4662,13 +4652,13 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-resolution-isolation-001.json": "1a8d632812f95c0c628a894ccf0d2a6e1cc96c7784e6a38506cf576c66d67c59",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-security-baseline-001.json": "3c679aa993c7146ac43c33f5ca132b0a7d88c643e4aa8b0756c285e16ca3f011",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-stack-citation-audit-001.json": "e2198be09d7d47d2fbadd516d37c0e101963b81426439c5d1e279337a51c0126",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-utf8-baseline-citation-audit-001.json": "e1fbdf4d897140b53aba9713ab841640b185deddc8b89c68e1022e26f4baf551",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-validate-citation-audit-001.json": "ade817924adad22d1daa460b7b65907354384fc65dede9d4f50e690ef3ab5c02",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-write-citation-audit-001.json": "c07ab089aecf636747ad28b21ba76d6662fff47d2731eb22013bb715a144ce8b",
     "src/python/ora/src/format_factory/ora/codec/assets.py": "daa355728ed65a92d69c3178f91af4075501bde0549fb0ce9755a944206b9091",
     "src/python/ora/src/format_factory/ora/codec/container.py": "02dd620d7c5f405a2a63222a686cc77a102ad8da95893b43716684bc1c2fbde5",
     "src/python/ora/src/format_factory/ora/codec/png_metadata.py": "6b247625e57be37e010808f50a08ce76e5efd240c5459d2a7ad506eee74ac2ad",
     "src/python/ora/src/format_factory/ora/codec/stack_xml.py": "e63c2b411cbe65efb7baf6217cb2c1e91566c96243bde28dd182085d589d301b",
-    "src/python/ora/src/format_factory/ora/errors.py": "a00e0809d126afc89e40ff0e107287c0a93c4a3467dfefd559f4c3c1145e3ab6",
     "src/python/ora/src/format_factory/ora/lifecycle.py": "8e817f2350d1103df5ac0ed62851021c66cf61bc486698ed1d19697dfd025277",
     "src/python/ora/src/format_factory/ora/model/document.py": "e77dcfb27563a7c6ea4aa002a4582cc4f1a2cce981f3b3a7f3575a819e99d5ef",
     "src/python/ora/src/format_factory/ora/model/stack.py": "252efd4b0ae3492959d1eb720e800c653d35c12b956767a233aa603656cdae12",
@@ -4678,23 +4668,23 @@
     "tests/python/ora/test_obligation_document_model_construction.py": "478139c90d4beeda8b8c4759b42bee88f29cc769fbbd1f1e9d70adf436224987",
     "tests/python/ora/test_obligation_isolation_semantics.py": "1d41a5f6f432a48cc8cb46967ed1287f186bea87f302de1c7b89cf42bdbf9b6f",
     "tests/python/ora/test_obligation_layer_and_group_editing.py": "508cabfb53c92fa7c4f8d2922aec0756ba76315ccac8ac3fd584a51f56dca9e3",
-    "tests/python/ora/test_obligation_lifecycle_and_write.py": "be1fb76093075037f5e094a06e90ca9518ca4adacc4d56017ff1bb745d30f6ff",
+    "tests/python/ora/test_obligation_lifecycle_and_write.py": "a88a6412380498415ca414a4d4704a422e0429abda80c705e8ad89c2a7bc77a7",
     "tests/python/ora/test_obligation_preservation_baseline.py": "c0086dc6953839002dbce61cd826e280d17d8f673ffd5ed7f3651c5d9d72bf7a",
     "tests/python/ora/test_obligation_raster_assets.py": "9688c9e5e46223bc81ced1b49e9369fab113abcf6d52803011cb1e0eaa2d230b",
     "tests/python/ora/test_obligation_resolution_profile_detection.py": "606e3e87b8f4e80dae82c894df8e22ef492048b8cae15b9355b42363d89fe550",
     "tests/python/ora/test_obligation_security_baseline.py": "335380bfdbdce0b206ff75d771f6e03f144c8d6140567097df6361fc3e2d8ce3",
-    "tests/python/ora/test_obligation_stack_and_document.py": "8079699deb169f044f2fc472b5d9b908bf56332824a141dbfe591a30dfd7313e",
+    "tests/python/ora/test_obligation_stack_and_document.py": "15c2c2cd642f46c12a3aaf5f1c138740bb1778619e32e2ff1b4d06559642c052",
     "tests/python/ora/test_obligation_transactional_edit.py": "eac70aab6f267514104b69fbed0b34db581fc6a12f31cfa65c45e60f385f1fc4"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 98,
+      "implemented": 112,
       "missing": 8,
-      "partial": 28
+      "partial": 14
     },
     "total": 134,
-    "unresolved": 36
+    "unresolved": 22
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

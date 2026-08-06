@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-utf8-baseline-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T20:05:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_UTF8_BASELINE_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure-citation-audit-plus-new-tests",
+    "root_cause": "Event 174 flagged ora's 22 remaining generic-placeholder obligations as the largest remaining same-pattern opportunity across all six formats. 15 of the 22 already carried non-empty source_symbols/positive_test_selectors citations, several of them obvious cross-capability copy-paste errors (e.g. a 'stack.xml is UTF-8 XML' rule_text cited against PNG-header-reading tests or in-memory transaction tests with zero relation to file serialization).",
+    "obligation_targeted": "15 obligations across ORA-WRITE-001, ORA-VALIDATE-001, ORA-EDIT-001, ORA-ASSET-001, ORA-CONTAINER-001, ORA-STACK-001; 14 promoted to implemented, 1 (transactional CRUD) stays honestly partial with a precise, individually-verified characterization replacing the generic placeholder.",
+    "acceptance_evidence": "6 obligations sharing one identical rule_text ('the required stack.xml archive member is a UTF-8 encoded XML document') closed via 2 new tests plus existing conformance/round-trip tests. 4 obligations sharing another identical rule_text ('full baseline support for reading/editing/viewing... editing may damage the result') closed via existing LOSSLESS/CANONICAL PreservationMode tests. 4 obligations with distinct claims closed individually (1 via cross-file citation to existing preservation tests, 1 via cross-file citation to existing round-trip tests, 1 via existing tree-structure tests plus 2 new root-constraint tests, 1 via 1 new vendor-archive-member-survival test). 1 obligation (transactional add/replace/move/rename/remove) stays partial: only add is genuinely tested; replace/move/remove/groups/metadata/reference-maintenance/stale-view-invalidation are not.",
+    "regression_tier": "full ora package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Delegated initial per-obligation research to an Explore subagent covering all 15 non-empty-citation obligations, instructed to read every currently-cited test function's FULL body, confirm shipped-namespace imports, grep the actual source symbols, and search the whole ora test suite for better-fitting existing tests -- explicitly told to be skeptical since several citations looked like cross-capability copy-paste errors.",
+    "2. The subagent confirmed several definite mis-citations (a 'stack.xml is UTF-8 XML' claim cited against PNG-header tests with zero relation; the same claim cited against in-memory-only transaction tests that never serialize to stack.xml bytes; container.py's presence-only check cited as if it validated stack.xml content, when the real conformance logic lives in the uncited stack_xml.py module) and one precisely-scoped partial (transactional CRUD: only 'add' is tested; replace/move/remove/groups/metadata/reference-maintenance/stale-view-invalidation are not, per the test file's own module docstring).",
+    "3. Independently verified every claim before trusting it: read stack_xml.py's parse_stack and lifecycle.py's _canonical_stack_xml/dumps directly, ran interactive Python snippets confirming ElementTree.fromstring raises on invalid UTF-8 inside a document declaring encoding=\"UTF-8\" (caught and converted to OraValidationError), confirmed the writer always emits the literal UTF-8 XML declaration and .encode(\"utf-8\")'s the whole document, and confirmed the 'exactly one root <stack>' constraint in parse_stack works correctly for both zero-root and multi-root cases despite having zero test coverage.",
+    "4. Recognized a legitimate, non-fabricated connection the subagent's literal-text search missed: the 4 obligations sharing 'full baseline support for reading and editing and viewing... baseline support for visualization where editing may damage the result' map directly onto this library's LOSSLESS-vs-CANONICAL PreservationMode design -- LOSSLESS is the safe-by-default read/edit/view path that never damages unmodeled content, CANONICAL is the explicit, caller-chosen 'baseline save' path that visibly regenerates only what the model holds, matching OpenRaster's documented full-vs-baseline implementation-level concept precisely. Wrote this reasoning explicitly into implemented_behavior rather than a vague claim, so it is auditable.",
+    "5. Wrote 2 new tests for the previously-untested UTF-8 claim (test_written_stack_xml_declares_and_uses_utf8_encoding, test_invalid_utf8_in_a_declared_utf8_stack_xml_is_refused) in test_obligation_lifecycle_and_write.py, verified interactively with a scratch script against the module's own STACK/archive/png helpers before adding them as real pytest functions.",
+    "6. Wrote 1 new test (test_an_unrecognized_archive_member_survives_every_preservation_mode) proving a vendor archive member this library has no model for at all survives round-trip in both preservation modes -- the genuine, real evidence for 'custom extensions remain safe for baseline consumers' applied to raster/archive assets rather than stack.xml attributes.",
+    "7. Wrote 2 new tests (test_an_image_with_no_root_stack_is_refused, test_an_image_with_multiple_root_stacks_is_refused) in test_obligation_stack_and_document.py, closing the one previously-untested clause (root-versus-non-root constraints) of the tree-modeling obligation whose other clauses (visual order, nesting, child kind) were already well-proven but never cited.",
+    "8. Ran ruff on both changed test files (clean), the full ora suite (288 passed, was 283) before writing any evidence claim, patched the evidence YAML (14 promotions plus 1 precise-partial rewrite), and ran the reconciler. No src/ files changed this slice -- test files and evidence YAML only -- so skills-first governance was correctly skipped."
+  ],
+  "allowed_files": [
+    "tests/python/ora/test_obligation_lifecycle_and_write.py",
+    "tests/python/ora/test_obligation_stack_and_document.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ora/test_obligation_lifecycle_and_write.py",
+    "tests/python/ora/test_obligation_stack_and_document.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_lifecycle_and_write.py tests/python/ora/test_obligation_stack_and_document.py -q -- 96 passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 288 passed, was 283",
+    ".venv/Scripts/python -m ruff check <2 changed test files> -- all checks passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 14,
+    "obligations_total_for_format": 134,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not cross-checked against a reference OpenRaster implementation. The UTF-8 invalid-byte-rejection behavior and the root-constraint enforcement were both verified interactively against real source behavior before any test was written, not assumed.",
+    "obligations_moved_breakdown": "14 of 15 audited obligations promoted to implemented (6 via a shared UTF-8 claim closed with 2 new tests, 4 via a shared baseline-documents claim closed via existing LOSSLESS/CANONICAL tests, 4 via individual claims closed with a mix of cross-file citation and 3 more new tests). 1 (transactional CRUD) stays honestly partial: its generic placeholder was replaced with a precise characterization of exactly what is and is not tested, per Rule 3's explicit allowance for 'obligation mapping, independent verification' as valid progress distinct from obligations_moved.",
+    "new_bugs_found": "none this slice -- unlike several earlier ticks this session, no incorrect behavior was discovered; every gap found was a missing test for already-correct, already-working source behavior (UTF-8 rejection, root-count enforcement, unrecognized-member survival all worked correctly on first interactive verification).",
+    "largest_ora_sweep_this_session": "This is the largest single-tick obligation movement for ora this session (98 -> 112 implemented, +14), closing all 15 of ora's citation-carrying generic-placeholder obligations in one pass."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

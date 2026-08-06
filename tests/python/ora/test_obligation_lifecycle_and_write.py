@@ -430,6 +430,55 @@ def test_lossless_is_the_default_preservation_mode() -> None:
         assert b"x-vendor" in zf.read("stack.xml")
 
 
+# ── stack.xml is UTF-8, and unrecognized members survive ───────────────────
+
+
+def test_written_stack_xml_declares_and_uses_utf8_encoding() -> None:
+    """"the required stack.xml archive member is a UTF-8 encoded XML document"
+    -- proven both ways: a non-ASCII layer name survives a full read/write/
+    read round trip, and the written bytes carry the UTF-8 XML declaration."""
+    name = "图层"  # non-ASCII: would mis-round-trip under any single-byte codec
+    stack = STACK.replace(b'name="only"', f'name="{name}"'.encode("utf-8"))
+    payload = archive(stack=stack, thumbnail=png(16, 16), merged=png())
+
+    loaded = loads(payload)
+    assert loaded.document.root.children[0].name == name
+
+    written = dumps(loaded, preservation=PreservationMode.CANONICAL)
+    with zipfile.ZipFile(io.BytesIO(written)) as zf:
+        emitted = zf.read("stack.xml")
+    assert emitted.startswith(b'<?xml version="1.0" encoding="UTF-8"?>')
+    assert name.encode("utf-8") in emitted
+
+    reloaded = loads(written)
+    assert reloaded.document.root.children[0].name == name
+
+
+def test_invalid_utf8_in_a_declared_utf8_stack_xml_is_refused() -> None:
+    """A stack.xml that declares encoding="UTF-8" but is not actually valid
+    UTF-8 must be refused, not silently mis-decoded under some other codec."""
+    stack = STACK.replace(b'name="only"', b'name="bad\xffname"')
+    payload = archive(stack=stack, thumbnail=png(16, 16), merged=png())
+
+    with pytest.raises(OraValidationError):
+        loads(payload)
+
+
+def test_an_unrecognized_archive_member_survives_every_preservation_mode() -> None:
+    """"permits custom extensions that remain safe for baseline consumers" --
+    a vendor file this library does not model at all (not stack.xml, not a
+    layer source, not a known sentinel) must not be dropped on save, in
+    either preservation mode."""
+    members = {"data/only.png": png(), "vendor/notes.txt": b"not part of the baseline spec"}
+    payload = archive(members=members, thumbnail=png(16, 16), merged=png())
+    loaded = loads(payload)
+
+    assert loaded.members["vendor/notes.txt"] == b"not part of the baseline spec"
+    for mode in (PreservationMode.LOSSLESS, PreservationMode.CANONICAL):
+        with zipfile.ZipFile(io.BytesIO(dumps(loaded, preservation=mode))) as zf:
+            assert zf.read("vendor/notes.txt") == b"not part of the baseline spec"
+
+
 # ── Saving ─────────────────────────────────────────────────────────────────
 
 

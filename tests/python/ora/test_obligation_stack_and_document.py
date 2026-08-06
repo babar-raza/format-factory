@@ -82,6 +82,28 @@ def test_the_root_element_must_be_image() -> None:
     assert "image" in str(raised.value)
 
 
+def test_an_image_with_no_root_stack_is_refused() -> None:
+    """"root-versus-non-root constraints" -- an <image> with no <stack> child
+    has no layer tree to render at all."""
+    payload = image("")
+
+    with pytest.raises(OraValidationError) as raised:
+        parse_stack(payload)
+
+    assert "exactly one root" in str(raised.value)
+
+
+def test_an_image_with_multiple_root_stacks_is_refused() -> None:
+    """Two sibling <stack> elements directly under <image> would make "the"
+    root layer tree ambiguous -- there must be exactly one."""
+    payload = image(SIMPLE_BODY + '<stack x="0" y="0"></stack>')
+
+    with pytest.raises(OraValidationError) as raised:
+        parse_stack(payload)
+
+    assert "exactly one root" in str(raised.value)
+
+
 # ── Resolution: optional, paired, positive, defaulting to 72 ───────────────
 
 
