@@ -36,7 +36,34 @@ execution_evidence:
     repair, stale-view invalidation, independent application reopen -- remain unattempted, see the dated
     note above for why). ORA suite is now 261 passed with no failures. The remaining 5 capabilities have
     no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-EDIT-001''s
-    obligations move to `partial` only.'
+    obligations move to `partial` only.
+
+    2026-08-06 (later still): first ORA `implemented` promotions -- pure evidence-citation correction,
+    zero new production code or tests. codec/container.py''s OraContainer._check_mimetype/ALLOWED_COMPRESSION
+    and model/stack.py''s validate_src already fully and exactly implement four ORA-MIMETYPE-001 obligations
+    (mimetype sentinel position/compression/exact-bytes, ZIP-member compression-method restriction, and
+    archive-root-relative src referencing), each with existing on-point positive and negative tests in
+    tests/python/ora/test_obligation_container_and_mimetype.py and test_obligation_stack_and_document.py --
+    but every one was citing the same three generic placeholder selectors (test_a_well_formed_archive_opens/test_missing_mimetype_is_rejected/test_mimetype_must_be_the_first_member)
+    with no negative selectors at all, left over from this file''s original codex-authored ledger-map
+    mapping. Corrected each obligation''s citation to its own precise, differentiated selector set. ORA
+    suite unchanged at 261 passed (0 new tests, 0 source changes) -- proves this was a citation fix, not
+    product work. Four ORA-MIMETYPE-001 obligations move from `partial` to `implemented`.'
+- evidence_id: ORA-MIMETYPE-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-mimetype-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact positive and
+    negative test selectors for the mimetype sentinel (position, compression,
+    exact bytes, forbidden whitespace), the ZIP-member compression-method
+    restriction, and archive-root-relative layer/text src referencing.
+    SELF-CONSISTENT format_factory-only evidence per the execution-recovery
+    directive's GAP-008 rule, not VERIFIED -- not cross-checked against an
+    independent OpenRaster reader/writer. Covers SAL-ORA-OBL-2F587C16337355AD,
+    SAL-ORA-OBL-55DE1B78BE5C2722, SAL-ORA-OBL-6F8C875E6EA535C4, and
+    SAL-ORA-OBL-A24565BEF82FCD78 only; it supports no other obligation and
+    promotes no product state.
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -861,22 +888,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-2F587C16337355AD
   capability_id: ORA-MIMETYPE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer::from_bytes
+  - src/python/ora/src/format_factory/ora/codec/container.py::_check_mimetype
   positive_test_selectors:
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  negative_test_selectors:
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-MIMETYPE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: One negative fixture independently
-    varies each sentinel invariant.'
+  - _check_mimetype enforces the sentinel's required archive position (must be the first member), its
+    compression method (must be STORED), and its exact byte content (must equal `image/openraster` with
+    no surrounding whitespace or trailing newline), each independently varied and independently rejected
+    with a diagnostic naming which invariant failed.
+  missing_behavior: []
   proof_requirements:
     positive:
     - One negative fixture independently varies each sentinel invariant.
@@ -1539,22 +1571,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-55DE1B78BE5C2722
   capability_id: ORA-MIMETYPE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer::from_bytes
+  - src/python/ora/src/format_factory/ora/codec/container.py::_describe_compression
   positive_test_selectors:
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_deflated_and_stored_members_are_both_accepted
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_unsupported_compression_method_is_rejected
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-MIMETYPE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: One negative fixture independently
-    varies each sentinel invariant.'
+  - Every archive member's compress_type is checked during from_bytes against ALLOWED_COMPRESSION (STORED,
+    DEFLATED only); any other ZIP-valid method (e.g. BZIP2, LZMA) is rejected with a diagnostic naming
+    the member and the method, before any member is decompressed.
+  missing_behavior: []
   proof_requirements:
     positive:
     - One negative fixture independently varies each sentinel invariant.
@@ -1851,22 +1883,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-6F8C875E6EA535C4
   capability_id: ORA-MIMETYPE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer::from_bytes
+  - src/python/ora/src/format_factory/ora/codec/container.py::_check_mimetype
   positive_test_selectors:
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  negative_test_selectors:
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-MIMETYPE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: One negative fixture independently
-    varies each sentinel invariant.'
+  - 'This obligation is the exact normative quote SAL-ORA-OBL-2F587C16337355AD paraphrases: "the first
+    archive member must be named mimetype, must be STORED without compression, and must contain exactly
+    image/openraster without whitespace or a trailing newline" -- proven by the same _check_mimetype
+    behavior and the same selector set.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - One negative fixture independently varies each sentinel invariant.
@@ -2581,22 +2618,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-A24565BEF82FCD78
   capability_id: ORA-MIMETYPE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   positive_test_selectors:
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
-  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_layer_src_is_archive_root_relative
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused
+  - tests/python/ora/test_obligation_stack_and_document.py::test_every_layer_requires_a_src
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-MIMETYPE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: One negative fixture independently
-    varies each sentinel invariant.'
+  - 'validate_src (shared by the XML parser and direct model construction, so neither route can diverge)
+    enforces the rule''s normative half: a layer/text src must be a non-empty, archive-root-relative
+    path -- absolute paths, backslashes, drive letters, and `..` traversal are all rejected. The rule''s
+    other clause ("conventionally stored below data/") is explicitly non-normative phrasing (a naming
+    convention, not a MUST); no validator enforces a data/ prefix, and none should -- the writer preserves
+    whatever valid archive-root-relative path a layer already carries rather than imposing one.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - One negative fixture independently varies each sentinel invariant.

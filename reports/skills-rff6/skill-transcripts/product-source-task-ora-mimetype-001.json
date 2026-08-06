@@ -1,0 +1,49 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-mimetype-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T09:45:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_MIMETYPE_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "shared/format-contracts/implementation-evidence/ora.yaml was originally codex-generated from the ledger-map, and its ORA-MIMETYPE-001 rows were never hand-audited (each carried the generic 'Not yet audited against this obligation's declared proof requirements' missing_behavior placeholder). All four obligations under this capability cited the SAME three generic positive selectors and NO negative selectors, even though codec/container.py's OraContainer._check_mimetype/ALLOWED_COMPRESSION and model/stack.py's validate_src already fully implement all four obligations' distinct rules, each with existing, on-point, passing positive AND negative tests in tests/python/ora/test_obligation_container_and_mimetype.py and test_obligation_stack_and_document.py.",
+    "obligation_targeted": "SAL-ORA-OBL-2F587C16337355AD, SAL-ORA-OBL-55DE1B78BE5C2722, SAL-ORA-OBL-6F8C875E6EA535C4, SAL-ORA-OBL-A24565BEF82FCD78",
+    "acceptance_evidence": "tests/python/ora/test_obligation_container_and_mimetype.py, tests/python/ora/test_obligation_stack_and_document.py",
+    "regression_tier": "full ORA package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Surveyed ora's 46 remaining unresolved obligations (post FI-078 closeout) by capability size, looking for a tractable next slice given ORA-RENDER-001/ORA-COMPOSITE-001/ORA-MASK-001/ORA-STREAM-001/ORA-RESOLUTION-001 all require an actual pixel-compositing engine (missing entirely, large scope). ORA-MIMETYPE-001 (4 obligations) stood out: its four rule_texts are byte-level/structural (sentinel position, compression method, exact content, archive-root-relative path referencing), not pixel rendering.",
+    "2. Read codec/container.py in full: its own module docstring literally quotes the exact normative text of SAL-ORA-OBL-6F8C875E6EA535C4 and SAL-ORA-OBL-55DE1B78BE5C2722. _check_mimetype() already enforces sentinel position, compression, and exact bytes; ALLOWED_COMPRESSION + the from_bytes loop already enforce the compression-method restriction across every member, not only mimetype.",
+    "3. Read model/stack.py's validate_src(): already enforces archive-root-relative paths (rejects absolute, backslash, drive-letter, and .. traversal), shared by codec/stack_xml.py's parser and by direct model construction so neither route can diverge -- matching SAL-ORA-OBL-A24565BEF82FCD78's normative clause. Confirmed the obligation's other clause ('conventionally stored below data/') is explicitly non-normative phrasing; no validator enforces a data/ prefix, and the writer does not hardcode one -- correctly not claimed as tested, since nothing requires it to be.",
+    "4. Located existing, precise, already-passing tests for each obligation: test_missing_mimetype_is_rejected/test_mimetype_must_be_the_first_member/test_mimetype_must_be_stored_uncompressed/test_mimetype_rejects_any_surrounding_whitespace/test_mimetype_rejects_wrong_values (mimetype sentinel, SAL-ORA-OBL-2F587C16337355AD and SAL-ORA-OBL-6F8C875E6EA535C4's shared proof), test_unsupported_compression_method_is_rejected/test_deflated_and_stored_members_are_both_accepted (compression restriction, SAL-ORA-OBL-55DE1B78BE5C2722), test_layer_src_is_archive_root_relative/test_a_layer_src_that_escapes_the_archive_is_refused/test_every_layer_requires_a_src (src referencing, SAL-ORA-OBL-A24565BEF82FCD78).",
+    "5. Ran all 20 candidate selectors directly before citing any of them: all passed on first run, confirming they are real and on-point, not merely present.",
+    "6. Corrected all four obligations' source_symbols/positive_test_selectors/negative_test_selectors/implemented_behavior/missing_behavior/status in the implementation-evidence YAML. Caught and fixed one mistake during drafting: initially cited ALLOWED_COMPRESSION (a module-level frozenset constant) as a source_symbol for SAL-ORA-OBL-55DE1B78BE5C2722 -- the reconciler's _resolve_python_reference only resolves def/class-level AST nodes, so a bare constant would have errored exactly like the earlier CELL_ID_PATTERN/TransitionPolicy mistakes this session already learned from; replaced with the _describe_compression function instead before running the reconciler.",
+    "7. Zero source or test changes -- pure evidence-citation correction. Re-ran the full ORA suite to prove this: 261 passed, unchanged from before this slice. ruff/mypy not re-run (no source touched)."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values tests/python/ora/test_obligation_container_and_mimetype.py::test_unsupported_compression_method_is_rejected tests/python/ora/test_obligation_container_and_mimetype.py::test_deflated_and_stored_members_are_both_accepted tests/python/ora/test_obligation_stack_and_document.py::test_layer_src_is_archive_root_relative tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused tests/python/ora/test_obligation_stack_and_document.py::test_every_layer_requires_a_src -v -- 20 passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 261 passed, 0 regressions (unchanged from before this slice)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 4,
+    "obligations_total_for_format": 134,
+    "ora_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against an external OpenRaster reader/writer. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_four_obligations_promoted_together": "All four obligations under ORA-MIMETYPE-001 were already fully and distinctly implemented and tested; the only defect was a shared generic evidence-citation placeholder left by the original codex-authored ledger-map mapping. Each obligation's citation was corrected to its own precise selector set (not a shared copy), matching the specific normative clause it covers -- mimetype sentinel exactness (two overlapping obligations, one paraphrase and one exact quote), the archive-wide compression-method restriction, and archive-root-relative src referencing."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
