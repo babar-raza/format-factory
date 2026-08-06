@@ -8,7 +8,19 @@ from typing import Any, Mapping
 from format_factory.core import BinarySource
 
 from .analytics import axis_sizes, element_count, is_compressed
-from .codec import dump, dumps, load, loads, probe
+from .codec import (
+    NrrdHeader,
+    NrrdLazyPayload,
+    PayloadAccess,
+    PayloadAccessMode,
+    dump,
+    dumps,
+    load,
+    loads,
+    open_lazy_payload,
+    probe,
+    read_header,
+)
 from .codec.payload import decode_binary, encode_binary
 from .convert import (
     ConversionReport,
@@ -36,15 +48,17 @@ from .validation import validate
 
 __all__ = [
     "ConversionReport", "DOMAIN_KINDS", "NRRD_DEFAULT_LIMITS", "NrrdDocument",
-    "NrrdError", "NrrdParseError", "NrrdWriteError", "OverflowPolicy",
+    "NrrdError", "NrrdHeader", "NrrdLazyPayload", "NrrdParseError",
+    "NrrdWriteError", "OverflowPolicy", "PayloadAccess", "PayloadAccessMode",
     "PreservationIssue", "PreservationReport", "RoundingPolicy",
     "SpaceTransform",
     "axis_sizes", "build_space_transform", "convert_dtype", "convert_endian",
     "decode_nrrd_data", "dump", "dumps", "element_count", "encode_nrrd_data",
     "get_array", "get_dimension", "get_encoding", "is_compressed", "load",
-    "load_nrrd", "loads", "nrrd_installed_workflow", "parse_space_directions",
-    "parse_space_origin", "preservation_report", "probe", "probe_nrrd",
-    "reshape_nrrd_array", "roundtrip", "validate", "write_nrrd",
+    "load_nrrd", "loads", "nrrd_installed_workflow", "open_lazy_payload",
+    "parse_space_directions", "parse_space_origin", "preservation_report",
+    "probe", "probe_nrrd", "read_header", "reshape_nrrd_array", "roundtrip",
+    "validate", "write_nrrd",
 ]
 
 __version__ = "0.2.0.dev0"

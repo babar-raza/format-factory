@@ -53,6 +53,31 @@ execution_evidence:
       execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
       SAL-NRRD-OBL-028C0109E783B8F3 only; it supports no other obligation and
       promotes no product state.
+  - evidence_id: NRRD-LAZY-SELECTOR-PROOF
+    path: reports/skills-rff6/skill-transcripts/product-source-task-nrrd-lazy-payload-001.json
+    expected_result: PASS
+    granularity: selector
+    truth_boundary: >-
+      Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact test
+      selectors proving codec/lazy.py's read_header() reads only a bounded
+      chunk regardless of declared payload size (a byte-tracking stream
+      wrapper measures this directly, not by absence of an observed side
+      effect), that open_lazy_payload() memory-maps eligible raw
+      single-file payloads (attached or a plain detached filename) with
+      zero-copy region reads matching the eager loader's own materialized
+      bytes exactly, that gzip/bzip2 payloads stream-decode incrementally
+      and match the eager loader's decoded output, and that multi-file
+      detached forms (LIST, printf sequences), textual encodings, and a
+      declared line/byte skip each report an honest IN_MEMORY disclosure
+      naming the specific reason rather than silently claiming laziness.
+      Detached-path safety reuses the identical traversal/absolute-path
+      checks as the existing eager reader. SELF-CONSISTENT
+      format_factory-only evidence per the execution-recovery directive's
+      GAP-008 rule, not VERIFIED -- not cross-checked against Teem or
+      another reference implementation for these specific lazy-access
+      behaviors. Covers SAL-NRRD-OBL-6A4391DE91AF6940 and
+      SAL-NRRD-OBL-D137EAE6ED40E8B8 only; it supports no other obligation
+      and promotes no product state.
 obligations:
   - {obligation_id: SAL-NRRD-OBL-00F18A8DA59864CD, capability_id: NRRD-PHYSICALMETA-001, status: partial, source_symbols: &META ["src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument", "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"], positive_test_selectors: &TMETA ["tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"], negative_test_selectors: [], execution_evidence_ids: &EXEC [NRRD-R1-SOURCE-TESTS], implemented_behavior: ["Raw thicknesses and sample-units header values survive canonical serialization."], missing_behavior: ["No typed distinction among thickness, spacing, axis units, space units, and sample units; no NRRD0004 introduction check."], proof_requirements: {positive: ["Typed NRRD0004-NRRD0005 physical-metadata roundtrips."], negative: ["Reject physical metadata in earlier profiles and invalid arity."]}}
   - {obligation_id: SAL-NRRD-OBL-028C0109E783B8F3, capability_id: NRRD-LIFECYCLE-001, status: implemented, source_symbols: ["src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::version_requirements", "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::minimal_version_for", "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::load", "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::loads", "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps", "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"], positive_test_selectors: ["tests/python/nrrd/test_obligation_version_selection.py::test_freshly_constructed_document_has_no_detected_version", "tests/python/nrrd/test_obligation_version_selection.py::test_loading_a_file_records_its_actual_magic_line_version_as_detected", "tests/python/nrrd/test_obligation_version_selection.py::test_mutating_the_declared_version_never_touches_detected_version", "tests/python/nrrd/test_obligation_version_selection.py::test_to_dict_and_from_mapping_round_trip_detected_version", "tests/python/nrrd/test_obligation_version_selection.py::test_dumps_succeeds_when_declared_version_is_already_sufficient"], negative_test_selectors: ["tests/python/nrrd/test_obligation_version_selection.py::test_dumps_refuses_a_declared_version_too_old_for_kinds", "tests/python/nrrd/test_obligation_version_selection.py::test_dumps_refuses_an_explicit_profile_override_too_old", "tests/python/nrrd/test_obligation_version_selection.py::test_dumps_error_names_every_blocking_field", "tests/python/nrrd/test_obligation_version_selection.py::test_validate_flags_a_declared_version_too_old_for_populated_fields", "tests/python/nrrd/test_obligation_version_selection.py::test_validate_flags_an_explicit_profile_argument_too_old"], execution_evidence_ids: [NRRD-R1-SOURCE-TESTS, NRRD-VERSION-SELECTOR-PROOF], implemented_behavior: ["NrrdDocument exposes `detected_version` (set once by the reader from the file's actual magic line; None for a freshly-constructed document) distinct from the mutable `version` field the writer treats as the current declaration -- mutating `version` never touches `detected_version`.", "Writing with a declared `version` (or an explicit profile= override) too old for the document's populated fields is refused with a diagnostic naming every blocking field and the minimum required profile, rather than silently accepted or silently rewritten; `validate()` reports the same condition non-destructively as `nrrd.version.insufficient`."], missing_behavior: [], proof_requirements: {positive: ["Installed-wheel tests for detected versus declared version."], negative: ["Prove no silent declared-version rewrite."]}}
@@ -84,7 +109,43 @@ obligations:
   - {obligation_id: SAL-NRRD-OBL-6533C8FB0044E3A2, capability_id: NRRD-KEYVALUE-001, status: partial, source_symbols: *KV, positive_test_selectors: *TMETA, negative_test_selectors: *TDUP, execution_evidence_ids: *EXEC, implemented_behavior: ["Key/value lines parse and serialize."], missing_behavior: ["No newline/backslash unescaping, no := key prohibition, no last-value-wins duplicate behavior, and no version gate."], proof_requirements: {positive: ["Exact escaping and duplicate precedence against Teem."], negative: ["NRRD0001, forbidden delimiter, malformed escape, and empty-key cases."]}}
   - {obligation_id: SAL-NRRD-OBL-653B0BAE5AF9352F, capability_id: NRRD-HEADER-001, status: implemented, source_symbols: *HEADER, positive_test_selectors: *TENC, negative_test_selectors: *TDUP, execution_evidence_ids: *EXEC, implemented_behavior: ["Field identifiers are normalized case-insensitively and duplicate normalized fields are rejected."], missing_behavior: [], proof_requirements: {positive: ["Mixed-case field roundtrips."], negative: ["Same and case-variant duplicate fields."]}}
   - {obligation_id: SAL-NRRD-OBL-666DA3540EE4E38D, capability_id: NRRD-SPACE-001, status: partial, source_symbols: &SPACE ["src/python/nrrd/src/format_factory/nrrd/space.py::build_space_transform", "src/python/nrrd/src/format_factory/nrrd/space.py::SpaceTransform", "src/python/nrrd/src/format_factory/nrrd/space.py::parse_space_directions", "src/python/nrrd/src/format_factory/nrrd/space.py::parse_space_origin"], positive_test_selectors: &TSPACE ["tests/python/nrrd/test_obligation_space_transform.py::test_build_space_transform_from_consistent_3d_data", "tests/python/nrrd/test_obligation_space_transform.py::test_identity_transform_maps_index_to_itself_plus_origin", "tests/python/nrrd/test_obligation_space_transform.py::test_scaled_transform_applies_axis_spacing", "tests/python/nrrd/test_obligation_space_transform.py::test_zero_index_maps_exactly_to_the_origin", "tests/python/nrrd/test_obligation_space_transform.py::test_space_dimension_is_derived_from_data_not_the_named_space"], negative_test_selectors: &NSPACE ["tests/python/nrrd/test_obligation_space_transform.py::test_origin_length_inconsistent_with_direction_vectors_is_rejected", "tests/python/nrrd/test_obligation_space_transform.py::test_direction_vectors_of_differing_lengths_are_rejected", "tests/python/nrrd/test_obligation_space_transform.py::test_direction_entry_count_must_match_the_document_axis_count", "tests/python/nrrd/test_obligation_space_transform.py::test_index_to_world_rejects_an_index_of_the_wrong_length"], execution_evidence_ids: *EXEC, implemented_behavior: ["build_space_transform() validates space directions/origin/dimension for mutual consistency and builds a working index-to-world affine transform (SpaceTransform.index_to_world). Non-spatial axes (marked \"none\") are excluded from the spatial-axis set and contribute nothing to the transform. Space dimension is derived only from explicit data present (space dimension field, origin length, or spatial direction-vector lengths) -- the \"space\" field's name is not even a parameter to this function, so axis order can never be inferred from it."], missing_behavior: ["Measurement-to-world (NRRD0005 measurement frame) transforms remain unimplemented -- deliberately kept as a separate, unbuilt capability per the obligation's own instruction to keep it distinct from the NRRD0004 index-to-world transform. No test fixture derived from an actual known medical-orientation dataset (e.g. a real DICOM-derived NRRD) has been run against this transform; all fixtures here are synthetic."], proof_requirements: {positive: ["Known medical-orientation transform fixtures."], negative: ["Dimension mismatch, non-spatial axes, invalid basis, and no named-space axis inference."]}}
-  - {obligation_id: SAL-NRRD-OBL-6A4391DE91AF6940, capability_id: NRRD-LAZY-001, status: missing, source_symbols: [], positive_test_selectors: [], negative_test_selectors: [], execution_evidence_ids: [], implemented_behavior: [], missing_behavior: ["No header-only, lazy, mmap, streaming-decode, or region-read API exists."], proof_requirements: {positive: ["Eligible raw mmap and compressed streaming/region behavior."], negative: ["Explicit full-decompression reporting and resource-bound refusal."]}}
+  - obligation_id: SAL-NRRD-OBL-6A4391DE91AF6940
+    capability_id: NRRD-LAZY-001
+    status: implemented
+    source_symbols:
+      - src/python/nrrd/src/format_factory/nrrd/codec/lazy.py::read_header
+      - src/python/nrrd/src/format_factory/nrrd/codec/lazy.py::open_lazy_payload
+      - src/python/nrrd/src/format_factory/nrrd/codec/lazy.py::NrrdLazyPayload
+    positive_test_selectors:
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_attached_raw_is_eligible_for_memory_mapping
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_memory_mapped_region_matches_eager_load
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_gzip_streaming_decode_matches_eager_load
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_bzip2_streaming_decode_matches_eager_load
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_header_only_does_not_read_the_payload_from_a_stream
+    negative_test_selectors:
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_region_raises_in_streaming_decode_mode
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_multi_file_list_detached_reports_in_memory_required
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_declared_byte_skip_disqualifies_memory_mapping
+    execution_evidence_ids:
+      - NRRD-R1-SOURCE-TESTS
+      - NRRD-LAZY-SELECTOR-PROOF
+    implemented_behavior:
+      - read_header() parses only the header (proven via a byte-tracking
+        stream wrapper to read a small bounded chunk regardless of payload
+        size), open_lazy_payload() memory-maps eligible raw single-file
+        payloads (attached or plain detached filename, zero line/byte skip)
+        with zero-copy region reads, streams gzip/bzip2 payloads
+        incrementally via the standard library's own decompressing file
+        wrapper, and discloses IN_MEMORY with a specific reason (multi-file
+        detached, textual encoding, declared skip, bytes-source detached
+        data) whenever neither applies -- never a silent claim of laziness
+        it cannot deliver.
+    missing_behavior: []
+    proof_requirements:
+      positive:
+        - Eligible raw mmap and compressed streaming/region behavior.
+      negative:
+        - Explicit full-decompression reporting and resource-bound refusal.
   - {obligation_id: SAL-NRRD-OBL-6F62F1E19950584D, capability_id: NRRD-HEADER-001, status: implemented, source_symbols: *HEADER, positive_test_selectors: *TLOSS, negative_test_selectors: *TDUP, execution_evidence_ids: *EXEC, implemented_behavior: ["Magic line, header lines, and blank-line termination are parsed and written."], missing_behavior: [], proof_requirements: {positive: ["All five magics and both line endings."], negative: ["Bad magic width/version and missing blank line."]}}
   - {obligation_id: SAL-NRRD-OBL-6F9641D043F9DAAA, capability_id: NRRD-HEADER-001, status: partial, source_symbols: *HEADER, positive_test_selectors: *TLOSS, negative_test_selectors: [], execution_evidence_ids: *EXEC, implemented_behavior: ["LF/CRLF and exact attached-source replay are supported."], missing_behavior: ["Permitted lexical variants are not fully modeled or tested; canonical parsing strips significant field whitespace."], proof_requirements: {positive: ["Lexical-variant corpus with byte-exact lossless replay."], negative: ["Illegal whitespace and separators fail closed."]}}
   - {obligation_id: SAL-NRRD-OBL-725881DB5590E608, capability_id: NRRD-VERSION-001, status: partial, source_symbols: *VERSION, positive_test_selectors: *TENDIAN, negative_test_selectors: [], execution_evidence_ids: *EXEC, implemented_behavior: ["Five profile magics and explicit target profile selection exist."], missing_behavior: ["Cumulative feature gates and oldest-representable automatic selection are absent."], proof_requirements: {positive: ["One minimal document per introduction boundary and deterministic version selection."], negative: ["Every feature/profile contradiction."]}}
@@ -104,7 +165,41 @@ obligations:
   - {obligation_id: SAL-NRRD-OBL-BAAE59FC398A9D6C, capability_id: NRRD-FRAME-001, status: preservation_only, source_symbols: *META, positive_test_selectors: *TMETA, negative_test_selectors: [], execution_evidence_ids: *EXEC, implemented_behavior: ["Raw measurement-frame content can be carried through canonical serialization."], missing_behavior: ["No NRRD0005 gate, typed vectors, arity validation, or separate measurement-to-world transform."], rationale: "Lexical carry-through is safe but is not semantic frame support.", proof_requirements: {positive: ["Typed frame and transform reference fixtures."], negative: ["Earlier-profile and vector/space-dimension mismatch cases."]}}
   - {obligation_id: SAL-NRRD-OBL-C13492B6879B6E90, capability_id: NRRD-HEADER-001, status: partial, source_symbols: *HEADER, positive_test_selectors: *TENC, negative_test_selectors: *TDUP, execution_evidence_ids: *EXEC, implemented_behavior: ["Ordinary colon-delimited fields parse and canonical writer emits colon-space."], missing_behavior: ["Reader accepts missing colon-space and leading whitespace because keys/values are stripped."], proof_requirements: {positive: ["Exact legal lexical form corpus."], negative: ["Leading whitespace, missing single space, empty identifier, and malformed separators."]}}
   - {obligation_id: SAL-NRRD-OBL-C853EB5591524EF9, capability_id: NRRD-SPACE-001, status: preservation_only, source_symbols: *META, positive_test_selectors: *TENC, negative_test_selectors: [], execution_evidence_ids: *EXEC, implemented_behavior: ["Space-related fields are retained as raw header values."], missing_behavior: ["No typed space dimension, units, origin, directions, version gates, or measurement-frame separation."], rationale: "Raw field preservation is present without spatial semantics.", proof_requirements: {positive: ["NRRD0004-NRRD0005 typed spatial metadata fixtures."], negative: ["Earlier-profile, arity, vector-length, and frame-version cases."]}}
-  - {obligation_id: SAL-NRRD-OBL-D137EAE6ED40E8B8, capability_id: NRRD-LAZY-001, status: missing, source_symbols: [], positive_test_selectors: [], negative_test_selectors: [], execution_evidence_ids: [], implemented_behavior: [], missing_behavior: ["No header-only, lazy payload, mmap, streaming compressed decode, slice planning, or full-decompression report."], proof_requirements: {positive: ["Raw mmap and compressed streaming/slice behavior."], negative: ["Unsupported layout and limit-bound full-decompression refusal."]}}
+  - obligation_id: SAL-NRRD-OBL-D137EAE6ED40E8B8
+    capability_id: NRRD-LAZY-001
+    status: implemented
+    source_symbols:
+      - src/python/nrrd/src/format_factory/nrrd/codec/lazy.py::read_header
+      - src/python/nrrd/src/format_factory/nrrd/codec/lazy.py::open_lazy_payload
+      - src/python/nrrd/src/format_factory/nrrd/codec/lazy.py::PayloadAccess
+    positive_test_selectors:
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_detached_single_file_raw_is_eligible_for_memory_mapping
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_partial_region_read_returns_only_the_requested_bytes
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_streaming_decode_supports_incremental_reads
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_header_only_from_a_path_does_not_read_the_whole_file
+    negative_test_selectors:
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_detached_lazy_access_rejects_path_traversal
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_printf_pattern_detached_reports_in_memory_required
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_declared_line_skip_disqualifies_memory_mapping
+      - tests/python/nrrd/test_obligation_lazy_payload_access.py::test_read_stream_raises_in_memory_mapped_mode
+    execution_evidence_ids:
+      - NRRD-R1-SOURCE-TESTS
+      - NRRD-LAZY-SELECTOR-PROOF
+    implemented_behavior:
+      - header-only loading (including for a detached-referencing header,
+        which never opens the referenced payload file at all), lazy
+        single-file raw payload access via memory mapping with region
+        reads, and streaming decode for gzip/bzip2 payloads are all
+        provided with a PayloadAccess disclosure naming the mode and
+        whether full decompression is required, proven for both attached
+        and detached-single-file forms and reusing the same path-traversal
+        safety check as the eager detached-data reader.
+    missing_behavior: []
+    proof_requirements:
+      positive:
+        - Raw mmap and compressed streaming/slice behavior.
+      negative:
+        - Unsupported layout and limit-bound full-decompression refusal.
   - {obligation_id: SAL-NRRD-OBL-D7B962F3981120A7, capability_id: NRRD-SPACE-001, status: partial, source_symbols: *SPACE, positive_test_selectors: ["tests/python/nrrd/test_obligation_space_transform.py::test_non_spatial_axis_is_excluded_from_spatial_axes", "tests/python/nrrd/test_obligation_space_transform.py::test_non_spatial_axis_does_not_contribute_to_index_to_world", "tests/python/nrrd/test_obligation_space_transform.py::test_parse_space_directions_marks_non_spatial_axis_as_none", "tests/python/nrrd/test_obligation_space_transform.py::test_explicit_space_dimension_agreeing_with_vectors_is_accepted"], negative_test_selectors: ["tests/python/nrrd/test_obligation_space_transform.py::test_parse_space_directions_rejects_a_malformed_entry", "tests/python/nrrd/test_obligation_space_transform.py::test_parse_space_origin_rejects_a_malformed_value", "tests/python/nrrd/test_obligation_space_transform.py::test_explicit_space_dimension_must_agree_with_vector_lengths"], execution_evidence_ids: *EXEC, implemented_behavior: ["Typed spatial metadata validation (space directions/origin/dimension consistency, malformed-vector rejection) and a non-spatial-axis model (\"none\" entries excluded from the spatial transform) both exist, alongside the index-to-world transform build_space_transform()/SpaceTransform.index_to_world() provide."], missing_behavior: ["Named-space axis inference is not implemented, and deliberately so: no SAL fact in this repository enumerates Teem's named-space strings (e.g. \"left-posterior-superior\") with their exact implied dimensionality precisely enough to hard-code that table safely, and the obligation's own required_behavior forbids inferring axis order from a named space regardless. Dimension is derived only from explicit data (space dimension field, origin length, spatial vector lengths)."], proof_requirements: {positive: ["Known orientation transforms including non-spatial axes."], negative: ["Bad vector length, dimension, numeric values, and named-space inference."]}}
   - {obligation_id: SAL-NRRD-OBL-D8AFDA0097117585, capability_id: NRRD-META-001, status: partial, source_symbols: *META, positive_test_selectors: *TMETA, negative_test_selectors: [], execution_evidence_ids: *EXEC, implemented_behavior: ["Quoted labels and units survive as raw strings."], missing_behavior: ["No quote-delimited token parsing, embedded quote unescaping, other-escape rejection, or arity validation."], proof_requirements: {positive: ["Quoted label/unit token and embedded-quote roundtrips."], negative: ["Unclosed quotes, illegal escapes, and wrong arity."]}}
   - {obligation_id: SAL-NRRD-OBL-DD537F7E8C81FDE6, capability_id: NRRD-PAYLOAD-001, status: partial, source_symbols: *PAYLOAD, positive_test_selectors: ["tests/python/nrrd/test_obligation_payload_skip.py::test_byte_skip_offsets_past_junk_bytes", "tests/python/nrrd/test_obligation_payload_skip.py::test_line_skip_advances_past_whole_lines", "tests/python/nrrd/test_obligation_payload_skip.py::test_no_skip_fields_default_to_zero", "tests/python/nrrd/test_obligation_payload_skip.py::test_byte_skip_negative_one_skips_to_expected_tail_size", "tests/python/nrrd/test_obligation_payload_skip.py::test_line_skip_is_applied_before_byte_skip"], negative_test_selectors: ["tests/python/nrrd/test_obligation_payload_skip.py::test_byte_skip_negative_one_is_refused_for_non_raw_encoding", "tests/python/nrrd/test_obligation_payload_skip.py::test_line_skip_beyond_available_lines_is_refused", "tests/python/nrrd/test_obligation_payload_skip.py::test_byte_skip_beyond_payload_is_refused"], execution_evidence_ids: *EXEC, implemented_behavior: ["Line skip is applied before byte skip; positive skips and raw byte-skip -1 are implemented."], missing_behavior: ["2026-08-06: reconciled from shadow-package-only evidence. The prior selectors (tests/python/nrrd/test_nrrd_feature_completeness.py::TestLineAndByteSkip) imported the deprecated nrrd.* shadow package and could not count as shipped-namespace coverage (GAP-018); this obligation was correctly demoted to partial for that reason. tests/python/nrrd/test_obligation_payload_skip.py now proves the same scenarios directly against format_factory.nrrd -- positive byte skip, line skip, combined line-then-byte skip, byte-skip -1 tail-size extraction, and the no-skip default -- plus three negative refusal cases (byte-skip -1 outside raw encoding, line skip exceeding available lines, byte skip exceeding the payload) the shadow tests did not cover at all. Remains partial rather than implemented: per this session's own discipline, no obligation moves above partial on one slice's evidence alone -- that determination needs broader review."], proof_requirements: {positive: ["Attached/detached skip matrix across eligible encodings."], negative: ["Negative/oversized/non-integer and illegal -1 combinations."]}}

@@ -18,6 +18,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact test files and per-selector outcomes for the endian obligations, and is backed by bidirectional evidence from Teem 1.12.0, a genuinely independent C reference implementation that shares no code with format_factory. Covers TC-FF6-NRRD-GOLDEN-SLICE-001 (raw scalar payload guards) and TC-FF6-NRRD-ASCII-ENDIAN-001 (endian/encoding scoping) only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-LAZY-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-lazy-payload-001.json",
+      "sha256": "ee783f0c983b7f4fba3cdcd565c9f09d4fe16dc3fd1799bfd881969d266d3e09",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact test selectors proving codec/lazy.py's read_header() reads only a bounded chunk regardless of declared payload size (a byte-tracking stream wrapper measures this directly, not by absence of an observed side effect), that open_lazy_payload() memory-maps eligible raw single-file payloads (attached or a plain detached filename) with zero-copy region reads matching the eager loader's own materialized bytes exactly, that gzip/bzip2 payloads stream-decode incrementally and match the eager loader's decoded output, and that multi-file detached forms (LIST, printf sequences), textual encodings, and a declared line/byte skip each report an honest IN_MEMORY disclosure naming the specific reason rather than silently claiming laziness. Detached-path safety reuses the identical traversal/absolute-path checks as the existing eager reader. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED -- not cross-checked against Teem or another reference implementation for these specific lazy-access behaviors. Covers SAL-NRRD-OBL-6A4391DE91AF6940 and SAL-NRRD-OBL-D137EAE6ED40E8B8 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "NRRD-R1-SOURCE-TESTS",
       "expected_result": "PASS",
       "granularity": "suite",
@@ -37,7 +45,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "5786132b3ba627ef09fc2875e3192797d7c44e317b08c50a8d5fe0153a96dc8e",
+    "implementation_evidence": "e8ef5b8362e5cc68d040c1575fd8ea01da445a577dcbc8ddfc3c4dac8ffbea70",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1074,14 +1082,27 @@
     },
     {
       "capability_id": "NRRD-LAZY-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "No header-only, lazy, mmap, streaming-decode, or region-read API exists."
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-LAZY-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "read_header() parses only the header (proven via a byte-tracking stream wrapper to read a small bounded chunk regardless of payload size), open_lazy_payload() memory-maps eligible raw single-file payloads (attached or plain detached filename, zero line/byte skip) with zero-copy region reads, streams gzip/bzip2 payloads incrementally via the standard library's own decompressing file wrapper, and discloses IN_MEMORY with a specific reason (multi-file detached, textual encoding, declared skip, bytes-source detached data) whenever neither applies -- never a silent claim of laziness it cannot deliver."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_region_raises_in_streaming_decode_mode",
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_multi_file_list_detached_reports_in_memory_required",
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_declared_byte_skip_disqualifies_memory_mapping"
+      ],
       "obligation_id": "SAL-NRRD-OBL-6A4391DE91AF6940",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_attached_raw_is_eligible_for_memory_mapping",
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_memory_mapped_region_matches_eager_load",
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_gzip_streaming_decode_matches_eager_load",
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_bzip2_streaming_decode_matches_eager_load",
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_header_only_does_not_read_the_payload_from_a_stream"
+      ],
       "proof_requirements": {
         "negative": [
           "Explicit full-decompression reporting and resource-bound refusal."
@@ -1090,9 +1111,13 @@
           "Eligible raw mmap and compressed streaming/region behavior."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py::read_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py::open_lazy_payload",
+        "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py::NrrdLazyPayload"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-HEADER-001",
@@ -1717,14 +1742,27 @@
     },
     {
       "capability_id": "NRRD-LAZY-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "No header-only, lazy payload, mmap, streaming compressed decode, slice planning, or full-decompression report."
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-LAZY-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "header-only loading (including for a detached-referencing header, which never opens the referenced payload file at all), lazy single-file raw payload access via memory mapping with region reads, and streaming decode for gzip/bzip2 payloads are all provided with a PayloadAccess disclosure naming the mode and whether full decompression is required, proven for both attached and detached-single-file forms and reusing the same path-traversal safety check as the eager detached-data reader."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_detached_lazy_access_rejects_path_traversal",
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_printf_pattern_detached_reports_in_memory_required",
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_declared_line_skip_disqualifies_memory_mapping",
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_read_stream_raises_in_memory_mapped_mode"
+      ],
       "obligation_id": "SAL-NRRD-OBL-D137EAE6ED40E8B8",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_detached_single_file_raw_is_eligible_for_memory_mapping",
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_partial_region_read_returns_only_the_requested_bytes",
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_streaming_decode_supports_incremental_reads",
+        "tests/python/nrrd/test_obligation_lazy_payload_access.py::test_header_only_from_a_path_does_not_read_the_whole_file"
+      ],
       "proof_requirements": {
         "negative": [
           "Unsupported layout and limit-bound full-decompression refusal."
@@ -1733,9 +1771,13 @@
           "Raw mmap and compressed streaming/slice behavior."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py::read_header",
+        "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py::open_lazy_payload",
+        "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py::PayloadAccess"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-SPACE-001",
@@ -2215,8 +2257,10 @@
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-lazy-payload-001.json": "ee783f0c983b7f4fba3cdcd565c9f09d4fe16dc3fd1799bfd881969d266d3e09",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
+    "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "91881b17de9982f641410a448f2472c28526367628b92d89cb7a45521109a0c1",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "1082dd49e148afdf69fecd6b9225f38f0cf7db4914e569d51aff1adece3fd172",
     "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "de972d2377a13f11909d2c5a5f7e204cc6c5fd779a94b056ea31ddf616f4d0c5",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "27ed99ee0e1db0a02155ce7577e7b7450544ed0fd96824b50f31a45d623af52c",
@@ -2230,6 +2274,7 @@
     "tests/python/nrrd/test_obligation_axis_field_arity.py": "9d6e7bbbc5e7b0ea5a80d73f4ac4d285dc27e22f59bdcd522cfa74d4fa4392a1",
     "tests/python/nrrd/test_obligation_detached_forms_production.py": "0ea4f16a7602ef7ea83a4c69dead3d3204c291c30a71747696a92a97ecc2a2d8",
     "tests/python/nrrd/test_obligation_dtype_conversion.py": "303205eec17e82662e3e484870fac7e985c0ed400f36bc62f887c75b686d6425",
+    "tests/python/nrrd/test_obligation_lazy_payload_access.py": "f18ff2c44b5e0582b716e675cfd6566bdebc3469b22df73821f5acdfcdab5de1",
     "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
     "tests/python/nrrd/test_obligation_payload_skip.py": "631ddbb609282e655c179358af0e8cbaa76038e33343cd482c87aaeecb1b8116",
     "tests/python/nrrd/test_obligation_shape_production.py": "17ebb172b6e8f2ac861d2ff907dbe19794d327a6e20b5f915b20a9704be9dce5",
@@ -2240,13 +2285,13 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 20,
-      "missing": 3,
+      "implemented": 22,
+      "missing": 1,
       "partial": 39,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 45
+    "unresolved": 43
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

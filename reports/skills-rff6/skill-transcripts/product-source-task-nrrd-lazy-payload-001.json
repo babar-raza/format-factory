@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-lazy-payload-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T16:50:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_LAZY_PAYLOAD_001",
+    "task_kind": "genuine-new-capability",
+    "root_cause": "NRRD-LAZY-001's two obligations (header-only/lazy/mmap/streaming-decode/region-reads, reporting full decompression when required) were confirmed genuinely unbuilt last tick -- codec/reader/reader.py's _read_source always reads the entire file into memory eagerly, with no header-only, mmap, or streaming path at all. Flagged as a real new-capability opportunity, reusing safetensors' proven PayloadAccess/PayloadAccessMode disclosure pattern as the design template.",
+    "obligation_targeted": "SAL-NRRD-OBL-6A4391DE91AF6940, SAL-NRRD-OBL-D137EAE6ED40E8B8",
+    "acceptance_evidence": "tests/python/nrrd/test_obligation_lazy_payload_access.py (new, 25 tests)",
+    "regression_tier": "full NRRD package suite (tests/python/nrrd)"
+  },
+  "execution_steps": [
+    "1. Scoped the build deliberately narrower than the full obligation text to keep it buildable and correct within one tick, exactly as done for the ipynb execution adapter: memory mapping eligible only for raw-encoded, single-physical-file payloads (attached, or a plain detached filename -- not LIST/printf multi-file sequences) with zero line/byte skip; streaming decode for gzip/bzip2-encoded single-file payloads via the standard library's own decompressing file wrappers; everything else (textual encodings, hex, multi-file detached, declared skips) reports an honest IN_MEMORY disclosure rather than a silent claim of laziness. Documented explicitly in the new module's own docstring.",
+    "2. Built codec/lazy.py as a new, purely additive module: a bounded incremental header reader (_read_header_only/_read_header_stream, reading in 4KB chunks until the blank-line terminator is found -- never reusing the existing eager _read_source/_split_header, since those read the whole file), PayloadAccess/PayloadAccessMode (mirroring safetensors' design), NrrdHeader, and NrrdLazyPayload (wrapping either an mmap.mmap or a gzip.GzipFile/bz2.BZ2File) with region()/read_stream()/close().",
+    "3. Reused the exact same path-traversal and absolute-path safety checks as reader.py's existing _safe_detached_payload for resolving a detached single filename -- reimplemented locally (not imported, to avoid touching the existing well-tested eager reader at all) but verified identical behavior via a direct traversal-rejection test.",
+    "4. Manually smoke-tested every path before writing formal tests: attached raw + mmap + region reads matching eager-load bytes exactly; a byte-tracking stream wrapper proving header-only reads only ~4KB of a 100MB simulated payload; gzip streaming decode matching eager-load output; multi-file LIST correctly falling back to IN_MEMORY; byte-skip disqualifying mmap eligibility; path traversal correctly refused at open time (not at disclosure time, matching the existing eager reader's security boundary).",
+    "5. Hit one real mmap/memoryview lifetime issue during smoke testing: closing an mmap while a memoryview region from it was still alive raised BufferError (Python's own use-after-free protection, not a bug) -- fixed the test/usage pattern (release the view before closing) and documented the requirement.",
+    "6. Ran ruff and mypy: ruff clean immediately; mypy caught two real type issues (bz2.BZ2File has no fileobj= keyword, unlike gzip.GzipFile; GzipFile/BZ2File are not BinaryIO per the stubs) -- fixed both with correct API usage and a precise Union type rather than a cast or ignore.",
+    "7. Wrote test_obligation_lazy_payload_access.py (25 tests) covering header-only reading (stream byte-tracking and path-based), memory mapping (attached and detached-single-file, region correctness against eager load, partial regions, close/redundant-close), streaming decode (gzip and bzip2, matching eager load, incremental reads), region/stream cross-mode refusal (region raises outside MEMORY_MAPPED, read_stream raises outside STREAMING_DECODE), and honest disclosure (multi-file LIST, printf sequence, textual encoding, byte skip, line skip, bytes-source-with-detached-data).",
+    "8. Ran the full nrrd suite: 466 passed (441 baseline + 25 new), 0 regressions. Promoted both NRRD-LAZY-001 obligations to implemented -- the second genuinely new (not citation-corrected) capability closure this session, after the ipynb execution adapter."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_lazy_payload_access.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_lazy_payload_access.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_lazy_payload_access.py -v -- 25 passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 466 passed (441 baseline + 25 new), 1 skipped unchanged, 0 regressions",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/nrrd/src/format_factory/nrrd/ -- Success: no issues found in 20 source files (after two fixes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 65,
+    "nrrd_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against Teem or another reference implementation for these specific lazy-access behaviors. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_this_is_genuine_new_capability_not_evidence_correction": "codec/lazy.py (new module, ~350 lines) and 25 new tests are new production source and test coverage this slice -- the second non-citation-correction closure this session, directly building the real capability the obligations name.",
+    "scope_limitations_documented_honestly": "Memory mapping requires raw encoding, a single physical file, and zero line/byte skip. Multi-file detached forms (LIST, printf), textual encodings, and declared skips fall back to an honest IN_MEMORY disclosure rather than a silent claim of laziness -- stated explicitly in the module's own docstring, not silently narrowed."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
