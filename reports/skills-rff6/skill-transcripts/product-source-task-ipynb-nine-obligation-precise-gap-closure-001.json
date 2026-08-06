@@ -1,0 +1,62 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-nine-obligation-precise-gap-closure-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T20:26:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_9_OBLIGATION_PRECISE_GAP_CLOSURE_001",
+    "task_kind": "precise-gap-closure-plus-one-bug-fix",
+    "root_cause": "ipynb's final 9 unresolved obligations (all that remained after events 173/174 closed the last generic-placeholder clusters) each already carried a precise, individually-verified missing_behavior from an earlier citation-audit tick, describing one narrow, well-scoped gap rather than a vague placeholder -- e.g. 'the test never sets nbformat_minor BELOW a schema's floor' or 'iopub.status.idle never appears in any fixture'.",
+    "obligation_targeted": "SAL-IPYNB-OBL-0CDD583308EC81F1, 3FA9A87DE3411DC4, 4471354A239702DB, 44E62E9AB8ECC2E3, 8546D71A9E3916E7, AC36F06FBB685FE8, C3762C24648B1210, C599FB180ACF8D49, FE413358B1144149 -- all 9 of ipynb's remaining unresolved obligations, across IPYNB-VALIDATE-001, IPYNB-MODEL-001, IPYNB-META-001, IPYNB-ATTACH-001, IPYNB-EXECMETA-001, IPYNB-UPGRADE-001.",
+    "acceptance_evidence": "All 9 promoted to implemented: 6 via small new tests (minor-floor rejection, required-key omission, comma-in-tag rejection, read-time future-content preservation), 1 genuine model bug fixed (ExecutionMetadata's shell.execute_reply.started replaced with the real schema field iopub.status.idle) closing 2 obligations at once, and 2 via cross-file citation to already-existing, precisely on-topic tests that had simply never been linked.",
+    "regression_tier": "full ipynb package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Read all 9 obligations' precise missing_behavior text directly -- each already named the exact narrow gap, so no delegated research was needed this tick; went straight to source investigation per gap.",
+    "2. IPYNB-EXECMETA-001 (2 obligations): read ExecutionMetadata in metadata.py, found it modeled 'shell.execute_reply.started' as one of its four named properties. Cross-checked the pinned, vendored nbformat.v4.4.schema.json's execution object directly (not from memory) and found the real four standard fields are iopub.execute_input, iopub.status.busy, shell.execute_reply, and iopub.status.idle -- 'shell.execute_reply.started' appears nowhere in the official schema. Fixed the model: removed the wrong property, added iopub_status_idle, updated the extras known-keys set. The non-standard-but-real-world key now correctly falls through to .extras, matching the schema's own 'additionalProperties/patternProperties' allowance for extra string-valued timing entries (used by tools like papermill). Updated the shared test fixture and assertions to check all four real fields individually.",
+    "3. IPYNB-VALIDATE-001 (0CDD583308EC81F1, floor): read schema.py and confirmed each pinned schema (v4.0 through v4.5) declares nbformat_minor's own JSON Schema 'minimum' equal to that schema's own minor, by reading the actual vendored JSON files. Added a new parametrized test calling schema_diagnostics directly with an under-declared minor, confirming IPYNB_SCHEMA_MINIMUM at the correct path.",
+    "4. IPYNB-VALIDATE-001 (FE413358B1144149, relaxation): grepped for existing minor=6 (beyond-pinned) test usage and found test_future_declared_profile_is_valid_with_separate_forward_warnings already existed in test_obligation_validation_profiles.py, precisely proving 'declared' profile relaxation (IPYNB_FORWARD_VERSION warning, not rejection) versus 'current' profile's correct rejection of the same document -- cited cross-file rather than duplicated.",
+    "5. IPYNB-MODEL-001 (3FA9A87DE3411DC4, required keys): confirmed via the vendored schema that code_cell's required list includes execution_count and outputs. Added two new mutations (_remove_execution_count, _remove_outputs) to the existing differential-testing parametrize list in test_obligation_official_schema_validation.py, each verified against the REAL nbformat library's own validator (not just this package's schema) before trusting the test.",
+    "6. IPYNB-META-001 (4471354A239702DB, comma tags): confirmed CellMetadataAdapter.tags already has a real, working 'cell tags must not contain commas' check with zero test coverage. Added one new case to the existing malformed-metadata parametrize list.",
+    "7. IPYNB-ATTACH-001 (44E62E9AB8ECC2E3, orphan detection): grepped validation/rules.py and found real, complete orphan (IPYNB_ATTACHMENT_ORPHAN) and missing-target (IPYNB_ATTACHMENT_MISSING) detection logic already wired into the schema-validation pipeline, and an existing, deliberately-named test (test_attachment_reference_integrity_and_mime_bundles in test_obligation_validation_profiles.py) that asserts both codes together on one fixture -- not incidental as the prior note suggested, but a real, dedicated, on-topic proof simply filed in a different cluster's test file. Re-cited directly.",
+    "8. IPYNB-UPGRADE-001 (AC36F06FBB685FE8, ledger fixtures): confirmed test_upgrade_from_every_supported_older_minor_validates_officially (parametrized, asserts a real id_rewrites ledger) already existed in the same file as the cited downgrade tests and precisely satisfied the missing clause -- added to the citation list, zero new code.",
+    "9. IPYNB-UPGRADE-001 (C599FB180ACF8D49, read-time preservation): confirmed empirically that loads(mode='preservation') on a genuinely future nbformat_minor (6) document with unrecognized top-level/cell-type/nested content returns document.raw byte-identical to the source. Added one new test proving this as a pure read, distinct from the already-proven upgrade/downgrade conversion paths.",
+    "10. Ran ruff and mypy on the one changed source file (metadata.py, clean) and the full ipynb suite (716 passed, was 707) before writing any evidence claim, ran the skills-first resolve/manifest/receipt/closeout sequence for the metadata.py change, patched the evidence YAML, and ran the reconciler."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/model/metadata.py",
+    "tests/python/ipynb/test_obligation_metadata_adapters.py",
+    "tests/python/ipynb/test_obligation_official_schema_validation.py",
+    "tests/python/ipynb/test_obligation_version_conversion.py",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/model/metadata.py",
+    "tests/python/ipynb/test_obligation_metadata_adapters.py",
+    "tests/python/ipynb/test_obligation_official_schema_validation.py",
+    "tests/python/ipynb/test_obligation_version_conversion.py",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- 716 passed, was 707",
+    ".venv/Scripts/python -m ruff check <4 changed files> -- all checks passed",
+    ".venv/Scripts/python -m mypy src/python/ipynb/src/format_factory/ipynb/model/metadata.py -- no issues",
+    ".venv/Scripts/python -c \"import nbformat; ...\" -- confirmed the official nbformat library also rejects a code cell missing execution_count/outputs, before trusting the new schema test"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 9,
+    "obligations_total_for_format": 68,
+    "oracle": "The ExecutionMetadata fix and the schema-minimum/required-key tests were verified directly against this package's own pinned, vendored nbformat JSON schema files, and the required-key test was additionally cross-checked against the real nbformat Python library's own validator. SELF-CONSISTENT format_factory-only evidence per GAP-008 for the rest, not independently cross-checked against a reference nbformat implementation.",
+    "obligations_moved_breakdown": "All 9 of ipynb's remaining unresolved obligations promoted to implemented -- 9/68 unresolved -> 0/68 unresolved. ipynb reaches 68/68 implemented obligations this slice, the first of the six FF6 formats to reach full obligation-implemented status (obligation-implemented is not the same as 6/6 production certification -- certification requires the separate goal_driver gate, not yet run this slice).",
+    "genuine_bug_found_and_fixed": "ExecutionMetadata modeled a field ('shell.execute_reply.started') that does not exist in the official nbformat schema, while omitting the real fourth standard field (iopub.status.idle) entirely. This was a real, previously-shipped defect in the typed model's field coverage, not just a missing test -- fixed by replacing the wrong property with the correct one and moving the non-standard-but-real-world key to fall through to .extras."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

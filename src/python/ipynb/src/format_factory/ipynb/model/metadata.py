@@ -250,12 +250,12 @@ class ExecutionMetadata:
         return self._timestamp("iopub.execute_input")
 
     @property
-    def shell_execute_reply_started(self) -> str | None:
-        return self._timestamp("shell.execute_reply.started")
-
-    @property
     def shell_execute_reply(self) -> str | None:
         return self._timestamp("shell.execute_reply")
+
+    @property
+    def iopub_status_idle(self) -> str | None:
+        return self._timestamp("iopub.status.idle")
 
     @property
     def extras(self) -> dict[str, Any]:
@@ -265,8 +265,8 @@ class ExecutionMetadata:
                 {
                     "iopub.status.busy",
                     "iopub.execute_input",
-                    "shell.execute_reply.started",
                     "shell.execute_reply",
+                    "iopub.status.idle",
                 }
             ),
         )

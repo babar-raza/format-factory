@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from copy import deepcopy
 from dataclasses import replace
 
@@ -223,3 +224,29 @@ def test_downgrade_refuses_non_older_or_unsupported_targets(
 ) -> None:
     with pytest.raises(ValueError):
         plan_downgrade(_current_notebook(), target=target)
+
+
+def test_reading_a_higher_minor_preserves_unknown_future_additions() -> None:
+    """"preserve unknown future additions when reading higher minors" -- this
+    is a plain read, not a downgrade: nothing here is ever converted or
+    saved, only loaded and inspected."""
+    source = {
+        "nbformat": 4,
+        "nbformat_minor": 6,
+        "metadata": {},
+        "vendor_root": {"preserve": True},
+        "cells": [
+            {
+                "cell_type": "future_cell",
+                "id": "future",
+                "metadata": {},
+                "source": "future",
+                "vendor": {"keep": True},
+            }
+        ],
+    }
+
+    document = loads(json.dumps(source), mode="preservation")
+
+    assert document.raw == source
+    assert document.declared_version.as_tuple() == (4, 6)

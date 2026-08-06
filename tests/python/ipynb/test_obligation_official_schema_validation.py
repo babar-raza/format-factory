@@ -21,6 +21,7 @@ from format_factory.ipynb.validation.schema import (
     SCHEMA_DIGESTS,
     SCHEMA_SOURCE_VERSION,
     canonical_schema_digest,
+    schema_diagnostics,
 )
 
 Notebook = dict[str, Any]
@@ -105,6 +106,14 @@ def _add_display_extra(value: Notebook) -> None:
     )
 
 
+def _remove_execution_count(value: Notebook) -> None:
+    del value["cells"][0]["execution_count"]
+
+
+def _remove_outputs(value: Notebook) -> None:
+    del value["cells"][0]["outputs"]
+
+
 @pytest.mark.parametrize(
     "mutation",
     [
@@ -117,6 +126,8 @@ def _add_display_extra(value: Notebook) -> None:
         _negative_execution_count,
         _add_stream_extra,
         _add_display_extra,
+        _remove_execution_count,
+        _remove_outputs,
     ],
     ids=lambda function: function.__name__,
 )
@@ -136,6 +147,24 @@ def test_exact_supported_minor_schema_accepts_valid_document(minor: int) -> None
 
     assert not _official_errors(value, minor)
     assert validate(value, profile=f"4.{minor}").is_valid
+
+
+@pytest.mark.parametrize("minor", [1, 2, 3, 4, 5])
+def test_schema_diagnostics_enforce_the_minor_version_floor(minor: int) -> None:
+    """"the nbformat_minor field has a minimum equal to that schema's minor
+    number" -- each pinned schema declares nbformat_minor's own JSON Schema
+    "minimum" as its own minor, so a document that under-declares its minor
+    is rejected by the very schema it claims to satisfy."""
+    value = _notebook(minor)
+    value["nbformat_minor"] = minor - 1
+
+    errors = schema_diagnostics(value, minor=minor)
+
+    assert any(error.code == "IPYNB_SCHEMA_MINIMUM" for error in errors)
+    assert any(
+        error.location is not None and error.location.path == ("nbformat_minor",)
+        for error in errors
+    )
 
 
 def test_schema_diagnostics_expose_stable_codes_and_precise_paths() -> None:

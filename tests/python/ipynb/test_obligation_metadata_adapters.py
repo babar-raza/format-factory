@@ -76,8 +76,9 @@ def _document() -> IpynbDocument:
                         "execution": {
                             "iopub.status.busy": "2026-07-26T00:00:00Z",
                             "iopub.execute_input": "2026-07-26T00:00:01Z",
+                            "shell.execute_reply": "2026-07-26T00:00:02Z",
+                            "iopub.status.idle": "2026-07-26T00:00:03Z",
                             "shell.execute_reply.started": "2026-07-26T00:00:02Z",
-                            "shell.execute_reply": "2026-07-26T00:00:03Z",
                             "vendor_timing": "4",
                         },
                         "org.example": {"cell": "keep"},
@@ -219,11 +220,14 @@ def test_cell_and_output_adapters_cover_common_namespaces() -> None:
     assert cell_adapter.slideshow.slide_type == "slide"
     assert cell_adapter.slideshow.extras == {"vendor_slide": "keep"}
     assert cell_adapter.execution is not None
-    assert (
-        cell_adapter.execution.shell_execute_reply
-        == "2026-07-26T00:00:03Z"
-    )
-    assert cell_adapter.execution.extras == {"vendor_timing": "4"}
+    assert cell_adapter.execution.iopub_status_busy == "2026-07-26T00:00:00Z"
+    assert cell_adapter.execution.iopub_execute_input == "2026-07-26T00:00:01Z"
+    assert cell_adapter.execution.shell_execute_reply == "2026-07-26T00:00:02Z"
+    assert cell_adapter.execution.iopub_status_idle == "2026-07-26T00:00:03Z"
+    assert cell_adapter.execution.extras == {
+        "shell.execute_reply.started": "2026-07-26T00:00:02Z",
+        "vendor_timing": "4",
+    }
     assert cell_adapter.extras == {"org.example": {"cell": "keep"}}
 
     html = output_adapter.mime("text/html")
@@ -267,6 +271,13 @@ def test_adapters_are_defensive_snapshots_and_roundtrip_is_lossless() -> None:
             ),
             lambda value: cell_metadata(value.cell_objects[0]).tags,
             "unique",
+        ),
+        (
+            lambda value: value.cells[0]["metadata"].update(
+                tags=["a,b"]
+            ),
+            lambda value: cell_metadata(value.cell_objects[0]).tags,
+            "comma",
         ),
         (
             lambda value: value.cells[0]["outputs"][0]["metadata"].update(

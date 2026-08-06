@@ -3,6 +3,11 @@ format_id: ipynb
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: IPYNB-NINE-OBLIGATION-PRECISE-GAP-CLOSURE-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-nine-obligation-precise-gap-closure-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike IPYNB-BASELINE-SUITE. Closes all 9 of ipynb''s remaining unresolved obligations -- the last ones left after events 173/174 closed the generic-placeholder and missing-typed-model clusters. Each of these 9 already carried a precise, individually-verified missing_behavior from an earlier tick (not a generic placeholder), naming one narrow gap each. 6 closed with small new tests: a parametrized minor-version-floor rejection test (each pinned schema genuinely declares nbformat_minor''s own JSON Schema minimum equal to its own minor, confirmed by reading the vendored schema files directly); two new required-key-omission mutations added to an existing differential test, each cross-checked against the real nbformat library''s own validator, not just this package''s schema; a comma-in-tag rejection case added to an existing malformed-metadata parametrize list; and a new read-only (no downgrade) test proving unknown future additions survive loads(mode="preservation") on a genuinely future nbformat_minor. 1 genuine, previously-shipped model bug was found and fixed: ExecutionMetadata modeled a field ("shell.execute_reply.started") absent from the real, vendored nbformat schema, while omitting the actual fourth standard field ("iopub.status.idle") entirely -- confirmed directly against nbformat.v4.4.schema.json before changing anything; this single fix closes 2 obligations. 2 more closed via cross-file citation to already-existing, precisely on-topic tests that had simply never been linked to these specific obligations (orphan/missing-attachment detection; future-minor validation relaxation). ipynb suite: 707 -> 716 passed (9 new tests). ruff and mypy clean on all changed files. NOT backed by an independent reference implementation for the model/behavior claims generally -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, not VERIFIED; the schema-floor and required-key claims specifically were additionally verified against this package''s own vendored schema JSON and, for required-keys, against the real nbformat library''s validator. Covers SAL-IPYNB-OBL-0CDD583308EC81F1, SAL-IPYNB-OBL-3FA9A87DE3411DC4, SAL-IPYNB-OBL-4471354A239702DB, SAL-IPYNB-OBL-44E62E9AB8ECC2E3, SAL-IPYNB-OBL-8546D71A9E3916E7, SAL-IPYNB-OBL-AC36F06FBB685FE8, SAL-IPYNB-OBL-C3762C24648B1210, SAL-IPYNB-OBL-C599FB180ACF8D49, and SAL-IPYNB-OBL-FE413358B1144149 only; it supports no other obligation and promotes no product state.'
 - evidence_id: IPYNB-DOCMETA-HIDDEN-TYPED-MODEL-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-docmeta-hidden-typed-model-001.json
   expected_result: PASS
@@ -431,24 +436,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-0CDD583308EC81F1
   capability_id: IPYNB-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/validation/schema.py::schema_diagnostics
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_official_schema_validation.py::test_exact_supported_minor_schema_accepts_valid_document
-  negative_test_selectors: []
+  - 'tests/python/ipynb/test_obligation_official_schema_validation.py::test_exact_supported_minor_schema_accepts_valid_document'
+  - 'tests/python/ipynb/test_obligation_official_schema_validation.py::test_schema_diagnostics_enforce_the_minor_version_floor'
+  negative_test_selectors:
+  - 'tests/python/ipynb/test_obligation_official_schema_validation.py::test_schema_diagnostics_enforce_the_minor_version_floor'
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
-  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
+  - IPYNB-NINE-OBLIGATION-PRECISE-GAP-CLOSURE-PROOF
   implemented_behavior:
-  - 'Parametrized over minor 0-5, confirms each pinned schema accepts a document whose nbformat_minor equals that schema''s own floor value.'
-  missing_behavior:
-  - 'The test never sets nbformat_minor BELOW a schema''s floor to prove the stated minimum is actually enforced/rejected -- only the accept side of the floor claim is proven, not the reject side.'
+  - 'Both directions of the floor claim are now proven: the accept side (each pinned schema accepts a document whose nbformat_minor equals that schema''s own floor) and the reject side (new this slice: test_schema_diagnostics_enforce_the_minor_version_floor, parametrized over every pinned minor, under-declares nbformat_minor by one and confirms schema_diagnostics reports IPYNB_SCHEMA_MINIMUM at path (''nbformat_minor'',) -- each pinned schema genuinely declares ''minimum'': <its own minor> on that field, verified directly against the vendored schema JSON before writing the test).'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Both validation modes on fixtures per schema construct; unknown-field separation asserted.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet
+      identified.
 - obligation_id: SAL-IPYNB-OBL-121BE1F7FB462D30
   capability_id: IPYNB-PARSE-001
   status: implemented
@@ -751,67 +759,75 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-3FA9A87DE3411DC4
   capability_id: IPYNB-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/document.py::CodeCell
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_typed_model.py::test_typed_cells_outputs_and_logical_sources_preserve_raw_form
-  negative_test_selectors: []
+  - 'tests/python/ipynb/test_obligation_typed_model.py::test_typed_cells_outputs_and_logical_sources_preserve_raw_form'
+  - 'tests/python/ipynb/test_obligation_official_schema_validation.py::test_factory_rejects_every_official_schema_rejection'
+  negative_test_selectors:
+  - 'tests/python/ipynb/test_obligation_official_schema_validation.py::test_factory_rejects_every_official_schema_rejection'
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
-  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
+  - IPYNB-NINE-OBLIGATION-PRECISE-GAP-CLOSURE-PROOF
   implemented_behavior:
-  - 'Exercises cell_type/metadata/source (str-or-list)/execution_count/outputs as present fields on a real code cell.'
-  missing_behavior:
-  - 'The test never OMITS a required key to prove the schema actually enforces it as required -- the ''required keys'' half of the claim (as opposed to the fields simply being present when supplied) is unproven by this test alone; schema-level required-key enforcement is covered separately under IPYNB-VALIDATE-001.'
+  - 'Both halves of the claim are proven: the typed CodeCell model correctly exposes cell_type, metadata, source, execution_count, and outputs when present (existing test), and the schema genuinely requires execution_count and outputs for code cells -- two new mutations this slice (_remove_execution_count, _remove_outputs) added to the existing differential-testing parametrize list, each confirmed rejected by BOTH the official nbformat validator and this package''s own schema, matching the file''s established rigor. The typed model layer itself is deliberately permissive at construction (a preservation-oriented view, not a validator); ''required'' is a schema-level guarantee, proven here via the same schema machinery IPYNB-VALIDATE-001 already relies on, applied specifically to code_cell''s two code-cell-only required keys.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Typed access per cell type; unknown-cell-type preservation fixture.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet
+      identified.
 - obligation_id: SAL-IPYNB-OBL-4471354A239702DB
   capability_id: IPYNB-META-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::CellMetadataAdapter
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_malformed_known_metadata_fails_explicitly
-  negative_test_selectors: []
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces'
+  negative_test_selectors:
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_malformed_known_metadata_fails_explicitly'
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
-  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
+  - IPYNB-NINE-OBLIGATION-PRECISE-GAP-CLOSURE-PROOF
   implemented_behavior:
-  - 'Tags read as a typed tuple; duplicate tags proven to raise MetadataShapeError (''unique''); arbitrary extra JSON properties preserved via .extras.'
-  missing_behavior:
-  - 'No test in this cluster exercises the comma-free constraint on individual tag strings (a tag containing a comma is never constructed and checked for rejection).'
+  - 'Tags read as a typed tuple; duplicate tags raise MetadataShapeError (''unique''); a tag containing a comma raises MetadataShapeError (''comma'') -- new case added this slice to the existing malformed-metadata parametrize list, directly exercising CellMetadataAdapter.tags''s own ''cell tags must not contain commas'' check, previously real but untested; arbitrary extra JSON properties are preserved via .extras.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Unknown-metadata round trip; typed adapter reads on real fixtures.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet
+      identified.
 - obligation_id: SAL-IPYNB-OBL-44E62E9AB8ECC2E3
   capability_id: IPYNB-ATTACH-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::manage_attachments
   - src/python/ipynb/src/format_factory/ipynb/model/attachments.py::AttachmentManager
+  - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::validate_model
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_attachment_management.py::test_add_rejects_invalid_cells_bundles_and_accidental_replacement
-  - tests/python/ipynb/test_obligation_attachment_management.py::test_remove_refuses_dangling_reference_unless_explicitly_allowed
-  negative_test_selectors: []
+  - 'tests/python/ipynb/test_obligation_attachment_management.py::test_add_rejects_invalid_cells_bundles_and_accidental_replacement'
+  - 'tests/python/ipynb/test_obligation_attachment_management.py::test_remove_refuses_dangling_reference_unless_explicitly_allowed'
+  - 'tests/python/ipynb/test_obligation_validation_profiles.py::test_attachment_reference_integrity_and_mime_bundles'
+  negative_test_selectors:
+  - 'tests/python/ipynb/test_obligation_validation_profiles.py::test_attachment_reference_integrity_and_mime_bundles'
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
-  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
+  - IPYNB-NINE-OBLIGATION-PRECISE-GAP-CLOSURE-PROOF
   implemented_behavior:
-  - 'MIME-bundle validation (rejects invalid cells/bundles/accidental replacement) and missing-target detection (remove refuses a dangling reference unless explicitly allowed) are both directly tested.'
-  missing_behavior:
-  - 'Orphan detection (an attachment present in the map but never referenced from any cell source) is not tested anywhere in this cluster''s own files -- it appears only incidentally in the differently-cited test_obligation_validation_profiles.py, not as a dedicated AttachmentManager guarantee.'
+  - 'MIME-bundle validation and CRUD-level reference checks are proven directly by AttachmentManager''s own tests. Orphan and missing-target detection -- confirmed real, working logic in validation/rules.py''s _validate_attachments (IPYNB_ATTACHMENT_ORPHAN for a name in the map with no attachment: reference, IPYNB_ATTACHMENT_MISSING for a reference with no matching name) -- is precisely and deliberately proven by test_attachment_reference_integrity_and_mime_bundles, which asserts both diagnostic codes together on one fixture. This test lives in test_obligation_validation_profiles.py rather than this cluster''s own file, but is a real, dedicated, on-topic proof, not an incidental side effect -- re-cited here directly rather than left unlinked.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Orphan and missing-target fixtures produce diagnostics.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet
+      identified.
 - obligation_id: SAL-IPYNB-OBL-499CD4389B386A40
   capability_id: IPYNB-SANITIZE-001
   status: implemented
@@ -1194,24 +1210,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-8546D71A9E3916E7
   capability_id: IPYNB-EXECMETA-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::ExecutionMetadata
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces'
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
-  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
+  - IPYNB-NINE-OBLIGATION-PRECISE-GAP-CLOSURE-PROOF
   implemented_behavior:
-  - 'The execution-timing fixture and adapter are exercised, proving shell.execute_reply plus an additional string-valued timing entry (via .extras) are both handled.'
-  missing_behavior:
-  - 'The test fixture omits iopub.status.idle entirely, and iopub.execute_input / iopub.status.busy are present in the fixture but never individually asserted -- only 1 of the 4 standard timing fields is actually checked.'
+  - 'Fixed a genuine model bug found while investigating this gap: ExecutionMetadata previously exposed shell_execute_reply_started (mapped to the key ''shell.execute_reply.started''), which does not appear anywhere in the pinned, vendored nbformat.v4.4.schema.json''s execution object -- confirmed directly against the schema before changing anything. The real fourth standard field per that schema is iopub.status.idle, previously missing from the model entirely. Replaced the wrong property with iopub_status_idle; the non-standard-but-real-world ''shell.execute_reply.started'' key (used by tools like papermill) now correctly falls through to .extras, matching the schema''s own ''additional string-valued timing entries are permitted'' pattern. All four real standard fields (iopub_status_busy, iopub_execute_input, shell_execute_reply, iopub_status_idle) are now individually asserted in the updated fixture and test.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Four standard timing keys, additional string keys, and non-string negatives are covered.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet
+      identified.
 - obligation_id: SAL-IPYNB-OBL-8998C2CB8626FA68
   capability_id: IPYNB-HIDDEN-001
   status: implemented
@@ -1415,31 +1432,30 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-AC36F06FBB685FE8
   capability_id: IPYNB-UPGRADE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion
   - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction
   - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction
   - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_version_conversion.py::test_downgrade_plan_reports_loss_and_preserved_extensions
-  - tests/python/ipynb/test_obligation_version_conversion.py::test_lossy_downgrade_requires_explicit_acceptance
-  - tests/python/ipynb/test_obligation_version_conversion.py::test_accepted_downgrade_is_valid_for_every_supported_older_minor
+  - 'tests/python/ipynb/test_obligation_version_conversion.py::test_upgrade_from_every_supported_older_minor_validates_officially'
+  - 'tests/python/ipynb/test_obligation_version_conversion.py::test_downgrade_plan_reports_loss_and_preserved_extensions'
+  - 'tests/python/ipynb/test_obligation_version_conversion.py::test_lossy_downgrade_requires_explicit_acceptance'
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-NINE-OBLIGATION-PRECISE-GAP-CLOSURE-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Fixtures at each supported
-    older version upgrade with ledger assertions; downgrade-loss reporting fixture.'
+  - 'Both requested fixtures already exist and are now cited precisely: test_upgrade_from_every_supported_older_minor_validates_officially is parametrized across every supported older minor and asserts a real ledger (len(result.id_rewrites) == 2) plus official nbformat validation of the upgraded document; test_downgrade_plan_reports_loss_and_preserved_extensions is the downgrade-loss-reporting fixture, asserting the exact loss codes and paths a plan reports before any modification.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting
-      fixture.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet
+      identified.
 - obligation_id: SAL-IPYNB-OBL-B227B25AB9838FFD
   capability_id: IPYNB-CELLNAMEUNIQUE-001
   status: implemented
@@ -1625,48 +1641,50 @@ obligations:
       type each have a focused negative test proving explicit MetadataShapeError refusal.
 - obligation_id: SAL-IPYNB-OBL-C3762C24648B1210
   capability_id: IPYNB-EXECMETA-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/metadata.py::ExecutionMetadata
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces
+  - 'tests/python/ipynb/test_obligation_metadata_adapters.py::test_cell_and_output_adapters_cover_common_namespaces'
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
-  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
+  - IPYNB-NINE-OBLIGATION-PRECISE-GAP-CLOSURE-PROOF
   implemented_behavior:
-  - 'Same evidence as SAL-IPYNB-OBL-8546D71A9E3916E7 in this cluster: the execution-timing adapter and one standard field plus an additional string-valued entry are proven.'
-  missing_behavior:
-  - 'Same gap as SAL-IPYNB-OBL-8546D71A9E3916E7: only 1 of the 4 standard timing fields is asserted, and iopub.status.idle never appears in any fixture in this cluster''s cited file.'
+  - 'Same fix and evidence as SAL-IPYNB-OBL-8546D71A9E3916E7 in this cluster: ExecutionMetadata now models the real four standard timing fields (iopub_status_busy, iopub_execute_input, shell_execute_reply, iopub_status_idle, confirmed against the pinned vendored schema) in place of a non-schema field, with all four individually asserted plus one additional string-valued entry (shell.execute_reply.started) proven to survive via .extras.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Four standard timing keys, additional string keys, and non-string negatives are covered.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet
+      identified.
 - obligation_id: SAL-IPYNB-OBL-C599FB180ACF8D49
   capability_id: IPYNB-UPGRADE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::upgrade
   - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::downgrade
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_version_conversion.py::test_upgrade_from_every_supported_older_minor_validates_officially
-  - tests/python/ipynb/test_obligation_version_conversion.py::test_downgrade_plan_reports_loss_and_preserved_extensions
-  - tests/python/ipynb/test_obligation_version_conversion.py::test_lossy_downgrade_requires_explicit_acceptance
+  - 'tests/python/ipynb/test_obligation_version_conversion.py::test_upgrade_from_every_supported_older_minor_validates_officially'
+  - 'tests/python/ipynb/test_obligation_version_conversion.py::test_downgrade_plan_reports_loss_and_preserved_extensions'
+  - 'tests/python/ipynb/test_obligation_version_conversion.py::test_reading_a_higher_minor_preserves_unknown_future_additions'
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
-  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
+  - IPYNB-NINE-OBLIGATION-PRECISE-GAP-CLOSURE-PROOF
   implemented_behavior:
-  - 'Upgrade from every supported older minor produces an id_rewrites ledger and validates officially; downgrade is gated behind an explicit accept_loss after the plan reports losses -- both strongly proven.'
-  missing_behavior:
-  - 'No test shows unknown future additions preserved when merely READING (not downgrading) a higher-minor document -- the ''preserve unknown future additions when reading higher minors'' clause specifically is unproven by this cluster''s tests.'
+  - 'The previously-unproven clause is closed with one new test this slice, test_reading_a_higher_minor_preserves_unknown_future_additions: loads(mode=''preservation'') on a genuinely future nbformat_minor (6) document containing an unrecognized top-level key, an unrecognized cell_type, and unrecognized nested vendor data returns document.raw byte-identical to the source -- a pure read, never a downgrade or any other conversion. Explicit upgrade producing a conversion ledger and downgrade requiring loss acceptance remain proven by the two existing cited fixtures.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Fixtures at each supported older version upgrade with ledger assertions; downgrade-loss reporting
-      fixture.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet
+      identified.
 - obligation_id: SAL-IPYNB-OBL-C5EFBC1F7327CCE7
   capability_id: IPYNB-SEC-001
   status: implemented
@@ -1966,25 +1984,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-FE413358B1144149
   capability_id: IPYNB-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/validation/schema.py::schema_diagnostics
+  - src/python/ipynb/src/format_factory/ipynb/validation/rules.py::select_profile
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_official_schema_validation.py::test_exact_supported_minor_schema_accepts_valid_document
-  - tests/python/ipynb/test_obligation_official_schema_validation.py::test_factory_rejects_every_official_schema_rejection
+  - 'tests/python/ipynb/test_obligation_official_schema_validation.py::test_exact_supported_minor_schema_accepts_valid_document'
+  - 'tests/python/ipynb/test_obligation_official_schema_validation.py::test_factory_rejects_every_official_schema_rejection'
+  - 'tests/python/ipynb/test_obligation_validation_profiles.py::test_future_declared_profile_is_valid_with_separate_forward_warnings'
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
-  - IPYNB-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
+  - IPYNB-NINE-OBLIGATION-PRECISE-GAP-CLOSURE-PROOF
   implemented_behavior:
-  - 'Both tests call the official nbformat.validator.iter_validate() with explicit (version, version_minor) pairs across minors 0-5, proving schema selection by declared version/minor and rejection parity with the official validator.'
-  missing_behavior:
-  - 'Neither test exercises a minor beyond the pinned schemas (e.g. minor 6) to prove official relaxation for genuinely future minor versions specifically -- only the pinned 0-5 range is covered.'
+  - 'select_profile()''s ''declared'' path clamps effective_minor to min(minor, 5) and sets allow_forward when the declared minor exceeds 5, emitting IPYNB_FORWARD_VERSION as a WARNING rather than rejecting -- this is the genuine relaxation-for-future-minors mechanism. test_future_declared_profile_is_valid_with_separate_forward_warnings (already existed, previously cited only for a different cluster) proves this directly with nbformat_minor=6: the ''declared'' profile validates successfully with IPYNB_FORWARD_VERSION plus per-construct forward warnings, while the ''current'' profile on the same document correctly rejects it -- proving relaxation is specific to the declared-profile selection path, not a blanket leniency.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Both validation modes on fixtures per schema construct; unknown-field separation asserted.
+    - Each distinct clause of this obligation has a focused positive test proving the specific claim, not a
+      generic cluster-wide citation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited where the claim has a refusal half; otherwise not yet
+      identified.
 - obligation_id: SAL-IPYNB-OBL-FFF232183E2BB71E
   capability_id: IPYNB-LIFECYCLE-001
   status: implemented
