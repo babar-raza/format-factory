@@ -74,6 +74,14 @@
       "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact positive test selectors proving LOSSLESS-versus-CANONICAL is an explicit dumps() caller choice defaulting to LOSSLESS, that a lossless round trip survives a vendor/future-profile attribute the model does not know about (with a CANONICAL control proving the same attribute is genuinely unmodeled, not a fixture defect), and that check_preservation() reports every construct CANONICAL regeneration would drop -- including a positive control (no loss for a spec-only document) and a deeply-nested-attribute location test. Does NOT cover the fourth ORA-PRESERVE-001 obligation (preserving the absent-vs-explicit-default distinction) -- OraNode/OraStack apply attribute defaults at construction time by design, so the in-memory model cannot currently answer \"was this value explicit or defaulted\"; that clause remains honestly unpromoted. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-07B4638C09251BE1, SAL-ORA-OBL-1527BE3306AC38F2, and SAL-ORA-OBL-24BEC87CE09AB2DD only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-render-stream-mask-citation-audit-001.json",
+      "sha256": "b550483accc04ff09109b5618453182963545c94bf4b4b3138ce2be712639d1a",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE. Surveyed ora's remaining unresolved obligations across ORA-RENDER-001 (7), ORA-STREAM-001 (7), and ORA-MASK-001 (3) for the same near-duplicate pattern found across other formats' clusters this session. A programmatic exact-rule_text matcher against the pool already resolved elsewhere in ora (ORA-LAYER-001, ORA-STACK-001, ORA-BASELINEASSET-001, ORA-EDIT-001, ORA-VALIDATE-001, ORA-GROUP-001) found 12 of 17 obligations are exact-text duplicates, cross-referenced to that real evidence. 5 remain genuinely new and untouched this slice: actual pixel-level rendering/ compositing (ORA-RENDER-001's SAL-ORA-OBL-A979A77370914BCA), stack.xml schema-conformance validation (ORA-STREAM-001's SAL-ORA-OBL-8EDD775BF1715438), bounded-memory streaming plus lazy asset access (ORA-STREAM-001's SAL-ORA-OBL-F8A3777A56AA6121), the OpenRaster 0.0.5 baseline-intent concept (ORA-MASK-001's SAL-ORA-OBL-2DA8F5A931FB747D), and an explicit mask-extension model/registry (ORA-MASK-001's SAL-ORA-OBL-96DAD1AD6C297273) -- each is a real, substantial feature question deserving dedicated investigation, not force-matched or rushed in this pass. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Promotes no product state beyond the cross-referenced obligations whose source was itself implemented."
+    },
+    {
       "evidence_id": "ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -117,7 +125,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "d516acf5f14578ae4d7464451ecf0fb26f3096360243bc5eb3dded3e0cb62497",
+    "implementation_evidence": "c98d6dbd37ee19efd746c518feb509fec4c991b86abdf8c2cda4d4daff662865",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -249,15 +257,21 @@
     },
     {
       "capability_id": "ORA-MASK-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Recognized-mask edit tests and unknown-mask byte-preservation tests from independent producers.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "ORA-BASELINE-SUITE",
+        "ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Cross-capability duplicate of ORA-EDIT-001's SAL-ORA-OBL-035B53B843FF49F9 (identical rule_text): An .ora archive is parsed as a ZIP container (OraContainer.from_bytes uses zipfile under the hood, proven against a well-formed archive), and non-ZIP input is refused -- the archive-is-a-ZIP-wrapper requirement is structural, not merely convention. The .ora extension itself is a file-naming convention this package does not and cannot enforce at the byte level, consistent with how other formats in this codebase treat their own extensions."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_non_zip_input_is_rejected"
+      ],
       "obligation_id": "SAL-ORA-OBL-05E196310D5FAF71",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -266,9 +280,11 @@
           "Recognized-mask edit tests and unknown-mask byte-preservation tests from independent producers."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-LAYER-001",
@@ -377,15 +393,22 @@
     },
     {
       "capability_id": "ORA-RENDER-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
+      "execution_evidence_ids": [
+        "ORA-BASELINE-SUITE",
+        "ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF"
+      ],
+      "implemented_behavior": [
+        "Cross-capability duplicate of ORA-LAYER-001's SAL-ORA-OBL-3EFB60C80F84675D (identical rule_text): Cross-capability duplicate of SAL-ORA-OBL-930CACD129A5CC40 (identical rule_text): default value and verbatim preservation are proven."
+      ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential tests.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+        "Same confirmed gap as SAL-ORA-OBL-930CACD129A5CC40: no registry maps composite-op values to a documented blend function/Porter-Duff operator; not attempted, no committed verified SAL fact enumerates the OpenRaster composite-op inventory. "
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-07BA02F318F0DE06",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_defaults_to_src_over",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_is_preserved_verbatim"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -394,9 +417,11 @@
           "Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential tests."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/model/stack.py::OraNode"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "ORA-BASELINEASSET-001",
@@ -775,15 +800,21 @@
     },
     {
       "capability_id": "ORA-STREAM-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource limit.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "ORA-BASELINE-SUITE",
+        "ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Cross-capability duplicate of ORA-LAYER-001's SAL-ORA-OBL-029A8C8544788060 (identical rule_text): Cross-capability duplicate of already-implemented SAL-ORA-OBL-23D0207100C46AD9 (identical rule_text); citing the same proof."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_every_layer_requires_a_src"
+      ],
       "obligation_id": "SAL-ORA-OBL-1BF87FC84535C0EE",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_every_layer_requires_a_src"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -792,9 +823,12 @@
           "Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource limit."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/model/stack.py::OraLayer",
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-SEC-001",
@@ -833,15 +867,24 @@
     },
     {
       "capability_id": "ORA-RENDER-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential tests.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "ORA-BASELINE-SUITE",
+        "ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Cross-capability duplicate of ORA-STACK-001's SAL-ORA-OBL-329D93743655752D (identical rule_text): All three permitted child kinds -- stack, layer, and text -- are proven to parse via the real XML walker (_Walker.child), not merely accepted at the model layer: nested stacks build a tree with correct visual order (first child uppermost), and a text element (with or without src) parses as OraText. An element tag outside {stack, layer, text} is refused. Added this slice: the text-via-XML positive tests -- the dispatch branch existed in _Walker.child already (its own error message quotes this obligation's rule text verbatim) but was previously proven only at the model-construction layer (OraText(...) built directly in Python), never through the parser."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_unknown_child_elements_are_refused"
+      ],
       "obligation_id": "SAL-ORA-OBL-1EBB601F8B37AAD6",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_document_order_is_visual_order_topmost_first",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_nested_stacks_are_modelled_as_a_tree",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_text_element_parses_as_a_stack_child",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_text_element_without_src_parses_with_src_none"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -850,9 +893,12 @@
           "Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential tests."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
+        "src/python/ora/src/format_factory/ora/model/stack.py::OraStack"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-WRITE-001",
@@ -1590,15 +1636,21 @@
     },
     {
       "capability_id": "ORA-RENDER-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential tests.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "ORA-BASELINE-SUITE",
+        "ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Cross-capability duplicate of ORA-BASELINEASSET-001's SAL-ORA-OBL-0CF770969FA42DB5 (identical rule_text): _baseline_asset_diagnostics requires mergedimage.png to be present (ORA_MERGED_IMAGE_MISSING when absent) and to carry 8 or 16 bits per channel (ORA_MERGED_IMAGE_NON_CONFORMING otherwise), mandatory since profile 0.0.2, checked on every load in strict mode and reported as a diagnostic in tolerant/validate mode."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_non_conforming_merged_image"
+      ],
       "obligation_id": "SAL-ORA-OBL-3FF1BFF1C38F1ABA",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_raster_assets.py::test_merged_image_accepts_only_8_or_16_bits"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1607,9 +1659,12 @@
           "Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential tests."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/lifecycle.py::load",
+        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-GROUP-001",
@@ -1683,15 +1738,24 @@
     },
     {
       "capability_id": "ORA-RENDER-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential tests.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "ORA-BASELINE-SUITE",
+        "ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Cross-capability duplicate of ORA-LAYER-001's SAL-ORA-OBL-7160DCD53E7DAA43 (identical rule_text): Cross-capability duplicate of already-implemented SAL-ORA-OBL-97CE271E3DD6D883 (identical rule_text); citing the same proof."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_isolation_semantics.py::test_opacity_of_exactly_one_does_not_infer_isolation",
+        "tests/python/ora/test_obligation_isolation_semantics.py::test_default_composite_op_does_not_infer_isolation"
+      ],
       "obligation_id": "SAL-ORA-OBL-46EB4D69618023BF",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_isolation_semantics.py::test_declared_isolate_makes_a_stack_isolated",
+        "tests/python/ora/test_obligation_isolation_semantics.py::test_opacity_below_one_infers_isolation_even_without_the_attribute",
+        "tests/python/ora/test_obligation_isolation_semantics.py::test_non_default_composite_op_infers_isolation"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1700,9 +1764,12 @@
           "Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential tests."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/model/stack.py::OraStack",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::_uses_isolation"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-LIFECYCLE-001",
@@ -1942,15 +2009,22 @@
     },
     {
       "capability_id": "ORA-STREAM-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource limit.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "ORA-BASELINE-SUITE",
+        "ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Cross-capability duplicate of ORA-STACK-001's SAL-ORA-OBL-047E5523BB0D85D5 (identical rule_text): A layer src attribute is read and stored verbatim as an archive-root-relative path (proven against the data/1.png convention, not merely accepted), and a src that attempts to escape the archive root (e.g. ../../etc/passwd) is refused by validate_src before the model is constructed -- the same escape a container member-name traversal would allow, closed at the src-attribute entry point too."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused"
+      ],
       "obligation_id": "SAL-ORA-OBL-536DF06FA0E4F3A7",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_layer_src_is_archive_root_relative",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1959,9 +2033,12 @@
           "Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource limit."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/model/stack.py::validate_src",
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-WRITE-001",
@@ -2145,15 +2222,21 @@
     },
     {
       "capability_id": "ORA-RENDER-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential tests.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "ORA-BASELINE-SUITE",
+        "ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Cross-capability duplicate of ORA-EDIT-001's SAL-ORA-OBL-631448F8E906BB89 (identical rule_text): Cross-capability duplicate of ORA-STACK-001's already-implemented SAL-ORA-OBL-9007B671A8FCFF7D (identical rule_text): visibility defaults to visible and accepts only visible/hidden."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_unknown_visibility_values_are_refused"
+      ],
       "obligation_id": "SAL-ORA-OBL-602CAC51A3A29653",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_visibility_defaults_to_visible_and_accepts_only_two_values"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -2162,9 +2245,11 @@
           "Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential tests."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-SEC-001",
@@ -2535,15 +2620,20 @@
     },
     {
       "capability_id": "ORA-STREAM-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource limit.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "ORA-BASELINE-SUITE",
+        "ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
+      "implemented_behavior": [
+        "Cross-capability duplicate of ORA-VALIDATE-001's SAL-ORA-OBL-4DDAA1D370E3106E (identical rule_text): Cross-capability duplicate of already-implemented SAL-ORA-OBL-6491749388BB6731 (identical rule_text): member names are case-sensitive; non-ASCII UTF-8 names round-trip."
+      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-744596C8B4CE79E4",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_member_names_are_case_sensitive",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_non_ascii_member_names_round_trip"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -2552,9 +2642,11 @@
           "Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource limit."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-CONTAINER-001",
@@ -3150,15 +3242,30 @@
     },
     {
       "capability_id": "ORA-STREAM-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource limit.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "ORA-BASELINE-SUITE",
+        "ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Cross-capability duplicate of ORA-GROUP-001's SAL-ORA-OBL-3463B445DE0899EC (identical rule_text): Cross-capability duplicate of already-implemented SAL-ORA-OBL-B7B7362D7DBCA9A2 (identical rule_text); citing the same proof."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values"
+      ],
       "obligation_id": "SAL-ORA-OBL-9A124922C91A2CE9",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3167,9 +3274,11 @@
           "Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource limit."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-CONTAINER-001",
@@ -3552,15 +3661,21 @@
     },
     {
       "capability_id": "ORA-STREAM-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource limit.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "ORA-BASELINE-SUITE",
+        "ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Cross-capability duplicate of ORA-EDIT-001's SAL-ORA-OBL-035B53B843FF49F9 (identical rule_text): An .ora archive is parsed as a ZIP container (OraContainer.from_bytes uses zipfile under the hood, proven against a well-formed archive), and non-ZIP input is refused -- the archive-is-a-ZIP-wrapper requirement is structural, not merely convention. The .ora extension itself is a file-naming convention this package does not and cannot enforce at the byte level, consistent with how other formats in this codebase treat their own extensions."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_non_zip_input_is_rejected"
+      ],
       "obligation_id": "SAL-ORA-OBL-B225E41E5403D960",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3569,9 +3684,11 @@
           "Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource limit."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-DOCUMENT-001",
@@ -4461,15 +4578,22 @@
     },
     {
       "capability_id": "ORA-RENDER-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential tests.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "ORA-BASELINE-SUITE",
+        "ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Cross-capability duplicate of ORA-STACK-001's SAL-ORA-OBL-1BCC64FF1DFE8AE5 (identical rule_text): Opacity defaults to 1.0 when omitted and accepts the full inclusive range (0, 1, and a fractional value proven), while values outside the range, NaN, and non-numeric strings are refused by validate_opacity -- both inclusive endpoints (0 and 1) are proven legal, not merely the interior."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_opacity_outside_zero_through_one_is_refused"
+      ],
       "obligation_id": "SAL-ORA-OBL-FDFFC5E15584AB62",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_opacity_defaults_to_one_and_accepts_the_inclusive_range",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_opacity_outside_zero_through_one_is_refused"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -4478,9 +4602,12 @@
           "Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential tests."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity",
+        "src/python/ora/src/format_factory/ora/model/stack.py::OraNode"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-GROUP-001",
@@ -4531,6 +4658,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-lifecycle-citation-audit-001.json": "0da740721908a1871474ec18c8790f54228235cba7bb60c2c7c0292b31018096",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-mimetype-001.json": "c4af01879db0867dbc3deec2c4ecbb85112c7aa2a3283b2a2b24c28d6eb155cd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-preservation-baseline-001.json": "66670b6131f704d6bd441c2fd8a8e83dc51b29d415fdfcb7bff998ec953a047e",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-render-stream-mask-citation-audit-001.json": "b550483accc04ff09109b5618453182963545c94bf4b4b3138ce2be712639d1a",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-resolution-isolation-001.json": "1a8d632812f95c0c628a894ccf0d2a6e1cc96c7784e6a38506cf576c66d67c59",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-security-baseline-001.json": "3c679aa993c7146ac43c33f5ca132b0a7d88c643e4aa8b0756c285e16ca3f011",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-stack-citation-audit-001.json": "e2198be09d7d47d2fbadd516d37c0e101963b81426439c5d1e279337a51c0126",
@@ -4561,12 +4689,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 87,
-      "missing": 20,
-      "partial": 27
+      "implemented": 98,
+      "missing": 8,
+      "partial": 28
     },
     "total": 134,
-    "unresolved": 47
+    "unresolved": 36
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

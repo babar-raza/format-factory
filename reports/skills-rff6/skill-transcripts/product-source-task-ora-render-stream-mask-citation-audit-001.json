@@ -1,0 +1,44 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-render-stream-mask-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T04:20:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_RENDER_STREAM_MASK_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure-at-scale-programmatic",
+    "root_cause": "Following event 166's exact_next_action (survey ora, untouched by dedicated passes this session, for citation-audit or bug-hunt opportunities), surveyed ora's remaining 47 unresolved obligations across 15 clusters and found ORA-RENDER-001, ORA-STREAM-001, and ORA-MASK-001 (17 obligations combined) contained several near-duplicates of facts already resolved in other ora clusters.",
+    "obligation_targeted": "17 obligations across ORA-RENDER-001 (7), ORA-STREAM-001 (7), ORA-MASK-001 (3) -- see the ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF execution_evidence entry.",
+    "acceptance_evidence": "12 cross-referenced to already-resolved evidence in ORA-LAYER-001/STACK-001/BASELINEASSET-001/EDIT-001/VALIDATE-001/GROUP-001.",
+    "regression_tier": "full ora package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Ran the programmatic exact-rule_text matcher against the pool of already-resolved ora obligations (87 implemented at session start, now higher after other formats' work this session did not touch ora): 12 of 17 obligations across the 3 target clusters matched exactly (dict-key equality). Spot-checked 3 pairs directly against the register to confirm byte-for-byte identity.",
+    "2. Read the 5 non-matching obligations' rule_texts to classify them rather than force-matching: actual pixel-level rendering/compositing (SVG blend modes, isolation, opacity math) is a genuinely large, unbuilt image-compositing feature; stack.xml schema-conformance validation and bounded-memory streaming/lazy asset access are both real feature questions requiring investigation into whether ora already has any lazy-access mechanism; the OpenRaster 0.0.5 baseline-intent concept and an explicit mask-extension-model/registry are both distinct, substantial questions. None were force-matched or rushed -- left genuinely untouched for dedicated future investigation.",
+    "3. Applied the patch-script pattern. Added the new ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF execution_evidence entry, validated the YAML parses (134 total obligations), and ran the reconciler cleanly. No source or test files changed this slice (pure evidence-YAML citation correction), so ran the full ora suite to confirm zero regressions."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 11,
+    "obligations_total_for_format": 134,
+    "ora_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference OpenRaster implementation. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "obligations_moved_breakdown": "11 of 12 cross-references were promotions to implemented (the 12th's source was itself partial, so it carried forward that same honest partial status rather than being force-promoted). 5 genuinely distinct obligations remain untouched, flagged for dedicated future investigation: actual pixel rendering/compositing, stack.xml schema validation, bounded-memory streaming/lazy access, baseline-intent concept, and mask-extension-model."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
