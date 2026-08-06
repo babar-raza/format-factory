@@ -832,26 +832,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-1D0409875800C50B
   capability_id: UBL-PRESERVE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dump
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::semantic_sha256
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
+  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - XmlNode stores an unrecognized namespaced subtree as a generic node
+    (qname, attributes, children) rather than a typed reconstruction, so a
+    vendor extension element -- including its attributes and nested text
+    content -- survives a full load-dump-load cycle semantically intact.
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
@@ -2704,26 +2699,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-5A831127B0AA359F
   capability_id: UBL-PRESERVE-001
-  status: partial
-  source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dump
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::semantic_sha256
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - UBL-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'Confirmed gap, not an audit backlog: dumps()/dump() take no
+    preservation-mode parameter at all -- there is exactly one output
+    path, which always serializes the XmlNode tree exactly as
+    constructed. There is no separate CANONICAL regeneration path that
+    could drop unmodeled content, so there is nothing for an explicit
+    LOSSLESS-vs-CANONICAL caller choice to select between. The identical
+    architecture and the same confirmed-absent API were independently
+    found in XLIFF''s parallel obligation this session
+    (SAL-XLIFF-OBL-A9AF9198E92EA6F9) -- both packages serialize a raw tree
+    with a single output path and no separate canonical-regeneration mode.'
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
@@ -3380,26 +3372,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-79F230CE7F5852E9
   capability_id: UBL-PRESERVE-001
-  status: partial
-  source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dump
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::semantic_sha256
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - UBL-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'Confirmed gap, not an audit backlog: no LossReport/check_preservation-style
+    API exists anywhere in this package. Since dumps()/dump() always
+    serialize the tree exactly as constructed (see SAL-UBL-OBL-5A831127B0AA359F),
+    there is currently no regeneration path capable of losing content for
+    such a report to describe -- but the obligation requires the reporting
+    API to exist as a first-class callable, which it does not. The same
+    gap was independently confirmed for XLIFF''s parallel obligation this
+    session (SAL-XLIFF-OBL-F920057AE26D1B4F).'
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative
@@ -5845,24 +5832,27 @@ obligations:
   capability_id: UBL-PRESERVE-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dump
-  - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::semantic_sha256
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_is_none_when_absent
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_profile_id_is_none_when_absent
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_is_none_when_ublversionid_is_absent
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - '_first_child_text returns None when a matching optional child element
+    is genuinely absent, distinguishable from an explicit-but-empty text
+    value (which would strip to ""), proven for customization_id,
+    profile_id, and declared_version. Verified for these three
+    None-on-absence accessors specifically; not yet swept against a
+    present-but-empty fixture to directly exercise the explicit-empty half
+    of the distinction, nor against every other optional field in the
+    model.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each preservation baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - Not yet verified against a present-but-empty-element fixture (only the
+    absent-vs-present-with-value cases are directly tested), and not swept
+    across every other optional field beyond customization_id/profile_id/declared_version.
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative

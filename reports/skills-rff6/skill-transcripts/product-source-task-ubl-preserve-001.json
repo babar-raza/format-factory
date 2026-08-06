@@ -1,0 +1,46 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-preserve-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T15:50:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_PRESERVE_AUDIT_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "UBL-PRESERVE-001's 4 obligations (unknown constructs preserved; absent-vs-explicit-default distinction; explicit lossless-vs-canonical caller choice; loss-report API) mirror XLIFF-PRESERVE-001's identical rule texts and were flagged for a follow-up honest-status correction in Event 131 after XLIFF's parallel obligations were investigated. All 4 shared an identical generic 5-symbol citation.",
+    "obligation_targeted": "SAL-UBL-OBL-1D0409875800C50B, SAL-UBL-OBL-5A831127B0AA359F, SAL-UBL-OBL-79F230CE7F5852E9, SAL-UBL-OBL-E872079BFB45EC57",
+    "acceptance_evidence": "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically, test_obligation_profile_identifiers.py, test_obligation_detected_declared_version.py",
+    "regression_tier": "full UBL package suite (tests/python/ubl)"
+  },
+  "execution_steps": [
+    "1. Followed up on Event 131's flagged action: apply the same honest-status correction already made for XLIFF-PRESERVE-001's identical obligations to UBL's parallel ones.",
+    "2. Promoted obligation 1 (unknown constructs preserved): XmlNode stores unrecognized subtrees generically (qname/attributes/children) rather than typed, and test_unknown_extension_is_preserved_semantically already proves a vendor extension survives a full round trip with attributes and nested text intact. Ran it directly: passed.",
+    "3. Corrected obligations 3 and 4 (explicit lossless/canonical choice; loss-report API) from misleading generic partial citations to honest missing status, confirming via the same grep already performed for XLIFF (no mode parameter in dumps()/dump(), no LossReport-equivalent class anywhere in the package) -- cross-referencing XLIFF's identical finding in both directions for consistency.",
+    "4. Investigated obligation 2 (absent-vs-explicit-default): found _first_child_text (model/document.py) returns None for a genuinely absent optional child, distinguishable from an explicit-but-empty value. Found and ran three existing tests proving this for customization_id, profile_id, and declared_version (all None-when-absent). Promoted the citation but kept status `partial`: the present-but-empty half of the distinction (an element that exists with empty text) has no direct fixture, and the pattern was verified for three accessors, not swept across the whole model -- an honest scope limitation matching the same caution applied to XLIFF's parallel obligation."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_is_none_when_absent tests/python/ubl/test_obligation_profile_identifiers.py::test_profile_id_is_none_when_absent tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_is_none_when_ublversionid_is_absent -v -- 4 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 194,
+    "ubl_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against an external UBL preservation tool. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_only_one_net_promotion": "Two obligations were confirmed genuinely absent (correctly downgraded from misleading partial to honest missing, matching XLIFF's identical finding). One obligation's citation was corrected and narrowed for accuracy but kept at partial pending a present-but-empty fixture and a full-model sweep, avoiding an overclaim."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
