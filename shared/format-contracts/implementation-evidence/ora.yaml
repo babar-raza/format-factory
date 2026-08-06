@@ -351,6 +351,36 @@ execution_evidence:
     SAL-ORA-OBL-51047D9CBD1191DF, SAL-ORA-OBL-537613F85A370825,
     SAL-ORA-OBL-D59ADDD7B5FA720C, and SAL-ORA-OBL-EB51016F53E73135 only;
     it supports no other obligation and promotes no product state.
+- evidence_id: ORA-VALIDATE-CITATION-AUDIT-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-validate-citation-audit-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike ORA-BASELINE-SUITE: ORA-VALIDATE-001's 10
+    obligations shared one identical generic citation, the seventh ora
+    cluster to show this pattern. 6 of the 10 rule_texts are exact
+    cross-capability duplicates of facts already resolved under
+    ORA-STACK-001/ORA-CONTAINER-001/ORA-BASELINEASSET-001, closed by
+    citation. The genuinely validate-specific obligation (validate each
+    layer independently, aggregate stable diagnostics, distinguish
+    errors from interoperability warnings, never repair/normalize
+    unless requested) is corrected to accurate partial: independent
+    per-layer validation, stable diagnostic aggregation, and never-
+    repairs-unasked are each proven directly, but a targeted grep of
+    lifecycle.py found Severity.WARNING is never constructed anywhere --
+    every diagnostic this package emits is Severity.ERROR, so "distinguish
+    errors from interoperability warnings" has no non-fatal-warning
+    concept to distinguish from at all. Named as a confirmed, precise,
+    deliberately-unattempted gap rather than force-promoted. 3 obligations
+    (baseline-support-levels, baseline-intent/extensions, stack.xml UTF-8
+    conformance) mirror their still-unaudited counterparts elsewhere and
+    were left untouched for consistency. SELF-CONSISTENT
+    format_factory-only evidence per the execution-recovery directive's
+    GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-1B7BB4BAA91DE8E4,
+    SAL-ORA-OBL-4DDAA1D370E3106E, SAL-ORA-OBL-99E022E1F9490AE2,
+    SAL-ORA-OBL-AD8A2C03327A9DF2, SAL-ORA-OBL-CE7043CB956573DD,
+    SAL-ORA-OBL-ED7755CB3433CE7B, and SAL-ORA-OBL-F2672F4CCD923AC2 only;
+    it supports no other obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -795,27 +825,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-1B7BB4BAA91DE8E4
   capability_id: ORA-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required
+  - tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
-    per normative and security obligation plus multi-error aggregation.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-D76D780D4D9DA699 (identical rule_text): root image element requires w, h, and version.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.
@@ -1662,27 +1687,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-4DDAA1D370E3106E
   capability_id: ORA-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_member_names_are_case_sensitive
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_non_ascii_member_names_round_trip
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
-    per normative and security obligation plus multi-error aggregation.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-6491749388BB6731 (identical rule_text): member names are case-sensitive; non-ASCII UTF-8 names round-trip.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.
@@ -2650,27 +2667,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-99E022E1F9490AE2
   capability_id: ORA-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
-    per normative and security obligation plus multi-error aggregation.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-B7B7362D7DBCA9A2 (identical rule_text): mimetype member requirements proven against every named clause.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.
@@ -2918,27 +2936,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-AD8A2C03327A9DF2
   capability_id: ORA-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_defaults_to_72_when_absent
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_is_read_when_present
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_attributes_must_be_specified_together
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_must_be_positive_integers
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_attributes_must_be_specified_together
+  - tests/python/ora/test_obligation_stack_and_document.py::test_resolution_must_be_positive_integers
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
-    per normative and security obligation plus multi-error aggregation.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-6078C4F67F33C8E4 (identical rule_text): xres/yres paired, positive, default to 72.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.
@@ -3167,27 +3181,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-CE7043CB956573DD
   capability_id: ORA-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_stack_and_document.py::test_layer_src_is_archive_root_relative
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
-    per normative and security obligation plus multi-error aggregation.'
+  - 'Cross-capability duplicate of already-implemented SAL-ORA-OBL-047E5523BB0D85D5 (identical rule_text): layer src is archive-root-relative and traversal is refused.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.
@@ -3482,27 +3489,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-ED7755CB3433CE7B
   capability_id: ORA-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_baseline_asset_diagnostics
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_raster_assets.py::test_a_conforming_thumbnail_is_accepted
+  - tests/python/ora/test_obligation_raster_assets.py::test_non_conforming_thumbnails_are_rejected
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_mode_rejects_a_document_missing_its_thumbnail
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_non_conforming_thumbnail
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-ASSET-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
-    per normative and security obligation plus multi-error aggregation.'
+  - 'Cross-capability duplicate (this exact clause) of ORA-BASELINEASSET-001''s already-implemented SAL-ORA-OBL-48761EB31C2C2F7D: Thumbnails/thumbnail.png is required and non-conforming thumbnails are refused, each proven independently.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.
@@ -3512,25 +3514,21 @@ obligations:
   capability_id: ORA-VALIDATE-001
   status: partial
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
-  - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
-  - src/python/ora/src/format_factory/ora/lifecycle.py::load
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker
-  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  - src/python/ora/src/format_factory/ora/lifecycle.py::validate
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_layer_png_diagnostics
   positive_test_selectors:
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream
-  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path
-  negative_test_selectors: []
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_multi_layer_validation_checks_all_sources
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_returns_structured_diagnostics_rather_than_raising
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_conforming_document_as_valid
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_does_not_raise_on_a_broken_archive
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-VALIDATE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'Each layer is validated independently (a document with one bad and one good layer source reports exactly one diagnostic, naming only the bad one) and diagnostics are aggregated into a stable, deterministic report rather than raised as exceptions. validate() never repairs or normalizes anything -- its signature takes no auto-fix parameter, and it returns a report without mutating its input; the only opt-in recovery this package offers at all is ReadMode.TOLERANT on load(), which is a separate, explicitly-requested code path (proven by test_tolerant_mode_recovers_and_reports_the_recovery), not something validate() itself does unasked.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: One discriminating negative
-    per normative and security obligation plus multi-error aggregation.'
+  - 'Confirmed gap, not an audit backlog: this obligation asks to "distinguish errors from interoperability warnings", but every Diagnostic this package emits uses Severity.ERROR -- Severity.WARNING (which the shared Diagnostic/Severity type from format_factory.core already supports) is never constructed anywhere in lifecycle.py. There is currently no finding this package would classify as a non-fatal interoperability warning rather than a hard error; introducing that distinction would require deciding, per diagnostic, which existing ERROR findings are actually softer warnings -- a real design decision not attempted this slice.'
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.

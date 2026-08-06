@@ -1,0 +1,46 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-validate-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T19:50:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_VALIDATE_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "ORA-VALIDATE-001's 10 obligations shared one identical generic citation, the seventh ora cluster this session to show the pattern. Pulled each rule_text individually: 6 are exact cross-capability duplicates of already-resolved facts, 3 mirror still-unaudited duplicates elsewhere (left untouched for consistency), and 1 is the genuinely validate-specific capability itself.",
+    "obligation_targeted": "SAL-ORA-OBL-1B7BB4BAA91DE8E4, SAL-ORA-OBL-4DDAA1D370E3106E, SAL-ORA-OBL-99E022E1F9490AE2, SAL-ORA-OBL-AD8A2C03327A9DF2, SAL-ORA-OBL-CE7043CB956573DD, SAL-ORA-OBL-ED7755CB3433CE7B, SAL-ORA-OBL-F2672F4CCD923AC2",
+    "acceptance_evidence": "tests/python/ora/test_obligation_lifecycle_and_write.py, test_obligation_stack_and_document.py, test_obligation_container_and_mimetype.py, test_obligation_raster_assets.py (all pre-existing; no new tests this slice)",
+    "regression_tier": "full ORA package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Pulled all 10 ORA-VALIDATE-001 rule_texts. Recognized 6 as exact duplicates of already-resolved ORA-STACK-001/ORA-CONTAINER-001/ORA-BASELINEASSET-001 facts (root w/h/version, member-name case/UTF-8, mimetype requirements, xres/yres, layer data path, thumbnail requirements) -- cited directly, zero re-investigation.",
+    "2. Investigated the genuinely validate-specific obligation ('Validate each layer independently, aggregate stable diagnostics, distinguish errors from interoperability warnings, and never repair or normalize unless explicitly requested') against lifecycle.py's validate() and _layer_png_diagnostics, plus test_obligation_lifecycle_and_write.py. Confirmed independent per-layer validation (test_multi_layer_validation_checks_all_sources: a two-layer document with one bad source reports exactly one diagnostic, naming only the bad layer) and stable diagnostic aggregation (structured report, not exceptions) are both directly proven.",
+    "3. Checked 'never repair or normalize unless explicitly requested' against validate()'s actual signature: no auto-fix parameter exists, and the function returns a report without mutating input. The only recovery path in the package at all is ReadMode.TOLERANT on load() -- a separate, explicitly opt-in code path, not something validate() itself does. Confirmed proven, not assumed.",
+    "4. Checked 'distinguish errors from interoperability warnings' by grepping lifecycle.py for Severity.WARNING usage: zero hits. Every Diagnostic this package constructs uses Severity.ERROR, even though the shared Diagnostic/Severity type (from format_factory.core) already supports WARNING. Confirmed this is a real, standing gap -- not an audit backlog item -- and corrected the obligation to accurate partial with a precise missing_behavior naming exactly this, rather than force-promoting the whole obligation on the strength of the three proven clauses.",
+    "5. Applied all 7 evidence edits via the same obligation_id-delimited text-block script pattern used across the six prior ora ticks, extracting the actual proof_requirements boilerplate from an untouched sibling programmatically (the process fix applied since the WRITE tick). Ran the reconciler: clean pass, no errors, first attempt. Ran the full ora suite to confirm zero regressions (no source or test files changed this slice) -- 283 passed, identical to before."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 283 passed, unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 6,
+    "obligations_total_for_format": 134,
+    "ora_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against an independent OpenRaster reader/writer. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_6_of_10_moved_1_corrected_3_untouched": "6 obligations were exact cross-capability duplicates of already-fully-proven facts, closed by citation. 1 (the validate-specific capability) was corrected to accurate partial: three of its four clauses are proven, but the errors-vs-warnings distinction has no Severity.WARNING usage anywhere in the package to point to -- a real, confirmed, precisely-named gap. 3 (baseline-support-levels, baseline-intent/extensions, stack.xml UTF-8) mirror their still-unaudited counterparts elsewhere and were left untouched for consistency, not force-promoted."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

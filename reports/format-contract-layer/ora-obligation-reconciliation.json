@@ -90,6 +90,14 @@
       "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: ORA-STACK-001's 14 obligations shared one identical generic \"not yet audited\" citation despite real source_symbols already pointing at model/stack.py and codec/stack_xml.py. This audit names the exact positive/negative test selector proving each obligation's own specific rule_text individually (layer src path convention and traversal refusal, opacity range, required layer src, stack/layer/text nesting and visual order, xres/yres pairing and defaulting, visibility enum, root w/h/version requirement, x/y signed-position defaulting) rather than citing the three shared root-attribute tests for all fourteen. One obligation (SAL-ORA-OBL-BFEC595E47C33BE7) is a cross-capability duplicate of ORA-ISOLATION-001's already-implemented SAL-ORA-OBL-97CE271E3DD6D883 (identical rule_text) and is closed by citation, not new proof. Two obligations (SAL-ORA-OBL-930CACD129A5CC40 here and ORA-COMPOSITE-001's duplicate SAL-ORA-OBL-4EC8C1CC747F7FC6) are corrected to accurate `partial` -- default-value and verbatim-preservation behavior is proven, but no registry maps a composite-op value to its documented blend function/Porter-Duff operator, a confirmed gap not attempted this slice because the OpenRaster specification's actual composite-op inventory is not yet a committed, verified SAL fact. New test coverage added this slice: two tests proving a <text> element parses via the real XML walker (previously proven only at direct model-construction time, never through the parser). SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-047E5523BB0D85D5, SAL-ORA-OBL-1BCC64FF1DFE8AE5, SAL-ORA-OBL-23D0207100C46AD9, SAL-ORA-OBL-329D93743655752D, SAL-ORA-OBL-6078C4F67F33C8E4, SAL-ORA-OBL-9007B671A8FCFF7D, SAL-ORA-OBL-930CACD129A5CC40, SAL-ORA-OBL-BFEC595E47C33BE7, SAL-ORA-OBL-D76D780D4D9DA699, SAL-ORA-OBL-F6424763BCEC7266, and (cross-capability, ORA-COMPOSITE-001) SAL-ORA-OBL-4EC8C1CC747F7FC6; it supports no other obligation and promotes no product state. Extended in a follow-up slice the same session to also cover ORA-EDIT-001's ten near-verbatim rule_text duplicates of the ORA-STACK-001/ORA-ISOLATION-001 facts above: SAL-ORA-OBL-022F37EEA74EC1BB, SAL-ORA-OBL-631448F8E906BB89, SAL-ORA-OBL-86178CC1AEECB389, SAL-ORA-OBL-94713E68352E9199, SAL-ORA-OBL-9F423271F79A4954, SAL-ORA-OBL-AE0A21E0921EB0B1, SAL-ORA-OBL-BF7AD4693704AF6A, SAL-ORA-OBL-E8D9E4F183B12145, SAL-ORA-OBL-F41BA93CE84AA0F6, and SAL-ORA-OBL-6B6D7BEE18077E8A (composite-op, kept partial like its duplicate) -- same citation discipline, no additional new tests for this extension."
     },
     {
+      "evidence_id": "ORA-VALIDATE-CITATION-AUDIT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-validate-citation-audit-001.json",
+      "sha256": "ade817924adad22d1daa460b7b65907354384fc65dede9d4f50e690ef3ab5c02",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: ORA-VALIDATE-001's 10 obligations shared one identical generic citation, the seventh ora cluster to show this pattern. 6 of the 10 rule_texts are exact cross-capability duplicates of facts already resolved under ORA-STACK-001/ORA-CONTAINER-001/ORA-BASELINEASSET-001, closed by citation. The genuinely validate-specific obligation (validate each layer independently, aggregate stable diagnostics, distinguish errors from interoperability warnings, never repair/normalize unless requested) is corrected to accurate partial: independent per-layer validation, stable diagnostic aggregation, and never- repairs-unasked are each proven directly, but a targeted grep of lifecycle.py found Severity.WARNING is never constructed anywhere -- every diagnostic this package emits is Severity.ERROR, so \"distinguish errors from interoperability warnings\" has no non-fatal-warning concept to distinguish from at all. Named as a confirmed, precise, deliberately-unattempted gap rather than force-promoted. 3 obligations (baseline-support-levels, baseline-intent/extensions, stack.xml UTF-8 conformance) mirror their still-unaudited counterparts elsewhere and were left untouched for consistency. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-1B7BB4BAA91DE8E4, SAL-ORA-OBL-4DDAA1D370E3106E, SAL-ORA-OBL-99E022E1F9490AE2, SAL-ORA-OBL-AD8A2C03327A9DF2, SAL-ORA-OBL-CE7043CB956573DD, SAL-ORA-OBL-ED7755CB3433CE7B, and SAL-ORA-OBL-F2672F4CCD923AC2 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "ORA-WRITE-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -101,7 +109,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "f124ad18dca1b3ff33ade63e158679ac6a66113636ac33a7bcac37ca5ba40c1a",
+    "implementation_evidence": "a839d3e9b0be887acad962062e65ad6ec1bd7bbaa21deb62abe6963b6e8d0f38",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -692,20 +700,22 @@
     {
       "capability_id": "ORA-VALIDATE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of already-implemented SAL-ORA-OBL-D76D780D4D9DA699 (identical rule_text): root image element requires w, h, and version."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One discriminating negative per normative and security obligation plus multi-error aggregation."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-1B7BB4BAA91DE8E4",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_required_root_attributes_are_required",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_canvas_dimensions_must_be_positive_integers"
       ],
       "proof_requirements": {
         "negative": [
@@ -715,16 +725,11 @@
           "One discriminating negative per normative and security obligation plus multi-error aggregation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
         "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-STACK-001",
@@ -1805,20 +1810,18 @@
     {
       "capability_id": "ORA-VALIDATE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of already-implemented SAL-ORA-OBL-6491749388BB6731 (identical rule_text): member names are case-sensitive; non-ASCII UTF-8 names round-trip."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One discriminating negative per normative and security obligation plus multi-error aggregation."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-4DDAA1D370E3106E",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_member_names_are_case_sensitive",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_non_ascii_member_names_round_trip"
       ],
       "proof_requirements": {
         "negative": [
@@ -1828,16 +1831,11 @@
           "One discriminating negative per normative and security obligation plus multi-error aggregation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-COMPOSITE-001",
@@ -3109,20 +3107,28 @@
     {
       "capability_id": "ORA-VALIDATE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-CONTAINER-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of already-implemented SAL-ORA-OBL-B7B7362D7DBCA9A2 (identical rule_text): mimetype member requirements proven against every named clause."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One discriminating negative per normative and security obligation plus multi-error aggregation."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-99E022E1F9490AE2",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_well_formed_archive_opens",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_missing_mimetype_is_rejected",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_the_first_member",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_must_be_stored_uncompressed",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_any_surrounding_whitespace",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_mimetype_rejects_wrong_values"
       ],
       "proof_requirements": {
         "negative": [
@@ -3132,16 +3138,11 @@
           "One discriminating negative per normative and security obligation plus multi-error aggregation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-STREAM-001",
@@ -3451,20 +3452,23 @@
     {
       "capability_id": "ORA-VALIDATE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of already-implemented SAL-ORA-OBL-6078C4F67F33C8E4 (identical rule_text): xres/yres paired, positive, default to 72."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One discriminating negative per normative and security obligation plus multi-error aggregation."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_resolution_attributes_must_be_specified_together",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_resolution_must_be_positive_integers"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-AD8A2C03327A9DF2",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_stack_and_document.py::test_resolution_defaults_to_72_when_absent",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_resolution_is_read_when_present",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_resolution_attributes_must_be_specified_together",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_resolution_must_be_positive_integers"
       ],
       "proof_requirements": {
         "negative": [
@@ -3474,16 +3478,11 @@
           "One discriminating negative per normative and security obligation plus multi-error aggregation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
         "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-EDIT-001",
@@ -3778,20 +3777,20 @@
     {
       "capability_id": "ORA-VALIDATE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate of already-implemented SAL-ORA-OBL-047E5523BB0D85D5 (identical rule_text): layer src is archive-root-relative and traversal is refused."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One discriminating negative per normative and security obligation plus multi-error aggregation."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-CE7043CB956573DD",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_stack_and_document.py::test_layer_src_is_archive_root_relative",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_layer_src_that_escapes_the_archive_is_refused"
       ],
       "proof_requirements": {
         "negative": [
@@ -3801,16 +3800,11 @@
           "One discriminating negative per normative and security obligation plus multi-error aggregation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/model/stack.py::validate_src"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-STACK-001",
@@ -4200,20 +4194,21 @@
     {
       "capability_id": "ORA-VALIDATE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-ASSET-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cross-capability duplicate (this exact clause) of ORA-BASELINEASSET-001's already-implemented SAL-ORA-OBL-48761EB31C2C2F7D: Thumbnails/thumbnail.png is required and non-conforming thumbnails are refused, each proven independently."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One discriminating negative per normative and security obligation plus multi-error aggregation."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_mode_rejects_a_document_missing_its_thumbnail",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_non_conforming_thumbnail"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-ED7755CB3433CE7B",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_raster_assets.py::test_a_conforming_thumbnail_is_accepted",
+        "tests/python/ora/test_obligation_raster_assets.py::test_non_conforming_thumbnails_are_rejected"
       ],
       "proof_requirements": {
         "negative": [
@@ -4223,34 +4218,33 @@
           "One discriminating negative per normative and security obligation plus multi-error aggregation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::_baseline_asset_diagnostics",
+        "src/python/ora/src/format_factory/ora/codec/png_metadata.py::RasterMetadata"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-VALIDATE-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-VALIDATE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Each layer is validated independently (a document with one bad and one good layer source reports exactly one diagnostic, naming only the bad one) and diagnostics are aggregated into a stable, deterministic report rather than raised as exceptions. validate() never repairs or normalizes anything -- its signature takes no auto-fix parameter, and it returns a report without mutating its input; the only opt-in recovery this package offers at all is ReadMode.TOLERANT on load(), which is a separate, explicitly-requested code path (proven by test_tolerant_mode_recovers_and_reports_the_recovery), not something validate() itself does unasked."
       ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: One discriminating negative per normative and security obligation plus multi-error aggregation."
+        "Confirmed gap, not an audit backlog: this obligation asks to \"distinguish errors from interoperability warnings\", but every Diagnostic this package emits uses Severity.ERROR -- Severity.WARNING (which the shared Diagnostic/Severity type from format_factory.core already supports) is never constructed anywhere in lifecycle.py. There is currently no finding this package would classify as a non-fatal interoperability warning rather than a hard error; introducing that distinction would require deciding, per diagnostic, which existing ERROR findings are actually softer warnings -- a real design decision not attempted this slice."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_does_not_raise_on_a_broken_archive"
+      ],
       "obligation_id": "SAL-ORA-OBL-F2672F4CCD923AC2",
       "positive_test_selectors": [
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_bytes",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_readable_stream",
-        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_load_from_a_filesystem_path"
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_multi_layer_validation_checks_all_sources",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_returns_structured_diagnostics_rather_than_raising",
+        "tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_conforming_document_as_valid"
       ],
       "proof_requirements": {
         "negative": [
@@ -4262,12 +4256,8 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::OraImage",
-        "src/python/ora/src/format_factory/ora/lifecycle.py::load",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_Walker",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/lifecycle.py::validate",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::_layer_png_diagnostics"
       ],
       "status": "partial"
     },
@@ -4541,6 +4531,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-resolution-isolation-001.json": "1a8d632812f95c0c628a894ccf0d2a6e1cc96c7784e6a38506cf576c66d67c59",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-security-baseline-001.json": "3c679aa993c7146ac43c33f5ca132b0a7d88c643e4aa8b0756c285e16ca3f011",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-stack-citation-audit-001.json": "e2198be09d7d47d2fbadd516d37c0e101963b81426439c5d1e279337a51c0126",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-validate-citation-audit-001.json": "ade817924adad22d1daa460b7b65907354384fc65dede9d4f50e690ef3ab5c02",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-write-citation-audit-001.json": "c07ab089aecf636747ad28b21ba76d6662fff47d2731eb22013bb715a144ce8b",
     "src/python/ora/src/format_factory/ora/codec/assets.py": "daa355728ed65a92d69c3178f91af4075501bde0549fb0ce9755a944206b9091",
     "src/python/ora/src/format_factory/ora/codec/container.py": "02dd620d7c5f405a2a63222a686cc77a102ad8da95893b43716684bc1c2fbde5",
@@ -4567,12 +4558,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 75,
+      "implemented": 81,
       "missing": 20,
-      "partial": 39
+      "partial": 33
     },
     "total": 134,
-    "unresolved": 59
+    "unresolved": 53
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
