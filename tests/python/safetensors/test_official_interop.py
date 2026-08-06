@@ -84,11 +84,14 @@ def test_preservation_roundtrip_is_officially_readable(
         descriptor = rebuilt_header["x"]
         assert isinstance(descriptor, dict)
         assert descriptor["vendor"] == {"mode": "safe", "revision": 1}
-        if case_name == "string-map":
-            assert rebuilt_header["__metadata__"] == metadata
-        else:
-            # Absent and explicitly empty metadata are semantically equivalent.
+        if case_name == "absent":
+            # SAFETENSORS-PRESERVE-001: no __metadata__ key is a distinct
+            # state from an explicitly empty one, and must round-trip as such.
             assert "__metadata__" not in rebuilt_header
+        elif case_name == "empty":
+            assert rebuilt_header["__metadata__"] == {}
+        else:
+            assert rebuilt_header["__metadata__"] == metadata
 
         official_tensors = dict(official_safetensors.deserialize(rebuilt))
         assert official_tensors["x"] == {

@@ -3,6 +3,11 @@ format_id: safetensors
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: SAFETENSORS-ISOLATED-WHEEL-INTEROP-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-safetensors-isolated-wheel-interop-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike SAFETENSORS-BASELINE-SUITE. Closes safetensors'' only remaining obligation. Precisely investigated the GAP-002 mechanism rather than trusting the prior description: format-factory-safetensors and safetensors are different distribution names (no metadata-name collision), and the real reason the shared dev venv cannot carry the official safetensors package is a separate, legacy safetensors shadow-package test suite (test_safetensors_validation.py and 6 siblings) that needs a different, local top-level safetensors module identity -- confirmed by installing the official package (7 collection errors), then uninstalling (errors resolved), then fully reverting pyproject.toml and the venv to original state. Proven instead in a genuinely isolated, reproducible environment: tools/run_package_install_proof.py --format safetensors''s ephemeral proof venv (.local/package-install-proof-venv, gitignored) plus pip install safetensors into that same venv -- all 4 target tests pass there. Also found and fixed one genuine test bug along the way: test_official_interop.py wrongly assumed absent and explicitly-empty __metadata__ are equivalent, when the source already correctly implements SAFETENSORS-PRESERVE-001''s documented distinction between the two states. safetensors suite in the shared dev venv unchanged at 403 passed, 1 skipped, 4 failed (the same 4 tests, by design, since the official package is deliberately not installed there). NOT re-run against a live network fetch of safetensors -- pip installed 0.8.0 from the standard package index into an ephemeral, gitignored venv; the strongest oracle tier used this session for cross-implementation interop, not merely SELF-CONSISTENT. Covers SAL-SAFETENSORS-OBL-9229B611B9CCD5F8 only; it supports no other obligation and promotes no product state.'
 - evidence_id: SAFETENSORS-BASELINE-SUITE
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-safetensors-001.json
   expected_result: PASS_WITH_KNOWN_ENVIRONMENT_FAILURES
@@ -1459,7 +1464,7 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-SAFETENSORS-OBL-9229B611B9CCD5F8
   capability_id: SAFETENSORS-INTEROP-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header
   - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads
@@ -1475,13 +1480,15 @@ obligations:
   negative_test_selectors: []
   execution_evidence_ids:
   - SAFETENSORS-BASELINE-SUITE
+  - SAFETENSORS-ISOLATED-WHEEL-INTEROP-PROOF
   implemented_behavior:
-  - 'These are the correct, obligation-specific tests (bidirectional read/write cross-validation against the pinned official safetensors release, plus collision-free co-installation) and they exist with the right assertions. They are excluded from `implemented` here for a precise, non-generic reason: all 4 currently fail in this shared dev venv on the known GAP-002 shadow-package name-collision (importlib.metadata cannot resolve the ''safetensors'' distribution when both format_factory''s and the official package''s editable installs share the venv) and pass only in an isolated wheel-install environment, per SAFETENSORS-BASELINE-SUITE''s truth_boundary. This is an environment limitation, not an unbuilt capability -- the interop code path itself is exercised by these tests, just not in this venv.'
-  missing_behavior:
-  - 'Official-release bidirectional interop and coinstall-collision-freedom are not currently provable in the shared dev venv due to GAP-002 (importlib.metadata package-name collision between format_factory''s safetensors submodule and the officially pinned safetensors distribution). Provable only in an isolated wheel-install environment; not re-run there this slice.'
+  - 'Bidirectional interop against the pinned official safetensors release (0.8.0) and collision-free co-installation are now genuinely proven end to end, in a real isolated wheel-install environment -- not the shared dev venv, by design. Investigated the exact mechanism precisely rather than trusting the prior GAP-002 description at face value: format-factory-safetensors and safetensors are DIFFERENT distribution names (confirmed via importlib.metadata.distributions()), so there is no metadata-name collision between them as such. The real blocker is that the shared dev venv also carries a separate, legacy shadow-package test suite (test_safetensors_validation.py and siblings) that imports a bare top-level safetensors.exceptions/safetensors.safetensors_codec module expecting a LOCAL shadow package, not the official PyPI distribution -- installing the real official safetensors package into the shared venv breaks that shadow-package suite outright (confirmed by installing it, observing 7 collection errors, then uninstalling and confirming they resolve; the official package was reverted out of the shared venv and out of pyproject.toml before finishing this slice). Instead, proven in a genuinely isolated, reproducible environment: `python tools/run_package_install_proof.py --format safetensors` builds format-factory-safetensors as a real wheel into an ephemeral proof venv (.local/package-install-proof-venv, ephemeral/gitignored), then `pip install safetensors` into that SAME venv, then running these exact 4 tests there -- all 4 passed. This also surfaced and fixed one genuine, real bug in test_official_interop.py itself: its own assumption that absent and explicitly-empty __metadata__ are semantically equivalent was WRONG -- the reader/writer already correctly implement SAFETENSORS-PRESERVE-001''s documented distinction between the two states (see reader.py''s _decode_header docstring), and the test''s assertion was fixed to expect that distinction rather than collapsing it.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Official corpus, bidirectional writer vectors, contradiction cases, and installed co-import proof.
+    - Official corpus, bidirectional writer vectors, contradiction cases, and installed co-import proof --
+      proven in an isolated wheel-install environment, reproducible via tools/run_package_install_proof.py
+      --format safetensors plus pip install safetensors into that same ephemeral venv.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-SAFETENSORS-OBL-9511E7A64BBE4BE0

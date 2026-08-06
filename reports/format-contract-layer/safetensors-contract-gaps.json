@@ -1,0 +1,43 @@
+{
+  "format_id": "safetensors",
+  "gaps": [
+    {
+      "gap_id": "GAP-FCL-SAFETENSORS-001",
+      "format": "SAFETENSORS",
+      "product_type": "foss_reduced",
+      "capability_name": "contract:SAFETENSORS-INTEROP-001",
+      "current_state": "tested",
+      "gap_type": "missing_implementation",
+      "status": "open",
+      "blocks_poc": false,
+      "blocks_readiness": true,
+      "commercial_impact": "medium",
+      "foss_impact": "high",
+      "priority": "P1",
+      "owning_lane": "product_deepening",
+      "suggested_taskcard": "TC-FCLGAP-SAFETENSORS-001",
+      "suggested_verification": "Raise observed depth from 3 to required 5 with executed tests; rerun contract_reconciler",
+      "related_capability_id": "SAFETENSORS-INTEROP-001",
+      "notes": "L30 contract gap: shared/format-contracts/safetensors.yaml capability SAFETENSORS-INTEROP-001 requires depth 5, observed 3 (TESTED). Origin: contract_reconciler."
+    },
+    {
+      "gap_id": "GAP-FCL-SAFETENSORS-002",
+      "format": "SAFETENSORS",
+      "product_type": "foss_reduced",
+      "capability_name": "contract:SAFETENSORS-PRESERVE-001",
+      "current_state": "tested",
+      "gap_type": "missing_implementation",
+      "status": "open",
+      "blocks_poc": false,
+      "blocks_readiness": true,
+      "commercial_impact": "medium",
+      "foss_impact": "high",
+      "priority": "P1",
+      "owning_lane": "product_deepening",
+      "suggested_taskcard": "TC-FCLGAP-SAFETENSORS-002",
+      "suggested_verification": "Raise observed depth from 3 to required 4 with executed tests; rerun contract_reconciler",
+      "related_capability_id": "SAFETENSORS-PRESERVE-001",
+      "notes": "L30 contract gap: shared/format-contracts/safetensors.yaml capability SAFETENSORS-PRESERVE-001 requires depth 4, observed 3 (TESTED). Origin: contract_reconciler."
+    }
+  ]
+}

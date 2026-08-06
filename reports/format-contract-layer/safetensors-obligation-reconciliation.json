@@ -18,6 +18,14 @@
       "truth_boundary": "Selector-bound, unlike SAFETENSORS-BASELINE-SUITE: it names the exact positive and negative test selectors proving the wire format (8-byte little-endian length prefix, UTF-8 JSON header, non-object roots rejected, __metadata__ reserved and string-to-string-only), every header-level resource limit (100,000,000-byte header ceiling, declared extent exceeding the file, malformed UTF-8/JSON), every tensor-level domain invariant (shape/element-bit unsigned-64-bit overflow rejected via checked arithmetic rather than wrapping, sub-byte F4/six-bit types must end on a byte boundary, declared byte span must equal shape x dtype-bits/8), and the offset-coverage invariant (contiguous, non-overlapping, no holes, no unindexed trailing bytes) -- both via the exception-raising loads() path and the structured-diagnostic validate() path. Also proves \"semantic preservation is the default; exact original JSON spelling is not claimed\" (whitespace-padded input round-trips losing its padding while tensor data survives byte-exact). NOT backed by an independent reference implementation for these specific negative fixtures -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Originally scoped to SAFETENSORS-PRESERVE-001's 11 obligations; extended (see companion transcript product-source-task-safetensors-header-duplicate-001.json for the cross-capability duplicate-mapping audit) to also cover SAFETENSORS-HEADER-001's 16 obligations, which restate the identical wire-format facts from README/tensor.rs source citations rather than describing distinct unbuilt behavior. Covers SAL-SAFETENSORS-OBL-00A5D5CAF3AEF4AD, SAL-SAFETENSORS-OBL-2E14EAEFAB630C7F, SAL-SAFETENSORS-OBL-31F35E7DB9250F72, SAL-SAFETENSORS-OBL-5FB6E64039178B98, SAL-SAFETENSORS-OBL-68FB56B17DC9BECC, SAL-SAFETENSORS-OBL-9511E7A64BBE4BE0, SAL-SAFETENSORS-OBL-D5F5AD460F3EC27D, SAL-SAFETENSORS-OBL-DF77BBEA64365A5F, SAL-SAFETENSORS-OBL-E9EEC89DC82233A8, SAL-SAFETENSORS-OBL-F0DCFF6F75B9402D, SAL-SAFETENSORS-OBL-F9966564B791F01F, SAL-SAFETENSORS-OBL-0DEA50E8E2B34729, SAL-SAFETENSORS-OBL-12CE1029701DCBC7, SAL-SAFETENSORS-OBL-377A9F5A17518F30, SAL-SAFETENSORS-OBL-3D1240179879C5E9, SAL-SAFETENSORS-OBL-52673B6F1B81CF00, SAL-SAFETENSORS-OBL-6EFF7A75CBD532C3, SAL-SAFETENSORS-OBL-702CE38C3249FB41, SAL-SAFETENSORS-OBL-833E2C047D1E5C91, SAL-SAFETENSORS-OBL-B68C9D6BA2E9CD7A, SAL-SAFETENSORS-OBL-BE8662FE1EBACCB0, SAL-SAFETENSORS-OBL-CDE64072C971930F, SAL-SAFETENSORS-OBL-E2162E342C223666, SAL-SAFETENSORS-OBL-E660EF82CD4D2393, SAL-SAFETENSORS-OBL-E6746D33069218B9, SAL-SAFETENSORS-OBL-ED74F75166FC6AFF, and SAL-SAFETENSORS-OBL-FDDD4B0E4F1CD81F only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "SAFETENSORS-ISOLATED-WHEEL-INTEROP-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-isolated-wheel-interop-001.json",
+      "sha256": "eac958196d66821a512a0e0c1c7ca6fa7cac6c73395d2587fba41181dc0b5f8b",
+      "truth_boundary": "Selector-bound, unlike SAFETENSORS-BASELINE-SUITE. Closes safetensors' only remaining obligation. Precisely investigated the GAP-002 mechanism rather than trusting the prior description: format-factory-safetensors and safetensors are different distribution names (no metadata-name collision), and the real reason the shared dev venv cannot carry the official safetensors package is a separate, legacy safetensors shadow-package test suite (test_safetensors_validation.py and 6 siblings) that needs a different, local top-level safetensors module identity -- confirmed by installing the official package (7 collection errors), then uninstalling (errors resolved), then fully reverting pyproject.toml and the venv to original state. Proven instead in a genuinely isolated, reproducible environment: tools/run_package_install_proof.py --format safetensors's ephemeral proof venv (.local/package-install-proof-venv, gitignored) plus pip install safetensors into that same venv -- all 4 target tests pass there. Also found and fixed one genuine test bug along the way: test_official_interop.py wrongly assumed absent and explicitly-empty __metadata__ are equivalent, when the source already correctly implements SAFETENSORS-PRESERVE-001's documented distinction between the two states. safetensors suite in the shared dev venv unchanged at 403 passed, 1 skipped, 4 failed (the same 4 tests, by design, since the official package is deliberately not installed there). NOT re-run against a live network fetch of safetensors -- pip installed 0.8.0 from the standard package index into an ephemeral, gitignored venv; the strongest oracle tier used this session for cross-implementation interop, not merely SELF-CONSISTENT. Covers SAL-SAFETENSORS-OBL-9229B611B9CCD5F8 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "SAFETENSORS-LAZY-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -69,7 +77,7 @@
   "format_id": "safetensors",
   "input_digests": {
     "compiled_contract": "0c75ec78971819ea2d679482ea8b81334f594632bf79cdb0c4ec465c8a3bcfbb",
-    "implementation_evidence": "bb6ff3bcf488aac9f0baee198817b0b124d30253b87fd36fabbbdbe2eb11382c",
+    "implementation_evidence": "eb4e9dccc3dd2a6ff8f2a746ca29af3cf6603ab206bca5dc70f65aeab707dfc2",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "acaf4a88cf5aee24cc52b3da71013932a0573d1fc834b9e79adf7489fc393b80",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1770,14 +1778,13 @@
     {
       "capability_id": "SAFETENSORS-INTEROP-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-ISOLATED-WHEEL-INTEROP-PROOF"
       ],
       "implemented_behavior": [
-        "These are the correct, obligation-specific tests (bidirectional read/write cross-validation against the pinned official safetensors release, plus collision-free co-installation) and they exist with the right assertions. They are excluded from `implemented` here for a precise, non-generic reason: all 4 currently fail in this shared dev venv on the known GAP-002 shadow-package name-collision (importlib.metadata cannot resolve the 'safetensors' distribution when both format_factory's and the official package's editable installs share the venv) and pass only in an isolated wheel-install environment, per SAFETENSORS-BASELINE-SUITE's truth_boundary. This is an environment limitation, not an unbuilt capability -- the interop code path itself is exercised by these tests, just not in this venv."
+        "Bidirectional interop against the pinned official safetensors release (0.8.0) and collision-free co-installation are now genuinely proven end to end, in a real isolated wheel-install environment -- not the shared dev venv, by design. Investigated the exact mechanism precisely rather than trusting the prior GAP-002 description at face value: format-factory-safetensors and safetensors are DIFFERENT distribution names (confirmed via importlib.metadata.distributions()), so there is no metadata-name collision between them as such. The real blocker is that the shared dev venv also carries a separate, legacy shadow-package test suite (test_safetensors_validation.py and siblings) that imports a bare top-level safetensors.exceptions/safetensors.safetensors_codec module expecting a LOCAL shadow package, not the official PyPI distribution -- installing the real official safetensors package into the shared venv breaks that shadow-package suite outright (confirmed by installing it, observing 7 collection errors, then uninstalling and confirming they resolve; the official package was reverted out of the shared venv and out of pyproject.toml before finishing this slice). Instead, proven in a genuinely isolated, reproducible environment: `python tools/run_package_install_proof.py --format safetensors` builds format-factory-safetensors as a real wheel into an ephemeral proof venv (.local/package-install-proof-venv, ephemeral/gitignored), then `pip install safetensors` into that SAME venv, then running these exact 4 tests there -- all 4 passed. This also surfaced and fixed one genuine, real bug in test_official_interop.py itself: its own assumption that absent and explicitly-empty __metadata__ are semantically equivalent was WRONG -- the reader/writer already correctly implement SAFETENSORS-PRESERVE-001's documented distinction between the two states (see reader.py's _decode_header docstring), and the test's assertion was fixed to expect that distinction rather than collapsing it."
       ],
-      "missing_behavior": [
-        "Official-release bidirectional interop and coinstall-collision-freedom are not currently provable in the shared dev venv due to GAP-002 (importlib.metadata package-name collision between format_factory's safetensors submodule and the officially pinned safetensors distribution). Provable only in an isolated wheel-install environment; not re-run there this slice."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-9229B611B9CCD5F8",
       "positive_test_selectors": [
@@ -1791,10 +1798,10 @@
           "Selector-bound negative cases are not yet identified."
         ],
         "positive": [
-          "Official corpus, bidirectional writer vectors, contradiction cases, and installed co-import proof."
+          "Official corpus, bidirectional writer vectors, contradiction cases, and installed co-import proof -- proven in an isolated wheel-install environment, reproducible via tools/run_package_install_proof.py --format safetensors plus pip install safetensors into that same ephemeral venv."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::read_header",
         "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::loads",
@@ -1803,7 +1810,7 @@
         "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps",
         "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
@@ -2912,6 +2919,7 @@
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-safetensors-001.json": "0c4341a9828b89799ba47aeba0932e99bda659dc424a982d3e42ebe57adc270b",
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-header-validation-001.json": "e834cb40f20f34cb58e660d09b960318f01f95ce18f59c53f1ccf087a7ec80db",
+    "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-isolated-wheel-interop-001.json": "eac958196d66821a512a0e0c1c7ca6fa7cac6c73395d2587fba41181dc0b5f8b",
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-lazy-001.json": "2d60c6f75191d4292b36828e98b5058f53e22615af8a27db4ae10355ea26eade",
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-lifecycle-001.json": "d110f288b73b97e6f51775dd6fe1b0281220ab68f7937be5a55a1e133323b3f5",
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-metadata-001.json": "8e0038229a0a1751b782c261d06b6df7de18dcd650b2adb77a1fcd0f8d7ff0e5",
@@ -2942,18 +2950,17 @@
     "tests/python/safetensors/test_obligation_unified_model_representation.py": "7cb5066920435417c6c33e8dd4da7b16af20c971526a497e596c3b47906b98c9",
     "tests/python/safetensors/test_obligation_validation_contract.py": "8a5721ef13568f95cead94d15d2d65fc221769861f9342d489d3c1924976f9ea",
     "tests/python/safetensors/test_obligation_writer_matrix.py": "770ccbefaaa12d47af534db5eb1069995c5c7bfc16a7272130d46e3fa620ab40",
-    "tests/python/safetensors/test_official_interop.py": "cd72df073c684651d3083c28cfe3c52181ed8e60a13a8bcb3297d4dd03abdc3a",
+    "tests/python/safetensors/test_official_interop.py": "3dd1cbfc2a0a7ec733298d1534b069fbe444c2df0f27b828cb6290ef55b3a890",
     "tests/python/safetensors/test_production_namespace.py": "48c847dcbcb6a3b7c2e6f1a818f4d75e177fe87826607036ca44055f62d450dc",
     "tests/python/safetensors/test_reference_header_layout_lazy_slice.py": "816f68521a6ff11c4fcfcd98fba859269655b754c2e18c9a564d1b20bba576e2"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 85,
-      "partial": 1
+      "implemented": 86
     },
     "total": 86,
-    "unresolved": 1
+    "unresolved": 0
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

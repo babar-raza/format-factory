@@ -1,0 +1,53 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-safetensors-isolated-wheel-interop-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T21:05:00Z",
+  "inputs": {
+    "format_id": "safetensors",
+    "task_id": "TC_FF6_SAFETENSORS_ISOLATED_WHEEL_INTEROP_001",
+    "task_kind": "environment-verification-plus-test-bug-fix",
+    "root_cause": "safetensors' last unresolved obligation (SAL-SAFETENSORS-OBL-9229B611B9CCD5F8, bidirectional interop against the official release plus collision-free coinstall) was marked GAP-002-environment-blocked in the shared dev venv: 4 tests fail there with importlib.metadata.PackageNotFoundError for 'safetensors' since the official PyPI package was never installed.",
+    "obligation_targeted": "SAL-SAFETENSORS-OBL-9229B611B9CCD5F8 (SAFETENSORS-INTEROP-001), safetensors' only remaining unresolved obligation.",
+    "acceptance_evidence": "All 4 previously-failing interop tests genuinely pass end-to-end in a real, isolated, reproducible wheel-install environment (tools/run_package_install_proof.py --format safetensors's ephemeral proof venv, plus the official safetensors package installed into that same venv). One genuine bug found and fixed in the test file itself along the way.",
+    "regression_tier": "full safetensors package suite (tests/python/safetensors), confirmed clean in the shared dev venv both before and after this investigation"
+  },
+  "execution_steps": [
+    "1. Investigated the exact GAP-002 mechanism precisely rather than trusting the existing missing_behavior description at face value (per GAP-008). Confirmed format-factory-safetensors and safetensors are DIFFERENT importlib.metadata distribution names -- no metadata-name collision between them as such. The actual, simpler cause: the official safetensors PyPI package was never installed in the shared dev venv at all.",
+    "2. Tried the obvious fix: added safetensors>=0.4 to pyproject.toml's dev extras and pip installed it into .venv. 2 of the 4 target tests passed immediately; the other 2 (which specifically assert format_factory.safetensors resolves under site-packages, i.e. a real wheel install, not editable) failed as expected -- editable installs never satisfy that assertion, matching the missing_behavior's own note that this needs an isolated wheel-install environment.",
+    "3. Before proceeding further, ran the FULL safetensors suite in the shared dev venv and discovered a real regression: 7 collection errors in test_safetensors_validation.py and 6 sibling files, all importing a bare top-level safetensors.exceptions/safetensors.safetensors_codec module. Confirmed causality directly: uninstalling the official package made these pass again immediately. This is a genuine, unrelated legacy shadow-package test suite in this same directory that needs a DIFFERENT local 'safetensors' module identity, which the official PyPI package's presence shadows/conflicts with in the shared venv.",
+    "4. Reverted both the pyproject.toml dev-dependency addition and the .venv pip install completely, confirming the shared dev venv suite returned to its exact original baseline (403 passed, 1 skipped, the same 4 pre-existing failures) before proceeding -- the shared dev venv must NOT carry the official safetensors package.",
+    "5. Used the already-existing, purpose-built tools/run_package_install_proof.py --format safetensors instead: it builds format-factory-safetensors as a real wheel and installs it into a genuinely isolated, ephemeral proof venv (.local/package-install-proof-venv, gitignored) with no shadow-package test suite present. Installed the official safetensors package into that SAME isolated venv (no conflict there, since the legacy shadow tests are never run against it) and ran the 4 target tests directly against it with that venv's own pytest.",
+    "6. 3 of 4 passed immediately; the 4th (test_preservation_roundtrip_is_officially_readable) failed on a real, distinct logic assertion, not an environment issue: it assumed 'absent __metadata__' and 'explicitly empty __metadata__: {}' are semantically equivalent and should both round-trip to no __metadata__ key. Read reader.py's _decode_header, whose own docstring explicitly documents SAFETENSORS-PRESERVE-001 requires distinguishing these two states -- confirming the SOURCE behavior (writing __metadata__: {} for an explicitly-declared-but-empty case) is correct and the TEST's assumption was the bug. Fixed the test's assertion to expect the documented distinction instead of collapsing it.",
+    "7. Re-ran all 4 tests against the isolated proof venv: all 4 passed. Ran ruff on the one changed test file (clean). Re-ran the full safetensors suite in the shared dev venv once more to confirm zero lingering state from the venv churn (still 403 passed, 1 skipped, same 4 known failures there by design)."
+  ],
+  "allowed_files": [
+    "tests/python/safetensors/test_official_interop.py",
+    "shared/format-contracts/implementation-evidence/safetensors.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/safetensors/test_official_interop.py",
+    "shared/format-contracts/implementation-evidence/safetensors.yaml"
+  ],
+  "tests_run": [
+    ".local/package-install-proof-venv/Scripts/python.exe -m pytest tests/python/safetensors/test_obligation_bidirectional_interop.py tests/python/safetensors/test_official_interop.py -q -- 4 passed",
+    ".venv/Scripts/pytest tests/python/safetensors/ -q -- 403 passed, 1 skipped, 4 failed (same 4 known environment-scoped failures, unchanged baseline)",
+    ".venv/Scripts/python -m ruff check tests/python/safetensors/test_official_interop.py -- all checks passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 86,
+    "oracle": "Bidirectional interop is proven against the real, officially pinned safetensors 0.8.0 PyPI distribution in a genuinely isolated wheel-install environment -- the strongest oracle tier this session has used for cross-implementation interop. Everything else SELF-CONSISTENT per GAP-008.",
+    "obligations_moved_breakdown": "The single remaining safetensors obligation promoted to implemented. safetensors reaches 86/86 implemented -- the second of the six FF6 formats (after ipynb) to reach full obligation-implemented status this session.",
+    "environment_change_summary": "No lasting change to the shared dev venv or to pyproject.toml -- both were fully reverted to their original state after confirming the official safetensors package cannot coexist there with this repo's legacy safetensors shadow-package test suite. The only persistent change is the test-file bug fix and the (gitignored, ephemeral) proof venv artifact.",
+    "genuine_bug_found_and_fixed": "test_official_interop.py's own assumption that absent and explicitly-empty __metadata__ are semantically equivalent was wrong; the source already correctly implements the documented SAFETENSORS-PRESERVE-001 distinction between the two states."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
