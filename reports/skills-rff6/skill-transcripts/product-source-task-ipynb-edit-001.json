@@ -1,0 +1,46 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-edit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T11:25:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_EDIT_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "IPYNB-EDIT-001's real production source (model/editor.py, CellEditor) and its 16-test suite (tests/python/ipynb/test_obligation_cell_editor.py) already existed but were never audited: the evidence row cited only 3 of 16 tests, no negative selectors, and was missing CellEditor/edit_cells (the actual entry points) from source_symbols, left at partial with the generic 'not yet audited' placeholder.",
+    "obligation_targeted": "SAL-IPYNB-OBL-BD6E7B4AA7C7E06C",
+    "acceptance_evidence": "tests/python/ipynb/test_obligation_cell_editor.py",
+    "regression_tier": "full IPYNB package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Continued the ipynb single-obligation-capability sweep after IPYNB-MERGE-001, following the same 'check for existing source first' rhythm. Found model/editor.py already complete: CellEditor provides insert/move/copy/replace/remove plus remove_where (bulk), and search(CellQuery) by cell_id/cell_type/tag/metadata/source_text -- every criterion the obligation names.",
+    "2. Read tests/python/ipynb/test_obligation_cell_editor.py in full (16 tests, some parametrized): stable-ID CRUD operations, deterministic copy-ID generation, combined-criteria search, deterministic bulk-remove reports, dry-run-matches-apply semantics, atomic refusal of invalid/duplicate cells and of an edit that would invalidate the notebook, forward-compatibility (unknown future cell fields survive an unrelated edit unchanged), and -- matching the obligation's own required_tests wording exactly -- every mutation class proven dry-run-matches-apply AND save-reload-stable-IDs.",
+    "3. Ran all 16 tests directly before citing any of them: all passed.",
+    "4. Corrected source_symbols (added CellEditor and edit_cells, the actual public entry points, which were missing) and positive/negative selectors to the full 16-test set, split by whether each proves a valid mutation succeeds (positive) or an invalid one is refused (negative). Promoted to implemented. Zero source or test changes."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_cell_editor.py -v -- 16 passed",
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 68,
+    "ipynb_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against Jupyter's own notebook-editing tools. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_no_new_production_source": "CellEditor's full CRUD-plus-search surface, bulk operations with change reports, and atomic invalid-edit refusal were already complete and correctly tested -- this slice audited and cited that existing proof, it did not build anything new."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

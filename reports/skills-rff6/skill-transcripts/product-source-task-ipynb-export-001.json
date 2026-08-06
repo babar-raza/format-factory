@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-export-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T11:28:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_EXPORT_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "IPYNB-EXPORT-001's real production source (adapters/export.py, whose own module docstring names this exact obligation ID) and its 17-test suite already existed but were never audited: the evidence row cited only 3 of 17 tests, no negative selectors, and was missing PythonScriptExporter from source_symbols, left at partial with the generic placeholder.",
+    "obligation_targeted": "SAL-IPYNB-OBL-AABAEFD635A6381D",
+    "acceptance_evidence": "tests/python/ipynb/test_obligation_export_adapter.py",
+    "regression_tier": "full IPYNB package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Continued the ipynb single-obligation-capability sweep. adapters/export.py's own module docstring literally opens with 'IPYNB-EXPORT-001: exporter adapters return main output plus ancillary resources, with exporter-specific logic outside the core parser' -- a direct signal the module was built specifically for this obligation.",
+    "2. Read adapters/export.py in full: ExportAdapter is a runtime_checkable Protocol (not an ABC), ExportResult bundles content plus a tuple of AncillaryResource, and a shared _collect_resources() helper (living in this adapter module, not codec/) extracts both cell attachments and code-cell image outputs into AncillaryResource records carrying filename/mime_type/data/source_path. Two built-in adapters (MarkdownExporter, PythonScriptExporter) both use it.",
+    "3. Read tests/python/ipynb/test_obligation_export_adapter.py in full (17 tests): protocol conformance for both built-ins AND a genuinely independent third-party adapter (test_custom_adapter_conforming_to_protocol_works -- proving ExportAdapter is a real structural-typing extensibility point, not merely satisfied by the two shipped implementations), resource collection from attachments and from outputs independently and combined, per-exporter content-shaping behavior, and an empty-notebook edge case.",
+    "4. Ran all 17 tests directly before citing any of them: all passed.",
+    "5. Corrected source_symbols (added PythonScriptExporter, which was missing) and positive/negative selectors to the full 17-test set. Promoted to implemented. Zero source or test changes."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_export_adapter.py -v -- 17 passed",
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 68,
+    "ipynb_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against Jupyter's own nbconvert exporters. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_no_new_production_source": "ExportAdapter's Protocol-based extensibility, both built-in exporters, and ancillary-resource collection were already complete and correctly tested -- this slice audited and cited that existing proof, it did not build anything new."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

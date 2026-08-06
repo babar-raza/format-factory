@@ -53,6 +53,51 @@ execution_evidence:
     SELF-CONSISTENT per the execution-recovery directive's GAP-008 rule,
     not VERIFIED. Covers SAL-IPYNB-OBL-03A1429F7B7AF3E1 only; it supports
     no other obligation and promotes no product state.
+- evidence_id: IPYNB-EDIT-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-edit-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact positive
+    and negative test selectors for CellEditor's full CRUD surface
+    (insert/move/copy/replace/remove/remove_where), search by every named
+    criterion (id/type/tag/metadata/source text), dry-run-matches-apply and
+    save-reload ID stability for every mutation class, and atomic refusal
+    of invalid or notebook-invalidating edits. SELF-CONSISTENT
+    format_factory-only evidence per the execution-recovery directive's
+    GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-BD6E7B4AA7C7E06C only;
+    it supports no other obligation and promotes no product state.
+- evidence_id: IPYNB-EXPORT-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-export-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact positive
+    and negative test selectors proving ExportAdapter is a genuine runtime
+    Protocol (a third-party adapter conforms without inheriting from
+    anything in this module), and that both built-in exporters return main
+    content plus ancillary resources (attachments and code-cell image
+    outputs) collected by exporter-specific logic living outside the core
+    parser. SELF-CONSISTENT format_factory-only evidence per the
+    execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
+    SAL-IPYNB-OBL-AABAEFD635A6381D only; it supports no other obligation
+    and promotes no product state.
+- evidence_id: IPYNB-WRITE-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-write-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact positive
+    and negative test selectors proving configurable formatting
+    (indent width, compact, nbformat-convention default) combined with
+    non-configurable canonical key ordering (sort_keys is not exposed as a
+    parameter), cell/output array order never changed by key sorting,
+    byte-identical repeated writes and round trips, and byte-exact survival
+    of binary MIME payloads and unknown MIME entries at every indent
+    setting. SELF-CONSISTENT format_factory-only evidence per the
+    execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
+    SAL-IPYNB-OBL-E72B508EFCCD0E0C only; it supports no other obligation
+    and promotes no product state.
 obligations:
 - obligation_id: SAL-IPYNB-OBL-02A00C213D2B0190
   capability_id: IPYNB-ATTACH-001
@@ -1281,25 +1326,36 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-AABAEFD635A6381D
   capability_id: IPYNB-EXPORT-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/adapters/export.py::AncillaryResource
   - src/python/ipynb/src/format_factory/ipynb/adapters/export.py::ExportResult
   - src/python/ipynb/src/format_factory/ipynb/adapters/export.py::ExportAdapter
   - src/python/ipynb/src/format_factory/ipynb/adapters/export.py::MarkdownExporter
+  - src/python/ipynb/src/format_factory/ipynb/adapters/export.py::PythonScriptExporter
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_export_adapter.py::test_markdown_exporter_satisfies_the_export_adapter_protocol
   - tests/python/ipynb/test_obligation_export_adapter.py::test_python_exporter_satisfies_the_export_adapter_protocol
   - tests/python/ipynb/test_obligation_export_adapter.py::test_export_result_contains_content_and_resources
-  negative_test_selectors: []
+  - tests/python/ipynb/test_obligation_export_adapter.py::test_ancillary_resource_carries_filename_mime_data_and_path
+  - tests/python/ipynb/test_obligation_export_adapter.py::test_attachment_resources_are_collected
+  - tests/python/ipynb/test_obligation_export_adapter.py::test_output_image_resources_are_collected
+  - tests/python/ipynb/test_obligation_export_adapter.py::test_resources_are_collected_from_both_attachments_and_outputs
+  - tests/python/ipynb/test_obligation_export_adapter.py::test_python_exporter_also_collects_resources
+  - tests/python/ipynb/test_obligation_export_adapter.py::test_custom_adapter_conforming_to_protocol_works
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_export_adapter.py::test_empty_notebook_produces_no_resources
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-EXPORT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Exporter adapter contract
-    test with ancillary-resource collection.'
+  - 'ExportAdapter is a runtime_checkable Protocol (not merely an abstract base class both built-in
+    exporters happen to satisfy) -- proven by a third-party ad-hoc adapter that conforms without
+    inheriting from anything in this module. Both MarkdownExporter and PythonScriptExporter return an
+    ExportResult (main content plus a tuple of AncillaryResource) built by a shared, exporter-specific
+    _collect_resources() helper that lives in adapters/export.py, not the core parser -- collecting both
+    cell attachments and code-cell image outputs, each carrying filename/mime_type/data/source_path.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Exporter adapter contract test with ancillary-resource collection.
@@ -1478,8 +1534,10 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-BD6E7B4AA7C7E06C
   capability_id: IPYNB-EDIT-001
-  status: partial
+  status: implemented
   source_symbols:
+  - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditor
+  - src/python/ipynb/src/format_factory/ipynb/model/editor.py::edit_cells
   - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEditOperation
   - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellQuery
   - src/python/ipynb/src/format_factory/ipynb/model/editor.py::CellEdit
@@ -1488,15 +1546,25 @@ obligations:
   - tests/python/ipynb/test_obligation_cell_editor.py::test_insert_move_replace_remove_are_stable_id_operations
   - tests/python/ipynb/test_obligation_cell_editor.py::test_copy_uses_deterministic_unique_ids_and_deep_copies
   - tests/python/ipynb/test_obligation_cell_editor.py::test_search_combines_id_type_tag_metadata_and_source_criteria
-  negative_test_selectors: []
+  - tests/python/ipynb/test_obligation_cell_editor.py::test_bulk_remove_has_deterministic_report_and_safe_empty_query
+  - tests/python/ipynb/test_obligation_cell_editor.py::test_dry_run_matches_apply_and_noop_reports_are_explicit
+  - tests/python/ipynb/test_obligation_cell_editor.py::test_future_unknown_cells_survive_unrelated_edit_unchanged
+  - tests/python/ipynb/test_obligation_cell_editor.py::test_every_mutation_dry_run_matches_apply_and_save_reload
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_cell_editor.py::test_insert_rejects_invalid_or_duplicate_cells_without_mutation
+  - tests/python/ipynb/test_obligation_cell_editor.py::test_replace_and_bulk_failure_are_atomic
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-EDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each mutation class save-reload-verifies
-    with IDs stable.'
+  - 'CellEditor provides full stable-ID CRUD (insert/move/copy/replace/remove) plus remove_where for bulk
+    operations, and search() by cell_id/cell_type/tag/metadata/source_text (CellQuery), matching every
+    criterion this obligation names. Every mutation returns a CellEditReport (change list plus applied
+    flag); bulk removal returns one report covering every matched cell. Each mutation class is proven
+    dry-run-matches-apply and save-reload-stable-IDs (the obligation''s own required_tests wording), and
+    an invalid or would-invalidate-the-notebook edit is refused atomically -- no partial mutation is ever
+    committed.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each mutation class save-reload-verifies with IDs stable.
@@ -1795,25 +1863,40 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-E72B508EFCCD0E0C
   capability_id: IPYNB-WRITE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps
   - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump
-  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::write_ipynb
-  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::get_cell_count
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_writer_contract.py::test_default_output_is_unchanged
   - tests/python/ipynb/test_obligation_writer_contract.py::test_indent_controls_the_indentation_width
   - tests/python/ipynb/test_obligation_writer_contract.py::test_indent_none_produces_compact_output
-  negative_test_selectors: []
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_indent_zero_produces_newlines_without_leading_spaces
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_key_ordering_stays_canonical_at_every_indent
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_cell_order_is_never_changed
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_output_order_is_never_changed
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_repeated_writes_are_byte_identical
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_roundtrip_is_stable_across_two_passes
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_binary_mime_payload_is_byte_exact_at_every_indent
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_unknown_mime_entries_are_retained_at_every_indent
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_non_ascii_is_written_as_utf8_not_escaped
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_dump_writes_utf8_bytes_to_a_file
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_written_notebook_still_validates
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_sort_keys_is_not_exposed
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-WRITE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Determinism byte-compare;
-    binary-payload integrity fixtures.'
+  - 'dumps()/dump() write valid UTF-8 JSON (non-ASCII unescaped, never NaN) with configurable formatting
+    (indent: nbformat-convention 1, any other width, or None for compact) and canonical (sort_keys=True)
+    dict-key ordering that is deliberately NOT itself configurable -- test_sort_keys_is_not_exposed
+    proves no parameter can request non-canonical output, which would break the same obligation''s
+    determinism requirement. sort_keys affects only JSON object key order, never JSON array element
+    order, so cells and outputs (both arrays) are proven never reordered at any indent setting. Repeated
+    writes and two-pass round trips are byte-identical; a binary MIME payload and an unknown MIME entry
+    both survive every indent setting byte-for-byte.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Determinism byte-compare; binary-payload integrity fixtures.

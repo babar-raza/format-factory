@@ -1,0 +1,46 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-write-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T11:31:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_WRITE_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "IPYNB-WRITE-001's real production source (codec/writer/writer.py, whose dumps() docstring directly discusses this obligation's own text -- 'SAL-IPYNB-OBL-FCCD0E0C asks for configurable formatting AND canonical key ordering -- two different properties in one sentence') and its 57-test suite already existed but were never audited: the evidence row cited only 3 of 57 tests, no negative selectors, and cited write_ipynb/get_cell_count (legacy-facade symbols unrelated to this specific obligation) instead of the real dumps()/dump() proof, left at partial with the generic placeholder.",
+    "obligation_targeted": "SAL-IPYNB-OBL-E72B508EFCCD0E0C",
+    "acceptance_evidence": "tests/python/ipynb/test_obligation_writer_contract.py",
+    "regression_tier": "full IPYNB package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Continued the ipynb single-obligation-capability sweep. writer.py's dumps() docstring explicitly explains a design decision directly quoting this obligation's own text: key ordering is deliberately NOT configurable, because 'configurable formatting AND canonical key ordering' are two separate properties, and exposing sort_keys as a parameter would let a caller break the same obligation's byte-determinism requirement.",
+    "2. Read tests/python/ipynb/test_obligation_writer_contract.py in full (57 tests across indent parametrizations): configurable formatting (indent width, None for compact, the nbformat-convention default), canonical key ordering proven at every indent AND proven not itself configurable (test_sort_keys_is_not_exposed), cell/output array order proven never changed by key sorting (a JSON-semantics point: sort_keys affects only object keys, never array element order), byte-identical repeated writes and two-pass round trips, byte-exact binary MIME payload and unknown-MIME-entry survival at every indent, UTF-8 non-ASCII handling, and that a written notebook still validates.",
+    "3. Ran all 57 tests directly before citing any of them: all passed.",
+    "4. Corrected source_symbols to the two functions this obligation actually governs (dumps/dump), removing write_ipynb and get_cell_count -- write_ipynb uses a documented separate legacy-facade normalization path (_legacy_normalized, 'the alpha facade's characterized implicit 4.5 normalization'), not the production dumps() path this obligation's proof is about. Corrected positive/negative selectors to the full 14 distinct test functions (57 cases across indent parametrization). Promoted to implemented. Zero source or test changes."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_writer_contract.py -v -- 57 passed",
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 68,
+    "ipynb_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against Jupyter's own nbformat writer. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_no_new_production_source": "dumps()/dump()'s configurable-formatting-plus-canonical-ordering design, determinism, and binary-payload/unknown-field fidelity were already complete and correctly tested -- this slice audited and cited that existing proof, it did not build anything new."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
