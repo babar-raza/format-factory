@@ -29,20 +29,34 @@ execution_evidence:
     instead of keeping its own copies. All 213 pre-existing tests still pass unchanged (parser behavior
     and error types are identical). 38 new tests. ORA suite is now 251 passed with no failures. The remaining
     6 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is
-    `implemented`; ORA-LAYER-001/ORA-GROUP-001''s obligations move to `partial` only.'
+    `implemented`; ORA-LAYER-001/ORA-GROUP-001''s obligations move to `partial` only.
+
+    2026-08-06 (later still): ORA-EDIT-001 adds a new module (transaction.py, apply_transaction()) plus
+    10 tests, covering only its "transaction rollback" required-proof area (three others -- reference
+    repair, stale-view invalidation, independent application reopen -- remain unattempted, see the dated
+    note above for why). ORA suite is now 261 passed with no failures. The remaining 5 capabilities have
+    no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-EDIT-001''s
+    obligations move to `partial` only.'
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
+  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
+  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
     repair, stale-view invalidation, and independent application reopen tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -79,16 +93,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-035B53B843FF49F9
   capability_id: ORA-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
+  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
+  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
     repair, stale-view invalidation, and independent application reopen tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -377,16 +398,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-11C60333E6524D1B
   capability_id: ORA-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
+  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
+  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
     repair, stale-view invalidation, and independent application reopen tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -453,16 +481,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-15D533FE2D5A1215
   capability_id: ORA-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
+  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
+  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
     repair, stale-view invalidation, and independent application reopen tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -1657,16 +1692,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-631448F8E906BB89
   capability_id: ORA-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
+  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
+  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
     repair, stale-view invalidation, and independent application reopen tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -1703,16 +1745,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-68519A171D58F7D6
   capability_id: ORA-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
+  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
+  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
     repair, stale-view invalidation, and independent application reopen tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -1749,16 +1798,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-6B6D7BEE18077E8A
   capability_id: ORA-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
+  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
+  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
     repair, stale-view invalidation, and independent application reopen tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -2058,16 +2114,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-86178CC1AEECB389
   capability_id: ORA-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
+  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
+  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
     repair, stale-view invalidation, and independent application reopen tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -2208,16 +2271,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-94713E68352E9199
   capability_id: ORA-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
+  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
+  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
     repair, stale-view invalidation, and independent application reopen tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -2486,16 +2556,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-9F423271F79A4954
   capability_id: ORA-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
+  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
+  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
     repair, stale-view invalidation, and independent application reopen tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -2631,16 +2708,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-AE0A21E0921EB0B1
   capability_id: ORA-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
+  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
+  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
     repair, stale-view invalidation, and independent application reopen tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -2772,16 +2856,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-BF7AD4693704AF6A
   capability_id: ORA-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
+  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
+  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
     repair, stale-view invalidation, and independent application reopen tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -3089,16 +3180,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-E8D9E4F183B12145
   capability_id: ORA-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
+  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
+  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
     repair, stale-view invalidation, and independent application reopen tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -3134,16 +3232,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-EC8D65524EB96820
   capability_id: ORA-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
+  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
+  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
     repair, stale-view invalidation, and independent application reopen tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -3208,16 +3313,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-F41BA93CE84AA0F6
   capability_id: ORA-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result
+  - tests/python/ora/test_obligation_transactional_edit.py::test_empty_step_sequence_commits_trivially
+  - tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  implemented_behavior:
+  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
+    suite passes.
   missing_behavior:
   - 'Not yet audited against this obligation''s declared proof requirements: Transaction rollback, reference
     repair, stale-view invalidation, and independent application reopen tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen

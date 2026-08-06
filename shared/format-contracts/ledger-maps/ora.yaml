@@ -14,17 +14,14 @@ notes: >-
   exactly the fabrication the evidence process exists to prevent. Recording
   them explicitly keeps all 134 obligations inside the denominator.
 
-  Fourteen capabilities are now mapped to real source that was read, not
+  Fifteen capabilities are now mapped to real source that was read, not
   merely assumed to exist (the GAP-022 rule). Mapping them does not assert
   they are complete -- ORA-STACK-001's model is built and its rendering is
   not -- only that implementing behaviour and tests exist for the
   reconciler to grade.
 
-  This remains mostly a build-from-nothing lane. 6 of 20 capabilities have no
-  source: rendering, compositing, transactional multi-entity editing
-  (ORA-EDIT-001 -- distinct from ORA-LAYER-001/ORA-GROUP-001's per-node
-  edit-and-validate, which is now mapped), masks, streaming, and resolution
-  profiles.
+  This remains mostly a build-from-nothing lane. 5 of 20 capabilities have no
+  source: rendering, compositing, masks, streaming, and resolution profiles.
 
   ORA-ISOLATION-001 status as of 2026-08-06: another XLIFF-NOTE-001-pattern
   capability, like ORA-SEC-001 before it. model/stack.py's
@@ -180,6 +177,42 @@ notes: >-
   `missing` to `partial` (82 partial/52 missing -> 97 partial/37 missing).
   No ORA obligation reaches `implemented`.
 
+  ORA-EDIT-001 status as of 2026-08-06: partial scope, stated explicitly.
+  Its required_tests name four distinct proof areas -- "transaction
+  rollback, reference repair, stale-view invalidation, and independent
+  application reopen tests" -- and only the first is built and tested here.
+  New module transaction.py: apply_transaction(image, steps) runs a
+  sequence of caller-supplied OraImage -> OraImage steps (each free to
+  restructure the layer tree, add/remove archive members, or both, using
+  the same dataclasses.replace() primitives ORA-LAYER-001/ORA-GROUP-001
+  already established as "editing") against a working copy, and only
+  returns a committed result if every step succeeds. Any step raising --
+  including model/stack.py's own __post_init__ validation errors -- or
+  returning something that is not an OraImage rolls the whole sequence
+  back: the result carries the ORIGINAL, untouched image, how many steps
+  succeeded before the failure (for diagnosis), and the failure itself.
+
+  Deliberately NOT attempted, stated in the module docstring rather than
+  silently assumed: "reference repair" (no cross-element reference type
+  exists in this package yet beyond a layer's own src archive-member path
+  -- ORA-MASK-001 and other reference-bearing capabilities remain unbuilt,
+  so there is nothing to repair against), "invalidate stale derived views"
+  (mergedimage.png/thumbnail.png have no regeneration path at all -- this
+  package has no rendering engine, ORA-RENDER-001/ORA-COMPOSITE-001 are
+  still `missing` -- inventing a staleness flag with no way to ever clear
+  it would be a hollow gesture, not a real capability), and "independent
+  application reopen" (covered, to the extent this package can cover it,
+  by the existing round-trip tests in test_obligation_lifecycle_and_write.py;
+  not re-proven here).
+
+  10 new tests in test_obligation_transactional_edit.py, all passed on
+  first run; ruff clean, mypy clean on the full package (13 source files).
+  ORA suite: 251 -> 261 passed. All 15 ORA-EDIT-001 obligations move from
+  `missing` to `partial` (97 partial/37 missing -> 112 partial/22 missing)
+  even though only one of four required proof areas is covered --
+  consistent with how every other `partial` capability in this ledger
+  works. No obligation reaches `implemented`.
+
 execution_evidence:
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json
   result: PARTIAL_IMPLEMENTATION_PRESENT
@@ -214,6 +247,15 @@ execution_evidence:
     failures. The remaining 6 capabilities have no source and no suite;
     their obligations stay `missing`. No ORA obligation is `implemented`;
     ORA-LAYER-001/ORA-GROUP-001's obligations move to `partial` only.
+
+    2026-08-06 (later still): ORA-EDIT-001 adds a new module (transaction.py,
+    apply_transaction()) plus 10 tests, covering only its "transaction
+    rollback" required-proof area (three others -- reference repair,
+    stale-view invalidation, independent application reopen -- remain
+    unattempted, see the dated note above for why). ORA suite is now 261
+    passed with no failures. The remaining 5 capabilities have no source
+    and no suite; their obligations stay `missing`. No ORA obligation is
+    `implemented`; ORA-EDIT-001's obligations move to `partial` only.
 
 capabilities:
   ORA-ASSET-001:
@@ -250,8 +292,10 @@ capabilities:
     - test_obligation_stack_and_document.py
 
   ORA-EDIT-001:
-    modules: []
-    tests: []
+    modules:
+    - transaction.py
+    tests:
+    - test_obligation_transactional_edit.py
 
   ORA-GROUP-001:
     modules:

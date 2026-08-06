@@ -35,12 +35,14 @@ from .lifecycle import (
     validate,
 )
 from .preservation import LossItem, LossReport, check_preservation
+from .transaction import EditStep, TransactionResult, apply_transaction
 from .errors import OraArchiveError, OraError, OraLimitError, OraValidationError
 
 __version__ = "0.1.0.dev0"
 
 __all__ = [
     "OPENRASTER_MEDIA_TYPE",
+    "EditStep",
     "LossItem",
     "LossReport",
     "OraArchiveError",
@@ -58,7 +60,9 @@ __all__ = [
     "ResolvedAsset",
     "OraLimitError",
     "OraValidationError",
+    "TransactionResult",
     "__version__",
+    "apply_transaction",
     "check_preservation",
     "dump",
     "dumps",
