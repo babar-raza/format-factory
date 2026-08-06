@@ -50,6 +50,14 @@
       "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact positive and negative test selectors for merge_notebooks()'s full conflict matrix (move/edit, delete/edit, output, metadata) plus base-fallback behavior on a genuine source conflict and multiple-simultaneous-conflict reporting. NOT backed by an independent reference implementation -- format_factory's merge semantics are its own design, not a reimplementation of nbdime or another existing notebook-merge tool -- SELF-CONSISTENT per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-03A1429F7B7AF3E1 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "IPYNB-STRUCTURE-DIFF-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-structure-diff-001.json",
+      "sha256": "4ab6abdf71526d76d0d213be161888e759169470d15bea9839995b1009524004",
+      "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact positive test selectors proving diff_notebooks() tracks stable-cell-identity moves and each semantic CellField (cell_type, source, metadata, attachments, execution_count, outputs) independently, that a DiffPolicy suppresses only its declared transient fields (not an arbitrary superset), and that the resulting NotebookPatch is atomic, machine-applicable, and rejects application against a stale base via PatchPreconditionError. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-6790961797EE55CD and SAL-IPYNB-OBL-7B453CA0FD8BCD5D only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "IPYNB-WRITE-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -61,7 +69,7 @@
   "format_id": "ipynb",
   "input_digests": {
     "compiled_contract": "070e7486feb32cb69e64bf9bb040bb47e4671f0034835d78d081c39ae2c05903",
-    "implementation_evidence": "3ea6958dce7c29cc2ea4a7580c5f3767caa28fafba3a0c86d66469bbf5301322",
+    "implementation_evidence": "2a24e3b24745cc6f1d0be8bd61bebaf34526b6904bc68012c1fc0d166a337e1c",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "04340fa8bde6468fa648cb60fce3d50876a39c187d5b9ad3b0329fe0a29850a8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -992,20 +1000,22 @@
     {
       "capability_id": "IPYNB-DIFF-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-STRUCTURE-DIFF-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "diff_notebooks() diffs by stable cell id, detects moves independently from content changes, applies a DiffPolicy to suppress only declared transient fields (outputs/execution-counts/metadata as configured) -- proven not to over-suppress -- and returns a NotebookPatch that is machine-applicable and rejects application against a base it was not computed against via PatchPreconditionError."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Move-detection fixtures; ignore-policy matrix; patch precondition failures."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_structure_diff.py::test_diff_rejects_missing_or_duplicate_stable_cell_ids"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-6790961797EE55CD",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_structure_diff.py::test_diff_tracks_move_and_each_semantic_cell_field",
         "tests/python/ipynb/test_obligation_structure_diff.py::test_ignore_policy_suppresses_only_declared_transient_changes",
-        "tests/python/ipynb/test_obligation_structure_diff.py::test_patch_is_atomic_machine_applicable_and_rejects_stale_base"
+        "tests/python/ipynb/test_obligation_structure_diff.py::test_patch_is_atomic_machine_applicable_and_rejects_stale_base",
+        "tests/python/ipynb/test_obligation_structure_diff.py::test_patch_preserves_ignored_values_on_existing_cells"
       ],
       "proof_requirements": {
         "negative": [
@@ -1015,14 +1025,14 @@
           "Move-detection fixtures; ignore-policy matrix; patch precondition failures."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::CellField",
-        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::PatchPreconditionError",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::diff_notebooks",
         "src/python/ipynb/src/format_factory/ipynb/model/diff.py::DiffPolicy",
-        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::FieldChange"
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::NotebookPatch",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::PatchPreconditionError"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-OUTPUT-001",
@@ -1258,20 +1268,21 @@
     {
       "capability_id": "IPYNB-DIFF-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-STRUCTURE-DIFF-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "CellField enumerates cell_type/source/metadata/attachments/execution_count/outputs as independently-tracked diff dimensions, each reported as its own FieldChange rather than collapsed into one generic \"cell changed\" signal, with a missing field distinguished from an explicit null and an ignore policy unable to hide a change by copying a value across an unrelated field or output type."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Move-detection fixtures; ignore-policy matrix; patch precondition failures."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_structure_diff.py::test_ignored_count_is_not_copied_to_a_different_output_type",
+        "tests/python/ipynb/test_obligation_structure_diff.py::test_policy_cannot_hide_non_json_target_data"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-7B453CA0FD8BCD5D",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_structure_diff.py::test_diff_tracks_move_and_each_semantic_cell_field",
-        "tests/python/ipynb/test_obligation_structure_diff.py::test_ignore_policy_suppresses_only_declared_transient_changes",
-        "tests/python/ipynb/test_obligation_structure_diff.py::test_patch_is_atomic_machine_applicable_and_rejects_stale_base"
+        "tests/python/ipynb/test_obligation_structure_diff.py::test_missing_and_explicit_null_are_distinct_report_states"
       ],
       "proof_requirements": {
         "negative": [
@@ -1281,14 +1292,13 @@
           "Move-detection fixtures; ignore-policy matrix; patch precondition failures."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ipynb/src/format_factory/ipynb/model/diff.py::CellField",
-        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::PatchPreconditionError",
-        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::DiffPolicy",
+        "src/python/ipynb/src/format_factory/ipynb/model/diff.py::diff_notebooks",
         "src/python/ipynb/src/format_factory/ipynb/model/diff.py::FieldChange"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-TRUST-001",
@@ -2574,6 +2584,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-edit-001.json": "bb88dabbc9361c01672ab1319cba2125c43bdb5ec1c4f5d650956a1ef5903d1d",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-export-001.json": "53d61ffd27a6d7f9b7b1fee61a02de20972f1d98a3baf1849360f7c750153ebc",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-merge-001.json": "f12e54e0372e13214347eb90ccb68f87c8abd19f95df34465dc6c3cd2a83804d",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-structure-diff-001.json": "4ab6abdf71526d76d0d213be161888e759169470d15bea9839995b1009524004",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-write-001.json": "2e1e1d5493518b7330f43d91639efa5839d91e11b4a13ba32f5b83abfd125675",
     "src/python/ipynb/src/format_factory/ipynb/adapters/export.py": "d03fec3c5c3d5a46f7ac5df365b9e89e360abc4472ea560f3ca1baefbfe051ae",
     "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py": "2f3b6b4920e08549bb8714673ece9b4dffd5f30aae1a9e802aa27efa0bb6776c",
@@ -2620,11 +2631,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 10,
-      "partial": 58
+      "implemented": 12,
+      "partial": 56
     },
     "total": 68,
-    "unresolved": 58
+    "unresolved": 56
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

@@ -117,6 +117,22 @@ execution_evidence:
     SAL-IPYNB-OBL-E9E64A65284001E4, SAL-IPYNB-OBL-1FA16EB9033A30BD, and
     SAL-IPYNB-OBL-B227B25AB9838FFD only; it supports no other obligation
     and promotes no product state.
+- evidence_id: IPYNB-STRUCTURE-DIFF-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-structure-diff-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact positive
+    test selectors proving diff_notebooks() tracks stable-cell-identity
+    moves and each semantic CellField (cell_type, source, metadata,
+    attachments, execution_count, outputs) independently, that a DiffPolicy
+    suppresses only its declared transient fields (not an arbitrary
+    superset), and that the resulting NotebookPatch is atomic,
+    machine-applicable, and rejects application against a stale base via
+    PatchPreconditionError. SELF-CONSISTENT format_factory-only evidence
+    per the execution-recovery directive's GAP-008 rule, not VERIFIED.
+    Covers SAL-IPYNB-OBL-6790961797EE55CD and SAL-IPYNB-OBL-7B453CA0FD8BCD5D
+    only; it supports no other obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-IPYNB-OBL-02A00C213D2B0190
   capability_id: IPYNB-ATTACH-001
@@ -837,25 +853,30 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-6790961797EE55CD
   capability_id: IPYNB-DIFF-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::CellField
-  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::PatchPreconditionError
+  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::diff_notebooks
   - src/python/ipynb/src/format_factory/ipynb/model/diff.py::DiffPolicy
-  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::FieldChange
+  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::NotebookPatch
+  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::PatchPreconditionError
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_structure_diff.py::test_diff_tracks_move_and_each_semantic_cell_field
   - tests/python/ipynb/test_obligation_structure_diff.py::test_ignore_policy_suppresses_only_declared_transient_changes
   - tests/python/ipynb/test_obligation_structure_diff.py::test_patch_is_atomic_machine_applicable_and_rejects_stale_base
-  negative_test_selectors: []
+  - tests/python/ipynb/test_obligation_structure_diff.py::test_patch_preserves_ignored_values_on_existing_cells
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_structure_diff.py::test_diff_rejects_missing_or_duplicate_stable_cell_ids
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-STRUCTURE-DIFF-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Move-detection fixtures;
-    ignore-policy matrix; patch precondition failures.'
+  - diff_notebooks() diffs by stable cell id, detects moves independently
+    from content changes, applies a DiffPolicy to suppress only declared
+    transient fields (outputs/execution-counts/metadata as configured) --
+    proven not to over-suppress -- and returns a NotebookPatch that is
+    machine-applicable and rejects application against a base it was not
+    computed against via PatchPreconditionError.
+  missing_behavior: []
   proof_requirements:
     positive:
     - Move-detection fixtures; ignore-policy matrix; patch precondition failures.
@@ -1050,25 +1071,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-7B453CA0FD8BCD5D
   capability_id: IPYNB-DIFF-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/model/diff.py::CellField
-  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::PatchPreconditionError
-  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::DiffPolicy
+  - src/python/ipynb/src/format_factory/ipynb/model/diff.py::diff_notebooks
   - src/python/ipynb/src/format_factory/ipynb/model/diff.py::FieldChange
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_structure_diff.py::test_diff_tracks_move_and_each_semantic_cell_field
-  - tests/python/ipynb/test_obligation_structure_diff.py::test_ignore_policy_suppresses_only_declared_transient_changes
-  - tests/python/ipynb/test_obligation_structure_diff.py::test_patch_is_atomic_machine_applicable_and_rejects_stale_base
-  negative_test_selectors: []
+  - tests/python/ipynb/test_obligation_structure_diff.py::test_missing_and_explicit_null_are_distinct_report_states
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_structure_diff.py::test_ignored_count_is_not_copied_to_a_different_output_type
+  - tests/python/ipynb/test_obligation_structure_diff.py::test_policy_cannot_hide_non_json_target_data
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-STRUCTURE-DIFF-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Move-detection fixtures;
-    ignore-policy matrix; patch precondition failures.'
+  - CellField enumerates cell_type/source/metadata/attachments/execution_count/outputs
+    as independently-tracked diff dimensions, each reported as its own
+    FieldChange rather than collapsed into one generic "cell changed"
+    signal, with a missing field distinguished from an explicit null and
+    an ignore policy unable to hide a change by copying a value across an
+    unrelated field or output type.
+  missing_behavior: []
   proof_requirements:
     positive:
     - Move-detection fixtures; ignore-policy matrix; patch precondition failures.

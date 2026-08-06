@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-structure-diff-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T15:05:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_DIFF_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "IPYNB-DIFF-001's two obligations (stable-cell-identity diff with move detection and ignore policies producing machine-applicable patches; distinguishing source/metadata/attachments/execution-count/outputs as independent diff dimensions) already had complete production source (model/diff.py's diff_notebooks/DiffPolicy/NotebookPatch/PatchPreconditionError/CellField) and a dedicated 16-test suite (test_obligation_structure_diff.py, self-described as 'failure-first tests for stable-identity notebook diff and guarded patches'), but both obligations cited only 3 of the 16 tests, identically, with generic missing_behavior text.",
+    "obligation_targeted": "SAL-IPYNB-OBL-6790961797EE55CD, SAL-IPYNB-OBL-7B453CA0FD8BCD5D",
+    "acceptance_evidence": "tests/python/ipynb/test_obligation_structure_diff.py",
+    "regression_tier": "full IPYNB package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Continued the ipynb sweep. IPYNB-DIFF-001's two obligations were both partial with a real (not generic-placeholder) test file already mapped, but sharing an identical 3-selector subset of a 16-test file regardless of which obligation's specific rule_text emphasis (general diff/patch mechanics vs. per-field-dimension distinction) each described.",
+    "2. Read model/diff.py in full: diff_notebooks() (stable-id-keyed diff with move detection via _moved_cell_ids), DiffPolicy (declared-field ignore policies), NotebookPatch/PatchPreconditionError (atomic, machine-applicable patches that refuse against a stale base), and CellField (an enum of independently-tracked diff dimensions: cell_type, source, metadata, attachments, execution_count, outputs).",
+    "3. Ran all 16 tests in test_obligation_structure_diff.py directly before citing any of them: all passed, including a 6-case metamorphic permutation test (patch-then-reverse-patch is a no-op regardless of cell reorder permutation) and negative tests for missing/duplicate stable cell ids.",
+    "4. Split source_symbols and test selectors per obligation by distinct emphasis: the general obligation (move detection + ignore policy + patch mechanics) cites diff_notebooks/DiffPolicy/NotebookPatch/PatchPreconditionError plus the move/ignore-policy/patch-atomicity/patch-preserves-ignored-values tests and the missing-or-duplicate-id negative test; the field-distinction obligation cites CellField/diff_notebooks/FieldChange plus the per-field tracking test, the missing-vs-explicit-null distinction test, and two tests proving an ignore policy cannot leak a change across an unrelated field or output type.",
+    "5. Promoted both to implemented. Zero source or test changes -- the seventh evidence-correction closure this session."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_structure_diff.py -v -- 16 passed",
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 68,
+    "ipynb_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against nbformat's own diff tooling (nbdime or equivalent). Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_no_new_production_source": "Stable-cell-identity diff, move detection, ignore policies, and guarded machine-applicable patches were already complete and covered by 16 dedicated tests -- this slice audited and cited that existing proof, it did not build anything new."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
