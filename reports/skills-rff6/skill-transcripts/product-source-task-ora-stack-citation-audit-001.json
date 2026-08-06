@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-stack-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T17:45:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_STACK_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "ORA-STACK-001's 14 obligations all cited an identical generic '3-shared-root-attribute-test' citation despite model/stack.py and codec/stack_xml.py already implementing and, for most rule_texts, already directly testing the specific behavior each obligation names -- the same 'started but not finished' audit pattern found repeatedly this session (XLIFF-SEG-001, ORA-RESOLUTION-001/ISOLATION-001, ORA-BASELINEASSET-001). Investigated the UBL/XLIFF preservation-mode thread's natural follow-up candidates (ORA-MASK-001, ORA-COMPOSITE-001) first but found both require inventing spec content (composite-op inventory, mask element shape) not backed by any committed SAL fact -- declined per this session's anti-fabrication discipline and pivoted to this citation audit instead.",
+    "obligation_targeted": "SAL-ORA-OBL-047E5523BB0D85D5, SAL-ORA-OBL-1BCC64FF1DFE8AE5, SAL-ORA-OBL-23D0207100C46AD9, SAL-ORA-OBL-329D93743655752D, SAL-ORA-OBL-6078C4F67F33C8E4, SAL-ORA-OBL-9007B671A8FCFF7D, SAL-ORA-OBL-930CACD129A5CC40, SAL-ORA-OBL-BFEC595E47C33BE7, SAL-ORA-OBL-D76D780D4D9DA699, SAL-ORA-OBL-F6424763BCEC7266, SAL-ORA-OBL-4EC8C1CC747F7FC6",
+    "acceptance_evidence": "tests/python/ora/test_obligation_stack_and_document.py (existing tests, individually cited per obligation) plus 2 new tests for <text>-via-XML parsing",
+    "regression_tier": "full ORA package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Pulled the rule_text for each of ORA-STACK-001's 14 obligations from the obligation register (not just the evidence file) to see what each ACTUALLY requires, since the shared generic citation gave no per-obligation signal.",
+    "2. Read model/stack.py and codec/stack_xml.py in full, then read test_obligation_stack_and_document.py in full and mapped each of the 14 distinct rule_texts to the specific existing test(s) that already prove it directly -- most were already fully proven by name-matched tests (opacity range, required src, visibility enum, xres/yres pairing, x/y signed defaults, root w/h/version).",
+    "3. Found two rule_texts under ORA-STACK-001 are cross-capability duplicates of already-closed or already-investigated obligations elsewhere: SAL-ORA-OBL-BFEC595E47C33BE7's rule_text ('a non-root stack is isolated when isolation is isolate, opacity is below one, or composite-op differs from svg:src-over') is word-for-word identical to ORA-ISOLATION-001's already-implemented SAL-ORA-OBL-97CE271E3DD6D883 -- closed by citation, extended ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF's covered-obligations list. SAL-ORA-OBL-930CACD129A5CC40's composite-op rule_text is identical to ORA-COMPOSITE-001's SAL-ORA-OBL-4EC8C1CC747F7FC6 (found while investigating ORA-COMPOSITE-001 first, before pivoting to this audit).",
+    "4. For the composite-op obligation (930CACD129A5CC40 and its duplicate 4EC8C1CC747F7FC6): confirmed via test_composite_op_defaults_to_src_over and test_composite_op_is_preserved_verbatim that the default value and open-vocabulary preservation ARE proven, but no registry anywhere in the package maps a composite-op string to 'a documented blend function combined with a Porter-Duff compositing operator' -- a confirmed, real gap. Checked shared/sal-facts/ora.yaml for the actual OpenRaster composite-op inventory before considering building a registry: the only committed fact is the generic default-plus-general-claim sentence, not an enumerated operation list. Declined to invent the list from memory (would risk fabricating spec content) and corrected both obligations to accurate `partial` (was `missing` for 4EC8C1CC747F7FC6, which incorrectly implied nothing was proven) with a precise missing_behavior naming exactly what remains and why it was not attempted.",
+    "5. Found one genuine, narrow, buildable test gap: 'A stack element contains nested stack, layer, or text elements' (SAL-ORA-OBL-329D93743655752D) was only proven for stack+layer nesting; the <text> child kind was implemented in codec/stack_xml.py's _Walker.child (its own error message quotes this obligation's rule text verbatim) but never exercised through the actual XML parser in any test -- only via direct OraText(...) construction in test_obligation_layer_and_group_editing.py, bypassing the parser entirely.",
+    "6. Added two new tests to test_obligation_stack_and_document.py: test_a_text_element_parses_as_a_stack_child (text with src) and test_a_text_element_without_src_parses_with_src_none (text's src is optional, unlike layer's). Ran ruff (clean) and the file's full suite (51 passed) before citing.",
+    "7. Ran every candidate test directly (not just the two new ones) before citing any of them, confirming each obligation's specific claim.",
+    "8. Promoted 8 of 14 ORA-STACK-001 obligations to fully implemented with specific (not shared) source_symbols and test selectors, closed 1 as a cross-capability duplicate citation, corrected 1 (plus its ORA-COMPOSITE-001 duplicate) to accurate narrowed partial. Left the remaining 4 (baseline-support-levels goal statement, interop-and-no-destructive-pixel-ops goal statement, root-versus-non-root modeling constraint, UTF-8-encoding-specific test coverage) unaudited rather than force-promoted -- each is either a broad policy statement not cleanly reducible to one test, or has a real but narrower remaining test gap not fully investigated this tick.",
+    "9. Hit the known contract_reconciler.py pitfall twice: DEFAULT_COMPOSITE_OP and VISIBILITY_VALUES are module-level constants, not def/class symbols, so _resolve_python_reference cannot resolve them via AST. Fixed both by removing the constant references from source_symbols, keeping only the real function/class symbols already cited alongside them.",
+    "10. Ran the full ora suite: 281 passed (279 baseline + 2 new), 0 regressions."
+  ],
+  "allowed_files": [
+    "tests/python/ora/test_obligation_stack_and_document.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ora/test_obligation_stack_and_document.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_stack_and_document.py -q -- 51 passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 281 passed (279 baseline + 2 new), 0 regressions",
+    ".venv/Scripts/python -m ruff check tests/python/ora/test_obligation_stack_and_document.py -- All checks passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 9,
+    "obligations_total_for_format": 134,
+    "ora_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against an independent OpenRaster reader/writer. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_9_of_14_moved_and_2_corrected_not_promoted": "8 obligations were directly, individually provable by existing or newly-added tests. 1 was a confirmed cross-capability duplicate closed by citation. 2 (930CACD129A5CC40 and its ORA-COMPOSITE-001 duplicate 4EC8C1CC747F7FC6) were corrected from misleading status to accurate partial rather than force-promoted, since a real clause (documented blend-function/Porter-Duff-operator registry) remains genuinely unbuilt and unattempted due to missing verified spec source. 4 remain unaudited, left honestly incomplete rather than rushed.",
+    "anti_fabrication_note": "ORA-MASK-001 and ORA-COMPOSITE-001's rendering-adapter obligation were investigated first as genuine-new-capability candidates (following event 139's exact_next_action) but declined: no committed SAL fact enumerates the OpenRaster composite-op inventory or the mask-element XML shape, and building either registry from memory risked fabricating spec content this session does not do. Pivoted to this citation audit instead, which required no such invention."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -29,7 +29,7 @@ from __future__ import annotations
 import pytest
 
 from format_factory.core import ResourceLimits
-from format_factory.ora import OraLayer, OraStack, OraValidationError, parse_stack
+from format_factory.ora import OraLayer, OraStack, OraText, OraValidationError, parse_stack
 
 HEADER = '<?xml version="1.0" encoding="UTF-8"?>\n'
 
@@ -166,6 +166,30 @@ def test_nested_stacks_are_modelled_as_a_tree() -> None:
     assert group.name == "group"
     assert [child.name for child in group.children] == ["inner"]
     assert document.root.children[1].name == "outer"
+
+
+def test_a_text_element_parses_as_a_stack_child() -> None:
+    """"A stack element contains nested stack, layer, or text elements" --
+    the third permitted child kind, unlike stack/layer, is never exercised
+    through the actual XML parser elsewhere in this file."""
+    body = '<stack><text name="caption" src="data/caption.png"/><layer name="art" src="data/art.png"/></stack>'
+    document = parse_stack(image(body))
+
+    caption = document.root.children[0]
+    assert isinstance(caption, OraText)
+    assert caption.name == "caption"
+    assert caption.src == "data/caption.png"
+    assert document.root.children[1].name == "art"
+
+
+def test_a_text_element_without_src_parses_with_src_none() -> None:
+    """Text is optional-src, unlike layer -- captured content can be inline."""
+    body = '<stack><text name="caption"/></stack>'
+    document = parse_stack(image(body))
+
+    caption = document.root.children[0]
+    assert isinstance(caption, OraText)
+    assert caption.src is None
 
 
 def test_every_layer_requires_a_src() -> None:
