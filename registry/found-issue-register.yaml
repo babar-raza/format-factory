@@ -2446,6 +2446,14 @@ issues:
     already existed), which underscores that even a zero-source-change
     tick can be destroyed by an unrelated future ledger rebuild for the
     same format.
+  update_20260806_later_3: >-
+    safetensors now has the same exposure too: SAL-SAFETENSORS-OBL-EF61013542A38DE7
+    (SAFETENSORS-PRESERVE-001) was promoted to `implemented` with
+    selector-level evidence (SAFETENSORS-METADATA-SELECTOR-PROOF). Four
+    formats now carry this risk (nrrd, xliff, ipynb, safetensors) -- every
+    format touched by an implemented-status promotion this session is now
+    exposed. Only ora and ubl remain unaffected, simply because neither has
+    an implemented row yet.
   severity: HIGH
   reproducibility: ALWAYS_REPRODUCIBLE
   root_cause_id: RC-FF6-LEDGER-REBUILD-DESTRUCTIVE-001

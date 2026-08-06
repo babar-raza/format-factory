@@ -144,6 +144,7 @@ class SafeTensorsHeader:
 
     tensors: Mapping[str, TensorDescriptor]
     metadata: Mapping[str, str] = field(default_factory=dict)
+    metadata_declared: bool | None = None
     payload_size: int = 0
     header_size: int = 0
     profile: str = "v0.8.0"
@@ -161,6 +162,13 @@ class SafeTensorsHeader:
     def __post_init__(self) -> None:
         object.__setattr__(self, "tensors", MappingProxyType(dict(self.tensors)))
         object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
+        if self.metadata_declared is None:
+            # A caller who never says whether __metadata__ was present is
+            # assumed to mean "as declared as this metadata implies" --
+            # correct for the common case, but the reader always passes this
+            # explicitly rather than relying on the guess (SAFETENSORS-PRESERVE-001:
+            # absence and explicit emptiness are not the same thing).
+            object.__setattr__(self, "metadata_declared", bool(self.metadata))
         if self.payload_size < 0 or self.header_size < 0:
             raise ValueError("header and payload sizes must be non-negative")
 
@@ -175,6 +183,7 @@ class SafeTensorsDocument:
     __slots__ = (
         "_closed",
         "_metadata",
+        "_metadata_declared",
         "_owner",
         "_payload",
         "_tensors",
@@ -188,6 +197,7 @@ class SafeTensorsDocument:
         *,
         tensors: Mapping[str, TensorDescriptor],
         metadata: Mapping[str, str] | None = None,
+        metadata_declared: bool | None = None,
         payload: bytes | bytearray | memoryview = b"",
         header_size: int = 0,
         profile: str = "v0.8.0",
@@ -196,6 +206,14 @@ class SafeTensorsDocument:
     ) -> None:
         self._tensors = MappingProxyType(dict(tensors))
         self._metadata = MappingProxyType(dict(metadata or {}))
+        # SAFETENSORS-PRESERVE-001: "no __metadata__ key" and "__metadata__: {}"
+        # are not the same document. A caller who passes `metadata=None`
+        # (the default -- no metadata section at all) is declared=False;
+        # passing `metadata={}` explicitly (a present-but-empty section) is
+        # declared=True. `metadata_declared` overrides both when given.
+        self._metadata_declared = (
+            (metadata is not None) if metadata_declared is None else metadata_declared
+        )
         self._payload = memoryview(payload).toreadonly()
         self._owner = owner
         self._closed = False
@@ -217,6 +235,16 @@ class SafeTensorsDocument:
     @property
     def metadata(self) -> Mapping[str, str]:
         return self._metadata
+
+    @property
+    def metadata_declared(self) -> bool:
+        """Whether a `__metadata__` section was present, even if empty.
+
+        SAFETENSORS-PRESERVE-001: preserving "optional metadata absence"
+        means this must be distinguishable from `not self.metadata`, which
+        is also true for a present-but-empty section.
+        """
+        return self._metadata_declared
 
     @property
     def tensor_names(self) -> tuple[str, ...]:

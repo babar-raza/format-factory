@@ -1,0 +1,60 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-safetensors-metadata-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T10:15:00Z",
+  "inputs": {
+    "format_id": "safetensors",
+    "task_id": "TC-FF6-SAFETENSORS-METADATA-PRESERVE-001",
+    "task_kind": "obligation-closure",
+    "root_cause": "reader.py's _decode_header always collapsed '__metadata__' absence to an empty dict (header.pop('__metadata__', {})), and writer.py's dumps() decided whether to emit __metadata__ purely from dict truthiness (if document.metadata:). Both routes made 'no __metadata__ key' and '__metadata__: {}' indistinguishable everywhere in the pipeline, so the distinction the obligation names ('optional metadata absence') could never survive a round trip.",
+    "obligation_targeted": "SAL-SAFETENSORS-OBL-EF61013542A38DE7",
+    "acceptance_evidence": "tests/python/safetensors/test_obligation_metadata_preservation.py",
+    "regression_tier": "full SafeTensors package suite (tests/python/safetensors)"
+  },
+  "execution_steps": [
+    "1. Read the obligation's rule_text and confirmed the existing model already handles the OTHER two named concerns: TensorDescriptor.unknown_fields already captures and round-trips unknown descriptor fields (proven, unattributed, by test_production_namespace.py::test_unknown_tensor_fields_preserved), and the __metadata__ string-map type check already exists and is proven by test_metadata_must_be_strings. Only 'optional metadata absence' was genuinely unimplemented.",
+    "2. Traced the collapse to its root: reader.py's _decode_header (header.pop('__metadata__', {})) discarded the distinction at parse time, before it ever reached the model, and writer.py's dumps() (if document.metadata:) could not have restored it even if the model had kept it.",
+    "3. Changed _decode_header to return None (not {}) when __metadata__ is absent, threaded that through all three call sites (_parse for SafeTensorsDocument, _read_header_stream and read_header for SafeTensorsHeader) as an explicit metadata_declared flag.",
+    "4. Added metadata_declared to both SafeTensorsDocument and SafeTensorsHeader: SafeTensorsDocument.metadata_declared defaults to `metadata is not None` (an explicit override parameter is available for constructing test fixtures without going through the reader); SafeTensorsHeader.metadata_declared defaults to `bool(metadata)` when not given explicitly (a weaker fallback, since SafeTensorsHeader is a plain dataclass without custom __init__ logic -- the reader always passes it explicitly, so this fallback only matters for direct construction). Chose NOT to make `.metadata` itself Optional -- cli/main.py and validator.py both call dict(document.metadata)/.metadata.items() unconditionally, so an Optional return would have been a breaking change for zero benefit; a separate boolean flag is additive and backward compatible.",
+    "5. Changed writer.py's dumps() to check document.metadata_declared instead of truthiness, so an explicit-but-empty section is now re-emitted as '__metadata__':{} rather than omitted.",
+    "6. Wrote tests/python/safetensors/test_obligation_metadata_preservation.py: absence vs explicit-empty distinguishable on read (both via loads() and read_header(), the latter proving the distinction survives header-only inspection with no payload opened), the distinction survives a full dumps()/loads() round trip in both directions, non-empty metadata is unaffected, and direct SafeTensorsDocument construction (no metadata arg, metadata={}, and the metadata_declared override) all behave correctly.",
+    "7. All 11 new tests passed on first run. Full safetensors suite: 385 -> 396 passed (the same 4 pre-existing official-safetensors-package-unavailable failures, unrelated, unchanged). ruff and mypy clean on the full package (22 source files).",
+    "8. Re-read the capability's other 11 obligations before promoting anything: SAFETENSORS-PRESERVE-001 bundles 12 distinct rule_texts under one capability_id, and most of them (byte-span/overflow/offset-coverage/trailing-data/header-limit checks) are genuinely VALIDATION concerns, not preservation ones -- they share this obligation's boilerplate missing_behavior/proof_requirements text but describe different, already-separately-implemented behavior this slice did not touch or re-verify. Promoted ONLY SAL-SAFETENSORS-OBL-EF61013542A38DE7, whose own rule_text ('Preserve string file metadata, optional metadata absence, and safe unknown tensor descriptor fields... reject values that cannot be represented safely') is now fully and exactly covered. Left the other 11 untouched rather than promote them on a shared-boilerplate technicality."
+  ],
+  "allowed_files": [
+    "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py",
+    "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py",
+    "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+    "tests/python/safetensors/test_obligation_metadata_preservation.py",
+    "shared/format-contracts/implementation-evidence/safetensors.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py",
+    "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py",
+    "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+    "tests/python/safetensors/test_obligation_metadata_preservation.py",
+    "shared/format-contracts/implementation-evidence/safetensors.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/safetensors/test_obligation_metadata_preservation.py -v -- 11 passed",
+    ".venv/Scripts/pytest tests/python/safetensors/ -q -- 396 passed, 1 skipped, 4 pre-existing failures unchanged (385 baseline + 11 new)",
+    ".venv/Scripts/python -m ruff check src/python/safetensors/src/format_factory/safetensors/ tests/python/safetensors/test_obligation_metadata_preservation.py -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/safetensors/src/format_factory/safetensors/ -- Success: no issues found in 22 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 86,
+    "safetensors_remains": "UNASSESSED",
+    "oracle": "none -- format_factory's own self-consistent test evidence. SELF-CONSISTENT per the execution-recovery directive's GAP-008 rule, not VERIFIED; the official safetensors reference implementation is not exercised for this specific metadata-presence behavior.",
+    "why_only_one_of_twelve_promoted": "SAFETENSORS-PRESERVE-001 bundles 12 distinct rule_texts under one capability_id and one shared boilerplate proof_requirements text. Only SAL-SAFETENSORS-OBL-EF61013542A38DE7's own rule_text is actually about preservation/metadata; the other 11 are validation concerns (overflow, byte-span, offset-coverage, header-limit, trailing-data checks) this slice did not touch or re-verify."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -57,8 +57,15 @@ def _decode_header(
     *,
     payload_size: int,
     limits: ResourceLimits,
-) -> tuple[dict[str, TensorDescriptor], dict[str, str]]:
-    """Validate a JSON header against the known payload extent."""
+) -> tuple[dict[str, TensorDescriptor], dict[str, str] | None]:
+    """Validate a JSON header against the known payload extent.
+
+    The returned metadata is `None` when `__metadata__` was absent from the
+    header entirely, and a (possibly empty) dict when it was present --
+    SAFETENSORS-PRESERVE-001 requires distinguishing "no __metadata__ key"
+    from "__metadata__: {}", which collapsing both to `{}` here would lose
+    before it ever reaches the model.
+    """
 
     try:
         header = json.loads(
@@ -75,9 +82,13 @@ def _decode_header(
     if not isinstance(header, dict):
         raise _error("SAFETENSORS_HEADER_ROOT", "header must be a JSON object")
 
-    raw_metadata = header.pop("__metadata__", {})
-    if not isinstance(raw_metadata, dict) or any(
-        not isinstance(k, str) or not isinstance(v, str) for k, v in raw_metadata.items()
+    raw_metadata = header.pop("__metadata__", None)
+    if raw_metadata is not None and (
+        not isinstance(raw_metadata, dict)
+        or any(
+            not isinstance(k, str) or not isinstance(v, str)
+            for k, v in raw_metadata.items()
+        )
     ):
         raise _error(
             "SAFETENSORS_METADATA_TYPE",
@@ -223,6 +234,7 @@ def _parse(
     return SafeTensorsDocument(
         tensors=descriptors,
         metadata=metadata,
+        metadata_declared=metadata is not None,
         payload=payload,
         header_size=header_size,
         owner=owner,
@@ -290,7 +302,8 @@ def _read_header_stream(
     )
     return SafeTensorsHeader(
         tensors=descriptors,
-        metadata=metadata,
+        metadata=metadata or {},
+        metadata_declared=metadata is not None,
         payload_size=payload_size,
         header_size=header_size,
     )
@@ -323,7 +336,8 @@ def read_header(
         )
         return SafeTensorsHeader(
             tensors=descriptors,
-            metadata=metadata,
+            metadata=metadata or {},
+            metadata_declared=metadata is not None,
             payload_size=len(buffer) - header_end,
             header_size=header_size,
         )

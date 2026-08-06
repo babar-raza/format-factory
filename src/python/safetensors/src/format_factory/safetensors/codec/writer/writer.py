@@ -26,7 +26,7 @@ def dumps(
         raise SafeTensorsWriteError(report.errors[0].message)
 
     header: dict[str, object] = {}
-    if document.metadata:
+    if document.metadata_declared:
         header["__metadata__"] = dict(sorted(document.metadata.items()))
     offset = 0
     payload_parts: list[bytes] = []

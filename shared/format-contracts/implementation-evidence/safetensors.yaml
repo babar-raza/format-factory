@@ -18,6 +18,20 @@ execution_evidence:
     passed / 1 skipped / 4 deselected (the same 4 pre-existing GAP-002 interop failures). Obligation status
     unchanged at 86 partial / 0 missing -- this slice deepens selector evidence within already- `partial`
     obligations, it does not move any obligation''s status.'
+- evidence_id: SAFETENSORS-METADATA-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-safetensors-metadata-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike SAFETENSORS-BASELINE-SUITE: it names the exact
+    positive test selectors proving metadata-section absence is
+    distinguishable from an explicit-but-empty section, on both read
+    (loads() and header-only read_header()) and through a full
+    dumps()/loads() round trip. NOT backed by an independent reference
+    implementation -- SELF-CONSISTENT format_factory-only evidence per the
+    execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
+    SAL-SAFETENSORS-OBL-EF61013542A38DE7 only; it supports no other
+    obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-SAFETENSORS-OBL-00A5D5CAF3AEF4AD
   capability_id: SAFETENSORS-PRESERVE-001
@@ -2358,29 +2372,38 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-SAFETENSORS-OBL-EF61013542A38DE7
   capability_id: SAFETENSORS-PRESERVE-001
-  status: partial
+  status: implemented
   source_symbols:
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::_decode_header
   - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps
-  - src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump
-  - src/python/safetensors/src/format_factory/safetensors/model/document.py::DType
   - src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor
-  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode
-  - src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::SafeTensorsDocument
+  - src/python/safetensors/src/format_factory/safetensors/model/document.py::SafeTensorsHeader
   positive_test_selectors:
-  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle
-  - tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes
-  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header
-  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected
-  - tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected
-  negative_test_selectors: []
+  - tests/python/safetensors/test_production_namespace.py::test_unknown_tensor_fields_preserved
+  - tests/python/safetensors/test_obligation_metadata_preservation.py::test_absent_metadata_section_is_not_declared
+  - tests/python/safetensors/test_obligation_metadata_preservation.py::test_explicit_empty_metadata_section_is_declared
+  - tests/python/safetensors/test_obligation_metadata_preservation.py::test_non_empty_metadata_is_declared
+  - tests/python/safetensors/test_obligation_metadata_preservation.py::test_read_header_reports_absent_metadata
+  - tests/python/safetensors/test_obligation_metadata_preservation.py::test_read_header_reports_explicit_empty_metadata
+  - tests/python/safetensors/test_obligation_metadata_preservation.py::test_absence_round_trips_as_absence
+  - tests/python/safetensors/test_obligation_metadata_preservation.py::test_explicit_empty_round_trips_as_explicit_empty
+  - tests/python/safetensors/test_obligation_metadata_preservation.py::test_non_empty_metadata_round_trips_unaffected
+  negative_test_selectors:
+  - tests/python/safetensors/test_production_namespace.py::test_metadata_must_be_strings
   execution_evidence_ids:
   - SAFETENSORS-BASELINE-SUITE
+  - SAFETENSORS-METADATA-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Unknown descriptor fields,
-    metadata absence, empty metadata, and string-map round trips.'
+  - 'Unknown tensor descriptor fields are captured (TensorDescriptor.unknown_fields) and re-emitted verbatim
+    on write. __metadata__ must be a string-to-string map or the load is rejected
+    (SAFETENSORS_METADATA_TYPE). A __metadata__ section''s ABSENCE is now distinguishable from an
+    explicit-but-empty section (SafeTensorsDocument.metadata_declared /
+    SafeTensorsHeader.metadata_declared) both on read (including header-only read_header(), which opens
+    no payload) and through a full write/read round trip -- previously both collapsed to the same
+    "empty mapping" everywhere in the pipeline, which could not survive a round trip because the reader
+    discarded the distinction before it ever reached the model.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips.

@@ -8,12 +8,20 @@
       "path": "reports/skills-rff6/skill-transcripts/build-evidence-ledger-safetensors-001.json",
       "sha256": "0c4341a9828b89799ba47aeba0932e99bda659dc424a982d3e42ebe57adc270b",
       "truth_boundary": "Suite-level and NON-PROMOTING. Records that the mapped shipped-namespace suites run and that the mapped source symbols exist. The declared result is deliberately not PASS: 4 of the 390 tests fail in the shared dev venv on the known GAP-002 shadow-package name collision, and pass only in an isolated wheel-install environment. They are not counted as passing. This binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most.\n2026-08-06: no source or test change this slice, only this map. safetensors suite unchanged at 385 passed / 1 skipped / 4 deselected (the same 4 pre-existing GAP-002 interop failures). Obligation status unchanged at 86 partial / 0 missing -- this slice deepens selector evidence within already- `partial` obligations, it does not move any obligation's status."
+    },
+    {
+      "evidence_id": "SAFETENSORS-METADATA-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-metadata-001.json",
+      "sha256": "8e0038229a0a1751b782c261d06b6df7de18dcd650b2adb77a1fcd0f8d7ff0e5",
+      "truth_boundary": "Selector-bound, unlike SAFETENSORS-BASELINE-SUITE: it names the exact positive test selectors proving metadata-section absence is distinguishable from an explicit-but-empty section, on both read (loads() and header-only read_header()) and through a full dumps()/loads() round trip. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-SAFETENSORS-OBL-EF61013542A38DE7 only; it supports no other obligation and promotes no product state."
     }
   ],
   "format_id": "safetensors",
   "input_digests": {
     "compiled_contract": "0c75ec78971819ea2d679482ea8b81334f594632bf79cdb0c4ec465c8a3bcfbb",
-    "implementation_evidence": "ecc238c9063e19d0a113b8222199d0cf85ab436291f2800ae7cec9a75d91ede8",
+    "implementation_evidence": "e7e1f7dfeef213ee74dc84aa8c2156c987f5d09eebade2f28836813b30c41433",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "acaf4a88cf5aee24cc52b3da71013932a0573d1fc834b9e79adf7489fc393b80",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -3022,22 +3030,27 @@
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
       "execution_evidence_ids": [
-        "SAFETENSORS-BASELINE-SUITE"
+        "SAFETENSORS-BASELINE-SUITE",
+        "SAFETENSORS-METADATA-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Unknown tensor descriptor fields are captured (TensorDescriptor.unknown_fields) and re-emitted verbatim on write. __metadata__ must be a string-to-string map or the load is rejected (SAFETENSORS_METADATA_TYPE). A __metadata__ section's ABSENCE is now distinguishable from an explicit-but-empty section (SafeTensorsDocument.metadata_declared / SafeTensorsHeader.metadata_declared) both on read (including header-only read_header(), which opens no payload) and through a full write/read round trip -- previously both collapsed to the same \"empty mapping\" everywhere in the pipeline, which could not survive a round trip because the reader discarded the distinction before it ever reached the model."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/safetensors/test_production_namespace.py::test_metadata_must_be_strings"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-SAFETENSORS-OBL-EF61013542A38DE7",
       "positive_test_selectors": [
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_path_stream_and_bytes_lifecycle",
-        "tests/python/safetensors/test_obligation_lifecycle_modes.py::test_strict_preservation_and_excluded_recovery_modes",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_exact_eight_byte_length_prefix_and_utf8_json_header",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_truncated_prefix_is_rejected",
-        "tests/python/safetensors/test_reference_header_layout_lazy_slice.py::test_declared_header_length_beyond_file_is_rejected"
+        "tests/python/safetensors/test_production_namespace.py::test_unknown_tensor_fields_preserved",
+        "tests/python/safetensors/test_obligation_metadata_preservation.py::test_absent_metadata_section_is_not_declared",
+        "tests/python/safetensors/test_obligation_metadata_preservation.py::test_explicit_empty_metadata_section_is_declared",
+        "tests/python/safetensors/test_obligation_metadata_preservation.py::test_non_empty_metadata_is_declared",
+        "tests/python/safetensors/test_obligation_metadata_preservation.py::test_read_header_reports_absent_metadata",
+        "tests/python/safetensors/test_obligation_metadata_preservation.py::test_read_header_reports_explicit_empty_metadata",
+        "tests/python/safetensors/test_obligation_metadata_preservation.py::test_absence_round_trips_as_absence",
+        "tests/python/safetensors/test_obligation_metadata_preservation.py::test_explicit_empty_round_trips_as_explicit_empty",
+        "tests/python/safetensors/test_obligation_metadata_preservation.py::test_non_empty_metadata_round_trips_unaffected"
       ],
       "proof_requirements": {
         "negative": [
@@ -3047,16 +3060,15 @@
           "Unknown descriptor fields, metadata absence, empty metadata, and string-map round trips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::_decode_header",
         "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dumps",
-        "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py::dump",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::DType",
         "src/python/safetensors/src/format_factory/safetensors/model/document.py::TensorDescriptor",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccessMode",
-        "src/python/safetensors/src/format_factory/safetensors/model/document.py::PayloadAccess"
+        "src/python/safetensors/src/format_factory/safetensors/model/document.py::SafeTensorsDocument",
+        "src/python/safetensors/src/format_factory/safetensors/model/document.py::SafeTensorsHeader"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "SAFETENSORS-PRESERVE-001",
@@ -3258,12 +3270,13 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-safetensors-001.json": "0c4341a9828b89799ba47aeba0932e99bda659dc424a982d3e42ebe57adc270b",
+    "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-metadata-001.json": "8e0038229a0a1751b782c261d06b6df7de18dcd650b2adb77a1fcd0f8d7ff0e5",
     "src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py": "82c249624fa0346474cb00a0877fa172ef15b593c03a6cd4670bd59435698b40",
     "src/python/safetensors/src/format_factory/safetensors/adapters/torch.py": "3b870a3f34d6b893adf620fefabc7b9d317a1733a477e1e8f25e8cd39cab449e",
-    "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py": "2c6786ed6de072fbcf6d3e86abb3acf4315d94c8d4d9d2f434d7196fe6309e4b",
+    "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py": "950b9d35758ed8534f74819060efa0edc771a9c52da005cfda4a3e3640d9b2f2",
     "src/python/safetensors/src/format_factory/safetensors/codec/sharded_index.py": "77b716fc9088bcc97a4f67eebc3139d3ea9f8dcb0a4eb1a8246ff26f03b966d3",
-    "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py": "171bd646d5dd2b88ef65eef67ef069295027c98ac6f30eb421b15d2d2c76d76c",
-    "src/python/safetensors/src/format_factory/safetensors/model/document.py": "154b768dc1efe3fd8126d583f51029d0d504c080cf1aac6932cfeb06f5b28c69",
+    "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py": "eaf8992c16980a8a193375c6c688cfa2f1a41a2e8c75563cd147dcfcb6424204",
+    "src/python/safetensors/src/format_factory/safetensors/model/document.py": "11f3ddcfa4c37c0bc89b4f93db3b3299450227afb4931442f096c83b4f834287",
     "src/python/safetensors/src/format_factory/safetensors/model/sharded.py": "8805f4884f1f6ac6c8eeb7df40a1a97cd68060fd2f005e2c3dec529f5324c423",
     "src/python/safetensors/src/format_factory/safetensors/validation/validator.py": "48f177aa9982d54c51d7c29800a544025cffebde3ce0c42acb6cfc3f2146d713",
     "tests/python/safetensors/test_lazy_io.py": "06ae19673cb6ec75a9badf5546fb99982889138518e710c3f35a141649830a70",
@@ -3272,6 +3285,7 @@
     "tests/python/safetensors/test_obligation_integer_overflow.py": "c69f57906f5bfa6f015d44e5d58a34b697801a75c443168b1d3563bb2c2c0c48",
     "tests/python/safetensors/test_obligation_invalid_headers.py": "e8ed963201fcc6b2c84411f5ab446bdb439fbdafd80e9a02e110e586a4873ebc",
     "tests/python/safetensors/test_obligation_lifecycle_modes.py": "29292f855fd97599712eb7055e7813efdf45269b807f1feda342f9545ff7531f",
+    "tests/python/safetensors/test_obligation_metadata_preservation.py": "76d5ccb485fd137ffea772880fb496ffbd508fa31287b189073beb65f3681e72",
     "tests/python/safetensors/test_obligation_offset_layout.py": "93dad8a3bb1ff97fac6eb8aaf3cb829eef6fba505563c8ea84006ea1e6596d7b",
     "tests/python/safetensors/test_obligation_optional_adapters.py": "f830cdf409c3c7a88729dcedab0c69e8b9c5b3ba03647581007badcd5ecf6b6d",
     "tests/python/safetensors/test_obligation_prefix_encoding.py": "d14c1a7096f5186d10fe3e1bd18d6f3a299172337f8ea42405257aa60dec77be",
@@ -3287,10 +3301,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "partial": 86
+      "implemented": 1,
+      "partial": 85
     },
     "total": 86,
-    "unresolved": 86
+    "unresolved": 85
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
