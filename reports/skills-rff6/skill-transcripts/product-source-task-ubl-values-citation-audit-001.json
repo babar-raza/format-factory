@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-values-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T23:45:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_VALUES_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure-at-scale-programmatic",
+    "root_cause": "Following event 158's exact_next_action (UBL-VALUES-001 and UBL-DOCTYPES-001 should investigate fast since MODEL-001's findings already identified their likely real evidence directly), ran the programmatic cross-cluster matcher proven in the xliff and safetensors ticks against UBL-VALUES-001's 19 obligations.",
+    "obligation_targeted": "19 obligations in UBL-VALUES-001 -- see the UBL-VALUES-CITATION-AUDIT-SELECTOR-PROOF execution_evidence entry.",
+    "acceptance_evidence": "16 cross-referenced to already-resolved UBL-MODEL-001 evidence (exact rule_text match, confirmed by dict-key equality, spot-checked directly against the register); 3 proven directly by dedicated existing tests in test_obligation_temporal_values.py and test_obligation_business_value_types.py.",
+    "regression_tier": "full ubl package suite (tests/python/ubl)"
+  },
+  "execution_steps": [
+    "1. Ran a programmatic exact-rule_text matcher (same pattern as the XLIFF cross-cluster tick and the SAFETENSORS-MODEL-001/PAYLOAD-001/ADAPTER-001 ticks) against the pool of obligations already resolved in UBL-MODEL-001 (implemented this session, real citations): 16 of 19 UBL-VALUES-001 obligations matched an already-resolved rule_text exactly via dict-key string equality (not an LLM judgment call). Spot-checked 3 pairs directly against the obligation register to confirm byte-for-byte identity before trusting the bulk output.",
+    "2. Investigated the 3 non-matching obligations fresh: read test_obligation_temporal_values.py (found test_z_is_not_rewritten_as_an_offset, test_declared_fractional_precision_is_preserved, test_a_zoned_value_reports_its_offset covering timezone/lexical-precision preservation) and test_obligation_business_value_types.py (found the 'Rounding is explicit, never implicit' test group -- test_rounding_requires_a_named_policy, test_rounding_policies_differ_and_the_choice_is_the_callers, test_rounding_preserves_the_currency -- and the 'Money is decimal, never binary floating point' test group -- test_an_amount_holds_an_exact_decimal, test_constructing_an_amount_from_a_float_is_refused, test_decimal_addition_is_exact_where_float_would_not_be, test_a_quantity_also_refuses_floats -- both explicitly named in source comments matching the obligations' exact rule_text framing).",
+    "3. Verified temporal.py's module path and class names (UblDateTime, UblDate, UblTime) directly via grep before citing, rather than assuming.",
+    "4. Wrote honest, precise implemented_behavior text for the 3 direct citations distinguishing what IS proven (decimal-not-float construction, exact-decimal holding, currency retention through multiplication and rounding, explicit named rounding policy) from what is NOT separately exercised by a dedicated test (unitCode/scheme-attribute retention specifically through an edit operation, beyond field-level preservation already proven at construction/projection time) -- cross-referenced to the sibling obligations in this same cluster that cover those field-level facts individually, rather than overclaiming a single test proves everything.",
+    "5. Applied the patch-script pattern (render_block with explicit `key: []` for empty lists). Added the new UBL-VALUES-CITATION-AUDIT-SELECTOR-PROOF execution_evidence entry, validated the YAML parses (194 total obligations, VALUES-001 now 17 implemented / 2 partial), and ran the reconciler: clean pass on first attempt. Ran the full ubl suite to confirm zero regressions (no source or test files changed this slice)."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 17,
+    "obligations_total_for_format": 194,
+    "ubl_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against a reference UBL implementation. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "obligations_moved_breakdown": "17 of 19 obligations moved to implemented (16 exact cross-capability duplicates whose MODEL-001 source was implemented, 1 fresh direct citation whose source facts were all implemented). 2 stay at partial, carrying forward the same honest, precise MODEL-001 partial reasons (PaymentMeans missing payee-financial-account field; Order's root/namespace proven but OrderLine untyped) via cross-reference rather than duplicating the investigation.",
+    "why_this_scaled_efficiently": "UBL-MODEL-001's prior tick had already done the hard investigative work (individually classifying 35 distinct facts with real per-rule tests). This tick reused that real evidence for 16 genuinely duplicate facts and only needed fresh investigation for 3 of 19 obligations, all found directly in already-existing, well-organized test files (the source comments in test_obligation_business_value_types.py literally quote the obligations' rule_text framing, e.g. \"binary floating point is never acceptable for money\")."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
