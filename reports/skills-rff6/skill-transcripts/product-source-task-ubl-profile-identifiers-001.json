@@ -1,0 +1,54 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-profile-identifiers-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T12:50:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_PROFILE_IDENTIFIERS_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "UBL-PROFILE-001's three obligations require exposing version/customization/profile identifiers and (for the broadest of the three) a plug-in registry for profile-specific validators. UblDocument had no accessor for cbc:CustomizationID or cbc:ProfileID at all before this slice; the UBLVersionID half was already closed by the immediately preceding FF6-EVENT-000117 slice (detected_version/declared_version), built for a different obligation (UBL-LIFECYCLE-001) but directly reusable here since this obligation's own ask for UBLVersionID is a strict subset (plain exposure, no detected/declared split required).",
+    "obligation_targeted": "SAL-UBL-OBL-965E8CAEA15E1281, SAL-UBL-OBL-FC5C33152AFDB187, SAL-UBL-OBL-7D0855CD163E1EFD (partial)",
+    "acceptance_evidence": "tests/python/ubl/test_obligation_profile_identifiers.py",
+    "regression_tier": "full UBL package suite (tests/python/ubl)"
+  },
+  "execution_steps": [
+    "1. Read the SAL facts backing this capability (SAL-UBL-00128, SAL-UBL-00131, both verified) confirming CustomizationID/ProfileID/UBLVersionID are legitimate, spec-confirmed elements to expose as-is (free-text identifiers, no enumerated value set to validate against).",
+    "2. Added customization_id(root)/profile_id(root) as a shared _first_child_text(root, qname) helper in model/document.py (refactoring ubl_version_id to use the same helper for consistency), and UblDocument.customization_id/profile_id as live properties -- deliberately NOT reusing the same names for module-level helper functions this time (unlike ubl_version_id, which is exported for reuse), since a same-named property-plus-module-function pair, while technically correct under Python's class-body scoping rules, was judged too easy to misread; inlined the lookup directly in each property instead.",
+    "3. Ran ruff, mypy, and the full ubl suite before writing new tests: 549 passed, unchanged (0 regressions from the refactor).",
+    "4. Wrote tests/python/ubl/test_obligation_profile_identifiers.py (7 tests): both identifiers exposed when declared, None when absent (including on a freshly built, unparsed document), read independently of each other and of declared_version, and customization_id reflecting an in-place tree edit immediately (matching declared_version's existing live-property behavior).",
+    "5. All 7 passed on first run. Re-ran the full UBL suite: 556 passed (549 baseline + 7 new, 0 regressions). ruff and mypy clean (25 source files).",
+    "6. Promoted SAL-UBL-OBL-965E8CAEA15E1281 (customization/profile exposure) fully to implemented. Promoted SAL-UBL-OBL-FC5C33152AFDB187 (UBLVersionID exposure) to implemented by citing the prior slice's declared_version tests directly -- its own scope is a strict subset of what UBL-LIFECYCLE-001's obligation already required and proved. Narrowed (did not promote) SAL-UBL-OBL-7D0855CD163E1EFD: its exposure clause is now satisfied by both slices' work, but its separate 'profile-specific validator plug-in registry' clause is a genuine, distinct, not-yet-built mechanism -- no API exists for a caller to register a validator keyed by profile/customization ID. Left partial with a precisely narrowed missing_behavior naming exactly that gap."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/model/document.py",
+    "tests/python/ubl/test_obligation_profile_identifiers.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/model/document.py",
+    "tests/python/ubl/test_obligation_profile_identifiers.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_profile_identifiers.py -v -- 7 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 556 passed (549 baseline + 7 new, 0 regressions)",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/model/document.py tests/python/ubl/test_obligation_profile_identifiers.py -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/ubl/src/format_factory/ubl/ -- Success: no issues found in 25 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 194,
+    "ubl_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently verified against an external UBL library. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_the_third_obligation_was_not_promoted": "SAL-UBL-OBL-7D0855CD163E1EFD requires both identifier exposure (now done) AND a profile-specific validator plug-in registry (genuinely absent -- no registration API, no per-profile dispatcher, no scoped-verdict/absent-when-not-installed semantics anywhere in validation/validator.py). Promoting it would overclaim a mechanism that does not exist; left partial with a narrowed, honest missing_behavior."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

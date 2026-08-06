@@ -90,8 +90,28 @@ execution_evidence:
     are distinct, and that the writer refuses rather than silently
     rewriting an unsupported declared version. SELF-CONSISTENT
     format_factory-only evidence per the execution-recovery directive's
-    GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-8940ED685664E7CE only;
-    it supports no other obligation and promotes no product state.
+    GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-8940ED685664E7CE
+    (UBL-LIFECYCLE-001, the detected-vs-declared distinction) and, via the
+    same declared_version property, SAL-UBL-OBL-FC5C33152AFDB187
+    (UBL-PROFILE-001, plain UBLVersionID exposure with no detected/declared
+    split required) and partially SAL-UBL-OBL-7D0855CD163E1EFD (the
+    version-exposure clause only); it supports no other obligation and
+    promotes no product state.
+- evidence_id: UBL-PROFILE-IDENTIFIERS-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-profile-identifiers-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact positive
+    and negative test selectors proving customization_id and profile_id
+    are live properties reading cbc:CustomizationID/cbc:ProfileID from the
+    current tree, each independent of the other and of declared_version,
+    None (never fabricated) when absent, and reflecting an edit
+    immediately. SELF-CONSISTENT format_factory-only evidence per the
+    execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
+    SAL-UBL-OBL-965E8CAEA15E1281 (fully) and partially
+    SAL-UBL-OBL-7D0855CD163E1EFD (the customization/profile exposure clause
+    only); it supports no other obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -3375,20 +3395,30 @@ obligations:
   capability_id: UBL-PROFILE-001
   status: partial
   source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_is_exposed_when_declared
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_profile_id_is_exposed_when_declared
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_reads_the_current_trees_ublversionid
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PROFILE-IDENTIFIERS-SELECTOR-PROOF
+  - UBL-DETECTED-DECLARED-VERSION-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - 'The "expose version, customization, and profile identifiers" clause is now fully covered:
+    UblDocument.declared_version/customization_id/profile_id (see the two sibling obligations under
+    this same capability). The remaining clause -- "allow profile-specific validators to be registered;
+    never claim profile conformance without the installed ruleset passing" -- is a distinct,
+    not-yet-built plug-in registry mechanism: no API exists for a caller to register a validator keyed by
+    profile/customization ID, and validate() only ever checks the single hardcoded stable-profile
+    ruleset. Not claimed.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Profile ruleset plug-in fixture:
-    verdicts scoped to the profile and absent when not installed.'
+  - 'A profile-specific validator plug-in registry does not exist: no way to register a validator keyed
+    by customization_id/profile_id, and no dispatcher that would run it and report a verdict scoped to
+    that profile (absent entirely when no validator is registered for it, per this obligation''s own
+    required_tests wording).'
   proof_requirements:
     positive:
     - 'Profile ruleset plug-in fixture: verdicts scoped to the profile and absent when not installed.'
@@ -4045,22 +4075,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-965E8CAEA15E1281
   capability_id: UBL-PROFILE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_is_exposed_when_declared
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_profile_id_is_exposed_when_declared
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_and_profile_and_version_are_read_independently
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_reflects_an_edit_to_the_tree
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_is_none_when_absent
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_customization_id_on_a_freshly_built_document_is_none
+  - tests/python/ubl/test_obligation_profile_identifiers.py::test_profile_id_is_none_when_absent
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-PROFILE-IDENTIFIERS-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Profile ruleset plug-in fixture:
-    verdicts scoped to the profile and absent when not installed.'
+  - 'UblDocument.customization_id and UblDocument.profile_id are live properties (like declared_version)
+    reading cbc:CustomizationID and cbc:ProfileID from the current tree, each read independently of the
+    other and of declared_version. Both are None -- never a fabricated default -- when the document does
+    not declare them, including on a freshly hand-built document with no parsing involved. Both reflect
+    an in-place edit to the tree immediately, matching this codebase''s existing live-property convention.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - 'Profile ruleset plug-in fixture: verdicts scoped to the profile and absent when not installed.'
@@ -6267,22 +6303,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-FC5C33152AFDB187
   capability_id: UBL-PROFILE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
+  - src/python/ubl/src/format_factory/ubl/model/document.py::ubl_version_id
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_loading_a_file_records_its_actual_declared_version_as_detected
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_reads_the_current_trees_ublversionid
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_ubl_version_id_helper_matches_the_declared_version_property
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_detected_declared_version.py::test_declared_version_is_none_when_ublversionid_is_absent
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-DETECTED-DECLARED-VERSION-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Profile ruleset plug-in fixture:
-    verdicts scoped to the profile and absent when not installed.'
+  - 'This obligation''s specific ask -- cbc:UBLVersionID identifies the UBL specification version a
+    document instance declares -- is the same underlying exposure UBL-LIFECYCLE-001''s
+    SAL-UBL-OBL-8940ED685664E7CE already required and closed: UblDocument.declared_version (and the
+    ubl_version_id(root) helper it calls) reads the current tree''s UBLVersionID directly. This
+    obligation does not itself require the detected-vs-declared distinction (that is specifically
+    UBL-LIFECYCLE-001''s separate obligation); declared_version alone fully satisfies it.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - 'Profile ruleset plug-in fixture: verdicts scoped to the profile and absent when not installed.'

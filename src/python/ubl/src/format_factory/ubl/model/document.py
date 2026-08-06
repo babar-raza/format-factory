@@ -9,8 +9,20 @@ from .._generated import ROOT_NAMESPACES
 
 #: cbc:UBLVersionID identifies the UBL specification version a document
 #: instance declares (UBL-PROFILE-001 / SAL-UBL-OBL-FC5C33152AFDB187).
+#: cbc:CustomizationID and cbc:ProfileID identify the customization profile
+#: and business process profile a document instance follows
+#: (SAL-UBL-OBL-965E8CAEA15E1281).
 _CBC_NAMESPACE = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
 _UBL_VERSION_QNAME = f"{{{_CBC_NAMESPACE}}}UBLVersionID"
+_CUSTOMIZATION_ID_QNAME = f"{{{_CBC_NAMESPACE}}}CustomizationID"
+_PROFILE_ID_QNAME = f"{{{_CBC_NAMESPACE}}}ProfileID"
+
+
+def _first_child_text(root: "XmlNode", qname: str) -> str | None:
+    for child in root.children:
+        if child.qname == qname:
+            return child.text.strip()
+    return None
 
 
 def ubl_version_id(root: "XmlNode") -> str | None:
@@ -20,10 +32,7 @@ def ubl_version_id(root: "XmlNode") -> str | None:
     one; validate() separately flags more than one as an error -- this
     accessor does not itself adjudicate that ambiguity).
     """
-    for child in root.children:
-        if child.qname == _UBL_VERSION_QNAME:
-            return child.text.strip()
-    return None
+    return _first_child_text(root, _UBL_VERSION_QNAME)
 
 
 @dataclass(frozen=True, slots=True)
@@ -107,6 +116,26 @@ class UblDocument:
         separately; never silently rewrite a declared version."
         """
         return ubl_version_id(self.root)
+
+    @property
+    def customization_id(self) -> str | None:
+        """The document's declared cbc:CustomizationID, or None if absent.
+
+        Identifies the customization profile a document instance follows
+        (UBL-PROFILE-001 / SAL-UBL-OBL-965E8CAEA15E1281). Live, like
+        `declared_version`: reflects the current tree, not a value frozen
+        at parse time.
+        """
+        return _first_child_text(self.root, _CUSTOMIZATION_ID_QNAME)
+
+    @property
+    def profile_id(self) -> str | None:
+        """The document's declared cbc:ProfileID, or None if absent.
+
+        Identifies the business process profile a document instance follows
+        (UBL-PROFILE-001 / SAL-UBL-OBL-965E8CAEA15E1281).
+        """
+        return _first_child_text(self.root, _PROFILE_ID_QNAME)
 
     @property
     def namespace(self) -> str:
