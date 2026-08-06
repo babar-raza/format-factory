@@ -20,6 +20,24 @@ execution_evidence:
     genuinely new production code, closing ipynb''s one remaining `missing` obligation. ipynb suite is
     now 670 passed with no failures. No ipynb obligation is `implemented`; IPYNB-MERGE-001''s obligation
     moves to `partial` only. ipynb obligations: 67 partial/1 missing -> 68 partial/0 missing.'
+- evidence_id: IPYNB-CELL-ID-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cell-id-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact positive
+    and negative test selectors for IPYNB-ID-001 (duplicate/invalid/valid
+    cell ids, passive-read never generates, explicit-upgrade-only
+    generation with a rewrite map, upgrade determinism). The
+    upgrade-produces-an-officially-valid-notebook claim is backed by
+    nbformat.validate() -- nbformat is this package's declared independent
+    oracle (nbformat 5.10.4). The duplicate/invalid-id rejection logic
+    itself is format_factory's own check, not independently cross-verified
+    against nbformat for those specific negative inputs -- SELF-CONSISTENT
+    for that half per the execution-recovery directive's GAP-008 rule, not
+    blanket VERIFIED. Covers SAL-IPYNB-OBL-6F4551856EC21F7B and
+    SAL-IPYNB-OBL-83A15CABF90C4B84 only; it supports no other obligation
+    and promotes no product state.
 obligations:
 - obligation_id: SAL-IPYNB-OBL-02A00C213D2B0190
   capability_id: IPYNB-ATTACH-001
@@ -836,25 +854,34 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-6F4551856EC21F7B
   capability_id: IPYNB-ID-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id
+  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::upgrade
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward
-  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2
-  - tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile
-  negative_test_selectors: []
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_valid_cell_ids_are_accepted
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_ids_are_not_generated_by_a_passive_read
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_explicit_upgrade_generates_ids_and_reports_the_rewrite_map
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_upgrade_is_deterministic_for_identical_input
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_upgraded_notebook_validates_at_4_5
+  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_explicit_upgrade_is_the_only_production_path_that_generates_ids
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_ids_are_rejected
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_invalid_cell_ids_are_rejected
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CELL-ID-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Duplicate/invalid ID negatives;
-    upgrade fixture verifies mapping.'
+  - 'Cell ids required from nbformat 4.5 onward are validated for charset, length (1-64 chars,
+    CELL_ID_PATTERN), and notebook-wide uniqueness in strict mode; a passive read never
+    synthesizes an id, and ids are generated only via explicit upgrade(), which reports a
+    rewrite map (cell_index, old_id, new_id) and is deterministic for identical input. The
+    upgraded document validates against nbformat, the declared independent oracle. This
+    obligation''s own rule_text was already fully implemented and already had complete,
+    passing shipped-namespace tests before this slice -- the evidence row previously cited
+    unrelated cell-NAME uniqueness tests instead; corrected the citation rather than
+    re-deriving the behavior.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Duplicate/invalid ID negatives; upgrade fixture verifies mapping.
@@ -976,25 +1003,31 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-83A15CABF90C4B84
   capability_id: IPYNB-ID-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell
-  - src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id
+  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::upgrade
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward
-  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2
-  - tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile
-  negative_test_selectors: []
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_valid_cell_ids_are_accepted
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_ids_are_not_generated_by_a_passive_read
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_explicit_upgrade_generates_ids_and_reports_the_rewrite_map
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_upgrade_is_deterministic_for_identical_input
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_upgraded_notebook_validates_at_4_5
+  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_explicit_upgrade_is_the_only_production_path_that_generates_ids
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_ids_are_rejected
+  - tests/python/ipynb/test_obligation_cell_identity.py::test_invalid_cell_ids_are_rejected
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-CELL-ID-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Duplicate/invalid ID negatives;
-    upgrade fixture verifies mapping.'
+  - 'Since nbformat 4.5, every cell carries an id unique within the notebook, conforming to
+    CELL_ID_PATTERN''s charset and length rules, enforced in strict mode. This obligation''s
+    own rule_text was already fully implemented and already had complete, passing
+    shipped-namespace tests before this slice, under the same test file as its sibling
+    obligation -- the evidence row previously cited unrelated cell-NAME uniqueness tests
+    instead; corrected the citation rather than re-deriving the behavior.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Duplicate/invalid ID negatives; upgrade fixture verifies mapping.

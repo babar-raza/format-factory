@@ -8,12 +8,20 @@
       "path": "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json",
       "sha256": "ec518b26fc721f8830442d3805580cb3c90bc2ddcaa49b50253f578de13f79ee",
       "truth_boundary": "Suite-level and NON-PROMOTING. 653 passed, 0 failed in the shared dev venv (.venv/Scripts/pytest tests/python/ipynb/ -q, 2026-08-05). The three installed-production-namespace tests that previously failed unconditionally under editable installs were fixed to detect editable installs via PEP 660 direct_url.json (matching tools/assurance/verify_package_install.py's existing EDITABLE_PTH/EDITABLE_DIRECT_URL convention) and assert against the source tree in that case, matching this repository's own definition of a valid installed package (see CT-INSTALL-001). They also continue to pass against a real built wheel install. Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most.\n2026-08-06: IPYNB-MERGE-001 adds a new module (model/merge.py, merge_notebooks()) plus 17 tests -- genuinely new production code, closing ipynb's one remaining `missing` obligation. ipynb suite is now 670 passed with no failures. No ipynb obligation is `implemented`; IPYNB-MERGE-001's obligation moves to `partial` only. ipynb obligations: 67 partial/1 missing -> 68 partial/0 missing."
+    },
+    {
+      "evidence_id": "IPYNB-CELL-ID-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cell-id-001.json",
+      "sha256": "a41bd433193a2f056bbfacd95c667ef16c066fbdff389d26c8016fac7860d5a1",
+      "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact positive and negative test selectors for IPYNB-ID-001 (duplicate/invalid/valid cell ids, passive-read never generates, explicit-upgrade-only generation with a rewrite map, upgrade determinism). The upgrade-produces-an-officially-valid-notebook claim is backed by nbformat.validate() -- nbformat is this package's declared independent oracle (nbformat 5.10.4). The duplicate/invalid-id rejection logic itself is format_factory's own check, not independently cross-verified against nbformat for those specific negative inputs -- SELF-CONSISTENT for that half per the execution-recovery directive's GAP-008 rule, not blanket VERIFIED. Covers SAL-IPYNB-OBL-6F4551856EC21F7B and SAL-IPYNB-OBL-83A15CABF90C4B84 only; it supports no other obligation and promotes no product state."
     }
   ],
   "format_id": "ipynb",
   "input_digests": {
     "compiled_contract": "070e7486feb32cb69e64bf9bb040bb47e4671f0034835d78d081c39ae2c05903",
-    "implementation_evidence": "2698ef708a7c26ec475af2fd56b27d0ecfb3cfb65df2f62b50d74567331972aa",
+    "implementation_evidence": "918c335a42f81900cdd484e77837fae26bd2c490734df012445fea4374350d2b",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "04340fa8bde6468fa648cb60fce3d50876a39c187d5b9ad3b0329fe0a29850a8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1086,20 +1094,25 @@
     {
       "capability_id": "IPYNB-ID-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-CELL-ID-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Cell ids required from nbformat 4.5 onward are validated for charset, length (1-64 chars, CELL_ID_PATTERN), and notebook-wide uniqueness in strict mode; a passive read never synthesizes an id, and ids are generated only via explicit upgrade(), which reports a rewrite map (cell_index, old_id, new_id) and is deterministic for identical input. The upgraded document validates against nbformat, the declared independent oracle. This obligation's own rule_text was already fully implemented and already had complete, passing shipped-namespace tests before this slice -- the evidence row previously cited unrelated cell-NAME uniqueness tests instead; corrected the citation rather than re-deriving the behavior."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate/invalid ID negatives; upgrade fixture verifies mapping."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_ids_are_rejected",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_invalid_cell_ids_are_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-6F4551856EC21F7B",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward",
-        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2",
-        "tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile"
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_valid_cell_ids_are_accepted",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_ids_are_not_generated_by_a_passive_read",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_explicit_upgrade_generates_ids_and_reports_the_rewrite_map",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_upgrade_is_deterministic_for_identical_input",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_upgraded_notebook_validates_at_4_5",
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_explicit_upgrade_is_the_only_production_path_that_generates_ids"
       ],
       "proof_requirements": {
         "negative": [
@@ -1109,14 +1122,12 @@
           "Duplicate/invalid ID negatives; upgrade fixture verifies mapping."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::upgrade"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-PRESERVE-001",
@@ -1269,20 +1280,25 @@
     {
       "capability_id": "IPYNB-ID-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-CELL-ID-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Since nbformat 4.5, every cell carries an id unique within the notebook, conforming to CELL_ID_PATTERN's charset and length rules, enforced in strict mode. This obligation's own rule_text was already fully implemented and already had complete, passing shipped-namespace tests before this slice, under the same test file as its sibling obligation -- the evidence row previously cited unrelated cell-NAME uniqueness tests instead; corrected the citation rather than re-deriving the behavior."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Duplicate/invalid ID negatives; upgrade fixture verifies mapping."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_ids_are_rejected",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_invalid_cell_ids_are_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-83A15CABF90C4B84",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_are_rejected_from_4_2_onward",
-        "tests/python/ipynb/test_obligation_cell_identity.py::test_duplicate_cell_names_remain_allowed_before_4_2",
-        "tests/python/ipynb/test_obligation_cell_identity.py::test_distinct_names_pass_in_every_profile"
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_valid_cell_ids_are_accepted",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_ids_are_not_generated_by_a_passive_read",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_explicit_upgrade_generates_ids_and_reports_the_rewrite_map",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_upgrade_is_deterministic_for_identical_input",
+        "tests/python/ipynb/test_obligation_cell_identity.py::test_upgraded_notebook_validates_at_4_5",
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_explicit_upgrade_is_the_only_production_path_that_generates_ids"
       ],
       "proof_requirements": {
         "negative": [
@@ -1292,14 +1308,12 @@
           "Duplicate/invalid ID negatives; upgrade fixture verifies mapping."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MimeBundle",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::Cell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::MarkdownCell",
-        "src/python/ipynb/src/format_factory/ipynb/model/document.py::RawCell"
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::ensure_cell_id",
+        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::upgrade"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-EXECMETA-001",
@@ -2485,6 +2499,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json": "ec518b26fc721f8830442d3805580cb3c90bc2ddcaa49b50253f578de13f79ee",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cell-id-001.json": "a41bd433193a2f056bbfacd95c667ef16c066fbdff389d26c8016fac7860d5a1",
     "src/python/ipynb/src/format_factory/ipynb/adapters/export.py": "d03fec3c5c3d5a46f7ac5df365b9e89e360abc4472ea560f3ca1baefbfe051ae",
     "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py": "2f3b6b4920e08549bb8714673ece9b4dffd5f30aae1a9e802aa27efa0bb6776c",
     "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py": "69e6862b047e46ac5321e144381befccb31d64cb5565bad19a504df8beb3b315",
@@ -2529,10 +2544,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "partial": 68
+      "implemented": 2,
+      "partial": 66
     },
     "total": 68,
-    "unresolved": 68
+    "unresolved": 66
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

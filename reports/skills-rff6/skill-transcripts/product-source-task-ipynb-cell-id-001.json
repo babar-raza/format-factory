@@ -1,0 +1,52 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-cell-id-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T09:05:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC-FF6-IPYNB-CELL-ID-EVIDENCE-001",
+    "task_kind": "evidence-correction",
+    "root_cause": "Both IPYNB-ID-001 obligations cited only cell-NAME uniqueness tests (test_duplicate_cell_names_are_rejected_from_4_2_onward etc.) -- a different capability (IPYNB-CELLNAME-001/CELLNAMEUNIQUE-001 territory) -- as their sole evidence. tests/python/ipynb/test_obligation_cell_identity.py's own docstring explicitly states it covers 'IPYNB-ID-001 (4.5): ids required, unique, charset and length constrained; generated ONLY via explicit upgrade, with a rewrite map', and contains a dedicated, complete, already-passing test block for exactly that (lines 185-257: test_duplicate_cell_ids_are_rejected, test_invalid_cell_ids_are_rejected, test_valid_cell_ids_are_accepted, test_ids_are_not_generated_by_a_passive_read, test_explicit_upgrade_generates_ids_and_reports_the_rewrite_map, test_upgrade_is_deterministic_for_identical_input, test_upgraded_notebook_validates_at_4_5) that was simply never cross-referenced into the evidence row. This is the same misattributed-evidence defect class found in XLIFF-STATE-001 (Event 103), now found a second time.",
+    "obligations_targeted": [
+      "SAL-IPYNB-OBL-6F4551856EC21F7B",
+      "SAL-IPYNB-OBL-83A15CABF90C4B84"
+    ],
+    "acceptance_evidence": "tests/python/ipynb/test_obligation_cell_identity.py, tests/python/ipynb/test_obligation_lifecycle_modes.py",
+    "regression_tier": "full IPYNB package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Read SAL-IPYNB-00014 and the two obligations' rule_text directly before searching for evidence: 'Validate required cell IDs (uniqueness, syntax, length); generate IDs only via explicit upgrade with a rewrite map for references' and the nbformat 4.5 core rule (unique id, permitted charset/length, required since 4.5).",
+    "2. Confirmed the shipped namespace already implements this completely: codec/reader/reader.py's CELL_ID_PATTERN (charset+length) and a single unified check (missing/invalid-syntax/duplicate, IPYNB_CELL_ID) enforced in strict mode for minor>=5; model/lifecycle.py's upgrade() generates ids only there, reporting an id_rewrites list (cell_index, old_id, new_id) -- exactly the 'rewrite map' the rule_text names.",
+    "3. Grepped for existing shipped-namespace test coverage before writing anything new: test_obligation_cell_identity.py's own docstring already claims IPYNB-ID-001 coverage explicitly, and contains a complete, dedicated block (7 test functions, 16 parametrized cases) proving every element of the rule: duplicate rejection, 6 invalid-syntax/length negative cases, 5 valid-syntax positive cases including the exact 64-character boundary, passive-read never generates an id, explicit upgrade generates unique valid ids, upgrade is deterministic, and the upgraded notebook validates. Independently re-ran all 16 before citing them: all pass.",
+    "4. Also found test_obligation_lifecycle_modes.py::test_explicit_upgrade_is_the_only_production_path_that_generates_ids, which additionally cross-checks the upgraded document against nbformat.validate() -- nbformat is the official Jupyter Project reference implementation, already declared as this package's independent oracle (controller-state.yaml's ipynb_checkpoint: 'oracle: nbformat 5.10.4'). This is genuine independent-reference backing for the 'upgrade produces an officially valid notebook' claim specifically -- stronger than the SELF-CONSISTENT label this session used for nrrd/xliff promotions that had no such oracle. The duplicate/invalid-id rejection logic itself is format_factory's own check, not independently cross-verified against nbformat's own behavior for those specific inputs, so the promotion's truth_boundary distinguishes the two rather than blanket-claiming oracle backing for everything.",
+    "5. No new source or test code was needed -- corrected the evidence citation to the tests that already existed and already passed, and added no new assertions.",
+    "6. Re-ran the full ipynb suite to confirm no incidental regressions from touching only the evidence YAML: 670 passed (unchanged from Event 100's baseline)."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_cell_identity.py -v -k \"duplicate_cell_ids or invalid_cell_ids or valid_cell_ids or ids_are_not_generated or explicit_upgrade_generates or upgrade_is_deterministic or upgraded_notebook_validates\" -- 16 passed",
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_lifecycle_modes.py::test_explicit_upgrade_is_the_only_production_path_that_generates_ids -v -- 1 passed",
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- 670 passed (unchanged, no source touched)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 68,
+    "ipynb_remains": "UNASSESSED",
+    "oracle": "nbformat 5.10.4 (official Jupyter Project reference implementation) genuinely backs the 'upgrade produces an officially valid 4.5 notebook' claim via test_upgraded_notebook_validates_at_4_5 and test_explicit_upgrade_is_the_only_production_path_that_generates_ids's nbformat.validate() call. The duplicate/invalid-id REJECTION logic is format_factory's own check, not independently cross-verified against nbformat for those specific negative inputs -- labeled SELF-CONSISTENT for that half, not blanket VERIFIED, per the execution-recovery directive's GAP-008 rule.",
+    "no_new_code_needed": "Pure evidence-correction slice: zero new source, zero new tests. The capability and its proof already existed in full; only the citation linking obligation to evidence was missing."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
