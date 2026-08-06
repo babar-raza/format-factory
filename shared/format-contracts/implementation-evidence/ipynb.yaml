@@ -216,6 +216,39 @@ execution_evidence:
     SAL-IPYNB-OBL-6DCE21F7DD6D971B, SAL-IPYNB-OBL-9A6A2B857F357379, and
     SAL-IPYNB-OBL-A87B92BEB23E3B35 only; it supports no other obligation
     and promotes no product state.
+- evidence_id: IPYNB-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-lifecycle-citation-audit-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike IPYNB-BASELINE-SUITE: IPYNB-LIFECYCLE-001's 6
+    obligations all cited the same 3-test citation from
+    test_obligation_lifecycle_modes.py, proving strict/tolerant modes
+    well but leaving save-to-destination, load-from-source,
+    validate-as-callable, deterministic serialization, and detected-
+    versus-declared version thinly or generically cited. Investigating
+    load/save individually found a real, narrow gap: Source and
+    Destination are both typed to accept a stream object (anything with
+    a str-returning read() / str-accepting write()), and the reader's
+    _read_source function explicitly branches on hasattr(source,
+    'read'), but no test anywhere in the shipped-namespace suite
+    constructed an actual stream object -- closed this slice with 2 new
+    tests (test_load_from_a_readable_text_stream,
+    test_dump_writes_to_a_writable_text_stream) in
+    test_production_namespace.py, proving source already handled it
+    correctly. Deterministic serialization, validate-as-callable, and
+    detected-vs-declared version are each re-cited against their own
+    precise existing tests (byte-identical repeated writes; schema
+    diagnostics with stable codes and precise paths; a document whose
+    declared minor is None still resolving a separate concrete detected
+    version without that resolution silently rewriting what was
+    declared). SELF-CONSISTENT format_factory-only evidence per the
+    execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
+    SAL-IPYNB-OBL-1CEEABB4EB56C405, SAL-IPYNB-OBL-650D957D94A33790,
+    SAL-IPYNB-OBL-C62F62D99CDA6EAF, SAL-IPYNB-OBL-DD20FA864FE34971,
+    SAL-IPYNB-OBL-F6811E708E96AF83, and SAL-IPYNB-OBL-FFF232183E2BB71E
+    only; it supports no other obligation and promotes no product
+    state.
 obligations:
 - obligation_id: SAL-IPYNB-OBL-02A00C213D2B0190
   capability_id: IPYNB-ATTACH-001
@@ -500,25 +533,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-1CEEABB4EB56C405
   capability_id: IPYNB-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load
+  - src/python/ipynb/src/format_factory/ipynb/model/document.py::IpynbDocument
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic
   - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value
-  negative_test_selectors: []
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'STRICT mode rejects malformed/incomplete input with a diagnostic; a tolerant recovery mode recovers where the format permits and reports every synthesized value as a recovery action, proven deterministic across repeated loads of the same input (same recovery actions both times).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -902,25 +930,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-650D957D94A33790
   capability_id: IPYNB-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition
+  - src/python/ipynb/src/format_factory/ipynb/model/document.py::IpynbDocument
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value
+  - tests/python/ipynb/test_obligation_version_conversion.py::test_upgrade_from_every_supported_older_minor_validates_officially
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'declared_version and detected_version are exposed as separate properties: a document declaring no explicit minor (declared_version.minor is None) still resolves a concrete detected_version ((4, 0)) without that resolution silently rewriting what was declared -- proven directly after a recovery pass that synthesizes several OTHER missing values, confirming the declared-version field specifically is never touched. An explicit upgrade() is proven to advance both declared_version and detected_version together, as the only path that does.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -1754,25 +1777,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-C62F62D99CDA6EAF
   capability_id: IPYNB-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition
+  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_repeated_writes_are_byte_identical
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_roundtrip_is_stable_across_two_passes
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'dumps() is proven byte-identical across repeated calls on the same document, and a load-dump-load-dump round trip is proven stable across two full passes -- both parametrized across every supported indent setting, so determinism holds independent of formatting choice.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -1910,25 +1927,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-DD20FA864FE34971
   capability_id: IPYNB-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition
+  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump
+  - src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value
+  - tests/python/ipynb/test_production_namespace.py::test_common_lifecycle_and_unknown_member_preservation
+  - tests/python/ipynb/test_production_namespace.py::test_dump_writes_to_a_writable_text_stream
+  - tests/python/ipynb/test_obligation_writer_contract.py::test_written_notebook_still_validates
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'Save is proven to a filesystem path (dump to a tmp_path destination, then reloaded) and, closing a real gap this slice, to a writable text stream (Destination is typed to accept anything with a str-accepting write(), but no existing test constructed an actual stream object before this tick -- added test_dump_writes_to_a_writable_text_stream). dumps() to bytes is covered by the determinism tests. Written output is proven to still validate, directly satisfying "producing output the library''s own loader accepts."'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -2032,25 +2045,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-F6811E708E96AF83
   capability_id: IPYNB-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load
+  - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value
+  - tests/python/ipynb/test_production_namespace.py::test_common_lifecycle_and_unknown_member_preservation
+  - tests/python/ipynb/test_production_namespace.py::test_load_from_a_readable_text_stream
   negative_test_selectors: []
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'load()/loads() are proven to accept a filesystem path, in-memory bytes/str, and, closing a real gap this slice, a readable text stream (Source is typed to accept anything with a str-returning read(), but no existing test constructed an actual stream object before this tick -- added test_load_from_a_readable_text_stream), each returning the same IpynbDocument root model object.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative
@@ -2091,25 +2099,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-IPYNB-OBL-FFF232183E2BB71E
   capability_id: IPYNB-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction
-  - src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition
+  - src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate
   positive_test_selectors:
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic
-  - tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value
-  negative_test_selectors: []
+  - tests/python/ipynb/test_obligation_official_schema_validation.py::test_schema_diagnostics_expose_stable_codes_and_precise_paths
+  - tests/python/ipynb/test_production_namespace.py::test_common_lifecycle_and_unknown_member_preservation
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_official_schema_validation.py::test_strict_load_rejects_official_schema_error_at_parse_boundary
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
+  - IPYNB-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Each lifecycle_io baseline
-    behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics.'
+  - 'validate() is a first-class callable returning structured diagnostics with stable codes and precise paths -- proven directly, and distinguished from the separate parse-time exception path (strict mode load() still raises at the parse boundary for the same underlying schema errors validate() reports structurally).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative

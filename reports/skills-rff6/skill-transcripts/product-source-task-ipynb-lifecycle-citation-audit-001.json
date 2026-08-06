@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-lifecycle-citation-audit-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T20:40:00Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_LIFECYCLE_CITATION_AUDIT_001",
+    "task_kind": "obligation-closure-with-one-small-genuine-gap-closed",
+    "root_cause": "IPYNB-LIFECYCLE-001's 6 obligations shared one 3-test citation proving strict/tolerant modes well but leaving the other five clauses (save, load, validate-as-callable, deterministic serialization, detected-vs-declared version) generically or thinly cited. This mirrors ORA-LIFECYCLE-001's earlier tick almost exactly (same six standard clauses every format in this codebase carries), but investigating load/save individually surfaced a genuine, narrow test gap this ora tick did not have: stream-object support (Source/Destination types both accept anything with read()/write(), and the reader explicitly branches on hasattr(source, 'read')) had zero test coverage anywhere in the shipped ipynb namespace, confirmed by first checking (and correctly rejecting) the deprecated shadow-package test file that does exercise similar-looking load paths but does not count as shipped-namespace evidence.",
+    "obligation_targeted": "SAL-IPYNB-OBL-1CEEABB4EB56C405, SAL-IPYNB-OBL-650D957D94A33790, SAL-IPYNB-OBL-C62F62D99CDA6EAF, SAL-IPYNB-OBL-DD20FA864FE34971, SAL-IPYNB-OBL-F6811E708E96AF83, SAL-IPYNB-OBL-FFF232183E2BB71E",
+    "acceptance_evidence": "tests/python/ipynb/test_obligation_lifecycle_modes.py, test_obligation_writer_contract.py, test_obligation_version_conversion.py, test_obligation_official_schema_validation.py, test_production_namespace.py (test_production_namespace.py extended this slice with 2 new tests)",
+    "regression_tier": "full IPYNB package suite (tests/python/ipynb)"
+  },
+  "execution_steps": [
+    "1. Pulled all 6 IPYNB-LIFECYCLE-001 rule_texts, recognized the standard load/save/validate/deterministic/strict-tolerant/version cluster shape already closed for ORA-LIFECYCLE-001 earlier this session, and began mapping each clause to its specific shipped-namespace test.",
+    "2. Searched broadly for load-from-path/stream/bytes, validate-as-callable, and detected/declared-version tests across the whole ipynb test suite (not just the obligation-named files) and found two candidate hits in test_ipynb_codec.py -- checked its imports first and found it imports from the bare `ipynb.*` package, the deprecated shadow package this codebase's own test docstrings (GAP-017/GAP-018) explicitly bar from counting as shipped-namespace coverage. Excluded it and continued searching.",
+    "3. Grepped specifically for BytesIO/StringIO/stream usage across every test_obligation_*.py file and test_production_namespace.py: zero hits. Checked reader.py/writer.py's actual Source/Destination type aliases and _read_source's implementation directly -- confirmed stream objects (anything with a str-returning read()) are explicitly supported in source (hasattr(source, 'read') branch), so this is a genuine test-coverage gap, not an unbuilt feature.",
+    "4. Closed the gap with 2 new tests in test_production_namespace.py: test_load_from_a_readable_text_stream (io.StringIO as load() source) and test_dump_writes_to_a_writable_text_stream (io.StringIO as dump() destination, reloaded to confirm round-trip). Ran both directly before citing: passed on the first attempt, confirming the source path already worked correctly.",
+    "5. Found precise existing tests for the remaining four clauses: deterministic serialization (test_repeated_writes_are_byte_identical, test_roundtrip_is_stable_across_two_passes, both parametrized across every indent setting); validate-as-callable (test_schema_diagnostics_expose_stable_codes_and_precise_paths, a stronger, more specific citation than the previously-used generic one); detected-vs-declared version (a document with declared_version.minor is None still resolving a separate concrete detected_version, proven not to silently rewrite the declared field even after a recovery pass that synthesizes several other missing values).",
+    "6. Applied all 6 evidence edits via the same obligation_id-delimited text-block script pattern used across nine prior ora/ipynb ticks, extracting the actual proof_requirements boilerplate from an untouched sibling programmatically. Ran the reconciler: clean pass, no errors, first attempt. Ran the full ipynb suite: 690 passed (688 baseline + 2 new), 0 regressions."
+  ],
+  "allowed_files": [
+    "tests/python/ipynb/test_production_namespace.py",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ipynb/test_production_namespace.py",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/test_production_namespace.py -k stream -v -- 2 passed",
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- 690 passed (688 baseline + 2 new), 0 regressions",
+    ".venv/Scripts/python -m ruff check tests/python/ipynb/test_production_namespace.py -- All checks passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 6,
+    "obligations_total_for_format": 68,
+    "ipynb_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against nbformat or Jupyter itself for these specific lifecycle behaviors. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_all_6_moved_and_one_real_gap_closed": "All six clauses were either already proven by existing tests (needing only precise re-citation) or, for load/save, proven correct once a genuinely missing test (stream-object support) was added. Unlike several ora clusters this session, no clause here required staying at partial with an honestly-named unbuilt gap -- the underlying source was already complete, just under-tested for one input shape."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

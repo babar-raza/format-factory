@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib.metadata
 import importlib.util
+import io
 import json
 from pathlib import Path
 
@@ -73,6 +74,38 @@ def test_common_lifecycle_and_unknown_member_preservation(tmp_path: Path) -> Non
     reloaded = load(destination, mode="preservation")
     assert reloaded.raw["vendor_root"] == ["retained"]
     assert reloaded.cells[0]["vendor_cell"] == {"retained": 1}
+
+
+def test_load_from_a_readable_text_stream() -> None:
+    """"Provide load from ... a readable stream" -- Source is typed to accept
+    anything with a str-returning read(), not only bytes/str/path, but no
+    existing test constructed an actual stream object until this one."""
+    source = json.dumps(
+        {
+            "nbformat": 4,
+            "nbformat_minor": 5,
+            "metadata": {},
+            "cells": [],
+        }
+    )
+    document = load(io.StringIO(source))
+
+    assert isinstance(document, IpynbDocument)
+    assert document.declared_version.as_tuple() == (4, 5)
+
+
+def test_dump_writes_to_a_writable_text_stream() -> None:
+    """"Provide save to ... a writable stream" -- Destination is typed to
+    accept anything with a str-accepting write(), not only a path."""
+    document = load(
+        json.dumps({"nbformat": 4, "nbformat_minor": 5, "metadata": {}, "cells": []})
+    )
+    buffer = io.StringIO()
+
+    dump(document, buffer)
+
+    reloaded = load(io.StringIO(buffer.getvalue()))
+    assert reloaded.declared_version.as_tuple() == (4, 5)
 
 
 def test_deterministic_cell_ids_are_created_only_by_explicit_upgrade() -> None:

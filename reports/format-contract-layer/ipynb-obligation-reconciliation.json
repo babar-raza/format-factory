@@ -50,6 +50,14 @@
       "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE: it names the exact positive and negative test selectors proving ExportAdapter is a genuine runtime Protocol (a third-party adapter conforms without inheriting from anything in this module), and that both built-in exporters return main content plus ancillary resources (attachments and code-cell image outputs) collected by exporter-specific logic living outside the core parser. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-AABAEFD635A6381D only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "IPYNB-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-lifecycle-citation-audit-001.json",
+      "sha256": "280fbe1d20539d795da77ea334a7402029ba609c16a7e12ee71ff35c4f7a512c",
+      "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE: IPYNB-LIFECYCLE-001's 6 obligations all cited the same 3-test citation from test_obligation_lifecycle_modes.py, proving strict/tolerant modes well but leaving save-to-destination, load-from-source, validate-as-callable, deterministic serialization, and detected- versus-declared version thinly or generically cited. Investigating load/save individually found a real, narrow gap: Source and Destination are both typed to accept a stream object (anything with a str-returning read() / str-accepting write()), and the reader's _read_source function explicitly branches on hasattr(source, 'read'), but no test anywhere in the shipped-namespace suite constructed an actual stream object -- closed this slice with 2 new tests (test_load_from_a_readable_text_stream, test_dump_writes_to_a_writable_text_stream) in test_production_namespace.py, proving source already handled it correctly. Deterministic serialization, validate-as-callable, and detected-vs-declared version are each re-cited against their own precise existing tests (byte-identical repeated writes; schema diagnostics with stable codes and precise paths; a document whose declared minor is None still resolving a separate concrete detected version without that resolution silently rewriting what was declared). SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-IPYNB-OBL-1CEEABB4EB56C405, SAL-IPYNB-OBL-650D957D94A33790, SAL-IPYNB-OBL-C62F62D99CDA6EAF, SAL-IPYNB-OBL-DD20FA864FE34971, SAL-IPYNB-OBL-F6811E708E96AF83, and SAL-IPYNB-OBL-FFF232183E2BB71E only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "IPYNB-MERGE-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -93,7 +101,7 @@
   "format_id": "ipynb",
   "input_digests": {
     "compiled_contract": "070e7486feb32cb69e64bf9bb040bb47e4671f0034835d78d081c39ae2c05903",
-    "implementation_evidence": "e3c8951b24a1e92ae709cfa06a01d778e1751e1038e8abd012a2113b5b4879bc",
+    "implementation_evidence": "e6956d16263e133c57fe1b5aafd734278207a8117a1b004be2e5cd93a6530ce4",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "04340fa8bde6468fa648cb60fce3d50876a39c187d5b9ad3b0329fe0a29850a8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -464,19 +472,18 @@
     {
       "capability_id": "IPYNB-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "STRICT mode rejects malformed/incomplete input with a diagnostic; a tolerant recovery mode recovers where the format permits and reports every synthesized value as a recovery action, proven deterministic across repeated loads of the same input (same recovery actions both times)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-1CEEABB4EB56C405",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids",
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic",
         "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value"
       ],
       "proof_requirements": {
@@ -487,14 +494,12 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition"
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::IpynbDocument"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-VALIDATE-001",
@@ -979,20 +984,18 @@
     {
       "capability_id": "IPYNB-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "declared_version and detected_version are exposed as separate properties: a document declaring no explicit minor (declared_version.minor is None) still resolves a concrete detected_version ((4, 0)) without that resolution silently rewriting what was declared -- proven directly after a recovery pass that synthesizes several OTHER missing values, confirming the declared-version field specifically is never touched. An explicit upgrade() is proven to advance both declared_version and detected_version together, as the only path that does."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-650D957D94A33790",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids",
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic",
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value"
+        "tests/python/ipynb/test_obligation_version_conversion.py::test_upgrade_from_every_supported_older_minor_validates_officially"
       ],
       "proof_requirements": {
         "negative": [
@@ -1002,14 +1005,12 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition"
+        "src/python/ipynb/src/format_factory/ipynb/model/document.py::IpynbDocument",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-DIFF-001",
@@ -2088,20 +2089,18 @@
     {
       "capability_id": "IPYNB-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "dumps() is proven byte-identical across repeated calls on the same document, and a load-dump-load-dump round trip is proven stable across two full passes -- both parametrized across every supported indent setting, so determinism holds independent of formatting choice."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-C62F62D99CDA6EAF",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids",
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic",
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value"
+        "tests/python/ipynb/test_obligation_writer_contract.py::test_repeated_writes_are_byte_identical",
+        "tests/python/ipynb/test_obligation_writer_contract.py::test_roundtrip_is_stable_across_two_passes"
       ],
       "proof_requirements": {
         "negative": [
@@ -2111,14 +2110,11 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition"
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-CLEAN-001",
@@ -2298,20 +2294,19 @@
     {
       "capability_id": "IPYNB-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Save is proven to a filesystem path (dump to a tmp_path destination, then reloaded) and, closing a real gap this slice, to a writable text stream (Destination is typed to accept anything with a str-accepting write(), but no existing test constructed an actual stream object before this tick -- added test_dump_writes_to_a_writable_text_stream). dumps() to bytes is covered by the determinism tests. Written output is proven to still validate, directly satisfying \"producing output the library's own loader accepts.\""
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-DD20FA864FE34971",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids",
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic",
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value"
+        "tests/python/ipynb/test_production_namespace.py::test_common_lifecycle_and_unknown_member_preservation",
+        "tests/python/ipynb/test_production_namespace.py::test_dump_writes_to_a_writable_text_stream",
+        "tests/python/ipynb/test_obligation_writer_contract.py::test_written_notebook_still_validates"
       ],
       "proof_requirements": {
         "negative": [
@@ -2321,14 +2316,12 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition"
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dump",
+        "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-WRITE-001",
@@ -2448,20 +2441,18 @@
     {
       "capability_id": "IPYNB-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "load()/loads() are proven to accept a filesystem path, in-memory bytes/str, and, closing a real gap this slice, a readable text stream (Source is typed to accept anything with a str-returning read(), but no existing test constructed an actual stream object before this tick -- added test_load_from_a_readable_text_stream), each returning the same IpynbDocument root model object."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-F6811E708E96AF83",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids",
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic",
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value"
+        "tests/python/ipynb/test_production_namespace.py::test_common_lifecycle_and_unknown_member_preservation",
+        "tests/python/ipynb/test_production_namespace.py::test_load_from_a_readable_text_stream"
       ],
       "proof_requirements": {
         "negative": [
@@ -2471,14 +2462,12 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition"
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::load",
+        "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::loads"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "IPYNB-VALIDATE-001",
@@ -2524,20 +2513,20 @@
     {
       "capability_id": "IPYNB-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "IPYNB-BASELINE-SUITE"
+        "IPYNB-BASELINE-SUITE",
+        "IPYNB-LIFECYCLE-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "validate() is a first-class callable returning structured diagnostics with stable codes and precise paths -- proven directly, and distinguished from the separate parse-time exception path (strict mode load() still raises at the parse boundary for the same underlying schema errors validate() reports structurally)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_official_schema_validation.py::test_strict_load_rejects_official_schema_error_at_parse_boundary"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-IPYNB-OBL-FFF232183E2BB71E",
       "positive_test_selectors": [
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_preservation_mode_does_not_synthesize_absent_values_or_ids",
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_strict_mode_rejects_incomplete_current_document_with_diagnostic",
-        "tests/python/ipynb/test_obligation_lifecycle_modes.py::test_recovery_mode_is_deterministic_and_reports_every_synthesized_value"
+        "tests/python/ipynb/test_obligation_official_schema_validation.py::test_schema_diagnostics_expose_stable_codes_and_precise_paths",
+        "tests/python/ipynb/test_production_namespace.py::test_common_lifecycle_and_unknown_member_preservation"
       ],
       "proof_requirements": {
         "negative": [
@@ -2547,14 +2536,11 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::NotebookVersion",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::RecoveryAction",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionAction",
-        "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py::ConversionDisposition"
+        "src/python/ipynb/src/format_factory/ipynb/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     }
   ],
   "promotion_effect": "none",
@@ -2566,6 +2552,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-edit-001.json": "bb88dabbc9361c01672ab1319cba2125c43bdb5ec1c4f5d650956a1ef5903d1d",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-execution-adapter-001.json": "cb763153a0ce13978e1e29e1620d3aaa2bae4ed83b792ef83e54fec2f36bce86",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-export-001.json": "53d61ffd27a6d7f9b7b1fee61a02de20972f1d98a3baf1849360f7c750153ebc",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-lifecycle-citation-audit-001.json": "280fbe1d20539d795da77ea334a7402029ba609c16a7e12ee71ff35c4f7a512c",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-merge-001.json": "f12e54e0372e13214347eb90ccb68f87c8abd19f95df34465dc6c3cd2a83804d",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-output-citation-audit-001.json": "f04a02748969db3a18e6289e53513a6c13fe2eef0ea03a49f630ee24b39a3e95",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-parse-citation-audit-001.json": "05a573d1aef638ad84c2c8182f3d894dfdfa8dec90ffccf82a1f4fd66b66b754",
@@ -2613,16 +2600,17 @@
     "tests/python/ipynb/test_obligation_typed_model.py": "8883ae99c33245fd3ceccc48582d3570ebff90e35534c8be372ba902395e14ff",
     "tests/python/ipynb/test_obligation_validation_profiles.py": "88bfd637a80e7c58ff0553e8e11d8293fbf164c2fe4b3208bfe2d853d7047fe2",
     "tests/python/ipynb/test_obligation_version_conversion.py": "48ebf0c998441eec842fe9d2990207788f2c1fda9814fdfcf6b75b25c52f03d6",
-    "tests/python/ipynb/test_obligation_writer_contract.py": "4f7cf97aac106965a34ad729c9c7087adaa214772fb74c261913944dd97cd57b"
+    "tests/python/ipynb/test_obligation_writer_contract.py": "4f7cf97aac106965a34ad729c9c7087adaa214772fb74c261913944dd97cd57b",
+    "tests/python/ipynb/test_production_namespace.py": "b4c540c9cc1177f5fb05d69704d9dac1278e54fcb13d2efab47eb314c290f94f"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 26,
-      "partial": 42
+      "implemented": 32,
+      "partial": 36
     },
     "total": 68,
-    "unresolved": 42
+    "unresolved": 36
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
