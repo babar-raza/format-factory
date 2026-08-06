@@ -131,6 +131,29 @@ execution_evidence:
     execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
     SAL-UBL-OBL-7D0855CD163E1EFD only; it supports no other obligation and
     promotes no product state.
+- evidence_id: UBL-SIGNATURE-NAMESPACE-SELECTOR-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-signature-namespace-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact positive
+    test selectors proving every one of the 91 authority-pinned root types
+    is loaded and type-dispatched via its
+    urn:oasis:names:specification:ubl:schema:xsd:<Type>-2 namespace (a
+    pattern the fixture builder constructs independently of the generated
+    ROOT_NAMESPACES table, so this is not circular), and that editing a
+    signed document invalidates UblDocument.signature_preserved and
+    surfaces validate()'s ubl.signature.invalidated diagnostic as a
+    non-fatal report rather than a silent loss. Does NOT cover "verification
+    and signing remain a separate pluggable opt-in" -- no signing or
+    verification backend, pluggable or otherwise, exists in this package;
+    that clause of UBL-SIGN-001's two signature obligations remains
+    unpromoted. SELF-CONSISTENT format_factory-only evidence per the
+    execution-recovery directive's GAP-008 rule, not VERIFIED. Covers
+    SAL-UBL-OBL-8A3551BBBAC3FFD9 fully, and SAL-UBL-OBL-175ADB055BC12E8F
+    and SAL-UBL-OBL-452B9C973F40966B partially (the report-before-saving
+    and never-rewrite-subtrees halves only); it supports no other
+    obligation and promotes no product state.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -704,22 +727,28 @@ obligations:
   capability_id: UBL-SIGN-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_production_namespace.py::test_edit_invalidates_signature_assertion
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-SIGNATURE-NAMESPACE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - UblDocument.signature_preserved compares the current tree's serialized
+    hash against the hash captured when a signature was last known intact;
+    with_root() (the sole edit path) invalidates this on every edit, and
+    validate() surfaces ubl.signature.invalidated as a non-fatal diagnostic
+    -- a caller sees the report before saving rather than a silent loss.
+    dumps() never rewrites subtrees since it always serializes the tree
+    exactly as constructed, so a signed subtree an edit did not touch is
+    never altered.
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Signed-document round-trip
-    byte-preserves signed subtrees; edit-warning fixture.'
+  - '"Verification and signing remain a separate pluggable opt-in" is not
+    implemented -- no signing or verification backend, pluggable or
+    otherwise, exists in this package. Only signature-presence tracking
+    (whether a previously-intact signature survived an edit) is built.'
   proof_requirements:
     positive:
     - Signed-document round-trip byte-preserves signed subtrees; edit-warning fixture.
@@ -1238,24 +1267,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-26CD31E7F8CF91E1
   capability_id: UBL-SIGN-001
-  status: partial
-  source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
-  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
-  positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  status: missing
+  source_symbols: []
+  positive_test_selectors: []
   negative_test_selectors: []
-  execution_evidence_ids:
-  - UBL-BASELINE-SUITE
-  implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  execution_evidence_ids: []
+  implemented_behavior: []
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Signed-document round-trip
-    byte-preserves signed subtrees; edit-warning fixture.'
+  - 'Confirmed gap, not an audit backlog: neither XmlNode.with_children
+    (model/document.py) nor validate() (validation/validator.py) checks
+    child-element sequence order against the schema at all -- a document
+    assembled or edited with elements in the wrong order is accepted and
+    would be written by dumps() without complaint. The same gap blocks
+    UBL-WRITE-001''s "write elements in schema-valid order independent of
+    mutation order" obligation. Fixing this needs a schema-order-aware
+    sequence table per UBL root/aggregate type, which does not currently
+    exist in this package and is not fabricated here per GAP-008.'
   proof_requirements:
     positive:
     - Signed-document round-trip byte-preserves signed subtrees; edit-warning fixture.
@@ -2030,22 +2057,26 @@ obligations:
   capability_id: UBL-SIGN-001
   status: partial
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
+  - tests/python/ubl/test_production_namespace.py::test_edit_invalidates_signature_assertion
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-SIGNATURE-NAMESPACE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
+  - Signature structures are preserved without rewriting (dumps() always
+    serializes the tree as constructed, touching only what an edit actually
+    changed), and an edit that invalidates a previously-intact signature is
+    reported via validate()'s ubl.signature.invalidated diagnostic before
+    saving, proven end-to-end (load a signed document, edit it, confirm
+    signature_preserved flips false and the diagnostic appears).
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Signed-document round-trip
-    byte-preserves signed subtrees; edit-warning fixture.'
+  - '"Verification and signing remain a separate pluggable opt-in" is not
+    implemented -- no signing or verification backend, pluggable or
+    otherwise, exists in this package. Only signature-presence tracking
+    (whether a previously-intact signature survived an edit) is built.'
   proof_requirements:
     positive:
     - Signed-document round-trip byte-preserves signed subtrees; edit-warning fixture.
@@ -3704,24 +3735,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-8A3551BBBAC3FFD9
   capability_id: UBL-SIGN-001
-  status: partial
+  status: implemented
   source_symbols:
-  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
-  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable
   - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-SIGNATURE-NAMESPACE-SELECTOR-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Signed-document round-trip
-    byte-preserves signed subtrees; edit-warning fixture.'
+  - Every one of the 91 authority-pinned maindoc types is loaded and
+    type-dispatched (loads() selects the matching ROOT_CLASSES entry) via
+    its own urn:oasis:names:specification:ubl:schema:xsd:<Type>-2 root
+    namespace -- proven with fixtures that construct the namespace pattern
+    textually, independent of the generated ROOT_NAMESPACES table used by
+    the writer, so the two are cross-checked rather than compared against
+    themselves.
+  missing_behavior: []
   proof_requirements:
     positive:
     - Signed-document round-trip byte-preserves signed subtrees; edit-warning fixture.

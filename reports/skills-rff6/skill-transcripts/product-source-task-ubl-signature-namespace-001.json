@@ -1,0 +1,47 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-signature-namespace-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-06T15:15:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_SIGN_NAMESPACE_CITATION_001",
+    "task_kind": "obligation-closure",
+    "root_cause": "UBL-SIGN-001's 4 obligations (root namespace pattern per maindoc type; report-before-saving on signature invalidation with never-rewriting subtrees, twice with slightly different framing; schema-valid element sequence order) all carried an identical generic 3-symbol citation. The root-namespace claim was already fully provable via existing tests. The signature-invalidation claim was half-built (invalidation tracking and reporting exist; a pluggable sign/verify backend does not) and had one real, uncited test. The element-order claim was confirmed genuinely unbuilt by direct source inspection -- no sequence-order checking exists anywhere in the write/validate path.",
+    "obligation_targeted": "SAL-UBL-OBL-8A3551BBBAC3FFD9, SAL-UBL-OBL-175ADB055BC12E8F, SAL-UBL-OBL-452B9C973F40966B, SAL-UBL-OBL-26CD31E7F8CF91E1",
+    "acceptance_evidence": "tests/python/ubl/test_production_namespace.py (test_authority_pinned_root_inventory_is_complete_and_stable, test_all_91_roots_have_typed_roundtrip, test_edit_invalidates_signature_assertion)",
+    "regression_tier": "full UBL package suite (tests/python/ubl)"
+  },
+  "execution_steps": [
+    "1. Continued the ubl sweep, targeting UBL-SIGN-001's 4 obligations. Read model/document.py's UblDocument.signature_preserved (compares current serialized hash against the hash captured when a signature was last known intact) and with_root() (the sole edit path, which invalidates this on every edit), plus validation/validator.py's signature-node scan that surfaces ubl.signature.invalidated as a non-fatal diagnostic when signature_preserved is false.",
+    "2. Confirmed _generated/root_catalog.py's ROOT_NAMESPACES is mechanically derived from the pattern urn:oasis:names:specification:ubl:schema:xsd:<Type>-2 for all 91 roots, and that test_production_namespace.py's _minimal() fixture builder independently constructs the identical pattern textually (not by importing ROOT_NAMESPACES) -- so test_all_91_roots_have_typed_roundtrip's per-root type-dispatch success is a genuine cross-check, not a tautology.",
+    "3. Searched for a pluggable signing/verification backend (def sign, def verify, SignatureAdapter, SigningBackend) and found none -- confirming the signature obligations' 'verification and signing remain a separate pluggable opt-in' clause is genuinely unbuilt, while the 'report before saving, never rewrite subtrees' clause is fully built and already covered by one existing test (test_edit_invalidates_signature_assertion) that had never been cited against these obligations.",
+    "4. Grepped validation/validator.py and model/document.py's with_children for any element-sequence-order check and found none at all -- confirming SAL-UBL-OBL-26CD31E7F8CF91E1 ('child elements must appear in schema sequence order') is a genuine, confirmed source gap, the same one already flagged for UBL-WRITE-001 in the prior tick, not a citation-audit backlog item.",
+    "5. Ran the three real candidate tests directly (93 parametrized+plain cases): all passed. Promoted SAL-UBL-OBL-8A3551BBBAC3FFD9 (namespace pattern) fully to implemented. Narrowed SAL-UBL-OBL-175ADB055BC12E8F and SAL-UBL-OBL-452B9C973F40966B to implemented behavior for the report/never-rewrite half, with missing_behavior specifically naming the unbuilt pluggable-signing-backend half -- correctly kept at `partial`, not force-promoted. Corrected SAL-UBL-OBL-26CD31E7F8CF91E1 from a misleading `partial` (citing unrelated evidence) to an honest `missing` naming the confirmed gap."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_production_namespace.py::test_authority_pinned_root_inventory_is_complete_and_stable tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip tests/python/ubl/test_production_namespace.py::test_edit_invalidates_signature_assertion -v -- 93 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- unchanged from before this slice (0 source or test changes)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 194,
+    "ubl_remains": "UNASSESSED",
+    "oracle": "none -- this is format_factory's own self-consistent test evidence, not independently cross-checked against an external UBL/xmldsig validator. Labeled SELF-CONSISTENT per the FF6 execution-recovery directive's GAP-008 rule, not VERIFIED.",
+    "why_two_obligations_stayed_partial_and_one_became_missing": "Signature reporting is genuinely half-built (tracking/reporting yes, pluggable sign/verify backend no) -- force-promoting would overclaim the unbuilt half. Element order is a confirmed zero-coverage gap in both the model and validator, not an audit gap -- `missing` is the honest state, and force-citing unrelated evidence (as the prior citation did) would misrepresent it."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
