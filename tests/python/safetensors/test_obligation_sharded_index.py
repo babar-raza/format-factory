@@ -61,6 +61,15 @@ def test_duplicate_tensor_mapping_is_rejected() -> None:
         loads_index(duplicate)
 
 
+def test_missing_tensor_lookup_is_rejected(tmp_path: Path) -> None:
+    index = SafeTensorsShardIndex(weight_map={"tensor": "model.safetensors"})
+
+    with pytest.raises(KeyError):
+        index.shard_for("absent")
+    with pytest.raises(KeyError):
+        index.resolve_shard("absent", tmp_path)
+
+
 def test_sharded_index_path_and_stream_lifecycle(tmp_path: Path) -> None:
     index = SafeTensorsShardIndex(
         weight_map={"tensor": "model.safetensors"},
