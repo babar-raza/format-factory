@@ -1,0 +1,65 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-signature-backend-registry-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T14:31:33Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_SIGNATURE_BACKEND_REGISTRY_001",
+    "task_kind": "build-narrow-missing-feature-mirroring-two-proven-sibling-registry-patterns-plus-stale-note-correction",
+    "root_cause": "SAL-UBL-OBL-175ADB055BC12E8F (UBL-SIGN-001)'s own missing_behavior named the exact gap: 'verification and signing remain a separate pluggable opt-in' is not implemented -- no signing or verification backend, pluggable or otherwise, exists in this package, distinct from the already-proven report-before-saving/never-rewrite half (UblDocument.signature_preserved, with_root, validate()'s ubl.signature.invalidated diagnostic).",
+    "obligation_targeted": "SAL-UBL-OBL-175ADB055BC12E8F and SAL-UBL-OBL-452B9C973F40966B (both UBL-SIGN-001) -- both promoted partial->implemented",
+    "acceptance_evidence": "11 new tests prove registry population (empty/register/replace/partial-backend), verify_signature (no backend, backend missing verify, real true/false results), and sign_document (no backend, backend missing sign, real result returned).",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. After 4 xliff-focused ticks (2 stale-bookkeeping reconciliations closing 6 obligations, 1 new capability, 1 evidence-strengthening primitive), pivoted to ubl per event 256's own exact_next_action pointing at applying the 'stale rule_text vs current implementation' technique there.",
+    "2. Re-surveyed ubl's remaining 28 unresolved obligations. Noticed UBL-SIGN-001's cluster (175ADB055BC12E8F, 452B9C973F40966B, 26CD31E7F8CF91E1) and re-read 175ADB055BC12E8F's own rule_text: 'verification and signing remain a separate pluggable opt-in', phrasing near-identical to UBL-EXT-001's already-closed 'expose registered typed adapters as opt-in' (event 252's ExtensionAdapterRegistry).",
+    "3. Recognized this as a third instance of the same successful pattern (CodeListRegistry -> ExtensionAdapterRegistry -> SignatureBackendRegistry): a pluggable, caller-populated registry that this package never bundles a real backend implementation for, since real XMLDSig signing/verification needs cryptography, key material, and trust anchors entirely out of scope for a format library, with no SAL fact documenting a specific profile precisely enough to build one without fabricating spec content.",
+    "4. Read model/document.py's existing signature_preserved/with_root and validator.py's ubl.signature.invalidated diagnostic directly to confirm the 'report before saving, never rewrite' half is already fully proven and would not be duplicated.",
+    "5. Designed SignatureBackendRegistry (model/signature_backend.py): a single-slot registry (no natural per-key namespace for a document-level operation, unlike CodeList's list_id or Extension's QName) holding an optional SignatureBackend(verify, sign) pair, plus verify_signature()/sign_document() functions.",
+    "6. Initially wrote sign_document() to raise ValueError when no backend is registered, then reconsidered for consistency with this package's established 'registries never raise, always return a tri-state/optional result' precedent (CodeListRegistry.get() returns None; decode_extension() returns adapter_known=False) -- revised sign_document() to return None instead, matching verify_signature()'s own not-registered-is-safe shape.",
+    "7. Probed interactively before writing any test: no-backend verify (backend_registered=False, verified=None), no-backend sign (None), registered backend verify (real True result), registered backend sign (real document returned by identity) -- all 4 cases behaved correctly on the first attempt after the raise-to-None revision.",
+    "8. Ran the full pre-existing ubl suite (972 tests, zero new fixtures) against the new module and export wiring to look for false positives before writing a single new test -- all 972 passed unchanged.",
+    "9. While investigating the sibling obligation SAL-UBL-OBL-452B9C973F40966B for evidence updates, discovered its own rule_text ('Preserve signature structures without rewriting signed subtrees in lossless mode; report edits that invalidate existing signatures before saving') contains NO 'pluggable opt-in' clause at all, unlike 175ADB055BC12E8F's rule_text -- the missing_behavior recorded on 452B9C973F40966B was a stale, mismatched copy from its sibling, and both halves it actually requires were already fully proven in its own pre-existing implemented_behavior text.",
+    "10. Wrote 11 formal tests in a new test_obligation_signature_backend_registry.py, mirroring test_obligation_extension_adapter_registry.py's established two-class structure (TestRegistryPopulation/TestVerifySignature/TestSignDocument, a 3-class split since verify and sign have independently testable failure modes). All passed on the first attempt.",
+    "11. Ran ruff (clean), mypy on the new module (clean), the full ubl suite (983 passed, was 972, +11), and the full 6-format regression (3477 passed, was 3466, +11; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "12. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-0897466763101e66, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "13. Promoted SAL-UBL-OBL-175ADB055BC12E8F to implemented (both halves of its own rule_text now genuinely satisfied) and SAL-UBL-OBL-452B9C973F40966B to implemented (citation-audit correction: its own rule_text never required the missing_behavior it had recorded; both actual halves were already proven before this tick)."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/model/signature_backend.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_signature_backend_registry.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/model/signature_backend.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_signature_backend_registry.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_signature_backend_registry.py -q -- 11 passed",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/model/signature_backend.py src/python/ubl/src/format_factory/ubl/model/__init__.py src/python/ubl/src/format_factory/ubl/__init__.py tests/python/ubl/test_obligation_signature_backend_registry.py -- all checks passed",
+    ".venv/Scripts/python -m mypy src/python/ubl/src/format_factory/ubl/model/signature_backend.py --ignore-missing-imports -- Success: no issues found",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 983 passed, was 972 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3477 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3466 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the registry pattern grounded directly in this package's own already-proven CodeListRegistry/ExtensionAdapterRegistry siblings, not invented from memory.",
+    "obligations_moved_breakdown": "SAL-UBL-OBL-175ADB055BC12E8F (UBL-SIGN-001) partial->implemented: a genuine new capability (pluggable signing/verification backend registry) built by directly mirroring two already-proven sibling patterns in the same package, closing both halves of the obligation's own rule_text. SAL-UBL-OBL-452B9C973F40966B (UBL-SIGN-001) partial->implemented: a citation-audit correction -- its own rule_text never contained the 'pluggable opt-in' clause its stale missing_behavior claimed was unmet; both halves it actually requires were already proven before this tick."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

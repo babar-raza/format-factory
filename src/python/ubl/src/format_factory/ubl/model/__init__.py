@@ -32,6 +32,15 @@ from .extension_adapters import (
     ExtensionDecodeResult,
     decode_extension,
 )
+from .signature_backend import (
+    SignatureBackend,
+    SignatureBackendRegistry,
+    SignatureSigner,
+    SignatureVerificationResult,
+    SignatureVerifier,
+    sign_document,
+    verify_signature,
+)
 from .lines import (
     CreditNoteLine,
     DespatchLine,
@@ -118,6 +127,13 @@ __all__ = [
     "ExtensionAdapterRegistry",
     "ExtensionDecodeResult",
     "decode_extension",
+    "SignatureBackend",
+    "SignatureBackendRegistry",
+    "SignatureSigner",
+    "SignatureVerificationResult",
+    "SignatureVerifier",
+    "sign_document",
+    "verify_signature",
     "DocumentIndex",
     "DuplicateId",
     "ExternalReference",

@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-SIGNATURE-BACKEND-REGISTRY-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-signature-backend-registry-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-175ADB055BC12E8F and SAL-UBL-OBL-452B9C973F40966B (both UBL-SIGN-001), promoted partial->implemented. SAL-UBL-OBL-175ADB055BC12E8F''s own missing_behavior named the exact gap: no registry lets a caller plug in a signing/verification backend, distinct from the already-proven report-before-saving/never-rewrite half. Built a new SignatureBackendRegistry (model/signature_backend.py) mirroring CodeListRegistry''s and ExtensionAdapterRegistry''s already-proven pluggable-registry pattern: a caller registers a SignatureBackend (verify and/or sign callables); this package never bundles an actual XMLDSig implementation itself, since real signature verification/creation is a cryptography concern with real key material and external trust anchors, entirely out of scope for a format library, and no SAL fact documents a specific XMLDSig profile precisely enough to build one without fabricating spec content. verify_signature()/sign_document() with no backend registered (or a backend missing the relevant half) return an explicit not-registered result (backend_registered=False, or None for sign_document) rather than raising or silently succeeding -- proven safe to call unconditionally, matching decode_extension()''s own opt-in-safe shape rather than CodeListRegistry''s validate_code() exactly, since signing has no meaningful default value to fall back to the way a validation tri-state does. While investigating the sibling obligation SAL-UBL-OBL-452B9C973F40966B, found its own missing_behavior was a stale, mismatched copy from SAL-UBL-OBL-175ADB055BC12E8F''s text: its own rule_text ("Preserve signature structures without rewriting signed subtrees in lossless mode; report edits that invalidate existing signatures before saving") contains no "pluggable opt-in" clause at all, and both halves it actually requires were already fully proven -- a citation-audit correction, promoted independent of the new registry code. Verified zero false positives against the entire pre-existing 972-test ubl suite before writing a single new test. 11 new tests (tests/python/ubl/test_obligation_signature_backend_registry.py) prove: registry population (empty/register/replace/partial-backend), verify_signature (no backend, backend without verify, real true/false results), and sign_document (no backend, backend without sign, real result returned). ubl suite: 972 -> 983 passed. mypy clean. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, the registry pattern grounded directly in this package''s own already-proven CodeListRegistry/ExtensionAdapterRegistry siblings, not invented from memory. Covers SAL-UBL-OBL-175ADB055BC12E8F and SAL-UBL-OBL-452B9C973F40966B only; it supports no other obligation and promotes no other product state.'
 - evidence_id: UBL-EXTENSION-ADAPTER-REGISTRY-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-extension-adapter-registry-001.json
   expected_result: PASS
@@ -966,16 +971,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-175ADB055BC12E8F
   capability_id: UBL-SIGN-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/model/signature_backend.py::SignatureBackendRegistry
+  - src/python/ubl/src/format_factory/ubl/model/signature_backend.py::verify_signature
+  - src/python/ubl/src/format_factory/ubl/model/signature_backend.py::sign_document
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_edit_invalidates_signature_assertion
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_signature_backend_registry.py::TestRegistryPopulation::test_register_then_get_round_trips
+  - tests/python/ubl/test_obligation_signature_backend_registry.py::TestRegistryPopulation::test_a_backend_may_supply_only_verify_or_only_sign
+  - tests/python/ubl/test_obligation_signature_backend_registry.py::TestVerifySignature::test_a_registered_verify_backend_returns_its_real_result
+  - tests/python/ubl/test_obligation_signature_backend_registry.py::TestSignDocument::test_a_registered_sign_backend_is_invoked_and_its_result_returned
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_signature_backend_registry.py::TestVerifySignature::test_no_backend_registered_is_reported_not_an_error
+  - tests/python/ubl/test_obligation_signature_backend_registry.py::TestVerifySignature::test_a_backend_with_no_verify_callable_is_reported_not_an_error
+  - tests/python/ubl/test_obligation_signature_backend_registry.py::TestSignDocument::test_no_backend_registered_returns_none_not_an_error
+  - tests/python/ubl/test_obligation_signature_backend_registry.py::TestSignDocument::test_a_backend_with_no_sign_callable_returns_none
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SIGNATURE-NAMESPACE-SELECTOR-PROOF
+  - UBL-SIGNATURE-BACKEND-REGISTRY-PROOF
   implemented_behavior:
   - UblDocument.signature_preserved compares the current tree's serialized
     hash against the hash captured when a signature was last known intact;
@@ -985,16 +1002,13 @@ obligations:
     dumps() never rewrites subtrees since it always serializes the tree
     exactly as constructed, so a signed subtree an edit did not touch is
     never altered.
-  missing_behavior:
-  - '"Verification and signing remain a separate pluggable opt-in" is not
-    implemented -- no signing or verification backend, pluggable or
-    otherwise, exists in this package. Only signature-presence tracking
-    (whether a previously-intact signature survived an edit) is built.'
+  - '"Verification and signing remain a separate pluggable opt-in" is now also implemented: a new SignatureBackendRegistry (model/signature_backend.py) mirrors CodeListRegistry''s and ExtensionAdapterRegistry''s already-proven pluggable-registry pattern -- a caller registers a SignatureBackend (verify and/or sign callables); this package never bundles an actual XMLDSig implementation itself. verify_signature()/sign_document() with no backend registered (or a backend missing the relevant half) return an explicit not-registered result (None or backend_registered=False) rather than raising or silently succeeding, proven safe to call unconditionally either way.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Signed-document round-trip byte-preserves signed subtrees; edit-warning fixture.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - A registered backend can report verification failure; an unregistered backend is reported, not raised.
 - obligation_id: SAL-UBL-OBL-1948F05A4C147BA1
   capability_id: UBL-MODEL-001
   status: implemented
@@ -1980,16 +1994,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-452B9C973F40966B
   capability_id: UBL-SIGN-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/model/signature_backend.py::SignatureBackendRegistry
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_edit_invalidates_signature_assertion
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_signature_backend_registry.py::TestVerifySignature::test_a_registered_verify_backend_returns_its_real_result
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_signature_backend_registry.py::TestVerifySignature::test_no_backend_registered_is_reported_not_an_error
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SIGNATURE-NAMESPACE-SELECTOR-PROOF
+  - UBL-SIGNATURE-BACKEND-REGISTRY-PROOF
   implemented_behavior:
   - Signature structures are preserved without rewriting (dumps() always
     serializes the tree as constructed, touching only what an edit actually
@@ -1997,16 +2015,13 @@ obligations:
     reported via validate()'s ubl.signature.invalidated diagnostic before
     saving, proven end-to-end (load a signed document, edit it, confirm
     signature_preserved flips false and the diagnostic appears).
-  missing_behavior:
-  - '"Verification and signing remain a separate pluggable opt-in" is not
-    implemented -- no signing or verification backend, pluggable or
-    otherwise, exists in this package. Only signature-presence tracking
-    (whether a previously-intact signature survived an edit) is built.'
+  - 'Citation-audit correction: this obligation''s own rule_text ("Preserve signature structures without rewriting signed subtrees in lossless mode; report edits that invalidate existing signatures before saving") contains no "pluggable opt-in" clause at all -- unlike its sibling SAL-UBL-OBL-175ADB055BC12E8F, whose rule_text does. The missing_behavior entry previously recorded here was a mismatched copy from that sibling, not a gap in this obligation''s own rule_text, both halves of which were already fully proven above. SignatureBackendRegistry (model/signature_backend.py, built this slice for the sibling obligation) is cited here too as additional, not required, evidence.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Signed-document round-trip byte-preserves signed subtrees; edit-warning fixture.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - A registered backend can report verification failure; an unregistered backend is reported, not raised.
 - obligation_id: SAL-UBL-OBL-47361D7221816349
   capability_id: UBL-PARSE-001
   status: implemented
