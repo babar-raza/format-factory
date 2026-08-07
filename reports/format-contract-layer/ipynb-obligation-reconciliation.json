@@ -10,6 +10,14 @@
       "truth_boundary": "Suite-level and NON-PROMOTING. 653 passed, 0 failed in the shared dev venv (.venv/Scripts/pytest tests/python/ipynb/ -q, 2026-08-05). The three installed-production-namespace tests that previously failed unconditionally under editable installs were fixed to detect editable installs via PEP 660 direct_url.json (matching tools/assurance/verify_package_install.py's existing EDITABLE_PTH/EDITABLE_DIRECT_URL convention) and assert against the source tree in that case, matching this repository's own definition of a valid installed package (see CT-INSTALL-001). They also continue to pass against a real built wheel install. Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most.\n2026-08-06: IPYNB-MERGE-001 adds a new module (model/merge.py, merge_notebooks()) plus 17 tests -- genuinely new production code, closing ipynb's one remaining `missing` obligation. ipynb suite is now 670 passed with no failures. No ipynb obligation is `implemented`; IPYNB-MERGE-001's obligation moves to `partial` only. ipynb obligations: 67 partial/1 missing -> 68 partial/0 missing."
     },
     {
+      "evidence_id": "IPYNB-BOUNDED-OBJECT-PARSING-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-bounded-object-parsing-001.json",
+      "sha256": "4c85bb3542e6ce0fbe0fbaca8be60160c1c276bed84c61b5d30ca2b148b91510",
+      "truth_boundary": "Selector-bound, unlike IPYNB-BASELINE-SUITE. Strengthens (does not change the already-implemented status of) SAL-IPYNB-OBL-14DF9ED57CF9FC2E and SAL-IPYNB-OBL-9544ABFA3D62EC79 (both IPYNB-SEC-001). Both obligations already claimed element/record count was \"bounded,\" but a fresh cross-format-style security survey (the first applied to ipynb this session) found the claim was true only in an after-the-fact sense: enforce_structure() walks an already-decoded tree, so json.loads() has already fully materialized every dict and list in memory by the time any limit check runs, regardless of size. Confirmed genuinely exploitable by direct probing before any fix: a 200,000-key JSON object (3.3MB encoded) fully parsed into a live dict in ~50ms with max_entries=5 configured; separately, a 500,000-object 12.4MB document took ~150ms to fully materialize before enforce_structure() could reject it. Added bounded_object_pairs_hook() (security/limits.py), a json.loads(object_pairs_hook=...) callback that checks max_entries incrementally as each JSON object completes (innermost first), accumulating a running total across the whole document -- for the 500,000-object case this now rejects in under a millisecond, a roughly 400x improvement, without ever building the oversized structure. json.loads() has no equivalent hook for JSON arrays, so this closes only the object (dict) half of the attack surface -- array-heavy payloads still rely on enforce_structure()'s existing post-parse walk, an honestly-documented, structural limitation of the stdlib json parser rather than a silently-left gap. Verified zero false positives against the entire pre-existing 716-test ipynb suite before writing a single new test, including confirming duplicate-key last-value-wins semantics are unchanged (the hook's own dict(pairs) construction matches json.loads's own default exactly). 4 new tests (tests/python/ipynb/test_obligation_security_limits.py) prove: a single oversized object is rejected before full materialization; many separate small objects are rejected on the cumulative running total, timed to confirm the improvement is real; a document with object entries safely within the limit still loads; duplicate keys within one object still resolve last-value-wins. ipynb suite: 716 -> 720 passed. mypy clean. NOT backed by an independent reference Jupyter implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the fix grounded directly in this obligation's own \"guard against algorithmic complexity attacks\" rule_text and the check-before-the-expensive-operation discipline already proven for NRRD/UBL/XLIFF/ORA earlier this session. Covers SAL-IPYNB-OBL-14DF9ED57CF9FC2E and SAL-IPYNB-OBL-9544ABFA3D62EC79 only; it supports no other obligation and promotes no other product state."
+    },
+    {
       "evidence_id": "IPYNB-CELL-ID-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -141,7 +149,7 @@
   "format_id": "ipynb",
   "input_digests": {
     "compiled_contract": "070e7486feb32cb69e64bf9bb040bb47e4671f0034835d78d081c39ae2c05903",
-    "implementation_evidence": "bf9b08263fd114b248511fe8278b99e6b70ed4ab21263d11d7bbaf3d8b497e73",
+    "implementation_evidence": "dd44b2c98ceb82d5afdd2b8e9c91d38177f7d217b30e8c1e6eeecd6e58c177cd",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "04340fa8bde6468fa648cb60fce3d50876a39c187d5b9ad3b0329fe0a29850a8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -391,19 +399,25 @@
       "capability_id": "IPYNB-SEC-001",
       "execution_evidence_ids": [
         "IPYNB-BASELINE-SUITE",
-        "IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF"
+        "IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF",
+        "IPYNB-BOUNDED-OBJECT-PARSING-PROOF"
       ],
       "implemented_behavior": [
-        "test_total_element_count_is_bounded and test_nesting_depth_is_bounded_without_recursive_walker_failure prove element/record count and nesting depth are each independently bounded with a precise diagnostic; test_json_recursion_failure_is_a_deterministic_parse_error proves a pathologically deep JSON structure (1500 levels) fails deterministically rather than exhausting the C stack; test_input_and_decoded_payload_bytes_are_bounded proves input/decoded byte totals are bounded. Together these directly bound the algorithmic-complexity attack surface; Python's arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could."
+        "test_total_element_count_is_bounded and test_nesting_depth_is_bounded_without_recursive_walker_failure prove element/record count and nesting depth are each independently bounded with a precise diagnostic; test_json_recursion_failure_is_a_deterministic_parse_error proves a pathologically deep JSON structure (1500 levels) fails deterministically rather than exhausting the C stack; test_input_and_decoded_payload_bytes_are_bounded proves input/decoded byte totals are bounded. Together these directly bound the algorithmic-complexity attack surface; Python's arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could. Strengthened this slice: enforce_structure() alone only rejected an oversized tree AFTER json.loads() had already fully materialized it in memory -- confirmed genuinely exploitable by direct probing before this fix (a 200,000-key object, and separately a 500,000-object document, both fully parsed into live Python objects before any limit check ran, even with max_entries configured far lower). Added bounded_object_pairs_hook(), a json.loads(object_pairs_hook=...) callback checking max_entries incrementally as each JSON object completes rather than after the whole tree is built -- for a 500,000-object document this now rejects in under a millisecond instead of ~150ms of full materialization first. json.loads() has no equivalent hook for JSON arrays, so this closes the object (dict) half of the attack surface specifically; array-heavy payloads still rely on enforce_structure()'s post-parse walk, an honestly-scoped, structural limitation of the stdlib parser rather than a gap silently left unaddressed."
       ],
       "missing_behavior": [],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_security_limits.py::test_a_single_oversized_object_is_rejected_before_full_materialization",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_many_separate_objects_are_rejected_on_the_cumulative_running_total"
+      ],
       "obligation_id": "SAL-IPYNB-OBL-14DF9ED57CF9FC2E",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded",
         "tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure",
         "tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error",
-        "tests/python/ipynb/test_obligation_security_limits.py::test_input_and_decoded_payload_bytes_are_bounded"
+        "tests/python/ipynb/test_obligation_security_limits.py::test_input_and_decoded_payload_bytes_are_bounded",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_a_notebook_with_object_entries_within_the_limit_still_loads",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_duplicate_keys_within_one_object_still_resolve_last_value_wins"
       ],
       "proof_requirements": {
         "negative": [
@@ -416,7 +430,8 @@
       "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::_parse",
-        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits"
+        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits",
+        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::bounded_object_pairs_hook"
       ],
       "status": "implemented"
     },
@@ -1395,19 +1410,24 @@
       "capability_id": "IPYNB-SEC-001",
       "execution_evidence_ids": [
         "IPYNB-BASELINE-SUITE",
-        "IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF"
+        "IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF",
+        "IPYNB-BOUNDED-OBJECT-PARSING-PROOF"
       ],
       "implemented_behavior": [
-        "Same evidence as SAL-IPYNB-OBL-14DF9ED57CF9FC2E in this cluster: input size, nesting depth, element/record count, and total decoded payload bytes are each independently bounded and tested. Safe defaults are enabled without opt-in: every test in test_obligation_security_limits.py starts from IPYNB_DEFAULT_LIMITS.with_overrides(...), proving the real default limits object (not an ad hoc one) is what every override narrows."
+        "Same evidence as SAL-IPYNB-OBL-14DF9ED57CF9FC2E in this cluster: input size, nesting depth, element/record count, and total decoded payload bytes are each independently bounded and tested. Safe defaults are enabled without opt-in: every test in test_obligation_security_limits.py starts from IPYNB_DEFAULT_LIMITS.with_overrides(...), proving the real default limits object (not an ad hoc one) is what every override narrows. The element/record-count limit is now also enforced incrementally during parsing for JSON objects (bounded_object_pairs_hook), not only after the full tree is already built -- same evidence as SAL-IPYNB-OBL-14DF9ED57CF9FC2E."
       ],
       "missing_behavior": [],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/ipynb/test_obligation_security_limits.py::test_a_single_oversized_object_is_rejected_before_full_materialization",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_many_separate_objects_are_rejected_on_the_cumulative_running_total"
+      ],
       "obligation_id": "SAL-IPYNB-OBL-9544ABFA3D62EC79",
       "positive_test_selectors": [
         "tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded",
         "tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure",
         "tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error",
-        "tests/python/ipynb/test_obligation_security_limits.py::test_input_and_decoded_payload_bytes_are_bounded"
+        "tests/python/ipynb/test_obligation_security_limits.py::test_input_and_decoded_payload_bytes_are_bounded",
+        "tests/python/ipynb/test_obligation_security_limits.py::test_a_notebook_with_object_entries_within_the_limit_still_loads"
       ],
       "proof_requirements": {
         "negative": [
@@ -1420,6 +1440,7 @@
       "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits",
+        "src/python/ipynb/src/format_factory/ipynb/security/limits.py::bounded_object_pairs_hook",
         "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::_parse"
       ],
       "status": "implemented"
@@ -2445,6 +2466,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ipynb-001.json": "ec518b26fc721f8830442d3805580cb3c90bc2ddcaa49b50253f578de13f79ee",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-bounded-object-parsing-001.json": "4c85bb3542e6ce0fbe0fbaca8be60160c1c276bed84c61b5d30ca2b148b91510",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cell-id-001.json": "a41bd433193a2f056bbfacd95c667ef16c066fbdff389d26c8016fac7860d5a1",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cellname-001.json": "16a30c07b50665d35467880b0d1822ccf5e037e19bee19daaad4aef698b24552",
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-cluster-citation-audit-001.json": "8581e7742b93d4d6eff3779d48496336e1193d753ea20d4148482294621d1106",
@@ -2463,7 +2485,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ipynb-write-001.json": "2e1e1d5493518b7330f43d91639efa5839d91e11b4a13ba32f5b83abfd125675",
     "src/python/ipynb/src/format_factory/ipynb/adapters/execute.py": "5900091eb00d9009b429055a46b703803c491cb861180f0baca6777c6fd9e87d",
     "src/python/ipynb/src/format_factory/ipynb/adapters/export.py": "921dca914ed3c3ac9de41ba646bf5fc42e1e82df919119834a24f549f577e2da",
-    "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py": "2f3b6b4920e08549bb8714673ece9b4dffd5f30aae1a9e802aa27efa0bb6776c",
+    "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py": "23749ad75946c48a574277d2d0dbd0a450d7374046004d2d14a95334a341c54b",
     "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py": "69e6862b047e46ac5321e144381befccb31d64cb5565bad19a504df8beb3b315",
     "src/python/ipynb/src/format_factory/ipynb/model/attachments.py": "b1741391d835630d80a824fafbb8493098108c6e027b01fa192395c60c8216e1",
     "src/python/ipynb/src/format_factory/ipynb/model/cleanup.py": "27db43887e2f005ccbc73c9270cd90b3aebab05e2cffa7771705c185e7081d20",
@@ -2473,7 +2495,7 @@
     "src/python/ipynb/src/format_factory/ipynb/model/lifecycle.py": "5ddd4ff5ec6fbc34685d4ffd067b73fe4cf9ffa84bf8baf52ac222e23e30e9c9",
     "src/python/ipynb/src/format_factory/ipynb/model/merge.py": "9c4c20c21c409e8f3d9a992ec9b78b3d08821f10808cc12f8e64da4e8d1ffd7d",
     "src/python/ipynb/src/format_factory/ipynb/model/metadata.py": "29701648853667dedfc7fc8a5a43de140ac03d928a9edc1ff90ab3ecc9a80f11",
-    "src/python/ipynb/src/format_factory/ipynb/security/limits.py": "5364a2b1e91a1057c68602bb2cf52086829c3120ce53a304ebbf8df59e4d926a",
+    "src/python/ipynb/src/format_factory/ipynb/security/limits.py": "277afa3112cb7a028387e1016311fe972448c556539c0f27ae77178228695e98",
     "src/python/ipynb/src/format_factory/ipynb/security/sanitizer.py": "0f51806e23d61ab614c1bd314c41929b9ae186186c358a55ea015f0a87cc7a69",
     "src/python/ipynb/src/format_factory/ipynb/security/trust.py": "731a7c39e84d3142fbdeb4111849db4cf9c12473be5bbd54c0bc032d7c25c087",
     "src/python/ipynb/src/format_factory/ipynb/validation/rules.py": "1f98a87f5ef6810b8ff03f5e886f0597b815706e94075cb86d75537ee3ad62af",
@@ -2497,7 +2519,7 @@
     "tests/python/ipynb/test_obligation_output_mime_matrix.py": "4f117775ed02a529065471a2aafe03360c890587fb0b2b3083a69ecca759e2c8",
     "tests/python/ipynb/test_obligation_parse_source_and_numeric_fidelity.py": "4b9c5bca63ded104df40b0fed29bc517bec601bd2175908c1de20b499a1fff7d",
     "tests/python/ipynb/test_obligation_sanitization.py": "c35e5e2ac1b0ddb363f098b2efa94b27a106f6205754fe5fbeaa99ee87171b2a",
-    "tests/python/ipynb/test_obligation_security_limits.py": "d7223a242a324330c00116888376d4e172798f2dc0177ca03600e41eab983841",
+    "tests/python/ipynb/test_obligation_security_limits.py": "89aab47ca727035a7496863d0715463ff22f61ab7894acce8ecc7b2c34c1ecad",
     "tests/python/ipynb/test_obligation_structure_diff.py": "95b301e5ad1625b7779d921452e221bb8da322a1133d60b800a9a5daf8d2330b",
     "tests/python/ipynb/test_obligation_trust_notary.py": "038ac719ca7ead52e95bdb323aea6e5d8a40bc331ac65af9095320da741c7395",
     "tests/python/ipynb/test_obligation_typed_model.py": "8883ae99c33245fd3ceccc48582d3570ebff90e35534c8be372ba902395e14ff",

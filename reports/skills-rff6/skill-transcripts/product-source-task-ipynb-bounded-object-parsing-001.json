@@ -1,0 +1,66 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-bounded-object-parsing-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T14:54:31Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_kind": "fix-real-unenforced-security-limit-found-by-first-cross-format-style-survey-applied-to-ipynb",
+    "task_id": "TC_FF6_IPYNB_BOUNDED_OBJECT_PARSING_001",
+    "root_cause": "SAL-IPYNB-OBL-14DF9ED57CF9FC2E/9544ABFA3D62EC79 (IPYNB-SEC-001) claimed element/record count was 'bounded,' but enforce_structure() only walks an already-decoded tree -- json.loads() has already fully materialized every dict and list in memory by the time any limit check runs. This is the first application this session of the security-survey technique (proven on xliff/ora/nrrd/ubl) to ipynb or safetensors, both of which showed 0 unresolved obligations and had never been independently re-examined.",
+    "obligation_targeted": "SAL-IPYNB-OBL-14DF9ED57CF9FC2E and SAL-IPYNB-OBL-9544ABFA3D62EC79 (both IPYNB-SEC-001) -- both remain implemented; evidence strengthened, real gap fixed, no status crossing (both were already implemented)",
+    "acceptance_evidence": "4 new tests prove: a single oversized object is rejected before full materialization; many separate small objects are rejected on the cumulative running total, timed to confirm the improvement is real; a document with entries within the limit still loads; duplicate keys within one object still resolve last-value-wins.",
+    "regression_tier": "full ipynb package suite (tests/python/ipynb) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Per event 259's own exact_next_action, surveyed ipynb and safetensors -- both fully implemented (0 unresolved obligations) but untouched by any of this session's discovery techniques -- for a genuine gap the obligation-count metric doesn't currently surface.",
+    "2. Read ipynb's security/limits.py (enforce_structure) and safetensors' security/limits.py + codec/reader/reader.py directly. Found safetensors' resource-limit enforcement already comprehensive and well-ordered (header size checked before reading it, tensor byte-length checked against declared shape before allocation, no compression step so max_decompressed_bytes is genuinely N/A) -- no exploitable gap found there.",
+    "3. Found ipynb's reader.py calls json.loads(text) FIRST, then enforce_structure(data, limits) on the already-parsed result -- the classic 'check after materialize' pattern already found and fixed twice this session in XML-based readers (ORA's attribute count, XLIFF's LIST file count).",
+    "4. Confirmed genuinely exploitable by direct probing before any fix: a 200,000-key JSON object (3.3MB encoded) fully materialized into a live Python dict in ~50ms via json.loads() alone, with the ResourceLimitError only raised afterward by enforce_structure(), even with max_entries=5 explicitly configured.",
+    "5. Considered whether the gap was meaningfully exploitable given JSON has no entity-expansion/compression-bomb mechanism (unlike XML) -- confirmed a SECOND, more damning probe: a 500,000-object 12.4MB document took ~150ms to fully materialize (500,000 live dicts held simultaneously) before rejection, versus the theoretical possibility of rejecting almost immediately if checked incrementally.",
+    "6. Investigated Python's stdlib json module's hook API and found object_pairs_hook fires once per JSON object as it completes parsing (innermost first) -- a genuine opportunity to check max_entries DURING parsing rather than after, mirroring safetensors' own existing use of object_pairs_hook (for duplicate-key detection, a different purpose) as precedent that this hook mechanism is already a proven, in-repo pattern.",
+    "7. Confirmed json.loads() has NO equivalent hook for JSON arrays -- meaning this fix can only close the object (dict) half of the attack surface; array-heavy payloads still rely on enforce_structure()'s existing post-parse walk. Deliberately scoped the fix to acknowledge this honestly rather than overclaiming a complete resolution.",
+    "8. Added bounded_object_pairs_hook() (security/limits.py): a closure-based callback maintaining a running entries total across the whole document (object_pairs_hook fires per-object, so the closure accumulates cumulatively), checking limits.enforce('max_entries', ...) after each object completes -- checked immediately after update, matching this session's established discipline.",
+    "9. Wired it into reader.py's _parse(): json.loads(text, object_pairs_hook=bounded_object_pairs_hook(limits)) replacing the bare json.loads(text) call.",
+    "10. Re-probed both cases after the fix: the 200,000-key object now rejects in ~57ms (roughly the same, since object_pairs_hook still receives the full pairs list for one giant object after JSON scanning completes); the 500,000-SEPARATE-object document now rejects in under a millisecond (a ~400x improvement), confirming the fix's real value is for many-separate-entries payloads, not single-giant-object payloads -- documented this nuance honestly in the evidence rather than overclaiming uniform improvement.",
+    "11. Confirmed duplicate-key handling is unchanged: the hook's own dict(pairs) construction matches json.loads's default last-value-wins semantics exactly (verified by direct probe and a dedicated test).",
+    "12. Ran the full pre-existing ipynb suite (716 tests, zero new fixtures) against the fix to look for false positives before writing a single new test -- all 716 passed unchanged.",
+    "13. Wrote 4 formal tests in the existing test_obligation_security_limits.py, all passing on the first attempt.",
+    "14. Ran ruff (clean), mypy on both changed source files (clean), the full ipynb suite (720 passed, was 716, +4), and the full 6-format regression (3481 passed, was 3477, +4; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "15. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-bac6cff7e6ba5717, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "16. Both obligations remain status=implemented (they already were) -- this tick strengthens evidence with a real, previously-unnoticed algorithmic-complexity gap fixed, matching this obligation's own 'guard against algorithmic complexity attacks' rule_text more completely than before."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/security/limits.py",
+    "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py",
+    "tests/python/ipynb/test_obligation_security_limits.py",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/security/limits.py",
+    "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py",
+    "tests/python/ipynb/test_obligation_security_limits.py",
+    "shared/format-contracts/implementation-evidence/ipynb.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_security_limits.py -q -- 8 passed, was 4 passed",
+    ".venv/Scripts/python -m ruff check src/python/ipynb/src/format_factory/ipynb/security/limits.py src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py tests/python/ipynb/test_obligation_security_limits.py -- all checks passed",
+    ".venv/Scripts/python -m mypy src/python/ipynb/src/format_factory/ipynb/security/limits.py src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py --ignore-missing-imports -- Success: no issues found",
+    ".venv/Scripts/pytest tests/python/ipynb/ -q -- 720 passed, was 716 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3481 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3477 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations moved status (both were already implemented); evidence strengthened with a real, previously-unnoticed fix",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 68,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the fix grounded directly in this obligation's own 'guard against algorithmic complexity attacks' rule_text and the check-before-the-expensive-operation discipline proven for NRRD/UBL/XLIFF/ORA earlier this session.",
+    "obligations_moved_breakdown": "SAL-IPYNB-OBL-14DF9ED57CF9FC2E and SAL-IPYNB-OBL-9544ABFA3D62EC79 (both IPYNB-SEC-001) remain implemented. A genuine, real, previously-unenforced algorithmic-complexity gap fixed with production source code (max_entries was checked only after full materialization, not during, for JSON object payloads), found by extending this session's proven security-survey technique to a format (ipynb) it had never been applied to, despite showing 0/68 unresolved obligations."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

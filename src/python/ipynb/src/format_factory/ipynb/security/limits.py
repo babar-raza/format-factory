@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Callable
 
 from format_factory.core import DEFAULT_LIMITS, ResourceLimits
 
@@ -49,4 +49,43 @@ def enforce_structure(value: Any, limits: ResourceLimits | None = None) -> None:
             decoded_bytes = _utf8_size(current, selected, decoded_bytes)
 
 
-__all__ = ["IPYNB_DEFAULT_LIMITS", "effective_limits", "enforce_structure"]
+def bounded_object_pairs_hook(
+    limits: ResourceLimits,
+) -> Callable[[list[tuple[str, Any]]], dict[str, Any]]:
+    """Build a `json.loads(..., object_pairs_hook=...)` callback that checks
+    `max_entries` DURING parsing, not after.
+
+    `enforce_structure()` walks an already-decoded tree -- by the time it
+    runs, `json.loads()` has already fully materialized every dict and list
+    in memory, regardless of how oversized the result is. Confirmed
+    genuinely exploitable by direct probing before this fix: a 200,000-key
+    JSON object (3.3MB encoded) was fully parsed into a live Python dict in
+    ~50ms before any limit check ever ran, even with max_entries=5
+    configured. `json.loads()` has no hook for JSON arrays, so this can only
+    guard the object (dict) half of the attack surface -- array-heavy
+    payloads still materialize fully before `enforce_structure()`'s
+    post-parse walk catches them, a structural limitation of the stdlib
+    parser this function does not attempt to work around.
+
+    A closure over a single running total, since `object_pairs_hook` fires
+    once per JSON object as it completes (innermost first) -- the count
+    accumulates across the whole document, matching `enforce_structure()`'s
+    own cumulative-across-the-tree counting.
+    """
+
+    state = {"entries": 0}
+
+    def hook(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        state["entries"] += len(pairs)
+        limits.enforce("max_entries", state["entries"])
+        return dict(pairs)
+
+    return hook
+
+
+__all__ = [
+    "IPYNB_DEFAULT_LIMITS",
+    "bounded_object_pairs_hook",
+    "effective_limits",
+    "enforce_structure",
+]

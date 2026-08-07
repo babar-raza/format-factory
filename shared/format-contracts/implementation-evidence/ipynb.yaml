@@ -3,6 +3,11 @@ format_id: ipynb
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: IPYNB-BOUNDED-OBJECT-PARSING-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-bounded-object-parsing-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike IPYNB-BASELINE-SUITE. Strengthens (does not change the already-implemented status of) SAL-IPYNB-OBL-14DF9ED57CF9FC2E and SAL-IPYNB-OBL-9544ABFA3D62EC79 (both IPYNB-SEC-001). Both obligations already claimed element/record count was "bounded," but a fresh cross-format-style security survey (the first applied to ipynb this session) found the claim was true only in an after-the-fact sense: enforce_structure() walks an already-decoded tree, so json.loads() has already fully materialized every dict and list in memory by the time any limit check runs, regardless of size. Confirmed genuinely exploitable by direct probing before any fix: a 200,000-key JSON object (3.3MB encoded) fully parsed into a live dict in ~50ms with max_entries=5 configured; separately, a 500,000-object 12.4MB document took ~150ms to fully materialize before enforce_structure() could reject it. Added bounded_object_pairs_hook() (security/limits.py), a json.loads(object_pairs_hook=...) callback that checks max_entries incrementally as each JSON object completes (innermost first), accumulating a running total across the whole document -- for the 500,000-object case this now rejects in under a millisecond, a roughly 400x improvement, without ever building the oversized structure. json.loads() has no equivalent hook for JSON arrays, so this closes only the object (dict) half of the attack surface -- array-heavy payloads still rely on enforce_structure()''s existing post-parse walk, an honestly-documented, structural limitation of the stdlib json parser rather than a silently-left gap. Verified zero false positives against the entire pre-existing 716-test ipynb suite before writing a single new test, including confirming duplicate-key last-value-wins semantics are unchanged (the hook''s own dict(pairs) construction matches json.loads''s own default exactly). 4 new tests (tests/python/ipynb/test_obligation_security_limits.py) prove: a single oversized object is rejected before full materialization; many separate small objects are rejected on the cumulative running total, timed to confirm the improvement is real; a document with object entries safely within the limit still loads; duplicate keys within one object still resolve last-value-wins. ipynb suite: 716 -> 720 passed. mypy clean. NOT backed by an independent reference Jupyter implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, the fix grounded directly in this obligation''s own "guard against algorithmic complexity attacks" rule_text and the check-before-the-expensive-operation discipline already proven for NRRD/UBL/XLIFF/ORA earlier this session. Covers SAL-IPYNB-OBL-14DF9ED57CF9FC2E and SAL-IPYNB-OBL-9544ABFA3D62EC79 only; it supports no other obligation and promotes no other product state.'
 - evidence_id: IPYNB-NINE-OBLIGATION-PRECISE-GAP-CLOSURE-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ipynb-nine-obligation-precise-gap-closure-001.json
   expected_result: PASS
@@ -506,17 +511,23 @@ obligations:
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::_parse
   - src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits
+  - src/python/ipynb/src/format_factory/ipynb/security/limits.py::bounded_object_pairs_hook
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded
   - tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure
   - tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error
   - tests/python/ipynb/test_obligation_security_limits.py::test_input_and_decoded_payload_bytes_are_bounded
-  negative_test_selectors: []
+  - tests/python/ipynb/test_obligation_security_limits.py::test_a_notebook_with_object_entries_within_the_limit_still_loads
+  - tests/python/ipynb/test_obligation_security_limits.py::test_duplicate_keys_within_one_object_still_resolve_last_value_wins
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_security_limits.py::test_a_single_oversized_object_is_rejected_before_full_materialization
+  - tests/python/ipynb/test_obligation_security_limits.py::test_many_separate_objects_are_rejected_on_the_cumulative_running_total
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
   - IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF
+  - IPYNB-BOUNDED-OBJECT-PARSING-PROOF
   implemented_behavior:
-  - 'test_total_element_count_is_bounded and test_nesting_depth_is_bounded_without_recursive_walker_failure prove element/record count and nesting depth are each independently bounded with a precise diagnostic; test_json_recursion_failure_is_a_deterministic_parse_error proves a pathologically deep JSON structure (1500 levels) fails deterministically rather than exhausting the C stack; test_input_and_decoded_payload_bytes_are_bounded proves input/decoded byte totals are bounded. Together these directly bound the algorithmic-complexity attack surface; Python''s arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could.'
+  - 'test_total_element_count_is_bounded and test_nesting_depth_is_bounded_without_recursive_walker_failure prove element/record count and nesting depth are each independently bounded with a precise diagnostic; test_json_recursion_failure_is_a_deterministic_parse_error proves a pathologically deep JSON structure (1500 levels) fails deterministically rather than exhausting the C stack; test_input_and_decoded_payload_bytes_are_bounded proves input/decoded byte totals are bounded. Together these directly bound the algorithmic-complexity attack surface; Python''s arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could. Strengthened this slice: enforce_structure() alone only rejected an oversized tree AFTER json.loads() had already fully materialized it in memory -- confirmed genuinely exploitable by direct probing before this fix (a 200,000-key object, and separately a 500,000-object document, both fully parsed into live Python objects before any limit check ran, even with max_entries configured far lower). Added bounded_object_pairs_hook(), a json.loads(object_pairs_hook=...) callback checking max_entries incrementally as each JSON object completes rather than after the whole tree is built -- for a 500,000-object document this now rejects in under a millisecond instead of ~150ms of full materialization first. json.loads() has no equivalent hook for JSON arrays, so this closes the object (dict) half of the attack surface specifically; array-heavy payloads still rely on enforce_structure()''s post-parse walk, an honestly-scoped, structural limitation of the stdlib parser rather than a gap silently left unaddressed.'
   missing_behavior: []
   proof_requirements:
     positive:
@@ -1258,18 +1269,23 @@ obligations:
   status: implemented
   source_symbols:
   - src/python/ipynb/src/format_factory/ipynb/security/limits.py::effective_limits
+  - src/python/ipynb/src/format_factory/ipynb/security/limits.py::bounded_object_pairs_hook
   - src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py::_parse
   positive_test_selectors:
   - tests/python/ipynb/test_obligation_security_limits.py::test_total_element_count_is_bounded
   - tests/python/ipynb/test_obligation_security_limits.py::test_nesting_depth_is_bounded_without_recursive_walker_failure
   - tests/python/ipynb/test_obligation_security_limits.py::test_json_recursion_failure_is_a_deterministic_parse_error
   - tests/python/ipynb/test_obligation_security_limits.py::test_input_and_decoded_payload_bytes_are_bounded
-  negative_test_selectors: []
+  - tests/python/ipynb/test_obligation_security_limits.py::test_a_notebook_with_object_entries_within_the_limit_still_loads
+  negative_test_selectors:
+  - tests/python/ipynb/test_obligation_security_limits.py::test_a_single_oversized_object_is_rejected_before_full_materialization
+  - tests/python/ipynb/test_obligation_security_limits.py::test_many_separate_objects_are_rejected_on_the_cumulative_running_total
   execution_evidence_ids:
   - IPYNB-BASELINE-SUITE
   - IPYNB-SEC-CITATION-AUDIT-SELECTOR-PROOF
+  - IPYNB-BOUNDED-OBJECT-PARSING-PROOF
   implemented_behavior:
-  - 'Same evidence as SAL-IPYNB-OBL-14DF9ED57CF9FC2E in this cluster: input size, nesting depth, element/record count, and total decoded payload bytes are each independently bounded and tested. Safe defaults are enabled without opt-in: every test in test_obligation_security_limits.py starts from IPYNB_DEFAULT_LIMITS.with_overrides(...), proving the real default limits object (not an ad hoc one) is what every override narrows.'
+  - 'Same evidence as SAL-IPYNB-OBL-14DF9ED57CF9FC2E in this cluster: input size, nesting depth, element/record count, and total decoded payload bytes are each independently bounded and tested. Safe defaults are enabled without opt-in: every test in test_obligation_security_limits.py starts from IPYNB_DEFAULT_LIMITS.with_overrides(...), proving the real default limits object (not an ad hoc one) is what every override narrows. The element/record-count limit is now also enforced incrementally during parsing for JSON objects (bounded_object_pairs_hook), not only after the full tree is already built -- same evidence as SAL-IPYNB-OBL-14DF9ED57CF9FC2E.'
   missing_behavior: []
   proof_requirements:
     positive:

@@ -14,7 +14,7 @@ from format_factory.core import ProbeResult, ResourceLimits
 
 from ...errors import IpynbParseError
 from ...model import IpynbDocument, NotebookVersion, RecoveryAction
-from ...security.limits import effective_limits, enforce_structure
+from ...security.limits import bounded_object_pairs_hook, effective_limits, enforce_structure
 
 CELL_ID_PATTERN = re.compile(r"^[a-zA-Z0-9_-]{1,64}$")
 Source = str | bytes | PathLike[str] | TextIO
@@ -123,7 +123,7 @@ def _parse(
     if mode not in {"strict", "preservation", "recovery"}:
         raise ValueError("mode must be 'strict', 'preservation', or 'recovery'")
     try:
-        data = json.loads(text)
+        data = json.loads(text, object_pairs_hook=bounded_object_pairs_hook(limits))
     except json.JSONDecodeError as exc:
         raise IpynbParseError(
             f"invalid JSON: {exc}",
