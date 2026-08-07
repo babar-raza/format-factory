@@ -50,6 +50,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-48CB227B444651BA and SAL-NRRD-OBL-6533C8FB0044E3A2 (both NRRD-KEYVALUE-001). The pinned spec source (src-nrrd-001.bin, SRC-NRRD-001) confirms word-for-word: \"a minimal escaping scheme is required ... '\\n' signifies a new line ... '\\\\' signifies the backslash character\" and \"These can appear in NRRD0002 (and higher version) files, but not NRRD0001 files.\" Before this slice neither reader.py nor writer.py implemented any escaping -- a key/value value containing a real newline or backslash produced a header that could not be parsed back after dumps(), reproduced interactively before the fix. reader.py now unescapes and writer.py now escapes both directions correctly (backslash before newline, to avoid double-escaping); a NRRD0002 version gate now rejects key:=value lines in NRRD0001 headers. 10 new tests confirm round-tripping, escaping order, raw sequence decoding, and the version gate both ways. nrrd suite: 490 -> 500 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-48CB227B444651BA and SAL-NRRD-OBL-6533C8FB0044E3A2 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-KIND-ENUM-ALIAS-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-kind-enum-alias-001.json",
+      "sha256": "af90cbb0d43424c792cfca31fb6c1ad2122840037389e339e69321a1eece78a4",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-02AE194021A775AC and SAL-NRRD-OBL-7C0FD86BAE579F5C (both NRRD-KINDS-001). Grounded in two independent pinned authoritative sources, cross-checked against each other: the prose spec's own 31-entry required-axis-size table (src-nrrd-001.bin, SRC-NRRD-001) and the Teem 1.9.0 reference implementation's own enum source (src-nrrd-002.bin, SRC-NRRD-002, src/nrrd/enumsNrrd.c's _nrrdKindStr_Eqv/_nrrdKindVal_Eqv arrays), which supplied the exact 23 alias strings Teem's own reader accepts (e.g. \"RGB\"/\"RGBcolor\" for \"RGB-color\"). A new codec/kinds.py module provides the full table plus canonical_kind(); validator.py now reports nrrd.kinds.unrecognized for a genuinely unrecognized kind string and nrrd.kinds.size_mismatch when a size-constrained kind's declared axis size disagrees with its spec-required size. 14 new tests prove the table structure and validator behavior against real documents, including both explicit unknown-kind markers (\"???\"/\"none\") and a \"-tensor\"-style alias. nrrd suite: 517 -> 531 passed. NOT backed by an independent third-party reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED, though grounded in two cross-checked authoritative sources rather than one. Covers SAL-NRRD-OBL-02AE194021A775AC and SAL-NRRD-OBL-7C0FD86BAE579F5C only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "NRRD-LAZY-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -85,7 +93,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "bac88b7cc2524136fd1f057f90cf22ecfb38adc3f12c8e6a54f4e57b1776ed1f",
+    "implementation_evidence": "f7cf0884c21806360a7cc920a35f9937114d5dcfa0383e77b12b83ec7c1de7ee",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -170,18 +178,25 @@
     {
       "capability_id": "NRRD-KINDS-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-KIND-ENUM-ALIAS-PROOF"
       ],
       "implemented_behavior": [
-        "Kinds are exposed as raw per-axis tokens and their arity is validated."
+        "Kinds are exposed as raw per-axis tokens and their arity is validated. Every specified axis kind and its aliases are now modeled (codec/kinds.py, a new module), grounded in two independent pinned sources: the prose spec's own 31-entry required-axis-size table and the Teem 1.9.0 reference implementation's own enum source (src/nrrd/enumsNrrd.c's _nrrdKindStr_Eqv/_nrrdKindVal_Eqv arrays), cross-checked against each other for consistency. validate() now reports 'nrrd.kinds.unrecognized' for a genuinely unrecognized kind string (preserving it as opaque text, never rejecting it outright) and 'nrrd.kinds.size_mismatch' when a size-constrained kind's declared axis size disagrees with its spec-required size. The kinds field's own NRRD0003 version gate was already implemented (version_requirements); the spec's own two explicit unknown-kind markers ('???', 'none') are recognized and never flagged."
       ],
-      "missing_behavior": [
-        "No complete kind enum/alias model, version gate, or strict unknown-kind diagnostic."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_kind_enum_alias.py::test_an_alias_with_the_wrong_size_is_reported",
+        "tests/python/nrrd/test_obligation_kind_enum_alias.py::test_an_unrecognized_kind_string_is_reported"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-02AE194021A775AC",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip",
+        "tests/python/nrrd/test_obligation_kind_enum_alias.py::test_a_canonical_kind_with_the_correct_size_is_valid",
+        "tests/python/nrrd/test_obligation_kind_enum_alias.py::test_an_alias_with_the_correct_size_is_valid",
+        "tests/python/nrrd/test_obligation_kind_enum_alias.py::test_the_explicit_unknown_markers_are_valid_and_not_reported",
+        "tests/python/nrrd/test_obligation_kind_enum_alias.py::test_a_no_size_constraint_kind_accepts_any_axis_size",
+        "tests/python/nrrd/test_obligation_kind_enum_alias.py::test_a_dash_tensor_alias_with_the_correct_size_is_valid"
       ],
       "proof_requirements": {
         "negative": [
@@ -191,12 +206,13 @@
           "Every specified kind and alias roundtrips."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::kinds",
-        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate",
+        "src/python/nrrd/src/format_factory/nrrd/codec/kinds.py::canonical_kind"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-PAYLOAD-001",
@@ -1299,18 +1315,24 @@
     {
       "capability_id": "NRRD-KINDS-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-KIND-ENUM-ALIAS-PROOF"
       ],
       "implemented_behavior": [
-        "Kinds token count can be validated against dimension."
+        "Kinds token count is validated against dimension. Complete value/alias validation is now implemented (codec/kinds.py), grounded in the pinned prose spec and the Teem reference implementation's own enum source: every one of the 31 canonical kind values and their 23 known aliases is recognized, with required-per-axis-size checking for the size-constrained kinds. The NRRD0003 introduction gate for the kinds field itself was already enforced (version_requirements); this obligation's remaining ask (per-value validation) is now closed."
       ],
-      "missing_behavior": [
-        "No complete value/alias validation or NRRD0003 introduction enforcement."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_kind_enum_alias.py::test_canonical_kind_returns_none_for_an_unrecognized_string"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-7C0FD86BAE579F5C",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip",
+        "tests/python/nrrd/test_obligation_kind_enum_alias.py::test_canonical_kind_recognizes_a_canonical_name",
+        "tests/python/nrrd/test_obligation_kind_enum_alias.py::test_canonical_kind_resolves_a_known_alias",
+        "tests/python/nrrd/test_obligation_kind_enum_alias.py::test_every_alias_target_is_itself_a_canonical_kind",
+        "tests/python/nrrd/test_obligation_kind_enum_alias.py::test_size_constrained_kinds_have_their_spec_required_size",
+        "tests/python/nrrd/test_obligation_kind_enum_alias.py::test_the_kind_table_has_exactly_31_canonical_entries"
       ],
       "proof_requirements": {
         "negative": [
@@ -1320,12 +1342,13 @@
           "Every kind and alias with exact arity."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::kinds",
-        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate",
+        "src/python/nrrd/src/format_factory/nrrd/codec/kinds.py::canonical_kind"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-HEADER-001",
@@ -2365,10 +2388,12 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-writer-001.json": "459aee29fa15ac2f6d632f1d4d863923866957e8086da79dd6dde1ab6374d01f",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-grammar-001.json": "34ff1e271e63f2ceb26c72ebe47b1f44e9be6b2ddde57a06068be324b1383229",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-keyvalue-escaping-001.json": "58b4a3c1cb9aefd9d546fb5c0e5dfc1d7f7be90fd15e40b3c7f4424238d11125",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-kind-enum-alias-001.json": "af90cbb0d43424c792cfca31fb6c1ad2122840037389e339e69321a1eece78a4",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-lazy-payload-001.json": "ee783f0c983b7f4fba3cdcd565c9f09d4fe16dc3fd1799bfd881969d266d3e09",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-security-baseline-001.json": "75e80c2707a235afef3f1ab9980697a5e95e32a90fb18e8e1000fd29bbd2ee82",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
+    "src/python/nrrd/src/format_factory/nrrd/codec/kinds.py": "cf8517da058c0ce753866a46fdc5f1c652ab39b90b66e14b65c39d71891d8808",
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "738ef7feab3714ba69a4a56547714145e161ac8b22156bf7e868a18bc13ae847",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "38520a9be8ff12f1266999d5f8d79761254ecc327e65e637e39f35c72a86d240",
     "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "78ae8537ad384f925009106f92db6dab3421f71b3256a1275a4aebd3bf8fc2dd",
@@ -2377,7 +2402,7 @@
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "b0807a18aed01727b3ef85c445017ccd891b5840d7558c736f804fdbaa4222ab",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
     "src/python/nrrd/src/format_factory/nrrd/space.py": "887ea01c8f5e6867c8522335375d717198f1430911728fe6575009dc9a037679",
-    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "57656b36d7a8f1ac3c0a55a19c58dec9f4dfe4e6018878a1671a94c117bd7ef8",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "691df2b0e148314d1738c4b144af6980a6906246f7435e289eb0d3e24153b2cb",
     "tests/python/nrrd/test_ascii_encoding_endian.py": "70aaff339ed8a91183ead5c3b87164d5d1542c393746125c95fb63e5f3f17c04",
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
     "tests/python/nrrd/test_obligation_axis_field_arity.py": "3528ed42454f8e5f9c3640f3b005ee3f7f3a0972081d0a2b81ce9d3dcd6751e0",
@@ -2389,6 +2414,7 @@
     "tests/python/nrrd/test_obligation_header_field_grammar.py": "e70dc004b9be05c2828ba1b1fa99de76484c1190d1abf0ac59d1bd320e89fdee",
     "tests/python/nrrd/test_obligation_keyvalue_duplicates.py": "bd1aeeedc522b3be842bdecf4625b4a639375e84b858b8d94a0e5dd647798ab8",
     "tests/python/nrrd/test_obligation_keyvalue_escaping.py": "9511255a07b3ed1b2fe02b2b533baa82f6e1d7181d1ed1f9187fec4be72b3699",
+    "tests/python/nrrd/test_obligation_kind_enum_alias.py": "08434fe556d6596490b20468abf7b5f8c491c2a345b7da50876038463b32fe90",
     "tests/python/nrrd/test_obligation_lazy_payload_access.py": "c8337adae10f74da14611b74eda2a4ef12d2edeb9cfb9fdcfc967d1675899a3c",
     "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
     "tests/python/nrrd/test_obligation_payload_skip.py": "631ddbb609282e655c179358af0e8cbaa76038e33343cd482c87aaeecb1b8116",
@@ -2401,12 +2427,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 34,
-      "partial": 28,
+      "implemented": 36,
+      "partial": 26,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 31
+    "unresolved": 29
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

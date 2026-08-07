@@ -6,6 +6,7 @@ from typing import Any, Mapping
 
 from format_factory.core import Diagnostic, ResourceLimits, ValidationReport
 
+from ..codec.kinds import KIND_REQUIRED_SIZE, KIND_UNKNOWN_MARKERS, canonical_kind
 from ..codec.payload import (
     checked_element_count,
     dtype_info,
@@ -112,6 +113,31 @@ def validate(
                     "kinds must contain one entry per axis",
                 )
             )
+        elif document.kinds:
+            for index, kind in enumerate(document.kinds):
+                if kind in KIND_UNKNOWN_MARKERS:
+                    continue
+                canonical = canonical_kind(kind)
+                if canonical is None:
+                    diagnostics.append(
+                        Diagnostic(
+                            "nrrd.kinds.unrecognized",
+                            f"axis {index} declares kind {kind!r}, not a recognized "
+                            "kind or alias (preserved as opaque text, not rejected; "
+                            'use "???" or "none" for an explicitly unknown kind)',
+                        )
+                    )
+                    continue
+                required = KIND_REQUIRED_SIZE[canonical]
+                if required is not None and index < len(sizes) and sizes[index] != required:
+                    diagnostics.append(
+                        Diagnostic(
+                            "nrrd.kinds.size_mismatch",
+                            f"axis {index} has kind {kind!r} (canonically "
+                            f"{canonical!r}), which requires size {required}, but "
+                            f"the declared size is {sizes[index]}",
+                        )
+                    )
         for field_name, arity in document.per_axis_field_arities().items():
             if field_name == "kinds":
                 continue  # already reported above with its own diagnostic code

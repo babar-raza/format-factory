@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-kind-enum-alias-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T06:00:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_KIND_ENUM_ALIAS_001",
+    "task_kind": "genuine-new-feature-dual-source-grounded-enum-table",
+    "root_cause": "SAL-NRRD-OBL-02AE194021A775AC and SAL-NRRD-OBL-7C0FD86BAE579F5C (both NRRD-KINDS-001) require modeling every specified axis kind and its aliases, with strict validation reporting unrecognized ones. document.kinds only checked cardinality (count of tokens matches dimension); nothing validated individual kind strings against the spec's own enumerated table or Teem's own accepted aliases, confirmed by reading validator.py directly.",
+    "obligation_targeted": "SAL-NRRD-OBL-02AE194021A775AC, SAL-NRRD-OBL-7C0FD86BAE579F5C (both NRRD-KINDS-001)",
+    "acceptance_evidence": "New codec/kinds.py module with the full 31-entry canonical kind table (required per-axis size, or None), a 23-entry alias table, and the 2 explicit unknown-kind markers, grounded in two independent pinned sources. validator.py now reports 'nrrd.kinds.unrecognized' for a genuinely unrecognized kind string and 'nrrd.kinds.size_mismatch' when a size-constrained kind's declared axis size disagrees with its spec-required size. 14 new tests prove the table's structure and the validator's behavior against real documents.",
+    "regression_tier": "full nrrd package suite (tests/python/nrrd) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the prose spec's own 'Required axis size' table directly from the pinned HTML source (src-nrrd-001.bin, SRC-NRRD-001): all 31 canonical kind strings (domain through 3D-masked-matrix) with each one's required per-axis element count, or 'none' for the resample-able domain/list-family kinds. Also found the spec's own explicit unknown-kind markers ('???' and 'none' as literal header values, distinct from the table's use of the word 'none' to mean 'no size requirement').",
+    "2. Cross-checked and supplemented with a second, independent pinned source: the Teem 1.9.0 reference implementation's own C source (src-nrrd-002.bin, SRC-NRRD-002, extracted from the gzipped release tarball, file src/nrrd/enumsNrrd.c). Its _nrrdKindStr array confirmed the same 31 canonical strings in the same order (cross-validating the prose table), and its _nrrdKindStr_Eqv/_nrrdKindVal_Eqv arrays supplied the exact alias strings Teem's own reader accepts as synonyms (e.g. 'RGB'/'RGBcolor' for 'RGB-color', '-tensor'/'-sym-' spellings for the matrix kinds) -- not guessed or paraphrased from memory.",
+    "3. Built codec/kinds.py with KIND_REQUIRED_SIZE (31 entries), KIND_ALIASES (23 entries), KIND_UNKNOWN_MARKERS, and a canonical_kind() lookup function returning the canonical name for a recognized value (itself or via alias) or None for a genuinely unrecognized string.",
+    "4. Wired validation into validator.py's existing kinds-cardinality check: for each axis kind not in the unknown markers, look up canonical_kind(); report 'nrrd.kinds.unrecognized' if None, or 'nrrd.kinds.size_mismatch' if the canonical kind has a required size that disagrees with the declared axis size.",
+    "5. Verified interactively before writing any test: canonical kind with correct size (valid), alias with correct size (valid), alias with wrong size (size_mismatch), unrecognized string (unrecognized), both unknown markers (valid, not flagged), a no-size-constraint kind with an arbitrary size (valid), and a '-tensor' alias with its correct size (valid) -- all 8 scenarios correct on the first attempt.",
+    "6. Wrote 14 new tests (table-structure tests plus validator-behavior tests against real loaded documents). Ran ruff (clean) and the full nrrd suite (531 passed, was 517, +14) before writing any evidence claim. Ran the full 6-format regression (3070 passed, was 3056, +14; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/kinds.py",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+    "tests/python/nrrd/test_obligation_kind_enum_alias.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/kinds.py",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+    "tests/python/nrrd/test_obligation_kind_enum_alias.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_kind_enum_alias.py -q -- 14 passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 531 passed, 1 skipped, was 517 passed",
+    ".venv/Scripts/python -m ruff check tests/python/nrrd/test_obligation_kind_enum_alias.py src/python/nrrd/src/format_factory/nrrd/codec/kinds.py src/python/nrrd/src/format_factory/nrrd/validation/validator.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3070 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3056 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 65,
+    "oracle": "Verified against two independent pinned authoritative sources (the prose spec's required-size table and the Teem reference implementation's own C enum source), cross-checked against each other for consistency -- higher-confidence than typical SELF-CONSISTENT evidence, though still not cross-checked against an independent third-party NRRD implementation, per GAP-008.",
+    "obligations_moved_breakdown": "2 obligations closed by building a genuine, dual-source-grounded 31-kind enum/alias table with required-size validation and strict unknown-kind reporting, matching the obligations' own precise language exactly."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
