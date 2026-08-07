@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-BIDI-SUPPLEMENTARY-UNICODE-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-bidi-supplementary-unicode-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-BF7C86F8AFED34D6 (XLIFF-VALIDATE-001), promoted partial->implemented. Investigated alongside the sibling obligation SAL-XLIFF-OBL-0E27D8074CB0A72C''s citation-audit fix in the same tick and found a MIXED case rather than a pure reconciliation: "deeply nested and overlapping markers," "paired-code errors," and "every core structural and inline element plus each optional module" were already comprehensively proven elsewhere in the suite but never cited here (same citation-audit correction as the sibling), while "bidi content" and "supplementary Unicode code points" had genuinely zero test coverage anywhere -- confirmed by grep for "bidi" and "supplementary" across the entire xliff test suite before writing anything, returning zero matches. Rather than force-closing on citation alone, investigated whether this package''s text pipeline could actually mishandle either: confirmed by direct interactive probe before writing any test that Right-to-Left-Embedding/Pop-Directional-Formatting bidi control characters and a non-BMP supplementary-plane code point (an emoji requiring a UTF-16 surrogate pair, though Python represents it as a single code point) both round-trip correctly through load and a full dumps/reload cycle -- this package''s text handling is Python-string-native throughout with no custom byte-level logic, and ElementTree''s own XML serialization is UTF-8 by default, so there was no structural reason to expect a bug, and none was found. Added test_obligation_bidi_and_supplementary_unicode.py, 5 new tests proving both categories individually and mixed together in one segment. Verified zero false positives against the entire pre-existing 480-test xliff suite before writing these tests. xliff suite: 480 -> 485 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, confirming correct behavior via new tests rather than fixing a bug. Covers SAL-XLIFF-OBL-BF7C86F8AFED34D6 only; it supports no other obligation and promotes no other product state.'
 - evidence_id: XLIFF-VALIDATE-SEMANTIC-CONSTRAINT-CITATION-AUDIT-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-validate-semantic-constraint-citation-audit-001.json
   expected_result: PASS
@@ -3279,23 +3284,31 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-BF7C86F8AFED34D6
   capability_id: XLIFF-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load
   - tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order
   - tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_nested_group_hierarchy.py::test_nested_groups_parse_as_typed_group_objects_at_every_level
+  - tests/python/xliff/test_obligation_paired_code_integrity.py::test_two_independently_paired_overlapping_spans_are_not_flagged
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_matching_can_no_values_on_both_sc_and_ec_validate_cleanly
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_metagroup_with_a_typed_meta_validates_cleanly
+  - tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py::test_bidi_control_characters_survive_load
+  - tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py::test_bidi_control_characters_survive_a_write_reload_round_trip
+  - tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py::test_a_supplementary_plane_code_point_survives_load
+  - tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py::test_a_supplementary_plane_code_point_survives_a_write_reload_round_trip
+  - tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py::test_bidi_and_supplementary_code_points_coexist_in_one_segment
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_paired_code_integrity.py::test_an_ec_with_no_matching_sc_anywhere_is_orphaned
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_sc_cancopy_no_with_ec_cancopy_absent_is_a_mismatch
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
+  - XLIFF-BIDI-SUPPLEMENTARY-UNICODE-PROOF
   implemented_behavior:
-  - Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace
-    suite passes.
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Positive/negative fixtures
-    per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures
-    with per-layer diagnostics assertions.'
+  - 'Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes. Citation-audit correction plus a narrow new-test addition: "deeply nested and overlapping markers," "paired-code errors," and "every core structural and inline element plus each optional module" were already comprehensively proven elsewhere in the suite (nested group hierarchy, overlapping paired-code spans, isolated pairing attributes, and every module-coverage test file) but never cited on this obligation''s own evidence. "Bidi content" and "supplementary Unicode code points" had genuinely zero test coverage anywhere in the suite (confirmed by grep before writing anything) -- added test_obligation_bidi_and_supplementary_unicode.py, 5 new tests proving Right-to-Left-Embedding/Pop-Directional-Formatting bidi control characters and a non-BMP supplementary-plane code point (an emoji requiring a UTF-16 surrogate pair internally, though Python represents it as one code point) both survive load and a full dumps/reload round trip, individually and mixed together in one segment. This package''s text pipeline is Python-string-native throughout (no custom byte-level text handling) and ElementTree''s XML serialization is UTF-8 by default, so this is confirming already-correct behavior via new tests, not fixing a bug.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.

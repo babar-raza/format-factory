@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-bidi-supplementary-unicode-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T15:19:27Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_BIDI_SUPPLEMENTARY_UNICODE_001",
+    "task_kind": "confirm-and-test-existing-correct-behavior-closing-a-genuinely-untested-rule-text-clause",
+    "root_cause": "SAL-XLIFF-OBL-BF7C86F8AFED34D6's rule_text names 'bidi content' and 'supplementary Unicode code points' explicitly, and grep for both terms across the entire xliff test suite returned zero matches -- a genuine gap, distinct from the sibling obligation's pure citation-audit staleness found in the same tick.",
+    "obligation_targeted": "SAL-XLIFF-OBL-BF7C86F8AFED34D6 (XLIFF-VALIDATE-001) -- promoted partial->implemented",
+    "acceptance_evidence": "5 new tests prove bidi control characters (RLE/PDF) and a non-BMP supplementary-plane code point (emoji, requiring a UTF-16 surrogate pair internally) both survive load and a full dumps/reload round trip, individually and mixed together.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Following event 262's own exact_next_action, investigated SAL-XLIFF-OBL-BF7C86F8AFED34D6, the sibling of the obligation just reconciled by citation audit -- read its rule_text: 'Build validation matrices covering every core structural and inline element plus each optional module, including deeply nested and overlapping markers, paired-code errors, bidi content, and supplementary Unicode code points.'",
+    "2. Grepped the entire xliff test suite for 'bidi' and 'supplementary' and found zero matches for either -- confirming these two specific items are genuinely untested, unlike the rest of the rule_text's enumeration (nested/overlapping markers, paired-code errors, module coverage), which the same grep-and-map technique from the sibling obligation's fix confirmed IS already covered.",
+    "3. Before writing any test, investigated whether this package's text pipeline could plausibly mishandle either category: read the reader/writer/model code and found no custom byte-level text handling anywhere -- Python strings are used natively throughout, and the writer serializes via ElementTree, which defaults to UTF-8.",
+    "4. Confirmed via direct interactive probe before writing any test: constructed a segment with Right-to-Left-Embedding (U+202B) and Pop-Directional-Formatting (U+202C) bidi control characters wrapping Arabic text, and separately a segment with a supplementary-plane emoji (U+1F600, outside the Basic Multilingual Plane) -- both loaded correctly and survived a full dumps()/loads() round trip with exact string equality.",
+    "5. Wrote 5 formal tests in a new test_obligation_bidi_and_supplementary_unicode.py, mirroring the established _document()/loads()/dumps() byte-level round-trip pattern from test_obligation_absent_vs_explicit_value_sweep.py: bidi survives load, bidi survives round trip, supplementary code point survives load, supplementary code point survives round trip, and both mixed together in one segment survive both load and round trip.",
+    "6. Ran the full pre-existing xliff suite (480 tests, zero new fixtures) before finalizing -- all 480 passed unchanged, confirming the new tests introduce no interference.",
+    "7. Ran ruff (clean), the full xliff suite (485 passed, was 480, +5), and the full 6-format regression (3490 passed, was 3485, +5; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "8. Updated the obligation's evidence to also cite (via citation audit, same technique as the sibling obligation in the same tick) the already-existing nested/overlapping/paired-code/module tests, giving a complete positive+negative test set covering every item the rule_text names. Verified all 11 cited tests individually via pytest -v before finalizing.",
+    "9. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-0721d2eaffd65459, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "10. Promoted SAL-XLIFF-OBL-BF7C86F8AFED34D6 to implemented: every item its own rule_text names is now genuinely proven, either by pre-existing (now-cited) tests or these 5 new ones."
+  ],
+  "allowed_files": [
+    "tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py -q -- 5 passed",
+    ".venv/Scripts/python -m ruff check tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 485 passed, was 480 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3490 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3485 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, confirming correct behavior via new tests rather than fixing a bug -- no defect was found.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-BF7C86F8AFED34D6 (XLIFF-VALIDATE-001) partial->implemented. A mixed citation-audit-plus-narrow-new-test closure: cited already-proven coverage for nested/overlapping/paired-code/module requirements, and added 5 new tests to close the two genuinely untested items (bidi content, supplementary Unicode code points) the obligation's own rule_text names explicitly."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

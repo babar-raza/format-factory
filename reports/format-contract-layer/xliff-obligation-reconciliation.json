@@ -26,6 +26,14 @@
       "truth_boundary": "SOURCE READ 2026-08-04 under the GAP-022 rule, updated 2026-08-05. Unlike ubl, xliff's CORE is genuine work: segmentation.py (217 LOC) implements split_segment, join_segments, SegmentMapping, spanning-code closure checks and fresh-id enforcement; inline.py, text_editing.py and the reader/writer are real. Those `partial` entries are defensible pending audit.\n2026-08-05 correction: the prior note here named the eight XLIFF 2.1 modules as \"...Resource Data, Change Tracking, Size and Length Restriction, Validation\" -- Change Tracking is not one of the eight the contract's own normative_rules name; the eighth is ITS (http://www.w3.org/2005/11/its). That error is fixed here rather than carried forward.\nmodules.py now gives XLIFF-MODULE-001 a programmatic coverage manifest covering all eight (Translation Candidates, Glossary, Format Style, Metadata, Resource Data, Size and Length Restriction, Validation, ITS), each PRESERVATION_ONLY with round-trip fixtures proving lossless preservation (see notes above). No typed per-module accessor exists yet, so no XLIFF-MODULE-001 obligation may be recorded above `partial`; this deepens the evidence behind `partial`, exactly like the UBL slices that moved zero obligations while making the evidence real rather than fictional. validation/validator.py still performs no schema validation, so the schema-validation clauses inside XLIFF-VALIDATE-001's `partial` entries remain overstated and still need per-obligation correction -- unchanged by this slice.\nXLIFF-NOTE-001, same session: no source change. Direct experiment first (before writing any test) showed reader.py's _parse_inline is generic over every inline tag, so mrk/sm/em already survive with their exact attributes and document-order position -- which is what an overlapping span requires, since it cannot be a nested element pair. The gap was proof, not implementation; XLIFF-NOTE-001 could not be recorded `partial` before because it had zero shipped-namespace selectors, not because the behavior was absent.\nXLIFF-QA-001, same session: qa.py is new source (unlike NOTE-001). Five of six named QA categories implemented with dedicated tests each; length violations explicitly left undone pending Size/Length module modeling, documented rather than stubbed. No QA-001 obligation may be recorded above `partial` -- a check existing is not the same as it being verified against every fixture the required_tests line names, and length is a real, acknowledged gap in the category set itself.\nXLIFF-MERGE-001, same session: real new source (merge.py), unlike NOTE-001. SHOULD-level, and it stays SHOULD-level satisfied at `partial`: the reference adapter proves the protocol works end to end (extraction, reversible skeleton, translated merge, drift detection and refusal) but is deliberately not a real-world format adapter -- the obligation's \"never claim generic extraction\" clause is precisely why no such claim is made here.\nSuite-level and NON-PROMOTING. The xliff suite is 265 passed with no failures (193 baseline + 22 + 11 + 25 + 14 new), but that number is still dominated by the ten shadow-package files; the shipped-namespace files now contribute 87 tests (15 + 22 + 11 + 25 + 14). A green suite here says very little about the package that would be released. Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most."
     },
     {
+      "evidence_id": "XLIFF-BIDI-SUPPLEMENTARY-UNICODE-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-bidi-supplementary-unicode-001.json",
+      "sha256": "01b098d3e26c245769060c438486baf251960ab146dc590622b55e084109ba14",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-BF7C86F8AFED34D6 (XLIFF-VALIDATE-001), promoted partial->implemented. Investigated alongside the sibling obligation SAL-XLIFF-OBL-0E27D8074CB0A72C's citation-audit fix in the same tick and found a MIXED case rather than a pure reconciliation: \"deeply nested and overlapping markers,\" \"paired-code errors,\" and \"every core structural and inline element plus each optional module\" were already comprehensively proven elsewhere in the suite but never cited here (same citation-audit correction as the sibling), while \"bidi content\" and \"supplementary Unicode code points\" had genuinely zero test coverage anywhere -- confirmed by grep for \"bidi\" and \"supplementary\" across the entire xliff test suite before writing anything, returning zero matches. Rather than force-closing on citation alone, investigated whether this package's text pipeline could actually mishandle either: confirmed by direct interactive probe before writing any test that Right-to-Left-Embedding/Pop-Directional-Formatting bidi control characters and a non-BMP supplementary-plane code point (an emoji requiring a UTF-16 surrogate pair, though Python represents it as a single code point) both round-trip correctly through load and a full dumps/reload cycle -- this package's text handling is Python-string-native throughout with no custom byte-level logic, and ElementTree's own XML serialization is UTF-8 by default, so there was no structural reason to expect a bug, and none was found. Added test_obligation_bidi_and_supplementary_unicode.py, 5 new tests proving both categories individually and mixed together in one segment. Verified zero false positives against the entire pre-existing 480-test xliff suite before writing these tests. xliff suite: 480 -> 485 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, confirming correct behavior via new tests rather than fixing a bug. Covers SAL-XLIFF-OBL-BF7C86F8AFED34D6 only; it supports no other obligation and promotes no other product state."
+    },
+    {
       "evidence_id": "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -325,7 +333,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "9aaf559f1724af52cd24a6d3169cc1a4cd1fabd6d6f7da27a1c091c1a5fb1124",
+    "implementation_evidence": "ffb7aa80f10b6d5c93af9093c6a3b60fcfab48a4b5d692f49e25a12662929992",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -4122,20 +4130,31 @@
     {
       "capability_id": "XLIFF-VALIDATE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-BIDI-SUPPLEMENTARY-UNICODE-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes. Citation-audit correction plus a narrow new-test addition: \"deeply nested and overlapping markers,\" \"paired-code errors,\" and \"every core structural and inline element plus each optional module\" were already comprehensively proven elsewhere in the suite (nested group hierarchy, overlapping paired-code spans, isolated pairing attributes, and every module-coverage test file) but never cited on this obligation's own evidence. \"Bidi content\" and \"supplementary Unicode code points\" had genuinely zero test coverage anywhere in the suite (confirmed by grep before writing anything) -- added test_obligation_bidi_and_supplementary_unicode.py, 5 new tests proving Right-to-Left-Embedding/Pop-Directional-Formatting bidi control characters and a non-BMP supplementary-plane code point (an emoji requiring a UTF-16 surrogate pair internally, though Python represents it as one code point) both survive load and a full dumps/reload round trip, individually and mixed together in one segment. This package's text pipeline is Python-string-native throughout (no custom byte-level text handling) and ElementTree's XML serialization is UTF-8 by default, so this is confirming already-correct behavior via new tests, not fixing a bug."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_paired_code_integrity.py::test_an_ec_with_no_matching_sc_anywhere_is_orphaned",
+        "tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_sc_cancopy_no_with_ec_cancopy_absent_is_a_mismatch"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-BF7C86F8AFED34D6",
       "positive_test_selectors": [
         "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
         "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle",
+        "tests/python/xliff/test_obligation_nested_group_hierarchy.py::test_nested_groups_parse_as_typed_group_objects_at_every_level",
+        "tests/python/xliff/test_obligation_paired_code_integrity.py::test_two_independently_paired_overlapping_spans_are_not_flagged",
+        "tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_matching_can_no_values_on_both_sc_and_ec_validate_cleanly",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_metagroup_with_a_typed_meta_validates_cleanly",
+        "tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py::test_bidi_control_characters_survive_load",
+        "tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py::test_bidi_control_characters_survive_a_write_reload_round_trip",
+        "tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py::test_a_supplementary_plane_code_point_survives_load",
+        "tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py::test_a_supplementary_plane_code_point_survives_a_write_reload_round_trip",
+        "tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py::test_bidi_and_supplementary_code_points_coexist_in_one_segment"
       ],
       "proof_requirements": {
         "negative": [
@@ -4146,11 +4165,11 @@
           "Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -5326,6 +5345,7 @@
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-xliff-001.json": "bb85918b335cbc4c82b7993cdbb1506f2e87c77626e871628989ce6fc87ac4d4",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-absent-vs-explicit-sweep-001.json": "4efe94db3235492a71a6bc7f3fda3b3b727e630e0aa6998facbb45384d9f8959",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-attribute-text-limits-001.json": "49066765c2e8ef245f2b1cd6191ce02c97440f96645142006f65eadc7c17ffa5",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-bidi-supplementary-unicode-001.json": "01b098d3e26c245769060c438486baf251960ab146dc590622b55e084109ba14",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-cross-cluster-citation-audit-001.json": "a13c27fe5a277fc1cbda003532f02792fee40b10bdafe966c4052601e8f9ae6e",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-data-element-required-id-001.json": "a2c7f275c962e1dc477391f95c578d69c4c5a43552e82c39229860a1c44fe349",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-file-group-id-uniqueness-001.json": "50333c4f0bea5929373b26cd75ceb05590c18f4173000e194334be720f7f3e73",
@@ -5377,6 +5397,7 @@
     "src/python/xliff/src/format_factory/xliff/state_transitions.py": "6b12476e31076a788cef37fb476e1b5eda7365e6eb640bbb7bedcebabb9d49ea",
     "src/python/xliff/src/format_factory/xliff/validation/validator.py": "18362cb9c92c0fbc775be7aa126b3341aeaf52566e1aaf056c79207cfa84099b",
     "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py": "0cf2b5f76b217e7768f56a9302d7012c450a1dc95cd05b823bb7476bd8db7761",
+    "tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py": "43045d1ebd13179843aaffbbbeb1fbbe50694f34d50f380eb5e7d409c2f65110",
     "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py": "4608bfab942b23e748dc4010785ec78e72a668f796a3d93401e208fc2365ab80",
     "tests/python/xliff/test_obligation_format_style_module_fs_values.py": "5e03baa15603d37ab30de64ad46e889955bf3be3694e2f515b3acde3bf1fac24",
     "tests/python/xliff/test_obligation_ignorable_elements.py": "70908f9b90fa150715bd19b6c9a1abd46b36b818a3710c4ad82d851dc6a9c880",
@@ -5411,12 +5432,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 112,
+      "implemented": 113,
       "missing": 11,
-      "partial": 19
+      "partial": 18
     },
     "total": 142,
-    "unresolved": 30
+    "unresolved": 29
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
