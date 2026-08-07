@@ -10,6 +10,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Narrows (does not fully close) SAL-XLIFF-OBL-612349C06EB3E809 (XLIFF-PRESERVE-001). Only Note.priority had been directly verified before this slice; the obligation's own finding named a broader, unverified sweep as the remaining gap. Read the pinned XLIFF 2.1 spec source directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin, section 4.3.1's per-attribute entries) for 5 candidate fields rather than assuming they all behave alike: Segment.state, Segment.sub_state, and Note.applies_to are each spec-constrained to a fixed enum or required format that makes an empty string never a valid explicit value, so the shared \"\" absent-sentinel is genuinely unambiguous for all three; XliffDocument.target_language uses no default at all (None when absent). All 4 confirmed via interactive probe and then formal tests to correctly distinguish absent from explicit. Note.category, by contrast, is spec-declared as unconstrained free \"Text\" with \"Default value: undefined\" -- a genuine, narrow remaining gap where an explicit empty category collides with absence, confirmed directly and proven with a dedicated negative test rather than silently ignored; fixing it needs a public-API type change (str -> str | None) left out of scope for this slice. 5 new tests. xliff suite: 366 -> 371 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, with the per-field constraint claims grounded directly in the pinned spec's own text. Covers SAL-XLIFF-OBL-612349C06EB3E809 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-ATTRIBUTE-TEXT-LIMITS-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-attribute-text-limits-001.json",
+      "sha256": "49066765c2e8ef245f2b1cd6191ce02c97440f96645142006f65eadc7c17ffa5",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-130340BC212989D5 (XLIFF-SEC-001), promoted partial->implemented. The obligation's own missing_behavior judged the gap as likely non-exploitable (\"largely redundant with the count/depth-limit tests already present\"), but comparing directly against the equivalent, already-implemented ubl obligation (SAL-UBL-OBL-8396E06EA0EA75FC, UBL-SEC-001) revealed a real, previously-unnoticed asymmetry: ubl's own _enforce_tree_limits checks FOUR complexity vectors (node count, nesting depth, cumulative attribute count, cumulative text bytes), while this package's own _enforce_tree_limits checked only the first two. Confirmed as a genuine, exploitable gap by direct probing before any fix: a document with 2000 attributes on its root element sailed straight through even with max_entries=100 explicitly configured, and a document with 5000 bytes of text sailed through with max_decompressed_bytes=100 explicitly configured -- neither vector was bounded at all, unlike the ubl reader's own equivalent check. Extended _enforce_tree_limits (reader.py) to accumulate and check attribute count (against max_entries) and text bytes (against max_decompressed_bytes) incrementally during the same stack-based walk that already checks node count and depth, matching the ubl sibling's exact field choices and \"check immediately after update, not after the full tree is built\" discipline. Verified zero false positives against the entire pre-existing 466-test xliff suite before writing a single new test. 4 new tests prove: an attribute flood on one element is refused (independent of node count and nesting depth, both trivially small in the fixture); a document with attributes within the limit loads; a text-byte flood is refused; a document with text within the limit loads. xliff suite: 466 -> 470 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the fix grounded directly in the already-proven, structurally-identical ubl sibling implementation, not invented from memory. Covers SAL-XLIFF-OBL-130340BC212989D5 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-BASELINE-SUITE",
       "expected_result": "PASS",
       "granularity": "suite",
@@ -285,7 +293,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "3ce2ed65583889062500a183a769feca1a1ab80a659eb5d016a6ff464bd031c0",
+    "implementation_evidence": "1ddf0e333b23eefd8e5b2e1d353643c30bdf0b4458d83efb1fb58129c002639d",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -736,21 +744,26 @@
       "capability_id": "XLIFF-SEC-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-ATTRIBUTE-TEXT-LIMITS-PROOF"
       ],
       "implemented_behavior": [
-        "Nesting depth and node count are bounded, directly bounding the primary XML algorithmic-complexity attack surface (deeply nested or oversized documents). Python's arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could in another language -- same characterization as the equivalent ubl obligation (SAL-UBL-OBL-8396E06EA0EA75FC, UBL-SEC-001). A width-shaped complexity vector distinct from the already-tested deep-nesting case is now also proven: _enforce_tree_limits (reader.py) checks max_xml_nodes on every node visited in its stack-based traversal, so a wide-but-shallow document (many siblings, shallow nesting -- the quadratic-blowup-style shape) is refused even though its depth stays low, confirmed by a dedicated 10000-sibling fixture against a tight max_xml_nodes limit."
+        "Nesting depth and node count are bounded, directly bounding the primary XML algorithmic-complexity attack surface (deeply nested or oversized documents). Python's arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could in another language -- same characterization as the equivalent ubl obligation (SAL-UBL-OBL-8396E06EA0EA75FC, UBL-SEC-001). A width-shaped complexity vector distinct from the already-tested deep-nesting case is now also proven: _enforce_tree_limits (reader.py) checks max_xml_nodes on every node visited in its stack-based traversal, so a wide-but-shallow document (many siblings, shallow nesting -- the quadratic-blowup-style shape) is refused even though its depth stays low, confirmed by a dedicated 10000-sibling fixture against a tight max_xml_nodes limit.",
+        "The remaining \"checked arithmetic\" gap is now closed with a genuine fix, not merely a test: comparing directly against the equivalent, already-implemented ubl obligation (SAL-UBL-OBL-8396E06EA0EA75FC) revealed its own _enforce_tree_limits checks FOUR vectors (node count, nesting depth, cumulative attribute count, cumulative text bytes) while this package's own _enforce_tree_limits checked only two -- confirmed as a real, exploitable gap by direct probing before any fix: a document with 2000 attributes on its root element sailed straight through even with max_entries=100 explicitly configured, because attribute-count accumulation was never checked at all. Extended _enforce_tree_limits to also accumulate and check attribute count (against max_entries) and text bytes (against max_decompressed_bytes) incrementally during the same stack-based walk, matching the ubl sibling's exact field choices and \"check immediately after update\" discipline. 4 new tests prove: an attribute flood on one element is refused; a document with attributes within the limit loads; a text-byte flood is refused; a document with text within the limit loads."
       ],
-      "missing_behavior": [
-        "No test specifically exercises 'checked arithmetic' as a distinct guarantee independent of Python's native big-int semantics -- judged the same way this session characterized the equivalent ubl/nrrd obligations: Python's native big-int semantics make a dedicated checked-arithmetic test largely redundant with the count/depth-limit tests already present, not a separate exploitable gap. Left honestly partial (not force-closed) because the obligation's own rule_text names checked arithmetic as a distinct requirement and no test asserts it as its own fact."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_security_limits.py::test_an_attribute_flood_on_one_element_is_rejected",
+        "tests/python/xliff/test_obligation_security_limits.py::test_a_text_flood_exceeding_the_decoded_byte_limit_is_rejected"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-130340BC212989D5",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_nesting_limit_is_rejected",
         "tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_node_count_limit_is_rejected",
         "tests/python/xliff/test_obligation_security_limits.py::test_a_wide_shallow_document_is_bounded_by_node_count_not_depth",
-        "tests/python/xliff/test_obligation_security_limits.py::test_a_wide_document_within_the_node_count_limit_loads"
+        "tests/python/xliff/test_obligation_security_limits.py::test_a_wide_document_within_the_node_count_limit_loads",
+        "tests/python/xliff/test_obligation_security_limits.py::test_a_document_with_attributes_within_the_limit_loads",
+        "tests/python/xliff/test_obligation_security_limits.py::test_a_document_with_text_within_the_byte_limit_loads"
       ],
       "proof_requirements": {
         "negative": [
@@ -760,11 +773,11 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_enforce_tree_limits"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODULE-001",
@@ -5235,6 +5248,7 @@
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-xliff-001.json": "bb85918b335cbc4c82b7993cdbb1506f2e87c77626e871628989ce6fc87ac4d4",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-absent-vs-explicit-sweep-001.json": "4efe94db3235492a71a6bc7f3fda3b3b727e630e0aa6998facbb45384d9f8959",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-attribute-text-limits-001.json": "49066765c2e8ef245f2b1cd6191ce02c97440f96645142006f65eadc7c17ffa5",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-cross-cluster-citation-audit-001.json": "a13c27fe5a277fc1cbda003532f02792fee40b10bdafe966c4052601e8f9ae6e",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-file-group-id-uniqueness-001.json": "50333c4f0bea5929373b26cd75ceb05590c18f4173000e194334be720f7f3e73",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-file-required-and-file-id-required-001.json": "a39c6208d21397ccaa1ba7d4c49360095c48b8509cd60b75508274bd38f4f1b7",
@@ -5269,7 +5283,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-version-downgrade-loss-001.json": "d883e3d53d90b3cdc9f8163ff159837437339a2d0fde9275a8235d04e9a8d969",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-xml-space-inheritance-resolution-001.json": "16ed744c0996ba2daa82b718193862b57317c5120f5bcf8b3a25d26948babd76",
     "src/python/xliff/src/format_factory/xliff/codec/preservation.py": "117c0c1dd41f34535267d67b1d387302ac3e5d16af927a5a44a58ed506910768",
-    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py": "3d20e2f0220c5248f180d190e6a33f13248c818b36a225c6b8603fab59835961",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py": "3826d878d653c01f9e021334a59aa4b123b9c5bdc64c046f72d3574be554beb7",
     "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py": "77a7a9b211d061098160e1fb827e7e5cd87aaf57871396431630d423c4f9da42",
     "src/python/xliff/src/format_factory/xliff/merge.py": "c16a0916c2a7ddaeb49dd200fbe89e4a0b08f0ca19dd5177f7001733c0882c1b",
     "src/python/xliff/src/format_factory/xliff/model/document.py": "2dfce111c09f486b31bef3f55bbfb1c4a403b57000132a57e3ef5a7e0b6fc139",
@@ -5304,7 +5318,7 @@
     "tests/python/xliff/test_obligation_resource_resolution_security.py": "7bd8371c0a04ee1ecf6574d863d76e4ed6c8d449fbfd12d492ad45cfcc9d7720",
     "tests/python/xliff/test_obligation_root_language_attribute_requirements.py": "4e829c770a8fc7792a9f4404e738afe789ef4ac04982855b1681ec51c37605de",
     "tests/python/xliff/test_obligation_root_xml_space_default.py": "d0f84396f61e8c8e8de1b82035e6c7987414371ee1ccb284f52e5800a537b812",
-    "tests/python/xliff/test_obligation_security_limits.py": "faea1be64cd4cf09be3a785aebad713f8af5b159aa84f2b3ca92c1cd15212ad7",
+    "tests/python/xliff/test_obligation_security_limits.py": "96912d30884be06a92e892340d250a6d0d981485e9fbb6eed2db08bd1724d476",
     "tests/python/xliff/test_obligation_segment_structure_and_language.py": "4147094fbe4e7af8284b21c0c92fdb3aa4a26bd1e923a244db09980937f2de93",
     "tests/python/xliff/test_obligation_state_transitions.py": "eb2fb6fa0f4503175da1904986563ca1a1ee97f317067a2d29466c5c35c9c1bf",
     "tests/python/xliff/test_obligation_target_creation_policies.py": "d6693ffb55e6c735194503d14f9f4ba6dd46564391aeb13ee5189b9d94cb85ef",
@@ -5315,12 +5329,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 103,
+      "implemented": 104,
       "missing": 11,
-      "partial": 28
+      "partial": 27
     },
     "total": 142,
-    "unresolved": 39
+    "unresolved": 38
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

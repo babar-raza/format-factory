@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-ATTRIBUTE-TEXT-LIMITS-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-attribute-text-limits-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-130340BC212989D5 (XLIFF-SEC-001), promoted partial->implemented. The obligation''s own missing_behavior judged the gap as likely non-exploitable ("largely redundant with the count/depth-limit tests already present"), but comparing directly against the equivalent, already-implemented ubl obligation (SAL-UBL-OBL-8396E06EA0EA75FC, UBL-SEC-001) revealed a real, previously-unnoticed asymmetry: ubl''s own _enforce_tree_limits checks FOUR complexity vectors (node count, nesting depth, cumulative attribute count, cumulative text bytes), while this package''s own _enforce_tree_limits checked only the first two. Confirmed as a genuine, exploitable gap by direct probing before any fix: a document with 2000 attributes on its root element sailed straight through even with max_entries=100 explicitly configured, and a document with 5000 bytes of text sailed through with max_decompressed_bytes=100 explicitly configured -- neither vector was bounded at all, unlike the ubl reader''s own equivalent check. Extended _enforce_tree_limits (reader.py) to accumulate and check attribute count (against max_entries) and text bytes (against max_decompressed_bytes) incrementally during the same stack-based walk that already checks node count and depth, matching the ubl sibling''s exact field choices and "check immediately after update, not after the full tree is built" discipline. Verified zero false positives against the entire pre-existing 466-test xliff suite before writing a single new test. 4 new tests prove: an attribute flood on one element is refused (independent of node count and nesting depth, both trivially small in the fixture); a document with attributes within the limit loads; a text-byte flood is refused; a document with text within the limit loads. xliff suite: 466 -> 470 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, the fix grounded directly in the already-proven, structurally-identical ubl sibling implementation, not invented from memory. Covers SAL-XLIFF-OBL-130340BC212989D5 only; it supports no other obligation and promotes no product state.'
 - evidence_id: XLIFF-XML-SPACE-INHERITANCE-RESOLUTION-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-xml-space-inheritance-resolution-001.json
   expected_result: PASS
@@ -781,7 +786,7 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-130340BC212989D5
   capability_id: XLIFF-SEC-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_enforce_tree_limits
   positive_test_selectors:
@@ -789,14 +794,19 @@ obligations:
   - tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_node_count_limit_is_rejected
   - tests/python/xliff/test_obligation_security_limits.py::test_a_wide_shallow_document_is_bounded_by_node_count_not_depth
   - tests/python/xliff/test_obligation_security_limits.py::test_a_wide_document_within_the_node_count_limit_loads
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_security_limits.py::test_a_document_with_attributes_within_the_limit_loads
+  - tests/python/xliff/test_obligation_security_limits.py::test_a_document_with_text_within_the_byte_limit_loads
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_security_limits.py::test_an_attribute_flood_on_one_element_is_rejected
+  - tests/python/xliff/test_obligation_security_limits.py::test_a_text_flood_exceeding_the_decoded_byte_limit_is_rejected
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-ATTRIBUTE-TEXT-LIMITS-PROOF
   implemented_behavior:
   - 'Nesting depth and node count are bounded, directly bounding the primary XML algorithmic-complexity attack surface (deeply nested or oversized documents). Python''s arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could in another language -- same characterization as the equivalent ubl obligation (SAL-UBL-OBL-8396E06EA0EA75FC, UBL-SEC-001). A width-shaped complexity vector distinct from the already-tested deep-nesting case is now also proven: _enforce_tree_limits (reader.py) checks max_xml_nodes on every node visited in its stack-based traversal, so a wide-but-shallow document (many siblings, shallow nesting -- the quadratic-blowup-style shape) is refused even though its depth stays low, confirmed by a dedicated 10000-sibling fixture against a tight max_xml_nodes limit.'
-  missing_behavior:
-  - 'No test specifically exercises ''checked arithmetic'' as a distinct guarantee independent of Python''s native big-int semantics -- judged the same way this session characterized the equivalent ubl/nrrd obligations: Python''s native big-int semantics make a dedicated checked-arithmetic test largely redundant with the count/depth-limit tests already present, not a separate exploitable gap. Left honestly partial (not force-closed) because the obligation''s own rule_text names checked arithmetic as a distinct requirement and no test asserts it as its own fact.'
+  - 'The remaining "checked arithmetic" gap is now closed with a genuine fix, not merely a test: comparing directly against the equivalent, already-implemented ubl obligation (SAL-UBL-OBL-8396E06EA0EA75FC) revealed its own _enforce_tree_limits checks FOUR vectors (node count, nesting depth, cumulative attribute count, cumulative text bytes) while this package''s own _enforce_tree_limits checked only two -- confirmed as a real, exploitable gap by direct probing before any fix: a document with 2000 attributes on its root element sailed straight through even with max_entries=100 explicitly configured, because attribute-count accumulation was never checked at all. Extended _enforce_tree_limits to also accumulate and check attribute count (against max_entries) and text bytes (against max_decompressed_bytes) incrementally during the same stack-based walk, matching the ubl sibling''s exact field choices and "check immediately after update" discipline. 4 new tests prove: an attribute flood on one element is refused; a document with attributes within the limit loads; a text-byte flood is refused; a document with text within the limit loads.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative

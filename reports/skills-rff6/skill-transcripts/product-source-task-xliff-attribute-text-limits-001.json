@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-attribute-text-limits-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T13:09:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_ATTRIBUTE_TEXT_LIMITS_001",
+    "task_kind": "fix-real-unenforced-security-limit-found-by-cross-format-comparison",
+    "root_cause": "Re-read SAL-XLIFF-OBL-130340BC212989D5's own missing_behavior, which judged the 'checked arithmetic' gap as likely non-exploitable (Python's big-int semantics making a dedicated test 'largely redundant'). Rather than trust that judgment at face value, compared directly against the equivalent, already-implemented ubl sibling obligation (SAL-UBL-OBL-8396E06EA0EA75FC) and found its _enforce_tree_limits checks 4 vectors (node count, depth, attribute count, text bytes) while xliff's own version checked only 2 -- a real, previously-unnoticed asymmetry between two structurally-identical readers.",
+    "obligation_targeted": "SAL-XLIFF-OBL-130340BC212989D5 (XLIFF-SEC-001) -- promoted partial->implemented",
+    "acceptance_evidence": "4 new tests prove: an attribute flood on one element is refused; a document with attributes within the limit loads; a text-byte flood is refused; a document with text within the limit loads.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read SAL-XLIFF-OBL-130340BC212989D5's own missing_behavior text, which characterized the remaining 'checked arithmetic' gap as likely non-exploitable, matching how this session characterized the equivalent ubl/nrrd obligations.",
+    "2. Rather than accepting that characterization, read the equivalent already-implemented ubl obligation's own evidence (SAL-UBL-OBL-8396E06EA0EA75FC) and its cited source (ubl's own _enforce_tree_limits) directly, and found it checks FOUR complexity vectors: node count, nesting depth, cumulative attribute count (against max_entries), and cumulative text bytes (against max_decompressed_bytes) -- each checked immediately after being updated during a single stack-based walk.",
+    "3. Read xliff's own _enforce_tree_limits directly and found it checks only the first two vectors (node count, nesting depth) -- attribute count and text bytes are never accumulated or checked at all.",
+    "4. Confirmed this is a genuine, exploitable gap via direct probing before any fix: constructed a document with 2000 attributes on its root element and loaded it with max_entries=100 explicitly configured -- it sailed straight through unrejected. Repeated with a 5000-byte text node against max_decompressed_bytes=100 -- also sailed through.",
+    "5. Extended xliff's _enforce_tree_limits to accumulate and check attribute count and text bytes incrementally during the same walk, matching ubl's exact field choices (max_entries, max_decompressed_bytes) and its 'check immediately after update' discipline precisely, rather than inventing new limit fields or a different check ordering.",
+    "6. Re-ran the same 2 probes after the fix: both now correctly raise ResourceLimitError naming the exact limit exceeded. Also confirmed a normal, small document still loads fine with default limits.",
+    "7. Ran the full pre-existing xliff suite (466 tests, zero new fixtures) against the fix to look for false positives before writing a single new test -- all 466 passed unchanged, confirming no existing fixture happens to exceed the default (generous) attribute/text limits.",
+    "8. Wrote 4 formal tests in the existing test_obligation_security_limits.py (extending its established pattern rather than creating a new file, since this obligation's own test infrastructure already lives there), all passing on the first attempt.",
+    "9. Ran ruff (clean), the full xliff suite (470 passed, was 466, +4), and the full 6-format regression (3436 passed, was 3432, +4; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "10. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-9d90e554533bba95, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "11. Promoted the obligation to implemented: the obligation's own rule_text names 'checked arithmetic for size and count calculations' as a distinct requirement, and all size/count vectors (node count, depth, attribute count, text bytes) are now genuinely bounded, closing a real security gap rather than merely adding a redundant test as the prior tick's own missing_behavior text had assumed was sufficient."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+    "tests/python/xliff/test_obligation_security_limits.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+    "tests/python/xliff/test_obligation_security_limits.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_security_limits.py -q -- 11 passed",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/codec/reader/reader.py tests/python/xliff/test_obligation_security_limits.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 470 passed, was 466 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3436 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3432 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the fix grounded directly in the already-proven, structurally-identical ubl sibling implementation, not invented from memory.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-130340BC212989D5 (XLIFF-SEC-001) partial->implemented. A genuine, real, previously-unenforced security gap fixed with production source code, found by cross-format comparison against an equivalent already-proven sibling implementation rather than accepting a prior tick's own 'likely non-exploitable' characterization at face value."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

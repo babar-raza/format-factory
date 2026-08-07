@@ -232,13 +232,26 @@ def _parse_file(element: ET.Element) -> XliffFile:
 
 
 def _enforce_tree_limits(root: ET.Element, limits: ResourceLimits) -> None:
+    """Bound node count, nesting depth, cumulative attribute count, and
+    cumulative text bytes incrementally during the walk -- each counter is
+    checked immediately after being updated, not after the full tree is
+    built and counted, so no complexity vector can grow unbounded even
+    momentarily. Matches the identical four-vector check already proven
+    for the equivalent ubl reader (_enforce_tree_limits, reader.py)."""
     count = 0
+    attribute_count = 0
+    text_bytes = 0
     stack: list[tuple[ET.Element, int]] = [(root, 1)]
     while stack:
         node, depth = stack.pop()
         count += 1
         limits.enforce("max_xml_nodes", count)
         limits.enforce("max_nesting_depth", depth)
+        attribute_count += len(node.attrib)
+        limits.enforce("max_entries", attribute_count)
+        text_bytes += len((node.text or "").encode("utf-8"))
+        text_bytes += len((node.tail or "").encode("utf-8"))
+        limits.enforce("max_decompressed_bytes", text_bytes)
         stack.extend((child, depth + 1) for child in node)
 
 
