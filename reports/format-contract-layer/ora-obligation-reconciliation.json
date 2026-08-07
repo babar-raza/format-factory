@@ -173,7 +173,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "1ab70a13efcb0850159596695ae3e98d34462460fd6825ad31726103d1383ff7",
+    "implementation_evidence": "d6c07bc38e7553663adcba35e7ecb5b4b23e1358013b2c282e68b360c9384d58",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1214,8 +1214,7 @@
       "execution_evidence_ids": [],
       "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Recognized-mask edit tests and unknown-mask byte-preservation tests from independent producers.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+        "Investigated directly, not merely unaudited: this obligation's cited authority_fact_ids (SAL-ORA-00006, SAL-ORA-00008 per plans/strategic/ff6/obligations/ora.yaml) do not substantiate its \"mask\" claim at all when read directly -- SAL-ORA-00006's actual claim is a generic \"OpenRaster 0.0.5 defines a baseline intent... and permits custom extensions\", and SAL-ORA-00008's is \"OpenRaster archives use the .ora extension and store their data inside a ZIP file wrapper\"; neither mentions masks. The word \"mask\" does not appear anywhere in any of the three pinned, authority-locked OpenRaster spec sources this repository has acquired (.local/format-contracts/acquired/ora/src-ora-00[1-3].bin), confirmed by a direct case-insensitive full-text search returning zero matches across all three files. This obligation's \"mask\" framing appears to be either drawn from an unacquired fourth spec document or a data-integrity defect in how this obligation was originally derived, not a real, currently-verifiable product requirement. Building any mask feature now would mean inventing spec content this repository cannot substantiate -- the exact anti-pattern this session's evidence discipline exists to prevent (see the composite-op cluster's identical \"no committed verified SAL fact enumerates...\" refusal for the same reasoning applied elsewhere in this file). Correctly left missing, not force-built; verification_status: UNVERIFIED in the obligation register itself already flagged this before this investigation confirmed why."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-2DA8F5A931FB747D",
@@ -3185,8 +3184,7 @@
       "execution_evidence_ids": [],
       "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Recognized-mask edit tests and unknown-mask byte-preservation tests from independent producers.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+        "Investigated directly, not merely unaudited: same finding as this obligation's ORA-MASK-001 sibling, SAL-ORA-OBL-2DA8F5A931FB747D. The cited authority_fact_ids (SAL-ORA-00006, SAL-ORA-00008) do not substantiate a \"mask\" requirement when read directly, and the word \"mask\" appears zero times across all three pinned OpenRaster spec sources this repository has acquired (confirmed by direct full-text search). \"Provide an explicit mask extension model and registry boundary\" cannot be honestly built without a verified spec source actually defining what that model or registry should contain -- building one now would mean inventing the very thing this obligation claims to require, which this session's evidence discipline exists to prevent (see the composite-op cluster's identical refusal for the same reasoning, and this obligation's own sibling for the fuller citation-level detail). Correctly left missing, not force-built."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-96DAD1AD6C297273",
