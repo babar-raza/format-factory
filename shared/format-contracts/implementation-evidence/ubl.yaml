@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-PAYEE-FINANCIAL-ACCOUNT-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-payee-financial-account-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-D21BA46DEC8DFA2B (UBL-CODELIST-001) only. The obligation had been honestly left partial because no SAL fact in the committed spec cache documented cac:PayeeFinancialAccount''s own element structure precisely enough to model without inventing structure from memory. Unblocked by reading the pinned OASIS UBL 2.3 release package''s own vendored XSD directly (extracted xsd/common/UBL-CommonAggregateComponents-2.3.xsd from the ZIP, not a SAL-fact paraphrase): confirmed PaymentMeansType''s cac:PayeeFinancialAccount is optional (minOccurs=0), referencing FinancialAccountType (ID, Name, AliasName, AccountTypeCode, AccountFormatCode, CurrencyCode, PaymentNote leaf fields, plus 2 nested aggregates deliberately left unmodeled). Added a new FinancialAccount dataclass (leaf fields only) and financial_account_of(), wired onto PaymentMeans. 5 new tests prove absence, full projection, independent field optionality, financial_account_of(None) returning None per its own optional cardinality, and a full document round trip. ubl suite: 733 -> 738 passed. Verified against the pinned XSD directly -- higher-confidence than typical SELF-CONSISTENT evidence, though still not cross-checked against an independent reference UBL implementation, per GAP-008. Covers SAL-UBL-OBL-D21BA46DEC8DFA2B only; it supports no other obligation and promotes no product state.'
 - evidence_id: UBL-SECURITY-BASELINE-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-security-baseline-001.json
   expected_result: PASS
@@ -4060,27 +4065,34 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-D21BA46DEC8DFA2B
   capability_id: UBL-CODELIST-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
   - src/python/ubl/src/format_factory/ubl/model/charges.py::payment_means_of
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::FinancialAccount
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::financial_account_of
   positive_test_selectors:
-  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_projects_with_its_code_and_due_date
-  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_payment_due_date_is_optional
+  - 'tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_projects_with_its_code_and_due_date'
+  - 'tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_payment_due_date_is_optional'
+  - 'tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_is_absent_when_not_declared'
+  - 'tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_projects_with_its_leaf_fields'
+  - 'tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_fields_are_each_independently_optional'
+  - 'tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_financial_account_of_returns_none_for_a_missing_node'
+  - 'tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_payee_financial_account_survives_a_real_document_round_trip'
   negative_test_selectors:
   - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_requires_a_code
   - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_malformed_due_date_is_refused
   execution_evidence_ids:
   - UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-PAYEE-FINANCIAL-ACCOUNT-PROOF
   implemented_behavior:
-  - 'cac:PaymentMeans is modeled with a required payment means code and an optional due date, both proven at construction and via XML projection; a missing code and a malformed due date are both refused.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: this obligation''s own rule_text names "payee financial account elements" (cac:PayeeFinancialAccount) as part of what PaymentMeans carries, and this module''s own docstring already quotes that clause -- but no such field is modeled on PaymentMeans, and no SAL fact in this repository''s committed spec cache documents cac:PayeeFinancialAccount''s own element structure (ID, Name, FinancialInstitutionBranch, or otherwise) with enough precision to model it without inventing structure from memory. Not attempted this slice for that reason.'
+  - 'cac:PaymentMeans is modeled with a required payment means code and an optional due date, both proven at construction and via XML projection; a missing code and a malformed due date are both refused. The obligation''s own named gap is now closed: PaymentMeans carries a payee_financial_account field (a new FinancialAccount dataclass), grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read directly from the ZIP rather than relying on an incomplete SAL fact) -- confirming cac:PayeeFinancialAccount is optional (minOccurs=0) on PaymentMeansType and modeling FinancialAccountType''s leaf fields (ID, Name, CurrencyCode). The type''s two nested aggregates (FinancialInstitutionBranch, Country) are deliberately left unmodeled and generically preserved, documented explicitly in the dataclass''s own docstring, matching this codebase''s existing scope discipline for comparable aggregates.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Known-good and known-bad coded values per first-wave list; offline determinism verified.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for a required-code violation and a malformed due date.
 - obligation_id: SAL-UBL-OBL-D25D2CB8429753F9
   capability_id: UBL-VALUES-001
   status: implemented

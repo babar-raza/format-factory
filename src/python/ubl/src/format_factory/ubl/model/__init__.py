@@ -17,9 +17,11 @@ from .aggregates import (
 )
 from .charges import (
     AllowanceCharge,
+    FinancialAccount,
     PaymentMeans,
     Price,
     allowance_charge_of,
+    financial_account_of,
     payment_means_of,
     price_of,
 )
@@ -86,8 +88,10 @@ __all__ = [
     "price_of",
     "payment_means_of",
     "allowance_charge_of",
+    "financial_account_of",
     "Price",
     "PaymentMeans",
+    "FinancialAccount",
     "AllowanceCharge",
     "UblTime",
     "UblDateTime",

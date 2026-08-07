@@ -90,6 +90,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. UBL-PARSE-001's 29 obligations all shared one generic citation and are near-verbatim restatements of UBL-MODEL-001/VALUES-001/DOCTYPES-001 facts (all resolved in preceding ticks). A programmatic exact-rule_text matcher found 27 of 29 are exact-text duplicates, cross-referenced to that real evidence. 1 (default vs. prefixed XML namespace forms resolving to identical expanded QNames) was proven directly by 2 new tests added this slice (test_obligation_qname_resolution.py) demonstrating that xml.etree.ElementTree's inherent Clark-notation normalization makes this true by construction, previously unasserted. 1 is a genuine, confirmed, security-relevant finding, not merely unaudited: model/typed.py's find()/find_all() -- the navigation primitives every typed accessor in the package routes through -- match children by local name only, never verifying the expanded namespace, so a spoofed-namespace element with the same local name as a legitimate one is silently preferred if it appears first in document order (demonstrated directly by constructing such a case and observing find() return the spoofed value). Root-level namespace mismatches are rejected, but that check does not extend to descendant lookups. This is left honestly `missing` rather than force-promoted or patched hastily: a correct fix touches every find()/find_all() call site across typed.py/aggregates.py/charges.py/reference.py/document.py, a cross-cutting change with real blast radius that needs dedicated design and regression coverage beyond a citation-audit tick's safe scope -- recorded as a genuine actionable finding for a future taskcard. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Promotes no product state beyond the 20 obligations moved to `implemented` (note: obligations_moved counts only clusters whose EXACT_DUP source was itself implemented; several sources are honest partials/missings carried forward unchanged)."
     },
     {
+      "evidence_id": "UBL-PAYEE-FINANCIAL-ACCOUNT-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-payee-financial-account-001.json",
+      "sha256": "871c30fea014cdad6674a806f06c1f7c38d9ea4ab650d5cda0fa352d8edf6aea",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-D21BA46DEC8DFA2B (UBL-CODELIST-001) only. The obligation had been honestly left partial because no SAL fact in the committed spec cache documented cac:PayeeFinancialAccount's own element structure precisely enough to model without inventing structure from memory. Unblocked by reading the pinned OASIS UBL 2.3 release package's own vendored XSD directly (extracted xsd/common/UBL-CommonAggregateComponents-2.3.xsd from the ZIP, not a SAL-fact paraphrase): confirmed PaymentMeansType's cac:PayeeFinancialAccount is optional (minOccurs=0), referencing FinancialAccountType (ID, Name, AliasName, AccountTypeCode, AccountFormatCode, CurrencyCode, PaymentNote leaf fields, plus 2 nested aggregates deliberately left unmodeled). Added a new FinancialAccount dataclass (leaf fields only) and financial_account_of(), wired onto PaymentMeans. 5 new tests prove absence, full projection, independent field optionality, financial_account_of(None) returning None per its own optional cardinality, and a full document round trip. ubl suite: 733 -> 738 passed. Verified against the pinned XSD directly -- higher-confidence than typical SELF-CONSISTENT evidence, though still not cross-checked against an independent reference UBL implementation, per GAP-008. Covers SAL-UBL-OBL-D21BA46DEC8DFA2B only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "UBL-PRESERVATION-MODE-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -157,7 +165,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "a963919becec146bbd0ecdb54afef7d6a6197fafa446d1ddb8b541919b392182",
+    "implementation_evidence": "04d997acb4087eb50987ad8bb0a6dfb1f23bf7666eda3c3d8f9974325d448cbe",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -5289,14 +5297,13 @@
     {
       "capability_id": "UBL-CODELIST-001",
       "execution_evidence_ids": [
-        "UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF"
+        "UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF",
+        "UBL-PAYEE-FINANCIAL-ACCOUNT-PROOF"
       ],
       "implemented_behavior": [
-        "cac:PaymentMeans is modeled with a required payment means code and an optional due date, both proven at construction and via XML projection; a missing code and a malformed due date are both refused."
+        "cac:PaymentMeans is modeled with a required payment means code and an optional due date, both proven at construction and via XML projection; a missing code and a malformed due date are both refused. The obligation's own named gap is now closed: PaymentMeans carries a payee_financial_account field (a new FinancialAccount dataclass), grounded directly in the pinned OASIS UBL 2.3 release package's own vendored XSD (xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read directly from the ZIP rather than relying on an incomplete SAL fact) -- confirming cac:PayeeFinancialAccount is optional (minOccurs=0) on PaymentMeansType and modeling FinancialAccountType's leaf fields (ID, Name, CurrencyCode). The type's two nested aggregates (FinancialInstitutionBranch, Country) are deliberately left unmodeled and generically preserved, documented explicitly in the dataclass's own docstring, matching this codebase's existing scope discipline for comparable aggregates."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: this obligation's own rule_text names \"payee financial account elements\" (cac:PayeeFinancialAccount) as part of what PaymentMeans carries, and this module's own docstring already quotes that clause -- but no such field is modeled on PaymentMeans, and no SAL fact in this repository's committed spec cache documents cac:PayeeFinancialAccount's own element structure (ID, Name, FinancialInstitutionBranch, or otherwise) with enough precision to model it without inventing structure from memory. Not attempted this slice for that reason."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_requires_a_code",
         "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_malformed_due_date_is_refused"
@@ -5304,22 +5311,29 @@
       "obligation_id": "SAL-UBL-OBL-D21BA46DEC8DFA2B",
       "positive_test_selectors": [
         "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_projects_with_its_code_and_due_date",
-        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_payment_due_date_is_optional"
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_payment_due_date_is_optional",
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_is_absent_when_not_declared",
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_projects_with_its_leaf_fields",
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_fields_are_each_independently_optional",
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_financial_account_of_returns_none_for_a_missing_node",
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_payee_financial_account_survives_a_real_document_round_trip"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited for a required-code violation and a malformed due date."
         ],
         "positive": [
           "Known-good and known-bad coded values per first-wave list; offline determinism verified."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans",
-        "src/python/ubl/src/format_factory/ubl/model/charges.py::payment_means_of"
+        "src/python/ubl/src/format_factory/ubl/model/charges.py::payment_means_of",
+        "src/python/ubl/src/format_factory/ubl/model/charges.py::FinancialAccount",
+        "src/python/ubl/src/format_factory/ubl/model/charges.py::financial_account_of"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALUES-001",
@@ -6269,6 +6283,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lifecycle-io-001.json": "ed787921f2225a81573186c4cd81377a417d211b447444ba0807685ba1e837b8",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-model-citation-audit-001.json": "d2c7dfa39a36272ee884db3f991425e0013760681491767abedad051028572e6",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-parse-citation-audit-001.json": "2bb3b3fd3318a9290b0a50d890416906f28500d899bd0efe330e77f39efd12be",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-payee-financial-account-001.json": "871c30fea014cdad6674a806f06c1f7c38d9ea4ab650d5cda0fa352d8edf6aea",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-preservation-mode-001.json": "088e0985934fa48774b39f185c541d9d3c3f038b561d70bb1d30359755986909",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-profile-identifiers-001.json": "48879903a7e0b13d2411bfdb1a24c27529a89fbf06f5f2dd0de655d21e7ab871",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-profile-validator-registry-001.json": "4fa90752a767767e0ead729d416bbbd68836191ef0a7c2f62480a640b5b2b9cd",
@@ -6281,9 +6296,9 @@
     "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "254743ef56212db8aebabac970793fee188634466b6907145e25b1b662e8f9fc",
     "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py": "e352a3442d0a31389f177c9a206d3a5d857c9a2d4f724833e9af90e31d5b4a7d",
     "src/python/ubl/src/format_factory/ubl/document_types.py": "3d2c4333b1544a3f45b4c6dd52b759aa528c5dd9ac2a1d102607688b8722819c",
-    "src/python/ubl/src/format_factory/ubl/model/__init__.py": "9e80ee4ab23c7bbdee54673f1bf8920aa358866de5ac5005ff7752e7578be925",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py": "61caa29dbd76681ce7c197ce8bbfbc422b9f47495a3a8d5d38a6889b30b45f02",
     "src/python/ubl/src/format_factory/ubl/model/aggregates.py": "c0f02a00ad6065ea0359dd379f30d0db94b95d63f772d2247ab521ea7a49886a",
-    "src/python/ubl/src/format_factory/ubl/model/charges.py": "2832078eb56abae974a7e549b8b58d8a486105c36ed7302fe099efe6f9c0f8ef",
+    "src/python/ubl/src/format_factory/ubl/model/charges.py": "f72762e8f2fe1f95f967b6842321265d1815dfcacf6e0c49aa83cda617069277",
     "src/python/ubl/src/format_factory/ubl/model/codelist.py": "1f17c8c2a0e0acafe8665c8695fbdf3226562a20c423fa2e4b388a4d2e5dd83f",
     "src/python/ubl/src/format_factory/ubl/model/document.py": "9b8ca16af3989f29c8ccd5ac15f697e6c4e423a6503db38378e8f2013c89bf6b",
     "src/python/ubl/src/format_factory/ubl/model/query.py": "b88a8be52595daac91f4e68f78b0c018339eb1612d9bb7e42d562bcedee5b4b4",
@@ -6314,7 +6329,7 @@
     "tests/python/ubl/test_obligation_read_mode_lifecycle.py": "53d3f43acb217df3ebd395d699d2270f3b30022fcc16bc4db1f0737ecc84b697",
     "tests/python/ubl/test_obligation_referential_integrity.py": "ca3bf25af599e5624a7ac0b3d3973724d2f4580aad8f03d2dcb2c0cce412379c",
     "tests/python/ubl/test_obligation_security_baseline.py": "df64042d433f888c07bf14f692d0756c4eeb5f36eedeb60b2d563a05a3cb43ba",
-    "tests/python/ubl/test_obligation_temporal_projection_and_charges.py": "f9e50f7d338f9a96764972761953b1859153a10aff0e1c08668a5d5b179c1920",
+    "tests/python/ubl/test_obligation_temporal_projection_and_charges.py": "a01a376f4606a7278cb6d7b83f6d91ad5694e387b4e6d7dc6070c45c841796a4",
     "tests/python/ubl/test_obligation_temporal_values.py": "6b280cba533c6d6370f06149257900b005784ff6702a10412c1d307a6a54f986",
     "tests/python/ubl/test_obligation_typed_projection.py": "2d035c4a83f5ff71729210eb83422f60c3d02a63c9f6b2dc92f3725f8d980b94",
     "tests/python/ubl/test_production_namespace.py": "a4dbeab77322aaeb8d35b8c7cba5d8a173f1fbe5566924c32363157a3b171ce6"
@@ -6322,12 +6337,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 125,
+      "implemented": 126,
       "missing": 28,
-      "partial": 41
+      "partial": 40
     },
     "total": 194,
-    "unresolved": 69
+    "unresolved": 68
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

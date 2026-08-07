@@ -23,8 +23,8 @@ from ..errors import UblValidationError
 from .aggregates import _require
 from .document import XmlNode
 from .temporal import UblDate
-from .typed import amount_of, code_of, find, local_name, quantity_of
-from .values import Amount, Code, Quantity
+from .typed import amount_of, code_of, find, identifier_of, local_name, quantity_of
+from .values import Amount, Code, Identifier, Quantity
 
 #: xsd:boolean has exactly four lexical forms. "yes"/"no" are not among them.
 _TRUE = frozenset({"true", "1"})
@@ -84,12 +84,29 @@ class Price:
 
 
 @dataclass(frozen=True)
+class FinancialAccount:
+    """`cac:PayeeFinancialAccount` / `cac:PayerFinancialAccount` -- a bank
+    account referenced by a payment means (`FinancialAccountType`,
+    UBL-CommonAggregateComponents-2.3.xsd). `FinancialInstitutionBranch` and
+    `Country`, the type's two nested aggregates, are not modeled here --
+    unlike the leaf fields below, they are themselves full aggregates the
+    contract does not separately name, so preserving them generically
+    (rather than inventing a typed model this obligation never asked for)
+    is the honest scope."""
+
+    id: Identifier | None = None
+    name: str | None = None
+    currency_code: Code | None = None
+
+
+@dataclass(frozen=True)
 class PaymentMeans:
     """How payment is to be made, and by when."""
 
     payment_means_code: Code
     payment_due_date: UblDate | None = None
     payment_id: Code | None = None
+    payee_financial_account: FinancialAccount | None = None
 
     def __post_init__(self) -> None:
         _require(self.payment_means_code, "cbc:PaymentMeansCode", "cac:PaymentMeans")
@@ -120,6 +137,20 @@ def price_of(node: XmlNode | None) -> Price:
     )
 
 
+def financial_account_of(node: XmlNode | None) -> FinancialAccount | None:
+    """Absent per its own optional cardinality (`minOccurs="0"`), not an error."""
+    if node is None:
+        return None
+    identifier = find(node, "ID")
+    name = find(node, "Name")
+    currency = find(node, "CurrencyCode")
+    return FinancialAccount(
+        id=identifier_of(identifier) if identifier is not None else None,
+        name=name.text.strip() if name is not None else None,
+        currency_code=code_of(currency) if currency is not None else None,
+    )
+
+
 def payment_means_of(node: XmlNode | None) -> PaymentMeans:
     if node is None:
         raise UblValidationError(
@@ -136,14 +167,17 @@ def payment_means_of(node: XmlNode | None) -> PaymentMeans:
         payment_means_code=code_of(code),
         payment_due_date=UblDate(due.text.strip()) if due is not None else None,
         payment_id=code_of(identifier) if identifier is not None else None,
+        payee_financial_account=financial_account_of(find(node, "PayeeFinancialAccount")),
     )
 
 
 __all__ = [
     "AllowanceCharge",
+    "FinancialAccount",
     "PaymentMeans",
     "Price",
     "allowance_charge_of",
+    "financial_account_of",
     "payment_means_of",
     "price_of",
 ]

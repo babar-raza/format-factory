@@ -24,6 +24,7 @@ from format_factory.ubl import (
     AllowanceCharge,
     Amount,
     Code,
+    FinancialAccount,
     PaymentMeans,
     Price,
     Quantity,
@@ -35,6 +36,7 @@ from format_factory.ubl import (
     date_of,
     date_time_of,
     find,
+    financial_account_of,
     loads,
     payment_means_of,
     price_of,
@@ -236,3 +238,92 @@ def test_a_well_formed_document_projects_all_three_aggregates(doc) -> None:
     assert allowance_charge_of(find(doc, "AllowanceCharge")).amount.currency_id == "EUR"
     assert price_of(find(doc, "Price")).price_amount.currency_id == "EUR"
     assert payment_means_of(find(doc, "PaymentMeans")).payment_means_code.value == "30"
+
+
+# ── cac:PayeeFinancialAccount (FinancialAccountType, UBL-CommonAggregate
+# Components-2.3.xsd, confirmed against the pinned OASIS UBL 2.3 release
+# package's own vendored XSD) ────────────────────────────────────────────
+
+
+def _payment_means_node(*, payee_account: XmlNode | None = None) -> XmlNode:
+    children = [XmlNode.create("{" + CBC + "}PaymentMeansCode", text="30")]
+    if payee_account is not None:
+        children.append(payee_account)
+    return XmlNode.create("{" + CAC + "}PaymentMeans", children=tuple(children))
+
+
+def _financial_account_node(
+    *, id_: str | None = None, name: str | None = None, currency: str | None = None
+) -> XmlNode:
+    children = []
+    if id_ is not None:
+        children.append(XmlNode.create("{" + CBC + "}ID", text=id_))
+    if name is not None:
+        children.append(XmlNode.create("{" + CBC + "}Name", text=name))
+    if currency is not None:
+        children.append(XmlNode.create("{" + CBC + "}CurrencyCode", text=currency))
+    return XmlNode.create("{" + CAC + "}PayeeFinancialAccount", children=tuple(children))
+
+
+def test_payee_financial_account_is_absent_when_not_declared() -> None:
+    means = payment_means_of(_payment_means_node())
+
+    assert means.payee_financial_account is None
+
+
+def test_payee_financial_account_projects_with_its_leaf_fields() -> None:
+    account_node = _financial_account_node(
+        id_="1234567890", name="Acme Corp Operating Account", currency="EUR"
+    )
+    means = payment_means_of(_payment_means_node(payee_account=account_node))
+
+    account = means.payee_financial_account
+    assert account is not None
+    assert account.id.value == "1234567890"
+    assert account.name == "Acme Corp Operating Account"
+    assert account.currency_code.value == "EUR"
+
+
+def test_payee_financial_account_fields_are_each_independently_optional() -> None:
+    account = financial_account_of(_financial_account_node(id_="42"))
+
+    assert account is not None
+    assert account.id.value == "42"
+    assert account.name is None
+    assert account.currency_code is None
+
+
+def test_financial_account_of_returns_none_for_a_missing_node() -> None:
+    """PayeeFinancialAccount is optional (minOccurs="0" in the XSD) --
+    absence is not an error, unlike the other *_of projectors in this
+    package which raise for a missing required aggregate."""
+    assert financial_account_of(None) is None
+
+
+def test_a_payee_financial_account_survives_a_real_document_round_trip() -> None:
+    """Through the actual loads()/dumps() pipeline, not just direct node
+    construction -- proves the field is reachable end-to-end, not only via
+    the projector called directly against a hand-built node."""
+    from format_factory.ubl import dumps
+
+    source = (
+        f'<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" '
+        f'xmlns:cbc="{CBC}" xmlns:cac="{CAC}">'
+        f"<cbc:ID>INV-001</cbc:ID>"
+        f"<cac:PaymentMeans>"
+        f"<cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>"
+        f"<cac:PayeeFinancialAccount>"
+        f"<cbc:ID>1234567890</cbc:ID>"
+        f"<cbc:Name>Acme Corp Operating Account</cbc:Name>"
+        f"</cac:PayeeFinancialAccount>"
+        f"</cac:PaymentMeans>"
+        f"</Invoice>"
+    ).encode()
+
+    original = loads(source)
+    reloaded = loads(dumps(original))
+
+    means = payment_means_of(find(reloaded.root, "PaymentMeans"))
+    assert means.payee_financial_account is not None
+    assert means.payee_financial_account.id.value == "1234567890"
+    assert means.payee_financial_account.name == "Acme Corp Operating Account"

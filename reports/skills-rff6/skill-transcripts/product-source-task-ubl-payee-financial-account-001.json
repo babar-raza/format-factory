@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-payee-financial-account-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T03:10:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_PAYEE_FINANCIAL_ACCOUNT_001",
+    "task_kind": "genuine-small-gap-closure-real-spec-source-read",
+    "root_cause": "SAL-UBL-OBL-D21BA46DEC8DFA2B (UBL-CODELIST-001) names cac:PaymentMeans as carrying 'payee financial account elements', but no such field existed on the PaymentMeans model. The obligation was previously and honestly left partial because no SAL fact in the committed spec cache documented cac:PayeeFinancialAccount's own element structure precisely enough to model it without inventing structure from memory (GAP-008).",
+    "obligation_targeted": "SAL-UBL-OBL-D21BA46DEC8DFA2B (UBL-CODELIST-001)",
+    "acceptance_evidence": "Read the pinned OASIS UBL 2.3 release package directly (not a SAL fact paraphrase): extracted xsd/common/UBL-CommonAggregateComponents-2.3.xsd from the vendored ZIP and located both the PaymentMeansType complexType (confirming cac:PayeeFinancialAccount is minOccurs=0/maxOccurs=1) and the FinancialAccountType complexType it references (ID, Name, AliasName, AccountTypeCode, AccountFormatCode, CurrencyCode, PaymentNote leaf fields, plus FinancialInstitutionBranch/Country nested aggregates). Added a new FinancialAccount dataclass modeling the leaf fields only (matching this codebase's existing scope discipline for other aggregates), wired PaymentMeans.payee_financial_account, and added financial_account_of(). 5 new tests prove absence, full projection, independent field optionality, financial_account_of(None) returning None (matching the field's own optional cardinality), and a full document round trip.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Confirmed the pinned OASIS UBL 2.3 release ZIP (SRC-UBL-002, .local/format-contracts/acquired/ubl/src-ubl-002.bin) is locally materialized and contains the actual XSD schema files -- the prose spec (SRC-UBL-001) does not mention PayeeFinancialAccount at all (a narrative document, not the schema), but the vendored xsd/common/UBL-CommonAggregateComponents-2.3.xsd does.",
+    "2. Extracted and read the PaymentMeansType complexType directly from the XSD: confirmed cac:PayeeFinancialAccount is present with minOccurs=0/maxOccurs=1, referencing FinancialAccountType.",
+    "3. Extracted and read FinancialAccountType directly: ID, Name, AliasName, AccountTypeCode, AccountFormatCode, CurrencyCode, PaymentNote (all optional leaf fields) plus FinancialInstitutionBranch and Country (nested aggregates). Deliberately modeled only the leaf fields this codebase's existing pattern covers for similar aggregates (e.g. ExternalReference), leaving the two nested aggregates unmodeled and generically preserved -- documented explicitly in the new dataclass's docstring, not silently narrowed.",
+    "4. Read model/charges.py's existing PaymentMeans/payment_means_of implementation and model/aggregates.py's Item class to match the established code style exactly (frozen dataclass, _require helper, find()-based projection, optional-field-returns-None pattern already used by allowance_charge_of's reason/reason_code fields).",
+    "5. Implemented FinancialAccount and financial_account_of() in charges.py, wired PaymentMeans.payee_financial_account, exported both from model/__init__.py and the top-level package __init__.py.",
+    "6. Verified interactively that financial_account_of(None) correctly returns None (matching PayeeFinancialAccount's own minOccurs=0 cardinality, unlike the other *_of projectors in this file which raise UblValidationError for a missing REQUIRED aggregate) before writing any test.",
+    "7. Wrote 5 new tests in the existing charges test file, matching its established fixture-building pattern. Ran ruff (clean) and the full ubl suite (738 passed, was 733, +5) before writing any evidence claim. Ran the full 6-format regression (3001 passed, was 2996, +5; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/model/charges.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_temporal_projection_and_charges.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/model/charges.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_temporal_projection_and_charges.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_temporal_projection_and_charges.py -q -- 25 passed, was 20 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 738 passed, was 733 passed",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_temporal_projection_and_charges.py src/python/ubl/src/format_factory/ubl/model/charges.py src/python/ubl/src/format_factory/ubl/model/__init__.py src/python/ubl/src/format_factory/ubl/__init__.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3001 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 2996 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 194,
+    "oracle": "Verified against the pinned OASIS UBL 2.3 release package's own vendored XSD schema (extracted directly from the ZIP, not a SAL-fact paraphrase or memory) -- higher-confidence than typical SELF-CONSISTENT evidence, though still not cross-checked against an independent reference UBL implementation, per GAP-008.",
+    "obligations_moved_breakdown": "1 obligation promoted from partial to implemented by adding a genuine, spec-grounded typed field (PaymentMeans.payee_financial_account) that the obligation's own rule_text named but the model previously lacked entirely -- unblocked by reading the actual pinned XSD directly rather than relying on an incomplete SAL fact."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
