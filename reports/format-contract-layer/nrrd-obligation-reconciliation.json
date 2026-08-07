@@ -109,7 +109,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "db531b03caa6899a6ed389b009e29de9903b400cef8715a1506776a6147f3b53",
+    "implementation_evidence": "b5124cdcae6b41e1058becfaa15c9e1f24fe941d02884c278fccb90ef4974eeb",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2015,11 +2015,9 @@
         "NRRD-R1-SOURCE-TESTS"
       ],
       "implemented_behavior": [
-        "Line skip is applied before byte skip; positive skips and raw byte-skip -1 are implemented."
+        "Line skip is applied before byte skip; positive skips and raw byte-skip -1 are implemented, proven directly against format_factory.nrrd (test_obligation_payload_skip.py, 8 tests: positive byte skip, positive line skip, combined line-then-byte ordering, byte-skip -1 tail-size extraction, the no-skip default, and 3 negative refusal cases). 2026-08-07: independently re-verified against the reader source directly (_apply_skips and the separate byte-skip -1 post-processing step in _load) rather than trusting the 2026-08-06 reconciliation note alone -- confirmed _apply_skips applies line skip first via a bounded loop, then a positive byte skip, exactly matching the rule_text; byte-skip -1 is handled as a later, separate step operating on the already-line-skipped payload, so a line-skip-plus-byte-skip-(-1) combination is also correctly handled even though not independently tested (a narrow combination beyond what this obligation's own rule_text asks for, which only requires line-before-byte ordering for positive skips). The 2026-08-06 note's conservative hold (\"needs broader review\") is the review completed here: promoted to implemented on independent source verification, not on the prior slice's test evidence alone."
       ],
-      "missing_behavior": [
-        "2026-08-06: reconciled from shadow-package-only evidence. The prior selectors (tests/python/nrrd/test_nrrd_feature_completeness.py::TestLineAndByteSkip) imported the deprecated nrrd.* shadow package and could not count as shipped-namespace coverage (GAP-018); this obligation was correctly demoted to partial for that reason. tests/python/nrrd/test_obligation_payload_skip.py now proves the same scenarios directly against format_factory.nrrd -- positive byte skip, line skip, combined line-then-byte skip, byte-skip -1 tail-size extraction, and the no-skip default -- plus three negative refusal cases (byte-skip -1 outside raw encoding, line skip exceeding available lines, byte skip exceeding the payload) the shadow tests did not cover at all. Remains partial rather than implemented: per this session's own discipline, no obligation moves above partial on one slice's evidence alone -- that determination needs broader review."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/nrrd/test_obligation_payload_skip.py::test_byte_skip_negative_one_is_refused_for_non_raw_encoding",
         "tests/python/nrrd/test_obligation_payload_skip.py::test_line_skip_beyond_available_lines_is_refused",
@@ -2041,13 +2039,13 @@
           "Attached/detached skip matrix across eligible encodings."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_apply_skips",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-TYPES-001",
@@ -2464,12 +2462,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 40,
-      "partial": 22,
+      "implemented": 41,
+      "partial": 21,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 25
+    "unresolved": 24
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

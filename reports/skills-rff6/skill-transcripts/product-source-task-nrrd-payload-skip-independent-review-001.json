@@ -1,0 +1,45 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-payload-skip-independent-review-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T07:00:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_PAYLOAD_SKIP_INDEPENDENT_REVIEW_001",
+    "task_kind": "independent-verification-completing-a-deferred-review",
+    "root_cause": "SAL-NRRD-OBL-DD537F7E8C81FDE6 (NRRD-PAYLOAD-001) was reconciled on 2026-08-06 from shadow-package-only evidence to a genuine shipped-namespace test file (test_obligation_payload_skip.py, 8 tests), but deliberately kept at status:partial with a note stating the promotion decision needed 'broader review' beyond that one slice's own evidence.",
+    "obligation_targeted": "SAL-NRRD-OBL-DD537F7E8C81FDE6 (NRRD-PAYLOAD-001)",
+    "acceptance_evidence": "Independent re-verification against the reader source directly (_apply_skips and the separate byte-skip -1 post-processing step in _load), confirming the implementation exactly matches the obligation's rule_text (line skip applied before byte skip) and that the 8 existing tests comprehensively cover it (positive/negative cases for both skip fields, the -1 special case, and the no-skip default), with no source or test changes needed.",
+    "regression_tier": "targeted re-run of the 8 existing payload-skip tests; no source changed, no full-suite re-run required beyond confirming those 8 selectors still pass"
+  },
+  "execution_steps": [
+    "1. Surveyed nrrd's remaining 25 unresolved obligations by capability cluster. Noted SAL-NRRD-OBL-DD537F7E8C81FDE6's missing_behavior text explicitly named its own status as a deliberate, conservative hold pending 'broader review' rather than an identified remaining defect -- distinct from every other unresolved nrrd obligation this tick, which each name a genuine, specific unbuilt feature.",
+    "2. Read the obligation's exact rule_text from the register: '(NRRD format - skip fields) line skip and byte skip fields declare how much of a data file to skip before payload with line skip applied before byte skip.' Confirmed this is a narrow, single-behavior obligation, not a broader cluster.",
+    "3. Read tests/python/nrrd/test_obligation_payload_skip.py in full: 8 tests directly against format_factory.nrrd (not the deprecated shadow package) covering positive byte skip, positive line skip, the no-skip default, byte-skip -1 tail-size extraction, byte-skip -1 refused for non-raw encoding, line-skip-before-byte-skip ordering, and 2 refusal cases (line skip / byte skip exceeding available content). Ran them directly -- all 8 pass.",
+    "4. Rather than trusting the prior reconciliation's test-existence claim alone, independently read the actual implementation (_apply_skips in reader.py) to confirm correctness beyond what any single test proves: line_skip is applied first via a bounded find-newline loop, then a positive byte_skip via a slice -- exactly matching the rule_text's ordering requirement. Also traced the separate byte-skip -1 post-processing step in _load (which runs AFTER _apply_skips, operating on the already-line-skipped payload), confirming a line-skip-plus-byte-skip-(-1) combination is also correctly handled by construction even though not independently tested -- a narrow combination beyond what this obligation's own rule_text requires (which only asks for line-before-byte ordering on positive skips).",
+    "5. Concluded the obligation's rule_text is fully and correctly satisfied, with no remaining gap identified by this independent code-level review. This constitutes the 'broader review' the 2026-08-06 note deferred -- promoted to implemented on that independent verification, not on the prior slice's test evidence alone."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_payload_skip.py -q -- 8 passed (pre-existing, re-confirmed, none newly written)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 65,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the correctness claim is grounded in a direct, independent read of the reader source, not merely the existence of a passing test.",
+    "obligations_moved_breakdown": "1 obligation promoted partial->implemented: a pure independent-verification review, completing what a prior slice had deliberately deferred, with zero new product code or tests."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
