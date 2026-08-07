@@ -26,6 +26,7 @@ from .codec import (
     probe,
 )
 from .errors import (
+    SchemaValidationUnavailable,
     XliffError,
     XliffParseError,
     XliffValidationError,
@@ -87,7 +88,7 @@ from .state_transitions import (
     TransitionViolation,
     check_state_transitions,
 )
-from .validation import validate
+from .validation import schema_validate, validate
 
 __all__ = [
     "MergeAdapter",
@@ -113,6 +114,7 @@ __all__ = [
     "ModuleInfo",
     "Note",
     "PreservationMode",
+    "SchemaValidationUnavailable",
     "Segment",
     "SegmentMapping",
     "Unit",
@@ -156,6 +158,7 @@ __all__ = [
     "replace_text_slots",
     "roundtrip",
     "run_qa_checks",
+    "schema_validate",
     "split_segment",
     "text_slots",
     "translated_segment_count",

@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-CORE-SCHEMA-VALIDATION-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-core-schema-validation-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Narrows (does not fully close) 2 obligations sharing identical compound rule_text: SAL-XLIFF-OBL-078DE5F17834C232 (XLIFF-MODULE-001), SAL-XLIFF-OBL-C1BB9934B09B3B70 (XLIFF-PARSE-001). Both remain partial. The rule_text has three distinct clauses -- "well-formed XML" (already proven), "valid against the core schema" (this tick), "module content valid against its module schema" (still unbuilt, genuinely large) -- so 2 of 3 are now proven and the obligations correctly narrow rather than close. Discovered by re-reading the pinned XLIFF 2.1 spec directly (.local/format-contracts/acquired/xliff/src-xliff-003.bin) rather than trusting the missing_behavior text''s own "would require sourcing and vendoring the official XLIFF 2.1 schema bundle first" framing: the spec''s own Appendix A.3 "Core XML Schema" section (lines 3230-3657) already contains the FULL, complete, normative core schema embedded verbatim -- the spec''s own words describe it as "listed below for reading convenience," confirming it is the authoritative text, not a summary. Extracted it programmatically (HTML-unescaped the <pre> block), verified it parses as valid XSD via the `xmlschema` library, and confirmed the schema''s only external import (the standard, unversioned W3C xml: namespace, for xml:lang/xml:space/xml:id) resolves automatically from xmlschema''s own bundled copy with zero network access at validation time. Verified the optional `xmlschema==4.1.0` dependency pip installs successfully (network access confirmed available in this environment) and is EXACTLY the version already declared in pyproject.toml''s own `schema` extra -- not a new dependency, just the first time it is actually used. Bundled the extracted schema as package data (src/format_factory/xliff/validation/xliff_core_2.0.xsd, wired into pyproject.toml''s package-data table) and built a real wheel to confirm the .xsd ships byte-identical inside it before writing any test. Added schema_validate() (validation/schema_validator.py), lazily importing xmlschema so the rest of the package remains installable and fully functional with zero xmlschema installation -- verified via a dedicated test that mocks ImportError and confirms a clear SchemaValidationUnavailable message, not a crash, with the lru_cache explicitly cleared before and after to avoid cross-test cache leakage. Verified zero false positives against the entire pre-existing 517-test xliff suite before writing a single new test. 6 new tests (tests/python/xliff/test_obligation_core_schema_validation.py) prove: a valid document reports zero diagnostics; a missing required attribute is flagged; multiple violations are ALL reported (not just the first, per the sibling UBL-style obligations'' own "returning all diagnostics" phrasing); diagnostics carry a structural path; a multi-unit document with a target validates cleanly; the optional-dependency-unavailable path degrades gracefully. xliff suite: 517 -> 523 passed. ruff and mypy --strict clean. Combined 6-format run: 3532 -> 3538 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped -- zero regression beyond the 6 intentional new tests. NOT backed by an independent reference XLIFF implementation for cross-validation, but the schema ITSELF is the authoritative OASIS-published normative text, transcribed byte-for-byte with an automated diff confirming zero corruption during HTML-unescaping -- the strongest possible grounding this session has used for any single fix. Covers SAL-XLIFF-OBL-078DE5F17834C232 and SAL-XLIFF-OBL-C1BB9934B09B3B70 only; module-schema composition and Schematron-level rules remain genuinely unaddressed and both obligations correctly stay partial, narrowed rather than closed.'
 - evidence_id: XLIFF-SIZE-RESTRICTION-SIZEINFO-CONFLICT-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-size-restriction-sizeinfo-conflict-001.json
   expected_result: PASS
@@ -603,19 +608,27 @@ obligations:
   status: partial
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::schema_validate
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected
   - tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_a_schema_valid_document_reports_no_diagnostics
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_a_valid_document_with_a_target_and_multiple_units_validates_cleanly
   negative_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected
   - tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_a_missing_required_attribute_is_flagged
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_every_violation_is_reported_not_just_the_first
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_diagnostics_carry_a_structural_path
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_schema_validation_unavailable_when_xmlschema_cannot_be_imported
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-CORE-SCHEMA-VALIDATION-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of SAL-XLIFF-OBL-C1BB9934B09B3B70 (identical rule_text, XLIFF-PARSE-001): the well-formed-XML half is proven (DTD/entity declarations refused; unsupported namespace/version refused).'
+  - 'Cross-capability duplicate of SAL-XLIFF-OBL-C1BB9934B09B3B70 (identical rule_text, XLIFF-PARSE-001): the well-formed-XML half is proven (DTD/entity declarations refused; unsupported namespace/version refused). The "valid against the core schema" half is now also proven: a new schema_validate() function validates raw XLIFF XML against the bundled xliff_core_2.0.xsd, transcribed byte-for-byte from the pinned spec''s own Appendix A.3, using the already-declared-but-previously-unused optional xmlschema dependency (imported lazily so the package remains installable without it). Reports every violation, not just the first, with a structural path per diagnostic. Degrades gracefully with a clear SchemaValidationUnavailable error if xmlschema is not installed.'
   missing_behavior:
-  - 'Same confirmed gap as SAL-XLIFF-OBL-C1BB9934B09B3B70: true XSD/Schematron validation is not implemented -- no schema files are bundled in this package. Not attempted this slice.'
+  - 'Module content validation ("module content valid against its module schema") remains unbuilt: composing the 8 separate module schemas (Glossary, Metadata, Validation, Size and Length Restriction, Matches, Resource Data, Format Style, ITS) into the core schema, and any Schematron-level business-rule validation beyond XSD structural conformance, are both genuinely larger, separate undertakings. Not attempted this slice.'
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -3403,19 +3416,27 @@ obligations:
   status: partial
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::schema_validate
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected
   - tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_a_schema_valid_document_reports_no_diagnostics
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_a_valid_document_with_a_target_and_multiple_units_validates_cleanly
   negative_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected
   - tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_a_missing_required_attribute_is_flagged
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_every_violation_is_reported_not_just_the_first
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_diagnostics_carry_a_structural_path
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_schema_validation_unavailable_when_xmlschema_cannot_be_imported
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-CORE-SCHEMA-VALIDATION-PROOF
   implemented_behavior:
-  - 'The "well-formed XML" half is proven (DTD/entity declarations refused; unsupported namespace/version refused).'
+  - 'The "well-formed XML" half is proven (DTD/entity declarations refused; unsupported namespace/version refused). The "valid against the core schema" half is now also proven -- see SAL-XLIFF-OBL-078DE5F17834C232''s own implemented_behavior for the full detail.'
   missing_behavior:
-  - 'Confirmed gap, not an audit backlog: "valid against the core schema with module content valid against its module schema" (true XSD/Schematron validation) is not implemented -- no schema files are bundled in this package, and the optional xmlschema dependency declared in pyproject.toml is never imported anywhere in the source. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first.'
+  - 'Module content validation ("module content valid against its module schema") remains unbuilt: composing the 8 separate module schemas into the core schema, and any Schematron-level business-rule validation beyond XSD structural conformance, are both genuinely larger, separate undertakings. Not attempted this slice.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.

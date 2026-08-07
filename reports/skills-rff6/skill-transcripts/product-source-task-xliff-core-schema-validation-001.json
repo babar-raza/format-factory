@@ -1,0 +1,74 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-core-schema-validation-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T16:40:28Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_CORE_SCHEMA_VALIDATION_001",
+    "task_kind": "new-capability-wiring-already-declared-optional-dependency-to-embedded-spec-schema",
+    "root_cause": "SAL-XLIFF-OBL-078DE5F17834C232/C1BB9934B09B3B70's compound rule_text ('well-formed XML and valid against the core schema with module content valid against its module schema') had only its well-formedness clause proven -- no schema files were bundled, and the xmlschema optional dependency already declared in pyproject.toml was never imported anywhere.",
+    "obligation_targeted": "SAL-XLIFF-OBL-078DE5F17834C232 (XLIFF-MODULE-001) and SAL-XLIFF-OBL-C1BB9934B09B3B70 (XLIFF-PARSE-001) -- both narrowed, remain partial (module-schema composition and Schematron rules stay genuinely unbuilt).",
+    "acceptance_evidence": "6 new tests (tests/python/xliff/test_obligation_core_schema_validation.py) covering positive/negative/multi-error/path/graceful-degradation cases.",
+    "regression_tier": "full xliff package suite plus combined 6-format regression, plus a real wheel build verifying the bundled schema ships correctly"
+  },
+  "execution_steps": [
+    "1. Continuing the FF6 mission after event 269's exact_next_action -- checked whether the pinned .local/format-contracts/acquired/xliff/ cache already contains the core XSD schema text, since Glossary/Validation/sizeRestriction's own module schemas had all been found embedded verbatim in the same spec document this session.",
+    "2. Found the pinned XLIFF 2.1 spec's own Appendix A.3 'Core XML Schema' section (.local/format-contracts/acquired/xliff/src-xliff-003.bin, lines 3230-3657) contains the FULL, complete, normative core schema, the spec's own words describing it as 'listed below for reading convenience' -- the authoritative text, not a summary or approximation.",
+    "3. Extracted the schema programmatically (sliced the exact <pre> block boundaries, HTML-unescaped &lt;/&gt;/&amp;), wrote it to a scratch file, and verified it parses as valid XSD via a locally-installed xmlschema library before committing to building anything against it.",
+    "4. Confirmed network access works in this environment (pip install --dry-run succeeded), installed xmlschema==4.1.0 -- EXACTLY the version already declared in pyproject.toml's own 'schema' extra, not a new/different dependency choice.",
+    "5. Confirmed xmlschema ships its own bundled copy of the standard, unversioned W3C xml.xsd (for the xml: namespace xml:lang/xml:space/xml:id), so the schema's own <xs:import> of that namespace resolves automatically with zero network access at validation time -- verified by successfully parsing the schema and validating real documents against it.",
+    "6. Bundled the extracted schema at src/format_factory/xliff/validation/xliff_core_2.0.xsd, added it to pyproject.toml's package-data table, built a real wheel via `pip wheel .`, and confirmed the .xsd ships inside it byte-identical to the source file before writing any Python code that depends on it.",
+    "7. Added errors.py::SchemaValidationUnavailable (a new XliffError subclass) and validation/schema_validator.py::schema_validate(), lazily importing xmlschema inside a function (not at module top-level) so the rest of the package remains fully installable and functional with zero xmlschema installed.",
+    "8. Wired schema_validate and SchemaValidationUnavailable into validation/__init__.py and the top-level package __init__.py/__all__.",
+    "9. Ran the pre-existing xliff suite (517 passed) BEFORE writing any new test, confirming zero regressions from the wiring alone.",
+    "10. Probed interactively: a valid document validates cleanly; a document missing required attributes at two different nesting levels reports BOTH violations (not just the first); diagnostics carry a structural path; simulating an ImportError for xmlschema (via a temporary builtins.__import__ patch) raises the new SchemaValidationUnavailable with a clear message rather than crashing.",
+    "11. Wrote 6 new tests, using pytest.importorskip('xmlschema') at module level (matching the existing zst/conftest.py precedent for optional native dependencies) plus one dedicated test exercising the graceful-degradation path via monkeypatch, carefully clearing the module-level lru_cache before and after to avoid leaking simulated-absence state into other tests.",
+    "12. Ran the full xliff suite (517 -> 523 passed), ruff, and mypy --strict on the full xliff source tree (added a TYPE_CHECKING-guarded import to satisfy strict mode's return-type requirement without needing xmlschema type stubs) -- all clean.",
+    "13. Ran the combined 6-format regression suite (3532 -> 3538 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped) -- zero regression beyond the 6 new tests.",
+    "14. Updated both obligations' evidence: NARROWED (not closed, since the compound rule_text's third clause -- module-schema composition -- remains genuinely unbuilt) missing_behavior to remove the 'no schema files bundled... never imported' claim while keeping the module-schema/Schematron gap honestly documented; added the 6 new tests to positive/negative selectors, added XLIFF-CORE-SCHEMA-VALIDATION-PROOF to execution_evidence_ids. Both obligations correctly stay partial."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py",
+    "src/python/xliff/src/format_factory/xliff/validation/xliff_core_2.0.xsd",
+    "src/python/xliff/src/format_factory/xliff/validation/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/errors.py",
+    "src/python/xliff/pyproject.toml",
+    "tests/python/xliff/test_obligation_core_schema_validation.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py",
+    "src/python/xliff/src/format_factory/xliff/validation/xliff_core_2.0.xsd",
+    "src/python/xliff/src/format_factory/xliff/validation/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/errors.py",
+    "src/python/xliff/pyproject.toml",
+    "tests/python/xliff/test_obligation_core_schema_validation.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 517 passed (before new tests, sanity check)",
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_core_schema_validation.py -v -- 6 passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 523 passed (after new tests)",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/xliff/src/format_factory/xliff/ -- Success: no issues found in 25 source files",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3538 passed, 2 skipped, 4 pre-existing unrelated safetensors interop failures",
+    "pip wheel . (built real wheel, confirmed xliff_core_2.0.xsd ships inside it byte-identical to source)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations moved status; 2 obligations narrowed (missing_behavior reduced from a 3-clause to a 1-clause gap), both remain partial",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 142,
+    "oracle": "The bundled schema is the authoritative OASIS-published normative text, transcribed byte-for-byte from the pinned spec with an automated diff confirming zero corruption -- the strongest grounding used for any fix this session, though not independently cross-validated against a reference XLIFF implementation.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-078DE5F17834C232 (XLIFF-MODULE-001), SAL-XLIFF-OBL-C1BB9934B09B3B70 (XLIFF-PARSE-001): 'valid against the core schema' clause resolved and removed from missing_behavior; 'module content valid against its module schema' clause remains genuinely unaddressed, so both stay partial."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

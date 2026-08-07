@@ -22,3 +22,11 @@ class XliffWriteError(FormatWriteError, XliffError):
 
 class XliffValidationError(FormatValidationError, XliffError):
     """The document violates an XLIFF processing invariant."""
+
+
+class SchemaValidationUnavailable(XliffError):
+    """The optional `xmlschema` dependency is not installed.
+
+    Install the ``schema`` extra (``pip install format-factory-xliff[schema]``)
+    to enable XSD conformance checking against the bundled core schema.
+    """
