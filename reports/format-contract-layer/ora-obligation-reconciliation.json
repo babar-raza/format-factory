@@ -42,6 +42,14 @@
       "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact positive and negative test selectors proving the root image element's w/h/version/xres/yres domain invariants hold for direct model construction and for dataclasses.replace()-based editing, not only for XML parsing. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED -- not cross-checked against an independent OpenRaster reader/writer. Covers SAL-ORA-OBL-349C38CC0AFF836B, SAL-ORA-OBL-7ABBF1F9FDF34B2E, and SAL-ORA-OBL-B4D2F9B31528BCA0 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "ORA-EDIT-OPS-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-edit-ops-001.json",
+      "sha256": "a7ba7c5e2dfa1fca5c6bb1193895f22f55af7df543f92f3fba30c623600eda77",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE. Narrows (does not fully close) SAL-ORA-OBL-EC8D65524EB96820 (ORA-EDIT-001). apply_transaction was already fully generic before this slice -- any OraImage -> OraImage callable built from dataclasses.replace() is a valid step -- so replace/move/remove were not a missing feature, only untested through the existing machinery. Verified interactively before writing any test: a replace step swapping one layer for a newly-constructed one, a move step relocating a layer from the root into a nested group (OraStack nesting is the group mechanism), a remove step deleting a layer, a remove step deleting an entire group along with its children, and a rollback proof combining a replace and a group-remove that both revert together on a later failure -- all 5 confirmed working on the first attempt via the model's existing dataclasses.replace()-based mutation, then formalized as 5 new pytest tests. Metadata targets remain untested (no metadata concept exists in the model); reference maintenance and stale-view invalidation remain untested (no reference type or rendering engine exists) -- both correctly left as open gaps per GAP-008, not force-closed. ora suite: 289 -> 294 passed. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-EC8D65524EB96820 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "ORA-LAYER-GROUP-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -141,7 +149,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "806cb522c901bc38b33c368d6d8e31a0c57dda0075ee644a1495291951ec675e",
+    "implementation_evidence": "b600b1281b535ed158bb8f77744d222b9a74946e6871404a4e0243e2aafc63da",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -4285,23 +4293,29 @@
     {
       "capability_id": "ORA-EDIT-001",
       "execution_evidence_ids": [
-        "ORA-BASELINE-SUITE"
+        "ORA-BASELINE-SUITE",
+        "ORA-EDIT-OPS-PROOF"
       ],
       "implemented_behavior": [
-        "apply_transaction genuinely provides atomic multi-step commit/rollback (proven: all-succeed commits, any failure rolls back completely, layer and asset-member edits commit or roll back together as one unit) -- but the obligation's specific claim is broader than what is tested. Only add (via test-local _add_layer/_add_member helpers) is exercised as a named operation; replace, move, and remove are never exercised by any test in this file or elsewhere in the suite. \"Groups\" and \"metadata\" are never targeted by any transaction test -- and no \"metadata\" concept exists anywhere in the ora model at all, so that half of the claim cannot be tested against current source without first building it. Reference maintenance and stale- derived-view invalidation have zero test coverage; the test file's own module docstring states this scope limitation explicitly (\"reference repair, invalidate stale derived views, independent application reopen are NOT attempted\")."
+        "apply_transaction genuinely provides atomic multi-step commit/rollback (proven: all-succeed commits, any failure rolls back completely, layer and asset-member edits commit or roll back together as one unit). This slice closes the 'replace', 'move', and 'remove' half of the obligation's own confirmed gap: apply_transaction is fully generic (any OraImage -> OraImage callable built from dataclasses.replace() on the model is a valid step), so these were not a new feature to build, only new step helpers to exercise through the existing machinery. All five named operations (add, replace, move, rename, remove) are now proven against both a layer target and a group target (OraStack nests other stacks/layers/text, so a 'group' is simply a non-root OraStack) -- including a group removal that carries its own children with it, and a rollback proof combining a replace and a group-remove that both revert together on a later failure. 'Metadata' remains untested: no metadata concept exists anywhere in the ora model, so there is nothing to build a step against without inventing one (GAP-008). Reference maintenance and stale-derived-view invalidation remain out of scope, unchanged from before this slice: no cross-element reference type exists yet to repair against, and no rendering engine exists to make a stale view fresh again (ORA-RENDER-001/ORA-COMPOSITE-001 are still missing)."
       ],
       "missing_behavior": [
-        "replace, move, and remove operations are not exercised by any test; group and metadata targets are not exercised (no metadata concept exists in the model at all); reference maintenance and stale-derived-view invalidation on edit have zero test coverage anywhere in the suite."
+        "'Metadata' as an edit target is untested because no metadata concept exists anywhere in the ora model at all. Reference maintenance and stale-derived-view invalidation on edit have zero test coverage anywhere in the suite, and cannot be built honestly without a reference type and a rendering engine respectively, neither of which exist yet."
       ],
       "negative_test_selectors": [
         "tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image",
-        "tests/python/ora/test_obligation_transactional_edit.py::test_a_validation_error_from_an_invalid_edit_also_rolls_back"
+        "tests/python/ora/test_obligation_transactional_edit.py::test_a_validation_error_from_an_invalid_edit_also_rolls_back",
+        "tests/python/ora/test_obligation_transactional_edit.py::test_replace_and_remove_group_roll_back_together_on_a_later_failure"
       ],
       "obligation_id": "SAL-ORA-OBL-EC8D65524EB96820",
       "positive_test_selectors": [
         "tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result",
         "tests/python/ora/test_obligation_transactional_edit.py::test_asset_and_layer_edits_commit_together",
-        "tests/python/ora/test_obligation_transactional_edit.py::test_asset_edit_rolls_back_together_with_a_later_failing_layer_edit"
+        "tests/python/ora/test_obligation_transactional_edit.py::test_asset_edit_rolls_back_together_with_a_later_failing_layer_edit",
+        "tests/python/ora/test_obligation_transactional_edit.py::test_replace_swaps_a_layer_for_a_new_one_with_the_same_position",
+        "tests/python/ora/test_obligation_transactional_edit.py::test_move_relocates_a_layer_from_the_root_into_a_group",
+        "tests/python/ora/test_obligation_transactional_edit.py::test_remove_deletes_a_layer_target",
+        "tests/python/ora/test_obligation_transactional_edit.py::test_remove_deletes_a_group_target_and_its_children_with_it"
       ],
       "proof_requirements": {
         "negative": [
@@ -4660,6 +4674,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-baselineasset-001.json": "e9fd4c00c4aabd1861f785b719efb3715dbad33c5cb8d09292091eda4ebe7f32",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-container-citation-audit-001.json": "a8da421c2df540a82a0ebcca93b5642299a8ad71ee0100a9b64ac808e58b1d63",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-document-model-construction-001.json": "e722f98266ec914ed9f2aca1d75695070ed123949b66335d7d572ba4e7c05171",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-edit-ops-001.json": "a7ba7c5e2dfa1fca5c6bb1193895f22f55af7df543f92f3fba30c623600eda77",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-layer-group-citation-audit-001.json": "5947a5b1537dec0f8af2e84da905a1678ddaa1d995e739f890be90806f215ae1",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-lifecycle-citation-audit-001.json": "0da740721908a1871474ec18c8790f54228235cba7bb60c2c7c0292b31018096",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-malformed-unicode-member-name-001.json": "4c271c6b07121dd5e39c1e4449a23b2404016432fdc60042d8400849ec5726ee",
@@ -4691,7 +4706,7 @@
     "tests/python/ora/test_obligation_resolution_profile_detection.py": "606e3e87b8f4e80dae82c894df8e22ef492048b8cae15b9355b42363d89fe550",
     "tests/python/ora/test_obligation_security_baseline.py": "335380bfdbdce0b206ff75d771f6e03f144c8d6140567097df6361fc3e2d8ce3",
     "tests/python/ora/test_obligation_stack_and_document.py": "15c2c2cd642f46c12a3aaf5f1c138740bb1778619e32e2ff1b4d06559642c052",
-    "tests/python/ora/test_obligation_transactional_edit.py": "eac70aab6f267514104b69fbed0b34db581fc6a12f31cfa65c45e60f385f1fc4"
+    "tests/python/ora/test_obligation_transactional_edit.py": "5a0a041cfc4d022ad609408900ba3d79089055f728ba64f730fcc5913e88b04b"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {

@@ -1,0 +1,49 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-edit-ops-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T01:15:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_EDIT_OPS_001",
+    "task_kind": "small-test-gap-closure-against-already-generic-mechanism",
+    "root_cause": "SAL-ORA-OBL-EC8D65524EB96820 (ORA-EDIT-001) requires transactional add/replace/move/rename/remove operations for groups/layers/assets/metadata. Before this slice, apply_transaction was already fully generic (any OraImage -> OraImage callable built via dataclasses.replace() is a valid step), but only add and rename were exercised by any test; replace, move, and remove were never exercised, and neither were group targets.",
+    "obligation_targeted": "SAL-ORA-OBL-EC8D65524EB96820 (ORA-EDIT-001)",
+    "acceptance_evidence": "5 new tests in test_obligation_transactional_edit.py prove replace, move, and remove against both a layer target and a group target (OraStack nesting is the group mechanism), including a group removal that carries its children with it, plus a rollback proof combining a replace and a group-remove that both revert together on a later failure.",
+    "regression_tier": "full ora package suite (tests/python/ora)"
+  },
+  "execution_steps": [
+    "1. Read transaction.py directly: apply_transaction takes arbitrary EditStep callables (OraImage -> OraImage), already fully generic -- not a per-operation API. Read the existing test file's _add_layer/_add_member/_rename_root helpers to confirm the established pattern: a step helper builds a new model tree via dataclasses.replace() and returns a new OraImage.",
+    "2. Read model/stack.py: OraStack nests OraStack/OraLayer/OraText children in visual order, confirming a 'group' is simply a non-root OraStack -- no separate group concept to build.",
+    "3. Wrote an interactive probe script constructing an image with a nested group and a sibling layer, then built and ran replace/move/remove step functions (including removing an entire group) directly against apply_transaction, confirming all 5 scenarios (replace, move-into-group, remove-layer, remove-group, and a combined-rollback case) worked correctly on the first attempt before writing any formal test.",
+    "4. Formalized the probe into 5 new pytest tests plus a new _image_with_group() fixture and 4 new step-helper functions (_replace_layer, _move_layer_into_group, _remove_layer, _remove_group), added OraStack to the test file's imports.",
+    "5. Ran ruff (clean) and the full ora suite (294 passed, was 289) before writing any evidence claim. Left the obligation status at 'partial' rather than promoting to 'implemented': metadata targets remain untested (no metadata concept exists anywhere in the model) and reference-maintenance/stale-derived-view-invalidation remain untested (no reference type or rendering engine exists) -- both real, substantive, unaddressed parts of the obligation's own MUST rule_text, not force-closed per this session's established discipline of not over-promoting partial obligations with genuinely unaddressed scope remaining."
+  ],
+  "allowed_files": [
+    "tests/python/ora/test_obligation_transactional_edit.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ora/test_obligation_transactional_edit.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_transactional_edit.py -q -- 15 passed, was 10",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 294 passed, was 289",
+    ".venv/Scripts/python -m ruff check tests/python/ora/test_obligation_transactional_edit.py -- all checks passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 134,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not cross-checked against a reference OpenRaster implementation.",
+    "obligations_moved_breakdown": "0 obligations promoted to implemented; SAL-ORA-OBL-EC8D65524EB96820 stays partial with its scope honestly narrowed -- replace/move/remove/group-target coverage closed via 5 new tests against an already-generic mechanism, while metadata-target and reference/stale-view coverage remain genuinely open per GAP-008."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

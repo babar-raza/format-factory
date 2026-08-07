@@ -3,6 +3,11 @@ format_id: ora
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: ORA-EDIT-OPS-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-edit-ops-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike ORA-BASELINE-SUITE. Narrows (does not fully close) SAL-ORA-OBL-EC8D65524EB96820 (ORA-EDIT-001). apply_transaction was already fully generic before this slice -- any OraImage -> OraImage callable built from dataclasses.replace() is a valid step -- so replace/move/remove were not a missing feature, only untested through the existing machinery. Verified interactively before writing any test: a replace step swapping one layer for a newly-constructed one, a move step relocating a layer from the root into a nested group (OraStack nesting is the group mechanism), a remove step deleting a layer, a remove step deleting an entire group along with its children, and a rollback proof combining a replace and a group-remove that both revert together on a later failure -- all 5 confirmed working on the first attempt via the model''s existing dataclasses.replace()-based mutation, then formalized as 5 new pytest tests. Metadata targets remain untested (no metadata concept exists in the model); reference maintenance and stale-view invalidation remain untested (no reference type or rendering engine exists) -- both correctly left as open gaps per GAP-008, not force-closed. ora suite: 289 -> 294 passed. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-EC8D65524EB96820 only; it supports no other obligation and promotes no product state.'
 - evidence_id: ORA-MALFORMED-UNICODE-MEMBER-NAME-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ora-malformed-unicode-member-name-001.json
   expected_result: PASS
@@ -3551,15 +3556,21 @@ obligations:
   - 'tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result'
   - 'tests/python/ora/test_obligation_transactional_edit.py::test_asset_and_layer_edits_commit_together'
   - 'tests/python/ora/test_obligation_transactional_edit.py::test_asset_edit_rolls_back_together_with_a_later_failing_layer_edit'
+  - 'tests/python/ora/test_obligation_transactional_edit.py::test_replace_swaps_a_layer_for_a_new_one_with_the_same_position'
+  - 'tests/python/ora/test_obligation_transactional_edit.py::test_move_relocates_a_layer_from_the_root_into_a_group'
+  - 'tests/python/ora/test_obligation_transactional_edit.py::test_remove_deletes_a_layer_target'
+  - 'tests/python/ora/test_obligation_transactional_edit.py::test_remove_deletes_a_group_target_and_its_children_with_it'
   negative_test_selectors:
   - 'tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image'
   - 'tests/python/ora/test_obligation_transactional_edit.py::test_a_validation_error_from_an_invalid_edit_also_rolls_back'
+  - 'tests/python/ora/test_obligation_transactional_edit.py::test_replace_and_remove_group_roll_back_together_on_a_later_failure'
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
+  - ORA-EDIT-OPS-PROOF
   implemented_behavior:
-  - 'apply_transaction genuinely provides atomic multi-step commit/rollback (proven: all-succeed commits, any failure rolls back completely, layer and asset-member edits commit or roll back together as one unit) -- but the obligation''s specific claim is broader than what is tested. Only add (via test-local _add_layer/_add_member helpers) is exercised as a named operation; replace, move, and remove are never exercised by any test in this file or elsewhere in the suite. "Groups" and "metadata" are never targeted by any transaction test -- and no "metadata" concept exists anywhere in the ora model at all, so that half of the claim cannot be tested against current source without first building it. Reference maintenance and stale- derived-view invalidation have zero test coverage; the test file''s own module docstring states this scope limitation explicitly ("reference repair, invalidate stale derived views, independent application reopen are NOT attempted").'
+  - 'apply_transaction genuinely provides atomic multi-step commit/rollback (proven: all-succeed commits, any failure rolls back completely, layer and asset-member edits commit or roll back together as one unit). This slice closes the ''replace'', ''move'', and ''remove'' half of the obligation''s own confirmed gap: apply_transaction is fully generic (any OraImage -> OraImage callable built from dataclasses.replace() on the model is a valid step), so these were not a new feature to build, only new step helpers to exercise through the existing machinery. All five named operations (add, replace, move, rename, remove) are now proven against both a layer target and a group target (OraStack nests other stacks/layers/text, so a ''group'' is simply a non-root OraStack) -- including a group removal that carries its own children with it, and a rollback proof combining a replace and a group-remove that both revert together on a later failure. ''Metadata'' remains untested: no metadata concept exists anywhere in the ora model, so there is nothing to build a step against without inventing one (GAP-008). Reference maintenance and stale-derived-view invalidation remain out of scope, unchanged from before this slice: no cross-element reference type exists yet to repair against, and no rendering engine exists to make a stale view fresh again (ORA-RENDER-001/ORA-COMPOSITE-001 are still missing).'
   missing_behavior:
-  - 'replace, move, and remove operations are not exercised by any test; group and metadata targets are not exercised (no metadata concept exists in the model at all); reference maintenance and stale-derived-view invalidation on edit have zero test coverage anywhere in the suite.'
+  - '''Metadata'' as an edit target is untested because no metadata concept exists anywhere in the ora model at all. Reference maintenance and stale-derived-view invalidation on edit have zero test coverage anywhere in the suite, and cannot be built honestly without a reference type and a rendering engine respectively, neither of which exist yet.'
   proof_requirements:
     positive:
     - Each named operation (add, replace, move, rename, remove) against each named target kind
