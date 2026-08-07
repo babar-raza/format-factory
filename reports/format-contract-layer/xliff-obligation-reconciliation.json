@@ -309,7 +309,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "1454cb489332a13e9e6d37071acb3d26dc4a3fcb4278653337e2b4e79bf26f5a",
+    "implementation_evidence": "86a80eea03a42e4b4e032fbf49cc75653cbb1b24098a08faba3f0b7cdaf19b94",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -4168,11 +4168,9 @@
         "XLIFF-DATA-ELEMENT-REQUIRED-ID-PROOF"
       ],
       "implemented_behavior": [
-        "originalData/data element modeling now exists: a new DataElement model (id, content as list[InlineNode] -- the same shape as source/target inline content, since <data>'s own content model is text plus zero-or-more <cp> elements, which round-trip generically as InlineElement the same way any other unmodeled inline tag already does -- dir, attributes) plus Unit.original_data. The reader now parses <originalData> into this typed field instead of the generic ExtensionNode fallback it silently fell into before; the writer serializes it back in the correct structural position (after notes, before segments, per the XLIFF Core unit content model), confirmed via a byte-exact round-trip test. validate() now resolves every dataRef/dataRefStart/dataRefEnd attribute on inline elements against the unit's own <originalData> ids and enforces dataRefStart/dataRefEnd pairing on pc, grounded directly in the pinned XLIFF 2.1 schematron's own F15/F16S/F16T/F17S/F17T patterns, checked separately per content type (source/target). The <data> element's own REQUIRED id attribute (schemas/xliff_core_2.0.xsd: <xs:attribute name=\"id\" use=\"required\" type=\"xs:NMTOKEN\"/>) is now independently enforced as a validate() diagnostic (xliff.originalData.data.id.missing) when absent, rather than being silently excluded from the dataRef-resolution id set with no diagnostic at all -- confirmed genuinely unenforced by direct probing before this fix."
+        "originalData/data element modeling now exists: a new DataElement model (id, content as list[InlineNode] -- the same shape as source/target inline content, since <data>'s own content model is text plus zero-or-more <cp> elements, which round-trip generically as InlineElement the same way any other unmodeled inline tag already does -- dir, attributes) plus Unit.original_data. The reader now parses <originalData> into this typed field instead of the generic ExtensionNode fallback it silently fell into before; the writer serializes it back in the correct structural position (after notes, before segments, per the XLIFF Core unit content model), confirmed via a byte-exact round-trip test. validate() now resolves every dataRef/dataRefStart/dataRefEnd attribute on inline elements against the unit's own <originalData> ids and enforces dataRefStart/dataRefEnd pairing on pc, grounded directly in the pinned XLIFF 2.1 schematron's own F15/F16S/F16T/F17S/F17T patterns, checked separately per content type (source/target). The <data> element's own REQUIRED id attribute (schemas/xliff_core_2.0.xsd: <xs:attribute name=\"id\" use=\"required\" type=\"xs:NMTOKEN\"/>) is now independently enforced as a validate() diagnostic (xliff.originalData.data.id.missing) when absent, rather than being silently excluded from the dataRef-resolution id set with no diagnostic at all -- confirmed genuinely unenforced by direct probing before this fix. This obligation's own rule_text (\"originalData elements carry native code data referenced from inline codes via dataRef attributes\") is now fully satisfied: element modeling, round-trip, dataRef-family resolution, dataRefStart/dataRefEnd pairing, and the <data> element's own required-id enforcement are all proven. The <cp> child element deliberately has no dedicated typed modeling -- it round-trips generically as an untyped InlineElement, matching this package's existing precedent for unmodeled tags -- confirmed by direct re-reading of the rule_text that this is genuinely not a gap for this obligation (which concerns dataRef resolution, not <cp> itself) rather than an oversight; this note traces back to the original implementation commit (d982ac51), not a later rationalization."
       ],
-      "missing_behavior": [
-        "No dedicated modeling of the <cp> child element exists -- it round-trips generically as an untyped InlineElement rather than a first-class code-point-escape representation; this matches the package's existing precedent for unmodeled tags and is not considered a gap for this obligation's own rule_text, which concerns dataRef resolution, not <cp> itself."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_does_not_match_any_data_id_is_a_violation",
         "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_pc_with_only_datarefstart_and_no_datarefend_is_unpaired",
@@ -4198,14 +4196,14 @@
           "Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/xliff/src/format_factory/xliff/model/document.py::DataElement",
         "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_parse_original_data",
         "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::_write_original_data",
         "src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -4215,11 +4213,9 @@
         "XLIFF-DATA-ELEMENT-REQUIRED-ID-PROOF"
       ],
       "implemented_behavior": [
-        "originalData/data element modeling now exists: a new DataElement model (id, content as list[InlineNode] -- the same shape as source/target inline content, since <data>'s own content model is text plus zero-or-more <cp> elements, which round-trip generically as InlineElement the same way any other unmodeled inline tag already does -- dir, attributes) plus Unit.original_data. The reader now parses <originalData> into this typed field instead of the generic ExtensionNode fallback it silently fell into before; the writer serializes it back in the correct structural position (after notes, before segments, per the XLIFF Core unit content model), confirmed via a byte-exact round-trip test. validate() now resolves every dataRef/dataRefStart/dataRefEnd attribute on inline elements against the unit's own <originalData> ids and enforces dataRefStart/dataRefEnd pairing on pc, grounded directly in the pinned XLIFF 2.1 schematron's own F15/F16S/F16T/F17S/F17T patterns, checked separately per content type (source/target). The <data> element's own REQUIRED id attribute (schemas/xliff_core_2.0.xsd: <xs:attribute name=\"id\" use=\"required\" type=\"xs:NMTOKEN\"/>) is now independently enforced as a validate() diagnostic (xliff.originalData.data.id.missing) when absent, rather than being silently excluded from the dataRef-resolution id set with no diagnostic at all -- confirmed genuinely unenforced by direct probing before this fix."
+        "originalData/data element modeling now exists: a new DataElement model (id, content as list[InlineNode] -- the same shape as source/target inline content, since <data>'s own content model is text plus zero-or-more <cp> elements, which round-trip generically as InlineElement the same way any other unmodeled inline tag already does -- dir, attributes) plus Unit.original_data. The reader now parses <originalData> into this typed field instead of the generic ExtensionNode fallback it silently fell into before; the writer serializes it back in the correct structural position (after notes, before segments, per the XLIFF Core unit content model), confirmed via a byte-exact round-trip test. validate() now resolves every dataRef/dataRefStart/dataRefEnd attribute on inline elements against the unit's own <originalData> ids and enforces dataRefStart/dataRefEnd pairing on pc, grounded directly in the pinned XLIFF 2.1 schematron's own F15/F16S/F16T/F17S/F17T patterns, checked separately per content type (source/target). The <data> element's own REQUIRED id attribute (schemas/xliff_core_2.0.xsd: <xs:attribute name=\"id\" use=\"required\" type=\"xs:NMTOKEN\"/>) is now independently enforced as a validate() diagnostic (xliff.originalData.data.id.missing) when absent, rather than being silently excluded from the dataRef-resolution id set with no diagnostic at all -- confirmed genuinely unenforced by direct probing before this fix. This obligation's own rule_text (\"originalData elements carry native code data referenced from inline codes via dataRef attributes\") is now fully satisfied: element modeling, round-trip, dataRef-family resolution, dataRefStart/dataRefEnd pairing, and the <data> element's own required-id enforcement are all proven. The <cp> child element deliberately has no dedicated typed modeling -- it round-trips generically as an untyped InlineElement, matching this package's existing precedent for unmodeled tags -- confirmed by direct re-reading of the rule_text that this is genuinely not a gap for this obligation (which concerns dataRef resolution, not <cp> itself) rather than an oversight; this note traces back to the original implementation commit (d982ac51), not a later rationalization."
       ],
-      "missing_behavior": [
-        "No dedicated modeling of the <cp> child element exists -- it round-trips generically as an untyped InlineElement rather than a first-class code-point-escape representation; this matches the package's existing precedent for unmodeled tags and is not considered a gap for this obligation's own rule_text, which concerns dataRef resolution, not <cp> itself."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_does_not_match_any_data_id_is_a_violation",
         "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_pc_with_only_datarefstart_and_no_datarefend_is_unpaired",
@@ -4245,14 +4241,14 @@
           "Version/namespace consistency fixtures per supported version; legacy-version refusal fixture."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/xliff/src/format_factory/xliff/model/document.py::DataElement",
         "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_parse_original_data",
         "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::_write_original_data",
         "src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-INLINE-001",
@@ -5355,12 +5351,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 105,
+      "implemented": 107,
       "missing": 11,
-      "partial": 26
+      "partial": 24
     },
     "total": 142,
-    "unresolved": 37
+    "unresolved": 35
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
