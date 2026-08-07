@@ -146,6 +146,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes 4 cross-capability duplicate obligations (XLIFF-PARSE-001, XLIFF-VALIDATE-001, XLIFF-MODEL-001, XLIFF-TEXT-001) sharing one identical rule_text about source-side xml:lang compatibility, all confirmed genuinely unbuilt before this slice: qa.py already had a real, complete, already-tested check_target_language_compatibility (a WARNING-severity QA check, distinct from validate()'s conformance diagnostics, using a 4-way _language_specificity_relation helper) but no source-side sibling under any name. New check_source_language_compatibility mirrors it exactly -- same relation logic, same severity, same diagnostic code -- registered in QA_CHECKS and independently selectable via run_qa_checks(checks=...). This is distinct from the XLIFF-SEG-001 source/target language checks added to validator.py at an earlier tick this session: that pair are hard conformance diagnostics with a simpler 2-way exact-or-more-specific check; this pair are QA-layer, reviewer-facing WARNING signals using the more nuanced 4-way relation (adding a distinct reverse-specific case) that qa.py's existing target-side check already used. 6 new tests mirror the existing 6-test target-language matrix precisely (exact, more-specific-under-2.1, reverse-specific, incompatible, no-explicit-lang, XLIFF-2.0-exact-only). xliff suite: 339 -> 345 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-1FF54C0CDEC82951, SAL-XLIFF-OBL-20D653BB993E2687, SAL-XLIFF-OBL-A062E07DF7D59EBB, and SAL-XLIFF-OBL-A4C4AAF3B757A07B only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-RESOURCE-DATA-REFERENCE-HREF-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-resource-data-href-001.json",
+      "sha256": "f561aa029b68a42b1c11fc0f03c289ff00dc0f0b28d4d3e29a712d37e5d72d8e",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes 3 obligations sharing \"The Resource Data module models resource items and references; source and target resource payloads may use optional href attributes, while a reference element requires href\" across XLIFF-TEXT-001/PARSE-001/MODULE-001 (all 3 moved partial->implemented). Before this slice, the Resource Data module was preserved only as opaque extension content -- the same starting point the Metadata module was in before an earlier tick this same session. Grounded directly in the pinned XLIFF 2.1 Resource Data module schema (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/resource_data.xsd): res:source and res:target both declare href use=\"optional\", while res:reference declares href use=\"required\". res:reference can appear (0..unbounded) inside any res:resourceItem nested inside the module's root res:resourceData element, so the check walks the whole subtree via ElementTree's recursive iter() rather than only direct children. Added _resource_data_module_diagnostics() to validator.py, scoped to only extensions carrying the Resource Data module's own namespace, wired at the same 3 existing extension-walking call sites (segment, file/group, root) alongside the pre-existing _extension_well_formed() and _metadata_module_diagnostics() checks. Verified zero false positives against the entire pre-existing 415-test xliff suite before writing a single new test -- the package's own existing Resource Data module fixture (a resourceItemRef with no res:reference elements at all) was untouched by this check since it contains no reference element to flag. 6 new tests prove: a reference with href validates cleanly; a reference with no href is a violation; source/target with no href validate cleanly (the attribute is genuinely optional, not silently required); source/target with href present also validate cleanly; one reference missing href among several resourceItems is still flagged; and a non-Resource-Data-namespaced extension is left untouched. xliff suite: 415 -> 421 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every claim grounded directly in the pinned Resource Data module XSD. Covers SAL-XLIFF-OBL-7CED833579FE91A4, SAL-XLIFF-OBL-B2E26CC031AF32ED, and SAL-XLIFF-OBL-BF29D4CDCFB61497 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-RESOURCE-RESOLUTION-SECURITY-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -213,7 +221,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "566fcb56c918e782aa8478fd9a21016f1a8afb6e6e86461ec2bfe7cc9f7c73ae",
+    "implementation_evidence": "b7705b57be7d91b9b067d886e268ffbcabf9bd941a6e7ffea34413e1c9466683",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2861,18 +2869,24 @@
       "capability_id": "XLIFF-TEXT-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-RESOURCE-DATA-REFERENCE-HREF-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-B2E26CC031AF32ED (identical rule_text): resourceData/resourceItemRef round-trips as opaque extension content, proving the Resource Data module is preserved. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-BF29D4CDCFB61497), same evidence applies there."
+        "resourceData/resourceItemRef round-trips as opaque extension content, proving the Resource Data module is preserved. Both halves of this obligation's own rule_text are now also proven: validate() re-parses every Resource-Data-namespaced extension (grounded directly in the pinned XLIFF 2.1 Resource Data module schema, schemas/resource_data.xsd inside the pinned release ZIP) and flags any res:reference element missing its required href attribute, at any nesting depth inside res:resourceItem; res:source/res:target's own genuinely optional href is confirmed to never be falsely flagged when absent. Extensions using a different namespace are left untouched."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: \"a reference element requires href\" and the optional href on source/target resource payloads are not enforced or tested -- no typed accessor exists for this module's content. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_a_reference_with_no_href_is_a_violation",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_one_reference_missing_href_among_several_resourceitems_is_still_flagged"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-7CED833579FE91A4",
       "positive_test_selectors": [
-        "tests/python/xliff/test_obligation_module_coverage.py::test_resource_data_module_round_trips_despite_unconfirmed_namespace"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_resource_data_module_round_trips_despite_unconfirmed_namespace",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_a_reference_with_href_validates_cleanly",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_source_and_target_with_no_href_validate_cleanly_the_attribute_is_optional",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_source_and_target_with_href_also_validate_cleanly",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_a_non_resourcedata_extension_is_untouched_by_this_check"
       ],
       "proof_requirements": {
         "negative": [
@@ -2882,11 +2896,13 @@
           "Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_resource_data_module_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODEL-001",
@@ -3642,18 +3658,24 @@
       "capability_id": "XLIFF-PARSE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-RESOURCE-DATA-REFERENCE-HREF-PROOF"
       ],
       "implemented_behavior": [
-        "resourceData/resourceItemRef round-trips as opaque extension content, proving the Resource Data module is preserved. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-BF29D4CDCFB61497), same evidence applies there."
+        "resourceData/resourceItemRef round-trips as opaque extension content, proving the Resource Data module is preserved. Both halves of this obligation's own rule_text are now also proven: validate() re-parses every Resource-Data-namespaced extension (grounded directly in the pinned XLIFF 2.1 Resource Data module schema, schemas/resource_data.xsd inside the pinned release ZIP) and flags any res:reference element missing its required href attribute, at any nesting depth inside res:resourceItem; res:source/res:target's own genuinely optional href is confirmed to never be falsely flagged when absent. Extensions using a different namespace are left untouched."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: \"a reference element requires href\" and the optional href on source/target resource payloads are not enforced or tested -- no typed accessor exists for this module's content. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_a_reference_with_no_href_is_a_violation",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_one_reference_missing_href_among_several_resourceitems_is_still_flagged"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-B2E26CC031AF32ED",
       "positive_test_selectors": [
-        "tests/python/xliff/test_obligation_module_coverage.py::test_resource_data_module_round_trips_despite_unconfirmed_namespace"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_resource_data_module_round_trips_despite_unconfirmed_namespace",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_a_reference_with_href_validates_cleanly",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_source_and_target_with_no_href_validate_cleanly_the_attribute_is_optional",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_source_and_target_with_href_also_validate_cleanly",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_a_non_resourcedata_extension_is_untouched_by_this_check"
       ],
       "proof_requirements": {
         "negative": [
@@ -3663,11 +3685,13 @@
           "Version/namespace consistency fixtures per supported version; legacy-version refusal fixture."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_resource_data_module_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-NOTE-001",
@@ -3803,18 +3827,24 @@
       "capability_id": "XLIFF-MODULE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-RESOURCE-DATA-REFERENCE-HREF-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of SAL-XLIFF-OBL-B2E26CC031AF32ED (identical rule_text, XLIFF-PARSE-001): resourceData/resourceItemRef round-trips as opaque extension content, proving the Resource Data module is preserved."
+        "resourceData/resourceItemRef round-trips as opaque extension content, proving the Resource Data module is preserved. Both halves of this obligation's own rule_text are now also proven: validate() re-parses every Resource-Data-namespaced extension (grounded directly in the pinned XLIFF 2.1 Resource Data module schema, schemas/resource_data.xsd inside the pinned release ZIP) and flags any res:reference element missing its required href attribute, at any nesting depth inside res:resourceItem; res:source/res:target's own genuinely optional href is confirmed to never be falsely flagged when absent. Extensions using a different namespace are left untouched."
       ],
-      "missing_behavior": [
-        "Same confirmed gap as SAL-XLIFF-OBL-B2E26CC031AF32ED: \"a reference element requires href\" and the optional href on source/target resource payloads are not enforced or tested. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_a_reference_with_no_href_is_a_violation",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_one_reference_missing_href_among_several_resourceitems_is_still_flagged"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-BF29D4CDCFB61497",
       "positive_test_selectors": [
-        "tests/python/xliff/test_obligation_module_coverage.py::test_resource_data_module_round_trips_despite_unconfirmed_namespace"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_resource_data_module_round_trips_despite_unconfirmed_namespace",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_a_reference_with_href_validates_cleanly",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_source_and_target_with_no_href_validate_cleanly_the_attribute_is_optional",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_source_and_target_with_href_also_validate_cleanly",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_a_non_resourcedata_extension_is_untouched_by_this_check"
       ],
       "proof_requirements": {
         "negative": [
@@ -3824,11 +3854,13 @@
           "Per-module round-trip fixtures; coverage manifest matches behavior."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_resource_data_module_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
@@ -5001,6 +5033,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-preservation-mode-001.json": "3ce322c7f4990e64fa3573f6ebc57fb2cccf08767f18604bce82078c88136ec2",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-checks-001.json": "00a6d7c1b4d2fc48359f0484a08d0d639ee8fe136b11904870bd1acdda0e4d5c",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-source-language-001.json": "20704e391b435e219e635d1ad3b2da286e48e863bd64cf51ffa099aebc7fba27",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-resource-data-href-001.json": "f561aa029b68a42b1c11fc0f03c289ff00dc0f0b28d4d3e29a712d37e5d72d8e",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-root-language-attribute-requirements-001.json": "b3cfa6d54f98f0873a9281b99616064754fa5c4d37a7867b3666616eabb387ca",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-root-xml-space-default-001.json": "8666cfed5b1df0b4b4df1540cb46d5ae673ebfe26c06933080a37682d3dc0f3a",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-sec-001-001.json": "b59624a8a8b11d0b3eb8db6076fb61aba59add049d2ad84cd92bee83aea0603d",
@@ -5021,7 +5054,7 @@
     "src/python/xliff/src/format_factory/xliff/qa.py": "61c2a8f74d09f844e36bfc1d967a587b5e5e62cf6087577e1031347b3ee8fa2f",
     "src/python/xliff/src/format_factory/xliff/security/limits.py": "8cec6ffd2ccd8fe17fa6d76ab19b2deeda3578d558925d862b15494b3b06665a",
     "src/python/xliff/src/format_factory/xliff/state_transitions.py": "6b12476e31076a788cef37fb476e1b5eda7365e6eb640bbb7bedcebabb9d49ea",
-    "src/python/xliff/src/format_factory/xliff/validation/validator.py": "275afcca18fc78504efe9beedc2a080e5463e2cde913517d0ebaa748fc190021",
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py": "d816bf0eb5efd7506bd55c2dd40d6f9eaa5dd0206ccbbe99e3a41287c2deffe7",
     "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py": "3576c2a5c91c42fb0070f64d798078090e9af3118e3a6015663a4b7cbd111957",
     "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py": "13bd7850154306f68582918a5ffaca79a55f5b3145f703f76c3c3ef4e79328e5",
     "tests/python/xliff/test_obligation_ignorable_elements.py": "70908f9b90fa150715bd19b6c9a1abd46b36b818a3710c4ad82d851dc6a9c880",
@@ -5036,6 +5069,7 @@
     "tests/python/xliff/test_obligation_paired_code_integrity.py": "d9da9bd02837f6da941067d1507e3431b3f5e9318af57759d72aecb7e04112f4",
     "tests/python/xliff/test_obligation_preservation_mode.py": "f30f484eed1a8585828f01fb325a79f22eb0138633afbc872629a67841f140fe",
     "tests/python/xliff/test_obligation_qa_checks.py": "28fac4e3d1c95d6a35e3e766ac34d895e7e00bf5ecf30347e9a9124dbaee9143",
+    "tests/python/xliff/test_obligation_resource_data_module_reference_href.py": "52a35ed1a67fcf3fa2f9cddd2fd2732b327aa8115a0b73288692d0858dc4071c",
     "tests/python/xliff/test_obligation_resource_resolution_security.py": "7bd8371c0a04ee1ecf6574d863d76e4ed6c8d449fbfd12d492ad45cfcc9d7720",
     "tests/python/xliff/test_obligation_root_language_attribute_requirements.py": "4e829c770a8fc7792a9f4404e738afe789ef4ac04982855b1681ec51c37605de",
     "tests/python/xliff/test_obligation_root_xml_space_default.py": "d0f84396f61e8c8e8de1b82035e6c7987414371ee1ccb284f52e5800a537b812",
@@ -5049,12 +5083,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 80,
+      "implemented": 83,
       "missing": 12,
-      "partial": 50
+      "partial": 47
     },
     "total": 142,
-    "unresolved": 62
+    "unresolved": 59
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

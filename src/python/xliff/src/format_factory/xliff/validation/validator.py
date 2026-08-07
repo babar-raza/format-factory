@@ -27,6 +27,10 @@ _METADATA_QNAME = f"{{{_METADATA_NAMESPACE}}}metadata"
 _METAGROUP_QNAME = f"{{{_METADATA_NAMESPACE}}}metaGroup"
 _META_QNAME = f"{{{_METADATA_NAMESPACE}}}meta"
 
+_RESOURCE_DATA_NAMESPACE = "urn:oasis:names:tc:xliff:resourcedata:2.0"
+_RESOURCE_DATA_QNAME = f"{{{_RESOURCE_DATA_NAMESPACE}}}resourceData"
+_RESOURCE_REFERENCE_QNAME = f"{{{_RESOURCE_DATA_NAMESPACE}}}reference"
+
 
 def _language_compatible(enclosing: str, declared: str, *, exact_only: bool) -> bool:
     """Whether `declared` satisfies the enclosing srcLang/trgLang.
@@ -255,6 +259,43 @@ def _metadata_module_diagnostics(
             )
 
 
+def _resource_data_module_diagnostics(
+    extension: ExtensionNode, diagnostics: list[Diagnostic]
+) -> None:
+    """(XLIFF modules - resource data with external references) "source
+    and target resource payloads may use optional href attributes, while a
+    reference element requires href" -- grounded directly in the pinned
+    XLIFF 2.1 Resource Data module schema (inside
+    .local/format-contracts/acquired/xliff/src-xlf-002.bin,
+    schemas/resource_data.xsd): res:source/res:target both declare href
+    use="optional", while res:reference declares href use="required".
+    res:reference can appear (0..unbounded) inside any res:resourceItem
+    nested inside the module's root res:resourceData element, so this
+    walks the whole subtree via ElementTree's recursive iter() rather than
+    only direct children.
+
+    Only extensions actually carrying the Resource Data module's own
+    namespace are checked; source/target's own optional href is not
+    separately asserted since there is nothing to enforce about an
+    attribute that is genuinely optional.
+    """
+
+    if extension.tag != _RESOURCE_DATA_QNAME:
+        return
+    try:
+        element = ET.fromstring(extension.xml)
+    except ET.ParseError:
+        return
+    for reference in element.iter(_RESOURCE_REFERENCE_QNAME):
+        if "href" not in reference.attrib:
+            diagnostics.append(
+                Diagnostic(
+                    "xliff.module.resourcedata.reference.href.required",
+                    "reference element requires an href attribute",
+                )
+            )
+
+
 def _walk_group(group: Group) -> list[Unit]:
     return list(group.iter_units())
 
@@ -436,20 +477,24 @@ def validate(
                 for segment_extension in segment.extensions:
                     _extension_well_formed(segment_extension, diagnostics)
                     _metadata_module_diagnostics(segment_extension, diagnostics)
+                    _resource_data_module_diagnostics(segment_extension, diagnostics)
             _isolated_diagnostics(unit, diagnostics)
             _data_ref_diagnostics(unit, diagnostics)
         for file_child in file.children:
             if isinstance(file_child, ExtensionNode):
                 _extension_well_formed(file_child, diagnostics)
                 _metadata_module_diagnostics(file_child, diagnostics)
+                _resource_data_module_diagnostics(file_child, diagnostics)
             elif isinstance(file_child, Group):
                 for group_unit in _walk_group(file_child):
                     for group_child in group_unit.children:
                         if isinstance(group_child, ExtensionNode):
                             _extension_well_formed(group_child, diagnostics)
                             _metadata_module_diagnostics(group_child, diagnostics)
+                            _resource_data_module_diagnostics(group_child, diagnostics)
     for root_child in value.children:
         if isinstance(root_child, ExtensionNode):
             _extension_well_formed(root_child, diagnostics)
             _metadata_module_diagnostics(root_child, diagnostics)
+            _resource_data_module_diagnostics(root_child, diagnostics)
     return ValidationReport(diagnostics)

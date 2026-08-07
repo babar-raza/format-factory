@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-resource-data-href-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T09:59:21Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_RESOURCE_DATA_HREF_001",
+    "task_kind": "build-new-capability-for-a-3-obligation-cluster",
+    "root_cause": "Event 226's exact_next_action named the Resource Data module href-required cluster as the next fresh, buildable candidate using the exact same pattern just proven for the Metadata module. Resource Data (resourceData/resourceItemRef/resourceItem/source/target/reference) round-tripped only as opaque extension content, with zero structural validation.",
+    "obligation_targeted": "SAL-XLIFF-OBL-7CED833579FE91A4 (XLIFF-TEXT-001), SAL-XLIFF-OBL-B2E26CC031AF32ED (XLIFF-PARSE-001), SAL-XLIFF-OBL-BF29D4CDCFB61497 (XLIFF-MODULE-001) -- identical rule_text, all promoted partial->implemented",
+    "acceptance_evidence": "6 new tests prove validate() now detects a res:reference element missing its required href attribute, while correctly leaving res:source/res:target's genuinely optional href unenforced.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Confirmed via grep that no existing code inspects Resource Data module structure at all -- same starting point as the Metadata module before the immediately preceding tick.",
+    "2. Read the pinned XLIFF 2.1 Resource Data module XSD directly (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/resource_data.xsd): res:resourceData is a sequence of res:resourceItemRef (0..unbounded) and res:resourceItem (0..unbounded); res:resourceItem sequences res:source (0..1), res:target (0..1), res:reference (0..unbounded); res:source/res:target both declare href use=\"optional\"; res:reference declares href use=\"required\".",
+    "3. Added _resource_data_module_diagnostics() to validator.py: scoped to only extensions whose tag matches the Resource Data module's own qname, re-parses the extension's raw XML (same pattern as _metadata_module_diagnostics), walks every res:reference element at any nesting depth via ElementTree's recursive iter(), and flags any missing its href attribute. Deliberately does not assert anything about source/target's href, since it is genuinely optional and there is nothing to enforce about an optional attribute.",
+    "4. Wired the new check alongside the existing _extension_well_formed()/_metadata_module_diagnostics() checks at all 3 call sites where extensions are walked: segment extensions, file/group-nested extensions, root-level extensions.",
+    "5. Checked the existing Resource Data module fixture (test_obligation_module_coverage.py) before writing anything: it uses a bare resourceItemRef with no res:reference element at all, so the new check cannot false-positive on it (zero reference elements to inspect).",
+    "6. Verified interactively before writing formal tests: a reference with href validates cleanly; a reference with no href is a violation; source/target with no href validate cleanly (proving the optional half is correctly NOT enforced); a non-Resource-Data-namespaced extension is untouched; a mix of resourceItems with one bad reference among several good ones is still correctly flagged -- all 5 cases correct on the first attempt.",
+    "7. Ran the full pre-existing xliff suite (415 tests, zero new fixtures) against the new check to look for false positives before writing a single new test -- all 415 passed unchanged.",
+    "8. Wrote 6 formal tests, all passing on the first attempt.",
+    "9. Ran ruff (clean), the full xliff suite (421 passed, was 415, +6), and the full 6-format regression (3334 passed, was 3328, +6; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "10. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-6fd6f6219280f067, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_resource_data_module_reference_href.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_resource_data_module_reference_href.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_resource_data_module_reference_href.py -q -- 6 passed",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/validation/validator.py tests/python/xliff/test_obligation_resource_data_module_reference_href.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 421 passed, was 415 passed (415 passed unchanged BEFORE writing new tests, confirming zero false positives)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3334 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3328 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "3 obligations moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 3,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every claim grounded directly in the pinned XLIFF 2.1 Resource Data module XSD.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-7CED833579FE91A4 (XLIFF-TEXT-001), SAL-XLIFF-OBL-B2E26CC031AF32ED (XLIFF-PARSE-001), SAL-XLIFF-OBL-BF29D4CDCFB61497 (XLIFF-MODULE-001) all partial->implemented. Both clauses of the shared rule_text (reference href required, source/target href genuinely optional) are now fully and honestly proven -- a complete closure, matching the discipline just proven for the Metadata module."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
