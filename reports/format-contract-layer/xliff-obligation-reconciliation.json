@@ -106,6 +106,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes 4 cross-capability duplicate obligations (XLIFF-PARSE-001, XLIFF-VALIDATE-001, XLIFF-MODEL-001, XLIFF-TEXT-001) sharing one identical rule_text about source-side xml:lang compatibility, all confirmed genuinely unbuilt before this slice: qa.py already had a real, complete, already-tested check_target_language_compatibility (a WARNING-severity QA check, distinct from validate()'s conformance diagnostics, using a 4-way _language_specificity_relation helper) but no source-side sibling under any name. New check_source_language_compatibility mirrors it exactly -- same relation logic, same severity, same diagnostic code -- registered in QA_CHECKS and independently selectable via run_qa_checks(checks=...). This is distinct from the XLIFF-SEG-001 source/target language checks added to validator.py at an earlier tick this session: that pair are hard conformance diagnostics with a simpler 2-way exact-or-more-specific check; this pair are QA-layer, reviewer-facing WARNING signals using the more nuanced 4-way relation (adding a distinct reverse-specific case) that qa.py's existing target-side check already used. 6 new tests mirror the existing 6-test target-language matrix precisely (exact, more-specific-under-2.1, reverse-specific, incompatible, no-explicit-lang, XLIFF-2.0-exact-only). xliff suite: 339 -> 345 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-1FF54C0CDEC82951, SAL-XLIFF-OBL-20D653BB993E2687, SAL-XLIFF-OBL-A062E07DF7D59EBB, and SAL-XLIFF-OBL-A4C4AAF3B757A07B only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-RESOURCE-RESOLUTION-SECURITY-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-sec-001-001.json",
+      "sha256": "b59624a8a8b11d0b3eb8db6076fb61aba59add049d2ad84cd92bee83aea0603d",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-009F2EB91831B248 (XLIFF-SEC-001) only. The obligation's own prior finding was already correct and not stale -- no feature anywhere in the package resolves a detached or referenced resource from parsed document content, confirmed again by reading model/document.py directly and grepping the whole package for filesystem-path construction (the only 2 hits are reader.py's caller-supplied top-level source path and writer.py's caller-supplied destination path). It was correctly left `missing` rather than force-promoted because the absence-of-attack-surface claim had no dedicated test. 6 new tests now prove it: a whole-package AST scan confirms no networking/execution/plugin module is imported; Note.text is a plain opaque string; and 4 hostile path shapes survive load/validate/dump/round-trip with Path.open/Path.read_bytes monkeypatched to raise if ever invoked with the hostile content -- none were. A separate 2 new tests, added to the existing test_obligation_security_limits.py file, prove SAL-XLIFF-OBL-130340BC212989D5's _enforce_tree_limits also bounds a width-shaped complexity vector (many siblings, shallow nesting) distinct from the already-tested deep-nesting case -- that obligation stays honestly partial since its own rule_text separately names checked arithmetic, which is not independently tested. xliff suite: 350 -> 358 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-009F2EB91831B248 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -141,7 +149,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "faa0279c54c536d59775a16bffa1c7643473401de68f03161bdc0145ed07eff7",
+    "implementation_evidence": "4fb6257e4dcd63f5c45fcb2df809538be890be5a551b840634a080f02a194219",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -149,14 +157,21 @@
   "obligations": [
     {
       "capability_id": "XLIFF-SEC-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "No feature anywhere in the package resolves a detached or referenced resource from parsed document content to a filesystem path -- confirmed by grepping the whole model package for path-joining or resolution logic touching untrusted input (none found); XLIFF's notes/extensions/original-data references are all stored as opaque strings, never dereferenced or fetched. The specific vulnerability class (path traversal via a resolved reference) therefore has no attack surface in the current feature set. Recorded as missing rather than partial because this structural absence-of-attack-surface claim has no dedicated test proving it (same precedent as SAL-UBL-OBL-4CA52BA5DDD8840F, UBL-SEC-001) -- if a future feature adds resource resolution from document content, this obligation needs a real path-confinement test at that time."
+      "execution_evidence_ids": [
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-RESOURCE-RESOLUTION-SECURITY-PROOF"
       ],
+      "implemented_behavior": [
+        "No feature anywhere in the package resolves a detached or referenced resource from parsed document content to a filesystem path -- the obligation's own prior finding was already correct and not stale, re-confirmed by reading model/document.py directly and grepping the whole package for filesystem-path construction (the only 2 hits are reader.py's caller-supplied top-level source path and writer.py's caller-supplied destination path, neither derived from parsed document content). This is now proven, not merely asserted: a whole-package AST scan confirms no networking/execution/plugin module is ever imported, and a direct behavioral test carries 4 hostile path shapes (relative traversal, unix absolute path, windows absolute path, file:// scheme) stored in a <note> element -- the model's own free-text carrier, Note.text -- through load/validate/dump/round-trip with Path.open/Path.read_bytes monkeypatched to raise if the library ever attempts to resolve them -- confirming the required safety property holds because the resolution capability does not exist, the same reasoning pattern already used for SAL-UBL-OBL-4CA52BA5DDD8840F (UBL-SEC-001) this session."
+      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-009F2EB91831B248",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/xliff/test_obligation_resource_resolution_security.py::test_no_source_file_imports_networking_execution_or_plugin_modules",
+        "tests/python/xliff/test_obligation_resource_resolution_security.py::test_a_note_carrying_a_hostile_path_is_stored_as_opaque_text",
+        "tests/python/xliff/test_obligation_resource_resolution_security.py::test_a_hostile_note_path_never_touches_the_filesystem"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -165,9 +180,11 @@
           "Each security_limits baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/xliff/src/format_factory/xliff/model/document.py::Note"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODEL-001",
@@ -572,16 +589,18 @@
         "XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Nesting depth and node count are bounded (added this slice), directly bounding the primary XML algorithmic-complexity attack surface (deeply nested or oversized documents). Python's arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could in another language -- same characterization as the equivalent ubl obligation (SAL-UBL-OBL-8396E06EA0EA75FC, UBL-SEC-001)."
+        "Nesting depth and node count are bounded, directly bounding the primary XML algorithmic-complexity attack surface (deeply nested or oversized documents). Python's arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could in another language -- same characterization as the equivalent ubl obligation (SAL-UBL-OBL-8396E06EA0EA75FC, UBL-SEC-001). A width-shaped complexity vector distinct from the already-tested deep-nesting case is now also proven: _enforce_tree_limits (reader.py) checks max_xml_nodes on every node visited in its stack-based traversal, so a wide-but-shallow document (many siblings, shallow nesting -- the quadratic-blowup-style shape) is refused even though its depth stays low, confirmed by a dedicated 10000-sibling fixture against a tight max_xml_nodes limit."
       ],
       "missing_behavior": [
-        "No test specifically exercises 'checked arithmetic' as a distinct guarantee independent of Python's native big-int semantics, and no test targets an algorithmic-complexity attack vector beyond depth/node-count (e.g. quadratic-blowup-style attacks distinct from the already-rejected DTD/entity case). The limits mechanism exists and is now tested; a dedicated complexity-attack-shaped test does not."
+        "No test specifically exercises 'checked arithmetic' as a distinct guarantee independent of Python's native big-int semantics -- judged the same way this session characterized the equivalent ubl/nrrd obligations: Python's native big-int semantics make a dedicated checked-arithmetic test largely redundant with the count/depth-limit tests already present, not a separate exploitable gap. Left honestly partial (not force-closed) because the obligation's own rule_text names checked arithmetic as a distinct requirement and no test asserts it as its own fact."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-130340BC212989D5",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_nesting_limit_is_rejected",
-        "tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_node_count_limit_is_rejected"
+        "tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_node_count_limit_is_rejected",
+        "tests/python/xliff/test_obligation_security_limits.py::test_a_wide_shallow_document_is_bounded_by_node_count_not_depth",
+        "tests/python/xliff/test_obligation_security_limits.py::test_a_wide_document_within_the_node_count_limit_loads"
       ],
       "proof_requirements": {
         "negative": [
@@ -4594,6 +4613,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-preservation-mode-001.json": "3ce322c7f4990e64fa3573f6ebc57fb2cccf08767f18604bce82078c88136ec2",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-checks-001.json": "00a6d7c1b4d2fc48359f0484a08d0d639ee8fe136b11904870bd1acdda0e4d5c",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-source-language-001.json": "20704e391b435e219e635d1ad3b2da286e48e863bd64cf51ffa099aebc7fba27",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-sec-001-001.json": "b59624a8a8b11d0b3eb8db6076fb61aba59add049d2ad84cd92bee83aea0603d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-security-limits-001.json": "15f42fdeb25a403a632cbeca88772e794950c42e67c540c6384f09d31dfd84cd",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-seg-structure-language-001.json": "4e79d0650232d6bc7d61e45e7c0f203ab78e04faf29f792897448a44dcea6df8",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-segment-split-join-001.json": "16e92d9df77d60b1ffb85830f63759c78034e3b5168faabc58102b168c1c904d",
@@ -4620,7 +4640,8 @@
     "tests/python/xliff/test_obligation_paired_code_integrity.py": "d9da9bd02837f6da941067d1507e3431b3f5e9318af57759d72aecb7e04112f4",
     "tests/python/xliff/test_obligation_preservation_mode.py": "f30f484eed1a8585828f01fb325a79f22eb0138633afbc872629a67841f140fe",
     "tests/python/xliff/test_obligation_qa_checks.py": "28fac4e3d1c95d6a35e3e766ac34d895e7e00bf5ecf30347e9a9124dbaee9143",
-    "tests/python/xliff/test_obligation_security_limits.py": "cee5018bd3af729036aaa146067f1d37932992869a27e825dc93b4b3f703b051",
+    "tests/python/xliff/test_obligation_resource_resolution_security.py": "7bd8371c0a04ee1ecf6574d863d76e4ed6c8d449fbfd12d492ad45cfcc9d7720",
+    "tests/python/xliff/test_obligation_security_limits.py": "faea1be64cd4cf09be3a785aebad713f8af5b159aa84f2b3ca92c1cd15212ad7",
     "tests/python/xliff/test_obligation_segment_structure_and_language.py": "4147094fbe4e7af8284b21c0c92fdb3aa4a26bd1e923a244db09980937f2de93",
     "tests/python/xliff/test_obligation_state_transitions.py": "eb2fb6fa0f4503175da1904986563ca1a1ee97f317067a2d29466c5c35c9c1bf",
     "tests/python/xliff/test_obligation_target_creation_policies.py": "d6693ffb55e6c735194503d14f9f4ba6dd46564391aeb13ee5189b9d94cb85ef",
@@ -4629,12 +4650,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 67,
-      "missing": 24,
+      "implemented": 68,
+      "missing": 23,
       "partial": 51
     },
     "total": 142,
-    "unresolved": 75
+    "unresolved": 74
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

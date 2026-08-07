@@ -49,6 +49,31 @@ def test_a_document_exceeding_a_configured_nesting_limit_is_rejected() -> None:
         loads(_nested(50), limits=tight)
 
 
+def _wide(width: int) -> bytes:
+    siblings = b"<a/>" * width
+    return (
+        f'<xliff xmlns="{_NS}" version="2.1" srcLang="en">'
+        '<file id="f">'
+    ).encode() + siblings + b"</file></xliff>"
+
+
+def test_a_wide_shallow_document_is_bounded_by_node_count_not_depth() -> None:
+    """A quadratic-blowup-style complexity attack (many siblings, shallow
+    nesting) is a distinct vector from the deep-nesting case above --
+    _enforce_tree_limits checks max_xml_nodes on every node visited, so a
+    wide-but-shallow document is refused even though its depth stays low."""
+    tight = ResourceLimits(max_xml_nodes=100)
+
+    with pytest.raises(ResourceLimitError, match="max_xml_nodes exceeded"):
+        loads(_wide(10000), limits=tight)
+
+
+def test_a_wide_document_within_the_node_count_limit_loads() -> None:
+    document = loads(_wide(50), limits=ResourceLimits(max_xml_nodes=1000))
+
+    assert document.version == "2.1"
+
+
 def test_a_document_exceeding_a_configured_node_count_limit_is_rejected() -> None:
     tight = ResourceLimits(max_xml_nodes=10)
 

@@ -1,0 +1,54 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-sec-001-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T07:30:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_SEC_001_001",
+    "task_kind": "absence-of-attack-surface-proof-plus-complexity-vector-test",
+    "root_cause": "SAL-XLIFF-OBL-009F2EB91831B248 (resource-resolution path traversal) and SAL-XLIFF-OBL-130340BC212989D5 (algorithmic-complexity/checked-arithmetic) both XLIFF-SEC-001. The first already carried a precise finding identical in shape to UBL-SEC-001's SAL-UBL-OBL-4CA52BA5DDD8840F (no resolution feature exists, correctly left missing pending a dedicated proof); the second already had depth/node-count limits implemented and tested, but no test covered a width-shaped complexity vector distinct from depth.",
+    "obligation_targeted": "SAL-XLIFF-OBL-009F2EB91831B248, SAL-XLIFF-OBL-130340BC212989D5 (both XLIFF-SEC-001)",
+    "acceptance_evidence": "6 new tests prove the same absence-of-attack-surface pattern already used for UBL-SEC-001 (AST scan plus a monkeypatched-filesystem behavioral proof across 4 hostile path shapes stored in a <note> element). 2 new tests prove _enforce_tree_limits bounds a wide-but-shallow (quadratic-blowup-style) document by node count, a distinct vector from the already-tested deep-nesting case.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Re-confirmed the obligation's own prior finding was not stale: grepped the whole xliff package for open(/Path(/.read_bytes()/os.path -- the only 2 hits are reader.py's caller-supplied top-level source path and writer.py's caller-supplied destination path, neither derived from parsed document content. Checked model/document.py: no href/OriginalData/typed reference-bearing dataclass exists anywhere; the only free-text carrier is Note.text, a plain string field.",
+    "2. Ran an interactive probe before writing any test: built a document with a hostile path-traversal string inside a <note> element, monkeypatched Path.open/Path.read_bytes to raise if ever called, then ran loads()/validate()/dumps()/loads() against it across 4 hostile URI shapes -- confirmed zero filesystem access, on the first attempt, mirroring the UBL-SEC-001 pattern exactly.",
+    "3. Wrote 6 tests in a new file: the AST-scan (forbidden-module import check) and a parametrized 4-shape behavioral proof using pytest's monkeypatch fixture.",
+    "4. For the second obligation, read _enforce_tree_limits (reader.py) directly: it walks the tree with an explicit stack, checking both max_xml_nodes and max_nesting_depth on every node visited -- confirming node-count bounding is already real and would catch a wide-but-shallow document even though only the deep-nesting case had a dedicated test. Verified interactively with a 10000-sibling, depth-3 document against a tight max_xml_nodes limit -- correctly refused on the first attempt.",
+    "5. Added 2 tests to the existing test_obligation_security_limits.py file, extending its established fixture-building pattern (_nested -> _wide).",
+    "6. Ran ruff (clean) and the full xliff suite (358 passed, was 350, +8) before writing any evidence claim. Ran the full 6-format regression (3096 passed, was 3088, +8; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "tests/python/xliff/test_obligation_resource_resolution_security.py",
+    "tests/python/xliff/test_obligation_security_limits.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/xliff/test_obligation_resource_resolution_security.py",
+    "tests/python/xliff/test_obligation_security_limits.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_resource_resolution_security.py -q -- 6 passed",
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_security_limits.py -q -- 7 passed, was 5",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 358 passed, was 350 passed",
+    ".venv/Scripts/python -m ruff check tests/python/xliff/test_obligation_resource_resolution_security.py tests/python/xliff/test_obligation_security_limits.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3096 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3088 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not cross-checked against a reference XLIFF implementation.",
+    "obligations_moved_breakdown": "1 obligation (SAL-XLIFF-OBL-009F2EB91831B248) promoted from missing to implemented by proving the required safety property directly. The second obligation (SAL-XLIFF-OBL-130340BC212989D5) gains a genuine new complexity-vector test but stays honestly partial -- its own missing_behavior text also asks for a distinct 'checked arithmetic' guarantee test, which was judged the same way this session characterized the equivalent UBL/NRRD obligations: Python's native big-int semantics make a dedicated checked-arithmetic test largely redundant with the count/depth-limit tests already present, not a separate exploitable gap, but the citation was left narrowed rather than force-closed."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-RESOURCE-RESOLUTION-SECURITY-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-sec-001-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-009F2EB91831B248 (XLIFF-SEC-001) only. The obligation''s own prior finding was already correct and not stale -- no feature anywhere in the package resolves a detached or referenced resource from parsed document content, confirmed again by reading model/document.py directly and grepping the whole package for filesystem-path construction (the only 2 hits are reader.py''s caller-supplied top-level source path and writer.py''s caller-supplied destination path). It was correctly left `missing` rather than force-promoted because the absence-of-attack-surface claim had no dedicated test. 6 new tests now prove it: a whole-package AST scan confirms no networking/execution/plugin module is imported; Note.text is a plain opaque string; and 4 hostile path shapes survive load/validate/dump/round-trip with Path.open/Path.read_bytes monkeypatched to raise if ever invoked with the hostile content -- none were. A separate 2 new tests, added to the existing test_obligation_security_limits.py file, prove SAL-XLIFF-OBL-130340BC212989D5''s _enforce_tree_limits also bounds a width-shaped complexity vector (many siblings, shallow nesting) distinct from the already-tested deep-nesting case -- that obligation stays honestly partial since its own rule_text separately names checked arithmetic, which is not independently tested. xliff suite: 350 -> 358 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-009F2EB91831B248 only; it supports no other obligation and promotes no product state.'
 - evidence_id: XLIFF-IGNORABLE-ELEMENT-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-ignorable-elements-001.json
   expected_result: PASS
@@ -377,14 +382,20 @@ execution_evidence:
 obligations:
 - obligation_id: SAL-XLIFF-OBL-009F2EB91831B248
   capability_id: XLIFF-SEC-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: implemented
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/model/document.py::Note
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_resource_resolution_security.py::test_no_source_file_imports_networking_execution_or_plugin_modules
+  - tests/python/xliff/test_obligation_resource_resolution_security.py::test_a_note_carrying_a_hostile_path_is_stored_as_opaque_text
+  - tests/python/xliff/test_obligation_resource_resolution_security.py::test_a_hostile_note_path_never_touches_the_filesystem
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'No feature anywhere in the package resolves a detached or referenced resource from parsed document content to a filesystem path -- confirmed by grepping the whole model package for path-joining or resolution logic touching untrusted input (none found); XLIFF''s notes/extensions/original-data references are all stored as opaque strings, never dereferenced or fetched. The specific vulnerability class (path traversal via a resolved reference) therefore has no attack surface in the current feature set. Recorded as missing rather than partial because this structural absence-of-attack-surface claim has no dedicated test proving it (same precedent as SAL-UBL-OBL-4CA52BA5DDD8840F, UBL-SEC-001) -- if a future feature adds resource resolution from document content, this obligation needs a real path-confinement test at that time.'
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  - XLIFF-RESOURCE-RESOLUTION-SECURITY-PROOF
+  implemented_behavior:
+  - 'No feature anywhere in the package resolves a detached or referenced resource from parsed document content to a filesystem path -- the obligation''s own prior finding was already correct and not stale, re-confirmed by reading model/document.py directly and grepping the whole package for filesystem-path construction (the only 2 hits are reader.py''s caller-supplied top-level source path and writer.py''s caller-supplied destination path, neither derived from parsed document content). This is now proven, not merely asserted: a whole-package AST scan confirms no networking/execution/plugin module is ever imported, and a direct behavioral test carries 4 hostile path shapes (relative traversal, unix absolute path, windows absolute path, file:// scheme) stored in a <note> element -- the model''s own free-text carrier, Note.text -- through load/validate/dump/round-trip with Path.open/Path.read_bytes monkeypatched to raise if the library ever attempts to resolve them -- confirming the required safety property holds because the resolution capability does not exist, the same reasoning pattern already used for SAL-UBL-OBL-4CA52BA5DDD8840F (UBL-SEC-001) this session.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
@@ -681,14 +692,16 @@ obligations:
   positive_test_selectors:
   - tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_nesting_limit_is_rejected
   - tests/python/xliff/test_obligation_security_limits.py::test_a_document_exceeding_a_configured_node_count_limit_is_rejected
+  - tests/python/xliff/test_obligation_security_limits.py::test_a_wide_shallow_document_is_bounded_by_node_count_not_depth
+  - tests/python/xliff/test_obligation_security_limits.py::test_a_wide_document_within_the_node_count_limit_loads
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - 'Nesting depth and node count are bounded (added this slice), directly bounding the primary XML algorithmic-complexity attack surface (deeply nested or oversized documents). Python''s arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could in another language -- same characterization as the equivalent ubl obligation (SAL-UBL-OBL-8396E06EA0EA75FC, UBL-SEC-001).'
+  - 'Nesting depth and node count are bounded, directly bounding the primary XML algorithmic-complexity attack surface (deeply nested or oversized documents). Python''s arbitrary-precision integers mean size/count accumulation cannot silently overflow the way fixed-width arithmetic could in another language -- same characterization as the equivalent ubl obligation (SAL-UBL-OBL-8396E06EA0EA75FC, UBL-SEC-001). A width-shaped complexity vector distinct from the already-tested deep-nesting case is now also proven: _enforce_tree_limits (reader.py) checks max_xml_nodes on every node visited in its stack-based traversal, so a wide-but-shallow document (many siblings, shallow nesting -- the quadratic-blowup-style shape) is refused even though its depth stays low, confirmed by a dedicated 10000-sibling fixture against a tight max_xml_nodes limit.'
   missing_behavior:
-  - 'No test specifically exercises ''checked arithmetic'' as a distinct guarantee independent of Python''s native big-int semantics, and no test targets an algorithmic-complexity attack vector beyond depth/node-count (e.g. quadratic-blowup-style attacks distinct from the already-rejected DTD/entity case). The limits mechanism exists and is now tested; a dedicated complexity-attack-shaped test does not.'
+  - 'No test specifically exercises ''checked arithmetic'' as a distinct guarantee independent of Python''s native big-int semantics -- judged the same way this session characterized the equivalent ubl/nrrd obligations: Python''s native big-int semantics make a dedicated checked-arithmetic test largely redundant with the count/depth-limit tests already present, not a separate exploitable gap. Left honestly partial (not force-closed) because the obligation''s own rule_text names checked arithmetic as a distinct requirement and no test asserts it as its own fact.'
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
