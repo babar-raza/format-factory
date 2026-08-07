@@ -24,6 +24,21 @@ the same way unit ids already do via file.iter_units().
 ec/sc pairing check remains genuinely unbuilt and is not attempted here
 -- this file closes only the file-id and group-id uniqueness halves of
 SAL-XLIFF-OBL-EC188D4F6DD138A0, and fully closes SAL-XLIFF-OBL-087892B36F8591FF.
+
+Later slice: SAL-XLIFF-OBL-087892B36F8591FF's rule_text bundles three
+clauses -- "one or more file elements", "each carrying an id attribute",
+and "unique within the document" -- but the tests above only ever
+directly proved the third (uniqueness). The other two (xliff.file.required
+and xliff.file.id.required) already existed in validator.py, confirmed by
+direct probing, but had no test exercising them from this angle. Added
+here to make the obligation's own three-clause rule_text fully,
+individually proven rather than proven-by-implication. This also closes
+its cross-capability duplicate SAL-XLIFF-OBL-AD191413B05A60ED under
+XLIFF-MODEL-001 (identical rule_text), whose own missing_behavior text
+was stale -- it claimed "no shipped-namespace test builds a multi-file
+document" when in fact the tests above (added in this same file, prior
+slice) already did exactly that; only the two newly-added clauses here
+were genuinely untested.
 """
 
 from __future__ import annotations
@@ -117,3 +132,22 @@ def test_the_same_group_id_reused_across_different_files_is_not_a_duplicate() ->
     report = validate(document)
 
     assert report.is_valid is True
+
+
+def test_a_document_with_zero_file_elements_is_flagged_as_invalid() -> None:
+    document = loads(_document(""))
+
+    report = validate(document)
+
+    assert report.is_valid is False
+    assert any(item.code == "xliff.file.required" for item in report.diagnostics)
+
+
+def test_a_file_element_without_an_id_attribute_is_flagged_as_invalid() -> None:
+    body = '<file><unit id="u1"><segment id="s1"><source>hi</source></segment></unit></file>'
+    document = loads(_document(body))
+
+    report = validate(document)
+
+    assert report.is_valid is False
+    assert any(item.code == "xliff.file.id.required" for item in report.diagnostics)

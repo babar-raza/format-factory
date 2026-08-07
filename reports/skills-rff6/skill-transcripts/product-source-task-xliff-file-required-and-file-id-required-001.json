@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-file-required-and-file-id-required-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T11:05:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_FILE_REQUIRED_AND_FILE_ID_REQUIRED_001",
+    "task_kind": "verify-and-test-already-shipped-behavior-plus-stale-evidence-correction",
+    "root_cause": "Surveyed xliff's remaining unresolved obligations for a fresh, well-scoped cluster after the UBL-WRITE-001 tick. Found SAL-XLIFF-OBL-AD191413B05A60ED (XLIFF-MODEL-001) stuck at status=missing with a stale missing_behavior claim ('no shipped-namespace test builds a multi-file document, so file-id-unique-within-document is never exercised') that was already false: its cross-capability duplicate SAL-XLIFF-OBL-087892B36F8591FF (XLIFF-PARSE-001, identical rule_text) was already status=implemented, citing exactly the multi-file-document tests the stale text claimed did not exist. Neither sibling, however, had direct test coverage for the other two clauses the shared rule_text bundles: 'one or more file elements' (xliff.file.required) and 'each carrying an id attribute' (xliff.file.id.required).",
+    "obligation_targeted": "SAL-XLIFF-OBL-AD191413B05A60ED (missing->implemented) and SAL-XLIFF-OBL-087892B36F8591FF (already implemented, evidence strengthened to cover all 3 clauses directly)",
+    "acceptance_evidence": "2 new tests prove: a document with zero file elements is flagged xliff.file.required; a file element with no id attribute is flagged xliff.file.id.required. Both diagnostics already existed in validator.py, confirmed via direct interactive probing before writing any test.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Surveyed xliff's remaining unresolved obligations (48 unresolved of 142) grouped by capability_id, looking for a genuinely small, closeable cluster rather than the larger open-ended module/parse work already exhausted across 8 prior consecutive ticks this session (events 220-230).",
+    "2. Found SAL-XLIFF-OBL-AD191413B05A60ED at status=missing, whose rule_text is byte-identical to SAL-XLIFF-OBL-087892B36F8591FF (already status=implemented). Cross-checked exact rule_text equality directly against the obligation register (not the evidence file's own summary text) per the evidence-integrity discipline established earlier this session -- confirmed a true duplicate pair, not a superficially-similar-but-distinct obligation.",
+    "3. Read the missing obligation's own missing_behavior text: 'no shipped-namespace test builds a multi-file document, so file-id-unique-within-document is never exercised.' Read the implemented sibling's implemented_behavior and positive_test_selectors and found they cite tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_real_multi_file_document_with_distinct_file_ids_is_valid and ::test_two_files_sharing_an_id_are_flagged_as_duplicate -- both of which DO build multi-file documents and DO exercise file-id uniqueness, directly contradicting the missing obligation's own stale claim.",
+    "4. Read the full existing test file to confirm precisely what was and was not covered: uniqueness (clause 3) was fully covered by 2 existing tests; 'one or more files' (clause 1) and 'each file carries an id' (clause 2) had zero test coverage in either obligation's evidence.",
+    "5. Probed both untested clauses directly against the shipped package before writing any test: loads()+validate() on a document with zero <file> elements produced diagnostic code xliff.file.required; loads()+validate() on a document with one <file> element lacking an id attribute produced xliff.file.id.required. Both already existed in validator.py (lines ~613-622), confirmed by reading the source directly rather than assuming from the probe alone.",
+    "6. Extended the existing test_obligation_file_and_group_id_uniqueness.py (rather than creating a new file) since it already explicitly named both obligations in its own docstring and its docstring already documented the exact 3-clause bundling this tick closes -- adding a new file would have fragmented directly related coverage. Updated the docstring to record the later-slice rationale.",
+    "7. Added 2 new tests: test_a_document_with_zero_file_elements_is_flagged_as_invalid, test_a_file_element_without_an_id_attribute_is_flagged_as_invalid. Both passed on the first attempt -- zero source code changes needed.",
+    "8. Ran ruff (clean), the full xliff suite (447 passed, was 445, +2), and the full 6-format regression (3373 passed, was 3371, +2; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "9. No skills-first governance invocation needed -- zero src/ files changed, only an extended test file and evidence YAML, matching the 'skipped when only tests/evidence YAML change' rule.",
+    "10. Promoted SAL-XLIFF-OBL-AD191413B05A60ED to implemented (all 3 of its rule_text's clauses now individually, directly proven) and strengthened SAL-XLIFF-OBL-087892B36F8591FF's evidence (already implemented) to cite the same 2 new tests, correcting its own evidence from 'uniqueness proven, other two clauses proven only by implication' to 'all 3 clauses directly proven.'"
+  ],
+  "allowed_files": [
+    "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py -q -- 8 passed, was 6 passed",
+    ".venv/Scripts/python -m ruff check tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 447 passed, was 445 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3373 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3371 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation moved missing->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every claim verified by direct code inspection and interactive probing of already-shipped behavior.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-AD191413B05A60ED (XLIFF-MODEL-001) missing->implemented. Its cross-capability duplicate SAL-XLIFF-OBL-087892B36F8591FF (XLIFF-PARSE-001) remains implemented but now has strengthened, fully-direct evidence for all 3 of its rule_text's clauses instead of 2 of 3."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

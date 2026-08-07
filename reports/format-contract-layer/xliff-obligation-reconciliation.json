@@ -34,6 +34,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-087892B36F8591FF (XLIFF-PARSE-001) and narrows SAL-XLIFF-OBL-EC188D4F6DD138A0 (XLIFF-PARSE-001). xliff.file.id.duplicate already existed in validator.py but no shipped test built a real multi-file document to exercise it, confirmed via an interactive probe that the existing check already fires correctly on the first attempt -- a pure test-coverage gap, not a missing feature. Group-id duplicate detection genuinely did not exist, confirmed by the same probe returning zero diagnostics for two sibling groups sharing an id. Read the pinned XLIFF 2.1 spec source directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin, section 3.1 and the identical scope table in section 4.9) to ground the exact uniqueness scope: file ids are unique document-wide, group ids are unique file-wide (flattening across nesting depth) but explicitly NOT document-wide, distinct scopes confirmed directly rather than assumed uniform. Added _iter_groups(), a recursive flattening walker mirroring the existing file.iter_units() pattern, and a Counter-based group-id duplicate check in validate(), scoped per-file. 6 new tests prove sibling duplicates, nested-depth duplicates, non-duplicate distinct ids, and correct non-flagging when the same group id is legitimately reused across different files (since scope is per-file, not document-wide). xliff suite: 371 -> 377 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, with the group-id scope grounded directly in the pinned spec's own identifier-scope text. Covers SAL-XLIFF-OBL-087892B36F8591FF and SAL-XLIFF-OBL-EC188D4F6DD138A0 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-FILE-REQUIRED-AND-FILE-ID-REQUIRED-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-file-required-and-file-id-required-001.json",
+      "sha256": "a39c6208d21397ccaa1ba7d4c49360095c48b8509cd60b75508274bd38f4f1b7",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-087892B36F8591FF's (XLIFF-PARSE-001) remaining two clauses and its cross-capability duplicate SAL-XLIFF-OBL-AD191413B05A60ED (XLIFF-MODEL-001, identical rule_text, promoted missing->implemented). The obligation's own rule_text bundles three clauses -- \"one or more file elements\", \"each carrying an id attribute\", \"unique within the document\" -- but the file/group-id-uniqueness tick (XLIFF-FILE-GROUP-ID-UNIQUENESS-PROOF, this same test file) only ever directly proved the third. xliff.file.required (a document with zero file elements is invalid) and xliff.file.id.required (a file element missing its id attribute is invalid) both already existed in validator.py, confirmed via direct interactive probing before writing any test, but neither had dedicated test coverage. Also discovered and corrected a stale claim in SAL-XLIFF-OBL-AD191413B05A60ED's own prior missing_behavior text: it asserted \"no shipped-namespace test builds a multi-file document, so file-id-unique-within-document is never exercised,\" which was already false at the time this tick began -- the file/group-id-uniqueness tick had already added exactly that test, but this sibling obligation was never reconciled to reflect it, leaving it stuck at missing while its identical-rule_text sibling under XLIFF-PARSE-001 was already implemented. 2 new tests added to test_obligation_file_and_group_id_uniqueness.py prove: a document with zero file elements is flagged xliff.file.required; a file element with no id attribute is flagged xliff.file.id.required. Zero source code changes -- both checks were already shipped, only untested from this specific angle. xliff suite: 445 -> 447 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule. Covers SAL-XLIFF-OBL-087892B36F8591FF and SAL-XLIFF-OBL-AD191413B05A60ED only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-FORMAT-STYLE-FS-VALUES-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -245,7 +253,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "364f9dedb55fde42cbf4448ea84626f03ca1dcc3f294fc7c74806c9a34577d7f",
+    "implementation_evidence": "cc7c72669126cc3701506fdc5cd14c3828a61da42e64ee6d8466ae606eb4f66b",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -433,14 +441,18 @@
       "capability_id": "XLIFF-PARSE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-FILE-GROUP-ID-UNIQUENESS-PROOF"
+        "XLIFF-FILE-GROUP-ID-UNIQUENESS-PROOF",
+        "XLIFF-FILE-REQUIRED-AND-FILE-ID-REQUIRED-PROOF"
       ],
       "implemented_behavior": [
-        "xliff.file.id.duplicate already existed in validator.py but had no shipped test building a real multi-file document to exercise it -- now proven directly: a document with 2 files declaring the same id is flagged invalid with the exact diagnostic, and a document with distinct file ids validates cleanly."
+        "xliff.file.id.duplicate already existed in validator.py but had no shipped test building a real multi-file document to exercise it -- now proven directly: a document with 2 files declaring the same id is flagged invalid with the exact diagnostic, and a document with distinct file ids validates cleanly.",
+        "This obligation's rule_text bundles three clauses -- \"one or more file elements\", \"each carrying an id attribute\", \"unique within the document\" -- and the two above only ever directly proved the third. xliff.file.required (zero-file documents rejected) and xliff.file.id.required (a file element missing its id attribute rejected) both already existed in validator.py, confirmed by direct probing, but had no test exercising either from this angle -- now proven directly, so all three clauses are individually tested rather than two being proven only by implication."
       ],
       "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_files_sharing_an_id_are_flagged_as_duplicate"
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_files_sharing_an_id_are_flagged_as_duplicate",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_document_with_zero_file_elements_is_flagged_as_invalid",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_file_element_without_an_id_attribute_is_flagged_as_invalid"
       ],
       "obligation_id": "SAL-XLIFF-OBL-087892B36F8591FF",
       "positive_test_selectors": [
@@ -3647,14 +3659,25 @@
     },
     {
       "capability_id": "XLIFF-MODEL-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-087892B36F8591FF (identical rule_text). Confirmed gap, not an audit backlog: no shipped-namespace test builds a multi-file document, so file-id-unique-within-document is never exercised (the validator has a duplicate-id check, but only unit/segment-id duplicates are tested, never file-id). Not attempted this slice."
+      "execution_evidence_ids": [
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-FILE-GROUP-ID-UNIQUENESS-PROOF",
+        "XLIFF-FILE-REQUIRED-AND-FILE-ID-REQUIRED-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-087892B36F8591FF (identical rule_text, now fully closed there too): all three clauses of this obligation's rule_text are directly proven -- xliff.file.required (a document with zero file elements is invalid), xliff.file.id.required (a file element missing its id attribute is invalid), and xliff.file.id.duplicate (two files sharing an id are invalid; distinct ids validate cleanly). All three checks already existed in validator.py; the previous 'missing' status reflected stale text -- a prior slice's multi-file-document tests already covered the uniqueness clause, and this slice added direct coverage for the other two, previously untested from this angle."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_files_sharing_an_id_are_flagged_as_duplicate",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_document_with_zero_file_elements_is_flagged_as_invalid",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_file_element_without_an_id_attribute_is_flagged_as_invalid"
+      ],
       "obligation_id": "SAL-XLIFF-OBL-AD191413B05A60ED",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_real_multi_file_document_with_distinct_file_ids_is_valid",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_files_sharing_an_id_are_flagged_as_duplicate"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3663,9 +3686,11 @@
           "Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-INLINE-001",
@@ -5132,6 +5157,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-absent-vs-explicit-sweep-001.json": "4efe94db3235492a71a6bc7f3fda3b3b727e630e0aa6998facbb45384d9f8959",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-cross-cluster-citation-audit-001.json": "a13c27fe5a277fc1cbda003532f02792fee40b10bdafe966c4052601e8f9ae6e",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-file-group-id-uniqueness-001.json": "50333c4f0bea5929373b26cd75ceb05590c18f4173000e194334be720f7f3e73",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-file-required-and-file-id-required-001.json": "a39c6208d21397ccaa1ba7d4c49360095c48b8509cd60b75508274bd38f4f1b7",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-format-style-fs-values-001.json": "32dff4783e57f339a5b51c52c491eb55739ef51cb6a4d6d198aeddf100fbc970",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-ignorable-elements-001.json": "b4eae20e8f1235e61fed5828dbb0d3880ae8c9762e85f1d6e488c777872a1a93",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-isolated-pairing-attrs-001.json": "bab9d700b6907f730117050549aa3f075ac7a33b9f6c25c0306f4264cfc0f146",
@@ -5172,7 +5198,7 @@
     "src/python/xliff/src/format_factory/xliff/state_transitions.py": "6b12476e31076a788cef37fb476e1b5eda7365e6eb640bbb7bedcebabb9d49ea",
     "src/python/xliff/src/format_factory/xliff/validation/validator.py": "de665c8117025305b250f7b17158193b1e935f670abfc847d88ec41f46dc1b56",
     "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py": "3576c2a5c91c42fb0070f64d798078090e9af3118e3a6015663a4b7cbd111957",
-    "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py": "13bd7850154306f68582918a5ffaca79a55f5b3145f703f76c3c3ef4e79328e5",
+    "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py": "4608bfab942b23e748dc4010785ec78e72a668f796a3d93401e208fc2365ab80",
     "tests/python/xliff/test_obligation_format_style_module_fs_values.py": "5e03baa15603d37ab30de64ad46e889955bf3be3694e2f515b3acde3bf1fac24",
     "tests/python/xliff/test_obligation_ignorable_elements.py": "70908f9b90fa150715bd19b6c9a1abd46b36b818a3710c4ad82d851dc6a9c880",
     "tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py": "325fa2bd6193acdffb070a843633132e89f9f0a763c156714012baff1a95c4dd",
@@ -5202,12 +5228,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 94,
-      "missing": 12,
+      "implemented": 95,
+      "missing": 11,
       "partial": 36
     },
     "total": 142,
-    "unresolved": 48
+    "unresolved": 47
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
