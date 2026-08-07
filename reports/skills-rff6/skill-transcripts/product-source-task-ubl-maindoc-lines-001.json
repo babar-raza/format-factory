@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-maindoc-lines-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T04:10:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_MAINDOC_LINES_001",
+    "task_kind": "genuine-large-gap-closure-via-direct-xsd-read-23-way-cross-capability-duplicate",
+    "root_cause": "23 obligations across UBL-MODEL-001/PARSE-001/VALIDATE-001/DOCTYPES-001/EDIT-001/REF-001/VALUES-001 shared 5 distinct rule_texts (2 Order variants, 1 CreditNote, 1 DespatchAdvice, 1 ApplicationResponse), each naming a maindoc-specific line or response aggregate (cac:OrderLine, cac:CreditNoteLine, cac:DespatchLine, cac:DocumentResponse) that had zero model representation -- confirmed by grepping for each class name (zero hits). Events 193/194 proved the pinned OASIS UBL 2.3 XSD (vendored inside the locally materialized release ZIP) can be read directly to ground new typed models the SAL fact cache alone could not unblock.",
+    "obligation_targeted": "23 obligations total: 6 + 4 (Order, 2 rule_text variants), 5 (CreditNote), 4 (DespatchAdvice), 4 (ApplicationResponse) -- see the accepted evidence entry for the exact obligation-id list.",
+    "acceptance_evidence": "New model/lines.py module with 7 dataclasses (LineItem, OrderLine, CreditNoteLine, DespatchLine, DocumentReference, Response, DocumentResponse) and matching projectors, each field grounded directly in OrderLineType/LineItemType/CreditNoteLineType/DespatchLineType/DocumentReferenceType/ResponseType/DocumentResponseType read straight from the pinned XSD. 14 new tests prove every projector's positive, required-field, and optional-field cases plus a full document round trip through a real Order document.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Grepped the whole ubl model package for 'class OrderLine', 'class CreditNoteLine', 'class DespatchLine', 'class DocumentResponse' -- zero hits, confirming all 4 are genuinely unmodeled.",
+    "2. Extracted xsd/common/UBL-CommonAggregateComponents-2.3.xsd directly from the pinned OASIS UBL 2.3 release ZIP and read OrderLineType, LineItemType (OrderLineType's required child), CreditNoteLineType, DespatchLineType, DocumentResponseType, DocumentReferenceType, and ResponseType directly -- every field name and cardinality in the new module is sourced from this read.",
+    "3. Discovered each type has a genuinely different required-field shape (not a copy of InvoiceLine): OrderLineType requires a nested cac:LineItem (itself carrying ID/Quantity/LineExtensionAmount/Item, closely mirroring InvoiceLine); CreditNoteLineType requires only cbc:ID (quantity/amount/item all optional per the XSD, unlike InvoiceLine); DespatchLineType requires ID and Item but makes quantity optional; DocumentResponseType requires a nested cac:Response plus at least one cac:DocumentReference. Modeled each exactly as the XSD declares rather than assuming InvoiceLine's shape applies uniformly.",
+    "4. Wrote model/lines.py mirroring the exact code style of aggregates.py/charges.py/party.py (frozen dataclasses, _require imported from aggregates.py for genuinely-required XSD fields, find()/find_all()-based projectors). Wired all 14 new names through model/__init__.py and the top-level package __init__.py.",
+    "5. Ran an interactive probe covering all 4 line types plus their required-field violations before writing any test -- one drafting mistake caught immediately: the first probe attempt omitted the currencyID attribute LineExtensionAmount requires, producing a real UblValidationError from amount_of (not a bug in the new code, a fixture mistake) -- fixed the probe and re-ran; all cases then passed on the first real attempt.",
+    "6. Wrote 14 new tests. Ran ruff (clean) and the full ubl suite (771 passed, was 757, +14) before writing any evidence claim. Ran the full 6-format regression (3034 passed, was 3020, +14; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/model/lines.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_maindoc_lines.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/model/lines.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_maindoc_lines.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_maindoc_lines.py -q -- 14 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 771 passed, was 757 passed",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_maindoc_lines.py src/python/ubl/src/format_factory/ubl/model/lines.py src/python/ubl/src/format_factory/ubl/model/__init__.py src/python/ubl/src/format_factory/ubl/__init__.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3034 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3020 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 23,
+    "obligations_total_for_format": 194,
+    "oracle": "Verified against the pinned OASIS UBL 2.3 release package's own vendored XSD schema (extracted directly from the ZIP, not a SAL-fact paraphrase or memory) -- higher-confidence than typical SELF-CONSISTENT evidence, though still not cross-checked against an independent reference UBL implementation, per GAP-008.",
+    "obligations_moved_breakdown": "23 obligations closed at once (5 duplicate groups across 7 capabilities) by building one new, precisely-scoped, spec-grounded model module covering 4 distinct maindoc-specific aggregate types, mirroring this codebase's existing InvoiceLine pattern while respecting each type's own genuinely different required-field shape."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

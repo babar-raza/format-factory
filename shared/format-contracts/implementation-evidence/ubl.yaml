@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-MAINDOC-LINES-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-maindoc-lines-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Closes 23 obligations across UBL-MODEL-001/PARSE-001/VALIDATE-001/DOCTYPES-001/EDIT-001/REF-001/VALUES-001, spanning 5 distinct rule_texts (2 Order variants, 1 CreditNote, 1 DespatchAdvice, 1 ApplicationResponse). None of OrderLine, CreditNoteLine, DespatchLine, or DocumentResponse had any model representation before this slice, confirmed by grepping for each class name (zero hits). Unblocked the same way events 193/194 unblocked PaymentMeans.payee_financial_account and Party/PostalAddress: reading the pinned OASIS UBL 2.3 release package''s own vendored XSD directly (xsd/common/UBL-CommonAggregateComponents-2.3.xsd, extracted from the ZIP) rather than the incomplete SAL fact cache. A new model/lines.py module adds 7 dataclasses (LineItem, OrderLine, CreditNoteLine, DespatchLine, DocumentReference, Response, DocumentResponse) and matching projectors. Each type''s required-field shape was read exactly from its own complexType rather than assumed uniform: OrderLine wraps a required LineItem (mirroring InvoiceLine); CreditNoteLine requires only cbc:ID (quantity/amount/item all optional per its own XSD, unlike InvoiceLine); DespatchLine requires ID and Item; DocumentResponse requires a nested Response plus DocumentReference(s). 14 new tests prove every projector''s positive, required-field, and optional-field cases plus a full document round trip through a real Order document. ubl suite: 757 -> 771 passed. Verified against the pinned XSD directly -- higher-confidence than typical SELF-CONSISTENT evidence, though still not cross-checked against an independent reference UBL implementation, per GAP-008. Covers the 23 obligation IDs listed in this slice''s commit message only; it supports no other obligation and promotes no product state.'
 - evidence_id: UBL-PARTY-POSTAL-ADDRESS-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-party-postal-address-001.json
   expected_result: PASS
@@ -576,19 +581,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-0DE187D3095ADFC9
   capability_id: UBL-REF-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::Order
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::OrderLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::LineItem
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::order_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_projects_with_its_fields'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_projects_with_its_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_an_order_line_survives_a_real_document_round_trip'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_requires_a_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_requires_an_item'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-PARSE-001''s SAL-UBL-OBL-CC931175029D1D9C (identical rule_text): Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-5DE0B14D6D273578 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-4F8B81527163B9F9 (identical rule_text): Same underlying fact as SAL-UBL-OBL-16C93B2852CE2EAC in this cluster (Order document root, namespace, and OrderLine aggregate), restated with an "OASIS UBL 2.1" framing instead of "UBL maindoc schemas." The document-root/namespace half is proven by the same 91-root test.'
-  missing_behavior:
-  - 'Same gap as SAL-UBL-OBL-16C93B2852CE2EAC: no typed OrderLine dataclass exists; order lines are only generically preserved, not modeled as a typed composite.'
+  - 'cac:OrderLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (OrderLineType and LineItemType, xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read from the ZIP itself, not a SAL-fact paraphrase or memory): OrderLine wraps a required LineItem (cbc:ID, an optional cbc:Quantity and cbc:LineExtensionAmount, and a required cac:Item), mirroring InvoiceLine''s existing precedent for the identifying/quantity/amount/item shape.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -672,19 +686,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-111E7D9625D62ECE
   capability_id: UBL-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::Order
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::OrderLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::LineItem
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::order_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_projects_with_its_fields'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_projects_with_its_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_an_order_line_survives_a_real_document_round_trip'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_requires_a_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_requires_an_item'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-PARSE-001''s SAL-UBL-OBL-B68AB21224AFB222 (identical rule_text): Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-80D484D6F8F255B4 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-16C93B2852CE2EAC (identical rule_text): Order is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity (parametrized over the full root inventory including "Order").'
-  missing_behavior:
-  - 'Unlike InvoiceLine, no typed OrderLine dataclass exists anywhere in the model -- order lines are preserved generically as part of the lossless XmlNode tree (locatable via typed.py::find by local name) rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:OrderLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (OrderLineType and LineItemType, xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read from the ZIP itself, not a SAL-fact paraphrase or memory): OrderLine wraps a required LineItem (cbc:ID, an optional cbc:Quantity and cbc:LineExtensionAmount, and a required cac:Item), mirroring InvoiceLine''s existing precedent for the identifying/quantity/amount/item shape.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Per-layer positive/negative fixtures; layered report structure asserted machine-readable.
@@ -757,19 +780,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-16C93B2852CE2EAC
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::Order
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::OrderLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::LineItem
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::order_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_projects_with_its_fields'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_projects_with_its_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_an_order_line_survives_a_real_document_round_trip'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_requires_a_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_requires_an_item'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Order is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity (parametrized over the full root inventory including "Order").'
-  missing_behavior:
-  - 'Unlike InvoiceLine, no typed OrderLine dataclass exists anywhere in the model -- order lines are preserved generically as part of the lossless XmlNode tree (locatable via typed.py::find by local name) rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:OrderLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (OrderLineType and LineItemType, xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read from the ZIP itself, not a SAL-fact paraphrase or memory): OrderLine wraps a required LineItem (cbc:ID, an optional cbc:Quantity and cbc:LineExtensionAmount, and a required cac:Item), mirroring InvoiceLine''s existing precedent for the identifying/quantity/amount/item shape.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -1241,19 +1273,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-2DC5FD2DA3562AD8
   capability_id: UBL-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::CreditNote
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::CreditNoteLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::credit_note_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_credit_note_line_projects_with_its_fields'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_credit_note_line_requires_only_an_id'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_credit_note_line_requires_an_id'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-E349D547D508AD8C (identical rule_text): CreditNote is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
-  missing_behavior:
-  - 'Unlike InvoiceLine, no typed CreditNoteLine dataclass exists anywhere in the model -- credit note lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:CreditNoteLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (CreditNoteLineType): cbc:ID (required), and optional cbc:CreditedQuantity, cbc:LineExtensionAmount, and cac:Item -- unlike InvoiceLine, CreditNoteLineType''s own XSD makes quantity/amount/item all optional (minOccurs="0"), so only cbc:ID is enforced as required, matching the schema precisely rather than assuming InvoiceLine''s stricter shape applies uniformly.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Per-layer positive/negative fixtures; layered report structure asserted machine-readable.
@@ -1609,19 +1647,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-441B495EB6A1CA64
   capability_id: UBL-VALUES-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::Order
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::OrderLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::LineItem
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::order_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_projects_with_its_fields'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_projects_with_its_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_an_order_line_survives_a_real_document_round_trip'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_requires_a_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_requires_an_item'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-VALUES-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-4F8B81527163B9F9 (identical rule_text): Same underlying fact as SAL-UBL-OBL-16C93B2852CE2EAC in this cluster (Order document root, namespace, and OrderLine aggregate), restated with an "OASIS UBL 2.1" framing instead of "UBL maindoc schemas." The document-root/namespace half is proven by the same 91-root test.'
-  missing_behavior:
-  - 'Same gap as SAL-UBL-OBL-16C93B2852CE2EAC: no typed OrderLine dataclass exists; order lines are only generically preserved, not modeled as a typed composite.'
+  - 'cac:OrderLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (OrderLineType and LineItemType, xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read from the ZIP itself, not a SAL-fact paraphrase or memory): OrderLine wraps a required LineItem (cbc:ID, an optional cbc:Quantity and cbc:LineExtensionAmount, and a required cac:Item), mirroring InvoiceLine''s existing precedent for the identifying/quantity/amount/item shape.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
@@ -1680,44 +1727,55 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-47361D7221816349
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::DocumentResponse
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::response_of
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::document_response_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_document_response_projects_with_response_and_document_references'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_document_response_with_multiple_document_references'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_document_response_requires_a_response'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-91E7CB3AF843790E (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-77AE58DED2CCE475 (identical rule_text): ApplicationResponse is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
-  missing_behavior:
-  - 'No typed DocumentResponse dataclass exists anywhere in the model -- business-level acknowledgement aggregates are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:DocumentResponse is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (DocumentResponseType, ResponseType, DocumentReferenceType): a required nested cac:Response (response code and description) plus the cac:DocumentReference(s) it responds to (each requiring cbc:ID per DocumentReferenceType).'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
-      spoofed-namespace fixtures rejected.
+    - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures rejected.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-4900522060768D4E
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::CreditNote
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::CreditNoteLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::credit_note_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_credit_note_line_projects_with_its_fields'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_credit_note_line_requires_only_an_id'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_credit_note_line_requires_an_id'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-E349D547D508AD8C (identical rule_text): CreditNote is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
-  missing_behavior:
-  - 'Unlike InvoiceLine, no typed CreditNoteLine dataclass exists anywhere in the model -- credit note lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:CreditNoteLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (CreditNoteLineType): cbc:ID (required), and optional cbc:CreditedQuantity, cbc:LineExtensionAmount, and cac:Item -- unlike InvoiceLine, CreditNoteLineType''s own XSD makes quantity/amount/item all optional (minOccurs="0"), so only cbc:ID is enforced as required, matching the schema precisely rather than assuming InvoiceLine''s stricter shape applies uniformly.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
-      spoofed-namespace fixtures rejected.
+    - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures rejected.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-4936871F9800219B
@@ -1937,19 +1995,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-4F8B81527163B9F9
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::Order
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::OrderLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::LineItem
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::order_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_projects_with_its_fields'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_projects_with_its_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_an_order_line_survives_a_real_document_round_trip'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_requires_a_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_requires_an_item'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Same underlying fact as SAL-UBL-OBL-16C93B2852CE2EAC in this cluster (Order document root, namespace, and OrderLine aggregate), restated with an "OASIS UBL 2.1" framing instead of "UBL maindoc schemas." The document-root/namespace half is proven by the same 91-root test.'
-  missing_behavior:
-  - 'Same gap as SAL-UBL-OBL-16C93B2852CE2EAC: no typed OrderLine dataclass exists; order lines are only generically preserved, not modeled as a typed composite.'
+  - 'cac:OrderLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (OrderLineType and LineItemType, xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read from the ZIP itself, not a SAL-fact paraphrase or memory): OrderLine wraps a required LineItem (cbc:ID, an optional cbc:Quantity and cbc:LineExtensionAmount, and a required cac:Item), mirroring InvoiceLine''s existing precedent for the identifying/quantity/amount/item shape.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -2213,23 +2280,31 @@ obligations:
       missing required PartyName name.
 - obligation_id: SAL-UBL-OBL-5DE0B14D6D273578
   capability_id: UBL-DOCTYPES-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::Order
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::OrderLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::LineItem
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::order_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_projects_with_its_fields'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_projects_with_its_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_an_order_line_survives_a_real_document_round_trip'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_requires_a_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_requires_an_item'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-4F8B81527163B9F9 (identical rule_text): Same underlying fact as SAL-UBL-OBL-16C93B2852CE2EAC in this cluster (Order document root, namespace, and OrderLine aggregate), restated with an "OASIS UBL 2.1" framing instead of "UBL maindoc schemas." The document-root/namespace half is proven by the same 91-root test.'
-  missing_behavior:
-  - 'Same gap as SAL-UBL-OBL-16C93B2852CE2EAC: no typed OrderLine dataclass exists; order lines are only generically preserved, not modeled as a typed composite.'
+  - 'cac:OrderLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (OrderLineType and LineItemType, xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read from the ZIP itself, not a SAL-fact paraphrase or memory): OrderLine wraps a required LineItem (cbc:ID, an optional cbc:Quantity and cbc:LineExtensionAmount, and a required cac:Item), mirroring InvoiceLine''s existing precedent for the identifying/quantity/amount/item shape.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every
-      official sample.
+    - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-5E4A8D245A84A12F
@@ -2442,19 +2517,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-6D30B851A52B5863
   capability_id: UBL-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::DespatchAdvice
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::DespatchLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::despatch_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_despatch_line_projects_with_its_fields'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_despatch_line_requires_an_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_despatch_line_requires_an_id'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-PARSE-001''s SAL-UBL-OBL-DE96E8B4E9ADF196 (identical rule_text): Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-C2A6F6ABBACE3C26 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-BE7766CC0C6398BE (identical rule_text): DespatchAdvice is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
-  missing_behavior:
-  - 'No typed DespatchLine dataclass exists anywhere in the model -- despatch lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:DespatchLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (DespatchLineType): cbc:ID and cac:Item (both required per the XSD) plus an optional cbc:DeliveredQuantity.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Per-layer positive/negative fixtures; layered report structure asserted machine-readable.
@@ -2565,19 +2646,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-77AE58DED2CCE475
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::DocumentResponse
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::response_of
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::document_response_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_document_response_projects_with_response_and_document_references'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_document_response_with_multiple_document_references'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_document_response_requires_a_response'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'ApplicationResponse is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
-  missing_behavior:
-  - 'No typed DocumentResponse dataclass exists anywhere in the model -- business-level acknowledgement aggregates are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:DocumentResponse is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (DocumentResponseType, ResponseType, DocumentReferenceType): a required nested cac:Response (response code and description) plus the cac:DocumentReference(s) it responds to (each requiring cbc:ID per DocumentReferenceType).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -2816,23 +2904,31 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-80D484D6F8F255B4
   capability_id: UBL-DOCTYPES-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::Order
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::OrderLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::LineItem
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::order_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_projects_with_its_fields'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_projects_with_its_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_an_order_line_survives_a_real_document_round_trip'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_requires_a_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_requires_an_item'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-16C93B2852CE2EAC (identical rule_text): Order is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity (parametrized over the full root inventory including "Order").'
-  missing_behavior:
-  - 'Unlike InvoiceLine, no typed OrderLine dataclass exists anywhere in the model -- order lines are preserved generically as part of the lossless XmlNode tree (locatable via typed.py::find by local name) rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:OrderLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (OrderLineType and LineItemType, xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read from the ZIP itself, not a SAL-fact paraphrase or memory): OrderLine wraps a required LineItem (cbc:ID, an optional cbc:Quantity and cbc:LineExtensionAmount, and a required cac:Item), mirroring InvoiceLine''s existing precedent for the identifying/quantity/amount/item shape.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every
-      official sample.
+    - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-8396E06EA0EA75FC
@@ -2864,19 +2960,26 @@ obligations:
     - Selector-bound negative cases are cited for depth, node-count, and attribute-count violations.
 - obligation_id: SAL-UBL-OBL-83CEA9EE98A528C3
   capability_id: UBL-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::DocumentResponse
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::response_of
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::document_response_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_document_response_projects_with_response_and_document_references'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_document_response_with_multiple_document_references'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_document_response_requires_a_response'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-91E7CB3AF843790E (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-77AE58DED2CCE475 (identical rule_text): ApplicationResponse is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
-  missing_behavior:
-  - 'No typed DocumentResponse dataclass exists anywhere in the model -- business-level acknowledgement aggregates are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:DocumentResponse is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (DocumentResponseType, ResponseType, DocumentReferenceType): a required nested cac:Response (response code and description) plus the cac:DocumentReference(s) it responds to (each requiring cbc:ID per DocumentReferenceType).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Per-layer positive/negative fixtures; layered report structure asserted machine-readable.
@@ -3113,23 +3216,29 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-91E7CB3AF843790E
   capability_id: UBL-DOCTYPES-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::ApplicationResponse
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::DocumentResponse
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::response_of
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::document_response_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_document_response_projects_with_response_and_document_references'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_document_response_with_multiple_document_references'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_document_response_requires_a_response'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-77AE58DED2CCE475 (identical rule_text): ApplicationResponse is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
-  missing_behavior:
-  - 'No typed DocumentResponse dataclass exists anywhere in the model -- business-level acknowledgement aggregates are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:DocumentResponse is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (DocumentResponseType, ResponseType, DocumentReferenceType): a required nested cac:Response (response code and description) plus the cac:DocumentReference(s) it responds to (each requiring cbc:ID per DocumentReferenceType).'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every
-      official sample.
+    - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-933F687594F7AFA1
@@ -3443,19 +3552,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-A453593B8331BB0F
   capability_id: UBL-EDIT-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::CreditNote
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::CreditNoteLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::credit_note_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_credit_note_line_projects_with_its_fields'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_credit_note_line_requires_only_an_id'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_credit_note_line_requires_an_id'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-E349D547D508AD8C (identical rule_text): CreditNote is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
-  missing_behavior:
-  - 'Unlike InvoiceLine, no typed CreditNoteLine dataclass exists anywhere in the model -- credit note lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:CreditNoteLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (CreditNoteLineType): cbc:ID (required), and optional cbc:CreditedQuantity, cbc:LineExtensionAmount, and cac:Item -- unlike InvoiceLine, CreditNoteLineType''s own XSD makes quantity/amount/item all optional (minOccurs="0"), so only cbc:ID is enforced as required, matching the schema precisely rather than assuming InvoiceLine''s stricter shape applies uniformly.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite.
@@ -3667,44 +3782,57 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-B500CCDFA3228EDB
   capability_id: UBL-DOCTYPES-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::CreditNote
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::CreditNoteLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::credit_note_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_credit_note_line_projects_with_its_fields'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_credit_note_line_requires_only_an_id'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_credit_note_line_requires_an_id'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-E349D547D508AD8C (identical rule_text): CreditNote is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
-  missing_behavior:
-  - 'Unlike InvoiceLine, no typed CreditNoteLine dataclass exists anywhere in the model -- credit note lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:CreditNoteLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (CreditNoteLineType): cbc:ID (required), and optional cbc:CreditedQuantity, cbc:LineExtensionAmount, and cac:Item -- unlike InvoiceLine, CreditNoteLineType''s own XSD makes quantity/amount/item all optional (minOccurs="0"), so only cbc:ID is enforced as required, matching the schema precisely rather than assuming InvoiceLine''s stricter shape applies uniformly.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every
-      official sample.
+    - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-B68AB21224AFB222
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::Order
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::OrderLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::LineItem
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::order_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_projects_with_its_fields'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_projects_with_its_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_an_order_line_survives_a_real_document_round_trip'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_requires_a_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_requires_an_item'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-80D484D6F8F255B4 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-16C93B2852CE2EAC (identical rule_text): Order is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity (parametrized over the full root inventory including "Order").'
-  missing_behavior:
-  - 'Unlike InvoiceLine, no typed OrderLine dataclass exists anywhere in the model -- order lines are preserved generically as part of the lossless XmlNode tree (locatable via typed.py::find by local name) rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:OrderLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (OrderLineType and LineItemType, xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read from the ZIP itself, not a SAL-fact paraphrase or memory): OrderLine wraps a required LineItem (cbc:ID, an optional cbc:Quantity and cbc:LineExtensionAmount, and a required cac:Item), mirroring InvoiceLine''s existing precedent for the identifying/quantity/amount/item shape.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
-      spoofed-namespace fixtures rejected.
+    - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures rejected.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-B68F5F29F11197D6
@@ -3755,19 +3883,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-BE7766CC0C6398BE
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::DespatchAdvice
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::DespatchLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::despatch_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_despatch_line_projects_with_its_fields'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_despatch_line_requires_an_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_despatch_line_requires_an_id'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'DespatchAdvice is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
-  missing_behavior:
-  - 'No typed DespatchLine dataclass exists anywhere in the model -- despatch lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:DespatchLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (DespatchLineType): cbc:ID and cac:Item (both required per the XSD) plus an optional cbc:DeliveredQuantity.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -3819,23 +3953,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-C2A6F6ABBACE3C26
   capability_id: UBL-DOCTYPES-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::DespatchAdvice
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::DespatchLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::despatch_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_despatch_line_projects_with_its_fields'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_despatch_line_requires_an_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_despatch_line_requires_an_id'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-BE7766CC0C6398BE (identical rule_text): DespatchAdvice is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
-  missing_behavior:
-  - 'No typed DespatchLine dataclass exists anywhere in the model -- despatch lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:DespatchLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (DespatchLineType): cbc:ID and cac:Item (both required per the XSD) plus an optional cbc:DeliveredQuantity.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every
-      official sample.
+    - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-C4BD36751BD0B3AB
@@ -4082,23 +4221,31 @@ obligations:
       cardinality, apex-element count, and disallowed child type).
 - obligation_id: SAL-UBL-OBL-CC931175029D1D9C
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::Order
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::OrderLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::LineItem
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::order_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_projects_with_its_fields'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_projects_with_its_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_an_order_line_survives_a_real_document_round_trip'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_requires_a_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_requires_an_item'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-5DE0B14D6D273578 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-4F8B81527163B9F9 (identical rule_text): Same underlying fact as SAL-UBL-OBL-16C93B2852CE2EAC in this cluster (Order document root, namespace, and OrderLine aggregate), restated with an "OASIS UBL 2.1" framing instead of "UBL maindoc schemas." The document-root/namespace half is proven by the same 91-root test.'
-  missing_behavior:
-  - 'Same gap as SAL-UBL-OBL-16C93B2852CE2EAC: no typed OrderLine dataclass exists; order lines are only generically preserved, not modeled as a typed composite.'
+  - 'cac:OrderLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (OrderLineType and LineItemType, xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read from the ZIP itself, not a SAL-fact paraphrase or memory): OrderLine wraps a required LineItem (cbc:ID, an optional cbc:Quantity and cbc:LineExtensionAmount, and a required cac:Item), mirroring InvoiceLine''s existing precedent for the identifying/quantity/amount/item shape.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
-      spoofed-namespace fixtures rejected.
+    - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures rejected.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-CDADC5CFB25A9B9E
@@ -4312,23 +4459,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-DE96E8B4E9ADF196
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::DespatchAdvice
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::DespatchLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::despatch_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_despatch_line_projects_with_its_fields'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_despatch_line_requires_an_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_despatch_line_requires_an_id'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-C2A6F6ABBACE3C26 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-BE7766CC0C6398BE (identical rule_text): DespatchAdvice is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
-  missing_behavior:
-  - 'No typed DespatchLine dataclass exists anywhere in the model -- despatch lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:DespatchLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (DespatchLineType): cbc:ID and cac:Item (both required per the XSD) plus an optional cbc:DeliveredQuantity.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
-      spoofed-namespace fixtures rejected.
+    - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures rejected.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-DF289613C3ABBC56
@@ -4405,19 +4557,25 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-E349D547D508AD8C
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::CreditNote
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::CreditNoteLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::credit_note_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_credit_note_line_projects_with_its_fields'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_credit_note_line_requires_only_an_id'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_credit_note_line_requires_an_id'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'CreditNote is one of the 91 typed document roots; test_all_91_roots_have_typed_roundtrip proves its root element, namespace, and round-trip fidelity.'
-  missing_behavior:
-  - 'Unlike InvoiceLine, no typed CreditNoteLine dataclass exists anywhere in the model -- credit note lines are preserved generically as part of the lossless XmlNode tree rather than modeled as a typed composite. The document-root/namespace half of this claim is proven; the named-child-aggregate-as-typed-composite half is not.'
+  - 'cac:CreditNoteLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (CreditNoteLineType): cbc:ID (required), and optional cbc:CreditedQuantity, cbc:LineExtensionAmount, and cac:Item -- unlike InvoiceLine, CreditNoteLineType''s own XSD makes quantity/amount/item all optional (minOccurs="0"), so only cbc:ID is enforced as required, matching the schema precisely rather than assuming InvoiceLine''s stricter shape applies uniformly.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -4447,19 +4605,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-E77A92D09663F2D4
   capability_id: UBL-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::Order
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::OrderLine
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::LineItem
+  - src/python/ubl/src/format_factory/ubl/model/lines.py::order_line_of
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_projects_with_its_fields'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_projects_with_its_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_an_order_line_survives_a_real_document_round_trip'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_order_line_requires_a_line_item'
+  - 'tests/python/ubl/test_obligation_maindoc_lines.py::test_line_item_requires_an_item'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-MAINDOC-LINES-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of UBL-PARSE-001''s SAL-UBL-OBL-CC931175029D1D9C (identical rule_text): Cross-capability duplicate of UBL-DOCTYPES-001''s SAL-UBL-OBL-5DE0B14D6D273578 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-4F8B81527163B9F9 (identical rule_text): Same underlying fact as SAL-UBL-OBL-16C93B2852CE2EAC in this cluster (Order document root, namespace, and OrderLine aggregate), restated with an "OASIS UBL 2.1" framing instead of "UBL maindoc schemas." The document-root/namespace half is proven by the same 91-root test.'
-  missing_behavior:
-  - 'Same gap as SAL-UBL-OBL-16C93B2852CE2EAC: no typed OrderLine dataclass exists; order lines are only generically preserved, not modeled as a typed composite.'
+  - 'cac:OrderLine is now modeled (model/lines.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package''s own vendored XSD (OrderLineType and LineItemType, xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read from the ZIP itself, not a SAL-fact paraphrase or memory): OrderLine wraps a required LineItem (cbc:ID, an optional cbc:Quantity and cbc:LineExtensionAmount, and a required cac:Item), mirroring InvoiceLine''s existing precedent for the identifying/quantity/amount/item shape.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Per-layer positive/negative fixtures; layered report structure asserted machine-readable.
