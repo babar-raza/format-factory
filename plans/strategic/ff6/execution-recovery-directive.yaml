@@ -978,6 +978,82 @@ structural_gaps_20260804:
     remediation: Out of scope for Stage 2/3. Flag for a future packaging
       lane; consider a lockfile or pinned upper bounds before any FF6
       format's Gate 11 preparation.
+  - id: GAP-025
+    finding: >
+      All five oracle-bound FF6 formats (ipynb, nrrd, safetensors, ubl,
+      xliff) had their independent-oracle gate silently verifying the wrong
+      code. ENRICHED_LOADERS (tools/oracle/enriched_generic.py) and
+      oracle-package.yaml's own executor_config (used for invalid cases)
+      both hardcoded the deprecated {fmt}.{fmt}_codec shim under
+      src/python/{fmt}/ instead of the shipped format_factory.{fmt}
+      namespace. That shim sits outside each package's own
+      pyproject.toml [tool.setuptools.packages.find] build root, so it is
+      excluded from the built wheel — every oracle comparison for these
+      five formats was exercising code that ships to nobody. This is the
+      sixth independently discovered instance of the "a check that cannot
+      fail for the defect it names" shape in this program (GAP-023 named
+      it the fifth), and the first to affect all five oracle-bound FF6
+      formats simultaneously via one shared 17-line dict.
+    severity: HIGH
+    status: FIXED
+    owner: claude (2026-08-08, FF6-EVENT-000275)
+    remediation: >
+      Added a backward-compatible import-path branch (only activates for a
+      module string prefixed "format_factory.") in the three call sites
+      that resolved executor_config.module; repointed all five formats'
+      ENRICHED_LOADERS entries and oracle-package.yaml executor_config
+      blocks; rewrote _enrich_model to derive tensor_count/line_count/
+      unit_count from the shipped typed models' own real accessors
+      (SafeTensorsDocument.tensors, DocumentIndex(...).by_business_role
+      ("line"), XliffDocument.unit_count) since safetensors/ubl/xliff's
+      shipped loaders return typed objects, not the dicts the shadow
+      codecs returned. mtlx and the unrelated 20-format certified
+      portfolio take the unchanged code path byte-for-byte (verified via
+      re-run: csv 5/5, fods 9/10, zst 10/10 identical before/after; mtlx's
+      own PASS count changed only due to unrelated product-source
+      evolution since 2026-07-14, not this fix). Full detail, before/after
+      oracle results, and regression evidence: FF6-EVENT-000275.
+    method_lesson: >
+      Found by literally checking what module string each oracle
+      executor_config resolves to, not by trusting BOUND/PASS labels —
+      the same method that has now caught six instances of this shape.
+      Worth a standing check: whenever a new format's oracle binding is
+      authored, confirm importlib.import_module(module) resolves inside
+      the package's own declared wheel build root, not merely that it
+      resolves at all.
+  - id: GAP-026
+    finding: >
+      ubl-invalid-001's own case metadata is internally inconsistent, and
+      has been since the original 2026-07-14 onboarding commit (1adfdc47,
+      the only commit ever to touch either file). purpose/defect_class/
+      malformed_boundary all describe "XML without UBL namespace must
+      raise UblParseError", but its sample_ref
+      (samples/by-format/ubl/invalid/missing-mandatory.xml, hash-verified
+      unchanged since onboarding) has a fully valid UBL Invoice-2
+      namespace and only lacks mandatory business fields — which the
+      case's own "notes" field already correctly describes, contradicting
+      its own purpose/defect_class. Both ubl.ubl_codec.load_ubl (shadow)
+      and format_factory.ubl.load (shipped) silently accept this file
+      without raising, consistent with this session's own established
+      architecture where load() is a generic XML-preservation parse and
+      mandatory-field/cardinality checking is a separate, opt-in
+      schema_validate() call (built at FF6-EVENT-000274). Discovered
+      as a side effect of GAP-025's fix, not a regression it introduced —
+      confirmed by running both implementations against the identical
+      file, both fail identically.
+    severity: LOW
+    status: OPEN
+    owner: unassigned — next UBL taskcard that legitimately owns
+      oracle/formats/ubl/oracle-package.yaml or samples/by-format/ubl/invalid/
+    remediation: >
+      Either replace the sample with a document that actually lacks the
+      UBL namespace (matching the case's own stated purpose and
+      expected_failure_stage: PARSE), or rewrite the case's purpose/
+      defect_class/malformed_boundary/expected_error_type to match what
+      the sample and notes already describe (a VALIDATE-stage mandatory-
+      field rejection, presumably via schema_validate() rather than
+      load()). Do not silently pick one without updating the other three
+      fields that currently disagree with it.
 
 # Lesson recorded 2026-08-04 after Event 50. Binding for the rest of this
 # mission: it changes what "an obligation is proven" is allowed to mean.
