@@ -3,6 +3,11 @@ format_id: ora
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: ORA-COMPOSITE-OP-REGISTRY-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-composite-op-registry-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike ORA-BASELINE-SUITE. Closes 6 obligations sharing the identical "composite-op attribute defaults to svg:src-over and selects a documented blend function combined with a Porter-Duff compositing operator" rule_text, one per capability (ORA-COMPOSITE-001, ORA-STACK-001, ORA-LAYER-001, ORA-GROUP-001, ORA-EDIT-001, ORA-RENDER-001). Every prior event explicitly deferred this cluster: "building an honest registry now would risk inventing spec content from memory rather than a verified source." This slice reads the pinned, authority-locked Layer Stack Specification directly (.local/format-contracts/acquired/ora/src-ora-003.bin, "composite-op attribute" section) and transcribes its own 20-row table (Value / Blending function / Compositing Operator) into a new composite_ops.py module, wired onto OraNode as a composite_op_details property inherited by every layer/stack/text node. The same spec text states composite-op is a deliberately open, forward-compatible vocabulary ("In the future other compositing modes might be added..."), so the lookup returns None for a value outside the table rather than raising -- proven both statically and via a behavioral test constructing a node with an unrecognized value and confirming it survives unrejected. 11 new tests: registry completeness, default-value mapping, a blend-only case, a Porter-Duff-operator-only case, the one non-Source-Over-operator case (svg:plus), the unrecognized-value-returns-None case, OraLayer/OraStack accessor wiring, a behavioral forward-compat preservation proof, and an exhaustive round trip over all 20 registry entries. SAL-ORA-OBL-071A5F40BB2F4A17 (ORA-LAYER-001''s separate, bundled "reject invalid values" rule_text covering source/name/offsets/opacity/visibility/composite-op together) deliberately left untouched -- its composite-op sub-clause is in tension with this same spec text''s own open-vocabulary statement and needs a dedicated future investigation, not a rushed force-close here. ora suite: 294 -> 305 passed. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-3EFB60C80F84675D, SAL-ORA-OBL-41F8137CE8D8479A, SAL-ORA-OBL-6B6D7BEE18077E8A, SAL-ORA-OBL-930CACD129A5CC40, SAL-ORA-OBL-4EC8C1CC747F7FC6, and SAL-ORA-OBL-07BA02F318F0DE06 only; it supports no other obligation and promotes no product state.'
 - evidence_id: ORA-EDIT-OPS-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ora-edit-ops-001.json
   expected_result: PASS
@@ -631,20 +636,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-07BA02F318F0DE06
   capability_id: ORA-RENDER-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/composite_ops.py::composite_op_info
   positive_test_selectors:
   - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_defaults_to_src_over
   - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_is_preserved_verbatim
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_the_default_value_maps_to_normal_blending_and_source_over
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_every_registry_value_round_trips_through_a_layer_construction
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   - ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF
+  - ORA-COMPOSITE-OP-REGISTRY-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of ORA-LAYER-001''s SAL-ORA-OBL-3EFB60C80F84675D (identical rule_text): Cross-capability duplicate of SAL-ORA-OBL-930CACD129A5CC40 (identical rule_text): default value and verbatim preservation are proven.'
-  missing_behavior:
-  - 'Same confirmed gap as SAL-ORA-OBL-930CACD129A5CC40: no registry maps composite-op values to a documented blend function/Porter-Duff operator; not attempted, no committed verified SAL fact enumerates the OpenRaster composite-op inventory. '
+  - 'Cross-capability duplicate of ORA-LAYER-001''s SAL-ORA-OBL-3EFB60C80F84675D and ORA-STACK-001''s SAL-ORA-OBL-930CACD129A5CC40 (identical rule_text): a 20-entry registry, transcribed directly from the pinned Layer Stack Specification''s own composite-op table (SRC-ORA-003), now maps every known composite-op value to its documented blend function and Porter-Duff compositing operator, exposed via OraNode.composite_op_details (inherited by every layer/stack/text node).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential
@@ -1514,20 +1522,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-3EFB60C80F84675D
   capability_id: ORA-LAYER-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/composite_ops.py::composite_op_info
   positive_test_selectors:
   - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_defaults_to_src_over
   - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_is_preserved_verbatim
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_the_default_value_maps_to_normal_blending_and_source_over
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_every_registry_value_round_trips_through_a_layer_construction
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
+  - ORA-COMPOSITE-OP-REGISTRY-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of SAL-ORA-OBL-930CACD129A5CC40 (identical rule_text): default value and verbatim preservation are proven.'
-  missing_behavior:
-  - 'Same confirmed gap as SAL-ORA-OBL-930CACD129A5CC40: no registry maps composite-op values to a documented blend function/Porter-Duff operator; not attempted, no committed verified SAL fact enumerates the OpenRaster composite-op inventory. '
+  - 'Cross-capability duplicate of ORA-STACK-001''s SAL-ORA-OBL-930CACD129A5CC40 (identical rule_text): a 20-entry registry, transcribed directly from the pinned Layer Stack Specification''s own composite-op table (SRC-ORA-003), now maps every known composite-op value to its documented blend function and Porter-Duff compositing operator, exposed via OraNode.composite_op_details (inherited by every layer/stack/text node).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
@@ -1594,20 +1605,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-41F8137CE8D8479A
   capability_id: ORA-GROUP-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/composite_ops.py::composite_op_info
   positive_test_selectors:
   - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_defaults_to_src_over
   - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_is_preserved_verbatim
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_the_default_value_maps_to_normal_blending_and_source_over
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_every_registry_value_round_trips_through_a_layer_construction
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
+  - ORA-COMPOSITE-OP-REGISTRY-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of SAL-ORA-OBL-930CACD129A5CC40 (identical rule_text): default value and verbatim preservation are proven.'
-  missing_behavior:
-  - 'Same confirmed gap as SAL-ORA-OBL-930CACD129A5CC40: no registry maps composite-op values to a documented blend function/Porter-Duff operator; not attempted, no committed verified SAL fact enumerates the OpenRaster composite-op inventory. '
+  - 'Cross-capability duplicate of ORA-STACK-001''s SAL-ORA-OBL-930CACD129A5CC40 (identical rule_text): a 20-entry registry, transcribed directly from the pinned Layer Stack Specification''s own composite-op table (SRC-ORA-003), now maps every known composite-op value to its documented blend function and Porter-Duff compositing operator, exposed via OraNode.composite_op_details (inherited by every layer/stack/text node).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
@@ -1768,32 +1782,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-4EC8C1CC747F7FC6
   capability_id: ORA-COMPOSITE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/composite_ops.py::composite_op_info
   positive_test_selectors:
   - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_defaults_to_src_over
   - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_is_preserved_verbatim
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_the_default_value_maps_to_normal_blending_and_source_over
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_every_registry_value_round_trips_through_a_layer_construction
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
+  - ORA-COMPOSITE-OP-REGISTRY-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of ORA-STACK-001''s SAL-ORA-OBL-930CACD129A5CC40
-    (identical rule_text): "defaults to svg:src-over" is proven directly, and
-    an arbitrary composite-op value is preserved verbatim rather than
-    rejected. Corrected here from `missing` (which implied nothing was
-    proven) to `partial`, matching what is actually true.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: no registry maps a composite-op
-    value to "a documented blend function combined with a Porter-Duff
-    compositing operator" -- the value is an opaque round-tripped string.
-    Not attempted this slice: the OpenRaster specification''s actual
-    composite-op inventory is not yet ingested as a committed SAL fact (only
-    the default-plus-general-claim sentence is), so building an honest
-    registry now would risk inventing spec content from memory rather than a
-    verified source -- this session does not do that. See
-    SAL-ORA-OBL-930CACD129A5CC40 for the identical finding.'
+  - 'Cross-capability duplicate of ORA-STACK-001''s SAL-ORA-OBL-930CACD129A5CC40 (identical rule_text): a 20-entry registry, transcribed directly from the pinned Layer Stack Specification''s own composite-op table (SRC-ORA-003), now maps every known composite-op value to its documented blend function and Porter-Duff compositing operator, exposed via OraNode.composite_op_details (inherited by every layer/stack/text node).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Golden pixel vectors, alpha edge cases, unsupported-operation preservation, and adapter differential
@@ -2181,20 +2186,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-6B6D7BEE18077E8A
   capability_id: ORA-EDIT-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/composite_ops.py::composite_op_info
   positive_test_selectors:
   - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_defaults_to_src_over
   - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_is_preserved_verbatim
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_the_default_value_maps_to_normal_blending_and_source_over
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_every_registry_value_round_trips_through_a_layer_construction
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
+  - ORA-COMPOSITE-OP-REGISTRY-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of ORA-STACK-001''s SAL-ORA-OBL-930CACD129A5CC40 (identical rule_text): default value and verbatim preservation of arbitrary values are proven.'
-  missing_behavior:
-  - 'Same confirmed gap as SAL-ORA-OBL-930CACD129A5CC40: no registry maps composite-op values to a documented blend function/Porter-Duff operator; not attempted, no committed verified SAL fact enumerates the OpenRaster composite-op inventory.'
+  - 'Cross-capability duplicate of ORA-STACK-001''s SAL-ORA-OBL-930CACD129A5CC40 (identical rule_text): a 20-entry registry, transcribed directly from the pinned Layer Stack Specification''s own composite-op table (SRC-ORA-003), now maps every known composite-op value to its documented blend function and Porter-Duff compositing operator, exposed via OraNode.composite_op_details (inherited by every layer/stack/text node).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Transaction rollback, reference repair, stale-view invalidation, and independent application reopen
@@ -2579,36 +2587,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-930CACD129A5CC40
   capability_id: ORA-STACK-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/model/composite_ops.py::composite_op_info
   positive_test_selectors:
   - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_defaults_to_src_over
   - tests/python/ora/test_obligation_stack_and_document.py::test_composite_op_is_preserved_verbatim
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_the_registry_covers_every_value_in_the_pinned_spec_table
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_the_default_value_maps_to_normal_blending_and_source_over
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_a_stack_exposes_its_composite_op_details_the_same_way_as_a_layer
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_an_unrecognized_value_returns_none_rather_than_raising
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_every_registry_value_round_trips_through_a_layer_construction
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   - ORA-STACK-CITATION-AUDIT-SELECTOR-PROOF
+  - ORA-COMPOSITE-OP-REGISTRY-PROOF
   implemented_behavior:
-  - '"The composite-op attribute defaults to svg:src-over" is proven directly
-    (test_composite_op_defaults_to_src_over), and an arbitrary composite-op
-    value (e.g. svg:multiply) is preserved verbatim rather than rejected,
-    since blend modes are an open vocabulary this package does not police
-    (test_composite_op_is_preserved_verbatim).'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: no registry anywhere in this package
-    maps a composite-op value to "a documented blend function combined with a
-    Porter-Duff compositing operator" -- the value is stored and round-tripped
-    as an opaque string, with no lookup exposing what svg:src-over (or any
-    other value) actually means in blend-function/Porter-Duff terms. The
-    identical gap, under the identical rule_text, was independently confirmed
-    this session in ORA-COMPOSITE-001''s SAL-ORA-OBL-4EC8C1CC747F7FC6. Not
-    attempted this slice: building an honest registry requires the OpenRaster
-    specification''s actual composite-op inventory as a verified source, which
-    is not yet ingested as a committed SAL fact (the existing fact only quotes
-    the default-plus-general-claim sentence, not the enumerated operation
-    list) -- inventing the list from memory would risk fabricating spec
-    content, which this session does not do.'
+  - '"The composite-op attribute defaults to svg:src-over" is proven directly (test_composite_op_defaults_to_src_over), and an arbitrary composite-op value (e.g. svg:multiply) is preserved verbatim rather than rejected, since blend modes are an open vocabulary this package does not police (test_composite_op_is_preserved_verbatim). a 20-entry registry, transcribed directly from the pinned Layer Stack Specification''s own composite-op table (SRC-ORA-003), now maps every known composite-op value to its documented blend function and Porter-Duff compositing operator, exposed via OraNode.composite_op_details (inherited by every layer/stack/text node). Every value in the registry maps to its documented blend function and Porter-Duff compositing operator (e.g. svg:src-over -> Normal/Source Over, svg:dst-atop -> Normal/Destination Atop), and a value outside the table returns None rather than raising, matching the same spec text''s own forward-compatibility statement.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Deep nesting, mixed-child ordering, root-attribute rejection, and reorder round trips.

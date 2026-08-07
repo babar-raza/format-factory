@@ -23,9 +23,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from ..errors import OraValidationError
-
-#: "The composite-op attribute defaults to svg:src-over..."
-DEFAULT_COMPOSITE_OP = "svg:src-over"
+from .composite_ops import DEFAULT_COMPOSITE_OP, CompositeOpInfo
+from .composite_ops import composite_op_info as _composite_op_info
 
 #: "Stack and layer visibility accepts only visible or hidden and defaults to
 #: visible when omitted."
@@ -88,6 +87,14 @@ class OraNode:
     @property
     def is_visible(self) -> bool:
         return self.visibility == "visible"
+
+    @property
+    def composite_op_details(self) -> CompositeOpInfo | None:
+        """The composite-op value's documented blend function and
+        Porter-Duff operator, or ``None`` if it falls outside the spec's
+        current table -- composite-op is a deliberately open vocabulary,
+        so an unrecognized value is preserved content, not an error."""
+        return _composite_op_info(self.composite_op)
 
     def __post_init__(self) -> None:
         validate_opacity(self.opacity)

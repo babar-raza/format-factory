@@ -1,0 +1,62 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-composite-op-registry-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T05:59:30Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_COMPOSITE_OP_REGISTRY_001",
+    "task_kind": "direct-spec-read-registry-build",
+    "root_cause": "6 obligations across ORA-COMPOSITE-001/STACK-001/LAYER-001/GROUP-001/EDIT-001/RENDER-001 shared the identical finding: no registry maps a composite-op value to a documented blend function combined with a Porter-Duff compositing operator; the value was stored as an opaque round-tripped string. Every prior event explicitly deferred this as 'not attempted -- inventing the list from memory would risk fabricating spec content'.",
+    "obligation_targeted": "SAL-ORA-OBL-3EFB60C80F84675D, SAL-ORA-OBL-41F8137CE8D8479A, SAL-ORA-OBL-6B6D7BEE18077E8A, SAL-ORA-OBL-930CACD129A5CC40, SAL-ORA-OBL-4EC8C1CC747F7FC6, SAL-ORA-OBL-07BA02F318F0DE06",
+    "acceptance_evidence": "11 new tests prove a 20-entry composite-op registry, transcribed directly from the pinned Layer Stack Specification's own composite-op table, correctly maps every known value's blend function and Porter-Duff operator, defaults correctly, and gracefully returns None (not a raise) for a value outside the table -- proven both as a static lookup and behaviorally via OraLayer/OraStack construction, matching the same spec text's own forward-compatibility statement.",
+    "regression_tier": "full ora package suite (tests/python/ora) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Surveyed ora's remaining 20 unresolved obligations by capability cluster; found 7 sharing a composite-op registry gap (6 with identical rule_text, 1 -- SAL-ORA-OBL-071A5F40BB2F4A17 -- with a distinct bundled 'reject invalid values' rule_text left untouched this tick, since the spec's own extensibility statement makes blanket rejection of unrecognized composite-op values spec-nonconformant, a genuinely separate question deferred to avoid conflating two different findings).",
+    "2. Located the pinned, authority-locked spec source cited by these obligations' authority_source_ids (SRC-ORA-003): .local/format-contracts/acquired/ora/src-ora-003.bin, the Layer Stack Specification. Read the 'composite-op attribute' section directly, extracting its own HTML table (20 rows: Value / Blending function / Compositing Operator) plus the immediately following prose confirming the default (svg:src-over) and the deliberate open-vocabulary design ('In the future other compositing modes might be added...').",
+    "3. Wrote a new module, composite_ops.py, transcribing the table's 20 entries into a CompositeOpInfo(blending_function, compositing_operator) registry plus a composite_op_info() lookup returning None for unrecognized values -- grounded entirely in the just-read spec text, not memory.",
+    "4. Refactored stack.py's existing DEFAULT_COMPOSITE_OP constant to import from the new module (single source of truth, no duplicated literal) and added a composite_op_details property to OraNode (inherited by OraLayer/OraStack/OraText) wired to the new lookup.",
+    "5. Wired the new symbols through model/__init__.py and the top-level ora/__init__.py, matching the existing top-level-import convention every ora test file already uses.",
+    "6. Ran an interactive probe before writing any formal test: default/multiply/unknown-value/stack lookups all matched expectations on the first attempt, including the forward-compatibility case (an unrecognized value returns None without raising, and the raw string survives unchanged on the node).",
+    "7. Wrote 11 tests: registry completeness, default-value mapping, a blend-only case, a Porter-Duff-operator-only case, the one non-Source-Over-operator case (svg:plus -> Lighter), the unrecognized-value-returns-None case, OraLayer/OraStack accessor wiring, a behavioral forward-compat preservation proof, and an exhaustive round-trip over all 20 registry entries.",
+    "8. Ran ruff (clean) across all 4 changed/new source files plus the new test file. Ran the full ora suite (305 passed, was 294, +11) and the full 6-format regression (3107 passed, was 3096, +11; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "9. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-daad05d457a5bc7c, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/ora/src/format_factory/ora/model/composite_ops.py",
+    "src/python/ora/src/format_factory/ora/model/stack.py",
+    "src/python/ora/src/format_factory/ora/model/__init__.py",
+    "src/python/ora/src/format_factory/ora/__init__.py",
+    "tests/python/ora/test_obligation_composite_op_registry.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/src/format_factory/ora/model/composite_ops.py",
+    "src/python/ora/src/format_factory/ora/model/stack.py",
+    "src/python/ora/src/format_factory/ora/model/__init__.py",
+    "src/python/ora/src/format_factory/ora/__init__.py",
+    "tests/python/ora/test_obligation_composite_op_registry.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_composite_op_registry.py -q -- 11 passed",
+    ".venv/Scripts/python -m ruff check src/python/ora/src/format_factory/ora/model/composite_ops.py src/python/ora/src/format_factory/ora/model/stack.py src/python/ora/src/format_factory/ora/model/__init__.py src/python/ora/src/format_factory/ora/__init__.py tests/python/ora/test_obligation_composite_op_registry.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 305 passed, was 294 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3107 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3096 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 6,
+    "obligations_total_for_format": 134,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every registry entry transcribed directly from the pinned, authority-locked Layer Stack Specification's own composite-op table (SRC-ORA-003), not cross-checked against a reference OpenRaster implementation.",
+    "obligations_moved_breakdown": "6 obligations sharing the identical 'composite-op attribute defaults to svg:src-over and selects a documented blend function combined with a Porter-Duff compositing operator' rule_text promoted partial->implemented, one per capability (ORA-COMPOSITE-001, ORA-STACK-001, ORA-LAYER-001, ORA-GROUP-001, ORA-EDIT-001, ORA-RENDER-001). SAL-ORA-OBL-071A5F40BB2F4A17 (ORA-LAYER-001's separate, bundled 'reject invalid values' rule_text covering source/name/offsets/opacity/visibility/composite-op together) deliberately left untouched -- its composite-op sub-clause is in tension with the same spec's own open-vocabulary statement and needs a dedicated future investigation, not a rushed force-close in this slice."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

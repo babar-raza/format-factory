@@ -23,7 +23,16 @@ from .codec import (
     resolve_all_assets,
     resolve_asset,
 )
-from .model import OraDocument, OraLayer, OraNode, OraStack, OraText
+from .model import (
+    COMPOSITE_OP_REGISTRY,
+    CompositeOpInfo,
+    OraDocument,
+    OraLayer,
+    OraNode,
+    OraStack,
+    OraText,
+    composite_op_info,
+)
 from .lifecycle import (
     OraImage,
     PreservationMode,
@@ -41,7 +50,9 @@ from .errors import OraArchiveError, OraError, OraLimitError, OraValidationError
 __version__ = "0.1.0.dev0"
 
 __all__ = [
+    "COMPOSITE_OP_REGISTRY",
     "OPENRASTER_MEDIA_TYPE",
+    "CompositeOpInfo",
     "EditStep",
     "LossItem",
     "LossReport",
@@ -64,6 +75,7 @@ __all__ = [
     "__version__",
     "apply_transaction",
     "check_preservation",
+    "composite_op_info",
     "dump",
     "dumps",
     "load",
