@@ -30,6 +30,22 @@ from ..payload import (
 
 _REQUIRED_FIELDS = frozenset({"type", "dimension", "sizes", "encoding"})
 
+#: "Field specifications with alternate equivalent forms are listed together
+#: (for example, 'block size' is the same as 'blocksize')." Confirmed
+#: programmatically against the pinned spec text (every "<spaced>: <...>
+#: <unspaced>: <...>" adjacency where unspaced == spaced.replace(' ', '')):
+#: block size/blocksize, old min/oldmin, old max/oldmax, data file/datafile,
+#: line skip/lineskip, byte skip/byteskip, sample units/sampleunits. Five of
+#: the seven were already handled by a scattered `header.get(canonical,
+#: header.get(alias))` fallback at each consumer; "block size" and
+#: "data file" were not -- the latter's list-mode detection is itself keyed
+#: on the exact parsed field name, so both are normalized once, here, at the
+#: earliest possible point, rather than patched at every consumer.
+_UNSPACED_FIELD_ALIASES = {
+    "blocksize": "block size",
+    "datafile": "data file",
+}
+
 
 def _unescape_key_value(text: str) -> str:
     """Reverse the key/value escaping scheme: "\\n" -> newline, "\\\\" -> backslash."""
@@ -140,6 +156,7 @@ def _parse_header(
                 "and a single space"
             )
         normalized = key.strip().lower()
+        normalized = _UNSPACED_FIELD_ALIASES.get(normalized, normalized)
         if not normalized or not value.strip():
             raise NrrdParseError(f"malformed header field at line {line_number}")
         if normalized in header:

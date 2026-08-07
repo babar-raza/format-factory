@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-header-field-name-aliases-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T11:29:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_HEADER_FIELD_NAME_ALIASES_001",
+    "task_kind": "fix-real-unenforced-spec-requirement",
+    "root_cause": "Event 234 flagged SAL-NRRD-OBL-6F9641D043F9DAAA's own missing_behavior ('permitted lexical variants are not fully modeled or tested') as worth a second look. Programmatic extraction against the pinned spec text found 7 genuine field-name alias pairs (spaced vs unspaced forms); cross-checking against the codebase found 5 already correctly handled and 2 (block size/blocksize, data file/datafile) genuinely unrecognized anywhere -- a real, previously-unenforced spec requirement, not merely a test-coverage gap.",
+    "obligation_targeted": "SAL-NRRD-OBL-6F9641D043F9DAAA (NRRD-HEADER-001) -- lexical-variants clause closed, remains partial (whitespace clause investigated and confirmed genuinely unsettled)",
+    "acceptance_evidence": "5 new tests prove: blocksize alias recognized for a block-typed document; datafile alias recognized and resolves a real detached payload; declaring both spaced and unspaced forms of either field is a duplicate-field violation; canonical spaced forms remain unaffected.",
+    "regression_tier": "full nrrd package suite (tests/python/nrrd) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Re-investigated SAL-NRRD-OBL-6F9641D043F9DAAA per Event 234's own flag. Rather than re-reading the spec by eye, wrote a dedicated extraction script scanning the pinned spec text (.local/format-contracts/acquired/nrrd/src-nrrd-001.bin) for every '<spaced>: <...> <unspaced>: <...>' adjacency where unspaced == spaced.replace(' ', ''), filtering out false positives (an earlier naive regex incorrectly paired unrelated adjacent fields like 'type'/'encoding').",
+    "2. The script found exactly 7 genuine alias pairs: block size/blocksize, old min/oldmin, old max/oldmax, data file/datafile, line skip/lineskip, byte skip/byteskip, sample units/sampleunits -- confirmed by the spec's own explicit framing sentence: \"Field specifications with alternate equivalent forms are listed together (for example, 'block size' is the same as 'blocksize').\"",
+    "3. Grepped the codebase for each pair's handling and found 5 already correctly implemented via a scattered header.get(canonical, header.get(alias)) fallback pattern at their own consumer (old min/max in model/document.py, sample units in model/document.py, line/byte skip in codec/reader/reader.py) -- and 2 (block size, data file) with NO alias handling anywhere.",
+    "4. Confirmed the 2-field gap via direct interactive probing before any fix: a document declaring only 'blocksize: 4' (no 'block size') for a block-typed nrrd was silently mishandled by parse_block_size never seeing the value; a document declaring only 'datafile: a.raw' (no 'data file') never resolved its detached payload at all, since every downstream consumer (lazy.py, reader.py, model/document.py) checks the literal key 'data file'.",
+    "5. Designed the fix around 'data file' specifically requiring parse-time normalization rather than a scattered per-consumer patch: _parse_header's own LIST-mode detection ('if normalized == \"data file\" and value.strip().upper().startswith(\"LIST\")') is itself keyed on the exact parsed field name, so no downstream fallback could ever have fixed the LIST-detection path -- only normalizing the key at the moment it's computed works correctly for every consumer, including that one.",
+    "6. Added a small _UNSPACED_FIELD_ALIASES dict ({'blocksize': 'block size', 'datafile': 'data file'}) to codec/reader/reader.py, applied via one line immediately after normalized = key.strip().lower(), placed BEFORE the existing duplicate-field check so that declaring both the spaced and unspaced form of the same field is correctly caught as a duplicate (matching the spec's own 'alternate forms are the same field' framing) rather than silently overwriting or being missed.",
+    "7. Probed directly before writing formal tests: blocksize alias recognized (header['block size'] populated, 'blocksize' key absent); datafile alias recognized and resolved a real temp-file-based detached payload; declaring both 'block size: 4' and 'blocksize: 4' in the same header correctly raised the existing duplicate-field error unchanged. All 3 probes correct on the first attempt.",
+    "8. Wrote 5 formal tests in a new file (test_obligation_header_field_name_aliases.py, since this is a fresh capability angle -- field-name aliasing -- not covered by any existing NRRD test file), all passing on the first attempt.",
+    "9. Ran ruff (clean), the full nrrd suite (563 passed, 1 skipped, was 558 passed, +5), and the full 6-format regression (3386 passed, was 3381, +5; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "10. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-769201a03cfc6c3b, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "11. Kept the obligation at partial rather than promoting to implemented: the lexical-variants clause is now fully closed, but the obligation's own second named concern ('canonical parsing strips significant field whitespace') was investigated a second time with fresh eyes and remains genuinely ambiguous -- the reader already refuses (does not silently strip) any value with extra leading whitespace, and the only whitespace it removes is trailing whitespace the spec's own text explicitly permits ignoring; whether a quoted string field's own trailing whitespace should be exempted from this general rule is not addressed anywhere in the pinned spec, and guessing would risk inventing spec content. Documented this as a deliberately unresolved, investigated (not deferred-without-looking) question."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_header_field_name_aliases.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_header_field_name_aliases.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_header_field_name_aliases.py -q -- 5 passed",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py tests/python/nrrd/test_obligation_header_field_name_aliases.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 563 passed, 1 skipped, was 558 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3386 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3381 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations moved status (lexical-variants clause closed, whitespace clause remains an open, investigated question; status stays partial)",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 65,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the alias table extracted programmatically from the pinned spec's own text, the gap confirmed by direct interactive probing before any fix was written.",
+    "obligations_moved_breakdown": "SAL-NRRD-OBL-6F9641D043F9DAAA (NRRD-HEADER-001) evidence strengthened, status unchanged at partial. A genuine, real, previously-unenforced parsing gap fixed with production source code (2 of 7 field-name aliases were unrecognized anywhere), narrowing the obligation's own remaining gap to a single, precisely-scoped, deliberately-unresolved whitespace question."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
