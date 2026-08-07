@@ -10,6 +10,14 @@
       "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: ORA-ASSET-001's 12 obligations all shared one over-specific citation (the raster-asset metadata tests) attached uniformly to every obligation regardless of what its own rule_text actually named -- the inverse of the generic- under-citation pattern found in ORA-STACK-001/EDIT-001/CONTAINER-001, but the same root symptom (never individually audited). 6 of the 12 rule_texts are exact cross-capability duplicates of facts already resolved under ORA-STACK-001/ORA-CONTAINER-001, reassigned to their correct existing evidence. The genuinely asset-specific obligation (resolve references safely; expose metadata before decode; validate existence/media-type/dimensions/channel-depth/budgets) keeps and extends the original citation, now proven against every named clause individually rather than as one bundle. The thumbnail and mergedimage requirement obligations are cross-capability duplicates of ORA-BASELINEASSET-001's already-implemented equivalents -- extended this slice with 2 new tests closing a real, narrow gap found while verifying the duplicate claim: ORA_MERGED_IMAGE_MISSING (the mandatory- presence diagnostic, already implemented in lifecycle.py) had zero test coverage, unlike its thumbnail-missing counterpart. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-10B73685E6FDA374, SAL-ORA-OBL-700F3D214D9573FB, SAL-ORA-OBL-894A8A7FE25717DA, SAL-ORA-OBL-8E371EA83EEB75CF, SAL-ORA-OBL-99738EDD922E7F5E, SAL-ORA-OBL-D9D70C82BBB1808C, SAL-ORA-OBL-3A738D65887DDAA0, SAL-ORA-OBL-80901F8E09F17910, and SAL-ORA-OBL-849EDE79FBAE125D only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "ORA-ATTRIBUTE-COUNT-LIMIT-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-attribute-count-limit-001.json",
+      "sha256": "c81abe148b11eed7c492955a236e187280bef7ccbe7c26333e77a217185048bd",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE. Narrows (strengthens, does not change the already-implemented status of) SAL-ORA-OBL-1C91BEA24163FEE8 (ORA-SEC-001). Found by applying the same cross-format comparison technique that closed the equivalent xliff obligation (SAL-XLIFF-OBL-130340BC212989D5, XLIFF-SEC-001) one tick earlier: read this package's own _Walker (stack_xml.py) directly and found it checked node count and nesting depth but never accumulated or checked attribute count anywhere, despite max_entries already being a configured, caller-facing limit. Confirmed as a genuine, exploitable gap by direct probing before any fix: a layer carrying 2000 attributes sailed straight through even with max_entries=5 explicitly configured. A second, distinct sub-gap was also found and fixed in the same pass: the <image> root element and the top-level <stack> element's own attributes bypass _Walker.child()'s recursive dispatch entirely (only their descendants are ever visited through it), so an attribute flood on either of those two specific elements would have escaped even a naive attribute-count fix that only touched child(). Added _Walker.count_element() (node count + attribute count together) called explicitly for the root and top-level stack in parse_stack, and via the existing child() dispatch for every descendant as before. Verified zero false positives against the entire pre-existing 316-test ora suite before writing a single new test. 4 new tests (tests/python/ora/test_obligation_security_baseline.py) prove: an attribute flood on a nested layer, on the <image> root, and on the top-level <stack> are each independently refused, and a normal document with attributes safely within the limit still parses. ora suite: 316 -> 320 passed. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the fix grounded directly in the already-proven, structurally-identical ubl/xliff sibling implementations, not invented from memory. Covers SAL-ORA-OBL-1C91BEA24163FEE8 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "ORA-BASELINE-SUITE",
       "expected_result": "PARTIAL_IMPLEMENTATION_PRESENT",
       "granularity": "suite",
@@ -173,7 +181,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "19a5f52bbaebf9a3f551dfac5e5e67c106d85a2e50e3f04f695e09d8ae2e0241",
+    "implementation_evidence": "085d58e71a94f2749ae9c22155aad904357a55ca4c986729d47b7bf88881eff3",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -886,17 +894,22 @@
       "capability_id": "ORA-SEC-001",
       "execution_evidence_ids": [
         "ORA-BASELINE-SUITE",
-        "ORA-SECURITY-BASELINE-SELECTOR-PROOF"
+        "ORA-SECURITY-BASELINE-SELECTOR-PROOF",
+        "ORA-ATTRIBUTE-COUNT-LIMIT-PROOF"
       ],
       "implemented_behavior": [
-        "Canvas and PNG dimension products are computed with checked arithmetic (refusing absurd w*h before allocation), stack nesting is walked with a bounded-depth traversal rather than unbounded recursion, and decompression ratio is limit-enforced -- all algorithmic-complexity vectors are refused before their cost is paid, not after."
+        "Canvas and PNG dimension products are computed with checked arithmetic (refusing absurd w*h before allocation), stack nesting is walked with a bounded-depth traversal rather than unbounded recursion, and decompression ratio is limit-enforced -- all algorithmic-complexity vectors are refused before their cost is paid, not after.",
+        "Cumulative attribute count across the whole stack.xml tree is now also bounded, closing a real gap found by cross-format comparison against the equivalent, already-fixed xliff obligation (SAL-XLIFF-OBL-130340BC212989D5): confirmed by direct probing before this fix that an attribute flood sailed straight through _Walker entirely unbounded, even with max_entries explicitly configured -- and, distinctly, that the <image> root and the top-level <stack> element's own attributes bypassed the walker completely regardless (neither is reachable through _Walker.child()'s own recursive dispatch, only their descendants are). Extended _Walker with a count_element() method checking node count and cumulative attribute count together, called explicitly for the root and top-level stack in parse_stack (previously skipped) and via child() for every descendant (as before). 4 new tests prove: an attribute flood on a nested layer, on the <image> root, and on the top-level <stack> are each independently refused, and a normal document with attributes safely within the limit still parses."
       ],
       "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ora/test_obligation_security_baseline.py::test_absurd_canvas_dimensions_are_refused_by_checked_arithmetic",
         "tests/python/ora/test_obligation_security_baseline.py::test_absurd_png_dimensions_are_refused_by_checked_arithmetic",
         "tests/python/ora/test_obligation_security_baseline.py::test_deeply_nested_stacks_are_refused_by_a_bounded_recursion_walk",
-        "tests/python/ora/test_obligation_security_baseline.py::test_excessive_compression_ratio_is_refused"
+        "tests/python/ora/test_obligation_security_baseline.py::test_excessive_compression_ratio_is_refused",
+        "tests/python/ora/test_obligation_security_baseline.py::test_a_nested_layer_attribute_flood_is_rejected",
+        "tests/python/ora/test_obligation_security_baseline.py::test_a_root_image_attribute_flood_is_rejected",
+        "tests/python/ora/test_obligation_security_baseline.py::test_a_top_level_stack_attribute_flood_is_rejected"
       ],
       "obligation_id": "SAL-ORA-OBL-1C91BEA24163FEE8",
       "positive_test_selectors": [
@@ -4754,6 +4767,7 @@
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json": "ff1e276701cd182ef6dbf39d21d7fbeb7d841bc5d12209ab938ae304e341abdc",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-asset-citation-audit-001.json": "3758939b774568de093e6cc9239fcd24131fd2c5d8db9497f570d33a617f70dd",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-attribute-count-limit-001.json": "c81abe148b11eed7c492955a236e187280bef7ccbe7c26333e77a217185048bd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-baselineasset-001.json": "e9fd4c00c4aabd1861f785b719efb3715dbad33c5cb8d09292091eda4ebe7f32",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-composite-op-registry-001.json": "0c54f586eb44d407a506e7eefa43e0a060a0615ea06a5aff28efbd061b5c5c8b",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-container-citation-audit-001.json": "a8da421c2df540a82a0ebcca93b5642299a8ad71ee0100a9b64ac808e58b1d63",
@@ -4776,7 +4790,7 @@
     "src/python/ora/src/format_factory/ora/codec/assets.py": "daa355728ed65a92d69c3178f91af4075501bde0549fb0ce9755a944206b9091",
     "src/python/ora/src/format_factory/ora/codec/container.py": "129e2f98264ad518d28f40bddb23c11bfca5fac11f4ea471ea01e2cb5571fa87",
     "src/python/ora/src/format_factory/ora/codec/png_metadata.py": "6b247625e57be37e010808f50a08ce76e5efd240c5459d2a7ad506eee74ac2ad",
-    "src/python/ora/src/format_factory/ora/codec/stack_xml.py": "7724f6a5690232776d7fe13791c392436c698ba20ffa2990f30b152a3c537546",
+    "src/python/ora/src/format_factory/ora/codec/stack_xml.py": "2bad8a19200f98876641433894bbd77338a2bfcd1036c3b139858d20acc05388",
     "src/python/ora/src/format_factory/ora/lifecycle.py": "71e32aea2d52d324492766e96aba677796e6c3480721d7ffeee5fa029b305f2c",
     "src/python/ora/src/format_factory/ora/model/composite_ops.py": "e6d442735fa783c396176cb4636504c563a52ee7594e90734301fd72486dc4d6",
     "src/python/ora/src/format_factory/ora/model/document.py": "e77dcfb27563a7c6ea4aa002a4582cc4f1a2cce981f3b3a7f3575a819e99d5ef",
@@ -4792,7 +4806,7 @@
     "tests/python/ora/test_obligation_preservation_baseline.py": "c0086dc6953839002dbce61cd826e280d17d8f673ffd5ed7f3651c5d9d72bf7a",
     "tests/python/ora/test_obligation_raster_assets.py": "9688c9e5e46223bc81ced1b49e9369fab113abcf6d52803011cb1e0eaa2d230b",
     "tests/python/ora/test_obligation_resolution_profile_detection.py": "606e3e87b8f4e80dae82c894df8e22ef492048b8cae15b9355b42363d89fe550",
-    "tests/python/ora/test_obligation_security_baseline.py": "335380bfdbdce0b206ff75d771f6e03f144c8d6140567097df6361fc3e2d8ce3",
+    "tests/python/ora/test_obligation_security_baseline.py": "8d303e017fcf1037304347115aaff2b7e91f457ba0337f2e2078051122255042",
     "tests/python/ora/test_obligation_stack_and_document.py": "cf9199dfd37e2e05d153c04479b71a9d52cc97f4a951e2facc8198a78d00d50c",
     "tests/python/ora/test_obligation_transactional_edit.py": "5a0a041cfc4d022ad609408900ba3d79089055f728ba64f730fcc5913e88b04b",
     "tests/python/ora/test_obligation_version_drift_warning.py": "5f237bb40df32472268862d76ff868de8e6e919f0e8a67796df2e485b5072ec0"

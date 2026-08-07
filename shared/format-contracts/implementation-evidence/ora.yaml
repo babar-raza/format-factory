@@ -3,6 +3,11 @@ format_id: ora
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: ORA-ATTRIBUTE-COUNT-LIMIT-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-attribute-count-limit-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike ORA-BASELINE-SUITE. Narrows (strengthens, does not change the already-implemented status of) SAL-ORA-OBL-1C91BEA24163FEE8 (ORA-SEC-001). Found by applying the same cross-format comparison technique that closed the equivalent xliff obligation (SAL-XLIFF-OBL-130340BC212989D5, XLIFF-SEC-001) one tick earlier: read this package''s own _Walker (stack_xml.py) directly and found it checked node count and nesting depth but never accumulated or checked attribute count anywhere, despite max_entries already being a configured, caller-facing limit. Confirmed as a genuine, exploitable gap by direct probing before any fix: a layer carrying 2000 attributes sailed straight through even with max_entries=5 explicitly configured. A second, distinct sub-gap was also found and fixed in the same pass: the <image> root element and the top-level <stack> element''s own attributes bypass _Walker.child()''s recursive dispatch entirely (only their descendants are ever visited through it), so an attribute flood on either of those two specific elements would have escaped even a naive attribute-count fix that only touched child(). Added _Walker.count_element() (node count + attribute count together) called explicitly for the root and top-level stack in parse_stack, and via the existing child() dispatch for every descendant as before. Verified zero false positives against the entire pre-existing 316-test ora suite before writing a single new test. 4 new tests (tests/python/ora/test_obligation_security_baseline.py) prove: an attribute flood on a nested layer, on the <image> root, and on the top-level <stack> are each independently refused, and a normal document with attributes safely within the limit still parses. ora suite: 316 -> 320 passed. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, the fix grounded directly in the already-proven, structurally-identical ubl/xliff sibling implementations, not invented from memory. Covers SAL-ORA-OBL-1C91BEA24163FEE8 only; it supports no other obligation and promotes no product state.'
 - evidence_id: ORA-STACK-XML-UTF8-ENFORCEMENT-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ora-stack-xml-utf8-enforcement-001.json
   expected_result: PASS
@@ -990,15 +995,20 @@ obligations:
   - tests/python/ora/test_obligation_security_baseline.py::test_absurd_png_dimensions_are_refused_by_checked_arithmetic
   - tests/python/ora/test_obligation_security_baseline.py::test_deeply_nested_stacks_are_refused_by_a_bounded_recursion_walk
   - tests/python/ora/test_obligation_security_baseline.py::test_excessive_compression_ratio_is_refused
+  - tests/python/ora/test_obligation_security_baseline.py::test_a_nested_layer_attribute_flood_is_rejected
+  - tests/python/ora/test_obligation_security_baseline.py::test_a_root_image_attribute_flood_is_rejected
+  - tests/python/ora/test_obligation_security_baseline.py::test_a_top_level_stack_attribute_flood_is_rejected
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   - ORA-SECURITY-BASELINE-SELECTOR-PROOF
+  - ORA-ATTRIBUTE-COUNT-LIMIT-PROOF
   implemented_behavior:
   - Canvas and PNG dimension products are computed with checked arithmetic
     (refusing absurd w*h before allocation), stack nesting is walked with a
     bounded-depth traversal rather than unbounded recursion, and
     decompression ratio is limit-enforced -- all algorithmic-complexity
     vectors are refused before their cost is paid, not after.
+  - 'Cumulative attribute count across the whole stack.xml tree is now also bounded, closing a real gap found by cross-format comparison against the equivalent, already-fixed xliff obligation (SAL-XLIFF-OBL-130340BC212989D5): confirmed by direct probing before this fix that an attribute flood sailed straight through _Walker entirely unbounded, even with max_entries explicitly configured -- and, distinctly, that the <image> root and the top-level <stack> element''s own attributes bypassed the walker completely regardless (neither is reachable through _Walker.child()''s own recursive dispatch, only their descendants are). Extended _Walker with a count_element() method checking node count and cumulative attribute count together, called explicitly for the root and top-level stack in parse_stack (previously skipped) and via child() for every descendant (as before). 4 new tests prove: an attribute flood on a nested layer, on the <image> root, and on the top-level <stack> are each independently refused, and a normal document with attributes safely within the limit still parses.'
   missing_behavior: []
   proof_requirements:
     positive:

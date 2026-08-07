@@ -97,6 +97,53 @@ def test_xml_node_and_nesting_limits_are_enforced() -> None:
         parse_stack(stack_xml, limits=TINY_LIMITS)
 
 
+def test_a_nested_layer_attribute_flood_is_rejected() -> None:
+    """Cumulative attribute count was not previously bounded at all --
+    confirmed genuinely unenforced by direct probing before this fix. A
+    layer carrying far more attributes than TINY_LIMITS.max_entries (5)
+    is refused, independent of node count and nesting depth."""
+    attrs = " ".join(f'a{i}="v"' for i in range(8))
+    stack_xml = f"<image w='8' h='8' version='0.0.5'><stack><layer src='x.png' {attrs}/></stack></image>".encode()
+
+    with pytest.raises(OraLimitError, match="cumulative attributes"):
+        parse_stack(stack_xml, limits=TINY_LIMITS)
+
+
+def test_a_root_image_attribute_flood_is_rejected() -> None:
+    """The <image> root element's own attributes previously bypassed the
+    walker entirely -- it is never reachable through _Walker.child()'s
+    recursive dispatch, confirmed genuinely unenforced by direct probing
+    before this fix."""
+    attrs = " ".join(f'a{i}="v"' for i in range(8))
+    stack_xml = f"<image w='8' h='8' version='0.0.5' {attrs}><stack></stack></image>".encode()
+
+    with pytest.raises(OraLimitError, match="cumulative attributes"):
+        parse_stack(stack_xml, limits=TINY_LIMITS)
+
+
+def test_a_top_level_stack_attribute_flood_is_rejected() -> None:
+    """The top-level <stack> element's own attributes also previously
+    bypassed the walker entirely, for the same reason as the <image>
+    root -- confirmed genuinely unenforced by direct probing before this
+    fix."""
+    attrs = " ".join(f'a{i}="v"' for i in range(8))
+    stack_xml = f"<image w='8' h='8' version='0.0.5'><stack {attrs}></stack></image>".encode()
+
+    with pytest.raises(OraLimitError, match="cumulative attributes"):
+        parse_stack(stack_xml, limits=TINY_LIMITS)
+
+
+def test_a_document_with_attributes_within_the_limit_still_parses() -> None:
+    stack_xml = (
+        b"<image w='8' h='8' version='0.0.5'>"
+        b"<stack><layer src='x.png' name='a'/></stack></image>"
+    )
+
+    document = parse_stack(stack_xml, limits=TINY_LIMITS)
+
+    assert document.width == 8
+
+
 # ── "Never resolve network resources, execute embedded code, load plugins,
 #     or follow external references...unless explicitly enabled." ──────────
 

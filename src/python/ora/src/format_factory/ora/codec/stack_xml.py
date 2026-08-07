@@ -128,21 +128,37 @@ def _common(element: ElementTree.Element) -> dict[str, object]:
 
 
 class _Walker:
-    """Builds the tree while counting nodes and depth against the limits."""
+    """Builds the tree while counting nodes, depth, and cumulative
+    attribute count against the limits -- each checked immediately after
+    being updated, not after the full tree is built. Matches the identical
+    attribute-count vector already proven for the equivalent ubl and xliff
+    readers' own tree-limit walks."""
 
     def __init__(self, limits: ResourceLimits) -> None:
         self.limits = limits
         self.nodes = 0
+        self.attributes = 0
 
-    def _count(self) -> None:
+    def count_element(self, element: ElementTree.Element) -> None:
+        """Count one element's node and its own attributes against the
+        limits. Called for every element this walker ever sees, including
+        the <image> root and the top-level <stack> -- neither is reachable
+        through child()'s own recursive dispatch, so parse_stack calls this
+        directly for both before handing the top stack to stack()."""
         self.nodes += 1
         if self.nodes > self.limits.max_xml_nodes:
             raise OraLimitError(
                 f"stack.xml declares more than {self.limits.max_xml_nodes} nodes"
             )
+        self.attributes += len(element.attrib)
+        if self.attributes > self.limits.max_entries:
+            raise OraLimitError(
+                f"stack.xml declares more than {self.limits.max_entries} "
+                "cumulative attributes"
+            )
 
     def child(self, element: ElementTree.Element, depth: int) -> OraChild:
-        self._count()
+        self.count_element(element)
         if depth > self.limits.max_nesting_depth:
             raise OraLimitError(
                 f"stack.xml nests deeper than the limit of "
@@ -219,6 +235,9 @@ def parse_stack(payload: bytes, *, limits: ResourceLimits = DEFAULT_LIMITS) -> O
             f"stack.xml root element must be <{ROOT_ELEMENT}>, got <{root.tag}>"
         )
 
+    walker = _Walker(limits)
+    walker.count_element(root)
+
     width = _positive_integer(_require(root, "w"), label="image w")
     height = _positive_integer(_require(root, "h"), label="image h")
     version = _require(root, "version")
@@ -239,7 +258,7 @@ def parse_stack(payload: bytes, *, limits: ResourceLimits = DEFAULT_LIMITS) -> O
             f"<image> must contain exactly one root <stack>, found {len(stacks)}"
         )
 
-    walker = _Walker(limits)
+    walker.count_element(stacks[0])
     return OraDocument(
         width=width,
         height=height,

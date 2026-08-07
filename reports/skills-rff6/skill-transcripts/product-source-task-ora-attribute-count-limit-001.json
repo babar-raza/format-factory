@@ -1,0 +1,60 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-attribute-count-limit-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T13:21:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_ATTRIBUTE_COUNT_LIMIT_001",
+    "task_kind": "fix-real-unenforced-security-limit-found-by-cross-format-comparison",
+    "root_cause": "Applied the same cross-format comparison technique that closed the equivalent xliff obligation (SAL-XLIFF-OBL-130340BC212989D5, event 247) one tick earlier: read ora's own _Walker (stack_xml.py) directly and found it checked node count and nesting depth but never accumulated or checked attribute count anywhere, despite max_entries already being a configured, caller-facing ResourceLimits field -- the identical class of gap xliff's reader had just been found to have against its ubl sibling.",
+    "obligation_targeted": "SAL-ORA-OBL-1C91BEA24163FEE8 (ORA-SEC-001) -- already implemented; evidence strengthened, real bug fixed, no status crossing",
+    "acceptance_evidence": "4 new tests prove: an attribute flood on a nested layer is refused; an attribute flood on the <image> root element is refused; an attribute flood on the top-level <stack> element is refused; a document with attributes within the limit still parses.",
+    "regression_tier": "full ora package suite (tests/python/ora) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. After xliff's attribute/text-limit gap closed at event 247, checked ora's own _Walker class (stack_xml.py) for the same class of gap, since ora's stack.xml reader is a structurally similar bounded-XML-tree walker.",
+    "2. Found _Walker.child() checked max_xml_nodes (node count) and max_nesting_depth but never accumulated or checked attribute count anywhere, despite max_entries already being a defined, caller-facing ResourceLimits field used by the ubl and (as of event 247) xliff readers.",
+    "3. Confirmed this is a genuine, exploitable gap via direct probing before any fix: parse_stack() with 2000 attributes on a <layer> element sailed straight through even with max_entries=5 explicitly configured.",
+    "4. Added attribute counting inside _Walker.child() as the first fix. Re-probed: a nested-element attribute flood (on a <layer>) was now correctly refused.",
+    "5. A second probe on the <image> root element's own attributes revealed the fix was INCOMPLETE: the root's attributes are read directly in parse_stack() via _require(root, \"w\") etc. without ever passing through the walker, so a flood on the root itself still sailed through unrejected.",
+    "6. A third probe on the top-level <stack> element (stacks[0]) found the identical problem for a second, distinct reason: parse_stack() calls walker.stack(stacks[0], 0) directly rather than walker.child(stacks[0], 0), so stacks[0]'s own attributes (and even its own node-count entry) never passed through any counting logic either.",
+    "7. Refactored the shared node+attribute counting logic out of child() into a new _Walker.count_element() method (counts node + attributes together, checked immediately after each update). Called it explicitly for both root and stacks[0] in parse_stack(), in addition to its continued use inside child() for every descendant reached via the existing recursive dispatch.",
+    "8. Re-probed all 4 relevant cases (nested-layer flood, root-image flood, top-level-stack flood, and a normal small valid document) and confirmed correct behavior in every case.",
+    "9. Ran the full pre-existing ora suite (316 tests, zero new fixtures) against the fix to look for false positives before writing a single new test -- all 316 passed unchanged.",
+    "10. Wrote 4 formal tests in the existing test_obligation_security_baseline.py (extending its established pattern). First draft used 50 attributes per fixture, which produced a 448-byte stack.xml exceeding TINY_LIMITS.max_header_bytes=200, causing the wrong limit (max_header_bytes) to fire first and masking the intended 'cumulative attributes' assertion. Fixed by reducing to 8 attributes per fixture (114 bytes, confirmed under 200 via a direct byte-length check).",
+    "11. Ran ruff (clean), the full ora suite (320 passed, was 316, +4), and the full 6-format regression (3440 passed, was 3436, +4; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "12. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-a05f04f20598a798, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "13. SAL-ORA-OBL-1C91BEA24163FEE8 was already status=implemented before this tick (ORA-SEC-001 covers the broader security baseline). This tick strengthens its evidence with a real, previously-unnoticed exploitable gap fixed, rather than crossing a status boundary -- no obligation is promoted."
+  ],
+  "allowed_files": [
+    "src/python/ora/src/format_factory/ora/codec/stack_xml.py",
+    "tests/python/ora/test_obligation_security_baseline.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/src/format_factory/ora/codec/stack_xml.py",
+    "tests/python/ora/test_obligation_security_baseline.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_security_baseline.py -q -- 21 passed, was 17 passed",
+    ".venv/Scripts/python -m ruff check src/python/ora/src/format_factory/ora/codec/stack_xml.py tests/python/ora/test_obligation_security_baseline.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 320 passed, was 316 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3440 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3436 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations moved status; 1 already-implemented obligation's evidence strengthened with a real fix",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 134,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the fix grounded directly in the already-proven, structurally-identical ubl/xliff sibling implementations, not invented from memory.",
+    "obligations_moved_breakdown": "SAL-ORA-OBL-1C91BEA24163FEE8 (ORA-SEC-001) remains implemented. A genuine, real, previously-unenforced security gap fixed with production source code (attribute count never checked at all, plus root/top-stack elements bypassing the walker entirely), found by the same cross-format comparison technique that closed the xliff equivalent one tick earlier."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
