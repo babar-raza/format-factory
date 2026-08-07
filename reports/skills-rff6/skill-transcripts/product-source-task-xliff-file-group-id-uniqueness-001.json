@@ -1,0 +1,54 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-file-group-id-uniqueness-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T06:46:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_FILE_GROUP_ID_UNIQUENESS_001",
+    "task_kind": "existing-check-test-plus-mirrored-new-check",
+    "root_cause": "SAL-XLIFF-OBL-087892B36F8591FF (file-id uniqueness, missing) had zero test coverage for an already-implemented validator check. SAL-XLIFF-OBL-EC188D4F6DD138A0 (id uniqueness across file/group/unit/inline scopes plus reference resolution, partial) named group-id duplicate detection as entirely unbuilt.",
+    "obligation_targeted": "SAL-XLIFF-OBL-087892B36F8591FF, SAL-XLIFF-OBL-EC188D4F6DD138A0 (both XLIFF-PARSE-001)",
+    "acceptance_evidence": "6 new tests prove file-id duplicate detection (already implemented, now exercised with a real multi-file document) and a newly-added group-id duplicate check (mirroring the existing file/unit/segment pattern), including correct scope handling: group-id uniqueness is file-wide (flattens nested groups) but not document-wide, distinct from file-id's document-wide scope.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read validator.py's existing duplicate-id checks directly: xliff.file.id.duplicate already existed (Counter over value.files, comparing across the whole document) but no shipped test built a real 2+-file document to exercise it -- confirmed via an interactive probe that a hand-built duplicate-file-id document correctly triggered the diagnostic on the FIRST attempt, meaning this obligation's gap was purely test coverage, not a missing feature.",
+    "2. Confirmed via the same probe that a duplicate-group-id document (two sibling groups sharing an id) produced zero diagnostics -- group-id duplicate detection genuinely did not exist.",
+    "3. Read the pinned XLIFF 2.1 spec source directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin, section 3.1 'Selectors for Core Elements' and its identical scope table in section 4.9) to ground the exact scope rather than guessing: file ids are unique 'within the enclosing xliff element' (document-wide, matching the existing check); group ids are unique 'among all group id attribute values within the enclosing file element' (file-wide, flattening across nesting depth, but NOT document-wide -- distinct from file-id's broader scope).",
+    "4. Added _iter_groups(), a recursive flattening walker mirroring file.iter_units()'s existing pattern, and wired a group-id Counter-based duplicate check into validate(), scoped per-file exactly as the spec text specifies.",
+    "5. Verified interactively across 5 cases (sibling duplicate, nested duplicate at depth 2, distinct ids not flagged, same id reused across different files correctly NOT flagged since scope is per-file, and the pre-existing file-id check still works) -- all 5 behaved correctly on the first attempt.",
+    "6. Wrote 6 formal tests covering all 5 probe cases plus the original multi-file-no-duplicate baseline. Ran ruff (clean), the full xliff suite (377 passed, was 371, +6), and the full 6-format regression (3132 passed, was 3126, +6; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "7. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-1e7db05b93c37fc2, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py -q -- 6 passed",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/validation/validator.py tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 377 passed, was 371 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3132 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3126 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the group-id uniqueness scope is grounded directly in the pinned spec's own identifier-scope text, not invented from memory.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-087892B36F8591FF (file-id uniqueness) promoted missing->implemented: the underlying check already existed, this slice only proved it. SAL-XLIFF-OBL-EC188D4F6DD138A0 (broader id-uniqueness-plus-reference-resolution obligation) gains real new coverage (file-id and group-id uniqueness both now proven) but stays honestly partial -- 'references must resolve' beyond the existing ec/sc pairing check remains genuinely unbuilt and is not claimed here."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

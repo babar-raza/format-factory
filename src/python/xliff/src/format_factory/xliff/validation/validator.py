@@ -109,6 +109,23 @@ def _walk_group(group: Group) -> list[Unit]:
     return list(group.iter_units())
 
 
+def _iter_groups(children: list[Group | Unit | ExtensionNode]) -> list[Group]:
+    """Every Group anywhere in `children`, at any nesting depth.
+
+    "When used in <group> elements: The value MUST be unique among all
+    <group> id attribute values within the enclosing <file> element" --
+    the scope is the whole file, not just immediate siblings, so this
+    flattens nested groups the same way file.iter_units() already does
+    for units.
+    """
+    groups: list[Group] = []
+    for child in children:
+        if isinstance(child, Group):
+            groups.append(child)
+            groups.extend(_iter_groups(child.children))
+    return groups
+
+
 def validate(
     value: XliffDocument,
     *,
@@ -141,6 +158,16 @@ def validate(
     for file in value.files:
         if not file.id:
             diagnostics.append(Diagnostic("xliff.file.id.required", "file id is required"))
+        group_ids = [group.id for group in _iter_groups(file.children)]
+        for duplicate in sorted(
+            key for key, count in Counter(group_ids).items() if key and count > 1
+        ):
+            diagnostics.append(
+                Diagnostic(
+                    "xliff.group.id.duplicate",
+                    f"duplicate group id {duplicate!r} in file {file.id!r}",
+                )
+            )
         units = list(file.iter_units())
         unit_ids = [unit.id for unit in units]
         for duplicate in sorted(

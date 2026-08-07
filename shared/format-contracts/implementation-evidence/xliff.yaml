@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-FILE-GROUP-ID-UNIQUENESS-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-file-group-id-uniqueness-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-087892B36F8591FF (XLIFF-PARSE-001) and narrows SAL-XLIFF-OBL-EC188D4F6DD138A0 (XLIFF-PARSE-001). xliff.file.id.duplicate already existed in validator.py but no shipped test built a real multi-file document to exercise it, confirmed via an interactive probe that the existing check already fires correctly on the first attempt -- a pure test-coverage gap, not a missing feature. Group-id duplicate detection genuinely did not exist, confirmed by the same probe returning zero diagnostics for two sibling groups sharing an id. Read the pinned XLIFF 2.1 spec source directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin, section 3.1 and the identical scope table in section 4.9) to ground the exact uniqueness scope: file ids are unique document-wide, group ids are unique file-wide (flattening across nesting depth) but explicitly NOT document-wide, distinct scopes confirmed directly rather than assumed uniform. Added _iter_groups(), a recursive flattening walker mirroring the existing file.iter_units() pattern, and a Counter-based group-id duplicate check in validate(), scoped per-file. 6 new tests prove sibling duplicates, nested-depth duplicates, non-duplicate distinct ids, and correct non-flagging when the same group id is legitimately reused across different files (since scope is per-file, not document-wide). xliff suite: 371 -> 377 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, with the group-id scope grounded directly in the pinned spec''s own identifier-scope text. Covers SAL-XLIFF-OBL-087892B36F8591FF and SAL-XLIFF-OBL-EC188D4F6DD138A0 only; it supports no other obligation and promotes no product state.'
 - evidence_id: XLIFF-ABSENT-VS-EXPLICIT-SWEEP-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-absent-vs-explicit-sweep-001.json
   expected_result: PASS
@@ -511,14 +516,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-087892B36F8591FF
   capability_id: XLIFF-PARSE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: no shipped-namespace test builds a multi-file document, so file-id-unique-within-document is never exercised (the validator has a duplicate-id check, but only unit/segment-id duplicates are tested, never file-id). Not attempted this slice.'
+  status: implemented
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_real_multi_file_document_with_distinct_file_ids_is_valid
+  - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_files_sharing_an_id_are_flagged_as_duplicate
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_files_sharing_an_id_are_flagged_as_duplicate
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  - XLIFF-FILE-GROUP-ID-UNIQUENESS-PROOF
+  implemented_behavior:
+  - 'xliff.file.id.duplicate already existed in validator.py but had no shipped test building a real multi-file document to exercise it -- now proven directly: a document with 2 files declaring the same id is flagged invalid with the exact diagnostic, and a document with distinct file ids validates cleanly.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -3369,17 +3380,24 @@ obligations:
   status: partial
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_iter_groups
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
+  - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_files_sharing_an_id_are_flagged_as_duplicate
+  - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_sibling_groups_in_one_file_sharing_an_id_are_flagged_as_duplicate
+  - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_nested_group_sharing_its_parents_id_is_flagged_as_duplicate
+  - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_the_same_group_id_reused_across_different_files_is_not_a_duplicate
   negative_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-FILE-GROUP-ID-UNIQUENESS-PROOF
   implemented_behavior:
-  - 'unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven.'
+  - 'unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven. file-id uniqueness (document-wide) and group-id uniqueness (a new check, file-wide -- grounded directly in the pinned spec''s own identifier-scope text, which scopes group ids to "the enclosing file element" rather than the whole document) are now also proven, including correct nesting-depth flattening and correct non-flagging when the same group id is legitimately reused across different files.'
   missing_behavior:
-  - 'Confirmed gap, not an audit backlog: file-id duplicate detection exists in validator.py but is untested; group-id duplicate detection does not exist in the validator at all; broader "references must resolve" (e.g. mrk ref, dataRef) is unimplemented beyond the ec/sc case. Not attempted this slice.'
+  - 'Broader "references must resolve" (e.g. mrk ref, dataRef) remains genuinely unimplemented beyond the existing ec/sc pairing check -- not attempted this slice, deliberately scoped separately from the id-uniqueness half this slice closes.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
