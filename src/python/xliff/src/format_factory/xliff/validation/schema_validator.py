@@ -1,28 +1,32 @@
-"""XSD conformance validation against the bundled XLIFF 2.0/2.1 core schema.
+"""XSD conformance validation against the bundled, official XLIFF 2.1
+core and module schemas.
 
 MUST (SAL-XLIFF-OBL-078DE5F17834C232 / SAL-XLIFF-OBL-C1BB9934B09B3B70):
 "XLIFF documents must be well-formed XML and valid against the core
 schema with module content valid against its module schema."
 Well-formedness is already enforced at parse time (reader.py). This
-module supplies the "valid against the core schema" half.
+module supplies both remaining halves.
 
-xliff_core_2.0.xsd, bundled alongside this module, is transcribed
-byte-for-byte from the pinned XLIFF 2.1 specification's own Appendix
-A.3 "Core XML Schema" (.local/format-contracts/acquired/xliff/
-src-xliff-003.bin, lines 3230-3657) -- the spec's own words: "The schema
-listed below for reading convenience is accessible at
-http://docs.oasis-open.org/xliff/xliff-core/v2.1/os/schemas/xliff_core_2.1.xsd."
-This is the authoritative, normative core-only schema, not fabricated
-or reconstructed from memory. It imports the standard, unversioned W3C
-`xml:` namespace schema (xml:lang/xml:space/xml:id), which `xmlschema`
-resolves from its own bundled copy without any network access.
+The bundled schemas (validation/schemas/*.xsd) are the actual OASIS-
+published XLIFF 2.1 schema files, extracted byte-for-byte from the
+pinned raw acquisition cache: .local/format-contracts/acquired/xliff/
+src-xlf-002.bin is not spec prose -- it is a ZIP archive (confirmed by
+its own "PK" magic bytes), the official XLIFF 2.1 OS schema
+distribution package, containing xliff_core_2.0.xsd plus one .xsd per
+standard module (Format Style, Glossary, ITS, ITS Mapping, Matches,
+Metadata, Resource Data, Size and Length Restriction, Validation). Each
+module schema's own <xs:import schemaLocation="xliff_core_2.0.xsd"/>
+resolves automatically because all ten files are bundled together in
+the same directory, unmodified relative to how OASIS ships them.
 
-Deliberately narrow: this validates ONLY the core schema. Module content
-(Glossary, Metadata, Validation, Size and Length Restriction, Matches,
-Resource Data, Format Style, ITS) each has its own separate module
-schema this function does not load or check -- composing all of them
-into one combined schema (via xs:import/xs:redefine) remains a
-genuinely larger, separate undertaking, not attempted here.
+Deliberately narrow about one remaining thing: this validates XSD
+structural conformance only. The distribution package also ships
+per-module ISO Schematron (.sch) files for additional business-rule
+assertions beyond XSD's own expressive power -- Schematron is not
+required by this obligation's own rule_text ("valid against ... schema",
+not "... and its Schematron rules"), and compiling/running Schematron
+would need a substantially different toolchain (XSLT-based, not
+xmlschema), so it is correctly left unattempted.
 
 `xmlschema` is an optional dependency (the `schema` extra in
 pyproject.toml) -- imported lazily here so the rest of this package
@@ -33,7 +37,8 @@ from __future__ import annotations
 
 from functools import lru_cache
 from pathlib import Path
-from typing import TYPE_CHECKING
+from types import ModuleType
+from typing import TYPE_CHECKING, Iterator, cast
 
 from format_factory.core import Diagnostic, SourceLocation, ValidationReport
 
@@ -42,11 +47,23 @@ from ..errors import SchemaValidationUnavailable
 if TYPE_CHECKING:
     import xmlschema as _xmlschema_typing
 
-_SCHEMA_PATH = Path(__file__).parent / "xliff_core_2.0.xsd"
+_SCHEMAS_DIR = Path(__file__).parent / "schemas"
+_CORE_SCHEMA_PATH = _SCHEMAS_DIR / "xliff_core_2.0.xsd"
+#: Every standard module's own schema file, bundled alongside the core.
+_MODULE_SCHEMA_FILENAMES = (
+    "fs.xsd",
+    "glossary.xsd",
+    "its.xsd",
+    "itsm.xsd",
+    "matches.xsd",
+    "metadata.xsd",
+    "resource_data.xsd",
+    "size_restriction.xsd",
+    "validation.xsd",
+)
 
 
-@lru_cache(maxsize=1)
-def _load_schema() -> "_xmlschema_typing.XMLSchema":
+def _require_xmlschema() -> ModuleType:
     try:
         import xmlschema
     except ImportError as exc:
@@ -54,11 +71,48 @@ def _load_schema() -> "_xmlschema_typing.XMLSchema":
             "XSD schema validation requires the optional 'xmlschema' "
             "dependency. Install it with: pip install format-factory-xliff[schema]"
         ) from exc
-    return xmlschema.XMLSchema(str(_SCHEMA_PATH))
+    return xmlschema
+
+
+@lru_cache(maxsize=1)
+def _load_core_schema() -> "_xmlschema_typing.XMLSchema":
+    xmlschema = _require_xmlschema()
+    return cast("_xmlschema_typing.XMLSchema", xmlschema.XMLSchema(str(_CORE_SCHEMA_PATH)))
+
+
+@lru_cache(maxsize=1)
+def _load_full_schema() -> "_xmlschema_typing.XMLSchema":
+    """Core schema composed with every standard module's own schema.
+
+    A single xmlschema.XMLSchema built from the full file list -- each
+    module schema's own xs:import of the core resolves via the shared
+    directory, so this is the real OASIS-defined combined grammar, not
+    a hand-assembled approximation.
+    """
+
+    xmlschema = _require_xmlschema()
+    paths = [str(_CORE_SCHEMA_PATH)]
+    paths.extend(str(_SCHEMAS_DIR / name) for name in _MODULE_SCHEMA_FILENAMES)
+    return cast("_xmlschema_typing.XMLSchema", xmlschema.XMLSchema(paths))
+
+
+def _diagnostics_from_errors(errors: "Iterator[_xmlschema_typing.XMLSchemaValidationError]", code: str) -> list[Diagnostic]:
+    diagnostics: list[Diagnostic] = []
+    for error in errors:
+        path = tuple(segment for segment in (error.path or "").split("/") if segment)
+        diagnostics.append(
+            Diagnostic(
+                code,
+                error.reason or str(error),
+                location=SourceLocation(path=path) if path else None,
+            )
+        )
+    return diagnostics
 
 
 def schema_validate(source: bytes | str) -> ValidationReport:
-    """Validate raw XLIFF XML `source` against the bundled core schema.
+    """Validate raw XLIFF XML `source` against the bundled core schema
+    only (module extension content, if present, is not checked).
 
     Operates on raw XML text/bytes, independent of whether this
     package's own strict reader could load it -- a document a third
@@ -71,18 +125,32 @@ def schema_validate(source: bytes | str) -> ValidationReport:
     dependency is not installed.
     """
 
-    schema = _load_schema()
-    diagnostics: list[Diagnostic] = []
-    for error in schema.iter_errors(source):
-        path = tuple(segment for segment in (error.path or "").split("/") if segment)
-        diagnostics.append(
-            Diagnostic(
-                "xliff.schema.core.invalid",
-                error.reason or str(error),
-                location=SourceLocation(path=path) if path else None,
-            )
-        )
-    return ValidationReport(diagnostics)
+    schema = _load_core_schema()
+    return ValidationReport(
+        _diagnostics_from_errors(schema.iter_errors(source), "xliff.schema.core.invalid")
+    )
 
 
-__all__ = ["schema_validate"]
+def full_schema_validate(source: bytes | str) -> ValidationReport:
+    """Validate raw XLIFF XML `source` against the core schema composed
+    with every standard module's own schema.
+
+    Unlike :func:`schema_validate`, this also structurally validates any
+    module extension content (Glossary, Metadata, Validation, Size and
+    Length Restriction, Matches, Resource Data, Format Style, ITS, ITS
+    Mapping) present in the document -- the "module content valid
+    against its module schema" half of this obligation's own compound
+    rule_text. Reports every violation, from either the core or any
+    module, in one combined report.
+
+    Raises `SchemaValidationUnavailable` if the optional `xmlschema`
+    dependency is not installed.
+    """
+
+    schema = _load_full_schema()
+    return ValidationReport(
+        _diagnostics_from_errors(schema.iter_errors(source), "xliff.schema.module.invalid")
+    )
+
+
+__all__ = ["full_schema_validate", "schema_validate"]

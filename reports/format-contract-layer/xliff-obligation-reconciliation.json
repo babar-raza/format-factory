@@ -82,6 +82,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes 2 obligations sharing \"The Format Style module uses namespace urn:oasis:names:tc:xliff:fs:2.0 and defines fs and subFs attributes; fs values are constrained by the module schema\" across XLIFF-MODULE-001/PARSE-001 (both moved partial->implemented). Unlike the Metadata/Resource Data/Matches modules closed in the three immediately preceding ticks (each a single top-level extension element), fs and subFs \"attach to existing core elements rather than introducing their own\" -- confirmed directly by this package's own pre-existing fixture (test_format_style_attributes_round_trip_on_a_unit), which attaches them to a <unit>, not an inline element. Grounded directly in the pinned XLIFF 2.1 Format Style module schema (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/fs.xsd): fs:fs is restricted to a fixed 58-value enumeration of HTML-tag-like tokens, cross-verified programmatically against every <xs:enumeration> entry in the pinned XSD (not typed from memory) to confirm an exact 58/58 match; fs:subFs is an unrestricted xs:string with no value to check. Added _format_style_module_diagnostics() to validator.py, checking every host this package generically preserves unknown attributes on: the unit itself, each segment/ignorable and its own source/target attribute dicts, and every inline code element (ph/pc/sc/ec/mrk) within source/target content -- broader scope than the three prior module ticks, which only needed to check a single top-level extension's own re-parsed XML. Verified zero false positives against the entire pre-existing 428-test xliff suite before writing a single new test -- the package's own existing fs:fs=\"span\" fixture was already a valid enumerated value. 8 new tests prove: valid fs values on a unit and on an inline element validate cleanly; invalid values on a unit, an inline element, and source_attributes are each independently flagged; subFs accepts any string; no fs attributes anywhere stays clean; and a representative spot-check across 8 of the 58 enumerated values (a, h1, h6, table, tt, ul, div, span) are all individually accepted. xliff suite: 428 -> 436 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every enumerated value cross-checked programmatically against the pinned schema. Covers SAL-XLIFF-OBL-D8C6CC9733716C74 and SAL-XLIFF-OBL-CF05EFE9DC2D7502 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-FULL-MODULE-SCHEMA-VALIDATION-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-full-module-schema-validation-001.json",
+      "sha256": "1185dc9e12dd00551f1356196b8b9988d2a4a6f005ddb49a964f86dd3e72fdc2",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-078DE5F17834C232 (XLIFF-MODULE-001) and SAL-XLIFF-OBL-C1BB9934B09B3B70 (XLIFF-PARSE-001), both promoted partial->implemented -- their compound rule_text's final remaining clause. XLIFF-CORE-SCHEMA-VALIDATION-PROOF (an earlier tick this session) had narrowed both, explicitly leaving \"module content valid against its module schema\" as genuinely unbuilt, composing 8 separate module schemas assumed to be a \"genuinely larger, separate undertaking.\" That assumption was wrong: applying the \"systematically check every acquired/*.bin file for a hidden data/schema artifact by size and magic-number, not just when a specific obligation invites it\" discipline (named explicitly at the end of the immediately preceding ubl code-list tick this session), checked every one of xliff's own 4 acquired .bin files' first bytes and found src-xlf-001.bin and src-xlf-002.bin (previously never opened as anything but assumed-irrelevant siblings of the HTML spec files) both carry ZIP magic bytes (\"PK\"). Opened them: src-xlf-002.bin is the actual official XLIFF 2.1 OS schema distribution package, containing xliff_core_2.0.xsd plus one real, OASIS-published .xsd for every standard module (Format Style, Glossary, ITS, ITS Mapping, Matches, Metadata, Resource Data, Size and Length Restriction, Validation) -- plus ISO Schematron (.sch) files for each, correctly identified as out of scope since the obligation's own rule_text asks for schema validation, not Schematron business rules, and Schematron would need a wholly different XSLT-based toolchain. Verified each module schema's own xs:import of the core (schemaLocation=\"xliff_core_2.0.xsd\", a plain relative path) resolves automatically once all ten files are bundled together in one directory, proven directly: xmlschema.XMLSchema([core_path] + module_paths) composed successfully, exposing all 9 module namespaces plus the core namespace in one schema object. Replaced the previously hand-extracted, HTML-unescaped core schema (from XLIFF-CORE-SCHEMA-VALIDATION-PROOF) with this REAL zip-extracted copy (339 bytes larger, carrying the file's own OASIS copyright/provenance header comment the HTML extraction had dropped) for maximum fidelity and consistency with the newly-bundled modules, all sourced from the same real distribution package rather than mixing extraction methods. Added full_schema_validate() (schema_validator.py), composing core+modules into a second cached xmlschema.XMLSchema instance, reporting core-level and module-level violations together in one combined report. Verified zero false positives against the entire pre-existing 523-test xliff suite before writing a single new test; probed 3 scenarios interactively (a well-formed glossary extension validates cleanly; a glossEntry with two term children -- a genuine XSD structural violation, distinct from this package's own separate, narrower cardinality diagnostic -- is caught; a core-level defect is still caught even when an unrelated module extension elsewhere is well-formed) before writing any assertion. 7 new tests (tests/python/xliff/test_obligation_full_module_schema_validation.py) prove: all 9 module namespaces load; a document with no module extension validates cleanly; well-formed glossary and validation-module extensions validate cleanly; a module-level XSD violation is caught; a core-level violation is still caught alongside a well-formed module extension; multiple violations are all reported. xliff suite: 523 -> 530 passed. ruff and mypy --strict clean (25 source files). Combined 6-format run: 3552 -> 3559 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped -- zero regression beyond the 7 intentional new tests. A real wheel was built confirming all 10 bundled .xsd files (core + 9 modules) ship correctly in the package-data location; a stale duplicate entry in one local sanity-check wheel was traced to this session's own prior gitignored, uncommitted `build/` cache directory from an earlier tick's wheel-build verification, not a real packaging defect -- confirmed by direct source-tree inspection showing exactly one copy of each schema file, correctly placed. NOT backed by an independent reference XLIFF implementation for cross-validation, but the bundled schemas ARE themselves the authoritative OASIS-published normative files, extracted byte-for-byte from the pinned official distribution package -- the strongest grounding used for any fix this session, on par with the sibling core-schema and ubl code-list discoveries. Covers SAL-XLIFF-OBL-078DE5F17834C232 and SAL-XLIFF-OBL-C1BB9934B09B3B70 only; it supports no other obligation."
+    },
+    {
       "evidence_id": "XLIFF-GLOSSARY-MODULE-CARDINALITY-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -365,7 +373,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "04b809628a9655e995e0e478587760e9ba20c71393b843088b318ef1b599bd41",
+    "implementation_evidence": "109ec6ca2d1bc9f1fc3a97771168a7538ea997679e1af1ea98c544e8b1ed91e7",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -505,28 +513,32 @@
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
         "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
-        "XLIFF-CORE-SCHEMA-VALIDATION-PROOF"
+        "XLIFF-CORE-SCHEMA-VALIDATION-PROOF",
+        "XLIFF-FULL-MODULE-SCHEMA-VALIDATION-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of SAL-XLIFF-OBL-C1BB9934B09B3B70 (identical rule_text, XLIFF-PARSE-001): the well-formed-XML half is proven (DTD/entity declarations refused; unsupported namespace/version refused). The \"valid against the core schema\" half is now also proven: a new schema_validate() function validates raw XLIFF XML against the bundled xliff_core_2.0.xsd, transcribed byte-for-byte from the pinned spec's own Appendix A.3, using the already-declared-but-previously-unused optional xmlschema dependency (imported lazily so the package remains installable without it). Reports every violation, not just the first, with a structural path per diagnostic. Degrades gracefully with a clear SchemaValidationUnavailable error if xmlschema is not installed."
+        "Cross-capability duplicate of SAL-XLIFF-OBL-C1BB9934B09B3B70 (identical rule_text, XLIFF-PARSE-001): the well-formed-XML half is proven (DTD/entity declarations refused; unsupported namespace/version refused); the \"valid against the core schema\" half is proven via schema_validate(). The final \"module content valid against its module schema\" clause is now also proven: the pinned raw acquisition cache (.local/format-contracts/acquired/xliff/src-xlf-002.bin) turned out to be the actual official XLIFF 2.1 schema distribution ZIP (confirmed by its own \"PK\" magic bytes), containing every standard module's own real OASIS-published .xsd file (Format Style, Glossary, ITS, ITS Mapping, Matches, Metadata, Resource Data, Size and Length Restriction, Validation) alongside a more authoritative copy of the core schema itself (which replaced the previously hand-extracted one). full_schema_validate() composes all ten into one xmlschema.XMLSchema -- each module's own xs:import of the core resolves automatically via the shared bundle directory, so this is the real OASIS-defined combined grammar, not a hand-assembled approximation. Proven to catch both core-level and module-level violations together in one combined report (e.g. a glossEntry with two term children, or a file missing its required id attribute even when an unrelated module extension elsewhere is well-formed)."
       ],
-      "missing_behavior": [
-        "Module content validation (\"module content valid against its module schema\") remains unbuilt: composing the 8 separate module schemas (Glossary, Metadata, Validation, Size and Length Restriction, Matches, Resource Data, Format Style, ITS) into the core schema, and any Schematron-level business-rule validation beyond XSD structural conformance, are both genuinely larger, separate undertakings. Not attempted this slice."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected",
         "tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated",
         "tests/python/xliff/test_obligation_core_schema_validation.py::test_a_missing_required_attribute_is_flagged",
         "tests/python/xliff/test_obligation_core_schema_validation.py::test_every_violation_is_reported_not_just_the_first",
         "tests/python/xliff/test_obligation_core_schema_validation.py::test_diagnostics_carry_a_structural_path",
-        "tests/python/xliff/test_obligation_core_schema_validation.py::test_schema_validation_unavailable_when_xmlschema_cannot_be_imported"
+        "tests/python/xliff/test_obligation_core_schema_validation.py::test_schema_validation_unavailable_when_xmlschema_cannot_be_imported",
+        "tests/python/xliff/test_obligation_full_module_schema_validation.py::test_a_glossary_entry_with_two_terms_violates_the_module_schema",
+        "tests/python/xliff/test_obligation_full_module_schema_validation.py::test_a_core_level_violation_is_still_caught_when_a_module_extension_is_present"
       ],
       "obligation_id": "SAL-XLIFF-OBL-078DE5F17834C232",
       "positive_test_selectors": [
         "tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected",
         "tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated",
         "tests/python/xliff/test_obligation_core_schema_validation.py::test_a_schema_valid_document_reports_no_diagnostics",
-        "tests/python/xliff/test_obligation_core_schema_validation.py::test_a_valid_document_with_a_target_and_multiple_units_validates_cleanly"
+        "tests/python/xliff/test_obligation_core_schema_validation.py::test_a_valid_document_with_a_target_and_multiple_units_validates_cleanly",
+        "tests/python/xliff/test_obligation_full_module_schema_validation.py::test_composed_schema_loads_all_nine_standard_module_namespaces",
+        "tests/python/xliff/test_obligation_full_module_schema_validation.py::test_a_well_formed_glossary_extension_validates_cleanly",
+        "tests/python/xliff/test_obligation_full_module_schema_validation.py::test_a_well_formed_validation_module_extension_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -536,12 +548,13 @@
           "Per-module round-trip fixtures; coverage manifest matches behavior."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
-        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::schema_validate"
+        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::schema_validate",
+        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::full_schema_validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
@@ -4286,28 +4299,32 @@
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
         "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
-        "XLIFF-CORE-SCHEMA-VALIDATION-PROOF"
+        "XLIFF-CORE-SCHEMA-VALIDATION-PROOF",
+        "XLIFF-FULL-MODULE-SCHEMA-VALIDATION-PROOF"
       ],
       "implemented_behavior": [
-        "The \"well-formed XML\" half is proven (DTD/entity declarations refused; unsupported namespace/version refused). The \"valid against the core schema\" half is now also proven -- see SAL-XLIFF-OBL-078DE5F17834C232's own implemented_behavior for the full detail."
+        "The \"well-formed XML\" half is proven (DTD/entity declarations refused; unsupported namespace/version refused). The \"valid against the core schema\" and \"module content valid against its module schema\" halves are now also proven -- see SAL-XLIFF-OBL-078DE5F17834C232's own implemented_behavior for the full detail."
       ],
-      "missing_behavior": [
-        "Module content validation (\"module content valid against its module schema\") remains unbuilt: composing the 8 separate module schemas into the core schema, and any Schematron-level business-rule validation beyond XSD structural conformance, are both genuinely larger, separate undertakings. Not attempted this slice."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected",
         "tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated",
         "tests/python/xliff/test_obligation_core_schema_validation.py::test_a_missing_required_attribute_is_flagged",
         "tests/python/xliff/test_obligation_core_schema_validation.py::test_every_violation_is_reported_not_just_the_first",
         "tests/python/xliff/test_obligation_core_schema_validation.py::test_diagnostics_carry_a_structural_path",
-        "tests/python/xliff/test_obligation_core_schema_validation.py::test_schema_validation_unavailable_when_xmlschema_cannot_be_imported"
+        "tests/python/xliff/test_obligation_core_schema_validation.py::test_schema_validation_unavailable_when_xmlschema_cannot_be_imported",
+        "tests/python/xliff/test_obligation_full_module_schema_validation.py::test_a_glossary_entry_with_two_terms_violates_the_module_schema",
+        "tests/python/xliff/test_obligation_full_module_schema_validation.py::test_a_core_level_violation_is_still_caught_when_a_module_extension_is_present"
       ],
       "obligation_id": "SAL-XLIFF-OBL-C1BB9934B09B3B70",
       "positive_test_selectors": [
         "tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected",
         "tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated",
         "tests/python/xliff/test_obligation_core_schema_validation.py::test_a_schema_valid_document_reports_no_diagnostics",
-        "tests/python/xliff/test_obligation_core_schema_validation.py::test_a_valid_document_with_a_target_and_multiple_units_validates_cleanly"
+        "tests/python/xliff/test_obligation_core_schema_validation.py::test_a_valid_document_with_a_target_and_multiple_units_validates_cleanly",
+        "tests/python/xliff/test_obligation_full_module_schema_validation.py::test_composed_schema_loads_all_nine_standard_module_namespaces",
+        "tests/python/xliff/test_obligation_full_module_schema_validation.py::test_a_well_formed_glossary_extension_validates_cleanly",
+        "tests/python/xliff/test_obligation_full_module_schema_validation.py::test_a_well_formed_validation_module_extension_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -4317,12 +4334,13 @@
           "Version/namespace consistency fixtures per supported version; legacy-version refusal fixture."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
-        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::schema_validate"
+        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::schema_validate",
+        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::full_schema_validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODEL-001",
@@ -5509,6 +5527,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-file-group-id-uniqueness-001.json": "50333c4f0bea5929373b26cd75ceb05590c18f4173000e194334be720f7f3e73",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-file-required-and-file-id-required-001.json": "a39c6208d21397ccaa1ba7d4c49360095c48b8509cd60b75508274bd38f4f1b7",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-format-style-fs-values-001.json": "32dff4783e57f339a5b51c52c491eb55739ef51cb6a4d6d198aeddf100fbc970",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-full-module-schema-validation-001.json": "1185dc9e12dd00551f1356196b8b9988d2a4a6f005ddb49a964f86dd3e72fdc2",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-glossary-module-cardinality-001.json": "aa386f57739076811178357cc36f88f2d0ff59c16834a47a4ae97b7db9ff79c2",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-ignorable-elements-001.json": "b4eae20e8f1235e61fed5828dbb0d3880ae8c9762e85f1d6e488c777872a1a93",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-inline-required-id-001.json": "33d8fe481a9892e47f0d5b9886059f7a3c6290e0db4cbd20e544081f01ab8255",
@@ -5556,13 +5575,14 @@
     "src/python/xliff/src/format_factory/xliff/qa.py": "61c2a8f74d09f844e36bfc1d967a587b5e5e62cf6087577e1031347b3ee8fa2f",
     "src/python/xliff/src/format_factory/xliff/security/limits.py": "8cec6ffd2ccd8fe17fa6d76ab19b2deeda3578d558925d862b15494b3b06665a",
     "src/python/xliff/src/format_factory/xliff/state_transitions.py": "6b12476e31076a788cef37fb476e1b5eda7365e6eb640bbb7bedcebabb9d49ea",
-    "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py": "f095f4eb07fae82a336cade21264706be3fcb53b104513150e37fb657c36c4c1",
+    "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py": "1a7e37e980d5b0aa4557121ddf529e040771e8f0474c9e59b26576bb0c57c15c",
     "src/python/xliff/src/format_factory/xliff/validation/validator.py": "8b463c2f01f6002176f0876f49dae9773230bdaeb5f7d99697ebb6ae8fee479f",
     "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py": "0cf2b5f76b217e7768f56a9302d7012c450a1dc95cd05b823bb7476bd8db7761",
     "tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py": "43045d1ebd13179843aaffbbbeb1fbbe50694f34d50f380eb5e7d409c2f65110",
-    "tests/python/xliff/test_obligation_core_schema_validation.py": "965da4b59b5e43a8d426c37749f8351462be742233aad0490c4f1e2a75f9a528",
+    "tests/python/xliff/test_obligation_core_schema_validation.py": "4f6a99acc18bc098dff001c8a438e6ab95b588f90b0d3250b3201511ab8c50f3",
     "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py": "4608bfab942b23e748dc4010785ec78e72a668f796a3d93401e208fc2365ab80",
     "tests/python/xliff/test_obligation_format_style_module_fs_values.py": "5e03baa15603d37ab30de64ad46e889955bf3be3694e2f515b3acde3bf1fac24",
+    "tests/python/xliff/test_obligation_full_module_schema_validation.py": "5d3cd7e9889c9661e9fc655e9b4c5425692d6c94961345e5b190f0e09ff270cd",
     "tests/python/xliff/test_obligation_glossary_module_cardinality.py": "3d6aaad34401cb21386b9148d4f708cc50076f621f16acc1aea58f96d556d47a",
     "tests/python/xliff/test_obligation_ignorable_elements.py": "70908f9b90fa150715bd19b6c9a1abd46b36b818a3710c4ad82d851dc6a9c880",
     "tests/python/xliff/test_obligation_inline_required_id.py": "a499d28a49fc003b29ebaeb93dcb4619ee5767d344cc19a05fe432a6a4420eac",
@@ -5598,12 +5618,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 119,
+      "implemented": 121,
       "missing": 11,
-      "partial": 12
+      "partial": 10
     },
     "total": 142,
-    "unresolved": 23
+    "unresolved": 21
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

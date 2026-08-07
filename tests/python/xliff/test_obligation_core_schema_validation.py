@@ -2,26 +2,18 @@
 
 MUST (SAL-XLIFF-OBL-078DE5F17834C232 / SAL-XLIFF-OBL-C1BB9934B09B3B70):
 "XLIFF documents must be well-formed XML and valid against the core
-schema with module content valid against its module schema." Before
-this slice, confirmed genuinely unbuilt by direct probing: no schema
-files were bundled with this package, and the optional `xmlschema`
-dependency declared in pyproject.toml (the `schema` extra) was never
-imported anywhere in the source.
+schema with module content valid against its module schema."
 
-Grounded directly in the pinned XLIFF 2.1 specification's own Appendix
-A.3 "Core XML Schema" (.local/format-contracts/acquired/xliff/
-src-xliff-003.bin, lines 3230-3657), transcribed byte-for-byte into
-src/format_factory/xliff/validation/xliff_core_2.0.xsd -- the
-authoritative, normative schema the spec's own words describe as
-"listed below for reading convenience," not fabricated or approximated.
+The bundled schemas are the actual OASIS-published XLIFF 2.1 schema
+files, extracted from the real official distribution ZIP found inside
+the pinned raw acquisition cache (.local/format-contracts/acquired/
+xliff/src-xlf-002.bin -- confirmed a ZIP by its own "PK" magic bytes,
+not spec prose).
 
-Deliberately narrow: only the CORE schema is validated here. Module
-content (Glossary, Metadata, Validation, Size and Length Restriction,
-Matches, Resource Data, Format Style, ITS) each has its own separate
-module schema this slice does not load or check -- composing all of
-them into one combined schema remains a genuinely larger, separate
-undertaking, correctly left unattempted and still `missing_behavior` on
-both obligations' own evidence.
+This file tests schema_validate() (core schema only). The composed
+core+module validation (full_schema_validate(), the "module content
+valid against its module schema" half) is tested separately in
+test_obligation_full_module_schema_validation.py.
 """
 
 from __future__ import annotations
@@ -33,7 +25,7 @@ import pytest
 xmlschema = pytest.importorskip("xmlschema", reason="optional xmlschema dependency not installed")
 
 from format_factory.xliff import SchemaValidationUnavailable, schema_validate  # noqa: E402
-from format_factory.xliff.validation.schema_validator import _load_schema  # noqa: E402
+from format_factory.xliff.validation.schema_validator import _load_core_schema  # noqa: E402
 
 _XLIFF_NS = "urn:oasis:names:tc:xliff:document:2.0"
 
@@ -110,7 +102,7 @@ def test_schema_validation_unavailable_when_xmlschema_cannot_be_imported(
     schema_validate() does, and it fails with a clear, actionable
     error rather than an opaque ImportError or a crash at package
     import time."""
-    _load_schema.cache_clear()
+    _load_core_schema.cache_clear()
     real_import = __import__
 
     def _blocked_import(name: str, *args: object, **kwargs: object) -> object:
@@ -126,4 +118,4 @@ def test_schema_validation_unavailable_when_xmlschema_cannot_be_imported(
         with pytest.raises(SchemaValidationUnavailable, match="xmlschema"):
             schema_validate(b"<x/>")
     finally:
-        _load_schema.cache_clear()
+        _load_core_schema.cache_clear()

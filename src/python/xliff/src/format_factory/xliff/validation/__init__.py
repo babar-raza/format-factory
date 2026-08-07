@@ -1,6 +1,6 @@
 """XLIFF validation."""
 
-from .schema_validator import schema_validate
+from .schema_validator import full_schema_validate, schema_validate
 from .validator import validate
 
-__all__ = ["schema_validate", "validate"]
+__all__ = ["full_schema_validate", "schema_validate", "validate"]

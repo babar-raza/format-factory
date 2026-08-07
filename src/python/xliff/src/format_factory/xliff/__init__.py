@@ -88,7 +88,7 @@ from .state_transitions import (
     TransitionViolation,
     check_state_transitions,
 )
-from .validation import schema_validate, validate
+from .validation import full_schema_validate, schema_validate, validate
 
 __all__ = [
     "MergeAdapter",
@@ -132,6 +132,7 @@ __all__ = [
     "check_preservation",
     "check_source_language_compatibility",
     "check_state_transitions",
+    "full_schema_validate",
     "check_target_language_compatibility",
     "check_translation_consistency",
     "check_unchanged_targets",
