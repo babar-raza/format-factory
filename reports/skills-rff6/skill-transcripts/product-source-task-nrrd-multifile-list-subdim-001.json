@@ -1,0 +1,63 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-multifile-list-subdim-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T15:51:34Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_MULTIFILE_LIST_SUBDIM_001",
+    "task_kind": "resolve-structural-obstacle-deferred-by-sibling-evidence-entry",
+    "root_cause": "NRRD-MULTIFILE-PRINTF-SUBDIM-PROOF (an earlier tick this session) implemented and range-validated the printf detached form's optional <subdim> token but explicitly deferred the LIST form's own identical <subdim> token, citing a structural obstacle: _parse_header's list-mode handling reconstructed the 'data file' header value as a hardcoded 'LIST\\n<filenames>' literal regardless of the originally captured line, discarding any subdim token before _safe_detached_payload ever ran.",
+    "obligation_targeted": "SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD (both NRRD-MULTIFILE-001) -- narrowed, remain partial (multifile writer and per-file byte validation / grammar edge cases remain genuinely unaddressed).",
+    "acceptance_evidence": "6 new tests (tests/python/nrrd/test_obligation_multifile_list_subdim.py), mirroring the printf sibling's own test shape exactly.",
+    "regression_tier": "full nrrd package suite plus combined 6-format regression"
+  },
+  "execution_steps": [
+    "1. Continuing the FF6 mission per event 265's exact_next_action, swept nrrd's remaining 16 other partial obligations for a narrow win using the citation-quality/thin-citation discipline proven this session.",
+    "2. Found the LIST form's own optional <subdim> token ('data file: LIST <subdim>') was claimed unhandled by both SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD's missing_behavior, citing a 'structural obstacle' -- confirmed still genuinely true (not stale) by reading _parse_header directly: line 165-168 hardcoded 'LIST\\n' + filenames on reconstruction, discarding the original captured line.",
+    "3. Read the pinned NRRD specification source directly (.local/format-contracts/acquired/nrrd/src-nrrd-001.bin, Section 3, lines 656-729): confirmed 'data file: LIST [<subdim>]' has byte-for-byte identical <subdim> semantics ('between 1 and D') to the printf form's already-implemented 5th token.",
+    "4. Read the printf sibling's already-implemented subdim handling in _safe_detached_payload (parts[4], validate-only, not used to alter file reading) as the exact precedent to mirror for LIST.",
+    "5. Fixed _parse_header to capture the original list-mode header line verbatim (list_header_value, initialized to 'LIST' as the safe no-subdim default) instead of hardcoding the literal 'LIST' on reconstruction, so a subdim token present on that line survives into the value _safe_detached_payload receives.",
+    "6. Extended _safe_detached_payload's LIST branch to split the first line from the filename lines, parse any trailing subdim token after the 'LIST' keyword, and range-validate it (1 to dimension) with the identical validate-only treatment as the printf sibling -- not used to alter which files are read or how bytes are concatenated.",
+    "7. Ran the pre-existing nrrd suite (575 passed, 1 skipped) BEFORE writing any new test, confirming zero regressions from the reader.py changes alone.",
+    "8. Probed interactively (a real 3-file LIST declaration with subdim=3, subdim=D 'slabs' boundary, out-of-range subdim=9, non-integer subdim='x', and a no-subdim plain 'LIST' declaration) confirming all five behaviors correct before writing any test.",
+    "9. Wrote 6 new tests in tests/python/nrrd/test_obligation_multifile_list_subdim.py, mirroring test_obligation_multifile_printf_subdim.py's own structure and naming exactly.",
+    "10. Corrected the printf sibling test file's own module docstring, which had explicitly and now-staleley claimed the LIST form was 'NOT covered here' -- updated to point at the new sibling file.",
+    "11. Ran the full nrrd suite (575 -> 581 passed, 1 skipped), ruff, and mypy on the changed reader module -- all clean.",
+    "12. Ran the combined 6-format regression suite (3494 -> 3500 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped) -- zero regression beyond the 6 new tests.",
+    "13. Updated both obligations' evidence: narrowed missing_behavior (removed the now-resolved LIST-subdim clause, kept the genuinely still-true multifile-writer and per-file-byte-validation / grammar-edge-case claims), added the 6 new tests to positive/negative selectors, added NRRD-MULTIFILE-LIST-SUBDIM-PROOF to execution_evidence_ids. Both obligations correctly stay partial -- narrowed, not closed."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_multifile_list_subdim.py",
+    "tests/python/nrrd/test_obligation_multifile_printf_subdim.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_multifile_list_subdim.py",
+    "tests/python/nrrd/test_obligation_multifile_printf_subdim.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 575 passed, 1 skipped (before new tests, sanity check)",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 581 passed, 1 skipped (after new tests)",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py -- Success: no issues found",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3500 passed, 2 skipped, 4 pre-existing unrelated safetensors interop failures"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations moved status; 2 obligations narrowed (missing_behavior reduced), both remain partial",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 65,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the subdim range rule grounded directly in the pinned spec's own text.",
+    "obligations_moved_breakdown": "SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD (both NRRD-MULTIFILE-001): LIST-form subdim clause resolved and removed from missing_behavior; multifile writer and per-file byte validation / grammar edge cases remain genuinely unaddressed, so both stay partial."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

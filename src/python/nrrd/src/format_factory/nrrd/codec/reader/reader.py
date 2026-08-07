@@ -122,6 +122,7 @@ def _parse_header(
     key_values: dict[str, str] = {}
     list_files: list[str] = []
     list_mode = False
+    list_header_value = "LIST"
     for line_number, line in enumerate(lines[1:], start=2):
         if list_mode:
             if line:
@@ -164,8 +165,15 @@ def _parse_header(
         header[normalized] = value.strip()
         if normalized == "data file" and value.strip().upper().startswith("LIST"):
             list_mode = True
+            list_header_value = value.strip()
     if list_files:
-        header["data file"] = "LIST\n" + "\n".join(list_files)
+        # "data file: LIST [<subdim>]" -- the optional <subdim> token, if
+        # present, is on the same line as the LIST keyword itself, not
+        # among the filenames that follow. Preserve the original captured
+        # first line verbatim instead of a hardcoded "LIST" so a subdim
+        # token survives into the reconstructed value for the detached
+        # payload parser to validate.
+        header["data file"] = list_header_value + "\n" + "\n".join(list_files)
     missing = sorted(_REQUIRED_FIELDS.difference(header))
     if missing:
         raise NrrdParseError(f"missing required header fields: {', '.join(missing)}")
@@ -240,9 +248,27 @@ def _safe_detached_payload(
             f"got NRRD000{version}"
         )
     if value.upper().startswith("LIST"):
-        names = [line.strip() for line in value.splitlines()[1:] if line.strip()]
+        first_line, *rest_lines = value.splitlines()
+        names = [line.strip() for line in rest_lines if line.strip()]
         if not names:
             raise NrrdParseError("detached LIST has no payload paths")
+        subdim_token = first_line.strip()[len("LIST") :].strip()
+        if subdim_token:
+            # "A different datafile dimension (besides D-1) can be
+            # communicated with the optional <subdim> value. This value
+            # can be between 1 and D," D being the declared `dimension:`.
+            # Validated here, before any file is opened -- same
+            # validate-only treatment as the printf form's own <subdim>:
+            # not otherwise used to alter which files are read or how
+            # their bytes are concatenated.
+            try:
+                subdim = int(subdim_token)
+            except ValueError as exc:
+                raise NrrdParseError("detached LIST subdim must be an integer") from exc
+            if not 1 <= subdim <= dimension:
+                raise NrrdParseError(
+                    f"detached LIST subdim must be between 1 and {dimension}, got {subdim}"
+                )
         if len(names) > limits.max_entries:
             raise ResourceLimitError(
                 f"detached LIST declares {len(names)} files, over the limit of "

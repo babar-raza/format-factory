@@ -23,10 +23,8 @@ assembled payload is independently checked against the declared array
 shape downstream via expected_binary_size) -- subdim's semantic effect on
 per-file sample layout for lazy/partial access remains a separate,
 unbuilt concern. The LIST form's own optional <subdim> ("data file: LIST
-<subdim>") is also NOT covered here: _parse_header's list-mode handling
-discards the original header line entirely in favor of a reconstructed
-"LIST\\n<filenames>" value before _safe_detached_payload ever sees it, a
-separate, larger parsing change deliberately not attempted in this slice.
+<subdim>") is now also covered, with the identical validate-only
+treatment -- see test_obligation_multifile_list_subdim.py.
 """
 
 from __future__ import annotations
