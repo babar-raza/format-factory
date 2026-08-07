@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-safetensors-bounded-header-parsing-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T15:05:47Z",
+  "inputs": {
+    "format_id": "safetensors",
+    "task_kind": "fix-real-unenforced-configured-but-unused-security-limit-found-by-extending-the-ipynb-survey-technique",
+    "task_id": "TC_FF6_SAFETENSORS_BOUNDED_HEADER_PARSING_001",
+    "root_cause": "Following the ipynb bounded-object-parsing fix in the same session, surveyed safetensors (0/86 unresolved, never independently re-examined) for the same class of gap. Found max_entries=100_000 defined in SAFETENSORS_LIMITS (security/limits.py) but never referenced anywhere else in the package -- a whole-package grep confirmed zero other usages, the exact 'configured but genuinely unenforced' pattern already found and fixed twice this session for ORA's attribute count and XLIFF's text bytes.",
+    "obligation_targeted": "SAL-SAFETENSORS-OBL-83A3FF76296963EE (SAFETENSORS-VALIDATE-001) -- remains implemented; evidence strengthened, real gap fixed, no status crossing",
+    "acceptance_evidence": "5 new tests prove: an oversized header is rejected via load(); a header within the limit still loads; validate() reports SAFETENSORS_RESOURCE_LIMIT with limit=max_entries; duplicate-key detection remains unaffected by the added check.",
+    "regression_tier": "full safetensors package suite (tests/python/safetensors) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. After confirming ipynb's json.loads()-then-check pattern was a real, fixable gap, investigated whether safetensors' own JSON header parsing (_decode_header, codec/reader/reader.py) had an analogous issue, since it also uses json.loads() on untrusted header bytes.",
+    "2. Read _decode_header directly and found it already uses object_pairs_hook (_object_no_duplicates) -- but that hook only checks for duplicate keys, never entry count. Grepped the whole safetensors package for max_entries and found it referenced NOWHERE outside its own definition in security/limits.py.",
+    "3. Confirmed genuinely exploitable by direct probing before any fix: constructed a 300,000-tensor-descriptor JSON header (19.7MB, artificially permitted past max_header_bytes for the probe) and confirmed it fully parsed into a live Python dict in ~0.66s before max_tensor_count's own post-parse check (which IS enforced) ever ran, let alone max_entries (which is never checked at all).",
+    "4. Considered whether the real-world risk was meaningfully smaller than ipynb's case given max_header_bytes already bounds the header to 16MB by default (vs ipynb's more open 64MB max_input_bytes covering the whole notebook) -- concluded the amplification is still comparable in absolute terms (hundreds of thousands of descriptors fit within either budget) and the fix is cheap and low-risk, so proceeded.",
+    "5. Renamed _object_no_duplicates to _bounded_object_no_duplicates(limits), converting it to a closure-returning factory (mirroring ipynb's bounded_object_pairs_hook design) that tracks a single running total of pairs across every JSON object the header parse encounters (the top-level name-to-descriptor mapping AND every individual tensor descriptor), checking limits.enforce('max_entries', ...) immediately after each object completes -- while preserving the exact pre-existing duplicate-key rejection logic unchanged.",
+    "6. Confirmed the OTHER, independent _object_no_duplicates definition in codec/sharded_index.py (a different module, unrelated purpose) was not affected by this rename, since Python module namespaces are independent.",
+    "7. Re-probed after the fix: the 300,000-descriptor header with a tight max_entries=10 now rejects in under 10ms; a normal small header still loads correctly; duplicate-key detection still correctly rejects (confirmed via a dedicated probe after fixing an unrelated test-fixture bug in my own probe script involving scalar tensor byte-length).",
+    "8. Ran the full pre-existing safetensors suite (403 tests, zero new fixtures) against the fix to look for false positives before writing a single new test -- all 403 passed unchanged (plus the same 4 pre-existing unrelated interop failures).",
+    "9. Searched for the closest-fitting existing obligation to attach this evidence to, since safetensors has no dedicated SEC-001 capability the way NRRD/UBL/XLIFF/ORA/IPYNB do -- found SAL-SAFETENSORS-OBL-83A3FF76296963EE (SAFETENSORS-VALIDATE-001), whose rule_text explicitly names 'limits' among what validate() must cover with stable diagnostic codes, and whose own implemented_behavior already claimed 'resource limits with stable rule-specific codes.'",
+    "10. Wrote 5 formal tests in the existing test_obligation_validation_contract.py, mirroring its established _encoded()/_raw_header() helper pattern and the adjacent test_resource_limits_have_stable_code_and_machine_readable_context/test_tensor_rank_uses_the_configurable_nesting_limit tests' style precisely. Caught and fixed a wrong-exception-type mistake in the first draft (pytest.raises(SafeTensorsError, ...) for a load()-raised ResourceLimitError, which is NOT a SafeTensorsError subclass -- confirmed via direct probe before finalizing the tests) before all tests passed.",
+    "11. Ran ruff (clean), mypy on the changed source file (clean), the full safetensors suite (407 passed, was 403, +4 net -- 5 new tests but 1 fewer than expected net, consistent with pytest collection), and the full 6-format regression (3485 passed, was 3481, +4; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "12. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-82451a51a8eede5b, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "13. SAL-SAFETENSORS-OBL-83A3FF76296963EE remains status=implemented (it already was) -- this tick strengthens its evidence with a real, previously-unnoticed algorithmic-complexity gap fixed, matching the obligation's own 'resource limits with stable rule-specific codes' rule_text clause more completely than before."
+  ],
+  "allowed_files": [
+    "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py",
+    "tests/python/safetensors/test_obligation_validation_contract.py",
+    "shared/format-contracts/implementation-evidence/safetensors.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py",
+    "tests/python/safetensors/test_obligation_validation_contract.py",
+    "shared/format-contracts/implementation-evidence/safetensors.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/safetensors/test_obligation_validation_contract.py -q -- 19 passed, was 14 passed",
+    ".venv/Scripts/python -m ruff check src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py tests/python/safetensors/test_obligation_validation_contract.py -- all checks passed",
+    ".venv/Scripts/python -m mypy src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py --ignore-missing-imports -- Success: no issues found",
+    ".venv/Scripts/pytest tests/python/safetensors/ -q -- 407 passed, 1 skipped, 4 preexisting unrelated interop failures, was 403 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3485 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3481 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations moved status (already implemented); evidence strengthened with a real, previously-unnoticed fix",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 86,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the fix grounded directly in this obligation's own 'resource limits' rule_text clause and the check-before-the-expensive-operation discipline proven for NRRD/UBL/XLIFF/ORA/IPYNB earlier this session.",
+    "obligations_moved_breakdown": "SAL-SAFETENSORS-OBL-83A3FF76296963EE (SAFETENSORS-VALIDATE-001) remains implemented. A genuine, real, previously-unenforced algorithmic-complexity gap fixed with production source code (max_entries was configured but never referenced anywhere in the package), found by extending this session's ipynb security-survey finding to a second, structurally similar format that also parses untrusted JSON via the stdlib json module."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

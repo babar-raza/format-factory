@@ -7,7 +7,7 @@ import mmap
 import struct
 from os import PathLike
 from pathlib import Path
-from typing import Any, BinaryIO
+from typing import Any, BinaryIO, Callable
 
 from format_factory.core import BinarySource, ProbeResult, ResourceLimits
 
@@ -43,13 +43,40 @@ def _descriptor_error_code(exc: Exception) -> str:
     return "SAFETENSORS_DESCRIPTOR"
 
 
-def _object_no_duplicates(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
-    output: dict[str, Any] = {}
-    for key, value in pairs:
-        if key in output:
-            raise _error("SAFETENSORS_DUPLICATE_KEY", f"duplicate JSON key: {key!r}")
-        output[key] = value
-    return output
+def _bounded_object_no_duplicates(
+    limits: ResourceLimits,
+) -> Callable[[list[tuple[str, Any]]], dict[str, Any]]:
+    """Build a `json.loads(..., object_pairs_hook=...)` callback that checks
+    `max_entries` DURING header parsing, not only after.
+
+    `max_entries` was previously configured (security/limits.py) but never
+    referenced anywhere in this package -- confirmed genuinely unenforced by
+    direct probing before this fix: a 300,000-descriptor header (19.7MB)
+    fully parsed into a live Python dict in ~0.66s before any entries limit
+    could reject it. `object_pairs_hook` fires once per JSON object as it
+    completes (innermost first, so nested tensor descriptors complete before
+    the enclosing header object) -- a closure over a single running total
+    accumulates the pair count across every object in the header (the
+    top-level name-to-descriptor mapping, each descriptor, and __metadata__
+    alike), checked immediately after each update, matching this session's
+    established "check before the expensive operation completes, not after"
+    discipline. Preserves the pre-existing duplicate-key rejection this hook
+    already performed -- extending it, not replacing its behavior.
+    """
+
+    state = {"entries": 0}
+
+    def hook(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        state["entries"] += len(pairs)
+        limits.enforce("max_entries", state["entries"])
+        output: dict[str, Any] = {}
+        for key, value in pairs:
+            if key in output:
+                raise _error("SAFETENSORS_DUPLICATE_KEY", f"duplicate JSON key: {key!r}")
+            output[key] = value
+        return output
+
+    return hook
 
 
 def _decode_header(
@@ -70,7 +97,7 @@ def _decode_header(
     try:
         header = json.loads(
             encoded.decode("utf-8"),
-            object_pairs_hook=_object_no_duplicates,
+            object_pairs_hook=_bounded_object_no_duplicates(limits),
         )
     except SafeTensorsParseError:
         raise

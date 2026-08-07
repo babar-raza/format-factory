@@ -10,6 +10,14 @@
       "truth_boundary": "Suite-level and NON-PROMOTING. Records that the mapped shipped-namespace suites run and that the mapped source symbols exist. The declared result is deliberately not PASS: 4 of the 390 tests fail in the shared dev venv on the known GAP-002 shadow-package name collision, and pass only in an isolated wheel-install environment. They are not counted as passing. This binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most.\n2026-08-06: no source or test change this slice, only this map. safetensors suite unchanged at 385 passed / 1 skipped / 4 deselected (the same 4 pre-existing GAP-002 interop failures). Obligation status unchanged at 86 partial / 0 missing -- this slice deepens selector evidence within already- `partial` obligations, it does not move any obligation's status."
     },
     {
+      "evidence_id": "SAFETENSORS-BOUNDED-HEADER-PARSING-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-bounded-header-parsing-001.json",
+      "sha256": "0ed341fa29d10d0f156b5bc1578d6343a4859916e9b7ea42446778a36dbdb4df",
+      "truth_boundary": "Selector-bound, unlike SAFETENSORS-BASELINE-SUITE. Strengthens (does not change the already-implemented status of) SAL-SAFETENSORS-OBL-83A3FF76296963EE (SAFETENSORS-VALIDATE-001). Following the ipynb bounded-object-parsing fix (same session), surveyed safetensors for the same class of gap: max_entries is defined in SAFETENSORS_LIMITS (security/limits.py) but was never referenced anywhere else in the package -- confirmed by a whole-package grep before writing any code. Confirmed genuinely exploitable by direct probing before any fix: a 300,000-tensor-descriptor JSON header (19.7MB, within a caller-relaxed max_header_bytes) fully parsed into a live Python dict in ~0.66s before any max_entries check could reject it, since _decode_header's existing object_pairs_hook (_object_no_duplicates) only checked for duplicate keys, never entry count. Renamed/extended it to _bounded_object_no_duplicates(limits), a closure tracking a single running total across every JSON object the header parse encounters (the top-level name-to-descriptor mapping and every individual tensor descriptor), checking limits.enforce(\"max_entries\", ...) immediately after each object completes -- preserving the pre-existing duplicate-key rejection unchanged. validate()'s own pre-existing ResourceLimitError-to-SAFETENSORS_RESOURCE_LIMIT diagnostic conversion picks this up automatically with zero validator.py changes, reported with limit=\"max_entries\" in the diagnostic's machine-readable details. Verified zero false positives against the entire pre-existing 403-test safetensors suite before writing a single new test. 5 new tests (tests/python/safetensors/test_obligation_validation_contract.py) prove: an oversized header is rejected via load(); a header within the limit still loads; validate() reports SAFETENSORS_RESOURCE_LIMIT with limit=\"max_entries\"; duplicate-key detection remains unaffected. safetensors suite: 403 -> 407 passed. mypy clean. NOT backed by an independent reference safetensors implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the fix grounded directly in this obligation's own \"resource limits\" rule_text clause and the check-before-the-expensive-operation discipline proven for NRRD/UBL/XLIFF/ORA/IPYNB earlier this session. Covers SAL-SAFETENSORS-OBL-83A3FF76296963EE only; it supports no other obligation and promotes no other product state."
+    },
+    {
       "evidence_id": "SAFETENSORS-HEADER-VALIDATION-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -77,7 +85,7 @@
   "format_id": "safetensors",
   "input_digests": {
     "compiled_contract": "0c75ec78971819ea2d679482ea8b81334f594632bf79cdb0c4ec465c8a3bcfbb",
-    "implementation_evidence": "eb4e9dccc3dd2a6ff8f2a746ca29af3cf6603ab206bca5dc70f65aeab707dfc2",
+    "implementation_evidence": "87bca62e2e0f75b4679edad943875f8932865bfe6b56aa73e2ea15c8979a6278",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "acaf4a88cf5aee24cc52b3da71013932a0573d1fc834b9e79adf7489fc393b80",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1669,14 +1677,18 @@
       "capability_id": "SAFETENSORS-VALIDATE-001",
       "execution_evidence_ids": [
         "SAFETENSORS-BASELINE-SUITE",
-        "SAFETENSORS-VALIDATION-DIAGNOSTIC-SELECTOR-PROOF"
+        "SAFETENSORS-VALIDATION-DIAGNOSTIC-SELECTOR-PROOF",
+        "SAFETENSORS-BOUNDED-HEADER-PARSING-PROOF"
       ],
       "implemented_behavior": [
-        "validate() covers metadata typing, dtype, shape, checked size arithmetic, offset coverage, and resource limits with stable rule-specific codes (proven both for raw bytes and for an in-memory document with multiple simultaneous violations, reported deterministically across repeated calls), and separately enforces borrowed-view ownership -- close() refuses with SAFETENSORS_BORROWED_VIEW_ACTIVE while a region view is outstanding (owner-backed and mmap-backed), is retryable after release, and a closed document's own validation/access remain stable (SAFETENSORS_DOCUMENT_CLOSED) rather than crashing."
+        "validate() covers metadata typing, dtype, shape, checked size arithmetic, offset coverage, and resource limits with stable rule-specific codes (proven both for raw bytes and for an in-memory document with multiple simultaneous violations, reported deterministically across repeated calls), and separately enforces borrowed-view ownership -- close() refuses with SAFETENSORS_BORROWED_VIEW_ACTIVE while a region view is outstanding (owner-backed and mmap-backed), is retryable after release, and a closed document's own validation/access remain stable (SAFETENSORS_DOCUMENT_CLOSED) rather than crashing.",
+        "Strengthened this slice: max_entries was configured (security/limits.py) but never referenced anywhere in this package -- confirmed genuinely unenforced by direct probing before this fix, a 300,000-descriptor header (19.7MB) fully parsed into a live Python dict in ~0.66s before any entries limit could reject it. _bounded_object_no_duplicates() (codec/reader/reader.py) extends the header's existing object_pairs_hook (previously only checking duplicate keys) to also check max_entries incrementally as each JSON object in the header completes, mirroring the check-before-the-expensive-operation discipline this session already proved for NRRD/UBL/XLIFF/ORA/IPYNB. validate()'s existing ResourceLimitError-to-SAFETENSORS_RESOURCE_LIMIT conversion picks this up automatically with no validator.py changes needed, reported with limit=\"max_entries\" in the diagnostic's machine-readable details, the same pattern already proven for max_input_bytes/max_nesting_depth."
       ],
       "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_closed_document_validation_and_access_are_stable"
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_closed_document_validation_and_access_are_stable",
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_header_entry_count_is_bounded_during_parsing_not_only_after",
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_header_entry_count_limit_is_reported_by_validate_with_stable_code"
       ],
       "obligation_id": "SAL-SAFETENSORS-OBL-83A3FF76296963EE",
       "positive_test_selectors": [
@@ -1685,7 +1697,9 @@
         "tests/python/safetensors/test_obligation_validation_contract.py::test_tensor_rank_uses_the_configurable_nesting_limit",
         "tests/python/safetensors/test_obligation_validation_contract.py::test_model_validation_reports_all_stable_codes_deterministically",
         "tests/python/safetensors/test_obligation_validation_contract.py::test_close_retains_owner_until_borrowed_views_are_released",
-        "tests/python/safetensors/test_obligation_validation_contract.py::test_mapped_document_close_can_be_retried_after_region_release"
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_mapped_document_close_can_be_retried_after_region_release",
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_header_entry_count_within_the_limit_still_loads",
+        "tests/python/safetensors/test_obligation_validation_contract.py::test_duplicate_key_detection_is_unaffected_by_the_entry_count_check"
       ],
       "proof_requirements": {
         "negative": [
@@ -1697,7 +1711,8 @@
       },
       "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate"
+        "src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate",
+        "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::_bounded_object_no_duplicates"
       ],
       "status": "implemented"
     },
@@ -2918,6 +2933,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-safetensors-001.json": "0c4341a9828b89799ba47aeba0932e99bda659dc424a982d3e42ebe57adc270b",
+    "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-bounded-header-parsing-001.json": "0ed341fa29d10d0f156b5bc1578d6343a4859916e9b7ea42446778a36dbdb4df",
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-header-validation-001.json": "e834cb40f20f34cb58e660d09b960318f01f95ce18f59c53f1ccf087a7ec80db",
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-isolated-wheel-interop-001.json": "eac958196d66821a512a0e0c1c7ca6fa7cac6c73395d2587fba41181dc0b5f8b",
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-lazy-001.json": "2d60c6f75191d4292b36828e98b5058f53e22615af8a27db4ae10355ea26eade",
@@ -2928,7 +2944,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-safetensors-validation-diagnostic-001.json": "26788baf72eb0b197a11516b9eb2759a590659ffc73b0eb6333ad5019433558f",
     "src/python/safetensors/src/format_factory/safetensors/adapters/numpy.py": "82c249624fa0346474cb00a0877fa172ef15b593c03a6cd4670bd59435698b40",
     "src/python/safetensors/src/format_factory/safetensors/adapters/torch.py": "3b870a3f34d6b893adf620fefabc7b9d317a1733a477e1e8f25e8cd39cab449e",
-    "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py": "950b9d35758ed8534f74819060efa0edc771a9c52da005cfda4a3e3640d9b2f2",
+    "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py": "f10aa9c093cc3406f9a6a3df6b8855877dfee596d8e9e4d07878ef908e204bdd",
     "src/python/safetensors/src/format_factory/safetensors/codec/sharded_index.py": "77b716fc9088bcc97a4f67eebc3139d3ea9f8dcb0a4eb1a8246ff26f03b966d3",
     "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py": "eaf8992c16980a8a193375c6c688cfa2f1a41a2e8c75563cd147dcfcb6424204",
     "src/python/safetensors/src/format_factory/safetensors/model/document.py": "11f3ddcfa4c37c0bc89b4f93db3b3299450227afb4931442f096c83b4f834287",
@@ -2948,7 +2964,7 @@
     "tests/python/safetensors/test_obligation_sharded_index.py": "59556d1e6880d539de1e6d91cd0c9c58b2ea8e1ab8b5a10ae11d0ec6f1e66283",
     "tests/python/safetensors/test_obligation_tensor_regions.py": "d9ae98ff5d17fc90652fb782ba70faaf8c33f5135faf130e378156451cf7c375",
     "tests/python/safetensors/test_obligation_unified_model_representation.py": "7cb5066920435417c6c33e8dd4da7b16af20c971526a497e596c3b47906b98c9",
-    "tests/python/safetensors/test_obligation_validation_contract.py": "8a5721ef13568f95cead94d15d2d65fc221769861f9342d489d3c1924976f9ea",
+    "tests/python/safetensors/test_obligation_validation_contract.py": "0de8d38f27f48b13b7c5d2ad52452798faf56accbeac5621668a44d1cb39845b",
     "tests/python/safetensors/test_obligation_writer_matrix.py": "770ccbefaaa12d47af534db5eb1069995c5c7bfc16a7272130d46e3fa620ab40",
     "tests/python/safetensors/test_official_interop.py": "3dd1cbfc2a0a7ec733298d1534b069fbe444c2df0f27b828cb6290ef55b3a890",
     "tests/python/safetensors/test_production_namespace.py": "48c847dcbcb6a3b7c2e6f1a818f4d75e177fe87826607036ca44055f62d450dc",

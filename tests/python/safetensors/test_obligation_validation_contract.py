@@ -6,7 +6,7 @@ from collections.abc import Callable
 from pathlib import Path
 
 import pytest
-from format_factory.core import ResourceLimits
+from format_factory.core import ResourceLimitError, ResourceLimits
 from format_factory.safetensors import (
     DType,
     SafeTensorsDocument,
@@ -141,6 +141,60 @@ def test_tensor_rank_uses_the_configurable_nesting_limit() -> None:
         "SAFETENSORS_RESOURCE_LIMIT",
     )
     assert report.diagnostics[0].details["limit"] == "max_nesting_depth"
+
+
+def test_header_entry_count_is_bounded_during_parsing_not_only_after() -> None:
+    """max_entries was previously configured (security/limits.py) but never
+    referenced anywhere in this package -- confirmed genuinely unenforced by
+    direct probing before this fix: a 300,000-descriptor header (19.7MB)
+    fully parsed into a live Python dict in ~0.66s before any limit check
+    could reject it. The object_pairs_hook now checks max_entries
+    incrementally as each JSON object in the header completes (the
+    top-level name-to-descriptor mapping and every individual descriptor),
+    accumulating a single running total across the whole header."""
+    header = {
+        f"t{index}": {"dtype": "U8", "shape": [1], "data_offsets": [index, index + 1]}
+        for index in range(5)
+    }
+
+    with pytest.raises(ResourceLimitError, match="max_entries exceeded"):
+        load(_encoded(header, b"\0" * 5), limits=ResourceLimits(max_entries=3))
+
+
+def test_header_entry_count_within_the_limit_still_loads() -> None:
+    header = {
+        f"t{index}": {"dtype": "U8", "shape": [1], "data_offsets": [index, index + 1]}
+        for index in range(2)
+    }
+
+    document = load(_encoded(header, b"\0" * 2), limits=ResourceLimits(max_entries=100))
+
+    assert len(document.tensors) == 2
+
+
+def test_header_entry_count_limit_is_reported_by_validate_with_stable_code() -> None:
+    header = {
+        f"t{index}": {"dtype": "U8", "shape": [1], "data_offsets": [index, index + 1]}
+        for index in range(5)
+    }
+
+    report = validate(_encoded(header, b"\0" * 5), limits=ResourceLimits(max_entries=3))
+
+    assert tuple(item.code for item in report.diagnostics) == (
+        "SAFETENSORS_RESOURCE_LIMIT",
+    )
+    assert report.diagnostics[0].details["limit"] == "max_entries"
+
+
+def test_duplicate_key_detection_is_unaffected_by_the_entry_count_check() -> None:
+    with pytest.raises(SafeTensorsError, match="duplicate JSON key"):
+        load(
+            _raw_header(
+                b'{"x":{"dtype":"U8","shape":[1],"data_offsets":[0,1]},'
+                b'"x":{"dtype":"U8","shape":[1],"data_offsets":[0,1]}}',
+                b"\0",
+            )
+        )
 
 
 def test_model_validation_reports_all_stable_codes_deterministically() -> None:

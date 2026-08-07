@@ -3,6 +3,11 @@ format_id: safetensors
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: SAFETENSORS-BOUNDED-HEADER-PARSING-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-safetensors-bounded-header-parsing-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike SAFETENSORS-BASELINE-SUITE. Strengthens (does not change the already-implemented status of) SAL-SAFETENSORS-OBL-83A3FF76296963EE (SAFETENSORS-VALIDATE-001). Following the ipynb bounded-object-parsing fix (same session), surveyed safetensors for the same class of gap: max_entries is defined in SAFETENSORS_LIMITS (security/limits.py) but was never referenced anywhere else in the package -- confirmed by a whole-package grep before writing any code. Confirmed genuinely exploitable by direct probing before any fix: a 300,000-tensor-descriptor JSON header (19.7MB, within a caller-relaxed max_header_bytes) fully parsed into a live Python dict in ~0.66s before any max_entries check could reject it, since _decode_header''s existing object_pairs_hook (_object_no_duplicates) only checked for duplicate keys, never entry count. Renamed/extended it to _bounded_object_no_duplicates(limits), a closure tracking a single running total across every JSON object the header parse encounters (the top-level name-to-descriptor mapping and every individual tensor descriptor), checking limits.enforce("max_entries", ...) immediately after each object completes -- preserving the pre-existing duplicate-key rejection unchanged. validate()''s own pre-existing ResourceLimitError-to-SAFETENSORS_RESOURCE_LIMIT diagnostic conversion picks this up automatically with zero validator.py changes, reported with limit="max_entries" in the diagnostic''s machine-readable details. Verified zero false positives against the entire pre-existing 403-test safetensors suite before writing a single new test. 5 new tests (tests/python/safetensors/test_obligation_validation_contract.py) prove: an oversized header is rejected via load(); a header within the limit still loads; validate() reports SAFETENSORS_RESOURCE_LIMIT with limit="max_entries"; duplicate-key detection remains unaffected. safetensors suite: 403 -> 407 passed. mypy clean. NOT backed by an independent reference safetensors implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, the fix grounded directly in this obligation''s own "resource limits" rule_text clause and the check-before-the-expensive-operation discipline proven for NRRD/UBL/XLIFF/ORA/IPYNB earlier this session. Covers SAL-SAFETENSORS-OBL-83A3FF76296963EE only; it supports no other obligation and promotes no other product state.'
 - evidence_id: SAFETENSORS-ISOLATED-WHEEL-INTEROP-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-safetensors-isolated-wheel-interop-001.json
   expected_result: PASS
@@ -1371,6 +1376,7 @@ obligations:
   status: implemented
   source_symbols:
   - src/python/safetensors/src/format_factory/safetensors/validation/validator.py::validate
+  - src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py::_bounded_object_no_duplicates
   positive_test_selectors:
   - tests/python/safetensors/test_obligation_validation_contract.py::test_raw_validation_uses_rule_specific_stable_codes
   - tests/python/safetensors/test_obligation_validation_contract.py::test_resource_limits_have_stable_code_and_machine_readable_context
@@ -1378,11 +1384,16 @@ obligations:
   - tests/python/safetensors/test_obligation_validation_contract.py::test_model_validation_reports_all_stable_codes_deterministically
   - tests/python/safetensors/test_obligation_validation_contract.py::test_close_retains_owner_until_borrowed_views_are_released
   - tests/python/safetensors/test_obligation_validation_contract.py::test_mapped_document_close_can_be_retried_after_region_release
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_header_entry_count_within_the_limit_still_loads
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_duplicate_key_detection_is_unaffected_by_the_entry_count_check
   negative_test_selectors:
   - tests/python/safetensors/test_obligation_validation_contract.py::test_closed_document_validation_and_access_are_stable
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_header_entry_count_is_bounded_during_parsing_not_only_after
+  - tests/python/safetensors/test_obligation_validation_contract.py::test_header_entry_count_limit_is_reported_by_validate_with_stable_code
   execution_evidence_ids:
   - SAFETENSORS-BASELINE-SUITE
   - SAFETENSORS-VALIDATION-DIAGNOSTIC-SELECTOR-PROOF
+  - SAFETENSORS-BOUNDED-HEADER-PARSING-PROOF
   implemented_behavior:
   - validate() covers metadata typing, dtype, shape, checked size
     arithmetic, offset coverage, and resource limits with stable
@@ -1394,6 +1405,7 @@ obligations:
     (owner-backed and mmap-backed), is retryable after release, and a
     closed document's own validation/access remain stable
     (SAFETENSORS_DOCUMENT_CLOSED) rather than crashing.
+  - 'Strengthened this slice: max_entries was configured (security/limits.py) but never referenced anywhere in this package -- confirmed genuinely unenforced by direct probing before this fix, a 300,000-descriptor header (19.7MB) fully parsed into a live Python dict in ~0.66s before any entries limit could reject it. _bounded_object_no_duplicates() (codec/reader/reader.py) extends the header''s existing object_pairs_hook (previously only checking duplicate keys) to also check max_entries incrementally as each JSON object in the header completes, mirroring the check-before-the-expensive-operation discipline this session already proved for NRRD/UBL/XLIFF/ORA/IPYNB. validate()''s existing ResourceLimitError-to-SAFETENSORS_RESOURCE_LIMIT conversion picks this up automatically with no validator.py changes needed, reported with limit="max_entries" in the diagnostic''s machine-readable details, the same pattern already proven for max_input_bytes/max_nesting_depth.'
   missing_behavior: []
   proof_requirements:
     positive:
