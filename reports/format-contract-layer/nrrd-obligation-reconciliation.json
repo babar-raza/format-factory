@@ -18,6 +18,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-4CAFF21A47F62F19 fully and narrows SAL-NRRD-OBL-09CDF5A28C011CD7 (both NRRD-PAYLOAD-001). The pinned spec source (src-nrrd-001.bin, SRC-NRRD-001) confirms word-for-word: \"as of NRRD0004, the signifier of a header-relative file changed from the presence (at the beginning of the filename) of './', to the absence of '/' ... it becomes impossible for a header to refer to the data file relative to the current working directory of the reader\" (post-change) -- meaning pre-NRRD0004 bare-relative names ARE cwd-relative per spec, a genuinely different, unconfined resolution base. reader.py's _safe_detached_payload and lazy.py's _resolve_detached_path (a separate, duplicated code path for lazy access, proven independently so the two cannot silently diverge) both now branch on version: a leading './' is recognized and stripped as header-relative pre-NRRD0004, and a bare relative name without it is refused rather than resolved unconfined -- a deliberate security-conscious choice, not spec-literal cwd-relative support, leaving the caller-supplied-resolver-policy half of the cluster honestly partial. 12 new tests across 2 files prove all 4 version/prefix combinations plus confirm directory confinement still holds. nrrd suite: 500 -> 512 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-4CAFF21A47F62F19 and SAL-NRRD-OBL-09CDF5A28C011CD7 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-DETACHED-WRITER-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-writer-001.json",
+      "sha256": "459aee29fa15ac2f6d632f1d4d863923866957e8086da79dd6dde1ab6374d01f",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-9FFEE6E206F405F4 (NRRD-PAYLOAD-001) only. writer.py only ever emitted attached payloads before this slice, confirmed by reading dumps()/dump() directly. A new dump_detached() function writes the header (with a 'data file:' field naming the payload relative to the header's own directory) and the encoded payload to two separate destinations, reusing the same profile-selection and payload-encoding logic dumps() already uses (extracted into _select_profile/_encode_payload via a pure refactor, verified against the unchanged nrrd suite before any new code was added). Confinement is enforced at write time -- a payload destination outside the header's own directory is refused immediately, matching this reader's own read-time confinement rules (NRRD-SEC-001), so a document this package writes always round-trips through it. 5 new tests prove the header field, byte-exact round-trip, subdirectory support, write-time confinement refusal, and header-field preservation. Scoped to the single-file detached form only; multi-file LIST/printf sequence write support remains a genuinely separate, larger feature. nrrd suite: 512 -> 517 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-9FFEE6E206F405F4 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "NRRD-ENDIAN-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -77,7 +85,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "162da4139171a186ae0371a819e7de5f05ecd07f0fbeed3d5aca577a460ff0a5",
+    "implementation_evidence": "bac88b7cc2524136fd1f057f90cf22ecfb38adc3f12c8e6a54f4e57b1776ed1f",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1568,20 +1576,23 @@
     {
       "capability_id": "NRRD-PAYLOAD-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-DETACHED-WRITER-PROOF"
       ],
       "implemented_behavior": [
-        "Attached and one detached payload are read under encoding/type/size/endian controls."
+        "Attached and one detached payload are read under encoding/type/size/endian controls. The writer now also emits detached payloads: a new dump_detached() function writes the header (carrying a 'data file:' field naming the payload relative to the header's own directory) and the encoded payload to two separate destinations, round-tripping correctly through the existing reader, with confinement enforced at write time rather than only discoverable later at read time. Scoped to the single-file detached form, matching the reader's most common detached case; multi-file LIST/printf sequence write support remains a genuinely separate, larger feature, correctly out of scope."
       ],
-      "missing_behavior": [
-        "Writer only emits attached payloads and profile-correct detached semantics are incomplete."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed"
+        "tests/python/nrrd/test_obligation_detached_writer.py::test_detached_write_refuses_a_payload_outside_the_header_directory"
       ],
       "obligation_id": "SAL-NRRD-OBL-9FFEE6E206F405F4",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe"
+        "tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe",
+        "tests/python/nrrd/test_obligation_detached_writer.py::test_detached_write_produces_a_header_with_a_data_file_field",
+        "tests/python/nrrd/test_obligation_detached_writer.py::test_detached_write_round_trips_through_load",
+        "tests/python/nrrd/test_obligation_detached_writer.py::test_detached_write_supports_a_payload_in_a_subdirectory",
+        "tests/python/nrrd/test_obligation_detached_writer.py::test_detached_write_preserves_the_document_header_fields"
       ],
       "proof_requirements": {
         "negative": [
@@ -1591,13 +1602,13 @@
           "Attached and detached read-write matrix across profiles/encodings."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_apply_skips",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-SHAPE-001",
@@ -2351,6 +2362,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-path-version-gate-001.json": "0ddb74585effd11d8f31db536d8242dbcf347f14dba381a36faffab0b40a3add",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-writer-001.json": "459aee29fa15ac2f6d632f1d4d863923866957e8086da79dd6dde1ab6374d01f",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-grammar-001.json": "34ff1e271e63f2ceb26c72ebe47b1f44e9be6b2ddde57a06068be324b1383229",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-keyvalue-escaping-001.json": "58b4a3c1cb9aefd9d546fb5c0e5dfc1d7f7be90fd15e40b3c7f4424238d11125",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-lazy-payload-001.json": "ee783f0c983b7f4fba3cdcd565c9f09d4fe16dc3fd1799bfd881969d266d3e09",
@@ -2360,7 +2372,7 @@
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "738ef7feab3714ba69a4a56547714145e161ac8b22156bf7e868a18bc13ae847",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "38520a9be8ff12f1266999d5f8d79761254ecc327e65e637e39f35c72a86d240",
     "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "78ae8537ad384f925009106f92db6dab3421f71b3256a1275a4aebd3bf8fc2dd",
-    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "918411fad99952bf7cc5577610fcb57a36b99aeb6d57878a4bf857242e926108",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "9b2fc0b03f6c3f4dd42f1e091d465ddd7e887bdd2305f3c864f33d3e1ce39a11",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "83d96605f886fd24e9146410be552cb54d1bb93ee317102f46dc53b164448951",
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "b0807a18aed01727b3ef85c445017ccd891b5840d7558c736f804fdbaa4222ab",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
@@ -2372,6 +2384,7 @@
     "tests/python/nrrd/test_obligation_compressed_trailing_data.py": "5d2e460aa29e58b85602ce8c4000ad9642e3aee4b38be1816d8297db1116f97e",
     "tests/python/nrrd/test_obligation_detached_forms_production.py": "67c0d1384acdb24a892f7fb7c0340a9bd5c3338e2be5069d5d034a996121263a",
     "tests/python/nrrd/test_obligation_detached_path_version_gate.py": "abb3da066d8d0872f0dae9003d39fbcb45d8262f011dc19625b28130c87b4f5a",
+    "tests/python/nrrd/test_obligation_detached_writer.py": "a3d121c5c901aacd8066e37d35afd13d6f6c5f5b4c25eae4a07285b9758bb64d",
     "tests/python/nrrd/test_obligation_dtype_conversion.py": "303205eec17e82662e3e484870fac7e985c0ed400f36bc62f887c75b686d6425",
     "tests/python/nrrd/test_obligation_header_field_grammar.py": "e70dc004b9be05c2828ba1b1fa99de76484c1190d1abf0ac59d1bd320e89fdee",
     "tests/python/nrrd/test_obligation_keyvalue_duplicates.py": "bd1aeeedc522b3be842bdecf4625b4a639375e84b858b8d94a0e5dd647798ab8",
@@ -2388,12 +2401,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 33,
-      "partial": 29,
+      "implemented": 34,
+      "partial": 28,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 32
+    "unresolved": 31
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

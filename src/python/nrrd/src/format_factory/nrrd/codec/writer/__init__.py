@@ -1,5 +1,5 @@
 """NRRD writers."""
 
-from .writer import dump, dumps
+from .writer import dump, dump_detached, dumps
 
-__all__ = ["dump", "dumps"]
+__all__ = ["dump", "dump_detached", "dumps"]

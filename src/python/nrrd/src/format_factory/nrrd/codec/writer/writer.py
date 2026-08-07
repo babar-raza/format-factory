@@ -35,7 +35,9 @@ def _coerce_document(value: NrrdDocument | Mapping[str, Any]) -> NrrdDocument:
     return value if isinstance(value, NrrdDocument) else NrrdDocument.from_mapping(value)
 
 
-def _header_bytes(document: NrrdDocument, profile: str) -> bytes:
+def _header_bytes(
+    document: NrrdDocument, profile: str, *, detached_name: str | None = None
+) -> bytes:
     lines = [profile]
     lines.extend(f"# {comment}" if comment else "#" for comment in document.comments)
     emitted: set[str] = set()
@@ -46,6 +48,11 @@ def _header_bytes(document: NrrdDocument, profile: str) -> bytes:
     for name in sorted(document.header):
         if name not in emitted and name != "data file":
             lines.append(f"{name}: {document.header[name]}")
+    if detached_name is not None:
+        # The "data file: LIST" form must be the last field specification
+        # in the header (NRRD-HEADER-001) -- a single detached name has no
+        # such constraint, but emitting it last keeps both forms uniform.
+        lines.append(f"data file: {detached_name}")
     for key in sorted(document.key_value_pairs):
         escaped_key = _escape_key_value(key)
         escaped_value = _escape_key_value(document.key_value_pairs[key])
@@ -56,31 +63,7 @@ def _header_bytes(document: NrrdDocument, profile: str) -> bytes:
         raise NrrdWriteError("NRRD headers must be ASCII") from exc
 
 
-def dumps(
-    document: NrrdDocument | Mapping[str, Any],
-    *,
-    profile: str | None = None,
-    mode: str = "canonical",
-    limits: ResourceLimits | None = None,
-) -> bytes:
-    """Serialize an attached document in canonical or exact-preservation mode."""
-
-    active_limits = effective_limits(limits)
-    value = _coerce_document(document)
-    if mode not in {"canonical", "lossless"}:
-        raise NrrdWriteError("mode must be 'canonical' or 'lossless'")
-    if mode == "lossless":
-        if profile is not None:
-            raise NrrdWriteError(
-                "lossless output cannot convert the declared NRRD profile"
-            )
-        report = value.preservation_report()
-        if not report.is_lossless:
-            detail = "; ".join(issue.message for issue in report.issues)
-            raise NrrdWriteError(f"lossless output unavailable: {detail}")
-        assert value.source_bytes is not None
-        active_limits.enforce("max_output_bytes", len(value.source_bytes))
-        return value.source_bytes
+def _select_profile(value: NrrdDocument, profile: str | None) -> str:
     # Default serialization preserves the version declared by the document.
     # Callers may deliberately request an explicit target profile to convert
     # it, or "auto" to select the oldest profile able to represent it
@@ -112,6 +95,10 @@ def dumps(
             'silently rewritten -- pass profile="auto" to select the oldest '
             "sufficient profile explicitly)"
         )
+    return selected
+
+
+def _encode_payload(value: NrrdDocument, active_limits: ResourceLimits) -> bytes:
     if value.encoding not in SUPPORTED_ENCODINGS:
         raise NrrdWriteError(f"unsupported NRRD encoding: {value.encoding!r}")
     try:
@@ -140,9 +127,36 @@ def dumps(
         # Reached via header-derived checks such as the endian guard. Failing to
         # produce output is a write failure, whichever helper detected it.
         raise NrrdWriteError(str(exc)) from exc
-    payload = encode_encoding(
-        binary, value.array, value.encoding, limits=active_limits
-    )
+    return encode_encoding(binary, value.array, value.encoding, limits=active_limits)
+
+
+def dumps(
+    document: NrrdDocument | Mapping[str, Any],
+    *,
+    profile: str | None = None,
+    mode: str = "canonical",
+    limits: ResourceLimits | None = None,
+) -> bytes:
+    """Serialize an attached document in canonical or exact-preservation mode."""
+
+    active_limits = effective_limits(limits)
+    value = _coerce_document(document)
+    if mode not in {"canonical", "lossless"}:
+        raise NrrdWriteError("mode must be 'canonical' or 'lossless'")
+    if mode == "lossless":
+        if profile is not None:
+            raise NrrdWriteError(
+                "lossless output cannot convert the declared NRRD profile"
+            )
+        report = value.preservation_report()
+        if not report.is_lossless:
+            detail = "; ".join(issue.message for issue in report.issues)
+            raise NrrdWriteError(f"lossless output unavailable: {detail}")
+        assert value.source_bytes is not None
+        active_limits.enforce("max_output_bytes", len(value.source_bytes))
+        return value.source_bytes
+    selected = _select_profile(value, profile)
+    payload = _encode_payload(value, active_limits)
     result = _header_bytes(value, selected) + payload
     active_limits.enforce("max_output_bytes", len(result))
     return result
@@ -170,3 +184,52 @@ def dump(
         raise NrrdWriteError(
             f"short write: expected {len(data)} bytes, wrote {written}"
         )
+
+
+def dump_detached(
+    document: NrrdDocument | Mapping[str, Any],
+    header_destination: str | PathLike,
+    payload_destination: str | PathLike,
+    *,
+    profile: str | None = None,
+    limits: ResourceLimits | None = None,
+) -> None:
+    """Write a detached NRRD: the header (with a `data file:` field naming
+    ``payload_destination``) to ``header_destination``, and the encoded
+    payload to ``payload_destination`` separately.
+
+    ``payload_destination`` must resolve to a path this reader's own
+    detached-path confinement rules can read back (NRRD-PAYLOAD-001,
+    NRRD-SEC-001): a bare name relative to ``header_destination``'s own
+    directory, never escaping it. Lossless/exact-preservation mode is not
+    supported here -- it returns the document's original source bytes
+    verbatim as a single buffer, which has no detached-form counterpart.
+    """
+
+    active_limits = effective_limits(limits)
+    value = _coerce_document(document)
+    header_path = Path(header_destination)
+    payload_path = Path(payload_destination)
+    try:
+        relative_name = payload_path.resolve().relative_to(
+            header_path.resolve().parent
+        )
+    except ValueError as exc:
+        raise NrrdWriteError(
+            "detached payload destination must be inside the header "
+            "destination's own directory, matching this reader's own "
+            "confinement rules for reading it back"
+        ) from exc
+    relative_str = relative_name.as_posix()
+    selected = _select_profile(value, profile)
+    payload = _encode_payload(value, active_limits)
+    header_bytes = _header_bytes(value, selected, detached_name=relative_str)
+    active_limits.enforce("max_output_bytes", len(header_bytes) + len(payload))
+    try:
+        header_path.write_bytes(header_bytes)
+    except OSError as exc:
+        raise NrrdWriteError(f"cannot write {header_path}: {exc}") from exc
+    try:
+        payload_path.write_bytes(payload)
+    except OSError as exc:
+        raise NrrdWriteError(f"cannot write {payload_path}: {exc}") from exc

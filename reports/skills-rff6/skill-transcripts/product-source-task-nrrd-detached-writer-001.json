@@ -1,0 +1,59 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-detached-writer-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T05:30:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_DETACHED_WRITER_001",
+    "task_kind": "genuine-new-feature-writer-detached-form-support",
+    "root_cause": "SAL-NRRD-OBL-9FFEE6E206F405F4 (NRRD-PAYLOAD-001) requires the writer to support both attached and detached payload forms; writer.py only ever emitted attached payloads, confirmed by reading dumps()/dump() directly -- no code path wrote a 'data file:' field or a separate payload file anywhere in the package.",
+    "obligation_targeted": "SAL-NRRD-OBL-9FFEE6E206F405F4 (NRRD-PAYLOAD-001)",
+    "acceptance_evidence": "New dump_detached(document, header_destination, payload_destination, *, profile=None, limits=None) function writes the header (with a data file: field naming the payload relative to the header's directory) and the encoded payload to two separate destinations, round-tripping correctly through the existing reader. Confinement is enforced at write time (refuses a payload destination outside the header's own directory) rather than only being discoverable later at read time. 5 new tests prove the header field, byte-exact round-trip, subdirectory support, confinement refusal, and header-field preservation.",
+    "regression_tier": "full nrrd package suite (tests/python/nrrd) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read writer.py's dumps()/dump() directly: both always call _header_bytes() (which explicitly excludes 'data file' from the emitted header) followed by inline-appended encoded payload bytes -- confirming no detached-write path exists anywhere.",
+    "2. Refactored dumps() to extract two reusable private helpers (_select_profile, _encode_payload) without changing any observable behavior -- verified via the full nrrd suite (512 passed, unchanged) before adding any new code, confirming the refactor itself introduced zero regressions.",
+    "3. Extended _header_bytes() with an optional detached_name parameter that emits a 'data file: <name>' field when provided (previously that field was unconditionally stripped from every ordinary-field pass, correct for the attached case, but needed a deliberate opt-in mechanism for the detached case).",
+    "4. Implemented dump_detached(): computes the payload's path relative to the header's own directory (matching this reader's own confinement rules for reading it back, NRRD-SEC-001), reuses _select_profile/_encode_payload, writes header bytes (with the data file field) and payload bytes to their respective destinations. Deliberately scoped to the single-file detached form only -- the multi-file LIST/printf sequence write path is a genuinely separate, larger feature, not attempted.",
+    "5. Verified interactively before writing any test: a document loaded from an attached fixture, written via dump_detached(), round-trips through load() with byte-exact payload recovery; a payload destination outside the header's directory is refused at write time; a payload in a subdirectory works and the header correctly names the relative subdirectory path -- all correct on the first attempt.",
+    "6. Wired dump_detached through codec/writer/__init__.py, codec/__init__.py, and the top-level package __init__.py exports. Wrote 5 new tests. Ran ruff (clean) and the full nrrd suite (517 passed, was 512, +5) before writing any evidence claim. Ran the full 6-format regression (3056 passed, was 3051, +5; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_detached_writer.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_detached_writer.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_detached_writer.py -q -- 5 passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 517 passed, 1 skipped, was 512 passed",
+    ".venv/Scripts/python -m ruff check tests/python/nrrd/test_obligation_detached_writer.py src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py src/python/nrrd/src/format_factory/nrrd/codec/writer/__init__.py src/python/nrrd/src/format_factory/nrrd/codec/__init__.py src/python/nrrd/src/format_factory/nrrd/__init__.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3056 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3051 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 65,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not cross-checked against a reference NRRD implementation.",
+    "obligations_moved_breakdown": "1 obligation promoted to implemented by adding a genuine new writer capability (single-file detached-form output) with confinement enforced at write time, mirroring the reader's own confinement rules so a document written by this package always round-trips through it. Multi-file detached write forms remain a genuinely separate, larger, correctly out-of-scope feature."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
