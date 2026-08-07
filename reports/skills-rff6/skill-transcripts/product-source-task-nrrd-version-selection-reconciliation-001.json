@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-version-selection-reconciliation-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T14:38:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_VERSION_SELECTION_RECONCILIATION_001",
+    "task_kind": "reconcile-stale-missing-behavior-against-already-built-and-tested-capability",
+    "root_cause": "SAL-NRRD-OBL-1DAEF31DD0BB6EBB and SAL-NRRD-OBL-725881DB5590E608 (both NRRD-VERSION-001) claimed 'feature-introduction validation' and 'oldest-sufficient-version selection' were absent. Re-reading writer.py's _select_profile and model/document.py's version_requirements()/minimal_version_for() directly found both fully built: version_requirements() scans every cumulative feature gate, minimal_version_for() returns the maximum gate present (the oldest sufficient version), the writer's profile=\"auto\" selects exactly that version, an explicit too-old profile is refused naming every blocking feature, and validate() raises nrrd.version.insufficient for the same case.",
+    "obligation_targeted": "SAL-NRRD-OBL-1DAEF31DD0BB6EBB and SAL-NRRD-OBL-725881DB5590E608 (both NRRD-VERSION-001) -- both promoted partial->implemented",
+    "acceptance_evidence": "Pre-existing, already-passing 31-test test_obligation_version_selection.py (built by commit 8f0d41de) comprehensively covers both obligations' claimed-missing functionality: pure feature-gate scanning, writer refusal/auto-selection, validator diagnostics, and detected-vs-declared version distinction.",
+    "regression_tier": "nrrd package suite (tests/python/nrrd) sanity re-run, no source changed"
+  },
+  "execution_steps": [
+    "1. Applying event 257's own exact_next_action (NRRD-VERSION-001's two obligations flagged as a broader generalization candidate of the narrow version-gate fix shipped at event 250), read both obligations' current missing_behavior text: 'No feature-introduction validation or oldest-sufficient-version selection' and 'Cumulative feature gates and oldest-representable automatic selection are absent.'",
+    "2. Read writer.py's _select_profile directly and found it already implements both claimed-missing capabilities: profile=\"auto\" calls value.minimal_version_for() to select the oldest sufficient version; any explicit profile is checked against minimal_version_for() and refused (never silently rewritten) if too old, naming every blocking feature by iterating value.version_requirements().",
+    "3. Read model/document.py's version_requirements()/minimal_version_for() directly and found they already scan every cumulative feature gate documented in the pinned spec (key/value pairs NRRD0002+, kinds NRRD0003+, thicknesses/sample units/space fields/multi-file data NRRD0004+, measurement frame NRRD0005+) -- exactly 'feature-introduction validation.'",
+    "4. Read validation/validator.py's validate() directly and found it also checks target_version against minimal_version_for(), raising nrrd.version.insufficient when insufficient -- the read-side half of the same capability.",
+    "5. Confirmed via direct interactive probe before touching any evidence: a NRRD0005 document declaring kinds correctly computes minimal_version_for()==3; dumps(doc, profile=\"auto\") auto-selects NRRD0003; dumps(doc, profile=\"NRRD0001\") is correctly refused naming 'kinds'; validate(doc, profile=\"NRRD0001\") correctly raises nrrd.version.insufficient.",
+    "6. Grepped tests/python/nrrd/ for existing coverage and found test_obligation_version_selection.py, an already-existing, already-passing 31-test file comprehensively covering pure feature-gate scanning (one test per cumulative feature), writer refusal/auto-selection (7 tests), validator diagnostics (5 tests), and detected-vs-declared version distinction (4 tests) -- confirming the capability both obligations claimed missing is fully proven already.",
+    "7. Traced via git log --follow that this test file was created by commit 8f0d41de ('distinguish detected/declared profile version, refuse under-versioned writes (NRRD-LIFECYCLE-001)'), a commit targeting the sibling obligation NRRD-LIFECYCLE-001 -- its evidence was simply never propagated to these two NRRD-VERSION-001 obligations sharing the identical underlying version_requirements()/minimal_version_for() feature.",
+    "8. Ran tests/python/nrrd/test_obligation_version_selection.py directly (31 passed, confirming nothing regressed since commit 8f0d41de) and the full nrrd suite (575 passed, unchanged from before this reconciliation, since no source or test file was modified).",
+    "9. Updated both obligations' evidence: source_symbols now cite version_requirements()/minimal_version_for()/validate() directly (previously only cited _parse_header/dumps generically); positive/negative_test_selectors now cite 13 representative tests from the 31-test file across both obligations; missing_behavior cleared to empty for both.",
+    "10. This tick touches only shared/format-contracts/implementation-evidence/nrrd.yaml (evidence) and this transcript -- no production source or test file was created or modified, since the capability being cited already exists and is already tested."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_version_selection.py -q -- 31 passed (pre-existing, unchanged)",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 575 passed, 1 skipped (unchanged, no source or test modified)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 65,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the underlying implementation grounded directly in the pinned spec's own cumulative-feature-gate table (already proven, unchanged this tick).",
+    "obligations_moved_breakdown": "SAL-NRRD-OBL-1DAEF31DD0BB6EBB and SAL-NRRD-OBL-725881DB5590E608 (both NRRD-VERSION-001) partial->implemented. A citation-audit correction: the capability both obligations' missing_behavior claimed was absent (feature-introduction validation, oldest-sufficient-version selection) was already comprehensively built and tested via an earlier commit targeting a sibling obligation (NRRD-LIFECYCLE-001), whose evidence was never propagated to these two."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -146,6 +146,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes NRRD-SEC-001's 4 obligations, the first dedicated security-baseline sweep for nrrd this session (the same never-audited-security-baseline pattern already closed for ubl/xliff/ipynb). A whole-package AST scan confirms no source file imports socket/urllib/http/ftplib/smtplib/subprocess/ importlib/pkgutil/ctypes -- no network, plugin, or dynamic-execution capability exists anywhere. Key-value pairs and comments are proven to survive shell-command-substitution and script-tag content byte-for-byte as inert text, never interpreted. checked_element_count's max_entries and checked-arithmetic overflow protection are both proven directly against hostile headers. Also fixed a genuine, confirmed algorithmic- complexity bug found while investigating this cluster: a detached printf multi-file sequence's declared file count was never bounded against limits.max_entries before allocating its filename list -- a header declaring an astronomically large range would attempt to materialize a correspondingly large list before any file was opened. NOT backed by an independent reference NRRD implementation -- SELF- CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-24B57E6A78478DB0, SAL-NRRD-OBL-9AB0A32906D88688, SAL-NRRD-OBL-2A95CBAA35F7BB05, and SAL-NRRD-OBL-38C2DECC64DF5145 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-VERSION-SELECTION-RECONCILIATION-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-reconciliation-001.json",
+      "sha256": "e5b54b72b12920fa20b64906a008fb432025569268ab0211532f04a04b2ecff1",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-1DAEF31DD0BB6EBB and SAL-NRRD-OBL-725881DB5590E608 (both NRRD-VERSION-001), promoted partial->implemented. Both obligations' missing_behavior claimed \"feature-introduction validation\" and \"oldest-sufficient- version selection\" were absent, but re-reading writer.py's _select_profile and model/document.py's version_requirements()/minimal_version_for() directly found both fully built and comprehensively tested: version_requirements() scans every cumulative feature gate (key/value pairs NRRD0002+, kinds NRRD0003+, thicknesses/sample units/space fields/multi-file data NRRD0004+, measurement frame NRRD0005+), minimal_version_for() returns the maximum gate present, the writer's profile=\"auto\" selects exactly that version, an explicit too-old profile is refused (never silently rewritten, naming every blocking feature), and validate() raises nrrd.version.insufficient for the same case. Traced via git log to commit 8f0d41de, which built and tested this capability targeting the sibling obligation NRRD-LIFECYCLE-001 -- its evidence was simply never propagated to these two NRRD-VERSION-001 obligations sharing the identical underlying feature. Confirmed via direct interactive probe before touching any evidence (a NRRD0005 document using kinds: minimal_version_for()==3, auto-selects NRRD0003 on write, refused under NRRD0001 on both write and validate) and via the pre-existing, already-passing 31-test test_obligation_version_selection.py (all 31 re-run and confirmed passing unchanged). Zero source or test changes -- pure evidence reconciliation, the same pattern as the xliff dataRef-resolution cluster fix (event 255) applied for the first time to nrrd. nrrd suite unchanged (575 passed). NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; this is pure bookkeeping correction against already-proven implementation, not new evidence generation. Covers SAL-NRRD-OBL-1DAEF31DD0BB6EBB and SAL-NRRD-OBL-725881DB5590E608 only; it supports no other obligation and promotes no other product state."
+    },
+    {
       "evidence_id": "NRRD-VERSION-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -157,7 +165,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "c76cad8c638f3bc95bd0fd4d2e0757bb75ad7fac5f79e0f637c79948afdc3150",
+    "implementation_evidence": "d8db76b295a913142d9032392e51252c176daee0f9adba1c221b3d3f0b04b80a",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -386,18 +394,30 @@
     {
       "capability_id": "NRRD-VERSION-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-VERSION-SELECTION-RECONCILIATION-PROOF"
       ],
       "implemented_behavior": [
-        "NRRD0001-NRRD0005 magics are accepted and explicit output profiles are bounded to that set."
+        "NRRD0001-NRRD0005 magics are accepted and explicit output profiles are bounded to that set. Stale-bookkeeping correction: feature-introduction validation and oldest-sufficient-version selection were both already comprehensively built and tested (commit 8f0d41de, targeted at the sibling obligation NRRD-LIFECYCLE-001, but its evidence was never propagated here) -- NrrdDocument.version_requirements() scans every cumulative feature gate (key/value pairs NRRD0002+, kinds NRRD0003+, thicknesses/sample units/space fields/multi-file data NRRD0004+, measurement frame NRRD0005+) and minimal_version_for() returns the maximum gate present, i.e. the oldest sufficient version. The writer''s profile=\"auto\" selects exactly that version; an explicit too-old profile is refused (never silently rewritten), naming every blocking feature; validate() raises nrrd.version.insufficient for the same case. Confirmed directly by interactive probe (a NRRD0005 document using kinds correctly computes minimal_version_for()==3, auto-selects NRRD0003 on write, and is refused under NRRD0001) before touching this evidence, and by the pre-existing, already-passing 31-test test_obligation_version_selection.py."
       ],
-      "missing_behavior": [
-        "No feature-introduction validation or oldest-sufficient-version selection."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_version_selection.py::test_dumps_refuses_a_declared_version_too_old_for_kinds",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_dumps_refuses_an_explicit_profile_override_too_old",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_dumps_error_names_every_blocking_field",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_validate_flags_a_declared_version_too_old_for_populated_fields",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_validate_flags_an_explicit_profile_argument_too_old"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-1DAEF31DD0BB6EBB",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_big_endian_decode_and_default_profile"
+        "tests/python/nrrd/test_production_namespace.py::test_big_endian_decode_and_default_profile",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_baseline_only_fields_require_no_version_beyond_one",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_kinds_require_at_least_nrrd0003",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_minimal_version_is_the_maximum_of_all_gated_fields_present",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_profile_auto_selects_the_oldest_sufficient_profile",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_profile_auto_on_baseline_only_document_selects_nrrd0001",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_dumps_succeeds_when_declared_version_is_already_sufficient",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_validate_reports_no_version_diagnostic_when_sufficient"
       ],
       "proof_requirements": {
         "negative": [
@@ -407,12 +427,15 @@
           "Cumulative feature matrix and deterministic oldest-sufficient writer selection."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
-        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps"
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::version_requirements",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::minimal_version_for",
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-LIFECYCLE-001",
@@ -1378,18 +1401,30 @@
     {
       "capability_id": "NRRD-VERSION-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-VERSION-SELECTION-RECONCILIATION-PROOF"
       ],
       "implemented_behavior": [
-        "Five profile magics and explicit target profile selection exist."
+        "Five profile magics and explicit target profile selection exist. Stale-bookkeeping correction: cumulative feature gates and oldest-representable automatic selection were both already comprehensively built and tested (commit 8f0d41de, targeted at the sibling obligation NRRD-LIFECYCLE-001, but its evidence was never propagated here) -- NrrdDocument.version_requirements() scans every cumulative feature gate (key/value pairs NRRD0002+, kinds NRRD0003+, thicknesses/sample units/space fields/multi-file data NRRD0004+, measurement frame NRRD0005+) and minimal_version_for() returns the maximum gate present, i.e. the oldest sufficient version. The writer''s profile=\"auto\" selects exactly that version; an explicit too-old profile is refused (never silently rewritten), naming every blocking feature; validate() raises nrrd.version.insufficient for the same case. Confirmed directly by interactive probe (a NRRD0005 document using kinds correctly computes minimal_version_for()==3, auto-selects NRRD0003 on write, and is refused under NRRD0001) before touching this evidence, and by the pre-existing, already-passing 31-test test_obligation_version_selection.py."
       ],
-      "missing_behavior": [
-        "Cumulative feature gates and oldest-representable automatic selection are absent."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_version_selection.py::test_dumps_refuses_a_declared_version_too_old_for_kinds",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_dumps_refuses_an_explicit_profile_override_too_old",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_dumps_error_names_every_blocking_field",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_validate_flags_a_declared_version_too_old_for_populated_fields",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_validate_flags_an_explicit_profile_argument_too_old"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-725881DB5590E608",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_big_endian_decode_and_default_profile"
+        "tests/python/nrrd/test_production_namespace.py::test_big_endian_decode_and_default_profile",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_baseline_only_fields_require_no_version_beyond_one",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_kinds_require_at_least_nrrd0003",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_minimal_version_is_the_maximum_of_all_gated_fields_present",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_profile_auto_selects_the_oldest_sufficient_profile",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_profile_auto_on_baseline_only_document_selects_nrrd0001",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_dumps_succeeds_when_declared_version_is_already_sufficient",
+        "tests/python/nrrd/test_obligation_version_selection.py::test_validate_reports_no_version_diagnostic_when_sufficient"
       ],
       "proof_requirements": {
         "negative": [
@@ -1399,12 +1434,15 @@
           "One minimal document per introduction boundary and deterministic version selection."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
-        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps"
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::version_requirements",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::minimal_version_for",
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-KINDS-001",
@@ -2521,6 +2559,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-sample-units-001.json": "ebdffdda4ad995da88900bc58b415ca7cbb3b42f554d667fb318a012f192b403",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-security-baseline-001.json": "75e80c2707a235afef3f1ab9980697a5e95e32a90fb18e8e1000fd29bbd2ee82",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-reconciliation-001.json": "e5b54b72b12920fa20b64906a008fb432025569268ab0211532f04a04b2ecff1",
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
     "src/python/nrrd/src/format_factory/nrrd/codec/kinds.py": "cf8517da058c0ce753866a46fdc5f1c652ab39b90b66e14b65c39d71891d8808",
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "738ef7feab3714ba69a4a56547714145e161ac8b22156bf7e868a18bc13ae847",
@@ -2562,12 +2601,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 43,
-      "partial": 19,
+      "implemented": 45,
+      "partial": 17,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 22
+    "unresolved": 20
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
