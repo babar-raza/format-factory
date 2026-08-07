@@ -1,0 +1,59 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-multifile-printf-subdim-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T12:44:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_MULTIFILE_PRINTF_SUBDIM_001",
+    "task_kind": "fix-real-unenforced-spec-requirement-plus-a-real-rejection-bug",
+    "root_cause": "Applied Event 243's 'narrow the broad obligation to its one fully-specified concrete example' technique to NRRD-MULTIFILE-001's remaining gaps. The pinned spec fully specifies the optional <subdim> parameter of the printf detached-file form ('This value can be between 1 and D'), but the reader's printf parser required exactly 4 tokens, meaning a legitimately spec-conformant 5-token declaration (format, min, max, step, subdim) was outright rejected as an invalid range -- a real bug, not just a coverage gap.",
+    "obligation_targeted": "SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD (both NRRD-MULTIFILE-001) -- remain partial, missing_behavior narrowed to precisely what's left",
+    "acceptance_evidence": "6 new tests prove: a valid subdim (including the subdim==dimension 'slabs' boundary case) reads correctly; an out-of-range subdim (too high, zero, non-integer) is rejected with a clear message; a 4-token declaration with no subdim is unaffected.",
+    "regression_tier": "full nrrd package suite (tests/python/nrrd) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Re-read NRRD-MULTIFILE-001's remaining obligations' missing_behavior text ('No multifile writer, profile gate, subdimension, or per-file byte validation') and searched the pinned spec directly for 'subdim' rather than assuming its semantics from the field-inventory listing alone.",
+    "2. Found a complete, unambiguous spec description (Section 3): <subdim> is an optional integer appended to the printf form ('data file: <format> <min> <max> <step> [<subdim>]') and the LIST form ('data file: LIST [<subdim>]'), valid range 1 to D (D = declared dimension), with subdim < D-1 meaning multiple slowest axes determine file count and subdim == D meaning equal-sized 'slabs'.",
+    "3. Read _safe_detached_payload directly and found the printf branch hard-required exactly 4 tokens ('if len(parts) != 4'), meaning ANY 5-token (subdim-carrying) declaration was rejected outright as 'invalid detached printf range' -- confirmed this is a real bug (rejecting valid input), not merely an unimplemented feature, by constructing a genuinely spec-conformant 5-token header and observing the false rejection before any fix.",
+    "4. Investigated the LIST form's own subdim handling separately and found a structural obstacle: _parse_header's list-mode detection reconstructs header['data file'] as a hardcoded 'LIST\\n<filenames>' string, discarding the original header line (and any subdim suffix on it) entirely before _safe_detached_payload ever runs -- a larger, separate parsing change than the printf case, deliberately not attempted this slice to keep the change narrow and low-risk.",
+    "5. Extended _safe_detached_payload's printf branch to accept 4 or 5 tokens; when 5 are present, parse the 5th as subdim and validate 1 <= subdim <= dimension (a new dimension parameter threaded through from the caller, which already computes it via _parse_sizes). Deliberately does NOT use subdim to alter which files are read or how bytes are concatenated (min/max/step alone already determine that, and the assembled payload's total size is independently checked downstream) -- subdim's effect on per-file sample layout for partial/lazy access remains a separate, unbuilt concern, honestly documented.",
+    "6. Probed directly before writing formal tests: a valid subdim=1 read correctly; subdim=2 (==dimension, the 'slabs' boundary) read correctly; subdim=3 (>dimension=2) was correctly refused naming the exact violation; subdim=0 was correctly refused; a plain 4-token declaration (no subdim) was unaffected. All 4 probes correct on the first attempt.",
+    "7. Ran the full pre-existing nrrd suite (563 tests, zero new fixtures) against the change to look for false positives before writing a single new test -- all 563 passed unchanged.",
+    "8. Wrote 6 formal tests in a new file (test_obligation_multifile_printf_subdim.py), all passing on the first attempt.",
+    "9. Ran ruff (clean), the full nrrd suite (569 passed, 1 skipped, was 563, +6), and the full 6-format regression (3427 passed, was 3421, +6; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "10. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-aa4506192f339bd6, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "11. While editing the evidence YAML, discovered and fixed a self-inflicted YAML anchor break: the target obligation's positive_test_selectors line was the SOLE definition site of the shared &TMULT anchor, and my first edit replaced it with a literal list without checking for aliases elsewhere first -- caught immediately via yaml.safe_load raising 'found undefined alias TMULT' before any commit, fixed by expanding the second obligation's own *TMULT alias into an equivalent literal list as part of updating its own evidence anyway, then re-validated the whole file parses cleanly and both &EXEC/&PAYLOAD anchors remain intact.",
+    "12. Kept both obligations at partial, not promoted to implemented: printf subdim is now fully proven, but the LIST form's own subdim, the read-time profile gate, comprehensive sequence grammar edge cases, and writer support all remain genuinely unbuilt -- missing_behavior text updated to name precisely these remaining gaps rather than leaving the old, now partially-stale blanket claim."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_multifile_printf_subdim.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_multifile_printf_subdim.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_multifile_printf_subdim.py -q -- 6 passed",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py tests/python/nrrd/test_obligation_multifile_printf_subdim.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 569 passed, 1 skipped, was 563 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3427 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3421 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations moved status (2 obligations strengthened, both remain partial)",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 65,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the subdim range rule grounded directly in the pinned spec's own Section 3 text, the false-rejection bug confirmed by direct probing before any fix.",
+    "obligations_moved_breakdown": "SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD (both NRRD-MULTIFILE-001) remain partial. A genuine, real bug fixed (spec-conformant 5-token printf declarations were previously rejected outright) plus new range validation, with missing_behavior narrowed to precisely the LIST-form subdim, read-time profile gate, and writer gaps that remain."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

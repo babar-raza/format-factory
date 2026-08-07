@@ -98,6 +98,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact test selectors proving codec/lazy.py's read_header() reads only a bounded chunk regardless of declared payload size (a byte-tracking stream wrapper measures this directly, not by absence of an observed side effect), that open_lazy_payload() memory-maps eligible raw single-file payloads (attached or a plain detached filename) with zero-copy region reads matching the eager loader's own materialized bytes exactly, that gzip/bzip2 payloads stream-decode incrementally and match the eager loader's decoded output, and that multi-file detached forms (LIST, printf sequences), textual encodings, and a declared line/byte skip each report an honest IN_MEMORY disclosure naming the specific reason rather than silently claiming laziness. Detached-path safety reuses the identical traversal/absolute-path checks as the existing eager reader. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED -- not cross-checked against Teem or another reference implementation for these specific lazy-access behaviors. Covers SAL-NRRD-OBL-6A4391DE91AF6940 and SAL-NRRD-OBL-D137EAE6ED40E8B8 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-MULTIFILE-PRINTF-SUBDIM-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-multifile-printf-subdim-001.json",
+      "sha256": "3c6f8a744be2fa7a5e4ef8f18210931e3796bb8331140fa8139bf315c808bdb4",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Narrows (does not fully close) SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD (both NRRD-MULTIFILE-001). Read the pinned NRRD spec's own Section 3 text directly (.local/format-contracts/acquired/nrrd/src-nrrd-001.bin) for the printf detached form's optional <subdim> parameter: \"This value can be between 1 and D,\" D being the declared dimension. Read _safe_detached_payload directly before writing any code and found the printf branch hard-required exactly 4 tokens, meaning a legitimately spec-conformant 5-token declaration (format, min, max, step, subdim) was outright rejected as an invalid range -- confirmed as a real bug (rejecting valid input), not merely an unimplemented feature, via direct probing before any fix. Extended the printf branch to accept 4 or 5 tokens, parsing and range-validating the 5th as subdim (1 to dimension) before any file is opened; does not use subdim to alter which files are read or how bytes are concatenated (min/max/step alone already determine that). Investigated the LIST form's own subdim separately and found a structural obstacle -- _parse_header's list-mode handling discards the original header line entirely before this parser ever runs -- deliberately not attempted this slice, a separate, larger parsing change. 6 new tests (tests/python/nrrd/test_obligation_multifile_printf_subdim.py) prove: valid subdim=1 and the subdim==dimension \"slabs\" boundary both read correctly; a no-subdim 4-token declaration is unaffected; subdim too high, subdim=0, and a non-integer subdim are each independently rejected with a clear message. nrrd suite: 563 -> 569 passed. While patching the evidence YAML, a self-inflicted anchor break was caught and fixed before commit: the target obligation's own line was the sole definition site of the shared &TMULT anchor, and the first edit replaced it with a literal list without checking for aliases elsewhere -- yaml.safe_load immediately raised \"found undefined alias TMULT,\" fixed by expanding the second obligation's own alias into an equivalent literal list, then the whole file was re-validated to parse cleanly with &EXEC/&PAYLOAD intact. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the subdim range rule grounded directly in the pinned spec's own text. Covers SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "NRRD-R1-SOURCE-TESTS",
       "expected_result": "PASS",
       "granularity": "suite",
@@ -133,7 +141,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "f5c941e214b05faaaff56318bd09279fdf17302e29b4a0ba3c7f89d5a00d034d",
+    "implementation_evidence": "31f47c2140004c60f440dcf310d47e72bf25b10ac243d5763c437c5d62f286a8",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1460,21 +1468,28 @@
     {
       "capability_id": "NRRD-MULTIFILE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-MULTIFILE-PRINTF-SUBDIM-PROOF"
       ],
       "implemented_behavior": [
-        "LIST and printf sequences are read with basic range and traversal checks. File count is now also validated before allocation: a printf range's declared file count is checked against limits.max_entries and refused with a ResourceLimitError before the filename list is built, closing a genuine, previously-unenforced gap (fixed this slice)."
+        "LIST and printf sequences are read with basic range and traversal checks. File count is now also validated before allocation: a printf range's declared file count is checked against limits.max_entries and refused with a ResourceLimitError before the filename list is built, closing a genuine, previously-unenforced gap. The printf form's optional <subdim> parameter is now recognized and range-validated (1 to the declared dimension) before any file is opened -- previously a legitimately spec-conformant 5-token declaration was outright rejected as an invalid range, confirmed by direct probing before this fix; a 4-token declaration (no subdim) is unaffected."
       ],
       "missing_behavior": [
-        "No multifile writer, profile gate, subdimension, or per-file byte validation."
+        "No multifile writer, read-time profile gate (a LIST/printf declaration under a pre-NRRD0004 magic is not rejected at read time, though version_requirements() lists it as a write-time/validate() concern), the LIST form's own optional <subdim> (data file: LIST <subdim> -- _parse_header's list-mode handling discards the original header line before _safe_detached_payload ever sees it, a separate, larger parsing change), or per-file byte validation."
       ],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_printf_sequence_file_count_is_bounded_before_allocation"
+        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_printf_sequence_file_count_is_bounded_before_allocation",
+        "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_subdim_above_dimension_is_rejected",
+        "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_subdim_of_zero_is_rejected",
+        "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_non_integer_subdim_is_rejected"
       ],
       "obligation_id": "SAL-NRRD-OBL-807586E5B4D0EDB2",
       "positive_test_selectors": [
         "tests/python/nrrd/test_obligation_detached_forms_production.py::test_list_and_printf_detached_payload_forms",
-        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_printf_sequence_file_count_is_bounded_before_allocation"
+        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_printf_sequence_file_count_is_bounded_before_allocation",
+        "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_printf_sequence_with_a_valid_subdim_reads_correctly",
+        "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_printf_sequence_with_subdim_equal_to_dimension_reads_correctly",
+        "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_printf_sequence_with_no_subdim_still_works_unaffected"
       ],
       "proof_requirements": {
         "negative": [
@@ -2293,19 +2308,25 @@
     {
       "capability_id": "NRRD-MULTIFILE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-MULTIFILE-PRINTF-SUBDIM-PROOF"
       ],
       "implemented_behavior": [
-        "Printf sequence and LIST payload declarations are recognized and concatenated."
+        "Printf sequence and LIST payload declarations are recognized and concatenated. The printf form's own optional <subdim> value (\"between 1 and D\" per the pinned spec's own Section 3 text, D being the declared dimension) is now recognized and range-validated before any file is opened."
       ],
       "missing_behavior": [
-        "Optional subdimension, profile gate, comprehensive sequence grammar, and writer support are absent."
+        "The LIST form's own optional <subdim> (\"data file: LIST <subdim>\") remains unhandled -- _parse_header's list-mode handling discards the original header line entirely in favor of a reconstructed \"LIST\\n<filenames>\" value before this ever reaches the detached-payload parser, a separate, larger parsing change deliberately not attempted this slice. Read-time profile gate (rejecting a LIST/printf declaration under a pre-NRRD0004 magic), comprehensive sequence grammar edge cases, and writer support remain absent."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_subdim_above_dimension_is_rejected",
+        "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_subdim_of_zero_is_rejected"
+      ],
       "obligation_id": "SAL-NRRD-OBL-EBE5230D5204B4AD",
       "positive_test_selectors": [
         "tests/python/nrrd/test_obligation_detached_forms_production.py::test_list_and_printf_detached_payload_forms",
-        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_printf_sequence_file_count_is_bounded_before_allocation"
+        "tests/python/nrrd/test_obligation_detached_forms_production.py::test_printf_sequence_file_count_is_bounded_before_allocation",
+        "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_printf_sequence_with_a_valid_subdim_reads_correctly",
+        "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_printf_sequence_with_subdim_equal_to_dimension_reads_correctly"
       ],
       "proof_requirements": {
         "negative": [
@@ -2465,6 +2486,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-keyvalue-escaping-001.json": "58b4a3c1cb9aefd9d546fb5c0e5dfc1d7f7be90fd15e40b3c7f4424238d11125",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-kind-enum-alias-001.json": "af90cbb0d43424c792cfca31fb6c1ad2122840037389e339e69321a1eece78a4",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-lazy-payload-001.json": "ee783f0c983b7f4fba3cdcd565c9f09d4fe16dc3fd1799bfd881969d266d3e09",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-multifile-printf-subdim-001.json": "3c6f8a744be2fa7a5e4ef8f18210931e3796bb8331140fa8139bf315c808bdb4",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-sample-units-001.json": "ebdffdda4ad995da88900bc58b415ca7cbb3b42f554d667fb318a012f192b403",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-security-baseline-001.json": "75e80c2707a235afef3f1ab9980697a5e95e32a90fb18e8e1000fd29bbd2ee82",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
@@ -2472,7 +2494,7 @@
     "src/python/nrrd/src/format_factory/nrrd/codec/kinds.py": "cf8517da058c0ce753866a46fdc5f1c652ab39b90b66e14b65c39d71891d8808",
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "738ef7feab3714ba69a4a56547714145e161ac8b22156bf7e868a18bc13ae847",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "f40b683110082f666fefd99b096ca4c9e9b78f87d0020541477d7a62587f980a",
-    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "79a667ec3d14d0398732c35ec2b97554a19530f2a53d09c206157f1254183bdb",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "e96bf94cc7275e8f8de76c3d37a2fcaeaae28982c9247e0878929acb47b38e47",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "9b2fc0b03f6c3f4dd42f1e091d465ddd7e887bdd2305f3c864f33d3e1ce39a11",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "83d96605f886fd24e9146410be552cb54d1bb93ee317102f46dc53b164448951",
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "7bf04acb5645b957c12f6a5d22d358a89d510bd1d63fa4b1bd6f622d2a52ca39",
@@ -2497,6 +2519,7 @@
     "tests/python/nrrd/test_obligation_kind_enum_alias.py": "08434fe556d6596490b20468abf7b5f8c491c2a345b7da50876038463b32fe90",
     "tests/python/nrrd/test_obligation_lazy_payload_access.py": "c8337adae10f74da14611b74eda2a4ef12d2edeb9cfb9fdcfc967d1675899a3c",
     "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
+    "tests/python/nrrd/test_obligation_multifile_printf_subdim.py": "6a98d3642b146fc6084205787977402187908090d54baaea9f21ca4a80fb2358",
     "tests/python/nrrd/test_obligation_payload_skip.py": "631ddbb609282e655c179358af0e8cbaa76038e33343cd482c87aaeecb1b8116",
     "tests/python/nrrd/test_obligation_sample_units.py": "5ce898c45cfadddd9b88fe79cc3c7442a155ae789e1642be43df04bf99283957",
     "tests/python/nrrd/test_obligation_security_baseline.py": "5788c0182586ffd1b6eae3c22c103660cfc4e5143ee40a282ed6f730c265476e",

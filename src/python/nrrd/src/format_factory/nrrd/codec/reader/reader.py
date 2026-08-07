@@ -184,7 +184,12 @@ def _parse_sizes(header: dict[str, str]) -> list[int]:
 
 
 def _safe_detached_payload(
-    value: str, *, source_path: Path | None, limits: ResourceLimits, version: int
+    value: str,
+    *,
+    source_path: Path | None,
+    limits: ResourceLimits,
+    version: int,
+    dimension: int,
 ) -> bytes:
     if source_path is None:
         raise NrrdParseError("detached data requires a filesystem header source")
@@ -227,14 +232,31 @@ def _safe_detached_payload(
             raise NrrdParseError("detached LIST has no payload paths")
     elif "%" in value:
         parts = value.split()
-        if len(parts) != 4 or not re.fullmatch(r"[^%]*%0?\d*d[^%]*", parts[0]):
+        if len(parts) not in (4, 5) or not re.fullmatch(r"[^%]*%0?\d*d[^%]*", parts[0]):
             raise NrrdParseError("invalid detached printf pattern")
         try:
-            start, stop, step = (int(item) for item in parts[1:])
+            start, stop, step = (int(item) for item in parts[1:4])
         except ValueError as exc:
             raise NrrdParseError("invalid detached printf range") from exc
         if step == 0 or (stop - start) * step < 0:
             raise NrrdParseError("invalid detached printf range")
+        if len(parts) == 5:
+            # "A different datafile dimension (besides D-1) can be
+            # communicated with the optional <subdim> value. This value
+            # can be between 1 and D," D being the declared `dimension:`.
+            # Validated here, before any file is opened; not otherwise
+            # used to alter which files are read or how their bytes are
+            # concatenated -- min/max/step alone already determine that,
+            # and the declared array shape is independently checked
+            # against the assembled payload's total byte count downstream.
+            try:
+                subdim = int(parts[4])
+            except ValueError as exc:
+                raise NrrdParseError("detached printf subdim must be an integer") from exc
+            if not 1 <= subdim <= dimension:
+                raise NrrdParseError(
+                    f"detached printf subdim must be between 1 and {dimension}, got {subdim}"
+                )
         file_count = abs(stop - start) // abs(step) + 1
         if file_count > limits.max_entries:
             raise ResourceLimitError(
@@ -332,7 +354,11 @@ def _load(source: BinarySource, *, limits: ResourceLimits, recovery_actions: tup
         raise NrrdParseError("block type is not valid with ASCII encoding")
     payload = (
         _safe_detached_payload(
-            header["data file"], source_path=source_path, limits=limits, version=version
+            header["data file"],
+            source_path=source_path,
+            limits=limits,
+            version=version,
+            dimension=len(sizes),
         )
         if "data file" in header
         else attached
