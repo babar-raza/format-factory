@@ -1,0 +1,53 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-header-field-ordering-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T11:20:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_HEADER_FIELD_ORDERING_001",
+    "task_kind": "verify-and-test-already-shipped-behavior-discovered-mid-investigation",
+    "root_cause": "Per Event 233's next-action ranking, surveyed NRRD's untouched-this-segment 23 unresolved obligations. SAL-NRRD-OBL-7D1A84A3077B90C2 (NRRD-HEADER-001) named 'field ordering constraints' as a remaining gap in its own missing_behavior. Read the pinned NRRD specification text directly rather than assuming from memory, and found the format defines exactly one ordering rule: the 'data file: LIST' form of the data file field must be the last field specification in the header, with no other positional constraint on any field.",
+    "obligation_targeted": "SAL-NRRD-OBL-7D1A84A3077B90C2 (NRRD-HEADER-001) -- promoted partial->implemented",
+    "acceptance_evidence": "3 new tests prove: 'data file: LIST' as the genuine last field specification reads correctly; a field-shaped line placed after it is never recognized as that field (surfaces as a missing-file error instead); a comment-shaped line placed after it is never recognized as a comment either.",
+    "regression_tier": "full nrrd package suite (tests/python/nrrd) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the obligation's full rule_text: 'Recognize every specified magic/version; parse ordinary fields and comments; enforce field uniqueness/ordering; preserve unknown metadata and optional-field absence.' Confirmed via the existing implemented_behavior text and a direct grep of test_production_namespace.py that magic/version recognition, ordinary field/comment parsing, field uniqueness (test_duplicate_header_and_truncated_payload_fail_closed), unknown-field preservation, and optional-field absence were all already directly tested -- only the 'ordering' half of the uniqueness/ordering clause remained untested.",
+    "2. Read the pinned NRRD spec source directly (.local/format-contracts/acquired/nrrd/src-nrrd-001.bin, an HTML document) rather than relying on memory, extracting the exact field-ordering sentence: 'the only constraint on field specification ordering is that the \"data file: LIST\" form of the data file field ... must be the last field specification in the header. Within these constraints, the field specification may appear in any order.' Confirmed this is the ONLY ordering rule anywhere in the spec text via keyword search for 'order'/'sequence'/'any order'.",
+    "3. Read _parse_header in reader.py directly before writing any test and found the reader already enforces this correctly, but by construction rather than an explicit check: once a 'data file: LIST' line is seen, list_mode becomes True, and every subsequent non-blank line unconditionally becomes a list_files entry -- meaning a field- or comment-looking line placed after it can never be recognized as a field or comment at all.",
+    "4. Probed this directly with a real temp-file-based header (list-mode requires a filesystem source path to resolve detached file names) before writing formal tests: a header with 'data file: LIST' followed by a real filename then a line reading 'encoding: gzip' raised NrrdParseError('cannot read detached payload ...encoding: gzip') -- proving the field-shaped line was treated purely as a (nonexistent) filename, not as an encoding override. Repeated with a '#'-prefixed line to confirm comments are treated the same way.",
+    "5. Wrote 3 tests in a new file (test_obligation_header_field_ordering.py, matching this being a genuinely fresh angle -- field ordering -- not covered by any existing NRRD test file): the positive case (LIST genuinely last, reads correctly) and the two negative cases (field-shaped and comment-shaped lines after LIST are swallowed as filenames, not recognized as fields/comments). All passed on the first attempt -- zero source code changes needed, since the behavior was already shipped.",
+    "6. Ran ruff (clean), the full nrrd suite (558 passed, 1 skipped, was 555 passed, +3), and the full 6-format regression (3376 passed, was 3373, +3; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "7. No skills-first governance invocation needed -- zero src/ files changed, only a new test file and evidence YAML, matching the 'skipped when only tests/evidence YAML change' rule.",
+    "8. Promoted the obligation from partial to implemented: with field ordering now directly proven and every other clause of the rule_text already covered, all of the obligation's own rule_text is satisfied. The evidence file's own prior missing_behavior text also named 'complete field-specific parsing/validation' as a residual concern, but this phrase does not appear in the obligation's actual rule_text -- it was an evidence-file-only addendum, and the underlying concern (per-field-type validation completeness) is tracked separately by the per-axis arity, kinds, and version-gate obligations elsewhere in this file. Documented this distinction transparently in implemented_behavior rather than silently dropping the caveat."
+  ],
+  "allowed_files": [
+    "tests/python/nrrd/test_obligation_header_field_ordering.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/nrrd/test_obligation_header_field_ordering.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_header_field_ordering.py -q -- 3 passed",
+    ".venv/Scripts/python -m ruff check tests/python/nrrd/test_obligation_header_field_ordering.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 558 passed, 1 skipped, was 555 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3376 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3373 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 65,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the ordering rule grounded directly in the pinned spec's own text, verified by direct interactive probing of already-shipped behavior.",
+    "obligations_moved_breakdown": "SAL-NRRD-OBL-7D1A84A3077B90C2 (NRRD-HEADER-001) partial->implemented. Field ordering (the one named remaining gap) is now directly proven; every other clause of the rule_text was already covered by pre-existing tests."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

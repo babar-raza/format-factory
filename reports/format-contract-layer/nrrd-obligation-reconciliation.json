@@ -50,6 +50,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact test files and per-selector outcomes for the endian obligations, and is backed by bidirectional evidence from Teem 1.12.0, a genuinely independent C reference implementation that shares no code with format_factory. Covers TC-FF6-NRRD-GOLDEN-SLICE-001 (raw scalar payload guards) and TC-FF6-NRRD-ASCII-ENDIAN-001 (endian/encoding scoping) only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-HEADER-FIELD-ORDERING-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-field-ordering-001.json",
+      "sha256": "69bf3bede20abc9f6cbe94440cd555ce406139e19f65bfad48d30002edcd5a21",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-7D1A84A3077B90C2 (NRRD-HEADER-001). The obligation's own missing_behavior named \"field ordering constraints\" as a remaining gap. Read the pinned NRRD specification text directly (.local/format-contracts/acquired/nrrd/src-nrrd-001.bin) rather than assuming: \"the only constraint on field specification ordering is that the 'data file: LIST' form of the data file field ... must be the last field specification in the header. Within these constraints, the field specification may appear in any order\" -- the ONLY ordering rule the format defines. Read _parse_header directly before writing any test and found the reader already enforces this correctly by construction: once 'data file: LIST' is seen, list_mode becomes True and every subsequent non-blank line unconditionally becomes list-file content, so nothing after it can ever be recognized as a field or comment again. 3 new tests (tests/python/nrrd/ test_obligation_header_field_ordering.py) prove: a document where 'data file: LIST' truly is the last field specification, followed immediately by real filenames, reads correctly; a field-shaped line (\"encoding: gzip\") placed after 'data file: LIST' is never parsed as that field -- it surfaces as a detached-payload read error (a nonexistent filename), not a silently-applied wrong encoding; and a comment-shaped line (\"# ...\") placed after 'data file: LIST' is likewise never parsed as a comment, proving the list-mode switch is unconditional rather than selectively skipping comments. Field uniqueness (the other half of this obligation's \"field uniqueness/ordering\" clause) was already directly tested by a pre-existing fixture (test_duplicate_header_and_truncated_payload_fail_closed), confirmed by reading it directly rather than re-testing redundantly. Zero source code changes -- the ordering behavior was already shipped, only untested from this specific angle. nrrd suite: 555 -> 558 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, with the ordering rule grounded directly in the pinned spec's own text. Covers SAL-NRRD-OBL-7D1A84A3077B90C2 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "NRRD-HEADER-GRAMMAR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -117,7 +125,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "cd08ab2b53d31385c54b13a6d4876a454451b22aeafdb2a8d486b017f2209331",
+    "implementation_evidence": "3b9e45d0eba048dc9fd72d47f16d7a68ff6dc918789a7b415835ff991aac3890",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1399,20 +1407,23 @@
     {
       "capability_id": "NRRD-HEADER-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-HEADER-FIELD-ORDERING-PROOF"
       ],
       "implemented_behavior": [
-        "Magics, ordinary fields, comments, duplicate rejection, unknown fields, and absent optional fields are represented."
+        "Magics, ordinary fields, comments, duplicate rejection, unknown fields, and absent optional fields are represented.",
+        "Field ordering is now directly proven, grounded word-for-word in the pinned spec's own text: \"the only constraint on field specification ordering is that the 'data file: LIST' form ... must be the last field specification in the header.\" This is enforced by construction in _parse_header -- once 'data file: LIST' is seen, every subsequent non-blank line unconditionally becomes list-file content, so a field- or comment-looking line placed after it is never recognized as a field or comment at all; it surfaces as a detached-payload read error (a nonexistent filename) rather than being silently misparsed as the field/comment it resembles. 'Complete field-specific parsing/validation' beyond this obligation's own rule_text (which only names uniqueness/ordering, not a broader per-field-type validation matrix) is a separate, ongoing concern tracked by the per-axis arity, kinds, and version-gate obligations elsewhere in this file, not a residual gap of this obligation itself."
       ],
-      "missing_behavior": [
-        "Field ordering constraints and complete field-specific parsing/validation are absent."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed"
+        "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed",
+        "tests/python/nrrd/test_obligation_header_field_ordering.py::test_a_field_looking_line_after_data_file_list_is_never_parsed_as_a_field",
+        "tests/python/nrrd/test_obligation_header_field_ordering.py::test_a_comment_looking_line_after_data_file_list_is_never_parsed_as_a_comment"
       ],
       "obligation_id": "SAL-NRRD-OBL-7D1A84A3077B90C2",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip",
+        "tests/python/nrrd/test_obligation_header_field_ordering.py::test_data_file_list_as_the_true_last_field_specification_reads_correctly"
       ],
       "proof_requirements": {
         "negative": [
@@ -1422,13 +1433,13 @@
           "Complete field inventory and permitted ordering corpus."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_split_header",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-MULTIFILE-001",
@@ -2432,6 +2443,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-codec-availability-001.json": "cafed57baf428e3e88e044b2ca36579e3ea13c111c54bac9741d48e3d8efbc80",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-path-version-gate-001.json": "0ddb74585effd11d8f31db536d8242dbcf347f14dba381a36faffab0b40a3add",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-writer-001.json": "459aee29fa15ac2f6d632f1d4d863923866957e8086da79dd6dde1ab6374d01f",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-field-ordering-001.json": "69bf3bede20abc9f6cbe94440cd555ce406139e19f65bfad48d30002edcd5a21",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-grammar-001.json": "34ff1e271e63f2ceb26c72ebe47b1f44e9be6b2ddde57a06068be324b1383229",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-keyvalue-escaping-001.json": "58b4a3c1cb9aefd9d546fb5c0e5dfc1d7f7be90fd15e40b3c7f4424238d11125",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-kind-enum-alias-001.json": "af90cbb0d43424c792cfca31fb6c1ad2122840037389e339e69321a1eece78a4",
@@ -2461,6 +2473,7 @@
     "tests/python/nrrd/test_obligation_detached_writer.py": "a3d121c5c901aacd8066e37d35afd13d6f6c5f5b4c25eae4a07285b9758bb64d",
     "tests/python/nrrd/test_obligation_dtype_conversion.py": "303205eec17e82662e3e484870fac7e985c0ed400f36bc62f887c75b686d6425",
     "tests/python/nrrd/test_obligation_header_field_grammar.py": "e70dc004b9be05c2828ba1b1fa99de76484c1190d1abf0ac59d1bd320e89fdee",
+    "tests/python/nrrd/test_obligation_header_field_ordering.py": "9e9c736263f2942b6e523c26f69b5e95e1dc5fb5a2f18a26ba6146868b7c8636",
     "tests/python/nrrd/test_obligation_keyvalue_duplicates.py": "bd1aeeedc522b3be842bdecf4625b4a639375e84b858b8d94a0e5dd647798ab8",
     "tests/python/nrrd/test_obligation_keyvalue_escaping.py": "9511255a07b3ed1b2fe02b2b533baa82f6e1d7181d1ed1f9187fec4be72b3699",
     "tests/python/nrrd/test_obligation_kind_enum_alias.py": "08434fe556d6596490b20468abf7b5f8c491c2a345b7da50876038463b32fe90",
@@ -2477,12 +2490,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 42,
-      "partial": 20,
+      "implemented": 43,
+      "partial": 19,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 23
+    "unresolved": 22
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
