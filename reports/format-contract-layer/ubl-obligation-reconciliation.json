@@ -90,6 +90,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. UBL-PARSE-001's 29 obligations all shared one generic citation and are near-verbatim restatements of UBL-MODEL-001/VALUES-001/DOCTYPES-001 facts (all resolved in preceding ticks). A programmatic exact-rule_text matcher found 27 of 29 are exact-text duplicates, cross-referenced to that real evidence. 1 (default vs. prefixed XML namespace forms resolving to identical expanded QNames) was proven directly by 2 new tests added this slice (test_obligation_qname_resolution.py) demonstrating that xml.etree.ElementTree's inherent Clark-notation normalization makes this true by construction, previously unasserted. 1 is a genuine, confirmed, security-relevant finding, not merely unaudited: model/typed.py's find()/find_all() -- the navigation primitives every typed accessor in the package routes through -- match children by local name only, never verifying the expanded namespace, so a spoofed-namespace element with the same local name as a legitimate one is silently preferred if it appears first in document order (demonstrated directly by constructing such a case and observing find() return the spoofed value). Root-level namespace mismatches are rejected, but that check does not extend to descendant lookups. This is left honestly `missing` rather than force-promoted or patched hastily: a correct fix touches every find()/find_all() call site across typed.py/aggregates.py/charges.py/reference.py/document.py, a cross-cutting change with real blast radius that needs dedicated design and regression coverage beyond a citation-audit tick's safe scope -- recorded as a genuine actionable finding for a future taskcard. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Promotes no product state beyond the 20 obligations moved to `implemented` (note: obligations_moved counts only clusters whose EXACT_DUP source was itself implemented; several sources are honest partials/missings carried forward unchanged)."
     },
     {
+      "evidence_id": "UBL-PARTY-POSTAL-ADDRESS-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-party-postal-address-001.json",
+      "sha256": "d6a1518c42b9db1cd8e7f3608c1c437e0b9c9fc7e03b91cb0280021cff0b2201",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Closes 8 obligations across UBL-MODEL-001/PARSE-001/CALC-001/EDIT-001/REF-001 (5-way Party duplicate + 3-way PostalAddress duplicate). Neither cac:Party nor cac:PostalAddress had any model representation before this slice, confirmed by grepping the model package for \"class Party\"/\"class PostalAddress\" (zero hits). Unblocked the same way event 193 unblocked PaymentMeans.payee_financial_account: reading the pinned OASIS UBL 2.3 release package's own vendored XSD directly (xsd/common/UBL-CommonAggregateComponents-2.3.xsd, extracted from the ZIP) rather than relying on the incomplete SAL fact cache. A new model/party.py module adds 8 dataclasses (Country, PostalAddress, PartyIdentification, PartyName, Contact, TaxScheme, PartyTaxScheme, Party) and matching *_of() projectors, scoped to the leaf-level fields each rule_text names, deliberately leaving deeper nested structures (e.g. PartyTaxScheme's RegistrationAddress) unmodeled and documented as such. 19 new tests prove every projector's positive, absent, and multi-value cases plus a full document round trip. ubl suite: 738 -> 757 passed. Verified against the pinned XSD directly -- higher-confidence than typical SELF-CONSISTENT evidence, though still not cross-checked against an independent reference UBL implementation, per GAP-008. Covers SAL-UBL-OBL-75FA432A5A176927, SAL-UBL-OBL-AE02391EE2696F99, SAL-UBL-OBL-C4BD36751BD0B3AB, SAL-UBL-OBL-C73836B17D8ECDBC, SAL-UBL-OBL-E016695D69C2BC7D, SAL-UBL-OBL-5D2ED9EBC9246EDA, SAL-UBL-OBL-63B4E9D295EF12C0, and SAL-UBL-OBL-CADCC40DD4CD3689 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "UBL-PAYEE-FINANCIAL-ACCOUNT-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -165,7 +173,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "04d997acb4087eb50987ad8bb0a6dfb1f23bf7666eda3c3d8f9974325d448cbe",
+    "implementation_evidence": "d2f59500ecfc5f996b9605bcc3fb466b565aeee1af646a5d68d82183d334e3f8",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2679,25 +2687,38 @@
     },
     {
       "capability_id": "UBL-PARSE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-CADCC40DD4CD3689 (identical rule_text). No PostalAddress or Address dataclass exists anywhere in the model -- confirmed by grepping the entire model package for \"class PostalAddress\"/\"class Address\". Street/city/postal-zone/country as a typed composite is entirely unbuilt (addresses round-trip only as generic, untyped XmlNode subtrees). This is a genuine, unbuilt gap, not a citation-audit opportunity."
+      "execution_evidence_ids": [
+        "UBL-PARTY-POSTAL-ADDRESS-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "cac:PostalAddress is now modeled (model/party.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package's own vendored XSD (AddressType): street_name, city_name, postal_zone, and country (a nested Country dataclass, itself modeling cac:Country's IdentificationCode and Name) -- the exact 4 sub-elements the rule_text names, out of AddressType's full ~28 optional fields (the type's remaining fields are not named by this obligation and are not modeled, documented in the module's own docstring)."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_identification_requires_an_id",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_name_requires_a_name"
+      ],
       "obligation_id": "SAL-UBL-OBL-5D2ED9EBC9246EDA",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_projects_all_five_named_child_kinds",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_postal_address_projects_with_its_four_named_sub_elements",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_multiple_party_identifications_and_names_are_each_preserved",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_a_party_survives_a_real_document_round_trip"
+      ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited for a missing required PartyIdentification ID and a missing required PartyName name."
         ],
         "positive": [
           "Same document under default namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures rejected."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/party.py::PostalAddress",
+        "src/python/ubl/src/format_factory/ubl/model/party.py::postal_address_of"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
@@ -2798,25 +2819,38 @@
     },
     {
       "capability_id": "UBL-EDIT-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-CADCC40DD4CD3689 (identical rule_text). No PostalAddress or Address dataclass exists anywhere in the model -- confirmed by grepping the entire model package for \"class PostalAddress\"/\"class Address\". Street/city/postal-zone/country as a typed composite is entirely unbuilt (addresses round-trip only as generic, untyped XmlNode subtrees). This is a genuine, unbuilt gap, not a citation-audit opportunity."
+      "execution_evidence_ids": [
+        "UBL-PARTY-POSTAL-ADDRESS-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "cac:PostalAddress is now modeled (model/party.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package's own vendored XSD (AddressType): street_name, city_name, postal_zone, and country (a nested Country dataclass, itself modeling cac:Country's IdentificationCode and Name) -- the exact 4 sub-elements the rule_text names, out of AddressType's full ~28 optional fields (the type's remaining fields are not named by this obligation and are not modeled, documented in the module's own docstring)."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_identification_requires_an_id",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_name_requires_a_name"
+      ],
       "obligation_id": "SAL-UBL-OBL-63B4E9D295EF12C0",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_projects_all_five_named_child_kinds",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_postal_address_projects_with_its_four_named_sub_elements",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_multiple_party_identifications_and_names_are_each_preserved",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_a_party_survives_a_real_document_round_trip"
+      ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited for a missing required PartyIdentification ID and a missing required PartyName name."
         ],
         "positive": [
           "Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/party.py::PostalAddress",
+        "src/python/ubl/src/format_factory/ubl/model/party.py::postal_address_of"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-LIFECYCLE-001",
@@ -3108,25 +3142,38 @@
     },
     {
       "capability_id": "UBL-MODEL-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "No Party dataclass or typed composite exists anywhere in the model -- confirmed by grepping the entire model package for \"class Party\". Party-suffixed elements are only generically tagged by query.py's business_role() heuristic (a document-query helper, not a typed model), with no identification, name, postal-address, tax-scheme, or contact sub-structure modeled or tested. This is a genuine, unbuilt gap, not a citation-audit opportunity."
+      "execution_evidence_ids": [
+        "UBL-PARTY-POSTAL-ADDRESS-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "cac:Party is now modeled (model/party.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package's own vendored XSD (PartyType, xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read from the ZIP itself, not a SAL-fact paraphrase or memory): party_identifications (tuple of PartyIdentification, each requiring cbc:ID per the XSD's minOccurs=1), party_names (tuple of PartyName, each requiring cbc:Name), postal_address (PostalAddress | None), party_tax_schemes (tuple of PartyTaxScheme, each requiring a nested cac:TaxScheme per the XSD), and contact (Contact | None). All 5 child kinds the rule_text names are covered."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_identification_requires_an_id",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_name_requires_a_name"
+      ],
       "obligation_id": "SAL-UBL-OBL-75FA432A5A176927",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_projects_all_five_named_child_kinds",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_postal_address_projects_with_its_four_named_sub_elements",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_multiple_party_identifications_and_names_are_each_preserved",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_a_party_survives_a_real_document_round_trip"
+      ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited for a missing required PartyIdentification ID and a missing required PartyName name."
         ],
         "positive": [
           "Typed access for every first-wave component; cardinality violations diagnosed on mutation."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/party.py::Party",
+        "src/python/ubl/src/format_factory/ubl/model/party.py::party_of"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALIDATE-001",
@@ -4480,25 +4527,38 @@
     },
     {
       "capability_id": "UBL-CALC-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Same confirmed status as UBL-PARSE-001's SAL-UBL-OBL-C4BD36751BD0B3AB (identical rule_text). Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-75FA432A5A176927 (identical rule_text). No Party dataclass or typed composite exists anywhere in the model -- confirmed by grepping the entire model package for \"class Party\". Party-suffixed elements are only generically tagged by query.py's business_role() heuristic (a document-query helper, not a typed model), with no identification, name, postal-address, tax-scheme, or contact sub-structure modeled or tested. This is a genuine, unbuilt gap, not a citation-audit opportunity."
+      "execution_evidence_ids": [
+        "UBL-PARTY-POSTAL-ADDRESS-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "cac:Party is now modeled (model/party.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package's own vendored XSD (PartyType, xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read from the ZIP itself, not a SAL-fact paraphrase or memory): party_identifications (tuple of PartyIdentification, each requiring cbc:ID per the XSD's minOccurs=1), party_names (tuple of PartyName, each requiring cbc:Name), postal_address (PostalAddress | None), party_tax_schemes (tuple of PartyTaxScheme, each requiring a nested cac:TaxScheme per the XSD), and contact (Contact | None). All 5 child kinds the rule_text names are covered."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_identification_requires_an_id",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_name_requires_a_name"
+      ],
       "obligation_id": "SAL-UBL-OBL-AE02391EE2696F99",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_projects_all_five_named_child_kinds",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_postal_address_projects_with_its_four_named_sub_elements",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_multiple_party_identifications_and_names_are_each_preserved",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_a_party_survives_a_real_document_round_trip"
+      ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited for a missing required PartyIdentification ID and a missing required PartyName name."
         ],
         "positive": [
           "Reconciliation fixtures with agreeing and disagreeing declared totals across rounding policies."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/party.py::Party",
+        "src/python/ubl/src/format_factory/ubl/model/party.py::party_of"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-EDIT-001",
@@ -4908,25 +4968,38 @@
     },
     {
       "capability_id": "UBL-PARSE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-75FA432A5A176927 (identical rule_text). No Party dataclass or typed composite exists anywhere in the model -- confirmed by grepping the entire model package for \"class Party\". Party-suffixed elements are only generically tagged by query.py's business_role() heuristic (a document-query helper, not a typed model), with no identification, name, postal-address, tax-scheme, or contact sub-structure modeled or tested. This is a genuine, unbuilt gap, not a citation-audit opportunity."
+      "execution_evidence_ids": [
+        "UBL-PARTY-POSTAL-ADDRESS-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "cac:Party is now modeled (model/party.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package's own vendored XSD (PartyType, xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read from the ZIP itself, not a SAL-fact paraphrase or memory): party_identifications (tuple of PartyIdentification, each requiring cbc:ID per the XSD's minOccurs=1), party_names (tuple of PartyName, each requiring cbc:Name), postal_address (PostalAddress | None), party_tax_schemes (tuple of PartyTaxScheme, each requiring a nested cac:TaxScheme per the XSD), and contact (Contact | None). All 5 child kinds the rule_text names are covered."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_identification_requires_an_id",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_name_requires_a_name"
+      ],
       "obligation_id": "SAL-UBL-OBL-C4BD36751BD0B3AB",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_projects_all_five_named_child_kinds",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_postal_address_projects_with_its_four_named_sub_elements",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_multiple_party_identifications_and_names_are_each_preserved",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_a_party_survives_a_real_document_round_trip"
+      ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited for a missing required PartyIdentification ID and a missing required PartyName name."
         ],
         "positive": [
           "Same document under default namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures rejected."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/party.py::Party",
+        "src/python/ubl/src/format_factory/ubl/model/party.py::party_of"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -5063,25 +5136,38 @@
     },
     {
       "capability_id": "UBL-EDIT-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Same confirmed status as UBL-PARSE-001's SAL-UBL-OBL-C4BD36751BD0B3AB (identical rule_text). Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-75FA432A5A176927 (identical rule_text). No Party dataclass or typed composite exists anywhere in the model -- confirmed by grepping the entire model package for \"class Party\". Party-suffixed elements are only generically tagged by query.py's business_role() heuristic (a document-query helper, not a typed model), with no identification, name, postal-address, tax-scheme, or contact sub-structure modeled or tested. This is a genuine, unbuilt gap, not a citation-audit opportunity."
+      "execution_evidence_ids": [
+        "UBL-PARTY-POSTAL-ADDRESS-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "cac:Party is now modeled (model/party.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package's own vendored XSD (PartyType, xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read from the ZIP itself, not a SAL-fact paraphrase or memory): party_identifications (tuple of PartyIdentification, each requiring cbc:ID per the XSD's minOccurs=1), party_names (tuple of PartyName, each requiring cbc:Name), postal_address (PostalAddress | None), party_tax_schemes (tuple of PartyTaxScheme, each requiring a nested cac:TaxScheme per the XSD), and contact (Contact | None). All 5 child kinds the rule_text names are covered."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_identification_requires_an_id",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_name_requires_a_name"
+      ],
       "obligation_id": "SAL-UBL-OBL-C73836B17D8ECDBC",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_projects_all_five_named_child_kinds",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_postal_address_projects_with_its_four_named_sub_elements",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_multiple_party_identifications_and_names_are_each_preserved",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_a_party_survives_a_real_document_round_trip"
+      ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited for a missing required PartyIdentification ID and a missing required PartyName name."
         ],
         "positive": [
           "Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/party.py::Party",
+        "src/python/ubl/src/format_factory/ubl/model/party.py::party_of"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
@@ -5148,25 +5234,38 @@
     },
     {
       "capability_id": "UBL-MODEL-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "No PostalAddress or Address dataclass exists anywhere in the model -- confirmed by grepping the entire model package for \"class PostalAddress\"/\"class Address\". Street/city/postal-zone/country as a typed composite is entirely unbuilt (addresses round-trip only as generic, untyped XmlNode subtrees). This is a genuine, unbuilt gap, not a citation-audit opportunity."
+      "execution_evidence_ids": [
+        "UBL-PARTY-POSTAL-ADDRESS-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "cac:PostalAddress is now modeled (model/party.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package's own vendored XSD (AddressType): street_name, city_name, postal_zone, and country (a nested Country dataclass, itself modeling cac:Country's IdentificationCode and Name) -- the exact 4 sub-elements the rule_text names, out of AddressType's full ~28 optional fields (the type's remaining fields are not named by this obligation and are not modeled, documented in the module's own docstring)."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_identification_requires_an_id",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_name_requires_a_name"
+      ],
       "obligation_id": "SAL-UBL-OBL-CADCC40DD4CD3689",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_projects_all_five_named_child_kinds",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_postal_address_projects_with_its_four_named_sub_elements",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_multiple_party_identifications_and_names_are_each_preserved",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_a_party_survives_a_real_document_round_trip"
+      ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited for a missing required PartyIdentification ID and a missing required PartyName name."
         ],
         "positive": [
           "Typed access for every first-wave component; cardinality violations diagnosed on mutation."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/party.py::PostalAddress",
+        "src/python/ubl/src/format_factory/ubl/model/party.py::postal_address_of"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALIDATE-001",
@@ -5608,25 +5707,38 @@
     },
     {
       "capability_id": "UBL-REF-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Same confirmed status as UBL-PARSE-001's SAL-UBL-OBL-C4BD36751BD0B3AB (identical rule_text). Same confirmed status as UBL-MODEL-001's SAL-UBL-OBL-75FA432A5A176927 (identical rule_text). No Party dataclass or typed composite exists anywhere in the model -- confirmed by grepping the entire model package for \"class Party\". Party-suffixed elements are only generically tagged by query.py's business_role() heuristic (a document-query helper, not a typed model), with no identification, name, postal-address, tax-scheme, or contact sub-structure modeled or tested. This is a genuine, unbuilt gap, not a citation-audit opportunity."
+      "execution_evidence_ids": [
+        "UBL-PARTY-POSTAL-ADDRESS-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "cac:Party is now modeled (model/party.py, a new module) grounded directly in the pinned OASIS UBL 2.3 release package's own vendored XSD (PartyType, xsd/common/UBL-CommonAggregateComponents-2.3.xsd, read from the ZIP itself, not a SAL-fact paraphrase or memory): party_identifications (tuple of PartyIdentification, each requiring cbc:ID per the XSD's minOccurs=1), party_names (tuple of PartyName, each requiring cbc:Name), postal_address (PostalAddress | None), party_tax_schemes (tuple of PartyTaxScheme, each requiring a nested cac:TaxScheme per the XSD), and contact (Contact | None). All 5 child kinds the rule_text names are covered."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_identification_requires_an_id",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_name_requires_a_name"
+      ],
       "obligation_id": "SAL-UBL-OBL-E016695D69C2BC7D",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_party_projects_all_five_named_child_kinds",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_postal_address_projects_with_its_four_named_sub_elements",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_multiple_party_identifications_and_names_are_each_preserved",
+        "tests/python/ubl/test_obligation_party_and_postal_address.py::test_a_party_survives_a_real_document_round_trip"
+      ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are cited for a missing required PartyIdentification ID and a missing required PartyName name."
         ],
         "positive": [
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/party.py::Party",
+        "src/python/ubl/src/format_factory/ubl/model/party.py::party_of"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-REF-001",
@@ -6283,6 +6395,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lifecycle-io-001.json": "ed787921f2225a81573186c4cd81377a417d211b447444ba0807685ba1e837b8",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-model-citation-audit-001.json": "d2c7dfa39a36272ee884db3f991425e0013760681491767abedad051028572e6",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-parse-citation-audit-001.json": "2bb3b3fd3318a9290b0a50d890416906f28500d899bd0efe330e77f39efd12be",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-party-postal-address-001.json": "d6a1518c42b9db1cd8e7f3608c1c437e0b9c9fc7e03b91cb0280021cff0b2201",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-payee-financial-account-001.json": "871c30fea014cdad6674a806f06c1f7c38d9ea4ab650d5cda0fa352d8edf6aea",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-preservation-mode-001.json": "088e0985934fa48774b39f185c541d9d3c3f038b561d70bb1d30359755986909",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-profile-identifiers-001.json": "48879903a7e0b13d2411bfdb1a24c27529a89fbf06f5f2dd0de655d21e7ab871",
@@ -6296,11 +6409,12 @@
     "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "254743ef56212db8aebabac970793fee188634466b6907145e25b1b662e8f9fc",
     "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py": "e352a3442d0a31389f177c9a206d3a5d857c9a2d4f724833e9af90e31d5b4a7d",
     "src/python/ubl/src/format_factory/ubl/document_types.py": "3d2c4333b1544a3f45b4c6dd52b759aa528c5dd9ac2a1d102607688b8722819c",
-    "src/python/ubl/src/format_factory/ubl/model/__init__.py": "61caa29dbd76681ce7c197ce8bbfbc422b9f47495a3a8d5d38a6889b30b45f02",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py": "b36728d55b1bd38ea7427328466a1c88a75bf43ca130995b0ccc95bee1af668a",
     "src/python/ubl/src/format_factory/ubl/model/aggregates.py": "c0f02a00ad6065ea0359dd379f30d0db94b95d63f772d2247ab521ea7a49886a",
     "src/python/ubl/src/format_factory/ubl/model/charges.py": "f72762e8f2fe1f95f967b6842321265d1815dfcacf6e0c49aa83cda617069277",
     "src/python/ubl/src/format_factory/ubl/model/codelist.py": "1f17c8c2a0e0acafe8665c8695fbdf3226562a20c423fa2e4b388a4d2e5dd83f",
     "src/python/ubl/src/format_factory/ubl/model/document.py": "9b8ca16af3989f29c8ccd5ac15f697e6c4e423a6503db38378e8f2013c89bf6b",
+    "src/python/ubl/src/format_factory/ubl/model/party.py": "ebc5685aa9ceb698e5a6ce60ac65a37a35cd88023162520b4f2ac6ec18246bb1",
     "src/python/ubl/src/format_factory/ubl/model/query.py": "b88a8be52595daac91f4e68f78b0c018339eb1612d9bb7e42d562bcedee5b4b4",
     "src/python/ubl/src/format_factory/ubl/model/reference.py": "98d303cdb177d529b786af09a19e50c9938e5c4e4fada28a8cb4d744ac4a654e",
     "src/python/ubl/src/format_factory/ubl/model/root_types.py": "1ffc0eb226aaeb88c0a2ee941faf71cf0578fa7e5de94d77fae335bcfbccb126",
@@ -6321,6 +6435,7 @@
     "tests/python/ubl/test_obligation_extensions_structure.py": "a25a8652d39fab6e3c146f64aaf7c9bbd28eb36be4df30d2ab914ab46d147c79",
     "tests/python/ubl/test_obligation_external_reference.py": "6ba99de8b1dab95aacf884176da6e3c59cf698d3017df4c95748f834fe854901",
     "tests/python/ubl/test_obligation_lifecycle_io.py": "6189da6be51a33cbe60b72e6d98b632dfda9232838d41788dfd7547ec824f7ed",
+    "tests/python/ubl/test_obligation_party_and_postal_address.py": "d35d55402a5d020574bcd2af1f841f59a3e1097929d17eddfcfab0d8bada261b",
     "tests/python/ubl/test_obligation_preservation_mode.py": "0fa525baf6a5836bd2ebd456cad1259f5e3b80c3e1b692864a45471bf6ff0873",
     "tests/python/ubl/test_obligation_profile_identifiers.py": "dd1a6ee497466d8a62d1ab81a91e478328d3ac2a1cec48e90461cadbe7ea8e77",
     "tests/python/ubl/test_obligation_profile_validator_registry.py": "b874e4d0c934f0496470bb854a6d90fafd98dc39f0ff744daac780909e2f2cb1",
@@ -6337,12 +6452,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 126,
-      "missing": 28,
+      "implemented": 134,
+      "missing": 20,
       "partial": 40
     },
     "total": 194,
-    "unresolved": 68
+    "unresolved": 60
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

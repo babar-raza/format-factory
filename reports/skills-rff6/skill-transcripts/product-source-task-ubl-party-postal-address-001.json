@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-party-postal-address-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T03:40:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_PARTY_POSTAL_ADDRESS_001",
+    "task_kind": "genuine-large-gap-closure-via-direct-xsd-read-8-way-cross-capability-duplicate",
+    "root_cause": "8 obligations across UBL-MODEL-001/PARSE-001/CALC-001/EDIT-001/REF-001 shared two rule_texts (5-way for cac:Party, 3-way for cac:PostalAddress), both naming aggregate structures that had zero model representation anywhere in the package -- confirmed by grepping for 'class Party' and 'class PostalAddress' (zero hits). Event 193 proved the pinned OASIS UBL 2.3 XSD (vendored inside the locally materialized release ZIP) can be read directly to ground new typed models precisely, unblocking obligations the incomplete SAL fact cache alone could not.",
+    "obligation_targeted": "SAL-UBL-OBL-75FA432A5A176927, SAL-UBL-OBL-AE02391EE2696F99, SAL-UBL-OBL-C4BD36751BD0B3AB, SAL-UBL-OBL-C73836B17D8ECDBC, SAL-UBL-OBL-E016695D69C2BC7D (Party, 5-way); SAL-UBL-OBL-5D2ED9EBC9246EDA, SAL-UBL-OBL-63B4E9D295EF12C0, SAL-UBL-OBL-CADCC40DD4CD3689 (PostalAddress, 3-way)",
+    "acceptance_evidence": "New model/party.py module with 8 dataclasses (Country, PostalAddress, PartyIdentification, PartyName, Contact, TaxScheme, PartyTaxScheme, Party) and matching *_of() projectors, each field grounded directly in the pinned XSD's PartyType/AddressType/CountryType/PartyIdentificationType/PartyNameType/ContactType/TaxSchemeType/PartyTaxSchemeType complexTypes read straight from the ZIP. 19 new tests prove every projector's positive, absent, and multi-value cases plus a full document round trip through AccountingSupplierParty/Party.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Grepped the whole ubl model package for 'class Party' and 'class PostalAddress' -- zero hits, confirming both are genuinely unmodeled, not stale citations.",
+    "2. Extracted xsd/common/UBL-CommonAggregateComponents-2.3.xsd directly from the pinned OASIS UBL 2.3 release ZIP (.local/format-contracts/acquired/ubl/src-ubl-002.bin) and read PartyType, AddressType, CountryType, PartyIdentificationType, PartyNameType, ContactType, TaxSchemeType, and PartyTaxSchemeType directly -- every field name, cardinality, and nesting relationship in the new module is sourced from this read, not memory or an incomplete SAL fact.",
+    "3. Scoped deliberately to leaf-level fields matching this codebase's existing pattern (e.g. charges.FinancialAccount from event 193): PostalAddress models the 4 sub-elements the contract itself names plus the Country it references (not the XSD type's full ~28 optional fields); PartyTaxScheme's nested RegistrationAddress (itself another PostalAddress) is deliberately not modeled, documented explicitly in the module's own docstring, not silently narrowed.",
+    "4. Wrote model/party.py mirroring the exact code style of charges.py/aggregates.py (frozen dataclasses, _require for genuinely-required XSD fields, find()/find_all()-based projectors, optional-returns-None pattern for optional aggregates). Wired all 16 new names through model/__init__.py and the top-level package __init__.py.",
+    "5. Ran an interactive probe against a full document (AccountingSupplierParty/Party with all 5 named child kinds populated) before writing any test -- every field, the empty-party case, party_of(None), and a full round trip all worked correctly on the first attempt.",
+    "6. Wrote 19 new tests. Ran ruff (clean) and the full ubl suite (757 passed, was 738, +19) before writing any evidence claim. Ran the full 6-format regression (3020 passed, was 3001, +19; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/model/party.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_party_and_postal_address.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/model/party.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_party_and_postal_address.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_party_and_postal_address.py -q -- 19 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 757 passed, was 738 passed",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_party_and_postal_address.py src/python/ubl/src/format_factory/ubl/model/party.py src/python/ubl/src/format_factory/ubl/model/__init__.py src/python/ubl/src/format_factory/ubl/__init__.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3020 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3001 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 8,
+    "obligations_total_for_format": 194,
+    "oracle": "Verified against the pinned OASIS UBL 2.3 release package's own vendored XSD schema (extracted directly from the ZIP, not a SAL-fact paraphrase or memory) -- higher-confidence than typical SELF-CONSISTENT evidence, though still not cross-checked against an independent reference UBL implementation, per GAP-008.",
+    "obligations_moved_breakdown": "8 obligations closed at once (5-way Party duplicate + 3-way PostalAddress duplicate) by building one new, precisely-scoped, spec-grounded model module, mirroring this codebase's existing aggregate-modeling pattern exactly."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -26,6 +26,24 @@ from .charges import (
     price_of,
 )
 from .codelist import CodeList, CodeListRegistry, CodeListValidation, validate_code
+from .party import (
+    Contact,
+    Country,
+    Party,
+    PartyIdentification,
+    PartyName,
+    PartyTaxScheme,
+    PostalAddress,
+    TaxScheme,
+    contact_of,
+    country_of,
+    party_identification_of,
+    party_name_of,
+    party_of,
+    party_tax_scheme_of,
+    postal_address_of,
+    tax_scheme_of,
+)
 from .query import DocumentIndex, DuplicateId, Path, QueryMatch, business_role
 from .reference import ExternalReference, external_reference_of
 from .temporal import UblDate, UblDateTime, UblTime
@@ -82,6 +100,22 @@ __all__ = [
     "business_role",
     "external_reference_of",
     "validate_code",
+    "Contact",
+    "Country",
+    "Party",
+    "PartyIdentification",
+    "PartyName",
+    "PartyTaxScheme",
+    "PostalAddress",
+    "TaxScheme",
+    "contact_of",
+    "country_of",
+    "party_identification_of",
+    "party_name_of",
+    "party_of",
+    "party_tax_scheme_of",
+    "postal_address_of",
+    "tax_scheme_of",
     "time_of",
     "date_time_of",
     "date_of",
