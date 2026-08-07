@@ -290,6 +290,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors for both XLIFF-STATE-001 obligations (the core state enum/target-required rule, and the configurable transition-validation mechanism). NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Originally scoped to XLIFF-STATE-001's 2 obligations; extended to also cover XLIFF-SEG-001's SAL-XLIFF-OBL-3B805BEF996C1B70, which restates the identical state-enum/target-required rule under a different capability (the \"Segment elements carry an optional state attribute...\" framing is the same fact as XLIFF-STATE-001's core rule, not a distinct unbuilt behavior). Covers SAL-XLIFF-OBL-AF86B77156C7C1E2, SAL-XLIFF-OBL-95E74FFC0501843B, and SAL-XLIFF-OBL-3B805BEF996C1B70 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-VALIDATE-SEMANTIC-CONSTRAINT-CITATION-AUDIT-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-validate-semantic-constraint-citation-audit-001.json",
+      "sha256": "e03483f29971233dfbead87217f3b867f037e2d6fe7554894387263c68195916",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-0E27D8074CB0A72C (XLIFF-VALIDATE-001), promoted partial->implemented. The obligation's own evidence carried a generic \"not yet audited against this obligation's declared proof requirements\" placeholder, apparently left over from an early tick and never updated across the many later ticks this session that built substantial validate() semantic-constraint checking. Re-read validate() (validator.py) directly and enumerated its own diagnostic codes via grep rather than trusting the stale placeholder: 40+ distinct codes exist, covering every one of the five categories the obligation's own rule_text explicitly enumerates -- \"IDs, references, pairing, source/target consistency, module constraints\" -- at multiple structural scopes (file/group/unit/segment/inline level IDs; dataRef-family and mrk-comment references; ec/isolated pairing constraints; source/target language compatibility; fs/matches/metadata/resourcedata module constraints). Each category already has dedicated positive AND negative tests in the existing suite (test_obligation_file_and_group_id_uniqueness.py, test_obligation_inline_required_id.py, test_obligation_paired_code_integrity.py, test_obligation_original_data_element_modeling.py, test_obligation_segment_structure_and_language.py, test_obligation_metadata_module_structure.py, test_obligation_resource_data_module_reference_href.py, among others). Zero source or test changes -- pure evidence reconciliation citing already-proven, already-passing tests that this obligation's own evidence had simply never been updated to reference. xliff suite unchanged (480 passed). NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; this is pure bookkeeping correction against already-proven implementation, not new evidence generation. Covers SAL-XLIFF-OBL-0E27D8074CB0A72C only; it supports no other obligation and promotes no other product state."
+    },
+    {
       "evidence_id": "XLIFF-VERSION-DOWNGRADE-LOSS-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -317,7 +325,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "1ff632f9a78b1e227b5aaff6b52b758abcb0c2358a5918a5a83caf48b35688b0",
+    "implementation_evidence": "9aaf559f1724af52cd24a6d3169cc1a4cd1fabd6d6f7da27a1c091c1a5fb1124",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -631,20 +639,35 @@
     {
       "capability_id": "XLIFF-VALIDATE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-VALIDATE-SEMANTIC-CONSTRAINT-CITATION-AUDIT-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Citation-audit correction: this obligation's own evidence carried a generic \"not yet audited\" placeholder from an early tick, never updated across the many later ticks this session that built and tested exactly the semantic constraints its own rule_text names. Re-read validate() (validator.py) directly and enumerated its diagnostic codes: IDs (xliff.file.id.duplicate, xliff.group.id.duplicate, xliff.unit.id.duplicate, xliff.segment.id.duplicate, xliff.inline.id.duplicate, plus the *.required counterparts), references (xliff.inline.dataRef.unresolved/dataRefStart.unresolved/dataRefEnd.unresolved, xliff.mrk.comment.ref.unresolved), pairing (xliff.inline.ec.unpaired/out_of_order, xliff.inline.isolated.* canReorder/canCopy/canDelete/canOverlap mismatches, xliff.inline.dataRef.unpaired), source/target consistency (xliff.segment.source.lang.incompatible, xliff.segment.target.lang.incompatible, xliff.segment.state.target_required), and module constraints (xliff.module.fs.fs.invalid, xliff.module.matches.match.*, xliff.module.metadata.meta.type.required/metagroup.required, xliff.module.resourcedata.reference.href.required) -- all five categories this obligation's own rule_text explicitly enumerates (\"IDs, references, pairing, source/target consistency, module constraints\") are directly proven, each with dedicated positive and negative tests, at multiple structural scopes (file/group/unit/segment/inline), confirming \"at multiple scopes\" is also satisfied."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.; Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_files_sharing_an_id_are_flagged_as_duplicate",
+        "tests/python/xliff/test_obligation_inline_required_id.py::test_a_ph_without_an_id_is_flagged",
+        "tests/python/xliff/test_obligation_paired_code_integrity.py::test_an_ec_with_no_matching_sc_anywhere_is_orphaned",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_does_not_match_any_data_id_is_a_violation",
+        "tests/python/xliff/test_obligation_segment_structure_and_language.py::test_xliff_21_rejects_an_unrelated_source_language",
+        "tests/python/xliff/test_obligation_segment_structure_and_language.py::test_target_language_compatibility_mirrors_source",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_meta_element_with_no_type_attribute_is_a_violation",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_a_reference_with_no_href_is_a_violation"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-0E27D8074CB0A72C",
       "positive_test_selectors": [
         "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
         "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_real_multi_file_document_with_distinct_file_ids_is_valid",
+        "tests/python/xliff/test_obligation_inline_required_id.py::test_a_well_formed_document_with_every_inline_tag_carrying_an_id_is_clean",
+        "tests/python/xliff/test_obligation_paired_code_integrity.py::test_a_well_formed_paired_code_produces_no_diagnostics",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_resolves_to_a_real_data_id_validates_cleanly",
+        "tests/python/xliff/test_obligation_segment_structure_and_language.py::test_xliff_21_accepts_exact_and_more_specific_source_language",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_metagroup_with_a_typed_meta_validates_cleanly",
+        "tests/python/xliff/test_obligation_resource_data_module_reference_href.py::test_a_reference_with_href_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -655,11 +678,11 @@
           "Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODULE-001",
@@ -5336,6 +5359,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-seg-structure-language-001.json": "4e79d0650232d6bc7d61e45e7c0f203ab78e04faf29f792897448a44dcea6df8",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-segment-split-join-001.json": "16e92d9df77d60b1ffb85830f63759c78034e3b5168faabc58102b168c1c904d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json": "368a286339e4990afa645543f86d2b1968bfc693706a6c170b366fecc18f432b",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-validate-semantic-constraint-citation-audit-001.json": "e03483f29971233dfbead87217f3b867f037e2d6fe7554894387263c68195916",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-version-downgrade-loss-001.json": "d883e3d53d90b3cdc9f8163ff159837437339a2d0fde9275a8235d04e9a8d969",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-xml-lang-inheritance-resolution-001.json": "ff51bfb0a4b8c8ab6692a780fd94cc558c8190321b42fadf1fc2ae4244ab3015",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-xml-space-inheritance-resolution-001.json": "16ed744c0996ba2daa82b718193862b57317c5120f5bcf8b3a25d26948babd76",
@@ -5387,12 +5411,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 111,
+      "implemented": 112,
       "missing": 11,
-      "partial": 20
+      "partial": 19
     },
     "total": 142,
-    "unresolved": 31
+    "unresolved": 30
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

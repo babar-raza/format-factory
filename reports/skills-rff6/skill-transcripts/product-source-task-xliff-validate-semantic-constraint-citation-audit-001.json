@@ -1,0 +1,50 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-validate-semantic-constraint-citation-audit-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T15:14:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_VALIDATE_SEMANTIC_CONSTRAINT_CITATION_AUDIT_001",
+    "task_kind": "citation-audit-correction-against-already-built-and-tested-capability",
+    "root_cause": "SAL-XLIFF-OBL-0E27D8074CB0A72C (XLIFF-VALIDATE-001)'s own evidence carried a generic 'Not yet audited against this obligation's declared proof requirements' missing_behavior placeholder, and its positive_test_selectors cited only 3 generic production_namespace load/roundtrip tests -- not a single validate()-specific semantic-constraint test, despite this session having built and tested extensive dataRef resolution, ID uniqueness, cardinality/pairing, source/target language compatibility, and module-constraint validation across many other obligations.",
+    "obligation_targeted": "SAL-XLIFF-OBL-0E27D8074CB0A72C (XLIFF-VALIDATE-001) -- promoted partial->implemented",
+    "acceptance_evidence": "17 already-existing, already-passing tests (verified via direct pytest run before finalizing the promotion) collectively prove all five categories the obligation's own rule_text enumerates: IDs, references, pairing, source/target consistency, module constraints, each at multiple structural scopes.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) sanity re-run, no source changed"
+  },
+  "execution_steps": [
+    "1. Continuing the sweep of xliff's remaining 20 partial obligations, read SAL-XLIFF-OBL-0E27D8074CB0A72C's own rule_text: 'Validate schema plus semantic constraints not expressible in schema (IDs, references, pairing, source/target consistency, module constraints) at multiple scopes.'",
+    "2. Read its current evidence and found a generic, clearly-stale placeholder ('Not yet audited...') and only 3 non-specific positive test citations -- a strong signal this obligation's evidence had never been updated to reflect the substantial validate() work built across this entire session.",
+    "3. Read validate() (validator.py) directly via grep for every '\"xliff.' diagnostic-code string literal rather than trusting memory or the stale evidence -- found 40+ distinct codes.",
+    "4. Categorized every diagnostic code against the rule_text's own 5-item enumeration: IDs (file/group/unit/segment/inline duplicate and required checks), references (dataRef/dataRefStart/dataRefEnd/mrk-comment resolution), pairing (ec unpaired/out-of-order, isolated canReorder/canCopy/canDelete/canOverlap mismatches), source/target consistency (segment source/target lang incompatible, state target-required), and module constraints (fs, matches, metadata, resourcedata) -- confirmed all 5 categories are directly covered, with none left unaddressed.",
+    "5. Confirmed 'at multiple scopes' is also satisfied: the diagnostic code prefixes themselves span file/group/unit/segment/inline structural levels, not just one.",
+    "6. Located the specific existing test file/function for each category via targeted grep across tests/python/xliff/, then ran all 17 candidate tests directly (pytest -v) before writing them into evidence, confirming every single one currently passes rather than assuming based on function names alone.",
+    "7. Ran the full pre-existing xliff suite (480 tests, zero new fixtures, zero source changes) as a sanity check -- all 480 passed unchanged, confirming this is pure evidence reconciliation with no code-behavior risk.",
+    "8. Updated the obligation's source_symbols, positive_test_selectors (10 entries across all 5 categories), negative_test_selectors (8 entries), execution_evidence_ids, implemented_behavior (documenting the full diagnostic-code enumeration and category mapping), and missing_behavior (cleared to empty), promoting status to implemented.",
+    "9. Zero source or test changes -- pure evidence reconciliation, the same discipline already proven this session for ora (events 242/246), xliff's own <cp>/dataRef clusters (events 254/255), nrrd's version-selection cluster (event 258), extended here to a fifth instance targeting a single generic-placeholder obligation rather than a stale cross-duplicate cluster."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest <17 cited test selectors> -v -- 17 passed (verified individually before citing)",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 480 passed, unchanged (no source or test modified)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; this is pure bookkeeping correction against already-proven, already-passing implementation, not new evidence generation.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-0E27D8074CB0A72C (XLIFF-VALIDATE-001) partial->implemented. A citation-audit correction closing a generic, stale 'not yet audited' placeholder by directly enumerating validate()'s own diagnostic codes and mapping each of the rule_text's 5 named categories (IDs, references, pairing, source/target consistency, module constraints) to already-existing, already-passing, individually-verified test coverage at multiple structural scopes."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
