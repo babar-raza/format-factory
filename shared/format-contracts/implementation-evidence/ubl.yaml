@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-SECURITY-BASELINE-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-security-baseline-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-4CA52BA5DDD8840F (UBL-SEC-001) only. The obligation''s own prior finding was already correct and not stale -- no feature anywhere in the package resolves a detached or referenced resource from parsed document content, confirmed again by reading model/reference.py directly and grepping the whole package for filesystem-path construction. It was correctly left `missing` rather than force-promoted because the absence-of-attack-surface claim had no dedicated test. 6 new tests now prove it: a whole-package AST scan confirms no networking/execution/plugin module is imported; ExternalReference''s URI is a plain opaque string; and 4 hostile URI shapes survive load/validate/dump/round-trip with Path.open/Path.read_bytes monkeypatched to raise if ever invoked with the hostile content -- none were. ubl suite: 727 -> 733 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-4CA52BA5DDD8840F only; it supports no other obligation and promotes no product state.'
 - evidence_id: UBL-EXTENSIONS-STRUCTURE-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-extensions-structure-001.json
   expected_result: PASS
@@ -1877,20 +1882,26 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-4CA52BA5DDD8840F
   capability_id: UBL-SEC-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: implemented
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/reference.py::ExternalReference
+  - src/python/ubl/src/format_factory/ubl/model/reference.py::external_reference_of
+  positive_test_selectors:
+  - 'tests/python/ubl/test_obligation_security_baseline.py::test_no_source_file_imports_networking_execution_or_plugin_modules'
+  - 'tests/python/ubl/test_obligation_security_baseline.py::test_external_reference_uri_is_stored_as_opaque_text'
+  - 'tests/python/ubl/test_obligation_security_baseline.py::test_a_hostile_reference_uri_never_touches_the_filesystem'
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'No feature anywhere in the package resolves a detached or referenced resource from parsed document content -- ExternalReference''s URI/DocumentHash and Identifier''s schemeID/schemeAgencyID are all stored as opaque strings, confirmed by reading reference.py and typed.py directly, never joined against a filesystem path or fetched, so the specific vulnerability class (path traversal via a resolved reference) has no attack surface in the current feature set. Recorded as missing rather than partial because this structural absence-of-attack-surface claim has no dedicated test proving it (unlike safetensors'' sharded-index root-confinement test, which proves the equivalent guarantee positively for a feature that DOES resolve references to paths) -- if a future feature adds resource resolution from document content, this obligation needs a real path-confinement test at that time.'
+  execution_evidence_ids:
+  - UBL-SECURITY-BASELINE-PROOF
+  implemented_behavior:
+  - 'No feature anywhere in the package resolves a detached or referenced resource from parsed document content -- ExternalReference''s URI/DocumentHash and Identifier''s schemeID/schemeAgencyID are all stored as opaque strings, confirmed by reading reference.py and typed.py directly, and by grepping the whole package for filesystem-path construction (the only 2 hits are the caller-supplied top-level load/dump paths, neither derived from parsed document content). This is now proven, not merely asserted: a whole-package AST scan confirms no networking/execution/plugin module is ever imported, and a direct behavioral test carries 4 hostile URI shapes (relative traversal, unix absolute path, windows absolute path, file:// scheme) through load/validate/dump/round-trip with Path.open/Path.read_bytes monkeypatched to raise if the library ever attempts to resolve them -- confirming the required safety property (no path traversal or unapproved absolute-path access) holds because the resolution capability does not exist, the same reasoning pattern already used for nrrd/xliff/ipynb''s SEC-001 clusters this session.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each security_limits baseline behavior has a focused positive test and, where refusable, a negative
       test proving refusal with diagnostics.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for hostile relative/absolute/file-URI reference shapes.
 - obligation_id: SAL-UBL-OBL-4E0F145D653528E0
   capability_id: UBL-PARSE-001
   status: implemented

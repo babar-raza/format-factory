@@ -1,0 +1,49 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-security-baseline-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T02:50:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_SECURITY_BASELINE_001",
+    "task_kind": "absence-of-attack-surface-proof-same-pattern-as-nrrd-xliff-ipynb-sec-001",
+    "root_cause": "SAL-UBL-OBL-4CA52BA5DDD8840F (UBL-SEC-001) requires preventing path traversal and unapproved absolute-path access when resolving a detached or referenced resource. The obligation's own precise finding was already correct: no feature anywhere in the package resolves a resource from parsed document content -- ExternalReference's URI/DocumentHash and Identifier's schemeID/schemeAgencyID are all opaque strings. It was correctly left 'missing' rather than force-promoted because this absence-of-attack-surface claim had no dedicated test proving it.",
+    "obligation_targeted": "SAL-UBL-OBL-4CA52BA5DDD8840F (UBL-SEC-001)",
+    "acceptance_evidence": "6 new tests in a new file prove: a whole-package AST scan confirms no networking/execution/plugin module is ever imported; ExternalReference's URI is stored as a plain opaque string; and 4 hostile URI shapes (relative traversal, unix absolute path, windows absolute path, file:// scheme) all survive load/validate/dump/round-trip without the library ever touching the filesystem, verified by monkeypatching Path.open/read_bytes to raise if the library attempts to resolve them.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Re-read model/reference.py directly: ExternalReference is a frozen dataclass with plain str | None fields (uri, document_hash, mime_code, filename, description) and no resolve()/open()/read() method anywhere. Grepped the whole ubl package for open(/Path(/.read_bytes()/os.path -- the only 2 hits are reader.py's top-level caller-supplied source path and writer.py's caller-supplied destination path, neither derived from parsed document content. This directly confirmed the obligation's own finding rather than assuming it.",
+    "2. Ran an interactive probe before writing any test: built a document containing a cac:ExternalReference with a hostile relative-traversal URI, monkeypatched Path.open/Path.read_bytes to raise if ever called with a path containing 'passwd' or '..', then ran validate()/dumps()/loads() against it -- confirmed the hostile URI is carried as opaque text with zero filesystem access, on the first attempt.",
+    "3. Wrote 6 formal tests mirroring the same pattern already used this session for nrrd/xliff/ipynb's SEC-001 clusters: a whole-package AST scan (forbidden-module import check), a structural opaque-string check, and 4 parametrized behavioral proofs (relative traversal, unix absolute path, windows absolute path, file:// URI scheme) using pytest's monkeypatch fixture rather than manual try/finally restoration.",
+    "4. Ran ruff (clean) and the full ubl suite (733 passed, was 727, +6) before writing any evidence claim. Ran the full 6-format regression (2996 passed, was 2990, +6; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "tests/python/ubl/test_obligation_security_baseline.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ubl/test_obligation_security_baseline.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_security_baseline.py -q -- 6 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 733 passed, was 727 passed",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_security_baseline.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 2996 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 2990 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not cross-checked against a reference UBL implementation.",
+    "obligations_moved_breakdown": "1 obligation promoted from missing to implemented: the required safety property (prevent path traversal / unapproved absolute-path access when resolving a referenced resource) is now proven, not merely asserted -- via a structural check (opaque string field, no resolve method) plus a direct behavioral proof (monkeypatched filesystem calls never triggered across 4 hostile URI shapes)."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
