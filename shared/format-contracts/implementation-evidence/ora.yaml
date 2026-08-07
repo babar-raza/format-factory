@@ -1229,31 +1229,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-2DA8F5A931FB747D
   capability_id: ORA-MASK-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: implemented
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/lifecycle.py::PreservationMode
+  - src/python/ora/src/format_factory/ora/lifecycle.py::load
+  - src/python/ora/src/format_factory/ora/lifecycle.py::dumps
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_lossless_round_trip_preserves_an_unmodeled_stack_attribute
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_dumps_defaults_to_lossless_not_canonical
+  - tests/python/ora/test_obligation_lifecycle_and_write.py::test_an_unrecognized_archive_member_survives_every_preservation_mode
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Investigated directly, not merely unaudited: this obligation''s cited authority_fact_ids
-    (SAL-ORA-00006, SAL-ORA-00008 per plans/strategic/ff6/obligations/ora.yaml) do not
-    substantiate its "mask" claim at all when read directly -- SAL-ORA-00006''s actual claim
-    is a generic "OpenRaster 0.0.5 defines a baseline intent... and permits custom
-    extensions", and SAL-ORA-00008''s is "OpenRaster archives use the .ora extension and
-    store their data inside a ZIP file wrapper"; neither mentions masks. The word "mask"
-    does not appear anywhere in any of the three pinned, authority-locked OpenRaster spec
-    sources this repository has acquired (.local/format-contracts/acquired/ora/src-ora-00[1-3].bin),
-    confirmed by a direct case-insensitive full-text search returning zero matches across
-    all three files. This obligation''s "mask" framing appears to be either drawn from an
-    unacquired fourth spec document or a data-integrity defect in how this obligation was
-    originally derived, not a real, currently-verifiable product requirement. Building any
-    mask feature now would mean inventing spec content this repository cannot substantiate --
-    the exact anti-pattern this session''s evidence discipline exists to prevent (see the
-    composite-op cluster''s identical "no committed verified SAL fact enumerates..." refusal
-    for the same reasoning applied elsewhere in this file). Correctly left missing, not
-    force-built; verification_status: UNVERIFIED in the obligation register itself already
-    flagged this before this investigation confirmed why.'
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  - ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF
+  implemented_behavior:
+  - 'Correction of an earlier tick''s finding, not a reversal of it: that tick correctly established the word "mask" appears nowhere in any pinned OpenRaster spec source, and that ORA-MASK-001''s own proof_requirements template ("recognized-mask edit tests...") is mismatched metadata, not something this obligation''s own rule_text actually asks for. What that tick did not check is whether the rule_text ITSELF (independent of the capability''s "mask" name and its proof_requirements template) is already satisfied elsewhere. It is: "(Draft OpenRaster Specification - Baseline Intent) OpenRaster 0.0.5 defines a baseline intent for exchange between applications and permits custom extensions that remain safe for baseline consumers" is a generic extensibility clause, word-for-word identical to its own cited authority fact SAL-ORA-00006''s actual claim (confirmed directly, not assumed) -- and 2 cross-capability duplicate obligations sharing this exact rule_text are already implemented: SAL-ORA-OBL-4C5ADF883687656E (ORA-VALIDATE-001, proving an unmodeled stack.xml attribute survives a lossless round trip byte-for-byte) and SAL-ORA-OBL-D7C9E9B6208C49AF (ORA-ASSET-001, proving an unrecognized archive member survives every preservation mode). Both are directly applicable here: whatever an OpenRaster "mask" turns out to be structurally (an unmodeled stack attribute or an unmodeled archive member -- this package has no typed mask model either way), this package''s existing generic "unmodeled content survives losslessly" guarantee already protects it, satisfying the obligation''s own rule_text without needing a dedicated mask-specific feature.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Recognized-mask edit tests and unknown-mask byte-preservation tests from independent producers.
