@@ -190,6 +190,7 @@ def validate(
     diagnostics.extend(_extension_diagnostics(value))
     diagnostics.extend(_namespace_shadowing_diagnostics(value))
     diagnostics.extend(_cardinality_diagnostics(value))
+    diagnostics.extend(_order_diagnostics(value))
     return ValidationReport(diagnostics)
 
 
@@ -261,6 +262,92 @@ def _cardinality_diagnostics(value: UblDocument) -> list[Diagnostic]:
         if checked is not None:
             fields, label = checked
             diagnostics.extend(_single_occurrence_violations(node, fields, label))
+    return diagnostics
+
+
+#: Per the pinned OASIS UBL 2.3 CommonAggregateComponents schema, the
+#: DECLARED SEQUENCE ORDER of exactly the already-modeled single-occurrence
+#: fields from _CARDINALITY_CHECKED_COMPONENTS (a strict subset of each
+#: complexType's full xsd:sequence, filtered and order-preserved
+#: programmatically from the pinned schema, not transcribed by hand -- a
+#: manual transcription of MonetaryTotalType's own order was caught and
+#: corrected this way: PayableAmount is declared LAST in the schema, not
+#: second, despite appearing second in this package's own frozenset
+#: iteration order used for the unrelated cardinality check above).
+_ORDER_CHECKED_COMPONENTS: dict[str, tuple[str, ...]] = {
+    _PARTY_QNAME: ("PostalAddress", "Contact"),
+    _POSTAL_ADDRESS_QNAME: ("StreetName", "CityName", "PostalZone", "Country"),
+    _CONTACT_QNAME: ("Name", "Telephone", "ElectronicMail"),
+    _PAYMENT_MEANS_QNAME: ("PaymentMeansCode", "PaymentDueDate", "PayeeFinancialAccount"),
+    _PAYEE_FINANCIAL_ACCOUNT_QNAME: ("ID", "Name", "CurrencyCode"),
+    _CREDIT_NOTE_LINE_QNAME: ("ID", "CreditedQuantity", "LineExtensionAmount", "Item"),
+    _RESPONSE_QNAME: ("ResponseCode",),
+    _DOCUMENT_REFERENCE_QNAME: ("ID", "DocumentTypeCode"),
+    _INVOICE_LINE_QNAME: ("ID", "InvoicedQuantity", "LineExtensionAmount", "Item"),
+    _TAX_SUBTOTAL_QNAME: ("TaxableAmount", "TaxAmount", "TaxCategory"),
+    _TAX_TOTAL_QNAME: ("TaxAmount",),
+    _LEGAL_MONETARY_TOTAL_QNAME: (
+        "LineExtensionAmount",
+        "TaxExclusiveAmount",
+        "TaxInclusiveAmount",
+        "AllowanceTotalAmount",
+        "ChargeTotalAmount",
+        "PayableAmount",
+    ),
+    _EXTERNAL_REFERENCE_QNAME: ("URI", "DocumentHash", "MimeCode", "FileName"),
+}
+
+
+def _order_violations(
+    node: XmlNode, expected_order: tuple[str, ...], component_label: str
+) -> list[Diagnostic]:
+    expected_index = {name: index for index, name in enumerate(expected_order)}
+    diagnostics: list[Diagnostic] = []
+    highest_seen = -1
+    highest_seen_name = ""
+    for child in node.children:
+        name = _local(child.qname)
+        index = expected_index.get(name)
+        if index is None:
+            continue
+        if index < highest_seen:
+            diagnostics.append(
+                Diagnostic(
+                    "ubl.order.violation",
+                    f"{component_label}: {name!r} appears after {highest_seen_name!r}, "
+                    f"but the OASIS UBL 2.3 schema declares {name!r} before "
+                    f"{highest_seen_name!r}",
+                )
+            )
+        else:
+            highest_seen = index
+            highest_seen_name = name
+    return diagnostics
+
+
+def _order_diagnostics(value: UblDocument) -> list[Diagnostic]:
+    """SAL-UBL-OBL-3B43504E9C74003C and its cross-capability duplicates:
+    "Child elements inside UBL aggregate components must appear in the
+    order declared by the schema sequence model for the document to be
+    valid." A genuine, spec-grounded slice: diagnoses a present, checked
+    child element that appears out of its declared relative order among
+    the already-modeled single-occurrence fields this package models today
+    (see _ORDER_CHECKED_COMPONENTS -- the exact same already-typed
+    components _CARDINALITY_CHECKED_COMPONENTS covers). Deliberately
+    narrow, matching the cardinality cluster's own established scope
+    discipline: covers only relative order among these already-modeled
+    fields, not every child of every UBL complexType, and does not itself
+    re-check cardinality (a genuinely duplicated field is handled
+    separately by _cardinality_diagnostics; this function simply compares
+    each occurrence against the running high-water mark, so a duplicate
+    does not spuriously trigger an order violation on its own).
+    """
+    diagnostics: list[Diagnostic] = []
+    for node in value.root.iter():
+        expected_order = _ORDER_CHECKED_COMPONENTS.get(node.qname)
+        if expected_order is not None:
+            label = _CARDINALITY_CHECKED_COMPONENTS[node.qname][1]
+            diagnostics.extend(_order_violations(node, expected_order, label))
     return diagnostics
 
 

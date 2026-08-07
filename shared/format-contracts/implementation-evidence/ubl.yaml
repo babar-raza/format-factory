@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-ELEMENT-ORDER-VALIDATION-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-element-order-validation-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) 6 obligations sharing "Child elements inside UBL aggregate components must appear in the order declared by the schema sequence model for the document to be valid" across UBL-SIGN-001/REF-001/MODEL-001/DOCTYPES-001/PARSE-001/VALIDATE-001 (all 6 moved missing->partial). Before this slice, neither XmlNode.with_children nor validate() checked child-element sequence order against the schema at all -- a document assembled or edited with elements in the wrong order was silently accepted and would be written by dumps() without complaint. Added _order_diagnostics()/_order_violations()/_ORDER_CHECKED_COMPONENTS to validator.py, reusing the exact same qname-keyed dispatch pattern already proven for the cardinality cluster (events 216-223), applied to the identical 13 already-modeled complexTypes: cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference. Every component''s exact declared child order was extracted PROGRAMMATICALLY from the pinned OASIS UBL 2.3 CommonAggregateComponents schema (.local/format-contracts/acquired/ubl/src-ubl-002.bin, xsd/common/UBL-CommonAggregateComponents-2.3.xsd) -- filtering each complexType''s full xsd:sequence down to only the already-modeled single-occurrence fields while preserving true schema order -- rather than transcribed by hand. This caught a genuine transcription risk directly: cac:LegalMonetaryTotal''s underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second (after LineExtensionAmount) as this package''s own pre-existing cardinality-check frozenset''s insertion order might suggest if read carelessly -- caught and corrected before any code was written, confirmed via the programmatic extraction script''s own assertion that the filtered set exactly matches the expected field set. Verified zero false positives against the entire pre-existing 928-test ubl suite before writing a single new test. 9 new tests prove: Party with PostalAddress before Contact validates cleanly, the reverse is a violation; PostalAddress with fields in declared order validates cleanly, PostalZone before CityName is a violation; LegalMonetaryTotal with PayableAmount correctly last validates cleanly, PayableAmount before TaxExclusiveAmount is a violation (directly proving the caught transcription risk is handled correctly); fields this package does not yet model as checkable may legitimately appear interspersed among checked fields without a false violation; and InvoiceLine''s ID/InvoicedQuantity/LineExtensionAmount/Item ordering is checked both ways. ubl suite: 928 -> 937 passed. Deliberately narrow, matching the cardinality cluster''s own established scope discipline: covers only relative order among already-modeled fields of these 13 complexTypes, not every child of every UBL complexType (a genuinely larger, separate undertaking), and does not re-check cardinality (a duplicate field does not spuriously trigger a false order violation, since the check only compares against a running high-water mark). UBL-WRITE-001''s companion "write elements in schema-valid order independent of mutation order" obligation remains separately unbuilt -- this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, every declared order read directly from the pinned schema, not invented. Covers SAL-UBL-OBL-26CD31E7F8CF91E1, SAL-UBL-OBL-31DE92275AF5F6EF, SAL-UBL-OBL-3B43504E9C74003C, SAL-UBL-OBL-4936871F9800219B, SAL-UBL-OBL-71FF376D05E7219A, and SAL-UBL-OBL-CDADC5CFB25A9B9E only; it supports no other obligation and promotes no product state.'
 - evidence_id: UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-external-reference-cardinality-001.json
   expected_result: PASS
@@ -1305,22 +1310,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-26CD31E7F8CF91E1
   capability_id: UBL-SIGN-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_postal_address_before_contact_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_fields_in_declared_order_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_last_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_unchecked_fields_interspersed_among_checked_fields_do_not_disturb_ordering
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_id_before_invoiced_quantity_before_line_extension_amount_before_item_validates_cleanly
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_postal_zone_before_city_name_is_an_order_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_before_tax_exclusive_amount_is_a_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_item_before_id_is_an_order_violation
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  - UBL-ELEMENT-ORDER-VALIDATION-PROOF
+  implemented_behavior:
+  - 'A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema''s own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, and cac:ExternalReference. Every component''s exact declared child order was extracted programmatically from the pinned schema (filtering each complexType''s full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal''s underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package''s own cardinality-check frozenset''s insertion order. This is deliberately narrow, matching the cardinality cluster''s own established scope discipline: covers only relative order among already-modeled fields of these 13 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation).'
   missing_behavior:
-  - 'Confirmed gap, not an audit backlog: neither XmlNode.with_children
-    (model/document.py) nor validate() (validation/validator.py) checks
-    child-element sequence order against the schema at all -- a document
-    assembled or edited with elements in the wrong order is accepted and
-    would be written by dumps() without complaint. The same gap blocks
-    UBL-WRITE-001''s "write elements in schema-valid order independent of
-    mutation order" obligation. Fixing this needs a schema-order-aware
-    sequence table per UBL root/aggregate type, which does not currently
-    exist in this package and is not fabricated here per GAP-008.'
+  - 'Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 13 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema''s ~91 root document types and their many aggregate/basic components. UBL-WRITE-001''s companion obligation (''write elements in schema-valid order independent of mutation order'') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically.'
   proof_requirements:
     positive:
     - Signed-document round-trip byte-preserves signed subtrees; edit-warning fixture.
@@ -1504,14 +1515,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-31DE92275AF5F6EF
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_postal_address_before_contact_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_fields_in_declared_order_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_last_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_unchecked_fields_interspersed_among_checked_fields_do_not_disturb_ordering
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_id_before_invoiced_quantity_before_line_extension_amount_before_item_validates_cleanly
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_postal_zone_before_city_name_is_an_order_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_before_tax_exclusive_amount_is_a_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_item_before_id_is_an_order_violation
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  - UBL-ELEMENT-ORDER-VALIDATION-PROOF
+  implemented_behavior:
+  - 'A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema''s own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, and cac:ExternalReference. Every component''s exact declared child order was extracted programmatically from the pinned schema (filtering each complexType''s full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal''s underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package''s own cardinality-check frozenset''s insertion order. This is deliberately narrow, matching the cardinality cluster''s own established scope discipline: covers only relative order among already-modeled fields of these 13 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation).'
   missing_behavior:
-  - 'Same confirmed status as UBL-PARSE-001''s SAL-UBL-OBL-71FF376D05E7219A (identical rule_text). Same confirmed status as UBL-DOCTYPES-001''s SAL-UBL-OBL-4936871F9800219B (identical rule_text). Same confirmed status as UBL-MODEL-001''s SAL-UBL-OBL-3B43504E9C74003C (identical rule_text). XmlNode preserves whatever child element order was present in the source document (a tuple, not a set) for round-trip fidelity, but nothing in the model or validator.py checks that order against the schema-declared sequence model to determine document validity. Confirmed by reading validator.py directly: it performs no sequence-order validation. Same underlying gap as SAL-UBL-OBL-B68F5F29F11197D6 in this cluster.'
+  - 'Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 13 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema''s ~91 root document types and their many aggregate/basic components. UBL-WRITE-001''s companion obligation (''write elements in schema-valid order independent of mutation order'') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically.'
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
@@ -1645,14 +1670,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-3B43504E9C74003C
   capability_id: UBL-MODEL-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_postal_address_before_contact_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_fields_in_declared_order_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_last_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_unchecked_fields_interspersed_among_checked_fields_do_not_disturb_ordering
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_id_before_invoiced_quantity_before_line_extension_amount_before_item_validates_cleanly
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_postal_zone_before_city_name_is_an_order_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_before_tax_exclusive_amount_is_a_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_item_before_id_is_an_order_violation
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  - UBL-ELEMENT-ORDER-VALIDATION-PROOF
+  implemented_behavior:
+  - 'A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema''s own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, and cac:ExternalReference. Every component''s exact declared child order was extracted programmatically from the pinned schema (filtering each complexType''s full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal''s underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package''s own cardinality-check frozenset''s insertion order. This is deliberately narrow, matching the cardinality cluster''s own established scope discipline: covers only relative order among already-modeled fields of these 13 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation).'
   missing_behavior:
-  - 'XmlNode preserves whatever child element order was present in the source document (a tuple, not a set) for round-trip fidelity, but nothing in the model or validator.py checks that order against the schema-declared sequence model to determine document validity. Confirmed by reading validator.py directly: it performs no sequence-order validation. Same underlying gap as SAL-UBL-OBL-B68F5F29F11197D6 in this cluster.'
+  - 'Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 13 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema''s ~91 root document types and their many aggregate/basic components. UBL-WRITE-001''s companion obligation (''write elements in schema-valid order independent of mutation order'') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -1955,14 +1994,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-4936871F9800219B
   capability_id: UBL-DOCTYPES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_postal_address_before_contact_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_fields_in_declared_order_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_last_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_unchecked_fields_interspersed_among_checked_fields_do_not_disturb_ordering
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_id_before_invoiced_quantity_before_line_extension_amount_before_item_validates_cleanly
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_postal_zone_before_city_name_is_an_order_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_before_tax_exclusive_amount_is_a_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_item_before_id_is_an_order_violation
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  - UBL-ELEMENT-ORDER-VALIDATION-PROOF
+  implemented_behavior:
+  - 'A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema''s own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, and cac:ExternalReference. Every component''s exact declared child order was extracted programmatically from the pinned schema (filtering each complexType''s full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal''s underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package''s own cardinality-check frozenset''s insertion order. This is deliberately narrow, matching the cardinality cluster''s own established scope discipline: covers only relative order among already-modeled fields of these 13 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation).'
   missing_behavior:
-  - 'Same confirmed status as UBL-MODEL-001''s SAL-UBL-OBL-3B43504E9C74003C (identical rule_text). XmlNode preserves whatever child element order was present in the source document (a tuple, not a set) for round-trip fidelity, but nothing in the model or validator.py checks that order against the schema-declared sequence model to determine document validity. Confirmed by reading validator.py directly: it performs no sequence-order validation. Same underlying gap as SAL-UBL-OBL-B68F5F29F11197D6 in this cluster.'
+  - 'Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 13 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema''s ~91 root document types and their many aggregate/basic components. UBL-WRITE-001''s companion obligation (''write elements in schema-valid order independent of mutation order'') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically.'
   proof_requirements:
     positive:
     - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every
@@ -2761,14 +2814,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-71FF376D05E7219A
   capability_id: UBL-PARSE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_postal_address_before_contact_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_fields_in_declared_order_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_last_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_unchecked_fields_interspersed_among_checked_fields_do_not_disturb_ordering
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_id_before_invoiced_quantity_before_line_extension_amount_before_item_validates_cleanly
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_postal_zone_before_city_name_is_an_order_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_before_tax_exclusive_amount_is_a_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_item_before_id_is_an_order_violation
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  - UBL-ELEMENT-ORDER-VALIDATION-PROOF
+  implemented_behavior:
+  - 'A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema''s own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, and cac:ExternalReference. Every component''s exact declared child order was extracted programmatically from the pinned schema (filtering each complexType''s full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal''s underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package''s own cardinality-check frozenset''s insertion order. This is deliberately narrow, matching the cardinality cluster''s own established scope discipline: covers only relative order among already-modeled fields of these 13 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation).'
   missing_behavior:
-  - 'Same confirmed status as UBL-DOCTYPES-001''s SAL-UBL-OBL-4936871F9800219B (identical rule_text). Same confirmed status as UBL-MODEL-001''s SAL-UBL-OBL-3B43504E9C74003C (identical rule_text). XmlNode preserves whatever child element order was present in the source document (a tuple, not a set) for round-trip fidelity, but nothing in the model or validator.py checks that order against the schema-declared sequence model to determine document validity. Confirmed by reading validator.py directly: it performs no sequence-order validation. Same underlying gap as SAL-UBL-OBL-B68F5F29F11197D6 in this cluster.'
+  - 'Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 13 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema''s ~91 root document types and their many aggregate/basic components. UBL-WRITE-001''s companion obligation (''write elements in schema-valid order independent of mutation order'') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -4632,14 +4699,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-CDADC5CFB25A9B9E
   capability_id: UBL-VALIDATE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_postal_address_before_contact_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_fields_in_declared_order_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_last_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_unchecked_fields_interspersed_among_checked_fields_do_not_disturb_ordering
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_id_before_invoiced_quantity_before_line_extension_amount_before_item_validates_cleanly
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_postal_zone_before_city_name_is_an_order_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_before_tax_exclusive_amount_is_a_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_item_before_id_is_an_order_violation
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  - UBL-ELEMENT-ORDER-VALIDATION-PROOF
+  implemented_behavior:
+  - 'A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema''s own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, and cac:ExternalReference. Every component''s exact declared child order was extracted programmatically from the pinned schema (filtering each complexType''s full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal''s underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package''s own cardinality-check frozenset''s insertion order. This is deliberately narrow, matching the cardinality cluster''s own established scope discipline: covers only relative order among already-modeled fields of these 13 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation).'
   missing_behavior:
-  - 'Same confirmed status as UBL-PARSE-001''s SAL-UBL-OBL-71FF376D05E7219A (identical rule_text). Same confirmed status as UBL-DOCTYPES-001''s SAL-UBL-OBL-4936871F9800219B (identical rule_text). Same confirmed status as UBL-MODEL-001''s SAL-UBL-OBL-3B43504E9C74003C (identical rule_text). XmlNode preserves whatever child element order was present in the source document (a tuple, not a set) for round-trip fidelity, but nothing in the model or validator.py checks that order against the schema-declared sequence model to determine document validity. Confirmed by reading validator.py directly: it performs no sequence-order validation. Same underlying gap as SAL-UBL-OBL-B68F5F29F11197D6 in this cluster.'
+  - 'Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 13 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema''s ~91 root document types and their many aggregate/basic components. UBL-WRITE-001''s companion obligation (''write elements in schema-valid order independent of mutation order'') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically.'
   proof_requirements:
     positive:
     - Per-layer positive/negative fixtures; layered report structure asserted machine-readable.

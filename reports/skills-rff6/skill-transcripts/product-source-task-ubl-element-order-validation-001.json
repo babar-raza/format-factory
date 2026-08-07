@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-element-order-validation-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T10:37:31Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_ELEMENT_ORDER_VALIDATION_001",
+    "task_kind": "build-new-capability-for-a-6-obligation-cluster-from-zero-evidence",
+    "root_cause": "After XLIFF's 8 consecutive productive ticks exhausted its easily-reachable clusters, surveyed UBL's remaining 30 unresolved obligations (untouched since event 223) and found a fresh, genuine 6-obligation cluster about element-order validation, entirely unbuilt: neither the model nor validate() checked child-element sequence order against the schema at all.",
+    "obligation_targeted": "SAL-UBL-OBL-3B43504E9C74003C and 5 cross-capability duplicates (26CD31E7F8CF91E1, 31DE92275AF5F6EF, 4936871F9800219B, 71FF376D05E7219A, CDADC5CFB25A9B9E) -- all promoted missing->partial",
+    "acceptance_evidence": "9 new tests prove validate() now detects out-of-order children among the same 13 already-modeled complexTypes the cardinality cluster covers, including a case that directly proves a caught schema-order transcription risk (cac:LegalMonetaryTotal's PayableAmount) is handled correctly.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Surveyed ubl's remaining 30 unresolved obligations (13 missing, 17 partial) and found a 6-obligation cluster sharing identical rule_text about element order, confirmed via substring search against the obligation register (the initial exact-string match missed one member, SAL-UBL-OBL-26CD31E7F8CF91E1 under UBL-SIGN-001, whose own missing_behavior text used slightly different phrasing -- caught by re-searching with a substring match on the rule_text itself rather than trusting the missing_behavior summary text).",
+    "2. Extracted the FULL, ordered child-element sequence for all 13 already-modeled complexTypes (PartyType, AddressType, ContactType, PaymentMeansType, FinancialAccountType, CreditNoteLineType, ResponseType, DocumentReferenceType, InvoiceLineType, TaxSubtotalType, TaxTotalType, MonetaryTotalType, ExternalReferenceType) directly from the pinned OASIS UBL 2.3 CommonAggregateComponents schema, in one pass.",
+    "3. Programmatically filtered each complexType's full sequence down to only the already-modeled single-occurrence fields from the existing cardinality-check frozensets, preserving true schema order, with an assertion that the filtered field set exactly matches the expected field set for every component. This caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second (after LineExtensionAmount) as a hand-transcription based on the existing frozenset's insertion order would have incorrectly produced.",
+    "4. Added _ORDER_CHECKED_COMPONENTS (a qname-keyed dispatch dict, mirroring _CARDINALITY_CHECKED_COMPONENTS exactly), _order_violations(), and _order_diagnostics() to validator.py: for each checked component, walks its children in document order, tracks a running high-water-mark index among only the checked fields present, and flags any checked field whose expected index is lower than the high-water mark (proving it appeared out of declared order). Deliberately does not re-check cardinality -- a genuine duplicate simply compares equal against the high-water mark and does not spuriously trigger a false order violation.",
+    "5. Wired the new function into validate() alongside the existing cardinality check.",
+    "6. Verified interactively before writing formal tests: Party with PostalAddress before Contact validates cleanly, the reverse is a violation; LegalMonetaryTotal with PayableAmount correctly last validates cleanly, PayableAmount before TaxExclusiveAmount is a violation (directly proving the caught transcription risk is now handled correctly); fields not yet modeled as checkable may legitimately intersperse among checked fields without a false violation -- all 5 cases correct on the first attempt.",
+    "7. Ran the full pre-existing ubl suite (928 tests, zero new fixtures) against the new check to look for false positives before writing a single new test -- all 928 passed unchanged, confirming zero pre-existing fixture used any of these 13 components in schema-violating order.",
+    "8. Wrote 9 formal tests, all passing on the first attempt.",
+    "9. Ran ruff (clean), the full ubl suite (937 passed, was 928, +9), and the full 6-format regression (3367 passed, was 3358, +9; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "10. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-f7a9100545d2f15b, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "11. Promoted all 6 obligations to partial (not implemented): full element-order validation across every UBL complexType remains a genuinely large, separate undertaking (only these 13 already-modeled complexTypes are covered), and UBL-WRITE-001's companion 'write elements in schema-valid order' obligation remains separately unbuilt -- this slice only detects existing out-of-order documents, it does not make the writer reorder elements automatically. Matches the honest scope discipline the cardinality cluster itself has maintained across all 5 of its own ticks this session."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_element_order_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_element_order_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_element_order_validation.py -q -- 9 passed",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/validation/validator.py tests/python/ubl/test_obligation_element_order_validation.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 937 passed, was 928 passed (928 passed unchanged BEFORE writing new tests, confirming zero false positives)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3367 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3358 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "6 obligations moved missing->partial",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 6,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every declared order read directly from the pinned schema, filtered programmatically, not transcribed by hand.",
+    "obligations_moved_breakdown": "SAL-UBL-OBL-26CD31E7F8CF91E1 (UBL-SIGN-001), SAL-UBL-OBL-31DE92275AF5F6EF (UBL-REF-001), SAL-UBL-OBL-3B43504E9C74003C (UBL-MODEL-001), SAL-UBL-OBL-4936871F9800219B (UBL-DOCTYPES-001), SAL-UBL-OBL-71FF376D05E7219A (UBL-PARSE-001), SAL-UBL-OBL-CDADC5CFB25A9B9E (UBL-VALIDATE-001) all missing->partial. A genuinely fresh, well-scoped UBL cluster -- first UBL work since event 223's ExternalReference cardinality extension."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
