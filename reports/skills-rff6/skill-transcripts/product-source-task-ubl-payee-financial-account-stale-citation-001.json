@@ -1,0 +1,45 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-payee-financial-account-stale-citation-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T06:20:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_PAYEE_FINANCIAL_ACCOUNT_STALE_CITATION_001",
+    "task_kind": "stale-citation-correction",
+    "root_cause": "3 obligations (SAL-UBL-OBL-4A02F547DCB50BCD/UBL-PARSE-001, SAL-UBL-OBL-603915CF28301B40/UBL-MODEL-001, SAL-UBL-OBL-B47D8E797924BBD4/UBL-VALUES-001) shared the identical rule_text as SAL-UBL-OBL-D21BA46DEC8DFA2B (UBL-CODELIST-001), which event 193 already closed by building PaymentMeans.payee_financial_account and financial_account_of() with 5 tests. These 3 duplicate-capability citations were never revisited to reflect that fix.",
+    "obligation_targeted": "SAL-UBL-OBL-4A02F547DCB50BCD, SAL-UBL-OBL-603915CF28301B40, SAL-UBL-OBL-B47D8E797924BBD4",
+    "acceptance_evidence": "No new code or tests were needed -- re-confirmed directly against the current charges.py that PaymentMeans.payee_financial_account is a real field, financial_account_of() is wired at construction, and all 5 pre-existing tests in test_obligation_temporal_projection_and_charges.py still pass, proving the feature these 3 obligations name is genuinely built, not merely uncited.",
+    "regression_tier": "targeted re-verification of the 5 existing payee-financial-account tests; no source changed, no full-suite re-run required beyond confirming those 5 selectors still pass"
+  },
+  "execution_steps": [
+    "1. Surveyed ubl's remaining 34 unresolved obligations by capability cluster. Noticed 3 entries under UBL-PARSE-001/UBL-MODEL-001/UBL-VALUES-001 all repeating the exact same missing_behavior text: 'PaymentMeans carries no payee-financial-account field at all -- the payee financial account element named in this obligation's rule_text is genuinely unbuilt, not merely untested.'",
+    "2. Cross-checked against the session's own prior work: event 193's commit message and evidence entry (UBL-PAYEE-FINANCIAL-ACCOUNT-PROOF, closing SAL-UBL-OBL-D21BA46DEC8DFA2B under UBL-CODELIST-001) already describes building exactly this feature -- a FinancialAccount dataclass and financial_account_of(), wired onto PaymentMeans.",
+    "3. Verified directly against current source rather than trusting memory: grepped model/charges.py for payee_financial_account/FinancialAccount/financial_account_of -- confirmed the field (line 109), the dataclass (line 87), and the projector (line 140) all exist, wired at construction (line 170).",
+    "4. Ran the 5 existing tests in test_obligation_temporal_projection_and_charges.py naming payee_financial_account directly -- all 5 pass, confirming the obligation's own missing_behavior text is stale, not current.",
+    "5. Patched all 3 obligations from partial->implemented, citing the same 4 positive tests and 1 negative test event 193 already proved, plus the 3 pre-existing tests each obligation already cited for PaymentMeans' other fields (payment_means_code/payment_due_date) -- none of which needed to change, since those were never in question."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_temporal_projection_and_charges.py -q -k financial_account -- 5 passed (pre-existing, re-confirmed, none newly written)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 3,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, re-confirming event 193's already-VERIFIED-against-pinned-XSD finding still holds -- not re-verified against the spec source a second time since the source-grounding was already established.",
+    "obligations_moved_breakdown": "3 obligations promoted partial->implemented: a pure stale-citation correction with zero new product code or tests, since the underlying feature was already built and proven in event 193 under a different (duplicate-rule_text) obligation ID."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-PAYEE-FINANCIAL-ACCOUNT-STALE-CITATION-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-payee-financial-account-stale-citation-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Closes 3 stale duplicate citations, not a new feature: SAL-UBL-OBL-4A02F547DCB50BCD (UBL-PARSE-001), SAL-UBL-OBL-603915CF28301B40 (UBL-MODEL-001), and SAL-UBL-OBL-B47D8E797924BBD4 (UBL-VALUES-001) all shared the identical rule_text as SAL-UBL-OBL-D21BA46DEC8DFA2B (UBL-CODELIST-001), which event 193 already closed by building PaymentMeans.payee_financial_account and financial_account_of() (5 tests). These 3 duplicates were never revisited to reflect that fix and still read "PaymentMeans carries no payee-financial-account field at all... genuinely unbuilt" -- re-confirmed directly against the current charges.py that the field, the projector, and all 5 tests are real and unchanged since event 193. No new source or test was needed; this slice only corrects a stale finding to match already-proven product state. ubl suite: unchanged (no new tests added, existing 776 passed). NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, not VERIFIED beyond re-confirming the already-existing SAL-UBL-OBL-D21BA46DEC8DFA2B evidence still holds. Covers SAL-UBL-OBL-4A02F547DCB50BCD, SAL-UBL-OBL-603915CF28301B40, and SAL-UBL-OBL-B47D8E797924BBD4 only; it supports no other obligation and promotes no product state.'
 - evidence_id: UBL-QDT-UDT-DATATYPE-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-qualified-unqualified-datatypes-001.json
   expected_result: PASS
@@ -1833,22 +1838,29 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-4A02F547DCB50BCD
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
   - src/python/ubl/src/format_factory/ubl/model/charges.py::payment_means_of
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::FinancialAccount
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::financial_account_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_projects_with_its_code_and_due_date
   - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_requires_a_code
   - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_payment_due_date_is_optional
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_is_absent_when_not_declared
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_projects_with_its_leaf_fields
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_fields_are_each_independently_optional
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_payee_financial_account_survives_a_real_document_round_trip
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_financial_account_of_returns_none_for_a_missing_node
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-PAYEE-FINANCIAL-ACCOUNT-STALE-CITATION-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of UBL-VALUES-001''s SAL-UBL-OBL-B47D8E797924BBD4 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-603915CF28301B40 (identical rule_text): PaymentMeans models payment_means_code (required) and payment_due_date (optional), both directly tested.'
-  missing_behavior:
-  - 'PaymentMeans carries no payee-financial-account field at all -- the payee financial account element named in this obligation''s rule_text is genuinely unbuilt, not merely untested.'
+  - 'Cross-capability duplicate of UBL-VALUES-001''s SAL-UBL-OBL-B47D8E797924BBD4 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-603915CF28301B40 (identical rule_text): PaymentMeans models payment_means_code (required) and payment_due_date (optional), both directly tested. Stale citation, not a genuine gap: PaymentMeans.payee_financial_account and financial_account_of() were built and proven by 5 tests in event 193 (SAL-UBL-OBL-D21BA46DEC8DFA2B, UBL-CODELIST-001, identical rule_text), but this duplicate obligation was never revisited to reflect the fix -- re-confirmed directly against the current charges.py: PaymentMeans.payee_financial_account is a real field, financial_account_of() is wired at construction, and cac:PayeeFinancialAccount projects with its leaf fields (id, name, account type code) plus correct optionality, proven by a full document round trip.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -2345,22 +2357,29 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-603915CF28301B40
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
   - src/python/ubl/src/format_factory/ubl/model/charges.py::payment_means_of
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::FinancialAccount
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::financial_account_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_projects_with_its_code_and_due_date
   - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_requires_a_code
   - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_payment_due_date_is_optional
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_is_absent_when_not_declared
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_projects_with_its_leaf_fields
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_fields_are_each_independently_optional
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_payee_financial_account_survives_a_real_document_round_trip
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_financial_account_of_returns_none_for_a_missing_node
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-PAYEE-FINANCIAL-ACCOUNT-STALE-CITATION-PROOF
   implemented_behavior:
-  - 'PaymentMeans models payment_means_code (required) and payment_due_date (optional), both directly tested.'
-  missing_behavior:
-  - 'PaymentMeans carries no payee-financial-account field at all -- the payee financial account element named in this obligation''s rule_text is genuinely unbuilt, not merely untested.'
+  - 'PaymentMeans models payment_means_code (required) and payment_due_date (optional), both directly tested. Stale citation, not a genuine gap: PaymentMeans.payee_financial_account and financial_account_of() were built and proven by 5 tests in event 193 (SAL-UBL-OBL-D21BA46DEC8DFA2B, UBL-CODELIST-001, identical rule_text), but this duplicate obligation was never revisited to reflect the fix -- re-confirmed directly against the current charges.py: PaymentMeans.payee_financial_account is a real field, financial_account_of() is wired at construction, and cac:PayeeFinancialAccount projects with its leaf fields (id, name, account type code) plus correct optionality, proven by a full document round trip.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -3777,22 +3796,29 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-B47D8E797924BBD4
   capability_id: UBL-VALUES-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
   - src/python/ubl/src/format_factory/ubl/model/charges.py::payment_means_of
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::FinancialAccount
+  - src/python/ubl/src/format_factory/ubl/model/charges.py::financial_account_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_projects_with_its_code_and_due_date
   - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payment_means_requires_a_code
   - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_payment_due_date_is_optional
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_is_absent_when_not_declared
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_projects_with_its_leaf_fields
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_fields_are_each_independently_optional
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_payee_financial_account_survives_a_real_document_round_trip
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_financial_account_of_returns_none_for_a_missing_node
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-VALUES-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-PAYEE-FINANCIAL-ACCOUNT-STALE-CITATION-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-603915CF28301B40 (identical rule_text): PaymentMeans models payment_means_code (required) and payment_due_date (optional), both directly tested.'
-  missing_behavior:
-  - 'PaymentMeans carries no payee-financial-account field at all -- the payee financial account element named in this obligation''s rule_text is genuinely unbuilt, not merely untested.'
+  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-603915CF28301B40 (identical rule_text): PaymentMeans models payment_means_code (required) and payment_due_date (optional), both directly tested. Stale citation, not a genuine gap: PaymentMeans.payee_financial_account and financial_account_of() were built and proven by 5 tests in event 193 (SAL-UBL-OBL-D21BA46DEC8DFA2B, UBL-CODELIST-001, identical rule_text), but this duplicate obligation was never revisited to reflect the fix -- re-confirmed directly against the current charges.py: PaymentMeans.payee_financial_account is a real field, financial_account_of() is wired at construction, and cac:PayeeFinancialAccount projects with its leaf fields (id, name, account type code) plus correct optionality, proven by a full document round trip.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Extreme decimal fixtures round-trip losslessly; attribute retention verified per value type.
