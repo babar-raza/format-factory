@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-ISOLATED-PAIRING-ATTRIBUTE-MATCHING-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-isolated-pairing-attrs-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes the remaining named gap on the 6-obligation isolated-attribute cluster (SAL-XLIFF-OBL-7508113EBF7E4457 and its cross-capability duplicates, all 6 moved partial->implemented), first built in an earlier tick this session (XLIFF-ISOLATED-START-CODE-VALIDATION-PROOF) which explicitly documented "the schematron''s F5.1S/F5.1T sibling assertions on canCopy/canDelete/canReorder/canOverlap attribute matching between paired sc/ec elements remain unbuilt" as this cluster''s only remaining gap. Grounded directly in the pinned XLIFF 2.1 schematron''s own F5.1S/F5.1T assertions (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/xliff_core_2.1.sch): when a non-isolated sc has a resolvable matching ec in the same unit, canCopy/canDelete/canOverlap must be equivalent between the two -- a "no" value on either side requires "no" on the other; "yes" and an absent attribute (both meaning the same schema default of "yes") are mutually compatible with each other -- and canReorder additionally allows sc''s own "firstNo" value, which requires the matching ec''s canReorder to be exactly "no". Added _can_attr_matches() and _isolated_pairing_attribute_diagnostics() to validator.py, deliberately scoped to only this sub-clause: _isolated_diagnostics already proves ec existence before this new function runs, so the schematron''s clause (a) (exactly-one-ec, document order) is not re-implemented. Verified zero false positives against the entire pre-existing 436-test xliff suite before writing a single new test -- no existing fixture used any can* attribute at all. 9 new tests prove: matching canCopy=no/no and absent/yes/absent-absent combinations all validate cleanly; a no/absent mismatch is flagged; canDelete and canOverlap mismatches are independently reported; canReorder=firstNo with a matching ec canReorder=no validates cleanly; firstNo with ec canReorder absent is a violation; an isolated=yes sc is never checked (no matching ec by definition); and an sc with no matching ec at all (already covered by the separate missing_ec diagnostic) is not double-checked for attribute matching. xliff suite: 436 -> 445 passed. Two adjacent, honestly-documented limitations are named in each obligation''s own implemented_behavior rather than left silent: the pre-existing per-segment ec.unpaired check still does not look across segment boundaries (a distinct, pre-existing limitation, not introduced or repaired here), and clause (a)''s exactly-one-ec/document-order assertion is not separately re-verified. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, every assertion grounded directly in the pinned schematron text. Covers SAL-XLIFF-OBL-7508113EBF7E4457, SAL-XLIFF-OBL-25A6AEE1EE8FA679, SAL-XLIFF-OBL-2D08D42095E5EFD9, SAL-XLIFF-OBL-452A66EC673B7518, SAL-XLIFF-OBL-4CDD66101DC1EEB9, and SAL-XLIFF-OBL-E8055B0103E9E5CD only; it supports no other obligation and promotes no product state.'
 - evidence_id: XLIFF-FORMAT-STYLE-FS-VALUES-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-format-style-fs-values-001.json
   expected_result: PASS
@@ -1034,27 +1039,35 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-25A6AEE1EE8FA679
   capability_id: XLIFF-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::_isolated_diagnostics
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_isolated_pairing_attribute_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_isolated_sc_with_no_matching_ec_anywhere_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_a_non_isolated_sc_with_a_matching_ec_in_the_same_segment_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_sc_with_no_isolated_attribute_and_a_matching_ec_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_isolated_check_is_scoped_per_content_type_a_target_side_match_does_not_satisfy_a_source_side_sc
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_matching_can_no_values_on_both_sc_and_ec_validate_cleanly
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_sc_cancopy_absent_with_ec_cancopy_yes_validates_cleanly_both_are_the_default
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_both_cancopy_absent_validates_cleanly
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_canreorder_firstno_with_matching_ec_no_validates_cleanly
   negative_test_selectors:
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_isolated_sc_with_a_matching_ec_in_the_same_segment_is_a_violation
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_sc_with_no_isolated_attribute_defaults_to_no_and_requires_a_matching_ec
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_isolated_yes_with_a_matching_ec_in_a_different_segment_of_the_same_unit_is_still_a_violation
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_a_target_side_isolated_sc_with_a_matching_target_ec_is_a_violation
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_sc_cancopy_no_with_ec_cancopy_absent_is_a_mismatch
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_candelete_and_canoverlap_mismatches_are_each_independently_reported
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_canreorder_firstno_with_ec_canreorder_absent_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-ISOLATED-START-CODE-VALIDATION-PROOF
+  - XLIFF-ISOLATED-PAIRING-ATTRIBUTE-MATCHING-PROOF
   implemented_behavior:
-  - 'A genuine, spec-grounded slice of sc isolated-attribute validation now exists: validate() detects, per unit and separately per content type (source/target), whether an sc''s isolated attribute (yes, or no/absent -- "no" is the schema default) is consistent with whether a matching ec (by startRef against this sc''s id) exists anywhere in the same unit -- grounded directly in the pinned OASIS XLIFF 2.1 spec''s own prose (4.2.3.4 sc) and the pinned XLIFF 2.1 schematron''s F5S/F5T patterns. The check scans the whole unit, not just one segment, matching the schematron''s ancestor::xlf:unit//xlf:ec[...] scope and the spec''s explicit allowance for non-isolated sc/ec pairs to span multiple segments of one unit. This is deliberately narrow, not a completeness claim: only the isolated-attribute-consistency direction is checked; the schematron''s F5.1S/F5.1T sibling assertions on canCopy/canDelete/canReorder/canOverlap attribute matching between paired sc/ec elements remain unbuilt.'
-  missing_behavior:
-  - 'The canCopy/canDelete/canReorder/canOverlap attribute-matching sub-clauses of the same schematron patterns (F5.1S/F5.1T) remain unbuilt -- only the core isolated-attribute-versus-matching-ec-presence rule this obligation''s own rule_text names is checked. The pre-existing, separate per-segment sc/ec pairing check (xliff.inline.ec.unpaired) does not look across segment boundaries within a unit, so a genuinely valid, non-isolated, cross-segment sc/ec pair would still also trip that older, narrower check -- a distinct, pre-existing limitation this slice discovered but did not repair, honestly documented rather than silently fixed or ignored.'
+  - 'A genuine, spec-grounded slice of sc isolated-attribute validation now exists: validate() detects, per unit and separately per content type (source/target), whether an sc''s isolated attribute (yes, or no/absent -- "no" is the schema default) is consistent with whether a matching ec (by startRef against this sc''s id) exists anywhere in the same unit -- grounded directly in the pinned OASIS XLIFF 2.1 spec''s own prose (4.2.3.4 sc) and the pinned XLIFF 2.1 schematron''s F5S/F5T patterns. The check scans the whole unit, not just one segment, matching the schematron''s ancestor::xlf:unit//xlf:ec[...] scope and the spec''s explicit allowance for non-isolated sc/ec pairs to span multiple segments of one unit. The schematron''s F5.1S/F5.1T sibling assertions -- the obligation''s own remaining named gap -- are now also proven: when a non-isolated sc has a resolvable matching ec, canCopy/canDelete/canOverlap must be equivalent between the two (a "no" value on either side requires "no" on the other; "yes" and an absent attribute -- both meaning the same schema default -- are mutually compatible), and canReorder additionally allows sc''s own "firstNo" value, which requires the matching ec''s canReorder to be exactly "no". Two adjacent, honestly-documented notes, neither blocking this obligation''s own rule_text: the pre-existing, separate per-segment sc/ec pairing check (xliff.inline.ec.unpaired) still does not look across segment boundaries within a unit, a distinct limitation discovered (not introduced or repaired) when the core isolated-attribute check was first built; and the schematron''s F5.1S/F5.1T clause (a) -- exactly-one-matching-ec existence and document-order -- is not separately re-verified by the new attribute-matching check, since it only runs once _isolated_diagnostics has already proven a matching ec is present.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
@@ -1091,27 +1104,35 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-2D08D42095E5EFD9
   capability_id: XLIFF-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::_isolated_diagnostics
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_isolated_pairing_attribute_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_isolated_sc_with_no_matching_ec_anywhere_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_a_non_isolated_sc_with_a_matching_ec_in_the_same_segment_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_sc_with_no_isolated_attribute_and_a_matching_ec_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_isolated_check_is_scoped_per_content_type_a_target_side_match_does_not_satisfy_a_source_side_sc
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_matching_can_no_values_on_both_sc_and_ec_validate_cleanly
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_sc_cancopy_absent_with_ec_cancopy_yes_validates_cleanly_both_are_the_default
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_both_cancopy_absent_validates_cleanly
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_canreorder_firstno_with_matching_ec_no_validates_cleanly
   negative_test_selectors:
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_isolated_sc_with_a_matching_ec_in_the_same_segment_is_a_violation
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_sc_with_no_isolated_attribute_defaults_to_no_and_requires_a_matching_ec
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_isolated_yes_with_a_matching_ec_in_a_different_segment_of_the_same_unit_is_still_a_violation
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_a_target_side_isolated_sc_with_a_matching_target_ec_is_a_violation
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_sc_cancopy_no_with_ec_cancopy_absent_is_a_mismatch
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_candelete_and_canoverlap_mismatches_are_each_independently_reported
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_canreorder_firstno_with_ec_canreorder_absent_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-ISOLATED-START-CODE-VALIDATION-PROOF
+  - XLIFF-ISOLATED-PAIRING-ATTRIBUTE-MATCHING-PROOF
   implemented_behavior:
-  - 'A genuine, spec-grounded slice of sc isolated-attribute validation now exists: validate() detects, per unit and separately per content type (source/target), whether an sc''s isolated attribute (yes, or no/absent -- "no" is the schema default) is consistent with whether a matching ec (by startRef against this sc''s id) exists anywhere in the same unit -- grounded directly in the pinned OASIS XLIFF 2.1 spec''s own prose (4.2.3.4 sc) and the pinned XLIFF 2.1 schematron''s F5S/F5T patterns. The check scans the whole unit, not just one segment, matching the schematron''s ancestor::xlf:unit//xlf:ec[...] scope and the spec''s explicit allowance for non-isolated sc/ec pairs to span multiple segments of one unit. This is deliberately narrow, not a completeness claim: only the isolated-attribute-consistency direction is checked; the schematron''s F5.1S/F5.1T sibling assertions on canCopy/canDelete/canReorder/canOverlap attribute matching between paired sc/ec elements remain unbuilt.'
-  missing_behavior:
-  - 'The canCopy/canDelete/canReorder/canOverlap attribute-matching sub-clauses of the same schematron patterns (F5.1S/F5.1T) remain unbuilt -- only the core isolated-attribute-versus-matching-ec-presence rule this obligation''s own rule_text names is checked. The pre-existing, separate per-segment sc/ec pairing check (xliff.inline.ec.unpaired) does not look across segment boundaries within a unit, so a genuinely valid, non-isolated, cross-segment sc/ec pair would still also trip that older, narrower check -- a distinct, pre-existing limitation this slice discovered but did not repair, honestly documented rather than silently fixed or ignored.'
+  - 'A genuine, spec-grounded slice of sc isolated-attribute validation now exists: validate() detects, per unit and separately per content type (source/target), whether an sc''s isolated attribute (yes, or no/absent -- "no" is the schema default) is consistent with whether a matching ec (by startRef against this sc''s id) exists anywhere in the same unit -- grounded directly in the pinned OASIS XLIFF 2.1 spec''s own prose (4.2.3.4 sc) and the pinned XLIFF 2.1 schematron''s F5S/F5T patterns. The check scans the whole unit, not just one segment, matching the schematron''s ancestor::xlf:unit//xlf:ec[...] scope and the spec''s explicit allowance for non-isolated sc/ec pairs to span multiple segments of one unit. The schematron''s F5.1S/F5.1T sibling assertions -- the obligation''s own remaining named gap -- are now also proven: when a non-isolated sc has a resolvable matching ec, canCopy/canDelete/canOverlap must be equivalent between the two (a "no" value on either side requires "no" on the other; "yes" and an absent attribute -- both meaning the same schema default -- are mutually compatible), and canReorder additionally allows sc''s own "firstNo" value, which requires the matching ec''s canReorder to be exactly "no". Two adjacent, honestly-documented notes, neither blocking this obligation''s own rule_text: the pre-existing, separate per-segment sc/ec pairing check (xliff.inline.ec.unpaired) still does not look across segment boundaries within a unit, a distinct limitation discovered (not introduced or repaired) when the core isolated-attribute check was first built; and the schematron''s F5.1S/F5.1T clause (a) -- exactly-one-matching-ec existence and document-order -- is not separately re-verified by the new attribute-matching check, since it only runs once _isolated_diagnostics has already proven a matching ec is present.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
@@ -1489,27 +1510,35 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-452A66EC673B7518
   capability_id: XLIFF-INLINE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::_isolated_diagnostics
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_isolated_pairing_attribute_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_isolated_sc_with_no_matching_ec_anywhere_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_a_non_isolated_sc_with_a_matching_ec_in_the_same_segment_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_sc_with_no_isolated_attribute_and_a_matching_ec_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_isolated_check_is_scoped_per_content_type_a_target_side_match_does_not_satisfy_a_source_side_sc
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_matching_can_no_values_on_both_sc_and_ec_validate_cleanly
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_sc_cancopy_absent_with_ec_cancopy_yes_validates_cleanly_both_are_the_default
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_both_cancopy_absent_validates_cleanly
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_canreorder_firstno_with_matching_ec_no_validates_cleanly
   negative_test_selectors:
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_isolated_sc_with_a_matching_ec_in_the_same_segment_is_a_violation
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_sc_with_no_isolated_attribute_defaults_to_no_and_requires_a_matching_ec
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_isolated_yes_with_a_matching_ec_in_a_different_segment_of_the_same_unit_is_still_a_violation
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_a_target_side_isolated_sc_with_a_matching_target_ec_is_a_violation
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_sc_cancopy_no_with_ec_cancopy_absent_is_a_mismatch
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_candelete_and_canoverlap_mismatches_are_each_independently_reported
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_canreorder_firstno_with_ec_canreorder_absent_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-ISOLATED-START-CODE-VALIDATION-PROOF
+  - XLIFF-ISOLATED-PAIRING-ATTRIBUTE-MATCHING-PROOF
   implemented_behavior:
-  - 'A genuine, spec-grounded slice of sc isolated-attribute validation now exists: validate() detects, per unit and separately per content type (source/target), whether an sc''s isolated attribute (yes, or no/absent -- "no" is the schema default) is consistent with whether a matching ec (by startRef against this sc''s id) exists anywhere in the same unit -- grounded directly in the pinned OASIS XLIFF 2.1 spec''s own prose (4.2.3.4 sc) and the pinned XLIFF 2.1 schematron''s F5S/F5T patterns. The check scans the whole unit, not just one segment, matching the schematron''s ancestor::xlf:unit//xlf:ec[...] scope and the spec''s explicit allowance for non-isolated sc/ec pairs to span multiple segments of one unit. This is deliberately narrow, not a completeness claim: only the isolated-attribute-consistency direction is checked; the schematron''s F5.1S/F5.1T sibling assertions on canCopy/canDelete/canReorder/canOverlap attribute matching between paired sc/ec elements remain unbuilt.'
-  missing_behavior:
-  - 'The canCopy/canDelete/canReorder/canOverlap attribute-matching sub-clauses of the same schematron patterns (F5.1S/F5.1T) remain unbuilt -- only the core isolated-attribute-versus-matching-ec-presence rule this obligation''s own rule_text names is checked. The pre-existing, separate per-segment sc/ec pairing check (xliff.inline.ec.unpaired) does not look across segment boundaries within a unit, so a genuinely valid, non-isolated, cross-segment sc/ec pair would still also trip that older, narrower check -- a distinct, pre-existing limitation this slice discovered but did not repair, honestly documented rather than silently fixed or ignored.'
+  - 'A genuine, spec-grounded slice of sc isolated-attribute validation now exists: validate() detects, per unit and separately per content type (source/target), whether an sc''s isolated attribute (yes, or no/absent -- "no" is the schema default) is consistent with whether a matching ec (by startRef against this sc''s id) exists anywhere in the same unit -- grounded directly in the pinned OASIS XLIFF 2.1 spec''s own prose (4.2.3.4 sc) and the pinned XLIFF 2.1 schematron''s F5S/F5T patterns. The check scans the whole unit, not just one segment, matching the schematron''s ancestor::xlf:unit//xlf:ec[...] scope and the spec''s explicit allowance for non-isolated sc/ec pairs to span multiple segments of one unit. The schematron''s F5.1S/F5.1T sibling assertions -- the obligation''s own remaining named gap -- are now also proven: when a non-isolated sc has a resolvable matching ec, canCopy/canDelete/canOverlap must be equivalent between the two (a "no" value on either side requires "no" on the other; "yes" and an absent attribute -- both meaning the same schema default -- are mutually compatible), and canReorder additionally allows sc''s own "firstNo" value, which requires the matching ec''s canReorder to be exactly "no". Two adjacent, honestly-documented notes, neither blocking this obligation''s own rule_text: the pre-existing, separate per-segment sc/ec pairing check (xliff.inline.ec.unpaired) still does not look across segment boundaries within a unit, a distinct limitation discovered (not introduced or repaired) when the core isolated-attribute check was first built; and the schematron''s F5.1S/F5.1T clause (a) -- exactly-one-matching-ec existence and document-order -- is not separately re-verified by the new attribute-matching check, since it only runs once _isolated_diagnostics has already proven a matching ec is present.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
@@ -1643,27 +1672,35 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-4CDD66101DC1EEB9
   capability_id: XLIFF-MODULE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::_isolated_diagnostics
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_isolated_pairing_attribute_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_isolated_sc_with_no_matching_ec_anywhere_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_a_non_isolated_sc_with_a_matching_ec_in_the_same_segment_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_sc_with_no_isolated_attribute_and_a_matching_ec_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_isolated_check_is_scoped_per_content_type_a_target_side_match_does_not_satisfy_a_source_side_sc
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_matching_can_no_values_on_both_sc_and_ec_validate_cleanly
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_sc_cancopy_absent_with_ec_cancopy_yes_validates_cleanly_both_are_the_default
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_both_cancopy_absent_validates_cleanly
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_canreorder_firstno_with_matching_ec_no_validates_cleanly
   negative_test_selectors:
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_isolated_sc_with_a_matching_ec_in_the_same_segment_is_a_violation
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_sc_with_no_isolated_attribute_defaults_to_no_and_requires_a_matching_ec
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_isolated_yes_with_a_matching_ec_in_a_different_segment_of_the_same_unit_is_still_a_violation
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_a_target_side_isolated_sc_with_a_matching_target_ec_is_a_violation
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_sc_cancopy_no_with_ec_cancopy_absent_is_a_mismatch
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_candelete_and_canoverlap_mismatches_are_each_independently_reported
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_canreorder_firstno_with_ec_canreorder_absent_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-ISOLATED-START-CODE-VALIDATION-PROOF
+  - XLIFF-ISOLATED-PAIRING-ATTRIBUTE-MATCHING-PROOF
   implemented_behavior:
-  - 'A genuine, spec-grounded slice of sc isolated-attribute validation now exists: validate() detects, per unit and separately per content type (source/target), whether an sc''s isolated attribute (yes, or no/absent -- "no" is the schema default) is consistent with whether a matching ec (by startRef against this sc''s id) exists anywhere in the same unit -- grounded directly in the pinned OASIS XLIFF 2.1 spec''s own prose (4.2.3.4 sc) and the pinned XLIFF 2.1 schematron''s F5S/F5T patterns. The check scans the whole unit, not just one segment, matching the schematron''s ancestor::xlf:unit//xlf:ec[...] scope and the spec''s explicit allowance for non-isolated sc/ec pairs to span multiple segments of one unit. This is deliberately narrow, not a completeness claim: only the isolated-attribute-consistency direction is checked; the schematron''s F5.1S/F5.1T sibling assertions on canCopy/canDelete/canReorder/canOverlap attribute matching between paired sc/ec elements remain unbuilt.'
-  missing_behavior:
-  - 'The canCopy/canDelete/canReorder/canOverlap attribute-matching sub-clauses of the same schematron patterns (F5.1S/F5.1T) remain unbuilt -- only the core isolated-attribute-versus-matching-ec-presence rule this obligation''s own rule_text names is checked. The pre-existing, separate per-segment sc/ec pairing check (xliff.inline.ec.unpaired) does not look across segment boundaries within a unit, so a genuinely valid, non-isolated, cross-segment sc/ec pair would still also trip that older, narrower check -- a distinct, pre-existing limitation this slice discovered but did not repair, honestly documented rather than silently fixed or ignored.'
+  - 'A genuine, spec-grounded slice of sc isolated-attribute validation now exists: validate() detects, per unit and separately per content type (source/target), whether an sc''s isolated attribute (yes, or no/absent -- "no" is the schema default) is consistent with whether a matching ec (by startRef against this sc''s id) exists anywhere in the same unit -- grounded directly in the pinned OASIS XLIFF 2.1 spec''s own prose (4.2.3.4 sc) and the pinned XLIFF 2.1 schematron''s F5S/F5T patterns. The check scans the whole unit, not just one segment, matching the schematron''s ancestor::xlf:unit//xlf:ec[...] scope and the spec''s explicit allowance for non-isolated sc/ec pairs to span multiple segments of one unit. The schematron''s F5.1S/F5.1T sibling assertions -- the obligation''s own remaining named gap -- are now also proven: when a non-isolated sc has a resolvable matching ec, canCopy/canDelete/canOverlap must be equivalent between the two (a "no" value on either side requires "no" on the other; "yes" and an absent attribute -- both meaning the same schema default -- are mutually compatible), and canReorder additionally allows sc''s own "firstNo" value, which requires the matching ec''s canReorder to be exactly "no". Two adjacent, honestly-documented notes, neither blocking this obligation''s own rule_text: the pre-existing, separate per-segment sc/ec pairing check (xliff.inline.ec.unpaired) still does not look across segment boundaries within a unit, a distinct limitation discovered (not introduced or repaired) when the core isolated-attribute check was first built; and the schematron''s F5.1S/F5.1T clause (a) -- exactly-one-matching-ec existence and document-order -- is not separately re-verified by the new attribute-matching check, since it only runs once _isolated_diagnostics has already proven a matching ec is present.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -2247,27 +2284,35 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-7508113EBF7E4457
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::_isolated_diagnostics
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_isolated_pairing_attribute_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_isolated_sc_with_no_matching_ec_anywhere_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_a_non_isolated_sc_with_a_matching_ec_in_the_same_segment_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_sc_with_no_isolated_attribute_and_a_matching_ec_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_isolated_check_is_scoped_per_content_type_a_target_side_match_does_not_satisfy_a_source_side_sc
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_matching_can_no_values_on_both_sc_and_ec_validate_cleanly
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_sc_cancopy_absent_with_ec_cancopy_yes_validates_cleanly_both_are_the_default
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_both_cancopy_absent_validates_cleanly
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_canreorder_firstno_with_matching_ec_no_validates_cleanly
   negative_test_selectors:
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_isolated_sc_with_a_matching_ec_in_the_same_segment_is_a_violation
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_sc_with_no_isolated_attribute_defaults_to_no_and_requires_a_matching_ec
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_isolated_yes_with_a_matching_ec_in_a_different_segment_of_the_same_unit_is_still_a_violation
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_a_target_side_isolated_sc_with_a_matching_target_ec_is_a_violation
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_sc_cancopy_no_with_ec_cancopy_absent_is_a_mismatch
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_candelete_and_canoverlap_mismatches_are_each_independently_reported
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_canreorder_firstno_with_ec_canreorder_absent_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-ISOLATED-START-CODE-VALIDATION-PROOF
+  - XLIFF-ISOLATED-PAIRING-ATTRIBUTE-MATCHING-PROOF
   implemented_behavior:
-  - 'A genuine, spec-grounded slice of sc isolated-attribute validation now exists: validate() detects, per unit and separately per content type (source/target), whether an sc''s isolated attribute (yes, or no/absent -- "no" is the schema default) is consistent with whether a matching ec (by startRef against this sc''s id) exists anywhere in the same unit -- grounded directly in the pinned OASIS XLIFF 2.1 spec''s own prose (4.2.3.4 sc) and the pinned XLIFF 2.1 schematron''s F5S/F5T patterns. The check scans the whole unit, not just one segment, matching the schematron''s ancestor::xlf:unit//xlf:ec[...] scope and the spec''s explicit allowance for non-isolated sc/ec pairs to span multiple segments of one unit. This is deliberately narrow, not a completeness claim: only the isolated-attribute-consistency direction is checked; the schematron''s F5.1S/F5.1T sibling assertions on canCopy/canDelete/canReorder/canOverlap attribute matching between paired sc/ec elements remain unbuilt.'
-  missing_behavior:
-  - 'The canCopy/canDelete/canReorder/canOverlap attribute-matching sub-clauses of the same schematron patterns (F5.1S/F5.1T) remain unbuilt -- only the core isolated-attribute-versus-matching-ec-presence rule this obligation''s own rule_text names is checked. The pre-existing, separate per-segment sc/ec pairing check (xliff.inline.ec.unpaired) does not look across segment boundaries within a unit, so a genuinely valid, non-isolated, cross-segment sc/ec pair would still also trip that older, narrower check -- a distinct, pre-existing limitation this slice discovered but did not repair, honestly documented rather than silently fixed or ignored.'
+  - 'A genuine, spec-grounded slice of sc isolated-attribute validation now exists: validate() detects, per unit and separately per content type (source/target), whether an sc''s isolated attribute (yes, or no/absent -- "no" is the schema default) is consistent with whether a matching ec (by startRef against this sc''s id) exists anywhere in the same unit -- grounded directly in the pinned OASIS XLIFF 2.1 spec''s own prose (4.2.3.4 sc) and the pinned XLIFF 2.1 schematron''s F5S/F5T patterns. The check scans the whole unit, not just one segment, matching the schematron''s ancestor::xlf:unit//xlf:ec[...] scope and the spec''s explicit allowance for non-isolated sc/ec pairs to span multiple segments of one unit. The schematron''s F5.1S/F5.1T sibling assertions -- the obligation''s own remaining named gap -- are now also proven: when a non-isolated sc has a resolvable matching ec, canCopy/canDelete/canOverlap must be equivalent between the two (a "no" value on either side requires "no" on the other; "yes" and an absent attribute -- both meaning the same schema default -- are mutually compatible), and canReorder additionally allows sc''s own "firstNo" value, which requires the matching ec''s canReorder to be exactly "no". Two adjacent, honestly-documented notes, neither blocking this obligation''s own rule_text: the pre-existing, separate per-segment sc/ec pairing check (xliff.inline.ec.unpaired) still does not look across segment boundaries within a unit, a distinct limitation discovered (not introduced or repaired) when the core isolated-attribute check was first built; and the schematron''s F5.1S/F5.1T clause (a) -- exactly-one-matching-ec existence and document-order -- is not separately re-verified by the new attribute-matching check, since it only runs once _isolated_diagnostics has already proven a matching ec is present.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -3652,27 +3697,35 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-E8055B0103E9E5CD
   capability_id: XLIFF-TEXT-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::_isolated_diagnostics
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_isolated_pairing_attribute_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_isolated_sc_with_no_matching_ec_anywhere_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_a_non_isolated_sc_with_a_matching_ec_in_the_same_segment_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_sc_with_no_isolated_attribute_and_a_matching_ec_validates_cleanly
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_isolated_check_is_scoped_per_content_type_a_target_side_match_does_not_satisfy_a_source_side_sc
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_matching_can_no_values_on_both_sc_and_ec_validate_cleanly
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_sc_cancopy_absent_with_ec_cancopy_yes_validates_cleanly_both_are_the_default
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_both_cancopy_absent_validates_cleanly
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_canreorder_firstno_with_matching_ec_no_validates_cleanly
   negative_test_selectors:
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_isolated_sc_with_a_matching_ec_in_the_same_segment_is_a_violation
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_an_sc_with_no_isolated_attribute_defaults_to_no_and_requires_a_matching_ec
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_isolated_yes_with_a_matching_ec_in_a_different_segment_of_the_same_unit_is_still_a_violation
   - tests/python/xliff/test_obligation_isolated_start_code_validation.py::test_a_target_side_isolated_sc_with_a_matching_target_ec_is_a_violation
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_sc_cancopy_no_with_ec_cancopy_absent_is_a_mismatch
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_candelete_and_canoverlap_mismatches_are_each_independently_reported
+  - tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py::test_canreorder_firstno_with_ec_canreorder_absent_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-ISOLATED-START-CODE-VALIDATION-PROOF
+  - XLIFF-ISOLATED-PAIRING-ATTRIBUTE-MATCHING-PROOF
   implemented_behavior:
-  - 'A genuine, spec-grounded slice of sc isolated-attribute validation now exists: validate() detects, per unit and separately per content type (source/target), whether an sc''s isolated attribute (yes, or no/absent -- "no" is the schema default) is consistent with whether a matching ec (by startRef against this sc''s id) exists anywhere in the same unit -- grounded directly in the pinned OASIS XLIFF 2.1 spec''s own prose (4.2.3.4 sc) and the pinned XLIFF 2.1 schematron''s F5S/F5T patterns. The check scans the whole unit, not just one segment, matching the schematron''s ancestor::xlf:unit//xlf:ec[...] scope and the spec''s explicit allowance for non-isolated sc/ec pairs to span multiple segments of one unit. This is deliberately narrow, not a completeness claim: only the isolated-attribute-consistency direction is checked; the schematron''s F5.1S/F5.1T sibling assertions on canCopy/canDelete/canReorder/canOverlap attribute matching between paired sc/ec elements remain unbuilt.'
-  missing_behavior:
-  - 'The canCopy/canDelete/canReorder/canOverlap attribute-matching sub-clauses of the same schematron patterns (F5.1S/F5.1T) remain unbuilt -- only the core isolated-attribute-versus-matching-ec-presence rule this obligation''s own rule_text names is checked. The pre-existing, separate per-segment sc/ec pairing check (xliff.inline.ec.unpaired) does not look across segment boundaries within a unit, so a genuinely valid, non-isolated, cross-segment sc/ec pair would still also trip that older, narrower check -- a distinct, pre-existing limitation this slice discovered but did not repair, honestly documented rather than silently fixed or ignored.'
+  - 'A genuine, spec-grounded slice of sc isolated-attribute validation now exists: validate() detects, per unit and separately per content type (source/target), whether an sc''s isolated attribute (yes, or no/absent -- "no" is the schema default) is consistent with whether a matching ec (by startRef against this sc''s id) exists anywhere in the same unit -- grounded directly in the pinned OASIS XLIFF 2.1 spec''s own prose (4.2.3.4 sc) and the pinned XLIFF 2.1 schematron''s F5S/F5T patterns. The check scans the whole unit, not just one segment, matching the schematron''s ancestor::xlf:unit//xlf:ec[...] scope and the spec''s explicit allowance for non-isolated sc/ec pairs to span multiple segments of one unit. The schematron''s F5.1S/F5.1T sibling assertions -- the obligation''s own remaining named gap -- are now also proven: when a non-isolated sc has a resolvable matching ec, canCopy/canDelete/canOverlap must be equivalent between the two (a "no" value on either side requires "no" on the other; "yes" and an absent attribute -- both meaning the same schema default -- are mutually compatible), and canReorder additionally allows sc''s own "firstNo" value, which requires the matching ec''s canReorder to be exactly "no". Two adjacent, honestly-documented notes, neither blocking this obligation''s own rule_text: the pre-existing, separate per-segment sc/ec pairing check (xliff.inline.ec.unpaired) still does not look across segment boundaries within a unit, a distinct limitation discovered (not introduced or repaired) when the core isolated-attribute check was first built; and the schematron''s F5.1S/F5.1T clause (a) -- exactly-one-matching-ec existence and document-order -- is not separately re-verified by the new attribute-matching check, since it only runs once _isolated_diagnostics has already proven a matching ec is present.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.

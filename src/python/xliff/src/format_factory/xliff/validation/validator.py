@@ -171,6 +171,100 @@ def _isolated_diagnostics(unit: Unit, diagnostics: list[Diagnostic]) -> None:
                 )
 
 
+_CAN_MATCH_ATTRS = ("canCopy", "canDelete", "canOverlap")
+
+
+def _can_attr_matches(sc_value: str | None, ec_value: str | None) -> bool:
+    """A "no" value on either side of a paired sc/ec requires "no" on the
+    other; "yes" and an absent attribute -- both meaning the same schema
+    default of "yes" -- are mutually compatible with each other. Grounded
+    directly in the pinned XLIFF 2.1 schematron's own F5.1S/F5.1T
+    assertions (e.g. canCopy: a report fires when @canCopy='no' and no
+    matching ec also has canCopy='no'; a second, separate report fires
+    when (@canCopy='yes' or not(@canCopy)) and no matching ec has either
+    canCopy='yes' or canCopy absent)."""
+
+    sc_no = sc_value == "no"
+    ec_no = ec_value == "no"
+    if sc_no or ec_no:
+        return sc_no and ec_no
+    return True
+
+
+def _isolated_pairing_attribute_diagnostics(
+    unit: Unit, diagnostics: list[Diagnostic]
+) -> None:
+    """(XLIFF Core start-code isolation, 2.1 schematron patterns F5.1S/
+    F5.1T, clauses b and c) When a non-isolated sc has a resolvable
+    matching ec in the same unit -- the case _isolated_diagnostics already
+    proves does not raise xliff.inline.isolated.missing_ec -- their
+    canCopy/canDelete/canOverlap attributes must be equivalent per
+    _can_attr_matches(), and canReorder additionally allows sc's own
+    "firstNo" value, which requires the matching ec's canReorder to be
+    exactly "no" (grounded directly in the pinned schematron's own
+    canReorder='firstNo' assertion, distinct from the shared no/yes-or-
+    absent equivalence the other three attributes use).
+
+    Scoped narrowly to exactly the sub-clauses this obligation cluster's
+    own missing_behavior names as unbuilt; clause (a) -- exactly-one-ec
+    existence and document-order -- is not re-implemented here, since
+    _isolated_diagnostics already proves ec presence and this function
+    only runs when a match was found.
+    """
+
+    for label in ("source", "target"):
+        starts: list[InlineElement] = []
+        ec_by_start_ref: dict[str, InlineElement] = {}
+        for segment in unit.segments:
+            content = segment.source if label == "source" else (segment.target or [])
+            for element in _inline_elements(content):
+                if element.tag == "sc" and element.id:
+                    starts.append(element)
+                elif element.tag == "ec":
+                    start_ref = element.attributes.get("startRef")
+                    if start_ref:
+                        ec_by_start_ref[start_ref] = element
+        for sc in starts:
+            if sc.attributes.get("isolated", "no") == "yes":
+                continue
+            ec = ec_by_start_ref.get(sc.id)
+            if ec is None:
+                continue
+            for attr in _CAN_MATCH_ATTRS:
+                sc_value = sc.attributes.get(attr)
+                ec_value = ec.attributes.get(attr)
+                if not _can_attr_matches(sc_value, ec_value):
+                    diagnostics.append(
+                        Diagnostic(
+                            f"xliff.inline.isolated.{attr.lower()}.mismatch",
+                            f"sc {sc.id!r} in unit {unit.id!r} {label} has "
+                            f"{attr}={sc_value!r} but its matching ec has "
+                            f"{attr}={ec_value!r}",
+                        )
+                    )
+            sc_reorder = sc.attributes.get("canReorder")
+            ec_reorder = ec.attributes.get("canReorder")
+            if sc_reorder == "firstNo":
+                if ec_reorder != "no":
+                    diagnostics.append(
+                        Diagnostic(
+                            "xliff.inline.isolated.canreorder.firstno_mismatch",
+                            f"sc {sc.id!r} in unit {unit.id!r} {label} has "
+                            f"canReorder='firstNo' but its matching ec's canReorder "
+                            f"is {ec_reorder!r}, not 'no'",
+                        )
+                    )
+            elif not _can_attr_matches(sc_reorder, ec_reorder):
+                diagnostics.append(
+                    Diagnostic(
+                        "xliff.inline.isolated.canreorder.mismatch",
+                        f"sc {sc.id!r} in unit {unit.id!r} {label} has "
+                        f"canReorder={sc_reorder!r} but its matching ec has "
+                        f"canReorder={ec_reorder!r}",
+                    )
+                )
+
+
 def _data_ref_diagnostics(unit: Unit, diagnostics: list[Diagnostic]) -> None:
     """(XLIFF Core original data references, 2.1 schematron patterns F15/
     F16S/F16T/F17S/F17T) Every dataRef/dataRefStart/dataRefEnd attribute on
@@ -636,6 +730,7 @@ def validate(
                     _resource_data_module_diagnostics(segment_extension, diagnostics)
                     _matches_module_diagnostics(segment_extension, diagnostics)
             _isolated_diagnostics(unit, diagnostics)
+            _isolated_pairing_attribute_diagnostics(unit, diagnostics)
             _data_ref_diagnostics(unit, diagnostics)
             _format_style_module_diagnostics(unit, diagnostics)
         for file_child in file.children:
