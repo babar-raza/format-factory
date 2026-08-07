@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-detached-path-version-gate-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T05:00:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_DETACHED_PATH_VERSION_GATE_001",
+    "task_kind": "genuine-spec-compliance-gap-closure-real-source-read",
+    "root_cause": "SAL-NRRD-OBL-4CAFF21A47F62F19 (NRRD-PAYLOAD-001) requires distinguishing pre-NRRD0004 leading-./ detached-path rules from NRRD0004+ relative-path rules. reader.py's _safe_detached_payload and lazy.py's _resolve_detached_path both applied the NRRD0004+ rule unconditionally regardless of declared version, confirmed by reading both functions directly (neither branches on version at all before this slice).",
+    "obligation_targeted": "SAL-NRRD-OBL-4CAFF21A47F62F19 (NRRD-PAYLOAD-001)",
+    "acceptance_evidence": "Both reader.py and lazy.py now branch on version < 4: a leading './' prefix is recognized and stripped (header-relative, matching pre-NRRD0004 semantics), while a bare relative name without './' is refused with a clear error rather than silently resolved as header-relative (the NRRD0004+ rule) -- strict spec semantics define this case as cwd-relative, an unconfined resolution base this reader deliberately does not support without an explicit caller-supplied resolver policy (SAL-NRRD-OBL-09CDF5A28C011CD7's own remaining, honestly-declared gap). 12 new tests across 2 files prove all 4 version/prefix combinations plus confirm directory confinement still holds after the prefix-stripping change.",
+    "regression_tier": "full nrrd package suite (tests/python/nrrd) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the pinned spec source directly (.local/format-contracts/acquired/nrrd/src-nrrd-001.bin, SRC-NRRD-001): confirmed verbatim 'as of NRRD0004, the signifier of a header-relative file changed from the presence (at the beginning of the filename) of \"./\", to the absence of \"/\" ... With this change, it becomes impossible for a header to refer to the data file relative to the current working directory of the reader' -- establishing precisely that pre-NRRD0004 bare-relative names are cwd-relative, a genuinely different (and more permissive/dangerous) resolution base than header-relative.",
+    "2. Read reader.py's _safe_detached_payload and lazy.py's _resolve_detached_path directly: both apply the NRRD0004+ rule (no leading '/' means header-relative) unconditionally, confirming the version-blindness is real, not a stale citation.",
+    "3. Considered implementing genuine unconfined cwd-relative resolution for the pre-NRRD0004 bare-relative case (strict spec literalism) but declined: this reader's own established security discipline (directory-confinement checks already present in both functions) has no natural confinement boundary for cwd-relative resolution, and introducing it unconditionally would be a security regression relative to this session's SEC-001 discipline. Chose instead to refuse the case explicitly with a clear error, leaving the caller-supplied-resolver-policy half of the obligation cluster (SAL-NRRD-OBL-09CDF5A28C011CD7) honestly partial rather than rushing an opt-in mechanism.",
+    "4. Implemented the version < 4 branch in both reader.py and lazy.py identically: './' prefix recognized and stripped, bare-relative names refused with an explanatory NrrdParseError. Threaded `version` through both call sites (reader.py's _load already had it from _parse_header; lazy.py's NrrdHeader dataclass already exposed .version).",
+    "5. Verified interactively before writing any test: NRRD0003 with './' resolves, NRRD0003 without './' is refused, NRRD0004/NRRD0005 without './' resolve (unchanged), NRRD0004/NRRD0005 with './' still resolve (not rejected) -- all 4 cases correct on the first attempt.",
+    "6. Wrote 11 new tests in a new file (reader.py path) plus 1 new test in the existing lazy-payload-access test file (lazy.py's duplicated resolution logic, proven separately so the two code paths cannot silently diverge). Ran ruff (clean) and the full nrrd suite (512 passed, was 500, +12) before writing any evidence claim. Ran the full 6-format regression (3051 passed, was 3039, +12; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py",
+    "tests/python/nrrd/test_obligation_detached_path_version_gate.py",
+    "tests/python/nrrd/test_obligation_lazy_payload_access.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py",
+    "tests/python/nrrd/test_obligation_detached_path_version_gate.py",
+    "tests/python/nrrd/test_obligation_lazy_payload_access.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_detached_path_version_gate.py -q -- 11 passed",
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_lazy_payload_access.py -q -- 26 passed, was 25",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 512 passed, 1 skipped, was 500 passed",
+    ".venv/Scripts/python -m ruff check tests/python/nrrd/test_obligation_detached_path_version_gate.py tests/python/nrrd/test_obligation_lazy_payload_access.py src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py src/python/nrrd/src/format_factory/nrrd/codec/lazy.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3051 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3039 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 65,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not cross-checked against a reference NRRD implementation. The version-gate rule was read directly from the pinned, authority-locked spec source rather than paraphrased.",
+    "obligations_moved_breakdown": "1 obligation promoted to implemented by adding a genuine, confirmed version-gated distinction (pre-NRRD0004 './' semantics vs NRRD0004+ bare-relative semantics) to both the eager and lazy detached-path resolution functions, confirmed against the pinned Teem spec text word-for-word, with 12 new tests. A sibling obligation (caller-supplied resolver policy for cwd-relative access) deliberately stays partial -- a genuinely separate, security-sensitive design decision not rushed into this slice."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

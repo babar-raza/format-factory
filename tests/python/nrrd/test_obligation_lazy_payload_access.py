@@ -207,6 +207,24 @@ def test_detached_lazy_access_rejects_absolute_path(tmp_path: Path) -> None:
         open_lazy_payload(path)
 
 
+def test_detached_lazy_access_applies_the_pre_nrrd0004_dot_slash_version_gate(
+    tmp_path: Path,
+) -> None:
+    """The lazy path (_resolve_detached_path) duplicates reader.py's eager
+    path resolution logic -- proven separately here so the two cannot
+    silently diverge. See SAL-NRRD-OBL-4CAFF21A47F62F19."""
+    (tmp_path / "payload.raw").write_bytes(bytes(range(4)))
+    header_lines = [
+        "NRRD0003", "type: uint8", "dimension: 1", "sizes: 4", "encoding: raw",
+        "data file: payload.raw",
+    ]
+    path = tmp_path / "d3.nrrd"
+    path.write_bytes(("\n".join(header_lines) + "\n\n").encode("ascii"))
+
+    with pytest.raises(NrrdParseError, match="pre-NRRD0004"):
+        open_lazy_payload(path)
+
+
 # ── Streaming decode: gzip and bzip2 ─────────────────────────────────────────
 
 

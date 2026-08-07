@@ -139,9 +139,19 @@ def _single_detached_filename(value: str) -> str | None:
     return stripped
 
 
-def _resolve_detached_path(name: str, *, source_path: Path) -> Path:
+def _resolve_detached_path(name: str, *, source_path: Path, version: int) -> Path:
     """Resolve a detached filename the same way reader.py's eager path does:
-    no absolute paths, no traversal outside the header's own directory."""
+    no absolute paths, no traversal outside the header's own directory, and
+    the same pre-NRRD0004-vs-NRRD0004+ './' signifier distinction."""
+    if version < 4:
+        if name.startswith("./"):
+            name = name[2:]
+        elif not name.startswith("/"):
+            raise NrrdParseError(
+                "pre-NRRD0004 detached data file names must start with "
+                "'./' to be resolved relative to the header; this reader "
+                "does not support cwd-relative resolution"
+            )
     relative = Path(name)
     if relative.is_absolute() or ".." in relative.parts:
         raise NrrdParseError("unsafe detached data path")
@@ -316,7 +326,9 @@ def open_lazy_payload(
         else:
             name = _single_detached_filename(data_file)
             assert name is not None
-            payload_path = _resolve_detached_path(name, source_path=Path(header.source_path))
+            payload_path = _resolve_detached_path(
+                name, source_path=Path(header.source_path), version=header.version
+            )
             start = 0
         file_obj = payload_path.open("rb")
         try:
@@ -341,7 +353,9 @@ def open_lazy_payload(
         else:
             name = _single_detached_filename(data_file)
             assert name is not None
-            payload_path = _resolve_detached_path(name, source_path=Path(header.source_path))
+            payload_path = _resolve_detached_path(
+                name, source_path=Path(header.source_path), version=header.version
+            )
             file_obj = payload_path.open("rb")
         stream: gzip.GzipFile | bz2.BZ2File
         if encoding in {"gzip", "gz"}:

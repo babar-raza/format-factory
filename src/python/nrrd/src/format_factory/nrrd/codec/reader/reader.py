@@ -167,11 +167,29 @@ def _parse_sizes(header: dict[str, str]) -> list[int]:
 
 
 def _safe_detached_payload(
-    value: str, *, source_path: Path | None, limits: ResourceLimits
+    value: str, *, source_path: Path | None, limits: ResourceLimits, version: int
 ) -> bytes:
     if source_path is None:
         raise NrrdParseError("detached data requires a filesystem header source")
     def read_relative(name: str) -> bytes:
+        if version < 4:
+            # "as of NRRD0004, the signifier of a header-relative file
+            # changed from the presence (at the beginning of the filename)
+            # of './', to the absence of '/'." Pre-NRRD0004, a name without
+            # the explicit './' prefix is spec-defined as relative to the
+            # reader's current working directory rather than the header's
+            # directory -- an unconfined resolution base this reader does
+            # not support automatically (no caller-supplied resolver policy
+            # exists yet to opt into it), so it is refused rather than
+            # silently mishandled.
+            if name.startswith("./"):
+                name = name[2:]
+            elif not name.startswith("/"):
+                raise NrrdParseError(
+                    "pre-NRRD0004 detached data file names must start with "
+                    "'./' to be resolved relative to the header; this reader "
+                    "does not support cwd-relative resolution"
+                )
         relative = Path(name)
         if relative.is_absolute() or ".." in relative.parts:
             raise NrrdParseError("unsafe detached data path")
@@ -297,7 +315,7 @@ def _load(source: BinarySource, *, limits: ResourceLimits, recovery_actions: tup
         raise NrrdParseError("block type is not valid with ASCII encoding")
     payload = (
         _safe_detached_payload(
-            header["data file"], source_path=source_path, limits=limits
+            header["data file"], source_path=source_path, limits=limits, version=version
         )
         if "data file" in header
         else attached

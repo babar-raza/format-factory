@@ -10,6 +10,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact positive and negative test selectors for every baseline and later-version per-axis metadata field (spacings, axis mins, axis maxs, centers, labels, units, kinds, thicknesses), plus the quote-delimited label/unit tokenizer's embedded-quote escaping, unterminated-quote rejection, and no-other-escaping behavior (2 tests added 2026-08-06 when this evidence was extended to cover 2 more obligations whose stale missing_behavior claimed arity/quoting was unenforced when it already was). Unlike NRRD-ENDIAN-SELECTOR-PROOF, this is NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-428BE326FCBC9A6E, SAL-NRRD-OBL-41CA935399A5A312, and SAL-NRRD-OBL-D8AFDA0097117585 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-DETACHED-PATH-VERSION-GATE-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-path-version-gate-001.json",
+      "sha256": "0ddb74585effd11d8f31db536d8242dbcf347f14dba381a36faffab0b40a3add",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-4CAFF21A47F62F19 fully and narrows SAL-NRRD-OBL-09CDF5A28C011CD7 (both NRRD-PAYLOAD-001). The pinned spec source (src-nrrd-001.bin, SRC-NRRD-001) confirms word-for-word: \"as of NRRD0004, the signifier of a header-relative file changed from the presence (at the beginning of the filename) of './', to the absence of '/' ... it becomes impossible for a header to refer to the data file relative to the current working directory of the reader\" (post-change) -- meaning pre-NRRD0004 bare-relative names ARE cwd-relative per spec, a genuinely different, unconfined resolution base. reader.py's _safe_detached_payload and lazy.py's _resolve_detached_path (a separate, duplicated code path for lazy access, proven independently so the two cannot silently diverge) both now branch on version: a leading './' is recognized and stripped as header-relative pre-NRRD0004, and a bare relative name without it is refused rather than resolved unconfined -- a deliberate security-conscious choice, not spec-literal cwd-relative support, leaving the caller-supplied-resolver-policy half of the cluster honestly partial. 12 new tests across 2 files prove all 4 version/prefix combinations plus confirm directory confinement still holds. nrrd suite: 500 -> 512 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-4CAFF21A47F62F19 and SAL-NRRD-OBL-09CDF5A28C011CD7 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "NRRD-ENDIAN-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -69,7 +77,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "c642c67b5355ef9d7c1db88c8dd57cbdc6acc5747815f7ddee3f194e116caf46",
+    "implementation_evidence": "162da4139171a186ae0371a819e7de5f05ecd07f0fbeed3d5aca577a460ff0a5",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -185,20 +193,23 @@
     {
       "capability_id": "NRRD-PAYLOAD-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-DETACHED-PATH-VERSION-GATE-PROOF"
       ],
       "implemented_behavior": [
-        "Attached and header-relative single detached payload reads, skips, bounds, and traversal refusal exist."
+        "Attached and header-relative single detached payload reads, skips, bounds, and traversal refusal exist. Pre-NRRD0004 leading-./ path semantics are now implemented and proven, confirmed against the pinned spec text word-for-word: a leading './' is recognized and stripped as header-relative for versions before NRRD0004, and a bare relative name lacking it is refused with a clear error rather than silently mishandled."
       ],
       "missing_behavior": [
-        "Pre-NRRD0004 leading-./ path semantics and a caller-supplied resolver policy are absent."
+        "A caller-supplied resolver policy for cwd-relative access is not implemented -- deliberately: the pinned spec defines a pre-NRRD0004 bare relative name (no leading './') as resolved relative to the reader's current working directory rather than the header's directory, an unconfined resolution base with no natural confinement boundary. This reader refuses that case rather than resolving it unconfined; an explicit opt-in policy parameter would be needed to support it safely, and does not exist yet."
       ],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe"
+        "tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe",
+        "tests/python/nrrd/test_obligation_detached_path_version_gate.py::test_pre_nrrd0004_refuses_a_bare_relative_name_without_dot_slash"
       ],
       "obligation_id": "SAL-NRRD-OBL-09CDF5A28C011CD7",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe"
+        "tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe",
+        "tests/python/nrrd/test_obligation_detached_path_version_gate.py::test_pre_nrrd0004_resolves_a_leading_dot_slash_name_as_header_relative"
       ],
       "proof_requirements": {
         "negative": [
@@ -778,14 +789,24 @@
     },
     {
       "capability_id": "NRRD-PAYLOAD-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Detached path interpretation does not distinguish pre-NRRD0004 leading-./ rules from NRRD0004+ relative rules."
+      "execution_evidence_ids": [
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-DETACHED-PATH-VERSION-GATE-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Detached path interpretation now distinguishes pre-NRRD0004 from NRRD0004+ rules, confirmed against the pinned spec text word-for-word ('as of NRRD0004, the signifier of a header-relative file changed from the presence ... of \"./\", to the absence of \"/\"'): reader.py's _safe_detached_payload and lazy.py's _resolve_detached_path both recognize and strip a leading './' as header-relative for versions before NRRD0004, and refuse a bare relative name lacking that prefix for those versions (spec-defined as cwd-relative, an unconfined resolution base this reader does not support automatically), while NRRD0004+ continues to treat any non-absolute name as header-relative regardless of a './' prefix."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_detached_path_version_gate.py::test_pre_nrrd0004_refuses_a_bare_relative_name_without_dot_slash",
+        "tests/python/nrrd/test_obligation_detached_path_version_gate.py::test_the_version_gate_still_enforces_directory_confinement"
+      ],
       "obligation_id": "SAL-NRRD-OBL-4CAFF21A47F62F19",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/nrrd/test_obligation_detached_path_version_gate.py::test_pre_nrrd0004_resolves_a_leading_dot_slash_name_as_header_relative",
+        "tests/python/nrrd/test_obligation_detached_path_version_gate.py::test_nrrd0004_and_newer_resolve_a_bare_relative_name_as_header_relative",
+        "tests/python/nrrd/test_obligation_detached_path_version_gate.py::test_nrrd0004_and_newer_still_accept_a_leading_dot_slash_name"
+      ],
       "proof_requirements": {
         "negative": [
           "Reject path forms not legal in each profile."
@@ -794,9 +815,12 @@
           "Profile-specific detached path matrix."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
+        "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py::_resolve_detached_path"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-META-001",
@@ -2326,15 +2350,16 @@
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-path-version-gate-001.json": "0ddb74585effd11d8f31db536d8242dbcf347f14dba381a36faffab0b40a3add",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-grammar-001.json": "34ff1e271e63f2ceb26c72ebe47b1f44e9be6b2ddde57a06068be324b1383229",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-keyvalue-escaping-001.json": "58b4a3c1cb9aefd9d546fb5c0e5dfc1d7f7be90fd15e40b3c7f4424238d11125",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-lazy-payload-001.json": "ee783f0c983b7f4fba3cdcd565c9f09d4fe16dc3fd1799bfd881969d266d3e09",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-security-baseline-001.json": "75e80c2707a235afef3f1ab9980697a5e95e32a90fb18e8e1000fd29bbd2ee82",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
-    "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "91881b17de9982f641410a448f2472c28526367628b92d89cb7a45521109a0c1",
+    "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "738ef7feab3714ba69a4a56547714145e161ac8b22156bf7e868a18bc13ae847",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "38520a9be8ff12f1266999d5f8d79761254ecc327e65e637e39f35c72a86d240",
-    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "f80c57a5e22cb94f68dbdd99b00c02457d5b81710874fbac10bc3da6d57890dd",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "78ae8537ad384f925009106f92db6dab3421f71b3256a1275a4aebd3bf8fc2dd",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "918411fad99952bf7cc5577610fcb57a36b99aeb6d57878a4bf857242e926108",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "83d96605f886fd24e9146410be552cb54d1bb93ee317102f46dc53b164448951",
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "b0807a18aed01727b3ef85c445017ccd891b5840d7558c736f804fdbaa4222ab",
@@ -2346,11 +2371,12 @@
     "tests/python/nrrd/test_obligation_axis_field_arity.py": "3528ed42454f8e5f9c3640f3b005ee3f7f3a0972081d0a2b81ce9d3dcd6751e0",
     "tests/python/nrrd/test_obligation_compressed_trailing_data.py": "5d2e460aa29e58b85602ce8c4000ad9642e3aee4b38be1816d8297db1116f97e",
     "tests/python/nrrd/test_obligation_detached_forms_production.py": "67c0d1384acdb24a892f7fb7c0340a9bd5c3338e2be5069d5d034a996121263a",
+    "tests/python/nrrd/test_obligation_detached_path_version_gate.py": "abb3da066d8d0872f0dae9003d39fbcb45d8262f011dc19625b28130c87b4f5a",
     "tests/python/nrrd/test_obligation_dtype_conversion.py": "303205eec17e82662e3e484870fac7e985c0ed400f36bc62f887c75b686d6425",
     "tests/python/nrrd/test_obligation_header_field_grammar.py": "e70dc004b9be05c2828ba1b1fa99de76484c1190d1abf0ac59d1bd320e89fdee",
     "tests/python/nrrd/test_obligation_keyvalue_duplicates.py": "bd1aeeedc522b3be842bdecf4625b4a639375e84b858b8d94a0e5dd647798ab8",
     "tests/python/nrrd/test_obligation_keyvalue_escaping.py": "9511255a07b3ed1b2fe02b2b533baa82f6e1d7181d1ed1f9187fec4be72b3699",
-    "tests/python/nrrd/test_obligation_lazy_payload_access.py": "f18ff2c44b5e0582b716e675cfd6566bdebc3469b22df73821f5acdfcdab5de1",
+    "tests/python/nrrd/test_obligation_lazy_payload_access.py": "c8337adae10f74da14611b74eda2a4ef12d2edeb9cfb9fdcfc967d1675899a3c",
     "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
     "tests/python/nrrd/test_obligation_payload_skip.py": "631ddbb609282e655c179358af0e8cbaa76038e33343cd482c87aaeecb1b8116",
     "tests/python/nrrd/test_obligation_security_baseline.py": "5788c0182586ffd1b6eae3c22c103660cfc4e5143ee40a282ed6f730c265476e",
@@ -2362,13 +2388,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 32,
-      "missing": 1,
+      "implemented": 33,
       "partial": 29,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 33
+    "unresolved": 32
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
