@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-party-cardinality-validation-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T07:48:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_PARTY_CARDINALITY_VALIDATION_001",
+    "task_kind": "spec-grounded-first-slice-of-a-large-cluster",
+    "root_cause": "SAL-UBL-OBL-03AF3A7D3A76F362 and its cross-capability duplicates (5 obligations sharing the identical 'full schema and cardinality validation remains a mandatory open obligation' finding) had zero cardinality checking of any kind -- a document with 2 cac:PostalAddress elements under one cac:Party validated cleanly, with the projector functions silently using only the first match.",
+    "obligation_targeted": "SAL-UBL-OBL-03AF3A7D3A76F362 (UBL-MODEL-001) and its identical-rule_text siblings across UBL-PARSE-001/DOCTYPES-001/VALIDATE-001/REF-001 -- narrowed, not closed",
+    "acceptance_evidence": "11 new tests prove validate() now detects cardinality violations (more than one occurrence of a minOccurs=0 maxOccurs=1 element) for cac:Party's PostalAddress/Contact fields and cac:PostalAddress's/cac:Contact's own leaf fields, grounded directly in the pinned OASIS UBL 2.3 schema's own PartyType/AddressType/ContactType complexType definitions, while correctly never flagging genuinely repeatable (0..unbounded) fields like PartyTaxScheme or PartyName, and correctly checking nested occurrences (customer party, not only supplier party) anywhere in the document tree.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the cluster's rule_text directly: 'UBL document schemas are W3C XML Schema definitions and conforming documents must be valid against the maindoc schema of their declared type', with required_tests naming 'cardinality violations diagnosed on mutation' specifically -- confirming the obligation cares about detecting cardinality violations, not necessarily a full XSD parser.",
+    "2. Recognized the model layer already structurally enforces correct cardinality BY CONSTRUCTION for already-typed fields (X | None for 0..1, tuple[X, ...] for 0..unbounded) -- the real, previously-undetected gap is in the READER path: a document with MULTIPLE occurrences of a 0..1 XML element is never rejected, because the projector functions (postal_address_of, contact_of, etc.) use find(), which silently returns only the first match and discards extras.",
+    "3. Extracted PartyType's, AddressType's (cac:PostalAddress's underlying complexType name in the schema), and ContactType's complete field lists with exact minOccurs/maxOccurs directly from the pinned OASIS UBL 2.3 release ZIP (.local/format-contracts/acquired/ubl/src-ubl-002.bin, xsd/common/UBL-CommonAggregateComponents-2.3.xsd) -- not from memory. Confirmed PostalAddress, Contact, and PostalAddress's/Contact's already-modeled leaf fields (StreetName, CityName, PostalZone, Country; Name, Telephone, ElectronicMail) are all genuinely minOccurs=0 maxOccurs=1 in the schema, while PartyTaxScheme, PartyName, PartyIdentification are genuinely 0..unbounded (repeatable).",
+    "4. Deliberately scoped the new check to exactly the fields this package already models as typed accessors -- not every field of PartyType/AddressType/ContactType (many of which, like PhysicalLocation, Person, or FinancialAccount, are not modeled at all yet), and not any other UBL complexType (InvoiceLine, TaxTotal, etc.) -- an honest, narrow first slice, not a claim of full schema coverage.",
+    "5. Added _cardinality_diagnostics() to validator.py, walking the whole document tree and flagging any minOccurs=0 maxOccurs=1 element appearing more than once under cac:Party/cac:PostalAddress/cac:Contact. Verified interactively before writing formal tests: a single postal address validates cleanly; two postal addresses under one party are flagged; two street names under one postal address are flagged -- all correct on the first attempt.",
+    "6. Ran the full pre-existing ubl suite (885 tests, zero changes to any fixture) against the new check specifically to look for false positives before writing a single new test -- all 885 passed unchanged, confirming no legitimate fixture in the package's entire existing corpus produces a flagged cardinality shape.",
+    "7. Wrote 11 formal tests covering both violation and non-violation cases for Party/PostalAddress/Contact, including a dedicated control proving genuinely repeatable fields (PartyTaxScheme, PartyName) are never flagged, and a nested-occurrence test (AccountingCustomerParty, not only AccountingSupplierParty) proving the whole-tree walk. Ran ruff (clean), the full ubl suite (896 passed, was 885, +11), and the full 6-format regression (3262 passed, was 3251, +11; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "8. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-3f24642b568314c9, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_party_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_party_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_party_cardinality_validation.py -q -- 11 passed",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/validation/validator.py tests/python/ubl/test_obligation_party_cardinality_validation.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 896 passed, was 885 passed (885 passed unchanged BEFORE writing new tests, confirming zero false positives against the existing corpus)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3262 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3251 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every field's exact cardinality read directly from the pinned OASIS schema ZIP, not invented from memory.",
+    "obligations_moved_breakdown": "0 obligations promoted -- 'full schema and cardinality validation' remains genuinely incomplete (only 3 of ~91 UBL aggregate/basic complexTypes now have cardinality checking, and only for the already-modeled fields within those 3). This is an honest, spec-grounded FIRST INSTALLMENT of a genuinely large cluster, narrowing (not closing) 5 obligations sharing the identical rule_text, with real, tested product capability shipped: a genuine cardinality-violation detector that did not exist before this slice."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

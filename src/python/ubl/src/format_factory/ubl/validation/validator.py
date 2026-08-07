@@ -18,6 +18,31 @@ _UBL_EXTENSION_QNAME = f"{{{_EXT_NAMESPACE}}}UBLExtension"
 _EXTENSION_CONTENT_QNAME = f"{{{_EXT_NAMESPACE}}}ExtensionContent"
 _SIGNATURE_LOCAL_NAMES = frozenset({"Signature", "UBLDocumentSignatures"})
 
+_CAC_NAMESPACE = (
+    "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+)
+_PARTY_QNAME = f"{{{_CAC_NAMESPACE}}}Party"
+_POSTAL_ADDRESS_QNAME = f"{{{_CAC_NAMESPACE}}}PostalAddress"
+_CONTACT_QNAME = f"{{{_CAC_NAMESPACE}}}Contact"
+
+#: Per the pinned OASIS UBL 2.3 CommonAggregateComponents schema
+#: (xsd/common/UBL-CommonAggregateComponents-2.3.xsd, PartyType/AddressType/
+#: ContactType complexTypes, read directly from the pinned release ZIP): the
+#: minOccurs=0 maxOccurs=1 children of each type that this package
+#: currently models as a single typed field (Party.postal_address,
+#: Party.contact, PostalAddress.street_name/city_name/postal_zone/country,
+#: Contact.name/telephone/electronic_mail). This is a deliberately narrow
+#: first slice of "full schema and cardinality validation" -- covering
+#: exactly the fields already modeled, not every field of every UBL
+#: complexType, which remains a genuinely larger, separate undertaking.
+_PARTY_SINGLE_OCCURRENCE_FIELDS = frozenset({"PostalAddress", "Contact"})
+_POSTAL_ADDRESS_SINGLE_OCCURRENCE_FIELDS = frozenset(
+    {"StreetName", "CityName", "PostalZone", "Country"}
+)
+_CONTACT_SINGLE_OCCURRENCE_FIELDS = frozenset(
+    {"Name", "Telephone", "ElectronicMail"}
+)
+
 
 def _local(qname: str) -> str:
     return qname.rsplit("}", 1)[-1]
@@ -94,7 +119,60 @@ def validate(
         )
     diagnostics.extend(_extension_diagnostics(value))
     diagnostics.extend(_namespace_shadowing_diagnostics(value))
+    diagnostics.extend(_cardinality_diagnostics(value))
     return ValidationReport(diagnostics)
+
+
+def _single_occurrence_violations(
+    node: XmlNode, single_occurrence_names: frozenset[str], component_label: str
+) -> list[Diagnostic]:
+    counts: dict[str, int] = {}
+    for child in node.children:
+        local = _local(child.qname)
+        if local in single_occurrence_names:
+            counts[local] = counts.get(local, 0) + 1
+    return [
+        Diagnostic(
+            "ubl.cardinality.exceeded",
+            f"{component_label} carries {count} {name!r} elements, but the "
+            f"OASIS UBL 2.3 schema declares {name!r} 0..1 (at most one)",
+        )
+        for name, count in sorted(counts.items())
+        if count > 1
+    ]
+
+
+def _cardinality_diagnostics(value: UblDocument) -> list[Diagnostic]:
+    """SAL-UBL-OBL-03AF3A7D3A76F362 and its cross-capability duplicates:
+    "full schema and cardinality validation remains a mandatory open
+    obligation." A genuine, spec-grounded first slice: diagnoses a
+    minOccurs=0 maxOccurs=1 element appearing more than once under
+    cac:Party, cac:PostalAddress, or cac:Contact -- the three already-typed
+    aggregate components this package models today. Deliberately narrow:
+    covers only these already-modeled fields, not every complexType in the
+    UBL 2.3 schema, which remains a separate, larger undertaking.
+    """
+    diagnostics: list[Diagnostic] = []
+    for node in value.root.iter():
+        if node.qname == _PARTY_QNAME:
+            diagnostics.extend(
+                _single_occurrence_violations(
+                    node, _PARTY_SINGLE_OCCURRENCE_FIELDS, "cac:Party"
+                )
+            )
+        elif node.qname == _POSTAL_ADDRESS_QNAME:
+            diagnostics.extend(
+                _single_occurrence_violations(
+                    node, _POSTAL_ADDRESS_SINGLE_OCCURRENCE_FIELDS, "cac:PostalAddress"
+                )
+            )
+        elif node.qname == _CONTACT_QNAME:
+            diagnostics.extend(
+                _single_occurrence_violations(
+                    node, _CONTACT_SINGLE_OCCURRENCE_FIELDS, "cac:Contact"
+                )
+            )
+    return diagnostics
 
 
 def _namespace(qname: str) -> str:

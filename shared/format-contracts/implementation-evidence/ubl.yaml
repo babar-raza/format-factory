@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-PARTY-CARDINALITY-VALIDATION-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-party-cardinality-validation-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) 6 obligations sharing the "full schema and cardinality validation remains a mandatory open obligation" finding across UBL-MODEL-001/DOCTYPES-001/PARSE-001/VALIDATE-001/REF-001 (5 moved missing->partial; SAL-UBL-OBL-788B2748204338B8, already partial, gains updated citations). Before this slice, no cardinality checking existed anywhere -- a document with 2 cac:PostalAddress elements under one cac:Party validated cleanly, with the projector functions silently using only the first match via find(). Extracted PartyType''s, AddressType''s (cac:PostalAddress''s underlying complexType), and ContactType''s complete field lists with exact minOccurs/maxOccurs directly from the pinned OASIS UBL 2.3 release ZIP (.local/format-contracts/acquired/ubl/src-ubl-002.bin, xsd/common/UBL-CommonAggregateComponents-2.3.xsd), not from memory. Added _cardinality_diagnostics() to validator.py, deliberately scoped to exactly the fields this package already models as typed accessors (Party.postal_address/contact; PostalAddress.street_name/city_name/postal_zone/country; Contact.name/telephone/electronic_mail) -- not every field of every UBL complexType, which remains a genuinely larger, separate undertaking, honestly documented as still missing. Verified zero false positives against the entire pre-existing 885-test ubl suite before writing a single new test. 11 new tests prove violation detection for each single-occurrence field, correct non-flagging of genuinely repeatable fields (PartyTaxScheme, PartyName), and whole-tree detection (customer party, not only supplier party). ubl suite: 885 -> 896 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, with every field''s cardinality read directly from the pinned schema, not invented. Covers SAL-UBL-OBL-03AF3A7D3A76F362, SAL-UBL-OBL-3C2E2EA8D3B697C9, SAL-UBL-OBL-783649FDF531B0F9, SAL-UBL-OBL-9736787B52CB148C, SAL-UBL-OBL-9C170E327B30FBD3, and SAL-UBL-OBL-788B2748204338B8 only; it supports no other obligation and promotes no product state.'
 - evidence_id: UBL-NAMESPACE-SHADOWING-SECURITY-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-namespace-shadowing-security-001.json
   expected_result: PASS
@@ -481,14 +486,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-03AF3A7D3A76F362
   capability_id: UBL-MODEL-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_a_single_postal_address_validates_cleanly
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_tax_schemes_are_not_a_violation_they_are_repeatable
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_names_are_not_a_violation_they_are_repeatable
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_contacts_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_street_names_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_countries_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_contact_with_two_telephone_numbers_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_nested_at_a_customer_party_is_also_checked_not_only_supplier
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  - UBL-PARTY-CARDINALITY-VALIDATION-PROOF
+  implemented_behavior:
+  - 'A genuine, spec-grounded first slice of cardinality validation now exists: validate() detects a minOccurs=0 maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema''s own PartyType/AddressType/ContactType complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, or cac:Contact -- the three already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName are proven to never be flagged. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 3 complexTypes out of the full UBL 2.3 schema''s ~91 root document types and their many aggregate/basic components.'
   missing_behavior:
-  - 'validator.py''s own docstring states this chassis validation "is deliberately not an XSD-conformance claim" and that "full schema and cardinality validation remains a mandatory open obligation." This is a real, confirmed, explicitly self-documented gap -- not force-promoted and not left as a generic placeholder.'
+  - 'Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact''s already-modeled single-occurrence fields are checked so far. validator.py''s own docstring still correctly states this chassis validation is not a complete XSD-conformance claim.'
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -1585,14 +1604,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-3C2E2EA8D3B697C9
   capability_id: UBL-DOCTYPES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_a_single_postal_address_validates_cleanly
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_tax_schemes_are_not_a_violation_they_are_repeatable
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_names_are_not_a_violation_they_are_repeatable
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_contacts_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_street_names_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_countries_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_contact_with_two_telephone_numbers_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_nested_at_a_customer_party_is_also_checked_not_only_supplier
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  - UBL-PARTY-CARDINALITY-VALIDATION-PROOF
+  implemented_behavior:
+  - 'A genuine, spec-grounded first slice of cardinality validation now exists: validate() detects a minOccurs=0 maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema''s own PartyType/AddressType/ContactType complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, or cac:Contact -- the three already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName are proven to never be flagged. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 3 complexTypes out of the full UBL 2.3 schema''s ~91 root document types and their many aggregate/basic components.'
   missing_behavior:
-  - 'Same confirmed status as UBL-MODEL-001''s SAL-UBL-OBL-03AF3A7D3A76F362 (identical rule_text). validator.py''s own docstring states this chassis validation "is deliberately not an XSD-conformance claim" and that "full schema and cardinality validation remains a mandatory open obligation." This is a real, confirmed, explicitly self-documented gap -- not force-promoted and not left as a generic placeholder.'
+  - 'Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact''s already-modeled single-occurrence fields are checked so far. validator.py''s own docstring still correctly states this chassis validation is not a complete XSD-conformance claim.'
   proof_requirements:
     positive:
     - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every
@@ -2745,14 +2778,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-783649FDF531B0F9
   capability_id: UBL-PARSE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_a_single_postal_address_validates_cleanly
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_tax_schemes_are_not_a_violation_they_are_repeatable
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_names_are_not_a_violation_they_are_repeatable
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_contacts_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_street_names_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_countries_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_contact_with_two_telephone_numbers_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_nested_at_a_customer_party_is_also_checked_not_only_supplier
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  - UBL-PARTY-CARDINALITY-VALIDATION-PROOF
+  implemented_behavior:
+  - 'A genuine, spec-grounded first slice of cardinality validation now exists: validate() detects a minOccurs=0 maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema''s own PartyType/AddressType/ContactType complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, or cac:Contact -- the three already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName are proven to never be flagged. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 3 complexTypes out of the full UBL 2.3 schema''s ~91 root document types and their many aggregate/basic components.'
   missing_behavior:
-  - 'Same confirmed status as UBL-DOCTYPES-001''s SAL-UBL-OBL-3C2E2EA8D3B697C9 (identical rule_text). Same confirmed status as UBL-MODEL-001''s SAL-UBL-OBL-03AF3A7D3A76F362 (identical rule_text). validator.py''s own docstring states this chassis validation "is deliberately not an XSD-conformance claim" and that "full schema and cardinality validation remains a mandatory open obligation." This is a real, confirmed, explicitly self-documented gap -- not force-promoted and not left as a generic placeholder.'
+  - 'Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact''s already-modeled single-occurrence fields are checked so far. validator.py''s own docstring still correctly states this chassis validation is not a complete XSD-conformance claim.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -2764,6 +2811,7 @@ obligations:
   status: partial
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics
   - src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex
   - src/python/ubl/src/format_factory/ubl/model/codelist.py::CodeListRegistry
   - src/python/ubl/src/format_factory/ubl/validation/profiles.py::ProfileValidatorRegistry
@@ -2771,14 +2819,17 @@ obligations:
   - tests/python/ubl/test_obligation_lifecycle_io.py::test_validate_returns_a_structured_report_not_an_exception
   - tests/python/ubl/test_obligation_lifecycle_io.py::test_validate_reports_a_diagnostic_rather_than_raising_for_a_semantic_issue
   - tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_a_single_postal_address_validates_cleanly
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-PARTY-CARDINALITY-VALIDATION-PROOF
   implemented_behavior:
-  - '4 of the 5 named layers exist as separate, independently invokable, diagnostic-returning capabilities rather than one monolithic all-or-nothing check: syntax (XML parse errors), referential (DocumentIndex.duplicate_line_ids), code-list (CodeListRegistry.validate_code), and pluggable business-rule (ProfileValidatorRegistry) are each separately callable and each return structured diagnostics rather than raising. validate() itself returns a ValidationReport rather than an exception, proven directly.'
+  - '4 of the 5 named layers exist as separate, independently invokable, diagnostic-returning capabilities rather than one monolithic all-or-nothing check: syntax (XML parse errors), referential (DocumentIndex.duplicate_line_ids), code-list (CodeListRegistry.validate_code), and pluggable business-rule (ProfileValidatorRegistry) are each separately callable and each return structured diagnostics rather than raising. validate() itself returns a ValidationReport rather than an exception, proven directly. The 5th layer, schema/XSD-conformance, now has a genuine first slice too: validate() detects cardinality violations (a minOccurs=0 maxOccurs=1 element occurring more than once) for cac:Party/cac:PostalAddress/cac:Contact''s already-modeled fields, grounded directly in the pinned OASIS UBL 2.3 schema.'
   missing_behavior:
-  - 'Schema/XSD-conformance validation is the one confirmed missing layer -- validator.py''s own docstring states ''this chassis validation is deliberately not an XSD-conformance claim,'' the same confirmed gap as SAL-UBL-OBL-03AF3A7D3A76F362 (UBL-MODEL-001). The 5 layers also are not unified into one combined call returning all diagnostics together -- a caller currently invokes each layer separately.'
+  - 'Full schema/XSD-conformance validation remains the one confirmed incomplete layer -- only cardinality checking for 3 already-modeled complexTypes'' single-occurrence fields exists so far, not type/pattern/full-cardinality validation across the whole UBL 2.3 schema''s ~91 root document types and their many components, the same confirmed gap as SAL-UBL-OBL-03AF3A7D3A76F362 (UBL-MODEL-001). The 5 layers also are not unified into one combined call returning all diagnostics together -- a caller currently invokes each layer separately.'
   proof_requirements:
     positive:
     - Per-layer positive/negative fixtures; layered report structure asserted machine-readable.
@@ -3476,14 +3527,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-9736787B52CB148C
   capability_id: UBL-VALIDATE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_a_single_postal_address_validates_cleanly
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_tax_schemes_are_not_a_violation_they_are_repeatable
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_names_are_not_a_violation_they_are_repeatable
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_contacts_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_street_names_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_countries_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_contact_with_two_telephone_numbers_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_nested_at_a_customer_party_is_also_checked_not_only_supplier
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  - UBL-PARTY-CARDINALITY-VALIDATION-PROOF
+  implemented_behavior:
+  - 'A genuine, spec-grounded first slice of cardinality validation now exists: validate() detects a minOccurs=0 maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema''s own PartyType/AddressType/ContactType complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, or cac:Contact -- the three already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName are proven to never be flagged. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 3 complexTypes out of the full UBL 2.3 schema''s ~91 root document types and their many aggregate/basic components.'
   missing_behavior:
-  - 'Same confirmed status as UBL-PARSE-001''s SAL-UBL-OBL-783649FDF531B0F9 (identical rule_text). Same confirmed status as UBL-DOCTYPES-001''s SAL-UBL-OBL-3C2E2EA8D3B697C9 (identical rule_text). Same confirmed status as UBL-MODEL-001''s SAL-UBL-OBL-03AF3A7D3A76F362 (identical rule_text). validator.py''s own docstring states this chassis validation "is deliberately not an XSD-conformance claim" and that "full schema and cardinality validation remains a mandatory open obligation." This is a real, confirmed, explicitly self-documented gap -- not force-promoted and not left as a generic placeholder.'
+  - 'Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact''s already-modeled single-occurrence fields are checked so far. validator.py''s own docstring still correctly states this chassis validation is not a complete XSD-conformance claim.'
   proof_requirements:
     positive:
     - Per-layer positive/negative fixtures; layered report structure asserted machine-readable.
@@ -3535,14 +3600,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-9C170E327B30FBD3
   capability_id: UBL-REF-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_a_single_postal_address_validates_cleanly
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_tax_schemes_are_not_a_violation_they_are_repeatable
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_names_are_not_a_violation_they_are_repeatable
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_contacts_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_street_names_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_countries_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_contact_with_two_telephone_numbers_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_nested_at_a_customer_party_is_also_checked_not_only_supplier
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  - UBL-PARTY-CARDINALITY-VALIDATION-PROOF
+  implemented_behavior:
+  - 'A genuine, spec-grounded first slice of cardinality validation now exists: validate() detects a minOccurs=0 maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema''s own PartyType/AddressType/ContactType complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, or cac:Contact -- the three already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName are proven to never be flagged. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 3 complexTypes out of the full UBL 2.3 schema''s ~91 root document types and their many aggregate/basic components.'
   missing_behavior:
-  - 'Same confirmed status as UBL-PARSE-001''s SAL-UBL-OBL-783649FDF531B0F9 (identical rule_text). Same confirmed status as UBL-DOCTYPES-001''s SAL-UBL-OBL-3C2E2EA8D3B697C9 (identical rule_text). Same confirmed status as UBL-MODEL-001''s SAL-UBL-OBL-03AF3A7D3A76F362 (identical rule_text). validator.py''s own docstring states this chassis validation "is deliberately not an XSD-conformance claim" and that "full schema and cardinality validation remains a mandatory open obligation." This is a real, confirmed, explicitly self-documented gap -- not force-promoted and not left as a generic placeholder.'
+  - 'Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact''s already-modeled single-occurrence fields are checked so far. validator.py''s own docstring still correctly states this chassis validation is not a complete XSD-conformance claim.'
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
