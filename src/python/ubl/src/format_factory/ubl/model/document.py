@@ -2,10 +2,33 @@
 
 from __future__ import annotations
 
+import hashlib
 from dataclasses import dataclass, replace
 from typing import ClassVar, Iterator, Mapping
 
 from .._generated import ROOT_NAMESPACES
+
+
+def _canonical_node_bytes(node: "XmlNode") -> bytes:
+    """A deterministic structural byte encoding of one XmlNode subtree
+    (qname, its already-sorted attributes, text, children recursively,
+    tail) -- not real XML serialization, just enough structure for a
+    stable hash. Attributes are already sorted by XmlNode's own
+    __post_init__ invariant, so no re-sorting is needed here."""
+
+    parts = [node.qname.encode("utf-8"), b"\x00"]
+    for key, value in node.attributes:
+        parts.append(key.encode("utf-8"))
+        parts.append(b"=")
+        parts.append(value.encode("utf-8"))
+        parts.append(b"\x00")
+    parts.append(node.text.encode("utf-8"))
+    parts.append(b"\x00")
+    for child in node.children:
+        parts.append(_canonical_node_bytes(child))
+    parts.append(node.tail.encode("utf-8"))
+    parts.append(b"\x00")
+    return b"".join(parts)
 
 #: cbc:UBLVersionID identifies the UBL specification version a document
 #: instance declares (UBL-PROFILE-001 / SAL-UBL-OBL-FC5C33152AFDB187).
@@ -80,6 +103,22 @@ class XmlNode:
 
     def with_children(self, children: tuple["XmlNode", ...]) -> "XmlNode":
         return replace(self, children=children)
+
+    @property
+    def checksum(self) -> str:
+        """SHA-256 hex digest of this subtree's canonical structural
+        content (qname, attributes, text, children, tail).
+
+        UBL-EXT-001 / SAL-UBL-OBL-E98EB489DAC77A1A: "expose their...
+        checksums without decoding side effects" -- an extension payload
+        is untrusted data this package never decodes or evaluates, the
+        same guarantee already proven for BinaryObject.checksum. Hashing
+        the tree's own structural encoding (not a real XML serialization)
+        is sufficient and avoids depending on any particular XML writer's
+        own escaping/formatting choices for what is meant to be a content
+        identity check, not a byte-for-byte wire-format proof.
+        """
+        return hashlib.sha256(_canonical_node_bytes(self)).hexdigest()
 
 
 @dataclass(frozen=True, slots=True)

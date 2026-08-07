@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-extension-payload-checksum-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T12:54:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_EXTENSION_PAYLOAD_CHECKSUM_001",
+    "task_kind": "build-new-capability-mirroring-an-already-proven-precedent",
+    "root_cause": "Surveyed UBL's remaining partial obligations for a clean, narrow candidate. SAL-UBL-OBL-E98EB489DAC77A1A's missing_behavior precisely named the one remaining gap: extension payloads had no dedicated byte-serialization helper to hash at all, distinct from embedded binary attachments (BinaryObject.checksum), which an earlier tick this session already closed.",
+    "obligation_targeted": "SAL-UBL-OBL-E98EB489DAC77A1A (UBL-EXT-001) -- promoted partial->implemented",
+    "acceptance_evidence": "5 new tests prove: a checksum is exposed as a 64-hex-char SHA-256 digest; identical extension content produces the same checksum; different text content and different attributes each independently produce a different checksum; the checksum is stable across repeated access.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the obligation's full rule_text: 'Treat extension payloads and embedded binary attachments as untrusted data; expose their media types and checksums without decoding side effects, and gate any external attachment retrieval behind allowlists, byte limits, and timeouts.' Confirmed via the existing evidence that media types (BinaryObject.mime_code) and binary-attachment checksums (BinaryObject.checksum) were already proven in an earlier tick; only extension-payload checksums remained unbuilt.",
+    "2. Read model/document.py directly and confirmed extensions are preserved purely as XmlNode subtrees with no byte-serialization or hashing capability anywhere -- no code path could hash an extension payload at all before this slice.",
+    "3. Found writer.py already has a private _to_element(node) helper converting XmlNode subtrees to ElementTree elements for the top-level document serializer, but deliberately did not reuse it directly: real XML serialization depends on the writer's own escaping/namespace-registration choices, which are appropriate for wire-format output but not for a stable content-identity hash (the same content re-serialized by a different writer configuration could produce different bytes despite being semantically identical).",
+    "4. Designed a small, self-contained _canonical_node_bytes(node) helper in model/document.py instead: a deterministic structural byte encoding (qname, attributes, text, children recursively, tail) that depends only on XmlNode's own already-sorted-attributes invariant, not on any XML writer's formatting choices.",
+    "5. Added XmlNode.checksum as a property (mirroring BinaryObject.checksum's exact style and docstring pattern), hashing _canonical_node_bytes(self) with SHA-256.",
+    "6. Probed directly before writing formal tests: two extensions with identical content produced identical checksums; different text content produced different checksums; the checksum was stable across repeated property access. All 4 probes correct on the first attempt.",
+    "7. Wrote 5 formal tests in a new file (test_obligation_extension_payload_checksum.py, mirroring test_obligation_business_value_types.py's BinaryObject.checksum test structure), all passing on the first attempt.",
+    "8. Ran ruff (clean), the full ubl suite (962 passed, was 957, +5), and the full 6-format regression (3432 passed, was 3427, +5; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "9. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-15f8f73c0f89b1ca, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "10. Promoted the obligation to implemented: all three of its rule_text's clauses are now satisfied -- media types (already proven), checksums (both binary attachments and extension payloads now proven), and gated external retrieval (correctly satisfied by the structural absence of any fetch mechanism at all, confirmed by this package's own whole-package static import scan, the same pattern already accepted elsewhere in this package for analogous no-attack-surface obligations)."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/model/document.py",
+    "tests/python/ubl/test_obligation_extension_payload_checksum.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/model/document.py",
+    "tests/python/ubl/test_obligation_extension_payload_checksum.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_extension_payload_checksum.py -q -- 5 passed",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/model/document.py tests/python/ubl/test_obligation_extension_payload_checksum.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 962 passed, was 957 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3432 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3427 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule.",
+    "obligations_moved_breakdown": "SAL-UBL-OBL-E98EB489DAC77A1A (UBL-EXT-001) partial->implemented. A genuine new capability (XmlNode.checksum) added, mirroring an already-proven precedent (BinaryObject.checksum), closing this obligation's own last named gap."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

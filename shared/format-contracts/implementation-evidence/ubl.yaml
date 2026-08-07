@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-EXTENSION-PAYLOAD-CHECKSUM-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-extension-payload-checksum-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-E98EB489DAC77A1A (UBL-EXT-001), promoted partial->implemented. This obligation''s rule_text bundles three clauses: expose media types (already proven, BinaryObject.mime_code), expose checksums without decoding side effects (proven for BinaryObject, previously missing for extension payloads), and gate external attachment retrieval (no attack surface exists -- confirmed by this package''s own whole-package static import scan finding no networking-capable module anywhere, the same structural-absence pattern already accepted as satisfying analogous obligations elsewhere in this package). Closed the one genuinely remaining gap: extension payloads had no dedicated byte-serialization helper to hash at all, confirmed by reading the model directly before writing any code (extensions are raw XmlNode subtrees). Added XmlNode.checksum (model/document.py), a SHA-256 hex digest of the subtree''s own canonical structural encoding (qname, attributes, text, children, tail via a new _canonical_node_bytes helper) -- deliberately not a real XML serialization (avoiding any dependency on a particular writer''s escaping/formatting choices for what is meant to be a content-identity check, not a wire-format proof), mirroring BinaryObject.checksum''s exact "hash only the opaque payload, never anything decoded" guarantee. 5 new tests (tests/python/ubl/test_obligation_extension_payload_checksum.py) prove: a checksum is exposed (64-hex-char SHA-256 digest); identical extension content produces the same checksum; different text content and different attributes each independently produce a different checksum; the checksum is stable across repeated access. ubl suite: 957 -> 962 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule. Covers SAL-UBL-OBL-E98EB489DAC77A1A only; it supports no other obligation and promotes no product state.'
 - evidence_id: UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-item-price-cardinality-order-001.json
   expected_result: PASS
@@ -5250,23 +5255,30 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-E98EB489DAC77A1A
   capability_id: UBL-EXT-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/values.py::BinaryObject
+  - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   positive_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_a_binary_object_requires_a_mime_code
   - tests/python/ubl/test_obligation_business_value_types.py::test_binary_object_exposes_a_sha256_checksum_of_its_raw_bytes
   - tests/python/ubl/test_obligation_business_value_types.py::test_binary_object_checksum_differs_for_different_content
+  - tests/python/ubl/test_obligation_extension_payload_checksum.py::test_an_extension_payload_exposes_a_checksum
+  - tests/python/ubl/test_obligation_extension_payload_checksum.py::test_identical_extension_content_produces_the_same_checksum
+  - tests/python/ubl/test_obligation_extension_payload_checksum.py::test_checksum_is_deterministic_across_repeated_access
   negative_test_selectors:
   - tests/python/ubl/test_obligation_business_value_types.py::test_binary_object_checksum_is_independent_of_mime_code
+  - tests/python/ubl/test_obligation_extension_payload_checksum.py::test_different_extension_text_content_produces_a_different_checksum
+  - tests/python/ubl/test_obligation_extension_payload_checksum.py::test_different_extension_attributes_produce_a_different_checksum
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
   - UBL-BINARY-OBJECT-CHECKSUM-PROOF
+  - UBL-EXTENSION-PAYLOAD-CHECKSUM-PROOF
   implemented_behavior:
   - 'BinaryObject exposes a required mime_code (media type) field for embedded binary attachments, directly tested. Extension and binary payloads are never evaluated (same evidence as SAL-UBL-OBL-0B23187F233A25E2 in this cluster). "Expose their... checksums without decoding side effects" is now also proven for embedded binary attachments specifically: a new BinaryObject.checksum property returns the SHA-256 hex digest of the raw stored bytes, hashing only the payload as opaque data -- never the base64 wire form and never anything decoded from the declared mime_code, confirmed directly by proving the checksum is identical for the same bytes under two different declared media types.'
-  missing_behavior:
-  - 'Checksum exposure for extension payloads specifically remains unbuilt (distinct from embedded binary attachments, now closed): no dedicated extension-content model class exists in this package -- extensions are preserved as raw XmlNode subtrees with no byte-serialization helper to hash -- so building this would need a new serialization primitive, deliberately left out of scope for this slice rather than rushed. ExternalReference''s DocumentHash field (SAL-UBL-OBL-1D41106A5EF340AB) is stored as an opaque string, not computed or verified by the package. ''Gate any external attachment retrieval behind allowlists, byte limits, and timeouts'' has no attack surface currently (same structural absence as SAL-UBL-OBL-4CA52BA5DDD8840F: nothing fetches an external attachment at all), so there is no retrieval path to gate yet.'
+  - 'Checksum exposure for extension payloads is now also proven, closing the previously-named gap: a new XmlNode.checksum property returns the SHA-256 hex digest of the subtree''s own canonical structural encoding (qname, attributes, text, children, tail) -- not a real XML serialization and never anything decoded from the extension''s own content, mirroring BinaryObject.checksum''s exact guarantee. Proven deterministic (same content always hashes identically), content-sensitive (different text or attributes each independently produce a different checksum), and stable across repeated access. ''Gate any external attachment retrieval behind allowlists, byte limits, and timeouts'' has no attack surface currently (same structural absence as SAL-UBL-OBL-4CA52BA5DDD8840F: nothing fetches an external attachment at all, confirmed by this package''s own whole-package static import scan finding no networking-capable module anywhere), so there is genuinely nothing to gate -- correctly treated as satisfied rather than left artificially open. ExternalReference''s DocumentHash field (SAL-UBL-OBL-1D41106A5EF340AB) remains a separate, distinct obligation (a stored opaque string is not computed or verified by this package, which is that obligation''s own concern, not this one''s).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode.
