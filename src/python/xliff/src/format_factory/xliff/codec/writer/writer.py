@@ -12,6 +12,7 @@ from format_factory.core import ResourceLimits, TextDestination
 
 from ...errors import XliffWriteError
 from ...model import (
+    DataElement,
     ExtensionNode,
     Group,
     InlineNode,
@@ -197,12 +198,27 @@ def _write_segment(parent: ET.Element, value: Segment) -> None:
         _append_extension(element, extension)
 
 
+def _write_original_data(parent: ET.Element, items: list[DataElement]) -> None:
+    if not items:
+        return
+    container = ET.SubElement(parent, f"{{{XLIFF_NAMESPACE}}}originalData")
+    for value in items:
+        data = ET.SubElement(container, f"{{{XLIFF_NAMESPACE}}}data")
+        if value.id:
+            data.set("id", value.id)
+        if value.dir:
+            data.set("dir", value.dir)
+        _set_attributes(data, value.attributes, reserved={"id", "dir"})
+        _serialize_inline(data, value.content)
+
+
 def _write_unit(parent: ET.Element, value: Unit) -> None:
     element = ET.SubElement(parent, f"{{{XLIFF_NAMESPACE}}}unit")
     if value.id:
         element.set("id", value.id)
     _set_attributes(element, value.attributes, reserved={"id"})
     _write_notes(element, value.notes)
+    _write_original_data(element, value.original_data)
     for child in value.children:
         if isinstance(child, Segment):
             _write_segment(element, child)

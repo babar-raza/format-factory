@@ -1,0 +1,73 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-original-data-element-modeling-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T09:01:03Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_ORIGINAL_DATA_MODELING_001",
+    "task_kind": "add-typed-model-plus-reader-writer-round-trip-plus-validation-for-a-genuinely-unbuilt-cluster",
+    "root_cause": "Event 221's exact_next_action named the originalData/data element modeling cluster as the next largest untouched, genuinely-buildable XLIFF opportunity. No originalData/data modeling existed at all -- it fell into the generic ExtensionNode fallback, and InlineElement.data_ref merely read attribute values without resolving them to anything.",
+    "obligation_targeted": "SAL-XLIFF-OBL-C6C67E6C253C9EAB (XLIFF-PARSE-001) and SAL-XLIFF-OBL-C632C43201760C05 (XLIFF-INLINE-001), identical rule_text -- both promoted missing->partial",
+    "acceptance_evidence": "10 new tests prove: originalData round-trips through dumps/reload, structural ordering (before segments), dataRef/dataRefStart/dataRefEnd resolution (positive and negative), pc pairing enforcement (both one-sided-missing directions), and source/target independence.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the pinned XLIFF 2.1 spec HTML directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin) for originalData's (4.2.2.10) and data's (4.2.2.11) formal content models: originalData is a unit-level container of one-or-more data elements; data holds non-translatable text plus zero-or-more cp elements, with a REQUIRED id attribute.",
+    "2. Confirmed via reading reader.py's _parse_unit dispatch loop that <originalData> currently fell into the generic 'else: unit.children.append(_extension(child))' branch -- preserved as an opaque byte blob, not typed or validated, but also not silently lost (an existing preservation safety net).",
+    "3. Read the pinned XLIFF 2.1 schematron directly (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/xliff_core_2.1.sch) for the exact dataRef-family resolution rules: F15 (generic dataRef on any inline element must resolve to a data id in the same unit), F16S/F16T (pc's dataRefEnd must resolve, source/target separately), F17S/F17T (pc's dataRefStart must resolve, source/target separately), plus each pattern's second assertion requiring dataRefStart/dataRefEnd to be used as a pair.",
+    "4. Added DataElement(id, content: list[InlineNode], dir, attributes) to model/document.py, reusing InlineNode for data's content since its content model (text + optional cp children) is structurally identical to source/target's mixed content -- a cp child simply round-trips generically as InlineElement, matching this package's existing precedent for unmodeled tags rather than inventing dedicated cp modeling. Added Unit.original_data: list[DataElement].",
+    "5. Wired reader.py's _parse_unit to recognize <originalData> and parse it via a new _parse_original_data() into the typed field, reusing the existing generic _parse_inline() for each <data>'s content.",
+    "6. Wired writer.py's _write_unit to call a new _write_original_data(), emitting the container in the correct position (immediately after notes, before segments, matching the unit content model's own declared order) -- reusing the existing generic _serialize_inline() for each <data>'s content.",
+    "7. Verified model+reader+writer round-trip interactively before touching the validator: parsed a 2-data-element fixture, confirmed typed content, re-serialized, confirmed byte-level structural correctness and reload fidelity -- correct on the first attempt.",
+    "8. Added _data_ref_diagnostics(unit, diagnostics) to validator.py: resolves every dataRef/dataRefStart/dataRefEnd attribute on any inline element against the unit's original_data ids (checked per content type, source/target independently), and flags a pc with only one of dataRefStart/dataRefEnd present as unpaired.",
+    "9. Verified interactively before writing formal tests: resolved dataRef valid; unresolved dataRef a violation; paired dataRefStart/dataRefEnd both resolved valid; start-only unpaired; end-unresolved-with-start-present a violation; no dataRef usage anywhere stays clean -- all 6 cases correct on the first attempt.",
+    "10. Ran the full pre-existing xliff suite (397 tests, zero new fixtures) against the new check BEFORE writing any new test -- surfaced ONE genuine, pre-existing false positive: test_production_namespace.py's SAMPLE constant had a <pc dataRefStart=\"d1\" dataRefEnd=\"d2\"> with no <originalData> anywhere in the document at all, meaning this fixture was never actually spec-conformant (the ids never resolved to anything real). Fixed by adding a matching <originalData> block with real <data id=\"d1\">/<data id=\"d2\"> elements to the fixture -- the same 'correct the fixture, not the validation' discipline already applied this session (XLIFF Event 206, UBL Event 191) -- re-ran and confirmed all 397 pre-existing tests pass with the corrected fixture.",
+    "11. Wrote 10 formal tests, all passing on the first attempt.",
+    "12. Ran ruff (clean across all 8 changed files), the full xliff suite (407 passed, was 397, +10), and the full 6-format regression (3314 passed, was 3304, +10; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "13. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-77954209ddb31b03, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_original_data_element_modeling.py",
+    "tests/python/xliff/test_production_namespace.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_original_data_element_modeling.py",
+    "tests/python/xliff/test_production_namespace.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_original_data_element_modeling.py -q -- 10 passed",
+    ".venv/Scripts/pytest tests/python/xliff/test_production_namespace.py -q -- 20 passed (after fixing 1 self-inflicted-by-discovery pre-existing fixture)",
+    ".venv/Scripts/python -m ruff check (8 changed source/test files) -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 407 passed, was 397 passed (397 passed unchanged BEFORE writing new tests, after the fixture fix, confirming zero false positives against a spec-conformant baseline)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3314 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3304 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations moved missing->partial",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every claim grounded directly in the pinned XLIFF 2.1 spec HTML and pinned schematron source.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-C6C67E6C253C9EAB (XLIFF-PARSE-001) and SAL-XLIFF-OBL-C632C43201760C05 (XLIFF-INLINE-001) both missing->partial. Stays partial, not implemented: <cp> sub-element content round-trips generically rather than being dedicated-modeled, and <data>'s own REQUIRED id attribute is not separately enforced as a diagnostic if absent -- both honestly out of this tick's scope."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

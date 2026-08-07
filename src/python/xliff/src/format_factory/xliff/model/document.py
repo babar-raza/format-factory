@@ -38,6 +38,27 @@ class ExtensionNode:
 
 
 @dataclass(slots=True)
+class DataElement:
+    """`<data>` -- storage for the original (native) code data of one inline
+    code, referenced by `id` from an inline element's `dataRef`,
+    `dataRefStart`, or `dataRefEnd` attribute (XLIFF Core 4.2.2.11 data).
+
+    Content is modeled the same way as source/target inline content
+    (`list[InlineNode]`) since `<data>`'s own content model -- non-
+    translatable text plus zero-or-more `<cp>` elements -- is structurally
+    the same shape; a literal `<cp>` child simply round-trips as a generic
+    `InlineElement(tag="cp", ...)`, matching this package's existing
+    "unknown tags round-trip generically" precedent rather than requiring
+    dedicated `<cp>` modeling.
+    """
+
+    id: str
+    content: list[InlineNode] = field(default_factory=list)
+    dir: str = ""
+    attributes: dict[str, str] = field(default_factory=dict)
+
+
+@dataclass(slots=True)
 class Note:
     text: str
     id: str = ""
@@ -87,6 +108,7 @@ class Unit:
     id: str
     children: list[Segment | ExtensionNode] = field(default_factory=list)
     notes: list[Note] = field(default_factory=list)
+    original_data: list[DataElement] = field(default_factory=list)
     attributes: dict[str, str] = field(default_factory=dict)
 
     @property

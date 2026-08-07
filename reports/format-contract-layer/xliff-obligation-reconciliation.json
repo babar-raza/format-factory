@@ -98,6 +98,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive test selectors proving notes (priority/category/applies_to, attaching at file/group/unit level), mrk inline-span annotation, and sm/em overlapping-span markers (proven both crossing another inline element and with document order preserved across a round trip, and surviving target creation from source). Also covers the ITS module's two namespaces: the XLIFF 2.1 itsm:2.1 attribute mapping directly, and the W3C ITS namespace itself via the already-proven namespace-agnostic extension-preservation mechanism (no dedicated its:-element fixture). SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-44186566A8BE9B26, SAL-XLIFF-OBL-B3D1B1A5CBD86240, SAL-XLIFF-OBL-CF6EB3C804324A1C, and SAL-XLIFF-OBL-DA68F5DEF1A61582 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-ORIGINAL-DATA-ELEMENT-MODELING-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-original-data-element-modeling-001.json",
+      "sha256": "143908e68bbc95e26c8c82cb877b7ff5b81bbb2b84743f9677b1586d0b607fca",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Narrows (does not fully close) 2 obligations sharing the \"originalData elements carry native code data referenced from inline codes via dataRef attributes\" finding across XLIFF-PARSE-001/INLINE-001 (both moved missing->partial). Before this slice, no originalData/data element modeling existed at all -- <originalData> fell into the generic ExtensionNode fallback (preserved as an opaque byte blob but not typed, queryable, or validated), confirmed directly by reading _parse_unit's child-dispatch loop before writing anything. Added a new DataElement model (id, content as list[InlineNode] -- reusing the exact same shape as source/target inline content, since <data>'s own content model per the pinned XLIFF 2.1 spec (.local/format-contracts/acquired/xliff/src-xliff-001.bin, section 4.2.2.11 data) is text plus zero-or-more <cp> elements, which now round-trip generically as InlineElement the same way any other unmodeled tag already does in this package -- dir, attributes) plus Unit.original_data. Wired the reader to parse <originalData> into this typed field (removed from the generic extension fallback) and the writer to serialize it back in the correct structural position (after notes, before segments, per the pinned spec's own unit content model), confirmed via a byte-exact round-trip test. Implemented dataRef/dataRefStart/dataRefEnd resolution validation grounded directly in the pinned XLIFF 2.1 schematron's own F15/F16S/F16T/F17S/F17T patterns (inside .local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/xliff_core_2.1.sch): every dataRef-family attribute must point to a <data> id within the same unit, checked separately per content type, and a pc's dataRefStart/dataRefEnd must be used as a pair. Verified zero false positives against the entire pre-existing 397-test xliff suite BEFORE writing a single new test -- except this run surfaced one genuinely pre-existing, non-conformant fixture: test_production_namespace.py's SAMPLE constant had a <pc dataRefStart=\"d1\" dataRefEnd=\"d2\"> with no <originalData> anywhere in the document, ids that never resolved to anything. Fixed by adding a matching <originalData> block to the fixture (the same \"correct the fixture, not the validation\" discipline already applied earlier this session for XLIFF Event 206 and UBL Event 191), re-verified all pre-existing tests pass unchanged in behavior otherwise. 10 new tests prove: round-trip fidelity, structural ordering, dataRef resolution (positive and negative), pc dataRefStart/dataRefEnd pairing (both one-sided-missing directions), an unresolved dataRefEnd, no-dataRef-usage stays clean, and source/target independence. xliff suite: 397 -> 407 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every claim grounded directly in the pinned spec and schematron text. Covers SAL-XLIFF-OBL-C6C67E6C253C9EAB and SAL-XLIFF-OBL-C632C43201760C05 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -197,7 +205,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "37a98c29d4cda330c8a70dbc820f5638e9f50d527a45b01df62aaa2354432ce5",
+    "implementation_evidence": "f65a5aeb830421b6fcff4d65862f0c481846ce05eff1d7ceae1621064a9f5f23",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -3859,14 +3867,31 @@
     },
     {
       "capability_id": "XLIFF-INLINE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-C6C67E6C253C9EAB (identical rule_text). Confirmed gap, not an audit backlog: no originalData/data element modeling exists -- InlineElement.data_ref merely reads a dataRef/dataRefStart/dataRefEnd/startRef attribute value generically, without any originalData/data element representing or resolving to the referenced native code data. Not attempted this slice."
+      "execution_evidence_ids": [
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-ORIGINAL-DATA-ELEMENT-MODELING-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "originalData/data element modeling now exists: a new DataElement model (id, content as list[InlineNode] -- the same shape as source/target inline content, since <data>'s own content model is text plus zero-or-more <cp> elements, which round-trip generically as InlineElement the same way any other unmodeled inline tag already does -- dir, attributes) plus Unit.original_data. The reader now parses <originalData> into this typed field instead of the generic ExtensionNode fallback it silently fell into before; the writer serializes it back in the correct structural position (after notes, before segments, per the XLIFF Core unit content model), confirmed via a byte-exact round-trip test. validate() now resolves every dataRef/dataRefStart/dataRefEnd attribute on inline elements against the unit's own <originalData> ids and enforces dataRefStart/dataRefEnd pairing on pc, grounded directly in the pinned XLIFF 2.1 schematron's own F15/F16S/F16T/F17S/F17T patterns, checked separately per content type (source/target)."
+      ],
+      "missing_behavior": [
+        "No dedicated modeling of the <cp> child element exists -- it round-trips generically as an untyped InlineElement rather than a first-class code-point-escape representation; this matches the package's existing precedent for unmodeled tags and is not considered a gap for this obligation's own rule_text, which concerns dataRef resolution, not <cp> itself. The <data> element's own REQUIRED id attribute is not separately enforced as a validate() diagnostic if absent (only downstream dataRef resolution against present ids is checked)."
+      ],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_does_not_match_any_data_id_is_a_violation",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_pc_with_only_datarefstart_and_no_datarefend_is_unpaired",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_pc_with_only_datarefend_and_no_datarefstart_is_unpaired",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_pc_datarefend_that_does_not_match_any_data_id_is_a_violation",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_target_side_dataref_is_checked_independently_of_source"
+      ],
       "obligation_id": "SAL-XLIFF-OBL-C632C43201760C05",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_originaldata_round_trips_through_dumps_and_reload",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_originaldata_is_written_before_segments",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_resolves_to_a_real_data_id_validates_cleanly",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_pc_with_a_resolved_datarefstart_and_datarefend_pair_validates_cleanly",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_no_dataref_usage_anywhere_validates_cleanly"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3875,20 +3900,42 @@
           "Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/xliff/src/format_factory/xliff/model/document.py::DataElement",
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_parse_original_data",
+        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::_write_original_data",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: no originalData/data element modeling exists -- InlineElement.data_ref merely reads a dataRef/dataRefStart/dataRefEnd/startRef attribute value generically, without any originalData/data element representing or resolving to the referenced native code data. Not attempted this slice."
+      "execution_evidence_ids": [
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-ORIGINAL-DATA-ELEMENT-MODELING-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "originalData/data element modeling now exists: a new DataElement model (id, content as list[InlineNode] -- the same shape as source/target inline content, since <data>'s own content model is text plus zero-or-more <cp> elements, which round-trip generically as InlineElement the same way any other unmodeled inline tag already does -- dir, attributes) plus Unit.original_data. The reader now parses <originalData> into this typed field instead of the generic ExtensionNode fallback it silently fell into before; the writer serializes it back in the correct structural position (after notes, before segments, per the XLIFF Core unit content model), confirmed via a byte-exact round-trip test. validate() now resolves every dataRef/dataRefStart/dataRefEnd attribute on inline elements against the unit's own <originalData> ids and enforces dataRefStart/dataRefEnd pairing on pc, grounded directly in the pinned XLIFF 2.1 schematron's own F15/F16S/F16T/F17S/F17T patterns, checked separately per content type (source/target)."
+      ],
+      "missing_behavior": [
+        "No dedicated modeling of the <cp> child element exists -- it round-trips generically as an untyped InlineElement rather than a first-class code-point-escape representation; this matches the package's existing precedent for unmodeled tags and is not considered a gap for this obligation's own rule_text, which concerns dataRef resolution, not <cp> itself. The <data> element's own REQUIRED id attribute is not separately enforced as a validate() diagnostic if absent (only downstream dataRef resolution against present ids is checked)."
+      ],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_does_not_match_any_data_id_is_a_violation",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_pc_with_only_datarefstart_and_no_datarefend_is_unpaired",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_pc_with_only_datarefend_and_no_datarefstart_is_unpaired",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_pc_datarefend_that_does_not_match_any_data_id_is_a_violation",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_target_side_dataref_is_checked_independently_of_source"
+      ],
       "obligation_id": "SAL-XLIFF-OBL-C6C67E6C253C9EAB",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_originaldata_round_trips_through_dumps_and_reload",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_originaldata_is_written_before_segments",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_resolves_to_a_real_data_id_validates_cleanly",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_pc_with_a_resolved_datarefstart_and_datarefend_pair_validates_cleanly",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_no_dataref_usage_anywhere_validates_cleanly"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3897,9 +3944,14 @@
           "Version/namespace consistency fixtures per supported version; legacy-version refusal fixture."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/xliff/src/format_factory/xliff/model/document.py::DataElement",
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_parse_original_data",
+        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::_write_original_data",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "XLIFF-INLINE-001",
@@ -4852,6 +4904,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-model-text-001.json": "8b2159725c4b4b8307a0a7585f56f1592614172ef1bb5f950913e7215f40a95f",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-module-citation-audit-001.json": "1034d53323ce68762453b90f8c08084c140a8e738aa82d5fd17f8ba086df65d8",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-notes-annotations-001.json": "0a5ffae1a5449741f166f644c5fce33059572098a8ab9624573162869da8eefd",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-original-data-element-modeling-001.json": "143908e68bbc95e26c8c82cb877b7ff5b81bbb2b84743f9677b1586d0b607fca",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-paired-code-integrity-001.json": "6b16b781c4d9f2bf3962817c754e384e54a313cc9200d82e311b5acda712c31d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-parse-citation-audit-001.json": "f510c6a7663de155ce4a245fe662a4d5b5f31c372b04595c1c9d6fec95089ef0",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-preservation-mode-001.json": "3ce322c7f4990e64fa3573f6ebc57fb2cccf08767f18604bce82078c88136ec2",
@@ -4866,10 +4919,10 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json": "368a286339e4990afa645543f86d2b1968bfc693706a6c170b366fecc18f432b",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-version-downgrade-loss-001.json": "d883e3d53d90b3cdc9f8163ff159837437339a2d0fde9275a8235d04e9a8d969",
     "src/python/xliff/src/format_factory/xliff/codec/preservation.py": "117c0c1dd41f34535267d67b1d387302ac3e5d16af927a5a44a58ed506910768",
-    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py": "a9c296cbdfb6da4d2ba4d4621cb1d69e002f5ce85047aca1a77a3426c55ded7c",
-    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py": "ddec3e6154bf1ee6533b1a3438fa8f62355f4475b6072e7323cf5e61da7b534b",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py": "3d20e2f0220c5248f180d190e6a33f13248c818b36a225c6b8603fab59835961",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py": "77a7a9b211d061098160e1fb827e7e5cd87aaf57871396431630d423c4f9da42",
     "src/python/xliff/src/format_factory/xliff/merge.py": "c16a0916c2a7ddaeb49dd200fbe89e4a0b08f0ca19dd5177f7001733c0882c1b",
-    "src/python/xliff/src/format_factory/xliff/model/document.py": "75998dc0703b79e6009e89d428e829f66eb4af5015f88b80e53a06a87eb26a2b",
+    "src/python/xliff/src/format_factory/xliff/model/document.py": "c12ab421eddb0ac24c2e5b92015a5768bafbf637c7720164b44a29faf87fb543",
     "src/python/xliff/src/format_factory/xliff/model/inline.py": "044d04957bcc6db867494411063619c0640e152012285f744a3f2ef7d41058c3",
     "src/python/xliff/src/format_factory/xliff/model/segmentation.py": "c2c3f1f35573fa11fc4f6ae67bf0a9d4395824dc2589dd05d73d88d83b00576b",
     "src/python/xliff/src/format_factory/xliff/model/text_editing.py": "408d1e5f8ffb5c51f548faac3e45125924bf395844171eb0fe292b0b3a20b5c3",
@@ -4877,7 +4930,7 @@
     "src/python/xliff/src/format_factory/xliff/qa.py": "61c2a8f74d09f844e36bfc1d967a587b5e5e62cf6087577e1031347b3ee8fa2f",
     "src/python/xliff/src/format_factory/xliff/security/limits.py": "8cec6ffd2ccd8fe17fa6d76ab19b2deeda3578d558925d862b15494b3b06665a",
     "src/python/xliff/src/format_factory/xliff/state_transitions.py": "6b12476e31076a788cef37fb476e1b5eda7365e6eb640bbb7bedcebabb9d49ea",
-    "src/python/xliff/src/format_factory/xliff/validation/validator.py": "6f2463e2d0ff4a0f7964c2a3fe09f26553240febce37d35655bea1514ed23da9",
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py": "00b6b90a44b86054c3f13baecba184eb7dfbc92a0cfd40433ca24b8ace168bbd",
     "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py": "3576c2a5c91c42fb0070f64d798078090e9af3118e3a6015663a4b7cbd111957",
     "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py": "13bd7850154306f68582918a5ffaca79a55f5b3145f703f76c3c3ef4e79328e5",
     "tests/python/xliff/test_obligation_ignorable_elements.py": "2deedf81feffbfaaeb5c39fbdf24be6dd6687a00d25ffd94d94c460aa44b8ad7",
@@ -4887,6 +4940,7 @@
     "tests/python/xliff/test_obligation_module_coverage.py": "dbe6b40b4a668b46bc62aac2ce8819ae9c45bff05d6edd255da7060098c31783",
     "tests/python/xliff/test_obligation_nested_group_hierarchy.py": "cb31f8d5782f920685c804e6283a44aa2196107d0069c8c3ed011c7d4003e122",
     "tests/python/xliff/test_obligation_notes_and_annotations.py": "357ae9aace9aab3cbb6bcda064a928b4934ccd7b6720094452aaedd75b69e587",
+    "tests/python/xliff/test_obligation_original_data_element_modeling.py": "4b932ec3d11a2562463fb7b270c39882613e1ac2dcc08eef2014588c2b223940",
     "tests/python/xliff/test_obligation_paired_code_integrity.py": "d9da9bd02837f6da941067d1507e3431b3f5e9318af57759d72aecb7e04112f4",
     "tests/python/xliff/test_obligation_preservation_mode.py": "f30f484eed1a8585828f01fb325a79f22eb0138633afbc872629a67841f140fe",
     "tests/python/xliff/test_obligation_qa_checks.py": "28fac4e3d1c95d6a35e3e766ac34d895e7e00bf5ecf30347e9a9124dbaee9143",
@@ -4898,14 +4952,14 @@
     "tests/python/xliff/test_obligation_state_transitions.py": "eb2fb6fa0f4503175da1904986563ca1a1ee97f317067a2d29466c5c35c9c1bf",
     "tests/python/xliff/test_obligation_target_creation_policies.py": "d6693ffb55e6c735194503d14f9f4ba6dd46564391aeb13ee5189b9d94cb85ef",
     "tests/python/xliff/test_obligation_version_downgrade_loss.py": "cabb9854780e765b19ad611de6e1e8f82573204737e12b9392254da837137efe",
-    "tests/python/xliff/test_production_namespace.py": "907de371555ded7c152d23d9748884e27915eb7ca93ffde5e10659e6266448d6"
+    "tests/python/xliff/test_production_namespace.py": "88385438935694311b5327b430942a3557c4ce7697427051b7b601b049b6df92"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
       "implemented": 72,
-      "missing": 14,
-      "partial": 56
+      "missing": 12,
+      "partial": 58
     },
     "total": 142,
     "unresolved": 70

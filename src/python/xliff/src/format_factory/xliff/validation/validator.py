@@ -139,6 +139,57 @@ def _isolated_diagnostics(unit: Unit, diagnostics: list[Diagnostic]) -> None:
                 )
 
 
+def _data_ref_diagnostics(unit: Unit, diagnostics: list[Diagnostic]) -> None:
+    """(XLIFF Core original data references, 2.1 schematron patterns F15/
+    F16S/F16T/F17S/F17T) Every dataRef/dataRefStart/dataRefEnd attribute on
+    an inline element must reference the id of a `<data>` element within
+    the same unit's `<originalData>`; a pc's dataRefStart and dataRefEnd
+    must be used as a pair (one present without the other is invalid),
+    matching the pinned schematron's own assertions exactly, checked
+    separately per content type (source/target)."""
+
+    data_ids = {value.id for value in unit.original_data if value.id}
+    for label in ("source", "target"):
+        for segment in unit.segments:
+            content = segment.source if label == "source" else (segment.target or [])
+            for element in _inline_elements(content):
+                data_ref = element.attributes.get("dataRef")
+                if data_ref is not None and data_ref not in data_ids:
+                    diagnostics.append(
+                        Diagnostic(
+                            "xliff.inline.dataRef.unresolved",
+                            f"{element.tag} {element.id!r} in unit {unit.id!r} {label} "
+                            f"has dataRef={data_ref!r}, which does not match any data id",
+                        )
+                    )
+                start_ref = element.attributes.get("dataRefStart")
+                end_ref = element.attributes.get("dataRefEnd")
+                if start_ref is not None and start_ref not in data_ids:
+                    diagnostics.append(
+                        Diagnostic(
+                            "xliff.inline.dataRefStart.unresolved",
+                            f"{element.tag} {element.id!r} in unit {unit.id!r} {label} "
+                            f"has dataRefStart={start_ref!r}, which does not match any data id",
+                        )
+                    )
+                if end_ref is not None and end_ref not in data_ids:
+                    diagnostics.append(
+                        Diagnostic(
+                            "xliff.inline.dataRefEnd.unresolved",
+                            f"{element.tag} {element.id!r} in unit {unit.id!r} {label} "
+                            f"has dataRefEnd={end_ref!r}, which does not match any data id",
+                        )
+                    )
+                if (start_ref is not None) != (end_ref is not None):
+                    diagnostics.append(
+                        Diagnostic(
+                            "xliff.inline.dataRef.unpaired",
+                            f"{element.tag} {element.id!r} in unit {unit.id!r} {label} "
+                            f"must use dataRefStart and dataRefEnd as a pair",
+                        )
+                    )
+
+
 def _extension_well_formed(
     extension: ExtensionNode, diagnostics: list[Diagnostic]
 ) -> None:
@@ -339,6 +390,7 @@ def validate(
                 for segment_extension in segment.extensions:
                     _extension_well_formed(segment_extension, diagnostics)
             _isolated_diagnostics(unit, diagnostics)
+            _data_ref_diagnostics(unit, diagnostics)
         for file_child in file.children:
             if isinstance(file_child, ExtensionNode):
                 _extension_well_formed(file_child, diagnostics)

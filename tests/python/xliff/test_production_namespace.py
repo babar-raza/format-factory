@@ -39,6 +39,10 @@ SAMPLE = b"""<?xml version="1.0" encoding="UTF-8"?>
     <v:metadata v:key="value"><v:item>opaque</v:item></v:metadata>
     <group id="g1">
       <unit id="u1">
+        <originalData>
+          <data id="d1">&lt;b&gt;</data>
+          <data id="d2">&lt;/b&gt;</data>
+        </originalData>
         <segment id="s1" state="translated">
           <source>Hello <pc id="1" dataRefStart="d1" dataRefEnd="d2">world</pc>!</source>
           <target>Bonjour <pc id="1" dataRefStart="d1" dataRefEnd="d2">monde</pc>!</target>

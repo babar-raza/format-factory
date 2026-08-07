@@ -1,6 +1,7 @@
 """XLIFF core and mixed-content models."""
 
 from .document import (
+    DataElement,
     ExtensionNode,
     Group,
     Note,
@@ -14,6 +15,7 @@ from .segmentation import SegmentMapping, join_segments, split_segment
 from .text_editing import copy_source_to_target, replace_text_slots, text_slots
 
 __all__ = [
+    "DataElement",
     "ExtensionNode",
     "Group",
     "InlineElement",

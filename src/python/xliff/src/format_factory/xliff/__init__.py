@@ -41,6 +41,7 @@ from .merge import (
     merge_with_drift_check,
 )
 from .model import (
+    DataElement,
     ExtensionNode,
     Group,
     InlineElement,
@@ -100,6 +101,7 @@ __all__ = [
     "TransitionViolation",
     "XLIFF_DEFAULT_LIMITS",
     "XLIFF_NAMESPACE",
+    "DataElement",
     "ExtensionNode",
     "Group",
     "InlineElement",

@@ -10,6 +10,7 @@ from format_factory.core import BinarySource, ProbeResult, ResourceLimits
 
 from ...errors import XliffParseError
 from ...model import (
+    DataElement,
     ExtensionNode,
     Group,
     InlineElement,
@@ -157,6 +158,22 @@ def _parse_segment(element: ET.Element) -> Segment:
     )
 
 
+def _parse_original_data(element: ET.Element) -> list[DataElement]:
+    result: list[DataElement] = []
+    for child in element:
+        if child.tag != f"{{{XLIFF_NAMESPACE}}}data":
+            continue
+        result.append(
+            DataElement(
+                id=child.get("id", ""),
+                content=_parse_inline(child),
+                dir=child.get("dir", ""),
+                attributes=_unknown_attributes(child, {"id", "dir"}),
+            )
+        )
+    return result
+
+
 def _parse_unit(element: ET.Element) -> Unit:
     unit = Unit(
         id=element.get("id", ""),
@@ -166,7 +183,9 @@ def _parse_unit(element: ET.Element) -> Unit:
     for child in element:
         if child.tag == f"{{{XLIFF_NAMESPACE}}}notes":
             continue
-        if child.tag in {
+        if child.tag == f"{{{XLIFF_NAMESPACE}}}originalData":
+            unit.original_data = _parse_original_data(child)
+        elif child.tag in {
             f"{{{XLIFF_NAMESPACE}}}segment",
             f"{{{XLIFF_NAMESPACE}}}ignorable",
         }:
