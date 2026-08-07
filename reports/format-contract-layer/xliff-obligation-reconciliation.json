@@ -74,6 +74,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors proving Skeleton carries non-translatable structure verbatim, MergeAdapter is a genuine runtime Protocol (a third-party adapter conforms without inheriting from anything in this module), TemplateMergeAdapter's extract()/merge() round trip end to end, and check_drift()/merge_with_drift_check() detect and refuse a live source that no longer matches the skeleton's extraction digest (reporting both digests), correctly skipping the check only when no live source is supplied. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-4F9A3D539840CB12 and SAL-XLIFF-OBL-6C1F7F44A337674B only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-METADATA-MODULE-STRUCTURE-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-metadata-module-structure-001.json",
+      "sha256": "774e8b594d89548d110b3377b80a678bdd0fcc10d80116d33aff6f7066a35e3a",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes 3 obligations sharing \"The Metadata module uses namespace urn:oasis:names:tc:xliff:metadata:2.0; metadata contains one or more metaGroup elements, and meta elements require a type attribute\" across XLIFF-PARSE-001/MODULE-001/MODEL-001 (all 3 moved partial->implemented). Before this slice, the Metadata module was preserved only as opaque extension content -- _extension_well_formed() already re-parsed every extension for well-formedness and tag matching, but nothing inspected Metadata-specific structure. Grounded directly in the pinned XLIFF 2.1 Metadata module schema (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/metadata.xsd): mda:metadata declares minOccurs=\"1\" maxOccurs=\"unbounded\" for its mda:metaGroup children, and mda:meta declares its type attribute use=\"required\"; mda:metaGroup can also nest recursively (a choice of further metaGroup or meta elements), so meta elements can appear at any nesting depth. Added _metadata_module_diagnostics() to validator.py, scoped to only extensions carrying the Metadata module's own namespace, wired at all 3 existing extension-walking call sites (segment, file/group, root) alongside the pre-existing _extension_well_formed() check. Verified zero false positives against the entire pre-existing 409-test xliff suite before writing a single new test -- the package's own existing Metadata module fixtures were already spec-conformant. 6 new tests prove: a well-formed metadata/metaGroup/meta tree validates cleanly; metadata with no metaGroup at all is a violation; a meta with no type attribute is a violation; a meta nested inside a nested metaGroup still requires type (proving the recursive walk); multiple typed meta elements across multiple metaGroups validate cleanly; and a non-Metadata-namespaced extension is left untouched. xliff suite: 409 -> 415 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every claim grounded directly in the pinned Metadata module XSD. Covers SAL-XLIFF-OBL-234A057EBC798099, SAL-XLIFF-OBL-5450B2DB4BF7B672, and SAL-XLIFF-OBL-72895F34A373C243 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-MODEL-TEXT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -205,7 +213,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "e21b185bafdc1809791b4a80e21ed3d520aa2ed439c72e24c382b71affbb2885",
+    "implementation_evidence": "566fcb56c918e782aa8478fd9a21016f1a8afb6e6e86461ec2bfe7cc9f7c73ae",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -985,19 +993,25 @@
       "capability_id": "XLIFF-PARSE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-METADATA-MODULE-STRUCTURE-PROOF"
       ],
       "implemented_behavior": [
-        "The Metadata module namespace (urn:oasis:names:tc:xliff:metadata:2.0) and metaGroup/meta round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-5450B2DB4BF7B672), same evidence applies there."
+        "The Metadata module namespace (urn:oasis:names:tc:xliff:metadata:2.0) and metaGroup/meta round-trip as opaque extension content are both proven. Both halves of this obligation's own rule_text are now also proven: validate() re-parses every Metadata-namespaced extension (grounded directly in the pinned XLIFF 2.1 Metadata module schema, schemas/metadata.xsd inside the pinned release ZIP) and flags a metadata element with no metaGroup child (minOccurs=1 maxOccurs=unbounded per the schema) and any meta element missing its required type attribute, at any nesting depth since metaGroup can nest recursively. Extensions using a different namespace are left untouched."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: \"meta elements require a type attribute\" is not enforced or tested -- Metadata is preserved only as opaque extension content, with no typed accessor to validate a required attribute against. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_metadata_with_no_metagroup_at_all_is_a_violation",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_meta_element_with_no_type_attribute_is_a_violation",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_meta_nested_inside_a_nested_metagroup_still_requires_type"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-234A057EBC798099",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
-        "tests/python/xliff/test_obligation_module_coverage.py::test_metadata_module_round_trips"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_metadata_module_round_trips",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_metagroup_with_a_typed_meta_validates_cleanly",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_multiple_typed_meta_elements_across_multiple_metagroups_validate_cleanly",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_non_metadata_extension_is_untouched_by_this_check"
       ],
       "proof_requirements": {
         "negative": [
@@ -1007,11 +1021,13 @@
           "Version/namespace consistency fixtures per supported version; legacy-version refusal fixture."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_metadata_module_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODULE-001",
@@ -2031,19 +2047,25 @@
       "capability_id": "XLIFF-MODULE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-METADATA-MODULE-STRUCTURE-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of SAL-XLIFF-OBL-234A057EBC798099 (identical rule_text, XLIFF-PARSE-001): the Metadata module namespace and metaGroup/meta round-trip as opaque extension content are both proven."
+        "The Metadata module namespace (urn:oasis:names:tc:xliff:metadata:2.0) and metaGroup/meta round-trip as opaque extension content are both proven. Both halves of this obligation's own rule_text are now also proven: validate() re-parses every Metadata-namespaced extension (grounded directly in the pinned XLIFF 2.1 Metadata module schema, schemas/metadata.xsd inside the pinned release ZIP) and flags a metadata element with no metaGroup child (minOccurs=1 maxOccurs=unbounded per the schema) and any meta element missing its required type attribute, at any nesting depth since metaGroup can nest recursively. Extensions using a different namespace are left untouched."
       ],
-      "missing_behavior": [
-        "Same confirmed gap as SAL-XLIFF-OBL-234A057EBC798099: \"meta elements require a type attribute\" is not enforced or tested. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_metadata_with_no_metagroup_at_all_is_a_violation",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_meta_element_with_no_type_attribute_is_a_violation",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_meta_nested_inside_a_nested_metagroup_still_requires_type"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-5450B2DB4BF7B672",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
-        "tests/python/xliff/test_obligation_module_coverage.py::test_metadata_module_round_trips"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_metadata_module_round_trips",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_metagroup_with_a_typed_meta_validates_cleanly",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_multiple_typed_meta_elements_across_multiple_metagroups_validate_cleanly",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_non_metadata_extension_is_untouched_by_this_check"
       ],
       "proof_requirements": {
         "negative": [
@@ -2053,11 +2075,13 @@
           "Per-module round-trip fixtures; coverage manifest matches behavior."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_metadata_module_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODULE-001",
@@ -2609,19 +2633,25 @@
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-METADATA-MODULE-STRUCTURE-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-234A057EBC798099 (identical rule_text): The Metadata module namespace (urn:oasis:names:tc:xliff:metadata:2.0) and metaGroup/meta round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-5450B2DB4BF7B672), same evidence applies there."
+        "The Metadata module namespace (urn:oasis:names:tc:xliff:metadata:2.0) and metaGroup/meta round-trip as opaque extension content are both proven. Both halves of this obligation's own rule_text are now also proven: validate() re-parses every Metadata-namespaced extension (grounded directly in the pinned XLIFF 2.1 Metadata module schema, schemas/metadata.xsd inside the pinned release ZIP) and flags a metadata element with no metaGroup child (minOccurs=1 maxOccurs=unbounded per the schema) and any meta element missing its required type attribute, at any nesting depth since metaGroup can nest recursively. Extensions using a different namespace are left untouched."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: \"meta elements require a type attribute\" is not enforced or tested -- Metadata is preserved only as opaque extension content, with no typed accessor to validate a required attribute against. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_metadata_with_no_metagroup_at_all_is_a_violation",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_meta_element_with_no_type_attribute_is_a_violation",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_meta_nested_inside_a_nested_metagroup_still_requires_type"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-72895F34A373C243",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
-        "tests/python/xliff/test_obligation_module_coverage.py::test_metadata_module_round_trips"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_metadata_module_round_trips",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_metagroup_with_a_typed_meta_validates_cleanly",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_multiple_typed_meta_elements_across_multiple_metagroups_validate_cleanly",
+        "tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_non_metadata_extension_is_untouched_by_this_check"
       ],
       "proof_requirements": {
         "negative": [
@@ -2631,11 +2661,13 @@
           "Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_metadata_module_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODULE-001",
@@ -4959,6 +4991,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-isolated-start-code-validation-001.json": "ae7462acea8d11cf3bbdd5c673987d2b4b82ae52b6c9e6ff4258312ce663b4b8",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-lifecycle-io-001.json": "02856c6f0ad09cf7b0352b9b777331dc5f6e2096e5f6576dbfe39f997669372d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-merge-audit-001.json": "ad52bf9234b0abdb222fca9ca32f9fca835f0d73f2cab7e0709aca7a81e9c29a",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-metadata-module-structure-001.json": "774e8b594d89548d110b3377b80a678bdd0fcc10d80116d33aff6f7066a35e3a",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-model-text-001.json": "8b2159725c4b4b8307a0a7585f56f1592614172ef1bb5f950913e7215f40a95f",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-module-citation-audit-001.json": "1034d53323ce68762453b90f8c08084c140a8e738aa82d5fd17f8ba086df65d8",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-notes-annotations-001.json": "0a5ffae1a5449741f166f644c5fce33059572098a8ab9624573162869da8eefd",
@@ -4988,13 +5021,14 @@
     "src/python/xliff/src/format_factory/xliff/qa.py": "61c2a8f74d09f844e36bfc1d967a587b5e5e62cf6087577e1031347b3ee8fa2f",
     "src/python/xliff/src/format_factory/xliff/security/limits.py": "8cec6ffd2ccd8fe17fa6d76ab19b2deeda3578d558925d862b15494b3b06665a",
     "src/python/xliff/src/format_factory/xliff/state_transitions.py": "6b12476e31076a788cef37fb476e1b5eda7365e6eb640bbb7bedcebabb9d49ea",
-    "src/python/xliff/src/format_factory/xliff/validation/validator.py": "00b6b90a44b86054c3f13baecba184eb7dfbc92a0cfd40433ca24b8ace168bbd",
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py": "275afcca18fc78504efe9beedc2a080e5463e2cde913517d0ebaa748fc190021",
     "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py": "3576c2a5c91c42fb0070f64d798078090e9af3118e3a6015663a4b7cbd111957",
     "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py": "13bd7850154306f68582918a5ffaca79a55f5b3145f703f76c3c3ef4e79328e5",
     "tests/python/xliff/test_obligation_ignorable_elements.py": "70908f9b90fa150715bd19b6c9a1abd46b36b818a3710c4ad82d851dc6a9c880",
     "tests/python/xliff/test_obligation_isolated_start_code_validation.py": "8b23d2f938ce7c6ce72a43dd04bb9420756b0dbb647ab9eedbb4d92903360f6c",
     "tests/python/xliff/test_obligation_lifecycle_io.py": "5d9973d4c931cea5f36247ac8f22b05ff57b335ab3dccf2d6c878da7b529c62b",
     "tests/python/xliff/test_obligation_merge_adapter.py": "8ab808796f526b4497037ff207d9924382fe6833689529377210a80e60d95e88",
+    "tests/python/xliff/test_obligation_metadata_module_structure.py": "35051e47bed5395598a8451ef08b8ad0028c2773580a661525e85de358a48f04",
     "tests/python/xliff/test_obligation_module_coverage.py": "dbe6b40b4a668b46bc62aac2ce8819ae9c45bff05d6edd255da7060098c31783",
     "tests/python/xliff/test_obligation_nested_group_hierarchy.py": "cb31f8d5782f920685c804e6283a44aa2196107d0069c8c3ed011c7d4003e122",
     "tests/python/xliff/test_obligation_notes_and_annotations.py": "357ae9aace9aab3cbb6bcda064a928b4934ccd7b6720094452aaedd75b69e587",
@@ -5015,12 +5049,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 77,
+      "implemented": 80,
       "missing": 12,
-      "partial": 53
+      "partial": 50
     },
     "total": 142,
-    "unresolved": 65
+    "unresolved": 62
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

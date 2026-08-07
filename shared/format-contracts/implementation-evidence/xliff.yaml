@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-METADATA-MODULE-STRUCTURE-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-metadata-module-structure-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes 3 obligations sharing "The Metadata module uses namespace urn:oasis:names:tc:xliff:metadata:2.0; metadata contains one or more metaGroup elements, and meta elements require a type attribute" across XLIFF-PARSE-001/MODULE-001/MODEL-001 (all 3 moved partial->implemented). Before this slice, the Metadata module was preserved only as opaque extension content -- _extension_well_formed() already re-parsed every extension for well-formedness and tag matching, but nothing inspected Metadata-specific structure. Grounded directly in the pinned XLIFF 2.1 Metadata module schema (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/metadata.xsd): mda:metadata declares minOccurs="1" maxOccurs="unbounded" for its mda:metaGroup children, and mda:meta declares its type attribute use="required"; mda:metaGroup can also nest recursively (a choice of further metaGroup or meta elements), so meta elements can appear at any nesting depth. Added _metadata_module_diagnostics() to validator.py, scoped to only extensions carrying the Metadata module''s own namespace, wired at all 3 existing extension-walking call sites (segment, file/group, root) alongside the pre-existing _extension_well_formed() check. Verified zero false positives against the entire pre-existing 409-test xliff suite before writing a single new test -- the package''s own existing Metadata module fixtures were already spec-conformant. 6 new tests prove: a well-formed metadata/metaGroup/meta tree validates cleanly; metadata with no metaGroup at all is a violation; a meta with no type attribute is a violation; a meta nested inside a nested metaGroup still requires type (proving the recursive walk); multiple typed meta elements across multiple metaGroups validate cleanly; and a non-Metadata-namespaced extension is left untouched. xliff suite: 409 -> 415 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, every claim grounded directly in the pinned Metadata module XSD. Covers SAL-XLIFF-OBL-234A057EBC798099, SAL-XLIFF-OBL-5450B2DB4BF7B672, and SAL-XLIFF-OBL-72895F34A373C243 only; it supports no other obligation and promotes no product state.'
 - evidence_id: XLIFF-ORIGINAL-DATA-ELEMENT-MODELING-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-original-data-element-modeling-001.json
   expected_result: PASS
@@ -964,20 +969,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-234A057EBC798099
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_metadata_module_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   - tests/python/xliff/test_obligation_module_coverage.py::test_metadata_module_round_trips
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_metagroup_with_a_typed_meta_validates_cleanly
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_multiple_typed_meta_elements_across_multiple_metagroups_validate_cleanly
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_non_metadata_extension_is_untouched_by_this_check
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_metadata_with_no_metagroup_at_all_is_a_violation
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_meta_element_with_no_type_attribute_is_a_violation
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_meta_nested_inside_a_nested_metagroup_still_requires_type
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-METADATA-MODULE-STRUCTURE-PROOF
   implemented_behavior:
-  - 'The Metadata module namespace (urn:oasis:names:tc:xliff:metadata:2.0) and metaGroup/meta round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-5450B2DB4BF7B672), same evidence applies there.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: "meta elements require a type attribute" is not enforced or tested -- Metadata is preserved only as opaque extension content, with no typed accessor to validate a required attribute against. Not attempted this slice.'
+  - 'The Metadata module namespace (urn:oasis:names:tc:xliff:metadata:2.0) and metaGroup/meta round-trip as opaque extension content are both proven. Both halves of this obligation''s own rule_text are now also proven: validate() re-parses every Metadata-namespaced extension (grounded directly in the pinned XLIFF 2.1 Metadata module schema, schemas/metadata.xsd inside the pinned release ZIP) and flags a metadata element with no metaGroup child (minOccurs=1 maxOccurs=unbounded per the schema) and any meta element missing its required type attribute, at any nesting depth since metaGroup can nest recursively. Extensions using a different namespace are left untouched.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -1716,20 +1729,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-5450B2DB4BF7B672
   capability_id: XLIFF-MODULE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_metadata_module_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   - tests/python/xliff/test_obligation_module_coverage.py::test_metadata_module_round_trips
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_metagroup_with_a_typed_meta_validates_cleanly
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_multiple_typed_meta_elements_across_multiple_metagroups_validate_cleanly
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_non_metadata_extension_is_untouched_by_this_check
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_metadata_with_no_metagroup_at_all_is_a_violation
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_meta_element_with_no_type_attribute_is_a_violation
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_meta_nested_inside_a_nested_metagroup_still_requires_type
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-METADATA-MODULE-STRUCTURE-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of SAL-XLIFF-OBL-234A057EBC798099 (identical rule_text, XLIFF-PARSE-001): the Metadata module namespace and metaGroup/meta round-trip as opaque extension content are both proven.'
-  missing_behavior:
-  - 'Same confirmed gap as SAL-XLIFF-OBL-234A057EBC798099: "meta elements require a type attribute" is not enforced or tested. Not attempted this slice.'
+  - 'The Metadata module namespace (urn:oasis:names:tc:xliff:metadata:2.0) and metaGroup/meta round-trip as opaque extension content are both proven. Both halves of this obligation''s own rule_text are now also proven: validate() re-parses every Metadata-namespaced extension (grounded directly in the pinned XLIFF 2.1 Metadata module schema, schemas/metadata.xsd inside the pinned release ZIP) and flags a metadata element with no metaGroup child (minOccurs=1 maxOccurs=unbounded per the schema) and any meta element missing its required type attribute, at any nesting depth since metaGroup can nest recursively. Extensions using a different namespace are left untouched.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -2127,20 +2148,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-72895F34A373C243
   capability_id: XLIFF-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_metadata_module_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   - tests/python/xliff/test_obligation_module_coverage.py::test_metadata_module_round_trips
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_metagroup_with_a_typed_meta_validates_cleanly
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_multiple_typed_meta_elements_across_multiple_metagroups_validate_cleanly
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_non_metadata_extension_is_untouched_by_this_check
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_metadata_with_no_metagroup_at_all_is_a_violation
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_meta_element_with_no_type_attribute_is_a_violation
+  - tests/python/xliff/test_obligation_metadata_module_structure.py::test_a_meta_nested_inside_a_nested_metagroup_still_requires_type
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
-  - XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-METADATA-MODULE-STRUCTURE-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of XLIFF-PARSE-001''s SAL-XLIFF-OBL-234A057EBC798099 (identical rule_text): The Metadata module namespace (urn:oasis:names:tc:xliff:metadata:2.0) and metaGroup/meta round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-5450B2DB4BF7B672), same evidence applies there.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: "meta elements require a type attribute" is not enforced or tested -- Metadata is preserved only as opaque extension content, with no typed accessor to validate a required attribute against. Not attempted this slice.'
+  - 'The Metadata module namespace (urn:oasis:names:tc:xliff:metadata:2.0) and metaGroup/meta round-trip as opaque extension content are both proven. Both halves of this obligation''s own rule_text are now also proven: validate() re-parses every Metadata-namespaced extension (grounded directly in the pinned XLIFF 2.1 Metadata module schema, schemas/metadata.xsd inside the pinned release ZIP) and flags a metadata element with no metaGroup child (minOccurs=1 maxOccurs=unbounded per the schema) and any meta element missing its required type attribute, at any nesting depth since metaGroup can nest recursively. Extensions using a different namespace are left untouched.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.

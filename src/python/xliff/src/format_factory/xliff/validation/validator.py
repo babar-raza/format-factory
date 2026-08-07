@@ -22,6 +22,11 @@ _STATES = frozenset({"", "initial", "translated", "reviewed", "final"})
 _TARGET_REQUIRED_STATES = frozenset({"translated", "reviewed", "final"})
 _XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
 
+_METADATA_NAMESPACE = "urn:oasis:names:tc:xliff:metadata:2.0"
+_METADATA_QNAME = f"{{{_METADATA_NAMESPACE}}}metadata"
+_METAGROUP_QNAME = f"{{{_METADATA_NAMESPACE}}}metaGroup"
+_META_QNAME = f"{{{_METADATA_NAMESPACE}}}meta"
+
 
 def _language_compatible(enclosing: str, declared: str, *, exact_only: bool) -> bool:
     """Whether `declared` satisfies the enclosing srcLang/trgLang.
@@ -209,6 +214,47 @@ def _extension_well_formed(
         )
 
 
+def _metadata_module_diagnostics(
+    extension: ExtensionNode, diagnostics: list[Diagnostic]
+) -> None:
+    """(XLIFF 2.1 Metadata module) "metadata contains one or more metaGroup
+    elements, and meta elements require a type attribute" -- grounded
+    directly in the pinned XLIFF 2.1 Metadata module schema (inside
+    .local/format-contracts/acquired/xliff/src-xlf-002.bin,
+    schemas/metadata.xsd): metadata's own sequence requires minOccurs=1
+    maxOccurs=unbounded metaGroup children, and meta's type attribute is
+    use="required". metaGroup can nest recursively and meta can appear at
+    any nesting depth within it, so this walks the whole subtree via
+    ElementTree's own recursive iter() rather than only direct children.
+
+    Only extensions actually carrying the Metadata module's own namespace
+    are checked; every other extension (including malformed XML, already
+    reported by _extension_well_formed) is left untouched.
+    """
+
+    if extension.tag != _METADATA_QNAME:
+        return
+    try:
+        element = ET.fromstring(extension.xml)
+    except ET.ParseError:
+        return
+    if not any(child.tag == _METAGROUP_QNAME for child in element):
+        diagnostics.append(
+            Diagnostic(
+                "xliff.module.metadata.metagroup.required",
+                "metadata must contain at least one metaGroup element",
+            )
+        )
+    for meta in element.iter(_META_QNAME):
+        if "type" not in meta.attrib:
+            diagnostics.append(
+                Diagnostic(
+                    "xliff.module.metadata.meta.type.required",
+                    "meta element requires a type attribute",
+                )
+            )
+
+
 def _walk_group(group: Group) -> list[Unit]:
     return list(group.iter_units())
 
@@ -389,17 +435,21 @@ def validate(
                     )
                 for segment_extension in segment.extensions:
                     _extension_well_formed(segment_extension, diagnostics)
+                    _metadata_module_diagnostics(segment_extension, diagnostics)
             _isolated_diagnostics(unit, diagnostics)
             _data_ref_diagnostics(unit, diagnostics)
         for file_child in file.children:
             if isinstance(file_child, ExtensionNode):
                 _extension_well_formed(file_child, diagnostics)
+                _metadata_module_diagnostics(file_child, diagnostics)
             elif isinstance(file_child, Group):
                 for group_unit in _walk_group(file_child):
                     for group_child in group_unit.children:
                         if isinstance(group_child, ExtensionNode):
                             _extension_well_formed(group_child, diagnostics)
+                            _metadata_module_diagnostics(group_child, diagnostics)
     for root_child in value.children:
         if isinstance(root_child, ExtensionNode):
             _extension_well_formed(root_child, diagnostics)
+            _metadata_module_diagnostics(root_child, diagnostics)
     return ValidationReport(diagnostics)
