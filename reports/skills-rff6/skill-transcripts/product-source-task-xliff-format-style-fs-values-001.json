@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-format-style-fs-values-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T10:17:36Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_FORMAT_STYLE_FS_VALUES_001",
+    "task_kind": "build-new-capability-for-a-2-obligation-cluster",
+    "root_cause": "Event 228's exact_next_action named the Format Style module fs-values cluster as the last remaining module-schema-pattern candidate from the original event 226 list. fs:fs/subFs attributes round-tripped generically but their values were never validated.",
+    "obligation_targeted": "SAL-XLIFF-OBL-D8C6CC9733716C74 (XLIFF-PARSE-001), SAL-XLIFF-OBL-CF05EFE9DC2D7502 (XLIFF-MODULE-001) -- identical rule_text, both promoted partial->implemented",
+    "acceptance_evidence": "8 new tests prove validate() now detects an fs:fs value outside the pinned schema's 58-value enumeration, checked across every host the package generically preserves unknown attributes on, while correctly leaving fs:subFs entirely unconstrained.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the pinned XLIFF 2.1 Format Style module XSD directly (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/fs.xsd): fs:fs is an xs:attribute typed fs_type, a simpleType restricted to a fixed enumeration; fs:subFs is an xs:attribute typed plain xs:string, unrestricted.",
+    "2. Extracted the exact enumeration values programmatically via a regex scan of every <xs:enumeration value=...> entry in the pinned XSD (58 values) rather than typing them from memory, then cross-verified my hand-written frozenset against that extraction with a set-difference check in both directions -- confirmed an exact 58/58 match, zero discrepancy.",
+    "3. Checked the existing Format Style fixture (test_obligation_module_coverage.py::test_format_style_attributes_round_trip_on_a_unit) and discovered a critical scope correction needed: fs:fs/subFs attach to a <unit> element in this fixture, not an inline code element -- confirming the module attributes 'attach to existing core elements rather than introducing their own' per the fixture's own docstring, and that my first-draft design (checking only inline elements, matching the isolated-attribute/dataRef pattern) was too narrow.",
+    "4. Redesigned _format_style_module_diagnostics() to check every host this package generically preserves unknown attributes on via a shared _check_fs_value() helper: unit.attributes, each segment's own attributes/source_attributes/target_attributes, and every inline code element (ph/pc/sc/ec/mrk) within source/target content.",
+    "5. Wired the new check into validate()'s per-unit loop alongside _isolated_diagnostics/_data_ref_diagnostics.",
+    "6. Verified interactively before writing formal tests: a valid fs:fs on a unit validates cleanly; an invalid fs:fs on a unit is a violation; a valid fs:fs on an inline ph element validates cleanly; an invalid one is a violation; fs:subFs with any string value is never flagged; no fs attributes anywhere stays clean; an invalid fs:fs on source_attributes is a violation -- all 7 cases correct on the first attempt.",
+    "7. Ran the full pre-existing xliff suite (428 tests, zero new fixtures) against the new check to look for false positives before writing a single new test -- all 428 passed unchanged, confirming the existing fs:fs='span' fixture was already a valid enumerated value.",
+    "8. Wrote 8 formal tests (including a representative 8-value spot-check across the full 58-value enumeration), all passing on the first attempt.",
+    "9. Ran ruff (clean), the full xliff suite (436 passed, was 428, +8), and the full 6-format regression (3349 passed, was 3341, +8; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "10. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-9fd037232efea7c7, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_format_style_module_fs_values.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_format_style_module_fs_values.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_format_style_module_fs_values.py -q -- 8 passed",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/validation/validator.py tests/python/xliff/test_obligation_format_style_module_fs_values.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 436 passed, was 428 passed (428 passed unchanged BEFORE writing new tests, confirming zero false positives)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3349 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3341 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the fs_type enumeration cross-verified programmatically against the pinned XSD, not typed from memory.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-D8C6CC9733716C74 (XLIFF-PARSE-001), SAL-XLIFF-OBL-CF05EFE9DC2D7502 (XLIFF-MODULE-001) both partial->implemented. Fourth consecutive complete closure this session using the module-schema-grounded validation pattern, and the last from event 226's original candidate list -- but the only one requiring a genuine mid-tick design correction (attribute-level, multi-host scope rather than a single top-level extension element), caught by reading the existing fixture carefully before finalizing the implementation."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

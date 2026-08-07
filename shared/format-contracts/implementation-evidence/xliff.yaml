@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-FORMAT-STYLE-FS-VALUES-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-format-style-fs-values-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes 2 obligations sharing "The Format Style module uses namespace urn:oasis:names:tc:xliff:fs:2.0 and defines fs and subFs attributes; fs values are constrained by the module schema" across XLIFF-MODULE-001/PARSE-001 (both moved partial->implemented). Unlike the Metadata/Resource Data/Matches modules closed in the three immediately preceding ticks (each a single top-level extension element), fs and subFs "attach to existing core elements rather than introducing their own" -- confirmed directly by this package''s own pre-existing fixture (test_format_style_attributes_round_trip_on_a_unit), which attaches them to a <unit>, not an inline element. Grounded directly in the pinned XLIFF 2.1 Format Style module schema (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/fs.xsd): fs:fs is restricted to a fixed 58-value enumeration of HTML-tag-like tokens, cross-verified programmatically against every <xs:enumeration> entry in the pinned XSD (not typed from memory) to confirm an exact 58/58 match; fs:subFs is an unrestricted xs:string with no value to check. Added _format_style_module_diagnostics() to validator.py, checking every host this package generically preserves unknown attributes on: the unit itself, each segment/ignorable and its own source/target attribute dicts, and every inline code element (ph/pc/sc/ec/mrk) within source/target content -- broader scope than the three prior module ticks, which only needed to check a single top-level extension''s own re-parsed XML. Verified zero false positives against the entire pre-existing 428-test xliff suite before writing a single new test -- the package''s own existing fs:fs="span" fixture was already a valid enumerated value. 8 new tests prove: valid fs values on a unit and on an inline element validate cleanly; invalid values on a unit, an inline element, and source_attributes are each independently flagged; subFs accepts any string; no fs attributes anywhere stays clean; and a representative spot-check across 8 of the 58 enumerated values (a, h1, h6, table, tt, ul, div, span) are all individually accepted. xliff suite: 428 -> 436 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, every enumerated value cross-checked programmatically against the pinned schema. Covers SAL-XLIFF-OBL-D8C6CC9733716C74 and SAL-XLIFF-OBL-CF05EFE9DC2D7502 only; it supports no other obligation and promotes no product state.'
 - evidence_id: XLIFF-MATCHES-MODULE-STRUCTURE-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-matches-module-structure-001.json
   expected_result: PASS
@@ -3312,19 +3317,29 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-CF05EFE9DC2D7502
   capability_id: XLIFF-MODULE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_format_style_module_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_obligation_module_coverage.py::test_format_style_attributes_round_trip_on_a_unit
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_a_valid_fs_value_on_a_unit_validates_cleanly
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_a_valid_fs_value_on_an_inline_element_validates_cleanly
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_subfs_accepts_any_string_it_is_genuinely_unrestricted
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_no_fs_attributes_anywhere_validates_cleanly
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_every_enumerated_fs_value_is_individually_accepted
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_an_invalid_fs_value_on_a_unit_is_a_violation
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_an_invalid_fs_value_on_an_inline_element_is_a_violation
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_an_invalid_fs_value_on_source_attributes_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-FORMAT-STYLE-FS-VALUES-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of SAL-XLIFF-OBL-D8C6CC9733716C74 (identical rule_text, XLIFF-PARSE-001): fs:fs and fs:subFs attributes round-trip on a unit.'
-  missing_behavior:
-  - 'Same confirmed gap as SAL-XLIFF-OBL-D8C6CC9733716C74: "fs values are constrained by the module schema" is untested -- no enum or validation of fs attribute values exists. Not attempted this slice.'
+  - 'fs:fs and fs:subFs attributes round-trip on a unit, proving the Format Style module namespace and its two named attributes are preserved -- these attributes ARE typed and read generically, not only preserved as opaque extension content. The obligation''s own remaining clause is now also proven: validate() checks fs:fs''s value against the pinned XLIFF 2.1 Format Style module schema''s own fixed 58-value enumeration (schemas/fs.xsd inside the pinned release ZIP, cross-verified programmatically against every <xs:enumeration> entry, not typed from memory), across every host this package generically preserves unknown attributes on: the unit itself, each segment/ignorable and its own source/target attribute dicts, and every inline code element (ph/pc/sc/ec/mrk) within source/target content -- confirmed necessary directly from this package''s own pre-existing fixture, which attaches fs:fs/subFs to a unit rather than an inline element. fs:subFs is confirmed genuinely unrestricted (an unrestricted xs:string in the same schema) and is never flagged regardless of its value.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -3461,19 +3476,29 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-D8C6CC9733716C74
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_format_style_module_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_obligation_module_coverage.py::test_format_style_attributes_round_trip_on_a_unit
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_a_valid_fs_value_on_a_unit_validates_cleanly
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_a_valid_fs_value_on_an_inline_element_validates_cleanly
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_subfs_accepts_any_string_it_is_genuinely_unrestricted
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_no_fs_attributes_anywhere_validates_cleanly
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_every_enumerated_fs_value_is_individually_accepted
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_an_invalid_fs_value_on_a_unit_is_a_violation
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_an_invalid_fs_value_on_an_inline_element_is_a_violation
+  - tests/python/xliff/test_obligation_format_style_module_fs_values.py::test_an_invalid_fs_value_on_source_attributes_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-FORMAT-STYLE-FS-VALUES-PROOF
   implemented_behavior:
-  - 'fs:fs and fs:subFs attributes round-trip on a unit, proving the Format Style module namespace and its two named attributes are preserved (a stronger result than most other single-module obligations: these attributes ARE typed and read generically, not only preserved as opaque extension content). Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-CF05EFE9DC2D7502), same evidence applies there.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: "fs values are constrained by the module schema" is untested -- no enum or validation of fs attribute values exists; any string value round-trips unchecked. Not attempted this slice.'
+  - 'fs:fs and fs:subFs attributes round-trip on a unit, proving the Format Style module namespace and its two named attributes are preserved -- these attributes ARE typed and read generically, not only preserved as opaque extension content. The obligation''s own remaining clause is now also proven: validate() checks fs:fs''s value against the pinned XLIFF 2.1 Format Style module schema''s own fixed 58-value enumeration (schemas/fs.xsd inside the pinned release ZIP, cross-verified programmatically against every <xs:enumeration> entry, not typed from memory), across every host this package generically preserves unknown attributes on: the unit itself, each segment/ignorable and its own source/target attribute dicts, and every inline code element (ph/pc/sc/ec/mrk) within source/target content -- confirmed necessary directly from this package''s own pre-existing fixture, which attaches fs:fs/subFs to a unit rather than an inline element. fs:subFs is confirmed genuinely unrestricted (an unrestricted xs:string in the same schema) and is never flagged regardless of its value.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.

@@ -37,6 +37,23 @@ _MATCH_QNAME = f"{{{_MATCHES_NAMESPACE}}}match"
 _CORE_SOURCE_QNAME = f"{{{XLIFF_NAMESPACE}}}source"
 _CORE_TARGET_QNAME = f"{{{XLIFF_NAMESPACE}}}target"
 
+_FS_NAMESPACE = "urn:oasis:names:tc:xliff:fs:2.0"
+_FS_FS_ATTR = f"{{{_FS_NAMESPACE}}}fs"
+#: Per the pinned XLIFF 2.1 Format Style module schema (schemas/fs.xsd,
+#: fs_type simpleType): the exhaustive, fixed enumeration fs:fs is
+#: restricted to. fs:subFs is an unrestricted xs:string in the same
+#: schema, so it has no value constraint to check.
+_FS_TYPE_VALUES = frozenset(
+    {
+        "a", "b", "bdo", "big", "blockquote", "body", "br", "button", "caption",
+        "center", "cite", "code", "col", "colgroup", "dd", "del", "div", "dl",
+        "dt", "em", "h1", "h2", "h3", "h4", "h5", "h6", "head", "hr", "html",
+        "i", "img", "label", "legend", "li", "ol", "p", "pre", "q", "s", "samp",
+        "select", "small", "span", "strike", "strong", "sub", "sup", "table",
+        "tbody", "td", "tfoot", "th", "thead", "title", "tr", "tt", "u", "ul",
+    }
+)
+
 
 def _language_compatible(enclosing: str, declared: str, *, exact_only: bool) -> bool:
     """Whether `declared` satisfies the enclosing srcLang/trgLang.
@@ -203,6 +220,80 @@ def _data_ref_diagnostics(unit: Unit, diagnostics: list[Diagnostic]) -> None:
                             f"must use dataRefStart and dataRefEnd as a pair",
                         )
                     )
+
+
+def _check_fs_value(
+    attributes: dict[str, str],
+    *,
+    host_label: str,
+    unit_id: str,
+    diagnostics: list[Diagnostic],
+) -> None:
+    fs_value = attributes.get(_FS_FS_ATTR)
+    if fs_value is not None and fs_value not in _FS_TYPE_VALUES:
+        diagnostics.append(
+            Diagnostic(
+                "xliff.module.fs.fs.invalid",
+                f"{host_label} in unit {unit_id!r} has fs:fs={fs_value!r}, which "
+                f"the Format Style module schema does not permit",
+            )
+        )
+
+
+def _format_style_module_diagnostics(unit: Unit, diagnostics: list[Diagnostic]) -> None:
+    """(XLIFF 2.1 Format Style module) "fs and subFs attributes; fs values
+    are constrained by the module schema" -- grounded directly in the
+    pinned XLIFF 2.1 Format Style module schema (inside
+    .local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/
+    fs.xsd): fs:fs is restricted to a fixed enumeration of HTML-tag-like
+    values (_FS_TYPE_VALUES); fs:subFs is an unrestricted xs:string, so it
+    has no value to check.
+
+    fs:fs/fs:subFs "attach to existing core elements rather than
+    introducing their own" (confirmed directly by this package's own
+    pre-existing Format Style fixture, which attaches them to a unit) --
+    the pinned XLIFF 2.1 spec's own repeated Constraints text ("attributes
+    from the namespace .../fs:2.0, OPTIONAL, provided that the Constraints
+    specified in the Format Style Module are met") shows this wildcard
+    permission recurring across many core elements' own constraint
+    sections. This checks every host this package generically preserves
+    unknown attributes on: the unit itself, each segment/ignorable and its
+    own source/target attribute dicts, and every inline code element
+    (ph/pc/sc/ec/mrk) within source/target content.
+    """
+
+    _check_fs_value(
+        unit.attributes, host_label=f"unit {unit.id!r}", unit_id=unit.id, diagnostics=diagnostics
+    )
+    for segment in unit.segments:
+        _check_fs_value(
+            segment.attributes,
+            host_label=f"{segment.kind} {segment.id!r}",
+            unit_id=unit.id,
+            diagnostics=diagnostics,
+        )
+        _check_fs_value(
+            segment.source_attributes,
+            host_label=f"source of {segment.kind} {segment.id!r}",
+            unit_id=unit.id,
+            diagnostics=diagnostics,
+        )
+        _check_fs_value(
+            segment.target_attributes,
+            host_label=f"target of {segment.kind} {segment.id!r}",
+            unit_id=unit.id,
+            diagnostics=diagnostics,
+        )
+        for label in ("source", "target"):
+            content = segment.source if label == "source" else (segment.target or [])
+            for element in _inline_elements(content):
+                _check_fs_value(
+                    element.attributes,
+                    host_label=f"{element.tag} {element.id!r} in {segment.kind} "
+                    f"{segment.id!r} {label}",
+                    unit_id=unit.id,
+                    diagnostics=diagnostics,
+                )
 
 
 def _extension_well_formed(
@@ -546,6 +637,7 @@ def validate(
                     _matches_module_diagnostics(segment_extension, diagnostics)
             _isolated_diagnostics(unit, diagnostics)
             _data_ref_diagnostics(unit, diagnostics)
+            _format_style_module_diagnostics(unit, diagnostics)
         for file_child in file.children:
             if isinstance(file_child, ExtensionNode):
                 _extension_well_formed(file_child, diagnostics)
