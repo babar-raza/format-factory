@@ -29,6 +29,10 @@ _PAYEE_FINANCIAL_ACCOUNT_QNAME = f"{{{_CAC_NAMESPACE}}}PayeeFinancialAccount"
 _CREDIT_NOTE_LINE_QNAME = f"{{{_CAC_NAMESPACE}}}CreditNoteLine"
 _RESPONSE_QNAME = f"{{{_CAC_NAMESPACE}}}Response"
 _DOCUMENT_REFERENCE_QNAME = f"{{{_CAC_NAMESPACE}}}DocumentReference"
+_INVOICE_LINE_QNAME = f"{{{_CAC_NAMESPACE}}}InvoiceLine"
+_TAX_SUBTOTAL_QNAME = f"{{{_CAC_NAMESPACE}}}TaxSubtotal"
+_TAX_TOTAL_QNAME = f"{{{_CAC_NAMESPACE}}}TaxTotal"
+_LEGAL_MONETARY_TOTAL_QNAME = f"{{{_CAC_NAMESPACE}}}LegalMonetaryTotal"
 
 #: Per the pinned OASIS UBL 2.3 CommonAggregateComponents schema
 #: (xsd/common/UBL-CommonAggregateComponents-2.3.xsd, PartyType/AddressType/
@@ -71,6 +75,30 @@ _CREDIT_NOTE_LINE_SINGLE_OCCURRENCE_FIELDS = frozenset(
 #: question already documented for PaymentMeans.PaymentID above.
 _RESPONSE_SINGLE_OCCURRENCE_FIELDS = frozenset({"ResponseCode"})
 _DOCUMENT_REFERENCE_SINGLE_OCCURRENCE_FIELDS = frozenset({"ID", "DocumentTypeCode"})
+_INVOICE_LINE_SINGLE_OCCURRENCE_FIELDS = frozenset(
+    {"ID", "InvoicedQuantity", "LineExtensionAmount", "Item"}
+)
+#: TaxSubtotal.category_code is projected from the nested cac:TaxCategory's
+#: own cbc:ID, not a direct TaxSubtotal child -- TaxCategory itself
+#: (maxOccurs=1 in TaxSubtotalType) is the checkable element here.
+_TAX_SUBTOTAL_SINGLE_OCCURRENCE_FIELDS = frozenset(
+    {"TaxableAmount", "TaxAmount", "TaxCategory"}
+)
+#: TaxTotal.subtotals is deliberately excluded: cac:TaxSubtotal is
+#: minOccurs=0 maxOccurs=UNBOUNDED in TaxTotalType, matching the model's
+#: own tuple[TaxSubtotal, ...] field -- genuinely repeatable, not a
+#: cardinality violation candidate.
+_TAX_TOTAL_SINGLE_OCCURRENCE_FIELDS = frozenset({"TaxAmount"})
+_LEGAL_MONETARY_TOTAL_SINGLE_OCCURRENCE_FIELDS = frozenset(
+    {
+        "LineExtensionAmount",
+        "PayableAmount",
+        "TaxExclusiveAmount",
+        "TaxInclusiveAmount",
+        "AllowanceTotalAmount",
+        "ChargeTotalAmount",
+    }
+)
 
 
 def _local(qname: str) -> str:
@@ -189,6 +217,13 @@ _CARDINALITY_CHECKED_COMPONENTS: dict[str, tuple[frozenset[str], str]] = {
     _DOCUMENT_REFERENCE_QNAME: (
         _DOCUMENT_REFERENCE_SINGLE_OCCURRENCE_FIELDS,
         "cac:DocumentReference",
+    ),
+    _INVOICE_LINE_QNAME: (_INVOICE_LINE_SINGLE_OCCURRENCE_FIELDS, "cac:InvoiceLine"),
+    _TAX_SUBTOTAL_QNAME: (_TAX_SUBTOTAL_SINGLE_OCCURRENCE_FIELDS, "cac:TaxSubtotal"),
+    _TAX_TOTAL_QNAME: (_TAX_TOTAL_SINGLE_OCCURRENCE_FIELDS, "cac:TaxTotal"),
+    _LEGAL_MONETARY_TOTAL_QNAME: (
+        _LEGAL_MONETARY_TOTAL_SINGLE_OCCURRENCE_FIELDS,
+        "cac:LegalMonetaryTotal",
     ),
 }
 

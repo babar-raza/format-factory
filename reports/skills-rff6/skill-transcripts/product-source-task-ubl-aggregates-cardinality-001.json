@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-aggregates-cardinality-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T08:22:30Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_AGGREGATES_CARDINALITY_001",
+    "task_kind": "extend-existing-cardinality-check-to-a-fourth-component-family",
+    "root_cause": "Event 218's exact_next_action named model/aggregates.py's InvoiceLine/Item/LegalMonetaryTotal/TaxTotal/TaxSubtotal -- the package's original, most-established typed components -- as the next natural candidates for the same repeatable cardinality-validation pattern established across events 216-218.",
+    "obligation_targeted": "The same 6-obligation cluster narrowed by events 216/217/218 (SAL-UBL-OBL-03AF3A7D3A76F362 and its cross-capability duplicates) -- extended with additional coverage, still not closed",
+    "acceptance_evidence": "10 new tests prove validate() now also detects cardinality violations for cac:InvoiceLine's ID/LineExtensionAmount fields, cac:TaxSubtotal's TaxCategory field, cac:TaxTotal's TaxAmount field, and cac:LegalMonetaryTotal's PayableAmount/TaxExclusiveAmount fields, while correctly never flagging TaxTotal.TaxSubtotal (genuinely minOccurs=0 maxOccurs=UNBOUNDED per the schema, matching the model's own tuple[TaxSubtotal, ...] field), proven as its own dedicated test.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Surveyed model/aggregates.py's classes: Item, InvoiceLine, TaxSubtotal, TaxTotal, LegalMonetaryTotal.",
+    "2. Extracted InvoiceLineType's, TaxSubtotalType's, and TaxTotalType's complete field lists with exact minOccurs/maxOccurs directly from the pinned OASIS UBL 2.3 release ZIP (same source as events 216-218). Discovered cac:LegalMonetaryTotal's element declaration uses type MonetaryTotalType, not a 'LegalMonetaryTotalType' complexType -- confirmed directly via the schema's own <xsd:element name=\"LegalMonetaryTotal\" type=\"MonetaryTotalType\"/> declaration rather than assumed from the element name, then extracted MonetaryTotalType's cardinality instead.",
+    "3. Deliberately excluded Item from this tick's scope entirely: discovered ItemType's schema has no direct cbc:ID or cbc:CommodityClassification child at all, yet item_of() uses find_all(node, 'ID') and find_all(node, 'CommodityClassification') -- a genuinely separate, deeper, not-yet-investigated correctness question about item_of()'s own field mapping, out of scope for a cardinality-only tick and explicitly flagged rather than silently worked around.",
+    "4. Confirmed invoice_line_of()/tax_subtotal_of()/tax_total_of()/legal_monetary_total_of() each receive the element itself directly, matching the established QNAME-matches-element-itself pattern from all prior extensions.",
+    "5. Added 4 new QNAME constants, 4 new frozensets (one, TaxSubtotal's own, with an inline comment on TaxCategory's ID being projected but the checked element itself being TaxCategory; TaxTotal's frozenset with an inline comment excluding TaxSubtotal, confirmed genuinely repeatable), and 4 new entries to the existing qname-keyed _CARDINALITY_CHECKED_COMPONENTS dispatch dict.",
+    "6. Verified interactively before writing formal tests: a valid LegalMonetaryTotal; a duplicate PayableAmount flagged; a duplicate TaxAmount in TaxTotal flagged; multiple TaxSubtotal under TaxTotal correctly NOT flagged (repeatable); a duplicate InvoiceLine ID flagged; a duplicate TaxCategory under TaxSubtotal flagged -- all 6 cases correct on the first attempt.",
+    "7. Ran the full pre-existing ubl suite (912 tests, zero new fixtures) against the extended check to look for false positives before writing a single new test -- all 912 passed unchanged.",
+    "8. Wrote 10 formal tests covering InvoiceLine.ID/LineExtensionAmount, TaxSubtotal.TaxCategory, TaxTotal.TaxAmount, TaxTotal.TaxSubtotal's genuine repeatability, and LegalMonetaryTotal.PayableAmount/TaxExclusiveAmount, plus the non-violation counterparts.",
+    "9. Ran ruff (clean), the full ubl suite (922 passed, was 912, +10), and the full 6-format regression (3288 passed, was 3278, +10; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "10. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-48f0f7253a427552, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "11. Also updated SAL-UBL-OBL-788B2748204338B8 (UBL-VALIDATE-001), the cluster's 6th obligation with its own distinct wrapper text (not part of the 5-obligation shared block), to cite the new evidence and the updated 8->12 complexType count, matching the same pattern applied in prior ticks."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_aggregates_cardinality_validation.py -q -- 10 passed",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/validation/validator.py tests/python/ubl/test_obligation_aggregates_cardinality_validation.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 922 passed, was 912 passed (912 passed unchanged BEFORE writing new tests, confirming zero false positives)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3288 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3278 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every field's exact cardinality read directly from the pinned schema.",
+    "obligations_moved_breakdown": "0 obligations moved status this tick -- extends the same already-partial cluster's evidence further (12 complexTypes/component-families now checked: Party, PostalAddress, Contact, PaymentMeans, PayeeFinancialAccount, CreditNoteLine, Response, DocumentReference, InvoiceLine, TaxSubtotal, TaxTotal, LegalMonetaryTotal). Item deliberately excluded and flagged as a separate, deeper, unresolved question."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
