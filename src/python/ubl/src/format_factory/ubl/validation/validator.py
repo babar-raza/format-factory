@@ -24,23 +24,39 @@ _CAC_NAMESPACE = (
 _PARTY_QNAME = f"{{{_CAC_NAMESPACE}}}Party"
 _POSTAL_ADDRESS_QNAME = f"{{{_CAC_NAMESPACE}}}PostalAddress"
 _CONTACT_QNAME = f"{{{_CAC_NAMESPACE}}}Contact"
+_PAYMENT_MEANS_QNAME = f"{{{_CAC_NAMESPACE}}}PaymentMeans"
+_PAYEE_FINANCIAL_ACCOUNT_QNAME = f"{{{_CAC_NAMESPACE}}}PayeeFinancialAccount"
 
 #: Per the pinned OASIS UBL 2.3 CommonAggregateComponents schema
 #: (xsd/common/UBL-CommonAggregateComponents-2.3.xsd, PartyType/AddressType/
-#: ContactType complexTypes, read directly from the pinned release ZIP): the
-#: minOccurs=0 maxOccurs=1 children of each type that this package
-#: currently models as a single typed field (Party.postal_address,
-#: Party.contact, PostalAddress.street_name/city_name/postal_zone/country,
-#: Contact.name/telephone/electronic_mail). This is a deliberately narrow
-#: first slice of "full schema and cardinality validation" -- covering
-#: exactly the fields already modeled, not every field of every UBL
-#: complexType, which remains a genuinely larger, separate undertaking.
+#: ContactType/PaymentMeansType/FinancialAccountType complexTypes, read
+#: directly from the pinned release ZIP): the minOccurs=0(or 1) maxOccurs=1
+#: children of each type that this package currently models as a single
+#: typed field (Party.postal_address, Party.contact, PostalAddress.
+#: street_name/city_name/postal_zone/country, Contact.name/telephone/
+#: electronic_mail, PaymentMeans.payment_means_code/payment_due_date/
+#: payee_financial_account, FinancialAccount.id/name/currency_code). This
+#: is a deliberately narrow, ongoing slice of "full schema and cardinality
+#: validation" -- covering exactly the fields already modeled, not every
+#: field of every UBL complexType, which remains a genuinely larger,
+#: separate undertaking. PaymentMeans.PaymentID is deliberately excluded:
+#: the schema declares it minOccurs=0 maxOccurs=UNBOUNDED (genuinely
+#: repeatable), even though this package's own PaymentMeans.payment_id
+#: field models only the first occurrence as a singular value -- that
+#: model-scoping question is a separate concern from this cardinality
+#: check, not silently resolved here.
 _PARTY_SINGLE_OCCURRENCE_FIELDS = frozenset({"PostalAddress", "Contact"})
 _POSTAL_ADDRESS_SINGLE_OCCURRENCE_FIELDS = frozenset(
     {"StreetName", "CityName", "PostalZone", "Country"}
 )
 _CONTACT_SINGLE_OCCURRENCE_FIELDS = frozenset(
     {"Name", "Telephone", "ElectronicMail"}
+)
+_PAYMENT_MEANS_SINGLE_OCCURRENCE_FIELDS = frozenset(
+    {"PaymentMeansCode", "PaymentDueDate", "PayeeFinancialAccount"}
+)
+_FINANCIAL_ACCOUNT_SINGLE_OCCURRENCE_FIELDS = frozenset(
+    {"ID", "Name", "CurrencyCode"}
 )
 
 
@@ -142,36 +158,38 @@ def _single_occurrence_violations(
     ]
 
 
+#: qname -> (single-occurrence local names, human-readable component label).
+#: Extending this mapping is how this cardinality check grows to cover more
+#: already-modeled components over time -- each entry's field set must be
+#: read directly from the pinned schema, never guessed.
+_CARDINALITY_CHECKED_COMPONENTS: dict[str, tuple[frozenset[str], str]] = {
+    _PARTY_QNAME: (_PARTY_SINGLE_OCCURRENCE_FIELDS, "cac:Party"),
+    _POSTAL_ADDRESS_QNAME: (_POSTAL_ADDRESS_SINGLE_OCCURRENCE_FIELDS, "cac:PostalAddress"),
+    _CONTACT_QNAME: (_CONTACT_SINGLE_OCCURRENCE_FIELDS, "cac:Contact"),
+    _PAYMENT_MEANS_QNAME: (_PAYMENT_MEANS_SINGLE_OCCURRENCE_FIELDS, "cac:PaymentMeans"),
+    _PAYEE_FINANCIAL_ACCOUNT_QNAME: (
+        _FINANCIAL_ACCOUNT_SINGLE_OCCURRENCE_FIELDS,
+        "cac:PayeeFinancialAccount",
+    ),
+}
+
+
 def _cardinality_diagnostics(value: UblDocument) -> list[Diagnostic]:
     """SAL-UBL-OBL-03AF3A7D3A76F362 and its cross-capability duplicates:
     "full schema and cardinality validation remains a mandatory open
-    obligation." A genuine, spec-grounded first slice: diagnoses a
-    minOccurs=0 maxOccurs=1 element appearing more than once under
-    cac:Party, cac:PostalAddress, or cac:Contact -- the three already-typed
-    aggregate components this package models today. Deliberately narrow:
+    obligation." A genuine, spec-grounded, ongoing slice: diagnoses a
+    minOccurs=0(or 1) maxOccurs=1 element appearing more than once under
+    any of the already-typed aggregate components this package models
+    today (see _CARDINALITY_CHECKED_COMPONENTS). Deliberately narrow:
     covers only these already-modeled fields, not every complexType in the
     UBL 2.3 schema, which remains a separate, larger undertaking.
     """
     diagnostics: list[Diagnostic] = []
     for node in value.root.iter():
-        if node.qname == _PARTY_QNAME:
-            diagnostics.extend(
-                _single_occurrence_violations(
-                    node, _PARTY_SINGLE_OCCURRENCE_FIELDS, "cac:Party"
-                )
-            )
-        elif node.qname == _POSTAL_ADDRESS_QNAME:
-            diagnostics.extend(
-                _single_occurrence_violations(
-                    node, _POSTAL_ADDRESS_SINGLE_OCCURRENCE_FIELDS, "cac:PostalAddress"
-                )
-            )
-        elif node.qname == _CONTACT_QNAME:
-            diagnostics.extend(
-                _single_occurrence_violations(
-                    node, _CONTACT_SINGLE_OCCURRENCE_FIELDS, "cac:Contact"
-                )
-            )
+        checked = _CARDINALITY_CHECKED_COMPONENTS.get(node.qname)
+        if checked is not None:
+            fields, label = checked
+            diagnostics.extend(_single_occurrence_violations(node, fields, label))
     return diagnostics
 
 

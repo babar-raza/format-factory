@@ -1,0 +1,54 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-payment-means-cardinality-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T07:58:30Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_PAYMENT_MEANS_CARDINALITY_001",
+    "task_kind": "extend-existing-cardinality-check-to-a-second-component-family",
+    "root_cause": "Event 216 established a repeatable pattern for the UBL schema-conformance cluster: extract exact cardinality from the pinned XSD for one already-modeled complexType at a time, add a targeted diagnostic, verify zero false positives. This tick applies the same pattern to PaymentMeans/PayeeFinancialAccount (model/charges.py), the cluster's next already-modeled component family.",
+    "obligation_targeted": "The same 6-obligation cluster narrowed by event 216 (SAL-UBL-OBL-03AF3A7D3A76F362 and its cross-capability duplicates) -- extended with additional coverage, still not closed",
+    "acceptance_evidence": "8 new tests prove validate() now also detects cardinality violations for cac:PaymentMeans's PaymentMeansCode/PaymentDueDate/PayeeFinancialAccount fields and cac:PayeeFinancialAccount's ID/Name/CurrencyCode fields, while correctly never flagging PaymentMeans.PaymentID (genuinely minOccurs=0 maxOccurs=UNBOUNDED per the schema, unlike its sibling fields), proven as its own dedicated test rather than assumed uniform with the other fields.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read model/charges.py's PaymentMeans and FinancialAccount dataclasses directly: PaymentMeans models payment_means_code/payment_due_date/payment_id/payee_financial_account; FinancialAccount models id/name/currency_code, projected from the cac:PayeeFinancialAccount element specifically (not a generic cac:FinancialAccount -- confirmed by reading financial_account_of's caller, payment_means_of, which calls find(node, 'PayeeFinancialAccount')).",
+    "2. Extracted PaymentMeansType's and FinancialAccountType's complete field lists with exact minOccurs/maxOccurs directly from the pinned OASIS UBL 2.3 release ZIP (same source as event 216's Party/PostalAddress/Contact work). Found a genuine discrepancy worth documenting rather than silently working around: PaymentMeansType declares cbc:PaymentID as minOccurs=0 maxOccurs=UNBOUNDED (repeatable), even though this package's own PaymentMeans.payment_id field models only a single value -- deliberately excluded PaymentID from the new cardinality check rather than either flagging legitimately-repeated instances as violations or silently fixing the separate model-scoping question, which is out of scope for a validation-only tick.",
+    "3. Refactored _cardinality_diagnostics() from a growing if/elif chain into a qname-keyed dict (_CARDINALITY_CHECKED_COMPONENTS), making it straightforward to extend with more already-modeled components in future ticks without the function itself growing unboundedly.",
+    "4. Verified interactively before writing formal tests: a single PaymentMeansCode validates cleanly; two PaymentMeansCode/PaymentDueDate/PayeeFinancialAccount values are each flagged; multiple PaymentID values are correctly NOT flagged; two CurrencyCode values inside PayeeFinancialAccount are flagged -- all 5 cases correct on the first attempt.",
+    "5. Ran the full pre-existing ubl suite (896 tests, zero new fixtures) against the extended check to look for false positives before writing a single new test -- all 896 passed unchanged.",
+    "6. Wrote 8 formal tests mirroring event 216's structure: positive/negative cases for each newly-checked field, plus a dedicated test proving PaymentID's genuine repeatability is honored, not accidentally flagged. Ran ruff (clean), the full ubl suite (904 passed, was 896, +8), and the full 6-format regression (3270 passed, was 3262, +8; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "7. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-914786c9d097d18f, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_payment_means_cardinality_validation.py -q -- 8 passed",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/validation/validator.py tests/python/ubl/test_obligation_payment_means_cardinality_validation.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 904 passed, was 896 passed (896 passed unchanged BEFORE writing new tests, confirming zero false positives)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3270 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3262 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every field's exact cardinality read directly from the pinned schema.",
+    "obligations_moved_breakdown": "0 obligations moved status this tick -- the cluster's already-partial status (event 216) is unchanged; this tick extends the same evidence with 2 more components' worth of coverage (5 complexTypes total now checked: Party, PostalAddress, Contact, PaymentMeans, PayeeFinancialAccount), narrowing the remaining gap further without a status transition of its own."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

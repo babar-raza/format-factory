@@ -154,6 +154,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Closes 3 stale duplicate citations, not a new feature: SAL-UBL-OBL-4A02F547DCB50BCD (UBL-PARSE-001), SAL-UBL-OBL-603915CF28301B40 (UBL-MODEL-001), and SAL-UBL-OBL-B47D8E797924BBD4 (UBL-VALUES-001) all shared the identical rule_text as SAL-UBL-OBL-D21BA46DEC8DFA2B (UBL-CODELIST-001), which event 193 already closed by building PaymentMeans.payee_financial_account and financial_account_of() (5 tests). These 3 duplicates were never revisited to reflect that fix and still read \"PaymentMeans carries no payee-financial-account field at all... genuinely unbuilt\" -- re-confirmed directly against the current charges.py that the field, the projector, and all 5 tests are real and unchanged since event 193. No new source or test was needed; this slice only corrects a stale finding to match already-proven product state. ubl suite: unchanged (no new tests added, existing 776 passed). NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED beyond re-confirming the already-existing SAL-UBL-OBL-D21BA46DEC8DFA2B evidence still holds. Covers SAL-UBL-OBL-4A02F547DCB50BCD, SAL-UBL-OBL-603915CF28301B40, and SAL-UBL-OBL-B47D8E797924BBD4 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "UBL-PAYMENT-MEANS-CARDINALITY-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-payment-means-cardinality-001.json",
+      "sha256": "3bd7f46c23e4f745b9ea296fe55a8177c0155ad94f02d516088d69d0c0f00697",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Extends (does not newly close) the same 6-obligation schema-conformance cluster UBL-PARTY-CARDINALITY-VALIDATION-PROOF already narrowed. Applies the same established pattern to a second component family: extracted PaymentMeansType's and FinancialAccountType's complete field lists with exact minOccurs/maxOccurs directly from the pinned OASIS UBL 2.3 release ZIP. Found and honestly documented a genuine discrepancy: PaymentMeansType declares cbc:PaymentID as minOccurs=0 maxOccurs=UNBOUNDED (repeatable), even though this package's own PaymentMeans.payment_id field models only a single value -- deliberately excluded from the new check rather than either false-flagging legitimate repetition or silently altering the model's own field typing, which is a separate concern. Refactored _cardinality_diagnostics() from a growing if/elif chain into a qname-keyed dict (_CARDINALITY_CHECKED_COMPONENTS) for straightforward future extension. Verified zero false positives against the entire pre-existing 896-test ubl suite before writing a single new test. 8 new tests prove violation detection for PaymentMeansCode/PaymentDueDate/PayeeFinancialAccount/PayeeFinancialAccount's own ID/Name/CurrencyCode fields, plus a dedicated proof that PaymentID's genuine repeatability is honored, not flagged. ubl suite: 896 -> 904 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every field's cardinality read directly from the pinned schema. Covers the same 6 obligations UBL-PARTY-CARDINALITY-VALIDATION-PROOF covers; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "UBL-PRESERVATION-MODE-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -237,7 +245,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "1b65096314a05fb704fd77a5152850de6e5793157d2fead62d07fd6893ed9640",
+    "implementation_evidence": "e6b1a86378b047607e9760965ce8b160d16c2d2894d935f483feed4dfbe363c2",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -313,13 +321,14 @@
       "capability_id": "UBL-MODEL-001",
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
-        "UBL-PARTY-CARDINALITY-VALIDATION-PROOF"
+        "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
+        "UBL-PAYMENT-MEANS-CARDINALITY-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded first slice of cardinality validation now exists: validate() detects a minOccurs=0 maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own PartyType/AddressType/ContactType complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, or cac:Contact -- the three already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName are proven to never be flagged. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 3 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, or cac:PayeeFinancialAccount -- the five already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 5 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components."
       ],
       "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact's already-modeled single-occurrence fields are checked so far. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
+        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (lines.py, values.py, reference.py) also type. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -327,13 +336,21 @@
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_street_names_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_countries_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_contact_with_two_telephone_numbers_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_nested_at_a_customer_party_is_also_checked_not_only_supplier"
+        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_nested_at_a_customer_party_is_also_checked_not_only_supplier",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_means_codes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_due_dates_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payee_financial_accounts_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_financial_account_with_two_currency_codes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_financial_account_with_two_names_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-03AF3A7D3A76F362",
       "positive_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_a_single_postal_address_validates_cleanly",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_tax_schemes_are_not_a_violation_they_are_repeatable",
-        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_names_are_not_a_violation_they_are_repeatable"
+        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_names_are_not_a_violation_they_are_repeatable",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_payment_means_with_a_single_code_validates_cleanly",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_multiple_payment_ids_are_not_a_violation_the_schema_declares_them_repeatable",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_financial_account_with_one_of_each_field_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -1864,13 +1881,14 @@
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
-        "UBL-PARTY-CARDINALITY-VALIDATION-PROOF"
+        "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
+        "UBL-PAYMENT-MEANS-CARDINALITY-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded first slice of cardinality validation now exists: validate() detects a minOccurs=0 maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own PartyType/AddressType/ContactType complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, or cac:Contact -- the three already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName are proven to never be flagged. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 3 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, or cac:PayeeFinancialAccount -- the five already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 5 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components."
       ],
       "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact's already-modeled single-occurrence fields are checked so far. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
+        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (lines.py, values.py, reference.py) also type. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -1878,13 +1896,21 @@
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_street_names_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_countries_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_contact_with_two_telephone_numbers_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_nested_at_a_customer_party_is_also_checked_not_only_supplier"
+        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_nested_at_a_customer_party_is_also_checked_not_only_supplier",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_means_codes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_due_dates_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payee_financial_accounts_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_financial_account_with_two_currency_codes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_financial_account_with_two_names_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-3C2E2EA8D3B697C9",
       "positive_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_a_single_postal_address_validates_cleanly",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_tax_schemes_are_not_a_violation_they_are_repeatable",
-        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_names_are_not_a_violation_they_are_repeatable"
+        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_names_are_not_a_violation_they_are_repeatable",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_payment_means_with_a_single_code_validates_cleanly",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_multiple_payment_ids_are_not_a_violation_the_schema_declares_them_repeatable",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_financial_account_with_one_of_each_field_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -3474,13 +3500,14 @@
       "capability_id": "UBL-PARSE-001",
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
-        "UBL-PARTY-CARDINALITY-VALIDATION-PROOF"
+        "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
+        "UBL-PAYMENT-MEANS-CARDINALITY-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded first slice of cardinality validation now exists: validate() detects a minOccurs=0 maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own PartyType/AddressType/ContactType complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, or cac:Contact -- the three already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName are proven to never be flagged. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 3 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, or cac:PayeeFinancialAccount -- the five already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 5 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components."
       ],
       "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact's already-modeled single-occurrence fields are checked so far. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
+        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (lines.py, values.py, reference.py) also type. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -3488,13 +3515,21 @@
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_street_names_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_countries_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_contact_with_two_telephone_numbers_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_nested_at_a_customer_party_is_also_checked_not_only_supplier"
+        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_nested_at_a_customer_party_is_also_checked_not_only_supplier",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_means_codes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_due_dates_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payee_financial_accounts_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_financial_account_with_two_currency_codes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_financial_account_with_two_names_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-783649FDF531B0F9",
       "positive_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_a_single_postal_address_validates_cleanly",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_tax_schemes_are_not_a_violation_they_are_repeatable",
-        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_names_are_not_a_violation_they_are_repeatable"
+        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_names_are_not_a_violation_they_are_repeatable",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_payment_means_with_a_single_code_validates_cleanly",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_multiple_payment_ids_are_not_a_violation_the_schema_declares_them_repeatable",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_financial_account_with_one_of_each_field_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -3516,23 +3551,26 @@
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
         "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF",
-        "UBL-PARTY-CARDINALITY-VALIDATION-PROOF"
+        "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
+        "UBL-PAYMENT-MEANS-CARDINALITY-PROOF"
       ],
       "implemented_behavior": [
-        "4 of the 5 named layers exist as separate, independently invokable, diagnostic-returning capabilities rather than one monolithic all-or-nothing check: syntax (XML parse errors), referential (DocumentIndex.duplicate_line_ids), code-list (CodeListRegistry.validate_code), and pluggable business-rule (ProfileValidatorRegistry) are each separately callable and each return structured diagnostics rather than raising. validate() itself returns a ValidationReport rather than an exception, proven directly. The 5th layer, schema/XSD-conformance, now has a genuine first slice too: validate() detects cardinality violations (a minOccurs=0 maxOccurs=1 element occurring more than once) for cac:Party/cac:PostalAddress/cac:Contact's already-modeled fields, grounded directly in the pinned OASIS UBL 2.3 schema."
+        "4 of the 5 named layers exist as separate, independently invokable, diagnostic-returning capabilities rather than one monolithic all-or-nothing check: syntax (XML parse errors), referential (DocumentIndex.duplicate_line_ids), code-list (CodeListRegistry.validate_code), and pluggable business-rule (ProfileValidatorRegistry) are each separately callable and each return structured diagnostics rather than raising. validate() itself returns a ValidationReport rather than an exception, proven directly. The 5th layer, schema/XSD-conformance, now has a genuine, growing slice too: validate() detects cardinality violations (a minOccurs=0(or 1) maxOccurs=1 element occurring more than once) for cac:Party/cac:PostalAddress/cac:Contact/cac:PaymentMeans/cac:PayeeFinancialAccount's already-modeled fields, grounded directly in the pinned OASIS UBL 2.3 schema."
       ],
       "missing_behavior": [
-        "Full schema/XSD-conformance validation remains the one confirmed incomplete layer -- only cardinality checking for 3 already-modeled complexTypes' single-occurrence fields exists so far, not type/pattern/full-cardinality validation across the whole UBL 2.3 schema's ~91 root document types and their many components, the same confirmed gap as SAL-UBL-OBL-03AF3A7D3A76F362 (UBL-MODEL-001). The 5 layers also are not unified into one combined call returning all diagnostics together -- a caller currently invokes each layer separately."
+        "Full schema/XSD-conformance validation remains the one confirmed incomplete layer -- only cardinality checking for 5 already-modeled complexTypes' single-occurrence fields exists so far, not type/pattern/full-cardinality validation across the whole UBL 2.3 schema's ~91 root document types and their many components, the same confirmed gap as SAL-UBL-OBL-03AF3A7D3A76F362 (UBL-MODEL-001). The 5 layers also are not unified into one combined call returning all diagnostics together -- a caller currently invokes each layer separately."
       ],
       "negative_test_selectors": [
-        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation"
+        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_means_codes_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-788B2748204338B8",
       "positive_test_selectors": [
         "tests/python/ubl/test_obligation_lifecycle_io.py::test_validate_returns_a_structured_report_not_an_exception",
         "tests/python/ubl/test_obligation_lifecycle_io.py::test_validate_reports_a_diagnostic_rather_than_raising_for_a_semantic_issue",
         "tests/python/ubl/test_obligation_referential_integrity.py::test_two_lines_sharing_an_id_are_reported_as_duplicates",
-        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_a_single_postal_address_validates_cleanly"
+        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_a_single_postal_address_validates_cleanly",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_payment_means_with_a_single_code_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -4475,13 +4513,14 @@
       "capability_id": "UBL-VALIDATE-001",
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
-        "UBL-PARTY-CARDINALITY-VALIDATION-PROOF"
+        "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
+        "UBL-PAYMENT-MEANS-CARDINALITY-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded first slice of cardinality validation now exists: validate() detects a minOccurs=0 maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own PartyType/AddressType/ContactType complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, or cac:Contact -- the three already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName are proven to never be flagged. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 3 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, or cac:PayeeFinancialAccount -- the five already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 5 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components."
       ],
       "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact's already-modeled single-occurrence fields are checked so far. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
+        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (lines.py, values.py, reference.py) also type. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -4489,13 +4528,21 @@
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_street_names_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_countries_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_contact_with_two_telephone_numbers_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_nested_at_a_customer_party_is_also_checked_not_only_supplier"
+        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_nested_at_a_customer_party_is_also_checked_not_only_supplier",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_means_codes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_due_dates_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payee_financial_accounts_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_financial_account_with_two_currency_codes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_financial_account_with_two_names_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-9736787B52CB148C",
       "positive_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_a_single_postal_address_validates_cleanly",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_tax_schemes_are_not_a_violation_they_are_repeatable",
-        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_names_are_not_a_violation_they_are_repeatable"
+        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_names_are_not_a_violation_they_are_repeatable",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_payment_means_with_a_single_code_validates_cleanly",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_multiple_payment_ids_are_not_a_violation_the_schema_declares_them_repeatable",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_financial_account_with_one_of_each_field_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -4578,13 +4625,14 @@
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
-        "UBL-PARTY-CARDINALITY-VALIDATION-PROOF"
+        "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
+        "UBL-PAYMENT-MEANS-CARDINALITY-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded first slice of cardinality validation now exists: validate() detects a minOccurs=0 maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own PartyType/AddressType/ContactType complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, or cac:Contact -- the three already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName are proven to never be flagged. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 3 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, or cac:PayeeFinancialAccount -- the five already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 5 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components."
       ],
       "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact's already-modeled single-occurrence fields are checked so far. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
+        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (lines.py, values.py, reference.py) also type. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -4592,13 +4640,21 @@
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_street_names_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_postal_address_with_two_countries_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_contact_with_two_telephone_numbers_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_nested_at_a_customer_party_is_also_checked_not_only_supplier"
+        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_nested_at_a_customer_party_is_also_checked_not_only_supplier",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_means_codes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_due_dates_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payee_financial_accounts_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_financial_account_with_two_currency_codes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_financial_account_with_two_names_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-9C170E327B30FBD3",
       "positive_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_a_single_postal_address_validates_cleanly",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_tax_schemes_are_not_a_violation_they_are_repeatable",
-        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_names_are_not_a_violation_they_are_repeatable"
+        "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_names_are_not_a_violation_they_are_repeatable",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_payment_means_with_a_single_code_validates_cleanly",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_multiple_payment_ids_are_not_a_violation_the_schema_declares_them_repeatable",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_financial_account_with_one_of_each_field_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -6814,6 +6870,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-party-postal-address-001.json": "d6a1518c42b9db1cd8e7f3608c1c437e0b9c9fc7e03b91cb0280021cff0b2201",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-payee-financial-account-001.json": "871c30fea014cdad6674a806f06c1f7c38d9ea4ab650d5cda0fa352d8edf6aea",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-payee-financial-account-stale-citation-001.json": "dbb79cbba24aa88c7876421ad9f2b508fa46ef5a735df122a9efa9e45bc80733",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-payment-means-cardinality-001.json": "3bd7f46c23e4f745b9ea296fe55a8177c0155ad94f02d516088d69d0c0f00697",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-preservation-mode-001.json": "088e0985934fa48774b39f185c541d9d3c3f038b561d70bb1d30359755986909",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-profile-identifiers-001.json": "48879903a7e0b13d2411bfdb1a24c27529a89fbf06f5f2dd0de655d21e7ab871",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-profile-validator-registry-001.json": "4fa90752a767767e0ead729d416bbbd68836191ef0a7c2f62480a640b5b2b9cd",
@@ -6843,7 +6900,7 @@
     "src/python/ubl/src/format_factory/ubl/model/values.py": "4aaa55d4f2c6faa457b1a03ab6bf9a5ff83ffcd7ee90f87c0b649c18b39b642f",
     "src/python/ubl/src/format_factory/ubl/security/limits.py": "95ba5485bad5547fe800d4952518507824e217d15a197df822945f73921afc6d",
     "src/python/ubl/src/format_factory/ubl/validation/profiles.py": "9be1805b9ea265200e890fc833526dd3589b0be559d61f1d6ba76954f63b0c35",
-    "src/python/ubl/src/format_factory/ubl/validation/validator.py": "e42ff649ea08151969b87fbc6b4dcdbc950d62e1adcf8cf249741d9ec9608497",
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py": "1e234aec8253fe6fa59a5e7d0aafd4415fbaa465ab27d2c72451d05576743902",
     "tests/python/ubl/test_obligation_aggregate_components.py": "26e36e29e05e239f1fc17915ebf243ae61b55799c7811dbfe8c3fee0fac66242",
     "tests/python/ubl/test_obligation_business_calculation.py": "ebf8352d49b7d0bc6bf5aa4bfa0d034f6f98f896ba34aceb95cfe38efeeee150",
     "tests/python/ubl/test_obligation_business_value_types.py": "5f4ee2e16fc785296a4fd493548197aaad50df1b384350ab7cee064e71ed8e10",
@@ -6859,6 +6916,7 @@
     "tests/python/ubl/test_obligation_namespace_shadowing_security.py": "09f618f4e2dc90fc400cd35109fe302bae72ab17d7087edce0bfaf6d580718fb",
     "tests/python/ubl/test_obligation_party_and_postal_address.py": "d35d55402a5d020574bcd2af1f841f59a3e1097929d17eddfcfab0d8bada261b",
     "tests/python/ubl/test_obligation_party_cardinality_validation.py": "7338dd69a0cb0b2907380229b94ec340d8494439240bb59686714076c930762d",
+    "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py": "099be7dab04dfce9141d2a29a19e05954f616119228f736d3fdc0d9bb23a56d0",
     "tests/python/ubl/test_obligation_preservation_mode.py": "0fa525baf6a5836bd2ebd456cad1259f5e3b80c3e1b692864a45471bf6ff0873",
     "tests/python/ubl/test_obligation_profile_identifiers.py": "dd1a6ee497466d8a62d1ab81a91e478328d3ac2a1cec48e90461cadbe7ea8e77",
     "tests/python/ubl/test_obligation_profile_validator_registry.py": "b874e4d0c934f0496470bb854a6d90fafd98dc39f0ff744daac780909e2f2cb1",
