@@ -3,6 +3,11 @@ format_id: ora
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: ORA-STACK-XML-UTF8-ENFORCEMENT-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-stack-xml-utf8-enforcement-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike ORA-BASELINE-SUITE. Closes SAL-ORA-OBL-8EDD775BF1715438 (ORA-STREAM-001). This obligation''s own rule_text is narrow -- "The required stack.xml archive member is a UTF-8 encoded XML document conforming to the OpenRaster Layer Stack format" -- distinct from its capability sibling SAL-ORA-OBL-F8A3777A56AA6121''s much larger streaming/lazy-access/resource-budget rule_text; the two share a proof_requirements template but not a rule_text, and this slice closes only the former. Before this slice, parse_stack fed raw archive bytes straight to ElementTree.fromstring with no encoding check at all, confirmed via direct interactive probing before writing any test: a stack.xml declaring encoding="ISO-8859-1" (with correspondingly-encoded bytes) parsed successfully, and a stack.xml with genuinely non-UTF-8 bytes and NO declaration at all also parsed successfully (mojibake silently produced instead of a refusal) -- both real, previously-unenforced spec violations, not just untested behavior. Added _require_utf8() to codec/stack_xml.py: rejects any XML declaration whose encoding pseudo-attribute is not case-insensitively "utf-8", then independently rejects payload bytes that fail to decode as UTF-8 even with no declaration present (catching the undeclared-mojibake case the declaration check alone would miss). Wired immediately after the existing reject_unsafe_xml() call in parse_stack. 5 new tests prove: a declared non-UTF-8 encoding is refused; genuinely non-UTF-8 bytes are refused even with no declaration; an explicit UTF-8 declaration parses normally; a case-insensitive "utf-8" declaration parses normally; and undeclared genuine UTF-8 bytes (including non-ASCII content) parse normally. The "conforming to the OpenRaster Layer Stack format" half of this obligation''s rule_text was already extensively covered by test_obligation_stack_and_document.py''s pre-existing 33 tests (root/stack/layer/text element structure, required attributes, opacity/visibility/composite-op parsing) -- cited here rather than re-proven. ora suite: 311 -> 316 passed. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, with the UTF-8 requirement grounded directly in the pinned spec''s own text (quoted verbatim in container.py''s module docstring from an earlier tick). Covers SAL-ORA-OBL-8EDD775BF1715438 only; it supports no other obligation and promotes no product state.'
 - evidence_id: ORA-VERSION-DRIFT-WARNING-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ora-version-drift-warning-001.json
   expected_result: PASS
@@ -2551,16 +2556,24 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-8EDD775BF1715438
   capability_id: ORA-STREAM-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Large sparse archives, lazy-read
-    instrumentation, flat-memory checks, cancellation, and every resource limit.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  status: implemented
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_require_utf8
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_document_with_an_explicit_utf8_declaration_parses_normally
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_document_with_a_case_insensitive_utf8_declaration_parses_normally
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_document_with_no_xml_declaration_and_genuine_utf8_bytes_parses_normally
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_document_declaring_a_non_utf8_encoding_is_refused
+  - tests/python/ora/test_obligation_stack_and_document.py::test_a_document_with_genuinely_non_utf8_bytes_is_refused_even_without_a_declaration
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  - ORA-STACK-XML-UTF8-ENFORCEMENT-PROOF
+  implemented_behavior:
+  - 'This obligation''s own rule_text is narrow -- "stack.xml archive member is a UTF-8 encoded XML document conforming to the OpenRaster Layer Stack format" -- and both halves are now directly proven. UTF-8 encoding is now explicitly enforced (previously delegated entirely, and incorrectly, to ElementTree''s permissive auto-detection): a stack.xml declaring a non-UTF-8 encoding is refused, and genuinely non-UTF-8 bytes are refused even with no declaration present, confirmed by direct probing before the fix that both cases were previously silently accepted. "Conforming to the OpenRaster Layer Stack format" (element structure, required attributes, opacity/visibility/composite-op parsing) was already extensively covered by this file''s own pre-existing 33 tests, cited here rather than re-proven. This obligation is distinct from its capability sibling SAL-ORA-OBL-F8A3777A56AA6121 (streaming/lazy-access/resource-budget semantics), which remains genuinely unbuilt and is not affected by this slice.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource

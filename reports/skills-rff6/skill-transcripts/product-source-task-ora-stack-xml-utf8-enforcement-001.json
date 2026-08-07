@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-stack-xml-utf8-enforcement-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T11:20:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_STACK_XML_UTF8_ENFORCEMENT_001",
+    "task_kind": "fix-real-unenforced-spec-requirement",
+    "root_cause": "Per Event 234's next-action ranking, surveyed ORA's remaining 13 unresolved obligations (untouched this whole session). SAL-ORA-OBL-8EDD775BF1715438 (ORA-STREAM-001) has a narrow rule_text distinct from its capability sibling's much larger streaming-feature rule_text: 'The required stack.xml archive member is a UTF-8 encoded XML document conforming to the OpenRaster Layer Stack format.' Read codec/stack_xml.py::parse_stack directly and found it fed raw archive bytes straight to ElementTree.fromstring with no encoding check of any kind.",
+    "obligation_targeted": "SAL-ORA-OBL-8EDD775BF1715438 (ORA-STREAM-001) -- promoted missing->implemented",
+    "acceptance_evidence": "5 new tests prove: a stack.xml declaring a non-UTF-8 encoding is refused; genuinely non-UTF-8 bytes are refused even with no declaration present; explicit and case-insensitive UTF-8 declarations parse normally; undeclared genuine UTF-8 bytes (including non-ASCII content) parse normally.",
+    "regression_tier": "full ora package suite (tests/python/ora) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Surveyed ORA's 13 unresolved obligations (6 partial, 7 missing) and read each one's rule_text directly rather than trusting the shared proof_requirements template some obligations under the same capability share -- confirmed SAL-ORA-OBL-8EDD775BF1715438's actual rule_text is narrow (stack.xml UTF-8 + format conformance) and distinct from its capability sibling SAL-ORA-OBL-F8A3777A56AA6121's much larger streaming/lazy-access/resource-budget rule_text, even though both share the same generic proof_requirements text.",
+    "2. Read codec/stack_xml.py::parse_stack directly before writing any test and found no encoding handling at all -- payload bytes go straight to ElementTree.fromstring(payload).",
+    "3. Probed directly (before any fix): a stack.xml with an XML declaration naming encoding=\"ISO-8859-1\" and correspondingly-encoded bytes parsed successfully via parse_stack, silently accepting a real spec violation. A second probe with genuinely non-UTF-8 bytes and NO declaration at all also parsed successfully, silently producing mojibake (a corrupted layer name) instead of a refusal. Both confirmed real, previously-unenforced gaps -- not merely untested behavior.",
+    "4. Added _require_utf8() to codec/stack_xml.py: first checks the XML declaration's encoding pseudo-attribute (extracted via a regex anchored to the start of the payload, since the XML spec requires it on the first line if present) and rejects any value that is not case-insensitively 'utf-8'; then independently attempts payload.decode('utf-8') and rejects a UnicodeDecodeError, catching the undeclared-mojibake case the declaration check alone would miss (a document with no declaration at all defaults to UTF-8 per the XML spec, so undeclared-but-non-UTF-8 bytes are a distinct violation).",
+    "5. Wired _require_utf8(payload) into parse_stack immediately after the existing reject_unsafe_xml() call, before the ElementTree parse.",
+    "6. Re-ran the two prior probes to confirm both are now refused with a clear error naming the actual declared encoding, and added three more probes (explicit UTF-8 declaration, case-insensitive 'utf-8' declaration, undeclared genuine UTF-8 with non-ASCII content) to confirm none of the valid cases regressed.",
+    "7. Wrote 5 formal tests in the existing test_obligation_stack_and_document.py (the file that already owns all other stack.xml parsing tests, including a pre-existing UTF-8-declared HEADER fixture), all passing on the first attempt.",
+    "8. Ran ruff (clean), the full ora suite (316 passed, was 311, +5), and the full 6-format regression (3381 passed, was 3376, +5; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "9. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-02cb85f63355ab5b, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "10. Promoted the obligation to implemented: both halves of its own narrow rule_text (UTF-8 enforcement, now proven; Layer Stack format conformance, already extensively covered by 33 pre-existing tests in the same file) are directly satisfied. Its capability sibling's much larger streaming-feature obligation remains correctly untouched and unaffected."
+  ],
+  "allowed_files": [
+    "src/python/ora/src/format_factory/ora/codec/stack_xml.py",
+    "tests/python/ora/test_obligation_stack_and_document.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/src/format_factory/ora/codec/stack_xml.py",
+    "tests/python/ora/test_obligation_stack_and_document.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_stack_and_document.py -q -- 58 passed",
+    ".venv/Scripts/python -m ruff check src/python/ora/src/format_factory/ora/codec/stack_xml.py tests/python/ora/test_obligation_stack_and_document.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 316 passed, was 311 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3381 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3376 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation moved missing->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 134,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the UTF-8 requirement grounded directly in the pinned spec's own text (quoted verbatim in container.py's own module docstring), the gap confirmed by direct interactive probing before any fix was written.",
+    "obligations_moved_breakdown": "SAL-ORA-OBL-8EDD775BF1715438 (ORA-STREAM-001) missing->implemented. A genuine, real, previously-unenforced spec violation fixed with production source code -- not merely a test-coverage gap on already-shipped behavior, unlike most of this session's other slices."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

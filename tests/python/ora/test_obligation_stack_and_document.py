@@ -375,3 +375,61 @@ def test_an_ordinary_document_passes_the_same_node_and_depth_limits() -> None:
     document = parse_stack(image(SIMPLE_BODY), limits=limits)
 
     assert len(document.root.children) == 2
+
+
+# ── SAL-ORA-OBL-8EDD775BF1715438 (ORA-STREAM-001): stack.xml must be UTF-8 ──
+#
+# "The required stack.xml archive member is a UTF-8 encoded XML document
+# conforming to the OpenRaster Layer Stack format." ElementTree.fromstring
+# alone does not enforce this -- it happily parses whatever encoding a
+# document's own XML declaration names, and silently decodes undeclared
+# non-UTF-8 bytes that merely happen to also be valid under some other
+# codec. Both are spec violations parse_stack now refuses explicitly.
+
+
+def test_a_document_declaring_a_non_utf8_encoding_is_refused() -> None:
+    payload = (
+        '<?xml version="1.0" encoding="ISO-8859-1"?>\n'
+        '<image w="1" h="1" version="0.0.5"><stack></stack></image>'
+    ).encode("iso-8859-1")
+
+    with pytest.raises(OraValidationError, match="UTF-8"):
+        parse_stack(payload)
+
+
+def test_a_document_with_genuinely_non_utf8_bytes_is_refused_even_without_a_declaration() -> None:
+    payload = (
+        '<image w="1" h="1" version="0.0.5"><stack>'
+        '<layer name="caf\xe9" src="data/1.png"/></stack></image>'
+    ).encode("iso-8859-1")
+
+    with pytest.raises(OraValidationError, match="UTF-8"):
+        parse_stack(payload)
+
+
+def test_a_document_with_an_explicit_utf8_declaration_parses_normally() -> None:
+    document = parse_stack(image(SIMPLE_BODY))
+
+    assert document.width == 800
+
+
+def test_a_document_with_a_case_insensitive_utf8_declaration_parses_normally() -> None:
+    payload = (
+        '<?xml version="1.0" encoding="utf-8"?>\n'
+        '<image w="1" h="1" version="0.0.5"><stack></stack></image>'
+    ).encode("utf-8")
+
+    document = parse_stack(payload)
+
+    assert document.width == 1
+
+
+def test_a_document_with_no_xml_declaration_and_genuine_utf8_bytes_parses_normally() -> None:
+    payload = (
+        '<image w="1" h="1" version="0.0.5"><stack>'
+        '<layer name="caf\xe9" src="data/1.png"/></stack></image>'
+    ).encode("utf-8")
+
+    document = parse_stack(payload)
+
+    assert document.root.children[0].name == "caf\xe9"

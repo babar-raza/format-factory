@@ -130,6 +130,14 @@
       "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: ORA-STACK-001's 14 obligations shared one identical generic \"not yet audited\" citation despite real source_symbols already pointing at model/stack.py and codec/stack_xml.py. This audit names the exact positive/negative test selector proving each obligation's own specific rule_text individually (layer src path convention and traversal refusal, opacity range, required layer src, stack/layer/text nesting and visual order, xres/yres pairing and defaulting, visibility enum, root w/h/version requirement, x/y signed-position defaulting) rather than citing the three shared root-attribute tests for all fourteen. One obligation (SAL-ORA-OBL-BFEC595E47C33BE7) is a cross-capability duplicate of ORA-ISOLATION-001's already-implemented SAL-ORA-OBL-97CE271E3DD6D883 (identical rule_text) and is closed by citation, not new proof. Two obligations (SAL-ORA-OBL-930CACD129A5CC40 here and ORA-COMPOSITE-001's duplicate SAL-ORA-OBL-4EC8C1CC747F7FC6) are corrected to accurate `partial` -- default-value and verbatim-preservation behavior is proven, but no registry maps a composite-op value to its documented blend function/Porter-Duff operator, a confirmed gap not attempted this slice because the OpenRaster specification's actual composite-op inventory is not yet a committed, verified SAL fact. New test coverage added this slice: two tests proving a <text> element parses via the real XML walker (previously proven only at direct model-construction time, never through the parser). SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-047E5523BB0D85D5, SAL-ORA-OBL-1BCC64FF1DFE8AE5, SAL-ORA-OBL-23D0207100C46AD9, SAL-ORA-OBL-329D93743655752D, SAL-ORA-OBL-6078C4F67F33C8E4, SAL-ORA-OBL-9007B671A8FCFF7D, SAL-ORA-OBL-930CACD129A5CC40, SAL-ORA-OBL-BFEC595E47C33BE7, SAL-ORA-OBL-D76D780D4D9DA699, SAL-ORA-OBL-F6424763BCEC7266, and (cross-capability, ORA-COMPOSITE-001) SAL-ORA-OBL-4EC8C1CC747F7FC6; it supports no other obligation and promotes no product state. Extended in a follow-up slice the same session to also cover ORA-EDIT-001's ten near-verbatim rule_text duplicates of the ORA-STACK-001/ORA-ISOLATION-001 facts above: SAL-ORA-OBL-022F37EEA74EC1BB, SAL-ORA-OBL-631448F8E906BB89, SAL-ORA-OBL-86178CC1AEECB389, SAL-ORA-OBL-94713E68352E9199, SAL-ORA-OBL-9F423271F79A4954, SAL-ORA-OBL-AE0A21E0921EB0B1, SAL-ORA-OBL-BF7AD4693704AF6A, SAL-ORA-OBL-E8D9E4F183B12145, SAL-ORA-OBL-F41BA93CE84AA0F6, and SAL-ORA-OBL-6B6D7BEE18077E8A (composite-op, kept partial like its duplicate) -- same citation discipline, no additional new tests for this extension."
     },
     {
+      "evidence_id": "ORA-STACK-XML-UTF8-ENFORCEMENT-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-stack-xml-utf8-enforcement-001.json",
+      "sha256": "084173bb4f514d4455ad68143feb1e132e3c8f9d85f89b1d84f3e6d3b7a9e995",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE. Closes SAL-ORA-OBL-8EDD775BF1715438 (ORA-STREAM-001). This obligation's own rule_text is narrow -- \"The required stack.xml archive member is a UTF-8 encoded XML document conforming to the OpenRaster Layer Stack format\" -- distinct from its capability sibling SAL-ORA-OBL-F8A3777A56AA6121's much larger streaming/lazy-access/resource-budget rule_text; the two share a proof_requirements template but not a rule_text, and this slice closes only the former. Before this slice, parse_stack fed raw archive bytes straight to ElementTree.fromstring with no encoding check at all, confirmed via direct interactive probing before writing any test: a stack.xml declaring encoding=\"ISO-8859-1\" (with correspondingly-encoded bytes) parsed successfully, and a stack.xml with genuinely non-UTF-8 bytes and NO declaration at all also parsed successfully (mojibake silently produced instead of a refusal) -- both real, previously-unenforced spec violations, not just untested behavior. Added _require_utf8() to codec/stack_xml.py: rejects any XML declaration whose encoding pseudo-attribute is not case-insensitively \"utf-8\", then independently rejects payload bytes that fail to decode as UTF-8 even with no declaration present (catching the undeclared-mojibake case the declaration check alone would miss). Wired immediately after the existing reject_unsafe_xml() call in parse_stack. 5 new tests prove: a declared non-UTF-8 encoding is refused; genuinely non-UTF-8 bytes are refused even with no declaration; an explicit UTF-8 declaration parses normally; a case-insensitive \"utf-8\" declaration parses normally; and undeclared genuine UTF-8 bytes (including non-ASCII content) parse normally. The \"conforming to the OpenRaster Layer Stack format\" half of this obligation's rule_text was already extensively covered by test_obligation_stack_and_document.py's pre-existing 33 tests (root/stack/layer/text element structure, required attributes, opacity/visibility/composite-op parsing) -- cited here rather than re-proven. ora suite: 311 -> 316 passed. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, with the UTF-8 requirement grounded directly in the pinned spec's own text (quoted verbatim in container.py's module docstring from an earlier tick). Covers SAL-ORA-OBL-8EDD775BF1715438 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -165,7 +173,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "58b7618f0d8929d2a79f8fbc42eee5d416cffd719652c24eb69060ef98dd8dab",
+    "implementation_evidence": "1ab70a13efcb0850159596695ae3e98d34462460fd6825ad31726103d1383ff7",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2992,15 +3000,25 @@
     },
     {
       "capability_id": "ORA-STREAM-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource limit.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "ORA-BASELINE-SUITE",
+        "ORA-STACK-XML-UTF8-ENFORCEMENT-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "This obligation's own rule_text is narrow -- \"stack.xml archive member is a UTF-8 encoded XML document conforming to the OpenRaster Layer Stack format\" -- and both halves are now directly proven. UTF-8 encoding is now explicitly enforced (previously delegated entirely, and incorrectly, to ElementTree's permissive auto-detection): a stack.xml declaring a non-UTF-8 encoding is refused, and genuinely non-UTF-8 bytes are refused even with no declaration present, confirmed by direct probing before the fix that both cases were previously silently accepted. \"Conforming to the OpenRaster Layer Stack format\" (element structure, required attributes, opacity/visibility/composite-op parsing) was already extensively covered by this file's own pre-existing 33 tests, cited here rather than re-proven. This obligation is distinct from its capability sibling SAL-ORA-OBL-F8A3777A56AA6121 (streaming/lazy-access/resource-budget semantics), which remains genuinely unbuilt and is not affected by this slice."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_document_declaring_a_non_utf8_encoding_is_refused",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_document_with_genuinely_non_utf8_bytes_is_refused_even_without_a_declaration"
+      ],
       "obligation_id": "SAL-ORA-OBL-8EDD775BF1715438",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_document_with_an_explicit_utf8_declaration_parses_normally",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_document_with_a_case_insensitive_utf8_declaration_parses_normally",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_document_with_no_xml_declaration_and_genuine_utf8_bytes_parses_normally",
+        "tests/python/ora/test_obligation_stack_and_document.py::test_a_minimal_document_parses"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3009,9 +3027,12 @@
           "Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource limit."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_require_utf8",
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-STACK-001",
@@ -4720,6 +4741,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-resolution-isolation-001.json": "1a8d632812f95c0c628a894ccf0d2a6e1cc96c7784e6a38506cf576c66d67c59",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-security-baseline-001.json": "3c679aa993c7146ac43c33f5ca132b0a7d88c643e4aa8b0756c285e16ca3f011",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-stack-citation-audit-001.json": "e2198be09d7d47d2fbadd516d37c0e101963b81426439c5d1e279337a51c0126",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-stack-xml-utf8-enforcement-001.json": "084173bb4f514d4455ad68143feb1e132e3c8f9d85f89b1d84f3e6d3b7a9e995",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-utf8-baseline-citation-audit-001.json": "e1fbdf4d897140b53aba9713ab841640b185deddc8b89c68e1022e26f4baf551",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-validate-citation-audit-001.json": "ade817924adad22d1daa460b7b65907354384fc65dede9d4f50e690ef3ab5c02",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-version-drift-warning-001.json": "0c63a7f08d49b0722687e1b5788a11b4301d779df435772ca85d8b7e1c536a7c",
@@ -4727,7 +4749,7 @@
     "src/python/ora/src/format_factory/ora/codec/assets.py": "daa355728ed65a92d69c3178f91af4075501bde0549fb0ce9755a944206b9091",
     "src/python/ora/src/format_factory/ora/codec/container.py": "129e2f98264ad518d28f40bddb23c11bfca5fac11f4ea471ea01e2cb5571fa87",
     "src/python/ora/src/format_factory/ora/codec/png_metadata.py": "6b247625e57be37e010808f50a08ce76e5efd240c5459d2a7ad506eee74ac2ad",
-    "src/python/ora/src/format_factory/ora/codec/stack_xml.py": "e63c2b411cbe65efb7baf6217cb2c1e91566c96243bde28dd182085d589d301b",
+    "src/python/ora/src/format_factory/ora/codec/stack_xml.py": "7724f6a5690232776d7fe13791c392436c698ba20ffa2990f30b152a3c537546",
     "src/python/ora/src/format_factory/ora/lifecycle.py": "71e32aea2d52d324492766e96aba677796e6c3480721d7ffeee5fa029b305f2c",
     "src/python/ora/src/format_factory/ora/model/composite_ops.py": "e6d442735fa783c396176cb4636504c563a52ee7594e90734301fd72486dc4d6",
     "src/python/ora/src/format_factory/ora/model/document.py": "e77dcfb27563a7c6ea4aa002a4582cc4f1a2cce981f3b3a7f3575a819e99d5ef",
@@ -4744,19 +4766,19 @@
     "tests/python/ora/test_obligation_raster_assets.py": "9688c9e5e46223bc81ced1b49e9369fab113abcf6d52803011cb1e0eaa2d230b",
     "tests/python/ora/test_obligation_resolution_profile_detection.py": "606e3e87b8f4e80dae82c894df8e22ef492048b8cae15b9355b42363d89fe550",
     "tests/python/ora/test_obligation_security_baseline.py": "335380bfdbdce0b206ff75d771f6e03f144c8d6140567097df6361fc3e2d8ce3",
-    "tests/python/ora/test_obligation_stack_and_document.py": "15c2c2cd642f46c12a3aaf5f1c138740bb1778619e32e2ff1b4d06559642c052",
+    "tests/python/ora/test_obligation_stack_and_document.py": "cf9199dfd37e2e05d153c04479b71a9d52cc97f4a951e2facc8198a78d00d50c",
     "tests/python/ora/test_obligation_transactional_edit.py": "5a0a041cfc4d022ad609408900ba3d79089055f728ba64f730fcc5913e88b04b",
     "tests/python/ora/test_obligation_version_drift_warning.py": "5f237bb40df32472268862d76ff868de8e6e919f0e8a67796df2e485b5072ec0"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 121,
-      "missing": 8,
+      "implemented": 122,
+      "missing": 7,
       "partial": 5
     },
     "total": 134,
-    "unresolved": 13
+    "unresolved": 12
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

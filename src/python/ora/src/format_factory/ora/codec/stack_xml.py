@@ -43,6 +43,29 @@ ROOT_ELEMENT = "image"
 #: unicode digits, none of which the specification permits.
 _INTEGER = re.compile(r"^-?[0-9]+$")
 
+#: The XML declaration's encoding pseudo-attribute, if present, must appear on
+#: the very first line per the XML spec -- this only ever looks at a short
+#: prefix of the payload, never the whole document.
+_XML_DECLARATION_ENCODING = re.compile(rb'^<\?xml\b[^>]*\bencoding=["\']([^"\']+)["\']')
+
+
+def _require_utf8(payload: bytes) -> None:
+    """"The required stack.xml archive member is a UTF-8 encoded XML
+    document." `ElementTree.fromstring` alone does not enforce this -- it
+    happily parses any encoding its declaration names, and silently accepts
+    non-UTF-8 bytes when no declaration is present at all (falling back to
+    Python's permissive default decoding). Both are spec violations this
+    package refuses explicitly rather than passing through mishandled."""
+    declared = _XML_DECLARATION_ENCODING.match(payload)
+    if declared is not None and declared.group(1).decode("ascii", "replace").lower() != "utf-8":
+        raise OraValidationError(
+            f"stack.xml must be UTF-8 encoded, got encoding={declared.group(1)!r}"
+        )
+    try:
+        payload.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise OraValidationError(f"stack.xml is not valid UTF-8: {exc}") from exc
+
 
 def _require(element: ElementTree.Element, attribute: str) -> str:
     value = element.get(attribute)
@@ -184,6 +207,7 @@ def parse_stack(payload: bytes, *, limits: ResourceLimits = DEFAULT_LIMITS) -> O
         )
 
     reject_unsafe_xml(payload, error_class=OraValidationError)
+    _require_utf8(payload)
 
     try:
         root = ElementTree.fromstring(payload)
