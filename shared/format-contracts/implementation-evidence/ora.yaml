@@ -3294,16 +3294,29 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-C668456FEC0FF4E4
   capability_id: ORA-COMPOSITE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Golden pixel vectors, alpha
-    edge cases, unsupported-operation preservation, and adapter differential tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  status: implemented
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_uses_isolation
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_detect_version
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_declared_isolate_makes_a_stack_isolated
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_declared_auto_alone_is_not_isolated
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_isolation_defaults_to_auto_and_is_not_isolated
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_opacity_below_one_infers_isolation_even_without_the_attribute
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_opacity_of_exactly_one_does_not_infer_isolation
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_non_default_composite_op_infers_isolation
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_default_composite_op_does_not_infer_isolation
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_isolation_usage_is_detected_as_profile_0_0_4
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_inferred_isolation_via_opacity_is_also_detected_as_0_0_4
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_isolation_semantics.py::test_neither_declared_nor_inferred_is_not_isolated
+  execution_evidence_ids:
+  - ORA-BASELINE-SUITE
+  - ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF
+  implemented_behavior:
+  - 'Stale-evidence reconciliation, not new work: this obligation is a cross-capability duplicate (identical rule_text) of SAL-ORA-OBL-97CE271E3DD6D883 (ORA-ISOLATION-001) and 5 further siblings (ORA-RENDER-001, ORA-LAYER-001, ORA-EDIT-001, ORA-STACK-001, ORA-GROUP-001) -- all 6 already implemented, citing the same evidence, while this one was left at missing with a generic, unrelated proof_requirements template (golden pixel vectors / adapter differential tests, which belong to ORA-COMPOSITE-001''s much larger sibling obligation about actual pixel rendering, not this structural isolation-determination clause). "Since profile 0.0.4, a non-root stack is isolated when isolation is \"isolate\", opacity is below one, or composite-op differs from svg:src-over" is directly implemented as OraStack.is_isolated_group, all three triggers modeled and tested independently (each proven to fire alone and proven not to fire at its own boundary), with isolation-usage correctly detected as profile 0.0.4 by lifecycle.py''s _detect_version. Corrected to cite the same real, already-proven evidence its siblings already do.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Golden pixel vectors, alpha edge cases, unsupported-operation preservation, and adapter differential

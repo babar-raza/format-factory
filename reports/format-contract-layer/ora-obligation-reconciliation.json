@@ -173,7 +173,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "d6c07bc38e7553663adcba35e7ecb5b4b23e1358013b2c282e68b360c9384d58",
+    "implementation_evidence": "7f0ae3548c03fe4183250977ef5601a7ed3c7e3261ae0fd2218287e6a53f60c6",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -3944,15 +3944,29 @@
     },
     {
       "capability_id": "ORA-COMPOSITE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Golden pixel vectors, alpha edge cases, unsupported-operation preservation, and adapter differential tests.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "ORA-BASELINE-SUITE",
+        "ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "Stale-evidence reconciliation, not new work: this obligation is a cross-capability duplicate (identical rule_text) of SAL-ORA-OBL-97CE271E3DD6D883 (ORA-ISOLATION-001) and 5 further siblings (ORA-RENDER-001, ORA-LAYER-001, ORA-EDIT-001, ORA-STACK-001, ORA-GROUP-001) -- all 6 already implemented, citing the same evidence, while this one was left at missing with a generic, unrelated proof_requirements template (golden pixel vectors / adapter differential tests, which belong to ORA-COMPOSITE-001's much larger sibling obligation about actual pixel rendering, not this structural isolation-determination clause). \"Since profile 0.0.4, a non-root stack is isolated when isolation is \\\"isolate\\\", opacity is below one, or composite-op differs from svg:src-over\" is directly implemented as OraStack.is_isolated_group, all three triggers modeled and tested independently (each proven to fire alone and proven not to fire at its own boundary), with isolation-usage correctly detected as profile 0.0.4 by lifecycle.py's _detect_version. Corrected to cite the same real, already-proven evidence its siblings already do."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_isolation_semantics.py::test_neither_declared_nor_inferred_is_not_isolated"
+      ],
       "obligation_id": "SAL-ORA-OBL-C668456FEC0FF4E4",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_isolation_semantics.py::test_declared_isolate_makes_a_stack_isolated",
+        "tests/python/ora/test_obligation_isolation_semantics.py::test_declared_auto_alone_is_not_isolated",
+        "tests/python/ora/test_obligation_isolation_semantics.py::test_isolation_defaults_to_auto_and_is_not_isolated",
+        "tests/python/ora/test_obligation_isolation_semantics.py::test_opacity_below_one_infers_isolation_even_without_the_attribute",
+        "tests/python/ora/test_obligation_isolation_semantics.py::test_opacity_of_exactly_one_does_not_infer_isolation",
+        "tests/python/ora/test_obligation_isolation_semantics.py::test_non_default_composite_op_infers_isolation",
+        "tests/python/ora/test_obligation_isolation_semantics.py::test_default_composite_op_does_not_infer_isolation",
+        "tests/python/ora/test_obligation_isolation_semantics.py::test_isolation_usage_is_detected_as_profile_0_0_4",
+        "tests/python/ora/test_obligation_isolation_semantics.py::test_inferred_isolation_via_opacity_is_also_detected_as_0_0_4"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3961,9 +3975,13 @@
           "Golden pixel vectors, alpha edge cases, unsupported-operation preservation, and adapter differential tests."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/model/stack.py::OraStack",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::_uses_isolation",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::_detect_version"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-VALIDATE-001",
@@ -4771,12 +4789,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 122,
-      "missing": 7,
+      "implemented": 123,
+      "missing": 6,
       "partial": 5
     },
     "total": 134,
-    "unresolved": 12
+    "unresolved": 11
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
