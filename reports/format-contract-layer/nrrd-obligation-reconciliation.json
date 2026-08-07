@@ -130,6 +130,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Narrows (strengthens, does not fully close) SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD (both NRRD-MULTIFILE-001). Both obligations' own missing_behavior already named this exact gap: \"a LIST/printf declaration under a pre-NRRD0004 magic is not rejected at read time, though version_requirements() lists it as a write-time/ validate() concern.\" Confirmed by direct probing before any fix: a NRRD0002-magic header declaring a LIST of detached files loaded successfully via load() and returned a usable array; only a separate, caller-opted-in validate() call surfaced the nrrd.version.insufficient diagnostic that document.version_requirements() had already computed internally. The rule itself was not in question -- the pinned spec's own Section 1.1/3 text (already cited by this capability's other obligations) states multi-file data file declarations require NRRD0004 or newer, and version_requirements() already modeled that gate correctly for validate(); the reader simply never called it. Added a version check directly in _safe_detached_payload, scoped precisely to the LIST/printf branches (a single detached file remains valid in every profile and is deliberately unaffected). Verified zero false positives against the entire pre-existing 571-test nrrd suite before writing a single new test. 4 new tests (tests/python/nrrd/test_obligation_detached_forms_production.py) prove: a LIST under NRRD0002 is rejected at read time; a printf sequence under NRRD0003 is rejected at read time; a LIST at exactly NRRD0004 still loads; a single detached file under NRRD0002 is unaffected by the new gate. nrrd suite: 571 -> 575 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the version threshold grounded directly in the already- proven version_requirements() gate this obligation's own evidence already cites. Covers SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-NAMED-SPACE-DIMENSION-CROSS-CHECK-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-named-space-dimension-cross-check-001.json",
+      "sha256": "8c86588afa853567dd264acd2f293ba893efbb47fb0602fd0af3d016ea88545a",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-D7B962F3981120A7 (NRRD-SPACE-001), promoted partial->implemented, and corrects a now-stale claim in sibling SAL-NRRD-OBL-666DA3540EE4E38D's own implemented_behavior (status unchanged, still partial for its own separate measurement-frame gap). The obligation's own missing_behavior said no SAL fact enumerated Teem's named-space strings \"with their exact implied dimensionality precisely enough to hard-code that table safely.\" Applying the \"systematically check every acquired/*.bin file's magic number for hidden data, not just when a specific obligation invites it\" discipline proven repeatedly this session on xliff/ubl, decompressed .local/format-contracts/acquired/nrrd/src-nrrd-002.bin directly (previously read as UTF-8 text with errors='replace', which would have produced mojibake, not real content, for what turns out to be a gzip-compressed tar archive) and found it is the complete Teem 1.9.0 reference implementation source tree (712 files), not spec prose. Read src/nrrd/enumsNrrd.c's own _nrrdSpaceStr/_nrrdSpaceStrEqv tables (the 12 canonical space names and every string alias, including short acronyms RAS/LAS/LPS/RAST/LAST/LPST) and src/nrrd/simple.c's own nrrdSpaceDimension() switch statement (3 for the six non-Time variants, 4 for the six Time variants) directly -- the authoritative reference implementation's own code, not approximated from memory. Noted, but deliberately did NOT reproduce, an apparent missing-comma typo in Teem's own _nrrdSpaceStrEqv array (two adjacent string literals would silently concatenate in C) -- used the obviously-intended separate entries instead of blindly replicating a probable source bug. Added named_space_dimension() (space.py) and wired an optional `space` parameter into build_space_transform(), cross-CHECKING (never inferring or supplying) a recognized name's fixed dimension against the dimension already derived from explicit data -- the existing \"never infer axis order from a named space\" architecture is completely unchanged; direction_vectors are still returned exactly as parsed, proven directly via a deliberately \"backwards\" vector-order fixture. An unrecognized (non-standard, spec-permitted) space name is silently not cross-checked, confirmed not to raise. Verified zero false positives against the entire pre-existing 581-test nrrd suite before writing a single new test. 27 new tests (tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py) prove: all 12 standard names plus 6 acronym aliases resolve to the correct Teem dimension; case-insensitive lookup; an unrecognized name returns None, not an error; agreeing named spaces (both 3-D and 4-D variants) are accepted; conflicting named spaces are rejected with a clear message naming both the implied and derived dimension; an unrecognized name does not block an otherwise-consistent document; omitting `space` entirely is unaffected; axis order is never altered. Also fixed the sibling obligation's own now-stale implemented_behavior claim (\"the space field's name is not even a parameter to this function\") to reflect the new optional parameter, without touching that obligation's own missing_behavior (measurement-to-world transforms remain correctly, separately unbuilt) or status. nrrd suite: 581 -> 608 passed. ruff clean; mypy --strict clean on both changed files (a pre-existing, unrelated PathLike generic-type gap in writer.py, a file this change did not touch, was noted but not fixed here -- out of scope for this obligation). Combined 6-format run: 3559 -> 3586 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped -- zero regression beyond the 27 intentional new tests. NOT backed by an independent reference NRRD implementation for cross-validation, but the dimension table ITSELF is transcribed directly from the pinned Teem reference implementation's own source code -- the strongest grounding this session has used for a nrrd fix, on par with the xliff schema and ubl code-list discoveries. Covers SAL-NRRD-OBL-D7B962F3981120A7 only; it supports no other obligation and promotes no other product state."
+    },
+    {
       "evidence_id": "NRRD-R1-SOURCE-TESTS",
       "expected_result": "PASS",
       "granularity": "suite",
@@ -173,7 +181,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "3f31694e553d63d0069d283478ade8143dabdb58313d6dbb2a8a66aed025a7ff",
+    "implementation_evidence": "b3c5bad8728b2b64de82680cdf0368d35c3ae6f84eb7a74be51dbc3d35a4eca8",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1260,7 +1268,7 @@
         "NRRD-R1-SOURCE-TESTS"
       ],
       "implemented_behavior": [
-        "build_space_transform() validates space directions/origin/dimension for mutual consistency and builds a working index-to-world affine transform (SpaceTransform.index_to_world). Non-spatial axes (marked \"none\") are excluded from the spatial-axis set and contribute nothing to the transform. Space dimension is derived only from explicit data present (space dimension field, origin length, or spatial direction-vector lengths) -- the \"space\" field's name is not even a parameter to this function, so axis order can never be inferred from it."
+        "build_space_transform() validates space directions/origin/dimension for mutual consistency and builds a working index-to-world affine transform (SpaceTransform.index_to_world). Non-spatial axes (marked \"none\") are excluded from the spatial-axis set and contribute nothing to the transform. Space dimension is always derived only from explicit data present (space dimension field, origin length, or spatial direction-vector lengths) -- the optional \"space\" field name, when given, is used only to cross-CHECK Teem's own fixed dimension for a recognized standard name against that already-derived result; it never supplies or overrides the dimension, and axis order is never inferred from it (see SAL-NRRD-OBL-D7B962F3981120A7's own implemented_behavior for the cross-check detail)."
       ],
       "missing_behavior": [
         "Measurement-to-world (NRRD0005 measurement frame) transforms remain unimplemented -- deliberately kept as a separate, unbuilt capability per the obligation's own instruction to keep it distinct from the NRRD0004 index-to-world transform. No test fixture derived from an actual known medical-orientation dataset (e.g. a real DICOM-derived NRRD) has been run against this transform; all fixtures here are synthetic."
@@ -2065,25 +2073,31 @@
     {
       "capability_id": "NRRD-SPACE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-NAMED-SPACE-DIMENSION-CROSS-CHECK-PROOF"
       ],
       "implemented_behavior": [
-        "Typed spatial metadata validation (space directions/origin/dimension consistency, malformed-vector rejection) and a non-spatial-axis model (\"none\" entries excluded from the spatial transform) both exist, alongside the index-to-world transform build_space_transform()/SpaceTransform.index_to_world() provide."
+        "Typed spatial metadata validation (space directions/origin/dimension consistency, malformed-vector rejection) and a non-spatial-axis model (\"none\" entries excluded from the spatial transform) both exist, alongside the index-to-world transform build_space_transform()/SpaceTransform.index_to_world() provide. Named-space dimension cross-validation is now also implemented, safely and narrowly: the pinned raw acquisition cache (.local/format-contracts/acquired/nrrd/src-nrrd-002.bin) turned out to be a gzip-compressed tar archive -- the full Teem 1.9.0 reference implementation source tree, not spec prose -- whose src/nrrd/enumsNrrd.c (the 12 canonical space names and their string aliases) and src/nrrd/simple.c (nrrdSpaceDimension()'s own switch statement) together give the exact, authoritative dimension table the obligation's own missing_behavior said no SAL fact could safely provide. named_space_dimension() looks up a recognized standard name's fixed dimension (3 for the six non-Time variants, 4 for the six Time variants, transcribed directly from the reference source); build_space_transform()'s own optional `space` parameter cross-CHECKS this against the dimension already derived from explicit data (space_dimension/space_origin/space_directions, architecture unchanged), raising a clear error on genuine inconsistency. This is deliberately NOT axis-order inference -- direction_vectors are returned exactly as parsed regardless of the named space's own canonical axis convention, proven directly -- honoring the obligation's own twice-stated \"never infer axis order from a named space\" instruction precisely: dimension is still always DERIVED from explicit data only; the name is used only to VALIDATE that result, never to supply or override it. An unrecognized (non-standard, spec-permitted) space name is silently not cross-checked, not an error."
       ],
-      "missing_behavior": [
-        "Named-space axis inference is not implemented, and deliberately so: no SAL fact in this repository enumerates Teem's named-space strings (e.g. \"left-posterior-superior\") with their exact implied dimensionality precisely enough to hard-code that table safely, and the obligation's own required_behavior forbids inferring axis order from a named space regardless. Dimension is derived only from explicit data (space dimension field, origin length, spatial vector lengths)."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/nrrd/test_obligation_space_transform.py::test_parse_space_directions_rejects_a_malformed_entry",
         "tests/python/nrrd/test_obligation_space_transform.py::test_parse_space_origin_rejects_a_malformed_value",
-        "tests/python/nrrd/test_obligation_space_transform.py::test_explicit_space_dimension_must_agree_with_vector_lengths"
+        "tests/python/nrrd/test_obligation_space_transform.py::test_explicit_space_dimension_must_agree_with_vector_lengths",
+        "tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py::test_a_named_space_conflicting_with_the_derived_dimension_is_rejected",
+        "tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py::test_a_time_variant_named_space_conflicting_with_3d_data_is_rejected"
       ],
       "obligation_id": "SAL-NRRD-OBL-D7B962F3981120A7",
       "positive_test_selectors": [
         "tests/python/nrrd/test_obligation_space_transform.py::test_non_spatial_axis_is_excluded_from_spatial_axes",
         "tests/python/nrrd/test_obligation_space_transform.py::test_non_spatial_axis_does_not_contribute_to_index_to_world",
         "tests/python/nrrd/test_obligation_space_transform.py::test_parse_space_directions_marks_non_spatial_axis_as_none",
-        "tests/python/nrrd/test_obligation_space_transform.py::test_explicit_space_dimension_agreeing_with_vectors_is_accepted"
+        "tests/python/nrrd/test_obligation_space_transform.py::test_explicit_space_dimension_agreeing_with_vectors_is_accepted",
+        "tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py::test_every_standard_named_space_has_the_correct_teem_dimension",
+        "tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py::test_a_named_space_agreeing_with_the_derived_dimension_is_accepted",
+        "tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py::test_a_time_variant_named_space_agreeing_with_4d_data_is_accepted",
+        "tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py::test_an_unrecognized_custom_space_name_is_not_cross_checked",
+        "tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py::test_the_cross_check_does_not_infer_or_alter_axis_order"
       ],
       "proof_requirements": {
         "negative": [
@@ -2093,14 +2107,15 @@
           "Known orientation transforms including non-spatial axes."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/space.py::build_space_transform",
         "src/python/nrrd/src/format_factory/nrrd/space.py::SpaceTransform",
         "src/python/nrrd/src/format_factory/nrrd/space.py::parse_space_directions",
-        "src/python/nrrd/src/format_factory/nrrd/space.py::parse_space_origin"
+        "src/python/nrrd/src/format_factory/nrrd/space.py::parse_space_origin",
+        "src/python/nrrd/src/format_factory/nrrd/space.py::named_space_dimension"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-META-001",
@@ -2578,6 +2593,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-multifile-list-subdim-001.json": "e2a079219af007aa96311b721934d59a766d15b8c6d1c4781ac802b3b8c206cd",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-multifile-printf-subdim-001.json": "3c6f8a744be2fa7a5e4ef8f18210931e3796bb8331140fa8139bf315c808bdb4",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-multifile-version-gate-001.json": "f16c7a47d8e3db8b5297c3213f2378f2e9dce6ddd3c9446c54d0b9c36f63d6cc",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-named-space-dimension-cross-check-001.json": "8c86588afa853567dd264acd2f293ba893efbb47fb0602fd0af3d016ea88545a",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-sample-units-001.json": "ebdffdda4ad995da88900bc58b415ca7cbb3b42f554d667fb318a012f192b403",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-security-baseline-001.json": "75e80c2707a235afef3f1ab9980697a5e95e32a90fb18e8e1000fd29bbd2ee82",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
@@ -2591,7 +2607,7 @@
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "83d96605f886fd24e9146410be552cb54d1bb93ee317102f46dc53b164448951",
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "7bf04acb5645b957c12f6a5d22d358a89d510bd1d63fa4b1bd6f622d2a52ca39",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
-    "src/python/nrrd/src/format_factory/nrrd/space.py": "887ea01c8f5e6867c8522335375d717198f1430911728fe6575009dc9a037679",
+    "src/python/nrrd/src/format_factory/nrrd/space.py": "85d5640445d14d653eab2ff6131b4b867be171c16f96fdb943f14e451965afe5",
     "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "691df2b0e148314d1738c4b144af6980a6906246f7435e289eb0d3e24153b2cb",
     "tests/python/nrrd/test_ascii_encoding_endian.py": "70aaff339ed8a91183ead5c3b87164d5d1542c393746125c95fb63e5f3f17c04",
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
@@ -2613,23 +2629,24 @@
     "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
     "tests/python/nrrd/test_obligation_multifile_list_subdim.py": "9c3b5fa172b712bfdcaa9aba5482b6aec8bc07b02dbe1d7667430c2633c75889",
     "tests/python/nrrd/test_obligation_multifile_printf_subdim.py": "b80baffb901593e1d970fbf3ddc28a85294c282c8199dbd9df9aaa2e531c83f2",
+    "tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py": "2901a62ed3edfc8080758546f38b83fa4bb05b091d4157dc095fd4bfbd80d039",
     "tests/python/nrrd/test_obligation_payload_skip.py": "631ddbb609282e655c179358af0e8cbaa76038e33343cd482c87aaeecb1b8116",
     "tests/python/nrrd/test_obligation_sample_units.py": "5ce898c45cfadddd9b88fe79cc3c7442a155ae789e1642be43df04bf99283957",
     "tests/python/nrrd/test_obligation_security_baseline.py": "5788c0182586ffd1b6eae3c22c103660cfc4e5143ee40a282ed6f730c265476e",
     "tests/python/nrrd/test_obligation_shape_production.py": "17ebb172b6e8f2ac861d2ff907dbe19794d327a6e20b5f915b20a9704be9dce5",
-    "tests/python/nrrd/test_obligation_space_transform.py": "fd2e5b51084b5061e2181cef869169f6a7bc9fc4dc0d64c4aa090c22d06fb874",
+    "tests/python/nrrd/test_obligation_space_transform.py": "16a41ea2b13a0252be31e10a82409e5ed0a9b908e7242a286a2178e14c20f761",
     "tests/python/nrrd/test_obligation_version_selection.py": "32e80107f2ef9b67bae0eb7f743e6ece726b98d3f6e54e352ead35312fbfccc6",
     "tests/python/nrrd/test_production_namespace.py": "0fb2b6ff7ab4d41af9b7419cbce1a36f8ae37313744f2b75ca4ec9f51d9cb78b"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 45,
-      "partial": 17,
+      "implemented": 46,
+      "partial": 16,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 20
+    "unresolved": 19
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

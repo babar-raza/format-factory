@@ -34,6 +34,7 @@ from .errors import NrrdError, NrrdParseError, NrrdWriteError
 from .space import (
     SpaceTransform,
     build_space_transform,
+    named_space_dimension,
     parse_space_directions,
     parse_space_origin,
 )
@@ -58,7 +59,8 @@ __all__ = [
     "decode_nrrd_data", "dump", "dump_detached", "dumps", "element_count",
     "encode_nrrd_data",
     "get_array", "get_dimension", "get_encoding", "is_compressed", "load",
-    "load_nrrd", "loads", "nrrd_installed_workflow", "open_lazy_payload",
+    "load_nrrd", "loads", "named_space_dimension", "nrrd_installed_workflow",
+    "open_lazy_payload",
     "parse_space_directions", "parse_space_origin", "preservation_report",
     "probe", "probe_nrrd", "read_header", "reshape_nrrd_array", "roundtrip",
     "validate", "write_nrrd",

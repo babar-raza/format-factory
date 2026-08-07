@@ -1,0 +1,67 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-named-space-dimension-cross-check-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T22:31:41Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_NAMED_SPACE_DIMENSION_CROSS_CHECK_001",
+    "task_kind": "new-capability-via-reference-implementation-source-discovery",
+    "root_cause": "SAL-NRRD-OBL-D7B962F3981120A7's own missing_behavior said no SAL fact enumerated Teem's named-space strings 'with their exact implied dimensionality precisely enough to hard-code that table safely,' so the 'space' field's name was never even a parameter to build_space_transform.",
+    "obligation_targeted": "SAL-NRRD-OBL-D7B962F3981120A7 (NRRD-SPACE-001) -- promoted partial->implemented. Sibling SAL-NRRD-OBL-666DA3540EE4E38D's own stale implemented_behavior claim corrected, status unchanged (still partial for its own separate measurement-frame gap).",
+    "acceptance_evidence": "27 new tests (tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py) proving all 12 standard names, acronym aliases, agreement/conflict detection, and axis-order preservation.",
+    "regression_tier": "full nrrd package suite plus combined 6-format regression"
+  },
+  "execution_steps": [
+    "1. Continuing the FF6 mission per event 272's own exact_next_action -- decompressed nrrd's own src-nrrd-002.bin (gzip magic bytes, confirmed via a first-bytes check across all six formats' acquired/*.bin files) which had been read as UTF-8 text with errors='replace' all session, producing mojibake rather than real content for what turns out to be a gzip-compressed tar archive.",
+    "2. Found the decompressed tarball is the complete Teem 1.9.0 reference implementation source tree (712 files, confirmed by its own 'teem-1.9.0-src/' path prefix) -- the actual reference C implementation NRRD is defined against, not spec prose.",
+    "3. Searched the tree for 'left-posterior-superior'/'right-anterior-superior' and found src/nrrd/enumsNrrd.c's own _nrrdSpaceStr/_nrrdSpaceStrEqv arrays: the 12 canonical space names plus every string alias Teem itself recognizes, including short acronyms (RAS, LAS, LPS, RAST, LAST, LPST).",
+    "4. Searched for a dimension-lookup function and found src/nrrd/simple.c's own nrrdSpaceDimension(), an explicit switch statement returning 3 for the six non-Time variants and 4 for the six Time variants -- the exact, authoritative answer the obligation's own missing_behavior said was unavailable.",
+    "5. Noticed an apparent missing-comma typo in Teem's own _nrrdSpaceStrEqv array (two adjacent string literals for '3D-right-handed' and '3D-left-handed' would silently C-string-literal-concatenate) -- deliberately did NOT reproduce this probable source bug, using the obviously-intended separate entries instead.",
+    "6. Re-read the obligation's own rule_text ('vector-length validation against space dimension... never infer axis order from a named space') and the module's own existing docstring to confirm the correct, safe scope: a scalar dimension CROSS-CHECK against data already derived from explicit fields, never an axis-order inference or a dimension SUPPLIED by the name.",
+    "7. Ran the pre-existing nrrd suite (581 passed) BEFORE writing any new test, confirming zero regressions from the space.py changes alone.",
+    "8. Added _TEEM_NAMED_SPACE_DIMENSIONS (space.py) and named_space_dimension(), then wired an optional `space` parameter into build_space_transform() and _infer_space_dimension(), cross-checking (never supplying) the dimension.",
+    "9. Probed interactively: all 12 canonical names plus acronyms resolve correctly; an unrecognized custom name returns None (not an error); a consistent named space + explicit data combination is accepted; a conflicting one is rejected with a clear message; omitting `space` entirely is unaffected -- confirming all behaviors correct before writing any test.",
+    "10. Wrote 27 new tests, including one that deliberately uses 'backwards' direction vectors with a named space to prove axis order is never altered or inferred, honoring the obligation's own twice-stated prohibition precisely.",
+    "11. Fixed a now-stale claim in the sibling obligation SAL-NRRD-OBL-666DA3540EE4E38D's own implemented_behavior ('the space field's name is not even a parameter to this function') without touching its own missing_behavior (measurement-to-world transforms remain correctly, separately unbuilt) or status.",
+    "12. Ran the full nrrd suite (581 -> 608 passed), ruff, and mypy --strict on the two changed files -- both clean. Noted (but did not fix, as out of scope) a pre-existing, unrelated mypy PathLike generic-type gap in writer.py, a file this change did not touch.",
+    "13. Ran the combined 6-format regression suite (3559 -> 3586 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped) -- zero regression beyond the 27 new tests.",
+    "14. Updated the obligation's evidence: promoted partial->implemented, cleared missing_behavior, added the 27 new tests to positive/negative selectors, added NRRD-NAMED-SPACE-DIMENSION-CROSS-CHECK-PROOF to execution_evidence_ids. Carefully expanded the shared &SPACE/*SPACE YAML anchor alias into a literal list for this obligation only (verified it was the sole alias site before editing), leaving the sibling obligation's own anchor definition and all &EXEC/*EXEC aliases elsewhere in the file untouched."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/space.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py",
+    "tests/python/nrrd/test_obligation_space_transform.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/space.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py",
+    "tests/python/nrrd/test_obligation_space_transform.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 581 passed, 1 skipped (before new tests, sanity check)",
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py -v -- 27 passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 608 passed, 1 skipped (after new tests)",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/space.py src/python/nrrd/src/format_factory/nrrd/__init__.py -- Success: no issues found",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3586 passed, 2 skipped, 4 pre-existing unrelated safetensors interop failures"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation moved partial->implemented",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 65,
+    "oracle": "The dimension table itself is transcribed directly from the pinned Teem 1.9.0 reference implementation's own source code (enumsNrrd.c/simple.c), not approximated from memory.",
+    "obligations_moved_breakdown": "SAL-NRRD-OBL-D7B962F3981120A7 (NRRD-SPACE-001): named-space dimension cross-validation now enforced via named_space_dimension() and build_space_transform()'s new optional `space` parameter, grounded directly in the pinned Teem reference source."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

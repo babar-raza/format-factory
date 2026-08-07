@@ -73,9 +73,9 @@ def test_build_space_transform_from_consistent_3d_data() -> None:
 
 
 def test_space_dimension_is_derived_from_data_not_the_named_space() -> None:
-    """"never infer axis order from a named space" -- the "space" field's
-    name is not even a parameter to build_space_transform; dimension comes
-    only from the vectors actually present."""
+    """"never infer axis order from a named space" -- dimension comes only
+    from the vectors actually present, never from the "space" field's own
+    name (even when omitted entirely, as here)."""
     transform = build_space_transform(
         space_directions="(1,0) (0,1)",
         space_origin="(5,5)",
