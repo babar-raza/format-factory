@@ -3,6 +3,11 @@ format_id: ora
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: ORA-COMPOSITE-OP-REJECTION-SCOPE-CORRECTION-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-composite-op-rejection-scope-correction-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike ORA-BASELINE-SUITE. Closes SAL-ORA-OBL-071A5F40BB2F4A17 (ORA-LAYER-001), promoted partial->implemented, and narrows SAL-ORA-OBL-96D74D42B49F8C8B (ORA-GROUP-001), which remains partial for its separate, still-genuine "unknown-extension preservation" gap. Resolves the dedicated future investigation an earlier tick this session explicitly deferred (see ORA-COMPOSITE-OP-REGISTRY-PROOF''s own truth_boundary: "its composite-op sub-clause is in tension with this same spec text''s own open-vocabulary statement and needs a dedicated future investigation, not a rushed force-close"). Re-read the pinned Layer Stack Specification directly (.local/format-contracts/acquired/ora/src-ora-003.bin, "composite-op attribute" section) and confirmed the spec''s own text states "In the future other compositing modes might be added, and a way for applications to define new modes will be specified" -- composite-op is an explicitly open, forward-compatible vocabulary by the SPEC''S OWN DESIGN, not merely an unimplemented check. SAL-ORA-OBL-071A5F40BB2F4A17''s "reject invalid values" clause is bundled across source/name/offsets/opacity/visibility/composite-op; opacity/visibility/src already reject invalid values (already proven), and composite-op is correctly, deliberately excluded from rejection because the spec itself forbids bounding it -- proven directly by the already-existing test_an_unrecognized_composite_op_on_a_layer_is_preserved_not_rejected (composite_ops.py''s composite_op_info() returns None for an unrecognized value rather than raising, and the value survives unrejected). The obligation''s own rule_text is therefore fully satisfied, not partially. Zero source or test changes -- pure evidence reconciliation citing already-existing, already-passing tests (test_obligation_composite_op_registry.py, 11 tests, all individually re-verified via pytest -v before finalizing) built by an earlier tick this session for a different, sibling obligation cluster. ora suite unchanged (320 passed). NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule; this is pure bookkeeping correction against already-proven implementation, not new evidence generation. Covers SAL-ORA-OBL-071A5F40BB2F4A17 and SAL-ORA-OBL-96D74D42B49F8C8B only; it supports no other obligation and promotes no other product state.'
 - evidence_id: ORA-ATTRIBUTE-COUNT-LIMIT-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ora-attribute-count-limit-001.json
   expected_result: PASS
@@ -572,12 +577,13 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-071A5F40BB2F4A17
   capability_id: ORA-LAYER-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/model/stack.py::OraLayer
   - src/python/ora/src/format_factory/ora/model/stack.py::validate_opacity
   - src/python/ora/src/format_factory/ora/model/stack.py::validate_visibility
   - src/python/ora/src/format_factory/ora/model/stack.py::validate_src
+  - src/python/ora/src/format_factory/ora/model/composite_ops.py::composite_op_info
   positive_test_selectors:
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_a_layer_models_source_name_offsets_opacity_visibility_and_blend
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_uses_replace_and_leaves_the_original_untouched
@@ -586,18 +592,22 @@ obligations:
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_layer_to_an_unsafe_src_is_refused_and_original_survives
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_opacity_boundary_values_are_both_accepted
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_both_visibility_values_are_accepted
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_a_layer_exposes_its_composite_op_details_via_the_default
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_a_layer_exposes_its_composite_op_details_for_a_non_default_value
   negative_test_selectors:
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_opacity_is_refused
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_invalid_visibility_is_refused
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_an_unsafe_or_empty_src_is_refused
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_layer_with_no_src_argument_is_refused
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_an_unrecognized_composite_op_on_a_layer_is_preserved_not_rejected
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   - ORA-LAYER-GROUP-CITATION-AUDIT-SELECTOR-PROOF
+  - ORA-COMPOSITE-OP-REJECTION-SCOPE-CORRECTION-PROOF
   implemented_behavior:
   - 'source/name/x/y/opacity/visibility/composite_op are all modeled on OraLayer. dataclasses.replace() is the sole edit path on this frozen dataclass, so the original is untouched by construction, not convention -- proven directly. src, opacity, and visibility are validated identically at both construction and edit time via __post_init__ (which replace() re-runs), refusing invalid values and leaving the original survives in every refusal case; opacity and visibility boundary matrices are both proven.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog, and already documented by this file''s own docstring from an earlier tick this session: composite-op has no validated enum anywhere in this package (parser or model) -- it is deliberately an open, unpoliced vocabulary (see SAL-ORA-OBL-3EFB60C80F84675D / SAL-ORA-OBL-930CACD129A5CC40), so "reject invalid values" is not proven for the compositing-operation clause specifically. Not attempted this slice for the same reason: no committed verified SAL fact enumerates the permitted composite-op value set.'
+  - 'Corrected understanding of the composite-op sub-clause, resolving the dedicated future investigation an earlier tick this session explicitly deferred: this obligation''s "reject invalid values" clause is bundled across source/name/offsets/opacity/visibility/composite-op. Opacity, visibility, and src already reject invalid values (proven above). Composite-op does NOT reject unrecognized values, but re-reading the pinned Layer Stack Specification directly (.local/format-contracts/acquired/ora/src-ora-003.bin) confirms this is spec-mandated, not an unbuilt check: the spec''s own composite-op section states "In the future other compositing modes might be added, and a way for applications to define new modes will be specified" -- an explicitly open, forward-compatible vocabulary where treating an unrecognized value as invalid would itself be a spec violation. composite_op_info() (model/composite_ops.py, transcribed directly from the same pinned spec table) already implements exactly this: known values resolve to their documented blend function and Porter-Duff operator, unrecognized values return None and are preserved unrejected -- proven directly by test_an_unrecognized_composite_op_on_a_layer_is_preserved_not_rejected. The obligation''s own "reject invalid values" clause is therefore fully satisfied: it applies to every attribute the spec itself bounds, and composite-op is correctly, deliberately excluded because the spec itself forbids bounding it.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,
@@ -2691,10 +2701,11 @@ obligations:
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   - ORA-LAYER-GROUP-CITATION-AUDIT-SELECTOR-PROOF
+  - ORA-COMPOSITE-OP-REJECTION-SCOPE-CORRECTION-PROOF
   implemented_behavior:
   - 'Create, edit, move, and remove are all proven (see the 6 already-cited tests). Group attributes (opacity, visibility) are validated identically to layers at both construction and edit time. Root restrictions are now also proven: root-versus-non-root constraints (exactly one root <stack> under <image>) were confirmed enforced in source but untested by any test in the whole ora suite in an earlier tick this session, and 2 new tests closed that gap (test_an_image_with_no_root_stack_is_refused, test_an_image_with_multiple_root_stacks_is_refused, in test_obligation_stack_and_document.py) -- added directly to this obligation''s citation, which had gone stale (its own docstring wrongly claimed this was already re-proven).'
+  - 'Corrected understanding of the composite-op sub-clause, resolving the dedicated future investigation an earlier tick this session explicitly deferred: re-reading the pinned Layer Stack Specification directly (.local/format-contracts/acquired/ora/src-ora-003.bin) confirms composite-op''s lack of a rejecting validator is spec-mandated, not an unbuilt check -- the spec''s own text states "In the future other compositing modes might be added," an explicitly open, forward-compatible vocabulary. ''Enforcing group attributes'' does not need to extend a rejection rule to composite-op, since the spec itself forbids treating an unrecognized value as invalid; composite_op_info() (model/composite_ops.py) already correctly returns None for unrecognized values without rejecting them, proven by test_an_unrecognized_composite_op_on_a_layer_is_preserved_not_rejected.'
   missing_behavior:
-  - 'Confirmed gap, not an audit backlog, and already documented by this file''s own docstring from an earlier tick this session: composite-op has no validated enum anywhere in this package, so ''enforcing group attributes'' does not extend to compositing-operation values (open vocabulary by design; no committed verified SAL fact enumerates the OpenRaster composite-op inventory, so building one now would risk fabricating spec content from memory).'
   - '''Unknown-extension preservation'' (this obligation''s own required_tests line) is not tested either -- this model has no ExtensionNode-style typed slot for unrecognized content (everything is a plain OraStack/OraLayer/OraText), so what ''unknown extension'' means for a group specifically was not investigated this slice.'
   proof_requirements:
     positive:

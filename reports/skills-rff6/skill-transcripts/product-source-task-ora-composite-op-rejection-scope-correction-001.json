@@ -1,0 +1,54 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-composite-op-rejection-scope-correction-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T15:37:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_COMPOSITE_OP_REJECTION_SCOPE_CORRECTION_001",
+    "task_kind": "resolve-explicitly-deferred-investigation-via-direct-pinned-spec-re-read",
+    "root_cause": "An earlier tick this session built composite_ops.py (a full 20-value registry transcribed from the pinned Layer Stack Specification) but explicitly deferred SAL-ORA-OBL-071A5F40BB2F4A17's own 'reject invalid values' clause as being 'in tension with this same spec text's own open-vocabulary statement and needs a dedicated future investigation, not a rushed force-close.' This tick performs that investigation.",
+    "obligation_targeted": "SAL-ORA-OBL-071A5F40BB2F4A17 (ORA-LAYER-001) -- promoted partial->implemented. SAL-ORA-OBL-96D74D42B49F8C8B (ORA-GROUP-001) -- narrowed, remains partial (separate 'unknown-extension preservation' gap genuinely unaddressed).",
+    "acceptance_evidence": "11 already-existing, already-passing tests (test_obligation_composite_op_registry.py) individually re-verified via pytest -v, especially test_an_unrecognized_composite_op_on_a_layer_is_preserved_not_rejected, which directly proves the spec-mandated non-rejection behavior.",
+    "regression_tier": "full ora package suite (tests/python/ora) sanity re-run, no source changed"
+  },
+  "execution_steps": [
+    "1. Applying event 264's own exact_next_action (apply the 'thin citation/stale claim' technique to ORA, not yet tried there specifically), re-checked ORA's 5 partial obligations' missing_behavior against current code state with fresh eyes.",
+    "2. Re-verified the 'composite-op has no validated enum... no committed verified SAL fact enumerates the permitted composite-op value set' claim shared by SAL-ORA-OBL-071A5F40BB2F4A17 and SAL-ORA-OBL-96D74D42B49F8C8B by checking shared/sal-facts/ora.yaml directly -- confirmed the SAL fact itself is still just a vague description ('selects a documented blend function'), not an enumeration.",
+    "3. Rather than stopping there, read the pinned Layer Stack Specification source directly (.local/format-contracts/acquired/ora/src-ora-003.bin, 'composite-op attribute' section) and found a full HTML table enumerating all 20 valid composite-op values with their blend function and Porter-Duff operator -- extracted programmatically via regex and cross-checked the row count (21 <tr> = 1 header + 20 values).",
+    "4. Discovered composite_ops.py already exists with a COMPOSITE_OP_REGISTRY containing exactly these same 20 values (built by an earlier tick this session, cross-checked and confirmed matching), plus a composite_op_info() lookup function and 11 already-passing tests in test_obligation_composite_op_registry.py.",
+    "5. Read that module's own docstring, which explicitly documents composite_op_info() returning None (not raising) for unrecognized values is a DELIBERATE design decision, quoting the pinned spec's own forward-compatibility statement: 'In the future other compositing modes might be added, and a way for applications to define new modes will be specified.'",
+    "6. Found the truth_boundary of that earlier tick's own evidence entry (ORA-COMPOSITE-OP-REGISTRY-PROOF, already committed) explicitly named SAL-ORA-OBL-071A5F40BB2F4A17 as deliberately left untouched pending 'a dedicated future investigation' -- this tick IS that investigation.",
+    "7. Read SAL-ORA-OBL-071A5F40BB2F4A17's own rule_text directly: 'Model and edit raster-layer source, name, signed offsets, opacity, visibility, and compositing operation; reject invalid values without altering the document.' Confirmed the 'reject invalid values' clause is bundled across all 6 named attributes, not composite-op alone.",
+    "8. Concluded: opacity/visibility/src already reject invalid values (already proven elsewhere in this obligation's own evidence); composite-op correctly does NOT reject unrecognized values because the spec itself explicitly forbids treating an unrecognized value as invalid -- meaning the obligation's rule_text is fully satisfied, not partially, once this distinction is understood correctly.",
+    "9. Ran the full pre-existing ora suite (320 tests, zero new fixtures, zero source changes) as a sanity check -- all 320 passed unchanged.",
+    "10. Individually re-ran all 11 tests in test_obligation_composite_op_registry.py via pytest -v before citing any of them, confirming each passes.",
+    "11. Updated SAL-ORA-OBL-071A5F40BB2F4A17's evidence: added composite_op_info as a source symbol, cited 3 additional already-existing tests, corrected implemented_behavior to explain the spec-mandated (not merely unbuilt) reasoning, cleared missing_behavior, promoted to implemented.",
+    "12. Updated SAL-ORA-OBL-96D74D42B49F8C8B's evidence with the same corrected reasoning for its own composite-op sub-clause, but correctly LEFT its separate 'unknown-extension preservation' missing_behavior item intact (this model genuinely has no ExtensionNode-style typed slot for unrecognized content) -- status stays partial, narrowed rather than fully closed.",
+    "13. Zero source or test changes -- pure evidence reconciliation citing already-existing, already-passing tests built by an earlier tick for a different, sibling obligation cluster, applied here to resolve that same earlier tick's own explicitly-flagged deferred question."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_composite_op_registry.py -v -- 11 passed (verified individually before citing)",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 320 passed, unchanged (no source or test modified)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation moved partial->implemented; 1 sibling obligation narrowed (stays partial for a separate, genuine gap)",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 134,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; this is pure bookkeeping correction against already-proven implementation, not new evidence generation.",
+    "obligations_moved_breakdown": "SAL-ORA-OBL-071A5F40BB2F4A17 (ORA-LAYER-001) partial->implemented: resolved an explicitly-deferred investigation from an earlier tick this session by re-reading the pinned spec source directly and confirming composite-op's non-rejecting behavior is spec-mandated, not an unbuilt check, so the obligation's own 'reject invalid values' clause is fully satisfied. SAL-ORA-OBL-96D74D42B49F8C8B (ORA-GROUP-001) remains partial: narrowed with the same corrected composite-op reasoning, but its separate 'unknown-extension preservation' gap remains genuinely unaddressed."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
