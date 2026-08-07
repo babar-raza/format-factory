@@ -88,11 +88,21 @@ from .state_transitions import (
     TransitionViolation,
     check_state_transitions,
 )
-from .validation import full_schema_validate, schema_validate, validate
+from .validation import (
+    bundled_module_schema_paths,
+    bundled_nvdl_path,
+    bundled_schematron_paths,
+    full_schema_validate,
+    schema_validate,
+    validate,
+)
 
 __all__ = [
     "MergeAdapter",
     "QA_CHECKS",
+    "bundled_module_schema_paths",
+    "bundled_nvdl_path",
+    "bundled_schematron_paths",
     "Skeleton",
     "SourceDriftError",
     "STANDARD_MODULES",

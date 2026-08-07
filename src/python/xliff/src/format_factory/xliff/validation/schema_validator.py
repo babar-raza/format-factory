@@ -20,13 +20,11 @@ resolves automatically because all ten files are bundled together in
 the same directory, unmodified relative to how OASIS ships them.
 
 Deliberately narrow about one remaining thing: this validates XSD
-structural conformance only. The distribution package also ships
-per-module ISO Schematron (.sch) files for additional business-rule
-assertions beyond XSD's own expressive power -- Schematron is not
-required by this obligation's own rule_text ("valid against ... schema",
-not "... and its Schematron rules"), and compiling/running Schematron
-would need a substantially different toolchain (XSLT-based, not
-xmlschema), so it is correctly left unattempted.
+structural conformance only. Schematron is not required by this
+obligation's own rule_text ("valid against ... schema", not "... and its
+Schematron rules"), so executing it is correctly left unattempted here --
+see bundled_schematron_paths() below for why, concretely, not just in
+principle.
 
 `xmlschema` is an optional dependency (the `schema` extra in
 pyproject.toml) -- imported lazily here so the rest of this package
@@ -61,6 +59,28 @@ _MODULE_SCHEMA_FILENAMES = (
     "size_restriction.xsd",
     "validation.xsd",
 )
+#: SAL-XLIFF-OBL-07A1F5F6A9B3A95F / 1405C2E94EEF25E6 / 21B94445F4216B94:
+#: "the official XLIFF 2.1 schema bundle contains exactly nine Schematron
+#: rule sets covering core processing constraints and the modules that
+#: define Schematron constraints" -- one core plus eight of the nine
+#: modules (ITS Mapping defines none of its own). Extracted byte-for-byte
+#: from the same src-xlf-002.bin ZIP the module XSDs above came from --
+#: this session's earlier extraction only pulled the *.xsd entries out of
+#: that archive and never re-examined it for its *.sch/*.nvdl entries.
+_SCHEMATRON_FILENAMES = (
+    "xliff_core_2.1.sch",
+    "fs.sch",
+    "glossary.sch",
+    "its.sch",
+    "matches.sch",
+    "metadata.sch",
+    "resource_data.sch",
+    "size_restriction.sch",
+    "validation.sch",
+)
+#: SAL-XLIFF-OBL-191B67AD2A05CA4E / 56B240550D37E1BA: "the release package
+#: supplies ... an NVDL advanced-validation dispatch artifact."
+_NVDL_FILENAME = "xliff_2_advanced_validation.nvdl"
 
 
 def _require_xmlschema() -> ModuleType:
@@ -153,4 +173,53 @@ def full_schema_validate(source: bytes | str) -> ValidationReport:
     )
 
 
-__all__ = ["full_schema_validate", "schema_validate"]
+def bundled_module_schema_paths() -> tuple[Path, ...]:
+    """The nine official module XSDs bundled with this package (Format
+    Style, Glossary, ITS, ITS Mapping, Matches, Metadata, Resource Data,
+    Size and Length Restriction, Validation) -- the same files
+    _load_full_schema() composes with the core schema, exposed here as a
+    public, path-returning accessor for a caller that wants the files
+    directly rather than a loaded xmlschema.XMLSchema object.
+    """
+    return tuple(_SCHEMAS_DIR / name for name in _MODULE_SCHEMA_FILENAMES)
+
+
+def bundled_schematron_paths() -> tuple[Path, ...]:
+    """The official ISO Schematron rule sets bundled with this package: one
+    core (xliff_core_2.1.sch) plus one per module that defines Schematron
+    constraints of its own (eight of the nine standard modules -- ITS
+    Mapping has none).
+
+    This package does not execute them: lxml.isoschematron, the only
+    Schematron engine available without a new heavyweight dependency,
+    refuses every one of these nine files outright with "This
+    implementation of ISO Schematron does not work with schemas using the
+    'xslt2' query language" -- confirmed empirically against all nine
+    files, not assumed from the core's own declared queryBinding="xslt2"
+    attribute alone. Running them requires an XSLT 2.0-capable Schematron
+    processor (e.g. a Java toolchain) this package does not bundle.
+    Returned as paths so a caller with such a processor can use the real,
+    official rule sets directly.
+    """
+    return tuple(_SCHEMAS_DIR / name for name in _SCHEMATRON_FILENAMES)
+
+
+def bundled_nvdl_path() -> Path:
+    """The official NVDL (Namespace-based Validation Dispatching Language)
+    advanced-validation dispatch artifact bundled with this package --
+    the document that routes a document's namespaced content to the
+    correct schema/Schematron pair. Not executed by this package for the
+    same reason as bundled_schematron_paths(): dispatching to Schematron
+    rule sets this package cannot itself run would not add real
+    validation capability.
+    """
+    return _SCHEMAS_DIR / _NVDL_FILENAME
+
+
+__all__ = [
+    "bundled_module_schema_paths",
+    "bundled_nvdl_path",
+    "bundled_schematron_paths",
+    "full_schema_validate",
+    "schema_validate",
+]

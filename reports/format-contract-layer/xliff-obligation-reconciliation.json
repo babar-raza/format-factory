@@ -290,6 +290,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-D2BB0F0D8018D601 (XLIFF-PARSE-001). The reader previously never synthesized a default xml:space value on the root -- if absent from source XML it was simply absent from XliffDocument.attributes, confirmed directly. Read the pinned XLIFF 2.1 spec source directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin, section 4.3.2.2) for xml:space's own default-value entry: \"When used in <xliff>: The value default\", distinct from the broader per-element inheritance chain the same spec text also describes (file/group/unit/source/target inherit from their parent, data defaults to preserve) -- deliberately not modeled here, since this obligation's own rule_text names only the root's default. Added XliffDocument.xml_space, returning \"default\" when absent, the explicit value otherwise. 4 new tests prove absent-defaults-to-default, explicit-preserve, explicit-default, and that the raw attributes dict still separately distinguishes absent from explicit-default for XLIFF-PRESERVE-001's finer concern. xliff suite: 377 -> 381 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, with the default-value claim grounded directly in the pinned spec's own text. Covers SAL-XLIFF-OBL-D2BB0F0D8018D601 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-SCHEMATRON-NVDL-BUNDLE-INVENTORY-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-schematron-nvdl-bundle-001.json",
+      "sha256": "b84a9f417ea4378e2cf69b45dc81b437e3b5f13d6f628f186d481657fb047d06",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact test selectors proving the official XLIFF 2.1 schema distribution's own layered validation artifacts are bundled with this package -- nine ISO Schematron rule sets (one core, eight of nine modules -- ITS Mapping has none of its own), the NVDL advanced-validation dispatch artifact, and (cross-referencing FF6-EVENT-000272's own already-passing test) the nine module XSDs. All extracted byte-for- byte from the same pinned src-xlf-002.bin ZIP already mined for the module XSDs -- this session's earlier extraction pulled only the *.xsd entries and never re-examined the archive for its *.sch/*.nvdl entries. Also proves, empirically rather than by assertion, that this package correctly does NOT attempt to execute these Schematron rule sets: every one of the nine files declares (directly or via a resolved include) queryBinding=\"xslt2\", which lxml.isoschematron -- the only Schematron engine available without a new heavyweight dependency -- refuses outright. Covers the nine obligations named in this slice's transcript (three \"nine Schematron rule sets\" inventory duplicates, two \"layered validation artifacts\" duplicates, four \"nine module XSDs\" inventory duplicates, the latter reconciling already-existing FF6-EVENT-000272 evidence to obligation IDs it was never linked to); it supports no other obligation and promotes no other product state."
+    },
+    {
       "evidence_id": "XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -373,7 +381,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "109ec6ca2d1bc9f1fc3a97771168a7538ea997679e1af1ea98c544e8b1ed91e7",
+    "implementation_evidence": "63a2870d9443287a28f453f0d6dc3895abf4f99f0967f621451cc551b2dddd3c",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -558,14 +566,19 @@
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-21B94445F4216B94 (identical rule_text). Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff's own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick."
+      "execution_evidence_ids": [
+        "XLIFF-SCHEMATRON-NVDL-BUNDLE-INVENTORY-PROOF"
       ],
+      "implemented_behavior": [
+        "FF6-EVENT-000277: the same pinned ZIP already mined for the module XSDs (src-xlf-002.bin) also contains all nine official Schematron rule sets -- this session's earlier extraction pulled only the *.xsd entries and never re-examined the archive for its *.sch entries. Now bundled and byte-for-byte confirmed against the archive; bundled_schematron_paths() returns exactly nine paths (one core, xliff_core_2.1.sch, plus eight of the nine standard modules -- ITS Mapping defines none of its own)."
+      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-07A1F5F6A9B3A95F",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_exactly_nine_schematron_rule_sets_are_bundled",
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_the_bundled_schematron_covers_core_plus_eight_modules"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -575,9 +588,11 @@
           "Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::bundled_schematron_paths"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -911,14 +926,19 @@
     },
     {
       "capability_id": "XLIFF-MODULE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Confirmed not testable as product runtime behavior, not an audit backlog item: same fact and same non-applicability as SAL-XLIFF-OBL-21B94445F4216B94 (identical rule_text, XLIFF-PARSE-001) -- describes the official XLIFF 2.1 spec distribution package's own bundled Schematron files, none of which are vendored in this repository."
+      "execution_evidence_ids": [
+        "XLIFF-SCHEMATRON-NVDL-BUNDLE-INVENTORY-PROOF"
       ],
+      "implemented_behavior": [
+        "FF6-EVENT-000277: same fact and resolution as SAL-XLIFF-OBL-21B94445F4216B94 -- the official Schematron files are now bundled, extracted from the same src-xlf-002.bin ZIP already used for the module XSDs, re-examined for the *.sch entries this session's earlier extraction skipped."
+      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-1405C2E94EEF25E6",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_exactly_nine_schematron_rule_sets_are_bundled",
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_the_bundled_schematron_covers_core_plus_eight_modules"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -927,20 +947,28 @@
           "Per-module round-trip fixtures; coverage manifest matches behavior."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::bundled_schematron_paths"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff's own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick."
+      "execution_evidence_ids": [
+        "XLIFF-SCHEMATRON-NVDL-BUNDLE-INVENTORY-PROOF"
       ],
+      "implemented_behavior": [
+        "FF6-EVENT-000277: every layer this obligation names is now bundled and directly verified present -- core XSD (xliff_core_2.0.xsd, since FF6-EVENT-000270), a core Schematron (xliff_core_2.1.sch), module XSDs (nine, since FF6-EVENT-000272), module Schematrons (eight of nine), and the NVDL advanced-validation dispatch artifact (xliff_2_advanced_validation.nvdl) -- all extracted from the same pinned src-xlf-002.bin ZIP, re-examined this session for the *.sch/*.nvdl entries its earlier *.xsd-only extraction skipped."
+      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-191B67AD2A05CA4E",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_exactly_nine_schematron_rule_sets_are_bundled",
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_nvdl_advanced_validation_dispatch_artifact_is_bundled",
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_exactly_nine_module_xsds_are_bundled_covering_every_standard_module"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -949,9 +977,12 @@
           "Version/namespace consistency fixtures per supported version; legacy-version refusal fixture."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::bundled_schematron_paths",
+        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::bundled_nvdl_path"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -1158,14 +1189,19 @@
     },
     {
       "capability_id": "XLIFF-PARSE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff's own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick."
+      "execution_evidence_ids": [
+        "XLIFF-SCHEMATRON-NVDL-BUNDLE-INVENTORY-PROOF"
       ],
+      "implemented_behavior": [
+        "FF6-EVENT-000277: the same pinned ZIP already mined for the module XSDs (src-xlf-002.bin) also contains all nine official Schematron rule sets -- this session's earlier extraction pulled only the *.xsd entries and never re-examined the archive for its *.sch entries. Now bundled and byte-for-byte confirmed against the archive; bundled_schematron_paths() returns exactly nine paths (one core, xliff_core_2.1.sch, plus eight of the nine standard modules -- ITS Mapping defines none of its own)."
+      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-21B94445F4216B94",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_exactly_nine_schematron_rule_sets_are_bundled",
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_the_bundled_schematron_covers_core_plus_eight_modules"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1174,9 +1210,11 @@
           "Version/namespace consistency fixtures per supported version; legacy-version refusal fixture."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::bundled_schematron_paths"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-SEC-001",
@@ -1462,14 +1500,19 @@
     },
     {
       "capability_id": "XLIFF-VALIDATE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-B90CB93CF07C9917 (identical rule_text). Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff's own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick."
+      "execution_evidence_ids": [
+        "XLIFF-SCHEMATRON-NVDL-BUNDLE-INVENTORY-PROOF"
       ],
+      "implemented_behavior": [
+        "FF6-EVENT-000272 already bundled all nine module XSDs (Format Style, Glossary, ITS, ITS Mapping, Matches, Metadata, Resource Data, Size and Length Restriction, Validation), and test_composed_schema_loads_all_nine_standard_module_namespaces already proved their namespaces load -- but that evidence was never propagated to this specific inventory-fact obligation. FF6-EVENT-000277 adds an explicit exact-count/exact-name assertion and reconciles the evidence link."
+      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-3059D36881034046",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_exactly_nine_module_xsds_are_bundled_covering_every_standard_module",
+        "tests/python/xliff/test_obligation_full_module_schema_validation.py::test_composed_schema_loads_all_nine_standard_module_namespaces"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1479,9 +1522,11 @@
           "Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::bundled_module_schema_paths"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -2380,14 +2425,20 @@
     },
     {
       "capability_id": "XLIFF-MODULE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Confirmed not testable as product runtime behavior, not an audit backlog item: same fact and same non-applicability as SAL-XLIFF-OBL-191B67AD2A05CA4E (identical rule_text, XLIFF-PARSE-001) -- describes the official XLIFF 2.1 spec distribution package's own layered validation artifacts (XSD, Schematron, NVDL), none of which are vendored in this repository."
+      "execution_evidence_ids": [
+        "XLIFF-SCHEMATRON-NVDL-BUNDLE-INVENTORY-PROOF"
       ],
+      "implemented_behavior": [
+        "FF6-EVENT-000277: same fact and resolution as SAL-XLIFF-OBL-191B67AD2A05CA4E -- every layer (core XSD, core Schematron, module XSDs, module Schematrons, NVDL) is now bundled and directly verified present."
+      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-56B240550D37E1BA",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_exactly_nine_schematron_rule_sets_are_bundled",
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_nvdl_advanced_validation_dispatch_artifact_is_bundled",
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_exactly_nine_module_xsds_are_bundled_covering_every_standard_module"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -2396,9 +2447,12 @@
           "Per-module round-trip fixtures; coverage manifest matches behavior."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::bundled_schematron_paths",
+        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::bundled_nvdl_path"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -3664,14 +3718,19 @@
     },
     {
       "capability_id": "XLIFF-MODULE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Confirmed not testable as product runtime behavior, not an audit backlog item: same fact and same non-applicability as SAL-XLIFF-OBL-B90CB93CF07C9917 (identical rule_text, XLIFF-PARSE-001) -- describes the official XLIFF 2.1 spec distribution package's own bundled module XSD files, none of which are vendored in this repository."
+      "execution_evidence_ids": [
+        "XLIFF-SCHEMATRON-NVDL-BUNDLE-INVENTORY-PROOF"
       ],
+      "implemented_behavior": [
+        "FF6-EVENT-000277: same fact and resolution as SAL-XLIFF-OBL-B90CB93CF07C9917 -- all nine module XSDs were already bundled and namespace-verified at FF6-EVENT-000272, that evidence just was not yet linked to this specific inventory-fact obligation."
+      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-9795E0B80A36DEBB",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_exactly_nine_module_xsds_are_bundled_covering_every_standard_module",
+        "tests/python/xliff/test_obligation_full_module_schema_validation.py::test_composed_schema_loads_all_nine_standard_module_namespaces"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3680,9 +3739,11 @@
           "Per-module round-trip fixtures; coverage manifest matches behavior."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::bundled_module_schema_paths"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODEL-001",
@@ -3751,14 +3812,19 @@
     },
     {
       "capability_id": "XLIFF-TEXT-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Same confirmed status as XLIFF-PARSE-001's SAL-XLIFF-OBL-B90CB93CF07C9917 (identical rule_text). Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff's own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick."
+      "execution_evidence_ids": [
+        "XLIFF-SCHEMATRON-NVDL-BUNDLE-INVENTORY-PROOF"
       ],
+      "implemented_behavior": [
+        "FF6-EVENT-000277: same fact and resolution as SAL-XLIFF-OBL-B90CB93CF07C9917 -- all nine module XSDs were already bundled and namespace-verified at FF6-EVENT-000272, that evidence just was not yet linked to this specific inventory-fact obligation."
+      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-9B0DC026A5B8E587",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_exactly_nine_module_xsds_are_bundled_covering_every_standard_module",
+        "tests/python/xliff/test_obligation_full_module_schema_validation.py::test_composed_schema_loads_all_nine_standard_module_namespaces"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3767,9 +3833,11 @@
           "Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::bundled_module_schema_paths"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-TEXT-001",
@@ -4191,14 +4259,19 @@
     },
     {
       "capability_id": "XLIFF-PARSE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff's own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick."
+      "execution_evidence_ids": [
+        "XLIFF-SCHEMATRON-NVDL-BUNDLE-INVENTORY-PROOF"
       ],
+      "implemented_behavior": [
+        "FF6-EVENT-000272 already bundled all nine module XSDs (Format Style, Glossary, ITS, ITS Mapping, Matches, Metadata, Resource Data, Size and Length Restriction, Validation), and test_composed_schema_loads_all_nine_standard_module_namespaces already proved their namespaces load -- but that evidence was never propagated to this specific inventory-fact obligation. FF6-EVENT-000277 adds an explicit exact-count/exact-name assertion and reconciles the evidence link."
+      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-B90CB93CF07C9917",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_exactly_nine_module_xsds_are_bundled_covering_every_standard_module",
+        "tests/python/xliff/test_obligation_full_module_schema_validation.py::test_composed_schema_loads_all_nine_standard_module_namespaces"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -4207,9 +4280,11 @@
           "Version/namespace consistency fixtures per supported version; legacy-version refusal fixture."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::bundled_module_schema_paths"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODULE-001",
@@ -5552,6 +5627,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-resource-data-href-001.json": "f561aa029b68a42b1c11fc0f03c289ff00dc0f0b28d4d3e29a712d37e5d72d8e",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-root-language-attribute-requirements-001.json": "b3cfa6d54f98f0873a9281b99616064754fa5c4d37a7867b3666616eabb387ca",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-root-xml-space-default-001.json": "8666cfed5b1df0b4b4df1540cb46d5ae673ebfe26c06933080a37682d3dc0f3a",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-schematron-nvdl-bundle-001.json": "b84a9f417ea4378e2cf69b45dc81b437e3b5f13d6f628f186d481657fb047d06",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-sec-001-001.json": "b59624a8a8b11d0b3eb8db6076fb61aba59add049d2ad84cd92bee83aea0603d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-security-limits-001.json": "15f42fdeb25a403a632cbeca88772e794950c42e67c540c6384f09d31dfd84cd",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-seg-structure-language-001.json": "4e79d0650232d6bc7d61e45e7c0f203ab78e04faf29f792897448a44dcea6df8",
@@ -5575,14 +5651,14 @@
     "src/python/xliff/src/format_factory/xliff/qa.py": "61c2a8f74d09f844e36bfc1d967a587b5e5e62cf6087577e1031347b3ee8fa2f",
     "src/python/xliff/src/format_factory/xliff/security/limits.py": "8cec6ffd2ccd8fe17fa6d76ab19b2deeda3578d558925d862b15494b3b06665a",
     "src/python/xliff/src/format_factory/xliff/state_transitions.py": "6b12476e31076a788cef37fb476e1b5eda7365e6eb640bbb7bedcebabb9d49ea",
-    "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py": "1a7e37e980d5b0aa4557121ddf529e040771e8f0474c9e59b26576bb0c57c15c",
+    "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py": "647d2a20bf39c3fc4a79c6e04822d4703874e1285148106c5af21179f6d8861b",
     "src/python/xliff/src/format_factory/xliff/validation/validator.py": "8b463c2f01f6002176f0876f49dae9773230bdaeb5f7d99697ebb6ae8fee479f",
     "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py": "0cf2b5f76b217e7768f56a9302d7012c450a1dc95cd05b823bb7476bd8db7761",
     "tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py": "43045d1ebd13179843aaffbbbeb1fbbe50694f34d50f380eb5e7d409c2f65110",
     "tests/python/xliff/test_obligation_core_schema_validation.py": "4f6a99acc18bc098dff001c8a438e6ab95b588f90b0d3250b3201511ab8c50f3",
     "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py": "4608bfab942b23e748dc4010785ec78e72a668f796a3d93401e208fc2365ab80",
     "tests/python/xliff/test_obligation_format_style_module_fs_values.py": "5e03baa15603d37ab30de64ad46e889955bf3be3694e2f515b3acde3bf1fac24",
-    "tests/python/xliff/test_obligation_full_module_schema_validation.py": "5d3cd7e9889c9661e9fc655e9b4c5425692d6c94961345e5b190f0e09ff270cd",
+    "tests/python/xliff/test_obligation_full_module_schema_validation.py": "62266d842669abe3a5a5078eaaa2016e54b8922bdb1f6292140f8eec23fc18f1",
     "tests/python/xliff/test_obligation_glossary_module_cardinality.py": "3d6aaad34401cb21386b9148d4f708cc50076f621f16acc1aea58f96d556d47a",
     "tests/python/xliff/test_obligation_ignorable_elements.py": "70908f9b90fa150715bd19b6c9a1abd46b36b818a3710c4ad82d851dc6a9c880",
     "tests/python/xliff/test_obligation_inline_required_id.py": "a499d28a49fc003b29ebaeb93dcb4619ee5767d344cc19a05fe432a6a4420eac",
@@ -5604,6 +5680,7 @@
     "tests/python/xliff/test_obligation_resource_resolution_security.py": "7bd8371c0a04ee1ecf6574d863d76e4ed6c8d449fbfd12d492ad45cfcc9d7720",
     "tests/python/xliff/test_obligation_root_language_attribute_requirements.py": "4e829c770a8fc7792a9f4404e738afe789ef4ac04982855b1681ec51c37605de",
     "tests/python/xliff/test_obligation_root_xml_space_default.py": "d0f84396f61e8c8e8de1b82035e6c7987414371ee1ccb284f52e5800a537b812",
+    "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py": "0a27d633b598c8d699cf2a97bf970d9486cf1e001e42da8e70a11008c052df0b",
     "tests/python/xliff/test_obligation_security_limits.py": "96912d30884be06a92e892340d250a6d0d981485e9fbb6eed2db08bd1724d476",
     "tests/python/xliff/test_obligation_segment_structure_and_language.py": "4147094fbe4e7af8284b21c0c92fdb3aa4a26bd1e923a244db09980937f2de93",
     "tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py": "66018806551c24638b6f2da871d740554298b3df241d154e04d685da7639cc89",
@@ -5618,12 +5695,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 121,
-      "missing": 11,
+      "implemented": 130,
+      "missing": 2,
       "partial": 10
     },
     "total": 142,
-    "unresolved": 21
+    "unresolved": 12
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

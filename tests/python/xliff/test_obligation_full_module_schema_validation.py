@@ -26,8 +26,10 @@ Deliberately narrow about one remaining thing: XSD structural
 conformance only. The distribution package also ships per-module ISO
 Schematron (.sch) files for additional business-rule assertions beyond
 XSD's own expressive power -- not required by this obligation's own
-rule_text and not attempted here (a substantially different, XSLT-based
-toolchain, not xmlschema).
+rule_text. Those files are bundled too (see
+test_obligation_schematron_and_nvdl_bundle_inventory.py) but not executed:
+they declare queryBinding="xslt2", which lxml.isoschematron -- the only
+engine available without a new heavyweight dependency -- refuses outright.
 """
 
 from __future__ import annotations

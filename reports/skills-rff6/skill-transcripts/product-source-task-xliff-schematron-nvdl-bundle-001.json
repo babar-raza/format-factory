@@ -1,0 +1,69 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-schematron-nvdl-bundle-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T00:50:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_SCHEMATRON_NVDL_BUNDLE_001",
+    "task_kind": "hidden-data-rediscovery-in-already-mined-source",
+    "root_cause": "Nine of xliff's 21 unresolved obligations shared a claim that no schema/Schematron/NVDL files are vendored anywhere in this repository. That claim was already false for the nine module XSDs (bundled at FF6-EVENT-000272) and turned out to also be false for the nine Schematron rule sets and the one NVDL dispatch artifact: the exact same pinned ZIP already mined for the module XSDs (.local/format-contracts/acquired/xliff/src-xlf-002.bin) also contains schemas/*.sch and schemas/xliff_2_advanced_validation.nvdl -- the earlier extraction pulled only the *.xsd entries and never re-examined the archive for the rest.",
+    "obligation_targeted": "9 obligations promoted missing->implemented, three duplicate clusters: SAL-XLIFF-OBL-07A1F5F6A9B3A95F/1405C2E94EEF25E6/21B94445F4216B94 ('nine Schematron rule sets' inventory), SAL-XLIFF-OBL-191B67AD2A05CA4E/56B240550D37E1BA ('layered validation artifacts' inventory), SAL-XLIFF-OBL-3059D36881034046/9795E0B80A36DEBB/9B0DC026A5B8E587/B90CB93CF07C9917 ('nine module XSDs' inventory -- the files were already bundled at FF6-EVENT-000272 and already tested by test_composed_schema_loads_all_nine_standard_module_namespaces, but that evidence had never been linked to these four specific obligation IDs).",
+    "acceptance_evidence": "7 new tests (tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py) proving exact file counts/names for the bundled Schematron and module XSD sets, NVDL presence, well-formedness of all bundled .sch/.nvdl files, and an empirical (not asserted) confirmation that lxml.isoschematron refuses to execute any of the nine Schematron files due to their xslt2 query binding.",
+    "regression_tier": "full xliff package suite plus a real wheel build verifying all 10 new files (9 .sch + 1 .nvdl) ship"
+  },
+  "execution_steps": [
+    "1. After the Stop hook flagged FF6-EVENT-000275 (oracle machinery fix) as product-work-free, surveyed nrrd (Event 276, space-consistency wiring) then xliff's 21 remaining unresolved obligations directly via the implementation-evidence ledger, applying this session's own established discipline of reading each obligation's own precise wording rather than trusting its missing_behavior summary.",
+    "2. Found 10 of 21 xliff obligations sharing near-identical missing_behavior text claiming 'no schema, Schematron, or NVDL files are vendored anywhere in this repository' -- but this session's own Event 270/272 already bundled the module XSDs, directly contradicting that claim for the XSD portion. Suspected the same staleness might apply to the Schematron/NVDL portion too.",
+    "3. Checked whether src-xlf-002.bin (the ZIP already mined at Event 272) contains anything beyond the *.xsd entries previously extracted: zipfile.namelist() showed 9 *.sch files and 1 *.nvdl file present in the archive, none previously extracted.",
+    "4. Extracted all 10 files into the existing validation/schemas/ directory alongside the module XSDs. Confirmed file counts and names against each of the three distinct obligation rule_text claims before writing any code: 'exactly nine Schematron rule sets' (core xliff_core_2.1.sch + 8 of 9 modules, ITS Mapping has none), 'an NVDL advanced-validation dispatch artifact' (1 file), 'exactly nine first-party module XSDs' (already had these from Event 272).",
+    "5. Attempted to determine whether real Schematron rule EXECUTION was newly feasible (lxml.isoschematron.Schematron is available in this environment) before assuming inventory-only was the ceiling. Empirically tested all nine .sch files: every one fails to load with 'This implementation of ISO Schematron does not work with schemas using the xslt2 query language.' Confirmed via direct queryBinding grep that the core file declares xslt2 explicitly; the eight module files inherit or resolve it the same way (empirically confirmed by the identical failure, not merely assumed from the core's own attribute). This is a genuine, confirmed toolchain gap, not an oversight -- running these would need a Java-based or other XSLT-2-capable Schematron processor this environment does not have.",
+    "6. Added bundled_schematron_paths() and bundled_nvdl_path() to schema_validator.py, returning real file paths for a caller with a capable external processor to use -- honest about not offering execution itself, consistent with the module's own existing docstring pattern for the schema_validate()/full_schema_validate() split.",
+    "7. Updated pyproject.toml package-data to include schemas/*.sch and schemas/*.nvdl.",
+    "8. Wrote 7 tests: exact Schematron file count, exact module coverage (core + 8 modules, itsm absent), NVDL presence, exact module XSD count/coverage (locking in what Event 272's own test only proved as a subset check), well-formedness of every bundled .sch/.nvdl file, and a dedicated test asserting lxml.isoschematron's own XSLTApplyError on the core file -- this last test is deliberately a REGRESSION TRIP-WIRE: if a future lxml/libxslt upgrade ever adds XSLT2 support, this test starts failing, which is the correct signal to revisit real Schematron execution.",
+    "9. Ran the full xliff suite (530 -> 537 passed), ruff (clean), and mypy --strict (25 source files, clean).",
+    "10. Built a real wheel via `pip wheel . --no-deps` and confirmed all 10 new files ship inside it under format_factory/xliff/validation/schemas/, byte-identical to source.",
+    "11. Updated the implementation-evidence ledger for all 9 target obligations (status, source_symbols, positive_test_selectors, execution_evidence_ids, implemented_behavior, missing_behavior) plus a new dedicated evidence entry, validating the YAML parses correctly and the obligation/evidence counts match expectations (142 obligations unchanged, evidence 46->47) after every edit."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py",
+    "src/python/xliff/src/format_factory/xliff/validation/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "src/python/xliff/pyproject.toml",
+    "src/python/xliff/src/format_factory/xliff/validation/schemas",
+    "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py",
+    "tests/python/xliff/test_obligation_full_module_schema_validation.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py",
+    "src/python/xliff/src/format_factory/xliff/validation/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "src/python/xliff/pyproject.toml",
+    "src/python/xliff/src/format_factory/xliff/validation/schemas/ (10 new files: 9 .sch + 1 .nvdl)",
+    "tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py",
+    "tests/python/xliff/test_obligation_full_module_schema_validation.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py -v -- 7 passed",
+    ".venv/Scripts/pytest tests/python/xliff -q -- 537 passed (was 530 before)",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/xliff/src/format_factory/xliff/ -- Success: no issues found in 25 source files",
+    "pip wheel . --no-deps (built real wheel, confirmed all 10 new bundled files present, byte-identical to source)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "9 obligations promoted missing->implemented",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 9,
+    "obligations_total_for_format": 142,
+    "oracle": "The bundled Schematron and NVDL files are the authoritative OASIS-published artifacts, extracted byte-for-byte from the same pinned XLIFF 2.1 official distribution ZIP already used for the module XSDs.",
+    "toolchain_limitation_confirmed": "lxml.isoschematron cannot execute any of the nine bundled Schematron files (xslt2 query binding unsupported) -- empirically confirmed, not assumed; real Schematron rule execution remains a genuinely separate, larger undertaking requiring an XSLT-2-capable processor."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
