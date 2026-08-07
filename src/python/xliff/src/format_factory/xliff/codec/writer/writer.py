@@ -25,6 +25,92 @@ from ...security import effective_limits
 from ..preservation import PreservationMode, canonicalize
 from ..reader import SUPPORTED_VERSIONS, XLIFF_NAMESPACE
 
+#: Per the XLIFF 2.1 specification's own Appendix C change summary, native
+#: ITS 2.0 support is one of exactly two content-level features 2.1 adds
+#: over 2.0 (the other, Advanced Validation, is Schematron-level and never
+#: appears in document content) -- the core namespace and grammar are
+#: otherwise explicitly stated to be unchanged between the two versions.
+_ITS_NAMESPACES = (
+    "http://www.w3.org/2005/11/its",
+    "urn:oasis:names:tc:xliff:itsm:2.1",
+)
+
+
+def _its_namespace_of(key: str) -> str | None:
+    if not key.startswith("{"):
+        return None
+    namespace = key[1:].split("}", 1)[0]
+    return namespace if namespace in _ITS_NAMESPACES else None
+
+
+def _attrs_have_its(attributes: dict[str, str]) -> bool:
+    return any(_its_namespace_of(key) for key in attributes)
+
+
+def _inline_has_its(nodes: list[InlineNode]) -> bool:
+    for node in nodes:
+        if isinstance(node, str):
+            continue
+        if _its_namespace_of(node.tag) or _attrs_have_its(node.attributes):
+            return True
+        if _inline_has_its(node.content):
+            return True
+    return False
+
+
+def _notes_have_its(notes: list[Note]) -> bool:
+    return any(_attrs_have_its(note.attributes) for note in notes)
+
+
+def _segment_has_its(segment: Segment) -> bool:
+    if (
+        _attrs_have_its(segment.attributes)
+        or _attrs_have_its(segment.source_attributes)
+        or _attrs_have_its(segment.target_attributes)
+    ):
+        return True
+    if any(_its_namespace_of(extension.tag) for extension in segment.extensions):
+        return True
+    if _inline_has_its(segment.source):
+        return True
+    if segment.target is not None and _inline_has_its(segment.target):
+        return True
+    return False
+
+
+def _container_has_its(container: XliffFile | Group | Unit) -> bool:
+    if _attrs_have_its(container.attributes) or _notes_have_its(container.notes):
+        return True
+    for child in container.children:
+        if isinstance(child, ExtensionNode):
+            if _its_namespace_of(child.tag):
+                return True
+        elif isinstance(child, Segment):
+            if _segment_has_its(child):
+                return True
+        elif _container_has_its(child):
+            return True
+    return False
+
+
+def _its_content_present(document: XliffDocument) -> bool:
+    """XLIFF-WRITE-001: "report any version-downgrade loss before writing."
+
+    Writing ITS 2.0 content under a ``profile="2.0"`` declaration would
+    misrepresent the document as conformant to a profile that defines no
+    ITS support -- this is the one genuinely checkable, spec-grounded
+    downgrade-loss case (see the module-level comment on _ITS_NAMESPACES).
+    """
+    if _attrs_have_its(document.attributes):
+        return True
+    for child in document.children:
+        if isinstance(child, ExtensionNode):
+            if _its_namespace_of(child.tag):
+                return True
+        elif _container_has_its(child):
+            return True
+    return False
+
 
 def _set_attributes(
     element: ET.Element,
@@ -177,6 +263,14 @@ def dumps(
     version = profile or document.version
     if version not in SUPPORTED_VERSIONS:
         raise XliffWriteError(f"unsupported stable XLIFF profile: {version!r}")
+    if version == "2.0" and _its_content_present(document):
+        raise XliffWriteError(
+            "cannot write to XLIFF 2.0: document contains ITS 2.0 content "
+            "(elements or attributes in the ITS namespaces), which is a "
+            "content-level feature XLIFF 2.0 does not define support for; "
+            "writing it anyway would silently misrepresent the document as "
+            "conformant to a profile with no defined meaning for that content"
+        )
     if document.namespace != XLIFF_NAMESPACE:
         raise XliffWriteError("document namespace is not the stable XLIFF 2.x namespace")
     if not document.source_language:

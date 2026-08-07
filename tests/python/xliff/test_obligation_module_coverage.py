@@ -270,9 +270,19 @@ def test_format_style_attributes_round_trip_on_a_unit() -> None:
 
 def test_its_mapping_attributes_round_trip_on_a_unit() -> None:
     """"the XLIFF 2.1 mapping adds urn:oasis:names:tc:xliff:itsm:2.1
-    attributes for domains and language." """
+    attributes for domains and language."
+
+    Unlike this file's shared HEADER (version="2.0"), this fixture declares
+    version="2.1": the itsm:2.1 mapping is content-level 2.1-only per the
+    specification's own Appendix C change summary, so XLIFF-WRITE-001's
+    version-downgrade-loss check (test_obligation_version_downgrade_loss.py)
+    correctly refuses to write it under a "version=2.0" declaration -- a
+    fixture that actually carries this content must honestly declare 2.1
+    to remain writable at all, which this test now does.
+    """
     xml = (
-        HEADER
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        f'<xliff xmlns="{XLIFF_NS}" version="2.1" srcLang="en">\n'
         + '<file id="f1"><unit id="u1" xmlns:itsm="urn:oasis:names:tc:xliff:itsm:2.1" '
         + 'itsm:domains="legal">'
         + "<segment><source>hi</source></segment>"

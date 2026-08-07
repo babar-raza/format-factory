@@ -144,12 +144,20 @@
       "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json",
       "sha256": "368a286339e4990afa645543f86d2b1968bfc693706a6c170b366fecc18f432b",
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors for both XLIFF-STATE-001 obligations (the core state enum/target-required rule, and the configurable transition-validation mechanism). NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Originally scoped to XLIFF-STATE-001's 2 obligations; extended to also cover XLIFF-SEG-001's SAL-XLIFF-OBL-3B805BEF996C1B70, which restates the identical state-enum/target-required rule under a different capability (the \"Segment elements carry an optional state attribute...\" framing is the same fact as XLIFF-STATE-001's core rule, not a distinct unbuilt behavior). Covers SAL-XLIFF-OBL-AF86B77156C7C1E2, SAL-XLIFF-OBL-95E74FFC0501843B, and SAL-XLIFF-OBL-3B805BEF996C1B70 only; it supports no other obligation and promotes no product state."
+    },
+    {
+      "evidence_id": "XLIFF-VERSION-DOWNGRADE-LOSS-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-version-downgrade-loss-001.json",
+      "sha256": "d883e3d53d90b3cdc9f8163ff159837437339a2d0fde9275a8235d04e9a8d969",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-1FE4640A3CD2FDAD and SAL-XLIFF-OBL-489B7755DF76C218 (both XLIFF-WRITE-001). Each obligation's 3-clause rule_text (extension preservation, deterministic writing, report version-downgrade loss before writing) had strong existing test coverage for the first two clauses but zero implementation for the third: dumps(profile=\"2.0\") silently wrote 2.1-only content under a version=2.0 declaration with no check at all, confirmed via an interactive probe before any fix. Read the pinned XLIFF 2.1 spec source directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin) and located Appendix C (\"Specification Change Tracking\"), which states in its own words that XLIFF 2.1 adds exactly two content-level features over 2.0 -- native ITS 2.0 support and Advanced Validation (Schematron-level, never appears in document content) -- and that the core namespace and grammar are otherwise explicitly stated unchanged. This directly grounds ITS content as the one checkable, spec-confirmed downgrade-loss case. Added a recursive whole-tree walker (_its_content_present) checking every attribute dict, ExtensionNode tag, and inline-element tag/attributes for the ITS namespaces, wired into dumps() to raise XliffWriteError before serialization when downgrading to 2.0 with ITS content present anywhere. 8 new tests prove the refusal at every content level (attribute, element, inline), non-refusal for non-ITS content and native writes, and correct interaction with CANONICAL mode. Fixed 1 pre-existing test (test_obligation_module_coverage.py::test_its_mapping_attributes_round_trip_on_a_unit) whose fixture declared version=\"2.0\" while carrying itsm:2.1-mapping content -- exactly the silent-loss shape this obligation warns about, existing only because the check did not exist yet; corrected to honestly declare version=\"2.1\", preserving the test's own actual purpose (attribute round-trip). xliff suite: 358 -> 366 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, though the downgrade-loss scope is grounded directly in the pinned spec's own change-tracking text, not invented from memory. Covers SAL-XLIFF-OBL-1FE4640A3CD2FDAD and SAL-XLIFF-OBL-489B7755DF76C218 only; it supports no other obligation and promotes no product state."
     }
   ],
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "4fb6257e4dcd63f5c45fcb2df809538be890be5a551b840634a080f02a194219",
+    "implementation_evidence": "c0aaf95111fb89b71524704c1e84735344d1ea92d4098ad306dd31fc8044ca25",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -723,20 +731,28 @@
     {
       "capability_id": "XLIFF-WRITE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-VERSION-DOWNGRADE-LOSS-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes. Extension preservation and determinism are both directly proven: test_semantic_roundtrip_preserves_unknown_namespace_and_order round-trips an unknown-namespace extension element through dumps/loads/dumps and confirms two consecutive dumps() calls are byte-identical, and test_repeated_dumps_calls_on_one_unchanged_document_are_byte_identical proves determinism directly. \"Report any version-downgrade loss before writing\" is now also implemented: per the pinned XLIFF 2.1 specification's own Appendix C change-tracking text, native ITS 2.0 support is one of exactly two content-level features 2.1 adds over 2.0 (the other, Advanced Validation, is Schematron-level and never appears in document content) -- the core namespace and grammar are explicitly stated to be otherwise unchanged. dumps() now refuses (XliffWriteError) to write ITS content -- at every level it can appear: attributes on core elements, ExtensionNode elements, or attributes inside inline mixed content -- under a profile=\"2.0\" declaration, proven by 8 new tests covering the refusal at each content level, non-refusal for non-ITS content and native (non-downgrading) writes, and correct interaction with CANONICAL mode (which drops the offending ExtensionNode before the check runs, so the downgrade succeeds once the content is actually gone)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Lossless round-trip of extension-rich fixtures; determinism byte-compare."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-1FE4640A3CD2FDAD",
       "positive_test_selectors": [
         "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
         "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_repeated_dumps_calls_on_one_unchanged_document_are_byte_identical",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_a_document_with_no_its_content_downgrades_to_2_0_without_error",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_an_itsm_attribute_on_a_segment_blocks_downgrade_to_2_0",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_an_its_extension_element_blocks_downgrade_to_2_0",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_its_content_inside_inline_mixed_content_blocks_downgrade_to_2_0",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_a_non_its_foreign_extension_does_not_block_downgrade",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_its_content_never_blocks_a_native_2_1_write",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_canonical_mode_drops_its_extension_nodes_before_the_check_runs",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_an_itsm_attribute_on_the_document_root_blocks_downgrade"
       ],
       "proof_requirements": {
         "negative": [
@@ -746,12 +762,13 @@
           "Lossless round-trip of extension-rich fixtures; determinism byte-compare."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump"
+        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump",
+        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::_its_content_present"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -1607,20 +1624,28 @@
     {
       "capability_id": "XLIFF-WRITE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-VERSION-DOWNGRADE-LOSS-PROOF"
       ],
       "implemented_behavior": [
-        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes."
+        "Production source implementing this capability exists at the mapped symbols and the mapped shipped-namespace suite passes. Extension preservation and determinism are both directly proven: test_semantic_roundtrip_preserves_unknown_namespace_and_order round-trips an unknown-namespace extension element through dumps/loads/dumps and confirms two consecutive dumps() calls are byte-identical, and test_repeated_dumps_calls_on_one_unchanged_document_are_byte_identical proves determinism directly. \"Report any version-downgrade loss before writing\" is now also implemented: per the pinned XLIFF 2.1 specification's own Appendix C change-tracking text, native ITS 2.0 support is one of exactly two content-level features 2.1 adds over 2.0 (the other, Advanced Validation, is Schematron-level and never appears in document content) -- the core namespace and grammar are explicitly stated to be otherwise unchanged. dumps() now refuses (XliffWriteError) to write ITS content -- at every level it can appear: attributes on core elements, ExtensionNode elements, or attributes inside inline mixed content -- under a profile=\"2.0\" declaration, proven by 8 new tests covering the refusal at each content level, non-refusal for non-ITS content and native (non-downgrading) writes, and correct interaction with CANONICAL mode (which drops the offending ExtensionNode before the check runs, so the downgrade succeeds once the content is actually gone)."
       ],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Lossless round-trip of extension-rich fixtures; determinism byte-compare."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-489B7755DF76C218",
       "positive_test_selectors": [
         "tests/python/xliff/test_production_namespace.py::test_typed_core_and_inline_content_load",
         "tests/python/xliff/test_production_namespace.py::test_semantic_roundtrip_preserves_unknown_namespace_and_order",
-        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle"
+        "tests/python/xliff/test_production_namespace.py::test_stream_and_path_lifecycle",
+        "tests/python/xliff/test_obligation_lifecycle_io.py::test_repeated_dumps_calls_on_one_unchanged_document_are_byte_identical",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_a_document_with_no_its_content_downgrades_to_2_0_without_error",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_an_itsm_attribute_on_a_segment_blocks_downgrade_to_2_0",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_an_its_extension_element_blocks_downgrade_to_2_0",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_its_content_inside_inline_mixed_content_blocks_downgrade_to_2_0",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_a_non_its_foreign_extension_does_not_block_downgrade",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_its_content_never_blocks_a_native_2_1_write",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_canonical_mode_drops_its_extension_nodes_before_the_check_runs",
+        "tests/python/xliff/test_obligation_version_downgrade_loss.py::test_an_itsm_attribute_on_the_document_root_blocks_downgrade"
       ],
       "proof_requirements": {
         "negative": [
@@ -1630,12 +1655,13 @@
           "Lossless round-trip of extension-rich fixtures; determinism byte-compare."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dumps",
-        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump"
+        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::dump",
+        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::_its_content_present"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODEL-001",
@@ -4618,9 +4644,10 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-seg-structure-language-001.json": "4e79d0650232d6bc7d61e45e7c0f203ab78e04faf29f792897448a44dcea6df8",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-segment-split-join-001.json": "16e92d9df77d60b1ffb85830f63759c78034e3b5168faabc58102b168c1c904d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json": "368a286339e4990afa645543f86d2b1968bfc693706a6c170b366fecc18f432b",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-version-downgrade-loss-001.json": "d883e3d53d90b3cdc9f8163ff159837437339a2d0fde9275a8235d04e9a8d969",
     "src/python/xliff/src/format_factory/xliff/codec/preservation.py": "117c0c1dd41f34535267d67b1d387302ac3e5d16af927a5a44a58ed506910768",
     "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py": "a9c296cbdfb6da4d2ba4d4621cb1d69e002f5ce85047aca1a77a3426c55ded7c",
-    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py": "88109c0eeb3db97b7c73f92ee2f069d07b8b5790d4c376a0f70a3cc80ebad954",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py": "ddec3e6154bf1ee6533b1a3438fa8f62355f4475b6072e7323cf5e61da7b534b",
     "src/python/xliff/src/format_factory/xliff/merge.py": "c16a0916c2a7ddaeb49dd200fbe89e4a0b08f0ca19dd5177f7001733c0882c1b",
     "src/python/xliff/src/format_factory/xliff/model/document.py": "70b4173911c55f8ebb068cff6aefbb34fadbe2577793ba5147e5e68652db4bbf",
     "src/python/xliff/src/format_factory/xliff/model/inline.py": "044d04957bcc6db867494411063619c0640e152012285f744a3f2ef7d41058c3",
@@ -4634,7 +4661,7 @@
     "tests/python/xliff/test_obligation_ignorable_elements.py": "2deedf81feffbfaaeb5c39fbdf24be6dd6687a00d25ffd94d94c460aa44b8ad7",
     "tests/python/xliff/test_obligation_lifecycle_io.py": "5d9973d4c931cea5f36247ac8f22b05ff57b335ab3dccf2d6c878da7b529c62b",
     "tests/python/xliff/test_obligation_merge_adapter.py": "8ab808796f526b4497037ff207d9924382fe6833689529377210a80e60d95e88",
-    "tests/python/xliff/test_obligation_module_coverage.py": "b83ec2190483e437fc5bac89611cdbefb85dbc1481fd6d936ad97edf2acd38ed",
+    "tests/python/xliff/test_obligation_module_coverage.py": "dbe6b40b4a668b46bc62aac2ce8819ae9c45bff05d6edd255da7060098c31783",
     "tests/python/xliff/test_obligation_nested_group_hierarchy.py": "cb31f8d5782f920685c804e6283a44aa2196107d0069c8c3ed011c7d4003e122",
     "tests/python/xliff/test_obligation_notes_and_annotations.py": "357ae9aace9aab3cbb6bcda064a928b4934ccd7b6720094452aaedd75b69e587",
     "tests/python/xliff/test_obligation_paired_code_integrity.py": "d9da9bd02837f6da941067d1507e3431b3f5e9318af57759d72aecb7e04112f4",
@@ -4645,17 +4672,18 @@
     "tests/python/xliff/test_obligation_segment_structure_and_language.py": "4147094fbe4e7af8284b21c0c92fdb3aa4a26bd1e923a244db09980937f2de93",
     "tests/python/xliff/test_obligation_state_transitions.py": "eb2fb6fa0f4503175da1904986563ca1a1ee97f317067a2d29466c5c35c9c1bf",
     "tests/python/xliff/test_obligation_target_creation_policies.py": "d6693ffb55e6c735194503d14f9f4ba6dd46564391aeb13ee5189b9d94cb85ef",
+    "tests/python/xliff/test_obligation_version_downgrade_loss.py": "cabb9854780e765b19ad611de6e1e8f82573204737e12b9392254da837137efe",
     "tests/python/xliff/test_production_namespace.py": "907de371555ded7c152d23d9748884e27915eb7ca93ffde5e10659e6266448d6"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 68,
+      "implemented": 70,
       "missing": 23,
-      "partial": 51
+      "partial": 49
     },
     "total": 142,
-    "unresolved": 74
+    "unresolved": 72
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

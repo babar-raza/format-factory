@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-version-downgrade-loss-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T06:30:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_VERSION_DOWNGRADE_LOSS_001",
+    "task_kind": "direct-spec-read-write-time-refusal",
+    "root_cause": "SAL-XLIFF-OBL-1FE4640A3CD2FDAD and SAL-XLIFF-OBL-489B7755DF76C218 (both XLIFF-WRITE-001) each carry a 3-clause rule_text: preserve extensions, deterministic writing, and 'report version-downgrade loss before writing'. The first two clauses already had strong existing test coverage; the third had zero implementation -- dumps(profile=\"2.0\") silently wrote 2.1-only content under a version=2.0 declaration with no check at all.",
+    "obligation_targeted": "SAL-XLIFF-OBL-1FE4640A3CD2FDAD, SAL-XLIFF-OBL-489B7755DF76C218 (both XLIFF-WRITE-001)",
+    "acceptance_evidence": "8 new tests prove dumps() now refuses to write ITS 2.0 content (elements, attributes on core elements, or attributes inside inline mixed content) under a profile=\"2.0\" declaration, while never blocking a downgrade with no ITS content, never blocking a native (non-downgrading) write even with ITS content present, and correctly permitting a downgrade after CANONICAL mode has already dropped the offending ExtensionNode.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Confirmed via an interactive probe that dumps(profile='2.0') on a document carrying an itsm:2.1-namespaced attribute silently succeeded and the attribute survived in the output -- a real, previously undiagnosed silent-loss case, exactly what the obligation's own rule_text names.",
+    "2. Read the pinned XLIFF 2.1 spec source directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin, an HTML document) rather than relying on the SAL fact cache or memory: located Appendix C ('Specification Change Tracking'), which states in its own words that XLIFF 2.1 adds exactly two content-level features over 2.0 -- native ITS 2.0 support and Advanced Validation (Schematron-level, never appears in document content) -- and that 'none of the changes... have affected the core namespace... or the XLIFF Core [XML Schema] that expresses its basic grammar and structure.' This directly and specifically grounds ITS content as THE one checkable, spec-confirmed downgrade-loss case.",
+    "3. Read modules.py's existing ITS module entry (namespace http://www.w3.org/2005/11/its, plus the 2.1-specific itsm mapping namespace urn:oasis:names:tc:xliff:itsm:2.1) and confirmed via reader.py that both element-level ITS content (as ExtensionNode, Clark-notation tag) and attribute-level itsm content (as unrecognized-attribute passthrough, Clark-notation dict keys) already round-trip losslessly through the existing reader/model -- meaning the detection only needed to walk the already-existing tree shape, not add new preservation machinery.",
+    "4. Wrote a recursive whole-tree walker (_its_content_present and its helpers) in writer.py checking every attributes dict (document/file/group/unit/segment/source/target/note), every ExtensionNode.tag, and every InlineElement.tag/attributes for the two ITS namespaces. Wired it into dumps(): when the effective write version is '2.0' and ITS content is present anywhere in the tree, raise XliffWriteError before any serialization begins.",
+    "5. Verified interactively across 8 cases (no-ITS baseline, itsm attribute on a segment, ITS element via ExtensionNode, ITS content inside inline mixed content, non-ITS foreign extension not blocked, native 2.1 write never blocked even with ITS content, CANONICAL mode correctly permits the downgrade after dropping the offending ExtensionNode first) -- all 8 behaved correctly on the first attempt (after fixing an unrelated bug in the probe's own hand-built XML fixture, an unbound namespace prefix, not a product defect).",
+    "6. Wrote 8 formal tests mirroring the probe's cases plus a root-level document.attributes case. Ran the full xliff suite -- 1 pre-existing test failed: test_obligation_module_coverage.py::test_its_mapping_attributes_round_trip_on_a_unit had a fixture declaring version='2.0' while carrying itsm:2.1-mapping content, which the new check now correctly refuses to write. This is the exact silent-loss shape the obligation warns about, existing only because the check did not exist yet when that test was written -- fixed by changing the fixture to honestly declare version='2.1' (matching what a real producer would emit for genuinely ITS-mapped content), which preserves that test's own actual purpose (attribute round-trip) without exercising the now-correctly-refused downgrade case.",
+    "7. Ran ruff (clean) on writer.py, the new test file, and the fixed existing test file. Ran the full xliff suite (366 passed, was 358, +8) and the full 6-format regression (3121 passed, was 3113, +8; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression beyond the 1 intentionally-adjusted fixture.",
+    "8. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-f24769fb695b2c54, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+    "tests/python/xliff/test_obligation_version_downgrade_loss.py",
+    "tests/python/xliff/test_obligation_module_coverage.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+    "tests/python/xliff/test_obligation_version_downgrade_loss.py",
+    "tests/python/xliff/test_obligation_module_coverage.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_version_downgrade_loss.py -q -- 8 passed",
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_module_coverage.py::test_its_mapping_attributes_round_trip_on_a_unit -q -- 1 passed (after fixture fix)",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/codec/writer/writer.py tests/python/xliff/test_obligation_version_downgrade_loss.py tests/python/xliff/test_obligation_module_coverage.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 366 passed, was 358 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3121 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3113 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the downgrade-loss scope (ITS content specifically) is grounded directly in the pinned XLIFF 2.1 spec's own Appendix C change-tracking text, not invented from memory.",
+    "obligations_moved_breakdown": "2 obligations promoted partial->implemented, one per capability duplicate under XLIFF-WRITE-001. Both obligations' other two clauses (extension preservation, deterministic writing) were already proven by pre-existing tests, now also cited on these obligations."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
