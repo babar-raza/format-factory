@@ -42,6 +42,23 @@ _GLOSSENTRY_QNAME = f"{{{_GLOSSARY_NAMESPACE}}}glossEntry"
 _GLS_TERM_QNAME = f"{{{_GLOSSARY_NAMESPACE}}}term"
 _GLS_TRANSLATION_QNAME = f"{{{_GLOSSARY_NAMESPACE}}}translation"
 _GLS_DEFINITION_QNAME = f"{{{_GLOSSARY_NAMESPACE}}}definition"
+
+_VALIDATION_NAMESPACE = "urn:oasis:names:tc:xliff:validation:2.0"
+_VALIDATION_QNAME = f"{{{_VALIDATION_NAMESPACE}}}validation"
+_VAL_RULE_QNAME = f"{{{_VALIDATION_NAMESPACE}}}rule"
+#: Per the pinned XLIFF 2.1 Validation module schema (schemas/validation.xsd,
+#: xlf:yesNo type, reused from the core schema): existsInSource,
+#: caseSensitive, and disabled are all typed xlf:yesNo.
+_VAL_YES_NO_VALUES = frozenset({"yes", "no"})
+#: Per the pinned Validation module schema's own normalization_type
+#: simpleType restriction.
+_VAL_NORMALIZATION_VALUES = frozenset({"none", "nfc", "nfd"})
+#: The four "condition" attributes the spec's own rule Constraints section
+#: names as mutually exclusive alternatives (the fifth alternative, "a
+#: custom rule defined by attributes from any namespace," is any attribute
+#: outside this set and the core module's own value/case/normalization/
+#: disabled/occurs attributes).
+_VAL_CONDITION_ATTRS = ("isPresent", "isNotPresent", "startsWith", "endsWith")
 _CORE_SOURCE_QNAME = f"{{{XLIFF_NAMESPACE}}}source"
 _CORE_TARGET_QNAME = f"{{{XLIFF_NAMESPACE}}}target"
 
@@ -706,6 +723,116 @@ def _glossary_module_diagnostics(
             seen_ids.add(entry_id)
 
 
+def _validation_module_diagnostics(
+    extension: ExtensionNode, diagnostics: list[Diagnostic]
+) -> None:
+    """(XLIFF 2.1 Validation module) grounded directly in the pinned XLIFF
+    2.1 Validation module spec text and schema (inside
+    .local/format-contracts/acquired/xliff/src-xliff-003.bin, Section 5.8
+    "Validation Module" and its bundled validation.xsd):
+
+    - validation's own sequence declares minOccurs="1" maxOccurs="unbounded"
+      for rule (a validation with no rule is grammatically invalid).
+    - rule's own prose Constraints section: "Exactly one of the following
+      attributes: isPresent, isNotPresent, startsWith, endsWith, [or] a
+      custom rule defined by attributes from any namespace ... is REQUIRED
+      in any one rule element" -- both under-specification (none of the
+      four present, no custom attribute either) and over-specification
+      (more than one of the four present) violate "exactly one".
+    - existsInSource's own prose Constraints section: "When existsInSource
+      is specified, exactly one of isPresent, startsWith, [or] endsWith is
+      REQUIRED in the same rule element" -- notably excluding isNotPresent,
+      so existsInSource paired with isNotPresent (or with none of the
+      three) is a distinct violation from the rule-level one above.
+    - existsInSource, caseSensitive, and disabled are all typed xlf:yesNo
+      in the schema; normalization is typed val:normalization_type
+      (enumeration: none/nfc/nfd); occurs is typed xs:positiveInteger.
+
+    This checks attribute-level modeling and grammar only -- it does not
+    evaluate any rule's condition against actual segment source/target
+    text (a genuinely separate, much larger capability: cascading
+    validation scope resolution across file/group/unit levels, disabled-
+    attribute override semantics, and text matching under case/
+    normalization options). Only extensions actually carrying the
+    Validation module's own namespace are checked.
+    """
+
+    if extension.tag != _VALIDATION_QNAME:
+        return
+    try:
+        element = ET.fromstring(extension.xml)
+    except ET.ParseError:
+        return
+    rules = [child for child in element if child.tag == _VAL_RULE_QNAME]
+    if not rules:
+        diagnostics.append(
+            Diagnostic(
+                "xliff.module.validation.rule.required",
+                "validation must contain at least one rule element",
+            )
+        )
+    for rule in rules:
+        condition_present = [name for name in _VAL_CONDITION_ATTRS if name in rule.attrib]
+        core_attrs = {
+            "isPresent", "isNotPresent", "startsWith", "endsWith", "occurs",
+            "existsInSource", "caseSensitive", "normalization", "disabled",
+        }
+        has_custom_attr = any(name not in core_attrs for name in rule.attrib)
+        if not condition_present and not has_custom_attr:
+            diagnostics.append(
+                Diagnostic(
+                    "xliff.module.validation.rule.condition.required",
+                    "rule must specify exactly one of isPresent, isNotPresent, "
+                    "startsWith, endsWith, or a custom attribute from another namespace",
+                )
+            )
+        elif len(condition_present) > 1:
+            diagnostics.append(
+                Diagnostic(
+                    "xliff.module.validation.rule.condition.conflict",
+                    "rule must specify exactly one of isPresent, isNotPresent, "
+                    f"startsWith, endsWith, found {len(condition_present)}: "
+                    f"{', '.join(condition_present)}",
+                )
+            )
+        if "existsInSource" in rule.attrib:
+            compatible = [name for name in ("isPresent", "startsWith", "endsWith") if name in rule.attrib]
+            if len(compatible) != 1:
+                diagnostics.append(
+                    Diagnostic(
+                        "xliff.module.validation.existsinsource.condition.required",
+                        "existsInSource requires exactly one of isPresent, "
+                        f"startsWith, endsWith in the same rule element, found {len(compatible)}",
+                    )
+                )
+        for yes_no_attr in ("existsInSource", "caseSensitive", "disabled"):
+            value = rule.attrib.get(yes_no_attr)
+            if value is not None and value not in _VAL_YES_NO_VALUES:
+                diagnostics.append(
+                    Diagnostic(
+                        "xliff.module.validation.yesno.invalid",
+                        f"rule attribute {yes_no_attr}={value!r} must be 'yes' or 'no'",
+                    )
+                )
+        normalization = rule.attrib.get("normalization")
+        if normalization is not None and normalization not in _VAL_NORMALIZATION_VALUES:
+            diagnostics.append(
+                Diagnostic(
+                    "xliff.module.validation.normalization.invalid",
+                    f"rule attribute normalization={normalization!r} must be one of "
+                    "'none', 'nfc', 'nfd'",
+                )
+            )
+        occurs = rule.attrib.get("occurs")
+        if occurs is not None and not (occurs.isdigit() and int(occurs) >= 1):
+            diagnostics.append(
+                Diagnostic(
+                    "xliff.module.validation.occurs.invalid",
+                    f"rule attribute occurs={occurs!r} must be a positive integer",
+                )
+            )
+
+
 def _walk_group(group: Group) -> list[Unit]:
     return list(group.iter_units())
 
@@ -890,6 +1017,7 @@ def validate(
                     _resource_data_module_diagnostics(segment_extension, diagnostics)
                     _matches_module_diagnostics(segment_extension, diagnostics)
                     _glossary_module_diagnostics(segment_extension, diagnostics)
+                    _validation_module_diagnostics(segment_extension, diagnostics)
             _isolated_diagnostics(unit, diagnostics)
             _isolated_pairing_attribute_diagnostics(unit, diagnostics)
             _data_ref_diagnostics(unit, diagnostics)
@@ -902,6 +1030,7 @@ def validate(
                 _resource_data_module_diagnostics(file_child, diagnostics)
                 _matches_module_diagnostics(file_child, diagnostics)
                 _glossary_module_diagnostics(file_child, diagnostics)
+                _validation_module_diagnostics(file_child, diagnostics)
             elif isinstance(file_child, Group):
                 for group_unit in _walk_group(file_child):
                     for group_child in group_unit.children:
@@ -911,6 +1040,7 @@ def validate(
                             _resource_data_module_diagnostics(group_child, diagnostics)
                             _matches_module_diagnostics(group_child, diagnostics)
                             _glossary_module_diagnostics(group_child, diagnostics)
+                            _validation_module_diagnostics(group_child, diagnostics)
     for root_child in value.children:
         if isinstance(root_child, ExtensionNode):
             _extension_well_formed(root_child, diagnostics)
@@ -918,4 +1048,5 @@ def validate(
             _resource_data_module_diagnostics(root_child, diagnostics)
             _matches_module_diagnostics(root_child, diagnostics)
             _glossary_module_diagnostics(root_child, diagnostics)
+            _validation_module_diagnostics(root_child, diagnostics)
     return ValidationReport(diagnostics)

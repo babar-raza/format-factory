@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-validation-module-constraint-types-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T16:11:16Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_VALIDATION_MODULE_CONSTRAINT_TYPES_001",
+    "task_kind": "new-capability-mirroring-established-module-diagnostic-pattern",
+    "root_cause": "Four obligations (SAL-XLIFF-OBL-CC8F94A8623CA191/251C3608521B6A97/7ECA9CEDFF1B2B42/E1BDD2E8A5F0F84B, spanning XLIFF-PARSE-001/MODULE-001/VALIDATE-001/TEXT-001) shared identical rule_text and identical missing_behavior for the Validation module: its attribute-level constraint types (presence, occurrence, boundary, source-existence, case, normalization, disabled) were never modeled -- content only round-tripped as opaque extension XML.",
+    "obligation_targeted": "SAL-XLIFF-OBL-CC8F94A8623CA191, SAL-XLIFF-OBL-251C3608521B6A97, SAL-XLIFF-OBL-7ECA9CEDFF1B2B42, SAL-XLIFF-OBL-E1BDD2E8A5F0F84B -- all four promoted partial->implemented.",
+    "acceptance_evidence": "15 new tests (tests/python/xliff/test_obligation_validation_module_constraint_types.py) covering 8 distinct violation types plus 4 valid-shape cases, a normalization-enumeration spot-check, and a non-validation-extension no-op case.",
+    "regression_tier": "full xliff package suite plus combined 6-format regression"
+  },
+  "execution_steps": [
+    "1. Continuing the FF6 mission per event 267's exact_next_action -- checking whether the Validation module's constraint types could be similarly scoped to a bounded validate()-only addition, the same shape just proven for Glossary.",
+    "2. Read the pinned XLIFF 2.1 specification's own Section 5.8 'Validation Module' text directly (.local/format-contracts/acquired/xliff/src-xliff-003.bin, lines 2912-3181): tree structure (validation: 1+ rule), rule's own prose Constraints section (exactly one of isPresent/isNotPresent/startsWith/endsWith/custom-namespace-attribute required), existsInSource's own separate Constraints section (exactly one of isPresent/startsWith/endsWith required when existsInSource is specified, deliberately excluding isNotPresent), and the bundled validation.xsd's own attribute types (caseSensitive/disabled/existsInSource: xlf:yesNo; normalization: enumeration none/nfc/nfd; occurs: xs:positiveInteger).",
+    "3. Grepped the whole evidence file for the obligation's own missing_behavior text and found FOUR obligations sharing it verbatim (not just the two originally investigated) -- SAL-XLIFF-OBL-CC8F94A8623CA191 (XLIFF-PARSE-001), SAL-XLIFF-OBL-251C3608521B6A97 (XLIFF-MODULE-001), SAL-XLIFF-OBL-7ECA9CEDFF1B2B42 (XLIFF-VALIDATE-001), and SAL-XLIFF-OBL-E1BDD2E8A5F0F84B (XLIFF-TEXT-001).",
+    "4. Reused validator.py's own established pattern, just proven for the Glossary module in the immediately preceding tick: added _VALIDATION_QNAME/_VAL_RULE_QNAME constants and a _validation_module_diagnostics function following the exact same namespace-keyed, ElementTree-walking shape.",
+    "5. Implemented 7 checks grounded directly in the spec text above: validation requires >=1 rule; rule requires exactly one condition attribute from {isPresent, isNotPresent, startsWith, endsWith} unless a custom-namespace attribute is present; existsInSource, when specified (regardless of its own yes/no value), requires exactly one of {isPresent, startsWith, endsWith}; existsInSource/caseSensitive/disabled must be yes/no; normalization must be none/nfc/nfd; occurs must be a positive integer.",
+    "6. Wired _validation_module_diagnostics into the same 4 call sites as the other module checks (segment_extension, file_child, group_child, root_child) -- no new architecture.",
+    "7. Ran the pre-existing xliff suite (496 passed) BEFORE writing any new test, confirming zero regressions from the validator.py changes alone.",
+    "8. Probed interactively 12 scenarios (3 valid single-condition cases, 1 valid custom-attribute case, and 8 distinct violations: no condition, two conditions, existsInSource+isNotPresent, existsInSource=no+isNotPresent, invalid yesNo, invalid normalization, occurs=0, occurs=non-integer, empty validation) confirming all behaviors correct before writing any test.",
+    "9. Wrote 15 new tests in tests/python/xliff/test_obligation_validation_module_constraint_types.py, constructing XliffDocument/ExtensionNode fixtures directly, mirroring the glossary test file's own style.",
+    "10. Ran the full xliff suite (496 -> 511 passed), ruff, and mypy on the changed validator module -- all clean.",
+    "11. Ran the combined 6-format regression suite (3511 -> 3526 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped) -- zero regression beyond the 15 new tests.",
+    "12. Updated all 4 obligations' evidence: promoted partial->implemented, cleared missing_behavior, added the 15 new tests to positive/negative selectors, added XLIFF-VALIDATION-MODULE-CONSTRAINT-TYPES-PROOF to execution_evidence_ids. Deliberately scoped to attribute-level grammar/constraint validation only -- rule conditions are not evaluated against actual segment source/target text, a separate, much larger unbuilt capability."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_validation_module_constraint_types.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_validation_module_constraint_types.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 496 passed (before new tests, sanity check)",
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_validation_module_constraint_types.py -v -- 15 passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 511 passed (after new tests)",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/xliff/src/format_factory/xliff/validation/validator.py -- Success: no issues found",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3526 passed, 2 skipped, 4 pre-existing unrelated safetensors interop failures"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "4 obligations moved partial->implemented",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 4,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the constraint rules grounded directly in the pinned spec's own prose and schema text.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-CC8F94A8623CA191 (XLIFF-PARSE-001), SAL-XLIFF-OBL-251C3608521B6A97 (XLIFF-MODULE-001), SAL-XLIFF-OBL-7ECA9CEDFF1B2B42 (XLIFF-VALIDATE-001), SAL-XLIFF-OBL-E1BDD2E8A5F0F84B (XLIFF-TEXT-001): Validation module attribute-level constraint types now enforced by validate() via a new _validation_module_diagnostics function mirroring the glossary module diagnostic pattern."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

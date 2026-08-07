@@ -314,6 +314,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-0E27D8074CB0A72C (XLIFF-VALIDATE-001), promoted partial->implemented. The obligation's own evidence carried a generic \"not yet audited against this obligation's declared proof requirements\" placeholder, apparently left over from an early tick and never updated across the many later ticks this session that built substantial validate() semantic-constraint checking. Re-read validate() (validator.py) directly and enumerated its own diagnostic codes via grep rather than trusting the stale placeholder: 40+ distinct codes exist, covering every one of the five categories the obligation's own rule_text explicitly enumerates -- \"IDs, references, pairing, source/target consistency, module constraints\" -- at multiple structural scopes (file/group/unit/segment/inline level IDs; dataRef-family and mrk-comment references; ec/isolated pairing constraints; source/target language compatibility; fs/matches/metadata/resourcedata module constraints). Each category already has dedicated positive AND negative tests in the existing suite (test_obligation_file_and_group_id_uniqueness.py, test_obligation_inline_required_id.py, test_obligation_paired_code_integrity.py, test_obligation_original_data_element_modeling.py, test_obligation_segment_structure_and_language.py, test_obligation_metadata_module_structure.py, test_obligation_resource_data_module_reference_href.py, among others). Zero source or test changes -- pure evidence reconciliation citing already-proven, already-passing tests that this obligation's own evidence had simply never been updated to reference. xliff suite unchanged (480 passed). NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; this is pure bookkeeping correction against already-proven implementation, not new evidence generation. Covers SAL-XLIFF-OBL-0E27D8074CB0A72C only; it supports no other obligation and promotes no other product state."
     },
     {
+      "evidence_id": "XLIFF-VALIDATION-MODULE-CONSTRAINT-TYPES-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-validation-module-constraint-types-001.json",
+      "sha256": "cd52ac7e4b815f8ca3ac9dd70f5459098ee3b1d283cb1914e7470236a1362cf5",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes 4 obligations sharing identical rule_text and identical missing_behavior across four capabilities: SAL-XLIFF-OBL-CC8F94A8623CA191 (XLIFF-PARSE-001), SAL-XLIFF-OBL-251C3608521B6A97 (XLIFF-MODULE-001), SAL-XLIFF-OBL-7ECA9CEDFF1B2B42 (XLIFF-VALIDATE-001), and SAL-XLIFF-OBL-E1BDD2E8A5F0F84B (XLIFF-TEXT-001) -- all four promoted partial->implemented. All four obligations' own missing_behavior was a confirmed-genuine gap, not a stale claim: \"the specific constraint types this module defines (presence, occurrence, boundary, source-existence, case, normalization, disabled) are not modeled or tested individually -- the module is preserved only as opaque extension content.\" Read the pinned XLIFF 2.1 spec's own Section 5.8 Validation Module text directly (.local/format-contracts/acquired/xliff/src-xliff-003.bin), confirming: rule's own prose Constraints section (\"Exactly one of isPresent, isNotPresent, startsWith, endsWith, or a custom rule ... is REQUIRED in any one rule element\"); existsInSource's own prose Constraints section (\"When existsInSource is specified, exactly one of isPresent, startsWith, endsWith is REQUIRED in the same rule element,\" deliberately excluding isNotPresent); and the module's own schema types (caseSensitive/disabled/existsInSource: xlf:yesNo; normalization: enumeration none/nfc/nfd; occurs: xs:positiveInteger). Reused the same validator.py pattern just proven for the Glossary module in the immediately preceding tick (a family of _{module}_module_diagnostics functions, namespace-keyed, ElementTree-walking) -- added _validation_module_diagnostics and wired it into the same 4 extension call sites the sibling module checks already use. Deliberately scoped to attribute-level grammar and constraint validation only: rule conditions are NOT evaluated against actual segment source/target text (cascading validation scope resolution across file/group/unit levels, disabled-attribute override semantics, and text matching under case/normalization options all remain a separate, much larger unbuilt capability -- a genuine text-validation engine, not attempted here). Verified zero false positives against the entire pre-existing 496-test xliff suite before writing a single new test; probed all 12 constraint scenarios interactively (valid isPresent/occurs/existsInSource/custom-attribute cases, and 8 distinct violation types) confirming correct behavior before writing any assertion. 15 new tests (tests/python/xliff/test_obligation_validation_module_constraint_types.py) prove each violation independently plus 4 valid-shape non-violation cases, a normalization-enumeration spot-check, and a non-validation-extension no-op case. xliff suite: 496 -> 511 passed. ruff and mypy clean. Combined 6-format run: 3511 -> 3526 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped -- zero regression beyond the 15 intentional new tests. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the constraint rules grounded directly in the pinned spec's own prose and schema text. Covers SAL-XLIFF-OBL-CC8F94A8623CA191, SAL-XLIFF-OBL-251C3608521B6A97, SAL-XLIFF-OBL-7ECA9CEDFF1B2B42, and SAL-XLIFF-OBL-E1BDD2E8A5F0F84B only; it supports no other obligation."
+    },
+    {
       "evidence_id": "XLIFF-VERSION-DOWNGRADE-LOSS-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -341,7 +349,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "e5edad26d57dfd28fcbcfb8165c569d04d040318f17c59abb61914692e0eceb3",
+    "implementation_evidence": "be16f3c0f1062c6db61245ba9fa3542123ed364c5be58557a06bcd82c1164daa",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1198,19 +1206,33 @@
       "capability_id": "XLIFF-MODULE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-VALIDATION-MODULE-CONSTRAINT-TYPES-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of SAL-XLIFF-OBL-CC8F94A8623CA191 (identical rule_text, XLIFF-PARSE-001): the Validation module namespace and validation/rule round-trip as opaque extension content are both proven."
+        "Cross-capability duplicate of SAL-XLIFF-OBL-CC8F94A8623CA191 (identical rule_text, XLIFF-PARSE-001): the Validation module namespace and validation/rule round-trip as opaque extension content are both proven. validate() now also enforces the module's own attribute-level constraint types on any extension carrying the Validation module namespace: presence/boundary (rule must specify exactly one of isPresent/isNotPresent/startsWith/endsWith, or a custom-namespace attribute); source-existence (existsInSource requires exactly one of isPresent/startsWith/endsWith in the same rule); case/disabled (caseSensitive/disabled/existsInSource must be yes/no); normalization (must be none/nfc/nfd); occurrence (occurs must be a positive integer). Content continues to round-trip as opaque ExtensionNode XML -- rule conditions are not evaluated against actual segment source/target text, a separate, larger unbuilt capability."
       ],
-      "missing_behavior": [
-        "Same confirmed gap as SAL-XLIFF-OBL-CC8F94A8623CA191: the specific constraint types (presence, occurrence, boundary, source-existence, case, normalization, disabled) are not modeled or tested individually. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_empty_validation_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_no_condition_attribute_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_two_condition_attributes_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_existsInSource_with_isNotPresent_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_existsInSource_set_to_no_is_still_checked_for_a_compatible_condition",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_invalid_yesno_value_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_invalid_normalization_value_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_occurs_value_of_zero_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_non_integer_occurs_value_is_a_violation"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-251C3608521B6A97",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
-        "tests/python/xliff/test_obligation_module_coverage.py::test_validation_module_round_trips"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_validation_module_round_trips",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_isPresent_alone_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_isPresent_combined_with_occurs_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_endsWith_combined_with_existsInSource_yes_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_only_a_custom_namespace_attribute_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_every_enumerated_normalization_value_is_individually_accepted"
       ],
       "proof_requirements": {
         "negative": [
@@ -1220,11 +1242,12 @@
           "Per-module round-trip fixtures; coverage manifest matches behavior."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_validation_module_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODEL-001",
@@ -3238,19 +3261,33 @@
       "capability_id": "XLIFF-VALIDATE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-VALIDATION-MODULE-CONSTRAINT-TYPES-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-CC8F94A8623CA191 (identical rule_text): The Validation module namespace (urn:oasis:names:tc:xliff:validation:2.0) and validation/rule round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-251C3608521B6A97), same evidence applies there."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-CC8F94A8623CA191 (identical rule_text): The Validation module namespace (urn:oasis:names:tc:xliff:validation:2.0) and validation/rule round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-251C3608521B6A97), same evidence applies there. validate() now also enforces the module's own attribute-level constraint types -- see SAL-XLIFF-OBL-CC8F94A8623CA191's own implemented_behavior for the full enumeration."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: the specific constraint types this module defines (presence, occurrence, boundary, source-existence, case, normalization, disabled) are not modeled or tested individually -- the module is preserved only as opaque extension content. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_empty_validation_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_no_condition_attribute_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_two_condition_attributes_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_existsInSource_with_isNotPresent_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_existsInSource_set_to_no_is_still_checked_for_a_compatible_condition",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_invalid_yesno_value_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_invalid_normalization_value_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_occurs_value_of_zero_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_non_integer_occurs_value_is_a_violation"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-7ECA9CEDFF1B2B42",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
-        "tests/python/xliff/test_obligation_module_coverage.py::test_validation_module_round_trips"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_validation_module_round_trips",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_isPresent_alone_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_isPresent_combined_with_occurs_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_endsWith_combined_with_existsInSource_yes_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_only_a_custom_namespace_attribute_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_every_enumerated_normalization_value_is_individually_accepted"
       ],
       "proof_requirements": {
         "negative": [
@@ -3261,11 +3298,12 @@
           "Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_validation_module_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -4469,19 +4507,33 @@
       "capability_id": "XLIFF-PARSE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-VALIDATION-MODULE-CONSTRAINT-TYPES-PROOF"
       ],
       "implemented_behavior": [
-        "The Validation module namespace (urn:oasis:names:tc:xliff:validation:2.0) and validation/rule round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-251C3608521B6A97), same evidence applies there."
+        "The Validation module namespace (urn:oasis:names:tc:xliff:validation:2.0) and validation/rule round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-251C3608521B6A97), same evidence applies there. validate() now also enforces the module's own attribute-level constraint types on any extension carrying the Validation module namespace: presence/boundary (rule must specify exactly one of isPresent/isNotPresent/startsWith/endsWith, or a custom-namespace attribute -- the spec's own rule Constraints section, worded \"exactly one ... is REQUIRED in any one rule element\"); source-existence (existsInSource requires exactly one of isPresent/startsWith/endsWith in the same rule, per existsInSource's own Constraints section, which deliberately excludes isNotPresent from the compatible set); case/disabled (caseSensitive/disabled/existsInSource are typed xlf:yesNo); normalization (typed val:normalization_type, enumeration none/nfc/nfd); occurrence (occurs is typed xs:positiveInteger). Content continues to round-trip as opaque ExtensionNode XML -- rule conditions are not evaluated against actual segment source/target text (cascading validation scope resolution across file/group/unit levels, disabled-attribute override semantics, and text matching under case/normalization options), a separate, much larger unbuilt capability."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: the specific constraint types this module defines (presence, occurrence, boundary, source-existence, case, normalization, disabled) are not modeled or tested individually -- the module is preserved only as opaque extension content. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_empty_validation_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_no_condition_attribute_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_two_condition_attributes_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_existsInSource_with_isNotPresent_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_existsInSource_set_to_no_is_still_checked_for_a_compatible_condition",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_invalid_yesno_value_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_invalid_normalization_value_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_occurs_value_of_zero_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_non_integer_occurs_value_is_a_violation"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-CC8F94A8623CA191",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
-        "tests/python/xliff/test_obligation_module_coverage.py::test_validation_module_round_trips"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_validation_module_round_trips",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_isPresent_alone_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_isPresent_combined_with_occurs_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_endsWith_combined_with_existsInSource_yes_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_only_a_custom_namespace_attribute_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_every_enumerated_normalization_value_is_individually_accepted"
       ],
       "proof_requirements": {
         "negative": [
@@ -4491,11 +4543,12 @@
           "Version/namespace consistency fixtures per supported version; legacy-version refusal fixture."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_validation_module_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODULE-001",
@@ -4872,19 +4925,33 @@
       "capability_id": "XLIFF-TEXT-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-VALIDATION-MODULE-CONSTRAINT-TYPES-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-CC8F94A8623CA191 (identical rule_text): The Validation module namespace (urn:oasis:names:tc:xliff:validation:2.0) and validation/rule round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-251C3608521B6A97), same evidence applies there."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-CC8F94A8623CA191 (identical rule_text): The Validation module namespace (urn:oasis:names:tc:xliff:validation:2.0) and validation/rule round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-251C3608521B6A97), same evidence applies there. validate() now also enforces the module's own attribute-level constraint types -- see SAL-XLIFF-OBL-CC8F94A8623CA191's own implemented_behavior for the full enumeration."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: the specific constraint types this module defines (presence, occurrence, boundary, source-existence, case, normalization, disabled) are not modeled or tested individually -- the module is preserved only as opaque extension content. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_empty_validation_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_no_condition_attribute_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_two_condition_attributes_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_existsInSource_with_isNotPresent_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_existsInSource_set_to_no_is_still_checked_for_a_compatible_condition",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_invalid_yesno_value_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_invalid_normalization_value_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_an_occurs_value_of_zero_is_a_violation",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_non_integer_occurs_value_is_a_violation"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-E1BDD2E8A5F0F84B",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
-        "tests/python/xliff/test_obligation_module_coverage.py::test_validation_module_round_trips"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_validation_module_round_trips",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_isPresent_alone_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_isPresent_combined_with_occurs_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_endsWith_combined_with_existsInSource_yes_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_a_rule_with_only_a_custom_namespace_attribute_validates_cleanly",
+        "tests/python/xliff/test_obligation_validation_module_constraint_types.py::test_every_enumerated_normalization_value_is_individually_accepted"
       ],
       "proof_requirements": {
         "negative": [
@@ -4894,11 +4961,12 @@
           "Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_validation_module_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -5411,6 +5479,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-segment-split-join-001.json": "16e92d9df77d60b1ffb85830f63759c78034e3b5168faabc58102b168c1c904d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-state-transitions-001.json": "368a286339e4990afa645543f86d2b1968bfc693706a6c170b366fecc18f432b",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-validate-semantic-constraint-citation-audit-001.json": "e03483f29971233dfbead87217f3b867f037e2d6fe7554894387263c68195916",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-validation-module-constraint-types-001.json": "cd52ac7e4b815f8ca3ac9dd70f5459098ee3b1d283cb1914e7470236a1362cf5",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-version-downgrade-loss-001.json": "d883e3d53d90b3cdc9f8163ff159837437339a2d0fde9275a8235d04e9a8d969",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-xml-lang-inheritance-resolution-001.json": "ff51bfb0a4b8c8ab6692a780fd94cc558c8190321b42fadf1fc2ae4244ab3015",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-xml-space-inheritance-resolution-001.json": "16ed744c0996ba2daa82b718193862b57317c5120f5bcf8b3a25d26948babd76",
@@ -5426,7 +5495,7 @@
     "src/python/xliff/src/format_factory/xliff/qa.py": "61c2a8f74d09f844e36bfc1d967a587b5e5e62cf6087577e1031347b3ee8fa2f",
     "src/python/xliff/src/format_factory/xliff/security/limits.py": "8cec6ffd2ccd8fe17fa6d76ab19b2deeda3578d558925d862b15494b3b06665a",
     "src/python/xliff/src/format_factory/xliff/state_transitions.py": "6b12476e31076a788cef37fb476e1b5eda7365e6eb640bbb7bedcebabb9d49ea",
-    "src/python/xliff/src/format_factory/xliff/validation/validator.py": "d0f1cff0938d3dc666df28ab2aa31c2c6158f7bb9b02ca4d600c90fc47f13eb1",
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py": "d3c5205d85717d04ca51bc37db292c5f987f24086880b61ac43700ea40055698",
     "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py": "0cf2b5f76b217e7768f56a9302d7012c450a1dc95cd05b823bb7476bd8db7761",
     "tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py": "43045d1ebd13179843aaffbbbeb1fbbe50694f34d50f380eb5e7d409c2f65110",
     "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py": "4608bfab942b23e748dc4010785ec78e72a668f796a3d93401e208fc2365ab80",
@@ -5456,6 +5525,7 @@
     "tests/python/xliff/test_obligation_segment_structure_and_language.py": "4147094fbe4e7af8284b21c0c92fdb3aa4a26bd1e923a244db09980937f2de93",
     "tests/python/xliff/test_obligation_state_transitions.py": "eb2fb6fa0f4503175da1904986563ca1a1ee97f317067a2d29466c5c35c9c1bf",
     "tests/python/xliff/test_obligation_target_creation_policies.py": "d6693ffb55e6c735194503d14f9f4ba6dd46564391aeb13ee5189b9d94cb85ef",
+    "tests/python/xliff/test_obligation_validation_module_constraint_types.py": "e94f36a8dd3b5c780ee67ee64fce989c83e1801dd48d70f0e88faaaa0e3ffe2f",
     "tests/python/xliff/test_obligation_version_downgrade_loss.py": "cabb9854780e765b19ad611de6e1e8f82573204737e12b9392254da837137efe",
     "tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py": "1436a5232dc8c97b9f137bf473ed10d53db6708ffe8bd253d957040f001e1da0",
     "tests/python/xliff/test_obligation_xml_space_inheritance_resolution.py": "1f16238d960cba223e7b4907094ff4a035ed01f8e4e441234e2521e010a8beeb",
@@ -5464,12 +5534,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 115,
+      "implemented": 119,
       "missing": 11,
-      "partial": 16
+      "partial": 12
     },
     "total": 142,
-    "unresolved": 27
+    "unresolved": 23
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
