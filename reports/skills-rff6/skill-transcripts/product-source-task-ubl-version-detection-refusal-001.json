@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-version-detection-refusal-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T07:22:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_VERSION_DETECTION_REFUSAL_001",
+    "task_kind": "uncited-existing-feature-plus-scope-narrowing",
+    "root_cause": "SAL-UBL-OBL-7B16479ACBBC8EFC (UBL-UPGRADE-001) had zero shipped-namespace test coverage mapped to it at all -- but the 'detect older specification versions' and 'never label a document as the target version without structural migration' halves of its rule_text were already real, correct, and separately proven under a different obligation (UBL-LIFECYCLE-001).",
+    "obligation_targeted": "SAL-UBL-OBL-7B16479ACBBC8EFC (UBL-UPGRADE-001)",
+    "acceptance_evidence": "4 new tests directly prove: an older declared version (2.0/2.1) is detected as what it actually says, not coerced to the current target; and validate() itself (not only dumps()) refuses an older-version document with a clear ubl.version.unsupported diagnostic. 'Migrate via explicit transforms producing a migration report' remains genuinely unbuilt and is explicitly not claimed.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the obligation's full rule_text: 'Detect older specification versions where practical; migrate via explicit transforms producing a migration report; never label a document as the target version without structural migration and validation.' Confirmed 3 distinct clauses.",
+    "2. Checked model/document.py's ubl_version_id()/declared_version machinery directly: already reads the raw cbc:UBLVersionID text from a source document, with no coercion -- confirmed via an interactive probe that a document declaring '2.0' correctly reports declared_version=='2.0', not '2.3'.",
+    "3. Checked validator.py directly and found an existing, already-correct check (line ~77): a document declaring any version other than '2.3' is refused with a ubl.version.unsupported diagnostic. Confirmed via the same probe that validate() on a '2.0'-declared document returns is_valid=False with exactly that diagnostic.",
+    "4. Found the closely-related but distinct test file test_obligation_detected_declared_version.py (UBL-LIFECYCLE-001), which already proves declared_version detection for older versions and dumps()'s write-time refusal -- but nothing in that file exercises validate()'s own refusal path, which is what this obligation's 'never label... without structural migration and validation' clause specifically names.",
+    "5. Considered building the 'migrate via explicit transforms producing a migration report' clause too, but found no transform infrastructure exists for any UBL version pair, and building one honestly would require deep spec knowledge of what changed between UBL 2.0/2.1/2.2/2.3 schemas -- a substantial, separate investigation deliberately left out of scope rather than rushed or guessed.",
+    "6. Wrote a new, capability-scoped test file (test_obligation_version_detection_and_refusal.py, since source_symbols was previously empty and no file was mapped to this capability at all) with 4 tests: older-version detection, validate()'s refusal with the correct diagnostic code, a control proving the current version is accepted, and a second older-version case. Ran ruff (clean), the full ubl suite (783 passed, was 779, +4), and the full 6-format regression (3149 passed, was 3145, +4; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "tests/python/ubl/test_obligation_version_detection_and_refusal.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ubl/test_obligation_version_detection_and_refusal.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_version_detection_and_refusal.py -q -- 4 passed",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_version_detection_and_refusal.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 783 passed, was 779 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3149 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3145 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule.",
+    "obligations_moved_breakdown": "0 obligations promoted to status:implemented -- 'migrate via explicit transforms producing a migration report' remains fully unbuilt, so the obligation cannot honestly claim full satisfaction. Promoted missing->partial: the detection-and-refusal half is now proven with 4 tests where previously zero test coverage existed at all."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

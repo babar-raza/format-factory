@@ -200,12 +200,20 @@
       "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-values-citation-audit-001.json",
       "sha256": "f9ec4866f212093bd3387fa2053bbcff765bd6472733dcb0aa2849adfd1a267b",
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. UBL-VALUES-001's 19 obligations all shared one identical, generic, never-individually-verified citation and are near-verbatim restatements of UBL-MODEL-001's facts (resolved in the immediately preceding tick). A programmatic exact-rule_text matcher (dict-key string equality against the obligation register, spot-checked directly) found 16 of 19 are exact-text duplicates, cross-referenced to that real, already-implemented/honestly-partial evidence. The remaining 3 (timezone/lexical-precision preservation plus explicit rounding policies; decimal-arithmetic-with- attribute-retention for amounts/quantities; the listID/schemeID-inclusive restatement of the same decimal-arithmetic fact) are proven directly by tests already present in test_obligation_temporal_values.py and test_obligation_business_value_types.py (float-construction refusal, exact-decimal holding, Z-lexical- form preservation, fractional-precision preservation, explicit named rounding policies, currency retention through multiplication/rounding). Zero new source or test code. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Promotes no product state beyond the 19 obligations moved to `implemented`."
+    },
+    {
+      "evidence_id": "UBL-VERSION-DETECTION-REFUSAL-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-version-detection-refusal-001.json",
+      "sha256": "cda5dbe2305e8e7260b726d72d38779bafe662be103b1d7190df86a01f99dd7e",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) SAL-UBL-OBL-7B16479ACBBC8EFC (UBL-UPGRADE-001), promoted missing->partial. This obligation had zero shipped-namespace test coverage mapped to it at all, but the \"detect older specification versions\" and \"never label a document as the target version without structural migration\" halves of its rule_text were already real, correct, and separately proven under a different obligation (UBL-LIFECYCLE-001's test_obligation_detected_declared_version.py, which exercises dumps()'s write-time refusal). This slice proves validate()'s own, separate refusal path directly (a ubl.version.unsupported diagnostic for any non-\"2.3\" declared version), confirmed via an interactive probe before writing formal tests. \"Migrate via explicit transforms producing a migration report\" remains genuinely unbuilt -- no transform infrastructure exists for any UBL version pair, and building one honestly would need deep knowledge of inter-version schema changes not attempted here -- so status stays partial, not implemented. 4 new tests. ubl suite: 779 -> 783 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule. Covers SAL-UBL-OBL-7B16479ACBBC8EFC only; it supports no other obligation and promotes no product state."
     }
   ],
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "401e38181f5fb6e5272c6c38dcffa017167e73e36c47e6bc91ec18cef12fba9e",
+    "implementation_evidence": "110221c892ff700ad7c00e99f96411b289d5a81bba7d68567954dab70569805b",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -3537,15 +3545,25 @@
     },
     {
       "capability_id": "UBL-UPGRADE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Older-version fixtures: migrate-with-report and unsupported-refusal paths.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+      "execution_evidence_ids": [
+        "UBL-BASELINE-SUITE",
+        "UBL-VERSION-DETECTION-REFUSAL-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "\"Detect older specification versions where practical\" and \"never label a document as the target version without structural migration and validation\" are now both proven: UblDocument.declared_version (model/document.py) reads whatever cbc:UBLVersionID a source file actually declares, with no coercion (proven for \"2.0\" and \"2.1\"), and validator.py's existing version check refuses any document declaring a version other than \"2.3\" with a clear ubl.version.unsupported diagnostic, proven directly through validate() (a distinct, previously-uncited proof from UBL-LIFECYCLE-001's existing test of dumps()'s separate write-time refusal). Cross-capability duplicate of the same underlying detection fact already proven under UBL-LIFECYCLE-001's test_obligation_detected_declared_version.py."
+      ],
+      "missing_behavior": [
+        "\"Migrate via explicit transforms producing a migration report\" remains genuinely unbuilt: no transform infrastructure exists for any UBL version pair (2.0->2.3, 2.1->2.3, etc.), and building one honestly would require deep spec knowledge of what changed between each UBL schema revision -- a substantial, separate investigation not attempted this slice. Older-version documents are correctly detected and refused, never migrated."
+      ],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_validate_refuses_an_older_version_with_a_clear_diagnostic"
+      ],
       "obligation_id": "SAL-UBL-OBL-7B16479ACBBC8EFC",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_an_older_declared_version_is_detected_not_silently_accepted_as_current",
+        "tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_validate_accepts_the_current_target_version",
+        "tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_a_different_older_version_is_also_detected_and_refused"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3554,9 +3572,12 @@
           "Older-version fixtures: migrate-with-report and unsupported-refusal paths."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/model/document.py::ubl_version_id",
+        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "UBL-PROFILE-001",
@@ -6651,6 +6672,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-signature-namespace-001.json": "6e26948fc2b7a618118cfc6e2aaba6d4c15ed5076aff4192bc9c5741e172d8ba",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-small-clusters-citation-audit-001.json": "c3014f0982d137f4487dfb14bc9eddbebbb560d3d0088084de16d7969c54a54b",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-values-citation-audit-001.json": "f9ec4866f212093bd3387fa2053bbcff765bd6472733dcb0aa2849adfd1a267b",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-version-detection-refusal-001.json": "cda5dbe2305e8e7260b726d72d38779bafe662be103b1d7190df86a01f99dd7e",
     "src/python/ubl/src/format_factory/ubl/codec/preservation.py": "dab616ced8f5104f5bee89db229a32d14000f486b061ace0e7a29dd934f5ab99",
     "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "254743ef56212db8aebabac970793fee188634466b6907145e25b1b662e8f9fc",
     "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py": "e352a3442d0a31389f177c9a206d3a5d857c9a2d4f724833e9af90e31d5b4a7d",
@@ -6696,14 +6718,15 @@
     "tests/python/ubl/test_obligation_temporal_projection_and_charges.py": "a01a376f4606a7278cb6d7b83f6d91ad5694e387b4e6d7dc6070c45c841796a4",
     "tests/python/ubl/test_obligation_temporal_values.py": "6b280cba533c6d6370f06149257900b005784ff6702a10412c1d307a6a54f986",
     "tests/python/ubl/test_obligation_typed_projection.py": "2d035c4a83f5ff71729210eb83422f60c3d02a63c9f6b2dc92f3725f8d980b94",
+    "tests/python/ubl/test_obligation_version_detection_and_refusal.py": "b02e4e8837fed773b02c76abf1d0585edba98191f9447ad20b06699c51e99301",
     "tests/python/ubl/test_production_namespace.py": "a4dbeab77322aaeb8d35b8c7cba5d8a173f1fbe5566924c32363157a3b171ce6"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
       "implemented": 163,
-      "missing": 20,
-      "partial": 11
+      "missing": 19,
+      "partial": 12
     },
     "total": 194,
     "unresolved": 31

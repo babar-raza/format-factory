@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-VERSION-DETECTION-REFUSAL-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-version-detection-refusal-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) SAL-UBL-OBL-7B16479ACBBC8EFC (UBL-UPGRADE-001), promoted missing->partial. This obligation had zero shipped-namespace test coverage mapped to it at all, but the "detect older specification versions" and "never label a document as the target version without structural migration" halves of its rule_text were already real, correct, and separately proven under a different obligation (UBL-LIFECYCLE-001''s test_obligation_detected_declared_version.py, which exercises dumps()''s write-time refusal). This slice proves validate()''s own, separate refusal path directly (a ubl.version.unsupported diagnostic for any non-"2.3" declared version), confirmed via an interactive probe before writing formal tests. "Migrate via explicit transforms producing a migration report" remains genuinely unbuilt -- no transform infrastructure exists for any UBL version pair, and building one honestly would need deep knowledge of inter-version schema changes not attempted here -- so status stays partial, not implemented. 4 new tests. ubl suite: 779 -> 783 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule. Covers SAL-UBL-OBL-7B16479ACBBC8EFC only; it supports no other obligation and promotes no product state.'
 - evidence_id: UBL-BINARY-OBJECT-CHECKSUM-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-binary-object-checksum-001.json
   expected_result: PASS
@@ -2833,16 +2838,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-7B16479ACBBC8EFC
   capability_id: UBL-UPGRADE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/model/document.py::ubl_version_id
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_an_older_declared_version_is_detected_not_silently_accepted_as_current
+  - tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_validate_accepts_the_current_target_version
+  - tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_a_different_older_version_is_also_detected_and_refused
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_validate_refuses_an_older_version_with_a_clear_diagnostic
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  - UBL-VERSION-DETECTION-REFUSAL-PROOF
+  implemented_behavior:
+  - '"Detect older specification versions where practical" and "never label a document as the target version without structural migration and validation" are now both proven: UblDocument.declared_version (model/document.py) reads whatever cbc:UBLVersionID a source file actually declares, with no coercion (proven for "2.0" and "2.1"), and validator.py''s existing version check refuses any document declaring a version other than "2.3" with a clear ubl.version.unsupported diagnostic, proven directly through validate() (a distinct, previously-uncited proof from UBL-LIFECYCLE-001''s existing test of dumps()''s separate write-time refusal). Cross-capability duplicate of the same underlying detection fact already proven under UBL-LIFECYCLE-001''s test_obligation_detected_declared_version.py.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Older-version fixtures: migrate-with-report
-    and unsupported-refusal paths.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  - '"Migrate via explicit transforms producing a migration report" remains genuinely unbuilt: no transform infrastructure exists for any UBL version pair (2.0->2.3, 2.1->2.3, etc.), and building one honestly would require deep spec knowledge of what changed between each UBL schema revision -- a substantial, separate investigation not attempted this slice. Older-version documents are correctly detected and refused, never migrated.'
   proof_requirements:
     positive:
     - 'Older-version fixtures: migrate-with-report and unsupported-refusal paths.'
