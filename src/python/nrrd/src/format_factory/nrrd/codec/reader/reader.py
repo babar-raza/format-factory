@@ -226,6 +226,19 @@ def _safe_detached_payload(
             raise NrrdParseError(f"cannot read detached payload {resolved}: {exc}") from exc
 
     base = source_path.resolve().parent
+    is_multi_file = value.upper().startswith("LIST") or "%" in value
+    if is_multi_file and version < 4:
+        # "the data file field can identify multiple payload files ...
+        # starting with NRRD0004" -- a LIST or printf-sequence declaration
+        # under an older magic is refused at read time rather than silently
+        # accepted and left for an optional, separately-invoked validate()
+        # call to catch later (version_requirements()/validate() already
+        # flag this as nrrd.version.insufficient, but a caller who only
+        # calls load() never sees that diagnostic).
+        raise NrrdParseError(
+            f"multi-file data file declarations require NRRD0004 or newer, "
+            f"got NRRD000{version}"
+        )
     if value.upper().startswith("LIST"):
         names = [line.strip() for line in value.splitlines()[1:] if line.strip()]
         if not names:

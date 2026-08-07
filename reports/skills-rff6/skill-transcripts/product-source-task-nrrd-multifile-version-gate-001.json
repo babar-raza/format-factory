@@ -1,0 +1,59 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-multifile-version-gate-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T13:40:47Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_MULTIFILE_VERSION_GATE_001",
+    "task_kind": "fix-real-unenforced-version-gate-already-named-in-obligation-missing-behavior",
+    "root_cause": "Both SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD's own missing_behavior text already named this exact gap explicitly: 'read-time profile gate (a LIST/printf declaration under a pre-NRRD0004 magic is not rejected at read time, though version_requirements() lists it as a write-time/validate() concern)'. document.version_requirements() already correctly modeled 'data file (multi-file)' as a NRRD0004+ gate, feeding validate()'s nrrd.version.insufficient diagnostic, but load() never consulted it.",
+    "obligation_targeted": "SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD (both NRRD-MULTIFILE-001) -- remain partial; evidence strengthened, real bug fixed, no status crossing",
+    "acceptance_evidence": "4 new tests prove: a LIST declaration under NRRD0002 is rejected at read time; a printf declaration under NRRD0003 is rejected at read time; a LIST declaration at exactly NRRD0004 still loads; a single detached file under NRRD0002 is unaffected by the new gate.",
+    "regression_tier": "full nrrd package suite (tests/python/nrrd) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. After three consecutive resource-limit fixes (xliff, ora, nrrd LIST file-count) via cross-format comparison, scanned nrrd's own remaining partial obligations directly for another already-documented, narrowly-scoped gap rather than repeating the same resource-limit angle a fourth time.",
+    "2. Found SAL-NRRD-OBL-807586E5B4D0EDB2 and its sibling SAL-NRRD-OBL-EBE5230D5204B4AD's own missing_behavior text already named a concrete, narrow, spec-grounded gap: a LIST/printf multi-file declaration under a pre-NRRD0004 magic is not rejected at read time.",
+    "3. Read document.version_requirements() (model/document.py) directly and confirmed it already models 'data file (multi-file)' as a NRRD0004+ gate, feeding minimal_version_for() and, through it, validate()'s nrrd.version.insufficient diagnostic -- the rule was already correctly implemented for the validate() path.",
+    "4. Read reader.py's _load() directly and confirmed it never calls validate() -- load() only parses and returns a document, so the version gate is invisible unless the caller separately, optionally calls validate() afterward.",
+    "5. Confirmed this is a genuine, exploitable gap via direct probing before any fix: a NRRD0002-magic header declaring a LIST of two detached files loaded successfully via load() and returned a correct, usable array -- validate() was never invoked, so the caller received no warning that the document violates the spec's own NRRD0004+ requirement for multi-file declarations.",
+    "6. Added a version check directly in _safe_detached_payload (which already receives `version` as a parameter from an earlier tick's subdim fix), scoped precisely to declarations that are LIST or contain a printf '%' token -- a single detached file remains valid in every profile per the spec and is deliberately excluded from this check.",
+    "7. Re-probed 5 cases: LIST under NRRD0002 (rejected), printf under NRRD0002 (rejected), LIST under NRRD0004 (still loads), printf under NRRD0004 (still loads), single detached file under NRRD0002 (still loads, confirming the gate's scope is correctly narrow).",
+    "8. Ran the full pre-existing nrrd suite (571 tests, zero new fixtures) against the fix to look for false positives before writing a single new test -- all 571 passed unchanged.",
+    "9. Wrote 4 formal tests in the existing test_obligation_detached_forms_production.py, extending its _header() helper with an optional magic parameter to construct non-default-magic fixtures. All passed on the first attempt.",
+    "10. Ran ruff (clean), the full nrrd suite (575 passed, was 571, +4), and the full 6-format regression (3446 passed, was 3442, +4; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "11. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-e5fb5cfcc2f16bd7, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "12. Both obligations remain status=partial: SAL-NRRD-OBL-807586E5B4D0EDB2's missing_behavior still lists the multifile writer, the LIST form's own optional <subdim>, and per-file byte validation; SAL-NRRD-OBL-EBE5230D5204B4AD's still lists the LIST subdim and writer support. This tick strengthens evidence with a real, previously-unnoticed gap fixed (the exact gap both obligations' own text already named), rather than crossing a status boundary."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_detached_forms_production.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_detached_forms_production.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_detached_forms_production.py -q -- 8 passed, was 4 passed",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py tests/python/nrrd/test_obligation_detached_forms_production.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 575 passed, 1 skipped, was 571 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3446 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3442 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations moved status; 2 already-partial obligations' evidence strengthened with a real fix",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 65,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the version threshold grounded directly in the already-proven version_requirements() gate.",
+    "obligations_moved_breakdown": "SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD (both NRRD-MULTIFILE-001) remain partial. A genuine, real, previously-unenforced version-gate gap fixed with production source code (a LIST/printf multi-file declaration under a pre-NRRD0004 magic was silently accepted at load() despite being modeled as a NRRD0004+ requirement in version_requirements()), found by directly reading both obligations' own already-documented missing_behavior text rather than a new cross-format comparison."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
