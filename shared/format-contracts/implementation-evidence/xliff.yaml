@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-ITS-MAPPING-LANG-ATTRIBUTE-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-its-mapping-lang-attribute-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-725053FB0A47E78D (XLIFF-MODULE-001) and SAL-XLIFF-OBL-E3F1C46FFD77CD5B (XLIFF-PARSE-001), identical rule_text: "The ITS module uses the W3C ITS namespace ... and the XLIFF 2.1 mapping adds urn:oasis:names:tc:xliff:itsm:2.1 attributes for domains and language." The domains half was already proven by test_its_mapping_attributes_round_trip_on_a_unit; the "language" half had never been separately tested, and both obligations'' own missing_behavior text explicitly declined to assume it behaves identically to domains without verifying. Read the pinned itsm.xsd schema directly (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/itsm.xsd) rather than transcribing the rule_text''s own English prose literally: the actual declared XML attribute is itsm:lang (xs:attribute name="lang" type="xs:language"), not "itsm:language" -- a real transcription risk caught before writing any test, the same discipline applied repeatedly this session for schema-derived names. Probed directly and confirmed itsm:lang already round-trips correctly through this package''s generic attribute-preservation mechanism, the same one already proven for itsm:domains -- zero source code changes needed. 1 new test (test_its_mapping_lang_attribute_round_trips_on_a_unit) proves it, mirroring the existing domains test''s exact structure. xliff suite: 454 -> 455 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, the attribute name grounded directly in the pinned schema. Covers SAL-XLIFF-OBL-725053FB0A47E78D and SAL-XLIFF-OBL-E3F1C46FFD77CD5B only; it supports no other obligation and promotes no product state.'
 - evidence_id: XLIFF-INLINE-REQUIRED-ID-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-inline-required-id-001.json
   expected_result: PASS
@@ -2190,20 +2195,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-725053FB0A47E78D
   capability_id: XLIFF-MODULE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
   positive_test_selectors:
   - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   - tests/python/xliff/test_obligation_module_coverage.py::test_its_mapping_attributes_round_trip_on_a_unit
+  - tests/python/xliff/test_obligation_module_coverage.py::test_its_mapping_lang_attribute_round_trips_on_a_unit
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-ITS-MAPPING-LANG-ATTRIBUTE-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of SAL-XLIFF-OBL-E3F1C46FFD77CD5B (identical rule_text, XLIFF-PARSE-001): both the W3C ITS namespace and the itsm:2.1 mapping''s domains attribute are proven to round-trip on a unit.'
-  missing_behavior:
-  - 'Same confirmed gap as SAL-XLIFF-OBL-E3F1C46FFD77CD5B: the itsm:2.1 mapping''s "language" attribute specifically is not separately confirmed round-tripping. Not attempted this slice.'
+  - 'The rule_text''s remaining "language" attribute is also now directly proven. The pinned itsm.xsd schema (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/itsm.xsd) declares the actual XML attribute as itsm:lang (xs:attribute name="lang" type="xs:language"), not "itsm:language" as a literal reading of the rule_text''s own English prose might suggest -- confirmed directly by reading the pinned schema before writing a test, avoiding a real transcription risk. itsm:lang was already correctly preserved by this package''s generic attribute round-trip mechanism, the same one already proven for itsm:domains; only untested from this specific angle before this slice.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -3687,20 +3694,22 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-E3F1C46FFD77CD5B
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
   positive_test_selectors:
   - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   - tests/python/xliff/test_obligation_module_coverage.py::test_its_mapping_attributes_round_trip_on_a_unit
+  - tests/python/xliff/test_obligation_module_coverage.py::test_its_mapping_lang_attribute_round_trips_on_a_unit
   negative_test_selectors: []
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-ITS-MAPPING-LANG-ATTRIBUTE-PROOF
   implemented_behavior:
   - 'Both the W3C ITS namespace and the itsm:2.1 mapping''s domains attribute are proven to round-trip on a unit. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-725053FB0A47E78D), same evidence applies there.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: the itsm:2.1 mapping''s "language" attribute specifically is not separately confirmed round-tripping in the cited test (only domains is asserted) -- not attempted this slice to verify precisely rather than assume it behaves identically to domains.'
+  - 'The "language" attribute is also now directly proven, not merely assumed identical to domains. The pinned itsm.xsd schema declares the actual XML attribute as itsm:lang (xs:attribute name="lang" type="xs:language"), confirmed directly by reading the pinned schema rather than transcribing "language" literally from the rule_text''s own English prose. itsm:lang was already correctly preserved by this package''s generic attribute round-trip mechanism; only untested from this specific angle before this slice.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.

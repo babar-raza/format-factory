@@ -90,6 +90,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Narrows (does not fully close) 6 obligations sharing the \"An sc isolated attribute must be set to yes if and only if the corresponding ec element is not in the same unit\" finding across XLIFF-PARSE-001/MODEL-001/VALIDATE-001/INLINE-001/MODULE-001/TEXT-001 (all 6 moved missing->partial). Before this slice, no isolated-attribute handling existed anywhere in the package -- the attribute round-tripped generically via InlineElement.attributes but was never read or validated. Grounded directly in the pinned OASIS XLIFF 2.1 spec's own prose (.local/format-contracts/acquired/xliff/src-xliff-001.bin, section 4.2.3.4 sc: \"The attribute isolated MUST be set to yes if and only if the <ec> element corresponding to this start marker is not in the same <unit>, and set to no otherwise\") and the pinned XLIFF 2.1 schematron's F5S/F5T patterns (inside .local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/xliff_core_2.1.sch), which scope the check separately per content type (source/target) and across the whole unit. Added _isolated_diagnostics() to validator.py, scanning every segment in a unit (not just one), matching the schematron's ancestor::xlf:unit//xlf:ec[...] scope and the spec's explicit allowance for non-isolated sc/ec pairs to span multiple segments of one unit. Deliberately narrow: only the isolated-attribute-consistency direction is checked, not the schematron's sibling canCopy/canDelete/canReorder/canOverlap attribute-matching sub-clauses (F5.1S/F5.1T), honestly left unbuilt. Also honestly documented, not fixed: the pre-existing per-segment sc/ec pairing check (xliff.inline.ec.unpaired) does not look across segment boundaries within a unit, so a genuinely valid cross-segment non-isolated pair would still also trip that older, separate check -- a distinct, pre-existing limitation this slice discovered but did not repair. Verified zero false positives against the entire pre-existing 381-test xliff suite before writing a single new test. 8 new tests prove: isolated=yes with no unit-wide match validates cleanly; isolated=yes with a same-segment match is a violation; isolated=no (explicit or absent, the schema default) with a same-segment match validates cleanly; isolated=no/absent with no match anywhere is a violation; isolated=yes with a match in a DIFFERENT segment of the same unit is still a violation (proving whole-unit scope); a target-side match does not satisfy a source-side sc (proving per-content-type scope); and the symmetric target-side violation case. xliff suite: 381 -> 389 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every claim grounded directly in the pinned spec/schematron text. Covers SAL-XLIFF-OBL-7508113EBF7E4457, SAL-XLIFF-OBL-25A6AEE1EE8FA679, SAL-XLIFF-OBL-2D08D42095E5EFD9, SAL-XLIFF-OBL-452A66EC673B7518, SAL-XLIFF-OBL-4CDD66101DC1EEB9, and SAL-XLIFF-OBL-E8055B0103E9E5CD only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-ITS-MAPPING-LANG-ATTRIBUTE-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-its-mapping-lang-attribute-001.json",
+      "sha256": "549e394b828680165f121af639d24b2463cdad5789e3458336a946440a7c413e",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-725053FB0A47E78D (XLIFF-MODULE-001) and SAL-XLIFF-OBL-E3F1C46FFD77CD5B (XLIFF-PARSE-001), identical rule_text: \"The ITS module uses the W3C ITS namespace ... and the XLIFF 2.1 mapping adds urn:oasis:names:tc:xliff:itsm:2.1 attributes for domains and language.\" The domains half was already proven by test_its_mapping_attributes_round_trip_on_a_unit; the \"language\" half had never been separately tested, and both obligations' own missing_behavior text explicitly declined to assume it behaves identically to domains without verifying. Read the pinned itsm.xsd schema directly (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/itsm.xsd) rather than transcribing the rule_text's own English prose literally: the actual declared XML attribute is itsm:lang (xs:attribute name=\"lang\" type=\"xs:language\"), not \"itsm:language\" -- a real transcription risk caught before writing any test, the same discipline applied repeatedly this session for schema-derived names. Probed directly and confirmed itsm:lang already round-trips correctly through this package's generic attribute-preservation mechanism, the same one already proven for itsm:domains -- zero source code changes needed. 1 new test (test_its_mapping_lang_attribute_round_trips_on_a_unit) proves it, mirroring the existing domains test's exact structure. xliff suite: 454 -> 455 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the attribute name grounded directly in the pinned schema. Covers SAL-XLIFF-OBL-725053FB0A47E78D and SAL-XLIFF-OBL-E3F1C46FFD77CD5B only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-LIFECYCLE-IO-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -261,7 +269,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "f5c6a668127f7d0e9f9ba9a75ac8559a68383de914f7265d49641758c6c951e1",
+    "implementation_evidence": "c36237497eec04f8ca7ddea5b63292c43b3e24acdddcae772c07cce123aadf6a",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2668,19 +2676,20 @@
       "capability_id": "XLIFF-MODULE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-ITS-MAPPING-LANG-ATTRIBUTE-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of SAL-XLIFF-OBL-E3F1C46FFD77CD5B (identical rule_text, XLIFF-PARSE-001): both the W3C ITS namespace and the itsm:2.1 mapping's domains attribute are proven to round-trip on a unit."
+        "Cross-capability duplicate of SAL-XLIFF-OBL-E3F1C46FFD77CD5B (identical rule_text, XLIFF-PARSE-001): both the W3C ITS namespace and the itsm:2.1 mapping's domains attribute are proven to round-trip on a unit.",
+        "The rule_text's remaining \"language\" attribute is also now directly proven. The pinned itsm.xsd schema (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/itsm.xsd) declares the actual XML attribute as itsm:lang (xs:attribute name=\"lang\" type=\"xs:language\"), not \"itsm:language\" as a literal reading of the rule_text's own English prose might suggest -- confirmed directly by reading the pinned schema before writing a test, avoiding a real transcription risk. itsm:lang was already correctly preserved by this package's generic attribute round-trip mechanism, the same one already proven for itsm:domains; only untested from this specific angle before this slice."
       ],
-      "missing_behavior": [
-        "Same confirmed gap as SAL-XLIFF-OBL-E3F1C46FFD77CD5B: the itsm:2.1 mapping's \"language\" attribute specifically is not separately confirmed round-tripping. Not attempted this slice."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-725053FB0A47E78D",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
-        "tests/python/xliff/test_obligation_module_coverage.py::test_its_mapping_attributes_round_trip_on_a_unit"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_its_mapping_attributes_round_trip_on_a_unit",
+        "tests/python/xliff/test_obligation_module_coverage.py::test_its_mapping_lang_attribute_round_trips_on_a_unit"
       ],
       "proof_requirements": {
         "negative": [
@@ -2690,11 +2699,11 @@
           "Per-module round-trip fixtures; coverage manifest matches behavior."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODEL-001",
@@ -4718,19 +4727,20 @@
       "capability_id": "XLIFF-PARSE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-ITS-MAPPING-LANG-ATTRIBUTE-PROOF"
       ],
       "implemented_behavior": [
-        "Both the W3C ITS namespace and the itsm:2.1 mapping's domains attribute are proven to round-trip on a unit. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-725053FB0A47E78D), same evidence applies there."
+        "Both the W3C ITS namespace and the itsm:2.1 mapping's domains attribute are proven to round-trip on a unit. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-725053FB0A47E78D), same evidence applies there.",
+        "The \"language\" attribute is also now directly proven, not merely assumed identical to domains. The pinned itsm.xsd schema declares the actual XML attribute as itsm:lang (xs:attribute name=\"lang\" type=\"xs:language\"), confirmed directly by reading the pinned schema rather than transcribing \"language\" literally from the rule_text's own English prose. itsm:lang was already correctly preserved by this package's generic attribute round-trip mechanism; only untested from this specific angle before this slice."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: the itsm:2.1 mapping's \"language\" attribute specifically is not separately confirmed round-tripping in the cited test (only domains is asserted) -- not attempted this slice to verify precisely rather than assume it behaves identically to domains."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-E3F1C46FFD77CD5B",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
-        "tests/python/xliff/test_obligation_module_coverage.py::test_its_mapping_attributes_round_trip_on_a_unit"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_its_mapping_attributes_round_trip_on_a_unit",
+        "tests/python/xliff/test_obligation_module_coverage.py::test_its_mapping_lang_attribute_round_trips_on_a_unit"
       ],
       "proof_requirements": {
         "negative": [
@@ -4740,11 +4750,11 @@
           "Version/namespace consistency fixtures per supported version; legacy-version refusal fixture."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-TEXT-001",
@@ -5187,6 +5197,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-inline-required-id-001.json": "33d8fe481a9892e47f0d5b9886059f7a3c6290e0db4cbd20e544081f01ab8255",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-isolated-pairing-attrs-001.json": "bab9d700b6907f730117050549aa3f075ac7a33b9f6c25c0306f4264cfc0f146",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-isolated-start-code-validation-001.json": "ae7462acea8d11cf3bbdd5c673987d2b4b82ae52b6c9e6ff4258312ce663b4b8",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-its-mapping-lang-attribute-001.json": "549e394b828680165f121af639d24b2463cdad5789e3458336a946440a7c413e",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-lifecycle-io-001.json": "02856c6f0ad09cf7b0352b9b777331dc5f6e2096e5f6576dbfe39f997669372d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-matches-module-structure-001.json": "68a6888f0e01130bd7481513ff0a8f391d4ab8b97d32c1967beb9e078e61c449",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-merge-audit-001.json": "ad52bf9234b0abdb222fca9ca32f9fca835f0d73f2cab7e0709aca7a81e9c29a",
@@ -5233,7 +5244,7 @@
     "tests/python/xliff/test_obligation_matches_module_structure.py": "6345a67d1044a532a59af264474a855e60057f988d77f83a67a84aad5740a26b",
     "tests/python/xliff/test_obligation_merge_adapter.py": "8ab808796f526b4497037ff207d9924382fe6833689529377210a80e60d95e88",
     "tests/python/xliff/test_obligation_metadata_module_structure.py": "35051e47bed5395598a8451ef08b8ad0028c2773580a661525e85de358a48f04",
-    "tests/python/xliff/test_obligation_module_coverage.py": "2804d8ed972061266d4ee66b5fad52dbe3b9107f687bd8ba2c0a2eedd257400a",
+    "tests/python/xliff/test_obligation_module_coverage.py": "4a2b8399919445c1604a099580c0375b7a28b69989fa269a0938cb676016ff68",
     "tests/python/xliff/test_obligation_nested_group_hierarchy.py": "cb31f8d5782f920685c804e6283a44aa2196107d0069c8c3ed011c7d4003e122",
     "tests/python/xliff/test_obligation_notes_and_annotations.py": "357ae9aace9aab3cbb6bcda064a928b4934ccd7b6720094452aaedd75b69e587",
     "tests/python/xliff/test_obligation_original_data_element_modeling.py": "4b932ec3d11a2562463fb7b270c39882613e1ac2dcc08eef2014588c2b223940",
@@ -5254,12 +5265,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 97,
+      "implemented": 99,
       "missing": 11,
-      "partial": 34
+      "partial": 32
     },
     "total": 142,
-    "unresolved": 45
+    "unresolved": 43
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

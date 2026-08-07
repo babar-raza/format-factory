@@ -303,6 +303,32 @@ def test_its_mapping_attributes_round_trip_on_a_unit() -> None:
         assert unit.attributes[domain_keys[0]] == "legal"
 
 
+def test_its_mapping_lang_attribute_round_trips_on_a_unit() -> None:
+    """The rule_text's own prose names this attribute "language", but the
+    pinned itsm.xsd schema declares it as itsm:lang (xs:attribute
+    name="lang" type="xs:language") -- confirmed by reading the pinned
+    schema directly rather than guessing an attribute name from the
+    obligation's own English description. Previously untested from this
+    specific angle, unlike the sibling itsm:domains attribute above."""
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        f'<xliff xmlns="{XLIFF_NS}" version="2.1" srcLang="en">\n'
+        + '<file id="f1"><unit id="u1" xmlns:itsm="urn:oasis:names:tc:xliff:itsm:2.1" '
+        + 'itsm:lang="fr">'
+        + "<segment><source>hi</source></segment>"
+        + "</unit></file>"
+        + FOOTER
+    )
+    document = loads(xml)
+    reparsed = loads(dumps(document))
+
+    for parsed in (document, reparsed):
+        unit = parsed.files[0].children[0]
+        lang_keys = [key for key in unit.attributes if key.endswith("}lang")]
+        assert len(lang_keys) == 1
+        assert unit.attributes[lang_keys[0]] == "fr"
+
+
 # ── Nothing is silently dropped: unit/segment structure survives alongside ──
 
 

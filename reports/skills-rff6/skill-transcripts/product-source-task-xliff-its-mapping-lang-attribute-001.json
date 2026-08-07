@@ -1,0 +1,52 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-its-mapping-lang-attribute-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T11:55:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_ITS_MAPPING_LANG_ATTRIBUTE_001",
+    "task_kind": "verify-and-test-already-shipped-behavior-catch-transcription-risk",
+    "root_cause": "Surveyed xliff's remaining 34 partial obligations per Event 238's next-action ranking. SAL-XLIFF-OBL-725053FB0A47E78D / SAL-XLIFF-OBL-E3F1C46FFD77CD5B (identical rule_text, XLIFF-MODULE-001/XLIFF-PARSE-001) named a precise, small remaining gap: the itsm:2.1 mapping's 'language' attribute was never separately confirmed round-tripping (only its sibling 'domains' attribute was tested), and the evidence explicitly declined to assume it behaves identically without verifying.",
+    "obligation_targeted": "SAL-XLIFF-OBL-725053FB0A47E78D (XLIFF-MODULE-001) and SAL-XLIFF-OBL-E3F1C46FFD77CD5B (XLIFF-PARSE-001) -- both promoted partial->implemented",
+    "acceptance_evidence": "1 new test proves itsm:lang round-trips correctly on a unit, mirroring the existing itsm:domains test's structure.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the shared rule_text: 'the XLIFF 2.1 mapping adds urn:oasis:names:tc:xliff:itsm:2.1 attributes for domains and language.' Read both obligations' missing_behavior text, which correctly declined to assume the 'language' attribute behaves identically to the already-tested 'domains' attribute without verifying.",
+    "2. Rather than guessing the XML attribute name from the rule_text's own English prose ('language'), read the pinned itsm.xsd schema directly (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/itsm.xsd) and found the actual declared attribute is itsm:lang (xs:attribute name=\"lang\" type=\"xs:language\"), not itsm:language -- a real transcription risk caught before writing any code, matching the discipline already applied repeatedly this session for schema-derived names (e.g. UBL's LegalMonetaryTotal PayableAmount ordering, XLIFF's fs:fs 58-value enum).",
+    "3. Probed directly before writing a formal test: loaded a unit carrying itsm:lang=\"fr\", confirmed it appears in the unit's attributes dict under the correct namespaced key, and confirmed it survives a full dumps()/loads() round-trip unchanged -- the same generic attribute-preservation mechanism already proven for itsm:domains, zero source code changes needed.",
+    "4. Added 1 new test (test_its_mapping_lang_attribute_round_trips_on_a_unit) to the existing test_obligation_module_coverage.py, directly adjacent to and mirroring the exact structure of the pre-existing itsm:domains test, including the same version=2.1 fixture-declaration rationale (itsm:2.1 mapping content is 2.1-only per the spec's Appendix C).",
+    "5. Ran ruff (clean), the full xliff suite (455 passed, was 454, +1), and the full 6-format regression (3402 passed, was 3401, +1; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "6. No skills-first governance invocation needed -- zero src/ files changed, only an extended test file and evidence YAML, matching the 'skipped when only tests/evidence YAML change' rule.",
+    "7. Promoted both cross-capability duplicate obligations to implemented: both attributes ('domains' and 'lang', the real XML name for the rule_text's 'language') the shared rule_text names are now directly, individually proven."
+  ],
+  "allowed_files": [
+    "tests/python/xliff/test_obligation_module_coverage.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/xliff/test_obligation_module_coverage.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_module_coverage.py -q -- 23 passed",
+    ".venv/Scripts/python -m ruff check tests/python/xliff/test_obligation_module_coverage.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 455 passed, was 454 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3402 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3401 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the attribute name grounded directly in the pinned schema rather than transcribed from the rule_text's own prose.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-725053FB0A47E78D (XLIFF-MODULE-001) and SAL-XLIFF-OBL-E3F1C46FFD77CD5B (XLIFF-PARSE-001), identical rule_text, both partial->implemented. A genuine test-coverage gap closed via direct schema verification, catching a real attribute-name transcription risk along the way."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
