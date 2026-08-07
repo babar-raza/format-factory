@@ -1,0 +1,59 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-data-element-required-id-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T13:47:35Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_DATA_ELEMENT_REQUIRED_ID_001",
+    "task_kind": "fix-real-unenforced-schema-required-attribute-already-named-in-obligation-missing-behavior",
+    "root_cause": "Both SAL-XLIFF-OBL-C632C43201760C05 (XLIFF-INLINE-001) and SAL-XLIFF-OBL-C6C67E6C253C9EAB (XLIFF-PARSE-001)'s own missing_behavior text already named this exact gap: 'The <data> element's own REQUIRED id attribute is not separately enforced as a validate() diagnostic if absent (only downstream dataRef resolution against present ids is checked).' Read the pinned core schema directly and confirmed <xs:attribute name=\"id\" use=\"required\" type=\"xs:NMTOKEN\"/> on the <data> element. _data_ref_diagnostics's data_ids set silently excluded any <data> element with a missing id, so no diagnostic was ever raised for the <data> element itself violating its own required attribute.",
+    "obligation_targeted": "SAL-XLIFF-OBL-C632C43201760C05 and SAL-XLIFF-OBL-C6C67E6C253C9EAB (both partial) -- remain partial; evidence strengthened, real bug fixed, no status crossing",
+    "acceptance_evidence": "2 new tests prove: a <data> element missing its id is flagged with xliff.originalData.data.id.missing; a normal document with all ids present is unaffected.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. After four consecutive resource-limit/version-gate fixes across xliff/ora/nrrd, surveyed ORA's remaining 5 partial obligations (found correctly blocked on large missing subsystems) and then xliff's remaining 27 partial obligations directly, per the 'read each partial obligation's own missing_behavior text for an already-diagnosed narrow gap' technique proven at event 250 against nrrd.",
+    "2. Found SAL-XLIFF-OBL-C632C43201760C05 and its sibling SAL-XLIFF-OBL-C6C67E6C253C9EAB's own missing_behavior text already named a concrete, narrow, spec-grounded second half of a two-part gap: the <cp> child-element modeling half is explicitly NOT a gap for this obligation's own rule_text (already correctly scoped out), but the <data> element's own REQUIRED id attribute enforcement genuinely is.",
+    "3. Read the pinned core schema directly (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/xliff_core_2.0.xsd) and confirmed <xs:attribute name=\"id\" use=\"required\" type=\"xs:NMTOKEN\"/> on the <data> element definition.",
+    "4. Read _data_ref_diagnostics (validator.py) directly and found data_ids = {value.id for value in unit.original_data if value.id} -- a <data> element with a missing/empty id is silently filtered OUT of the set with no diagnostic raised for the <data> element itself.",
+    "5. Confirmed this is a genuine, exploitable gap via direct probing before any fix: loaded a unit with one <data> element missing its id attribute and validated it -- no diagnostic named that element or its missing required attribute at all.",
+    "6. Added a dedicated check at the top of _data_ref_diagnostics that enumerates unit.original_data and flags every <data> element with a missing/empty id as xliff.originalData.data.id.missing, before the existing dataRef-resolution logic runs.",
+    "7. Re-probed both cases: a unit with a <data> element missing id now raises xliff.originalData.data.id.missing; a unit with all ids present raises no such diagnostic.",
+    "8. Ran the full pre-existing xliff suite (470 tests, zero new fixtures) against the fix to look for false positives before writing a single new test -- all 470 passed unchanged.",
+    "9. Wrote 2 formal tests in the existing test_obligation_original_data_element_modeling.py (extending its established _document() helper pattern), both passing on the first attempt.",
+    "10. Ran ruff (clean), the full xliff suite (472 passed, was 470, +2), and the full 6-format regression (3448 passed, was 3446, +2; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "11. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-fbb0b7f547e83ece, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "12. Both obligations remain status=partial: their missing_behavior now lists only the already-correctly-scoped-out <cp> modeling non-gap. This tick strengthens evidence with a real, previously-unnoticed required-attribute enforcement gap fixed (the exact gap both obligations' own text already named), rather than crossing a status boundary."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_original_data_element_modeling.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_original_data_element_modeling.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_original_data_element_modeling.py -q -- 12 passed, was 10 passed",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/validation/validator.py tests/python/xliff/test_obligation_original_data_element_modeling.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 472 passed, was 470 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3448 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3446 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations moved status; 2 already-partial obligations' evidence strengthened with a real fix",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the required-attribute rule grounded directly in the pinned core schema text.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-C632C43201760C05 (XLIFF-INLINE-001) and SAL-XLIFF-OBL-C6C67E6C253C9EAB (XLIFF-PARSE-001) remain partial. A genuine, real, previously-unenforced schema-required-attribute gap fixed with production source code (the <data> element's own REQUIRED id attribute was silently excluded from the dataRef-resolution id set rather than being independently validated), found by directly reading both obligations' own already-documented missing_behavior text, the same technique proven at event 250 against nrrd's multifile version gate."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

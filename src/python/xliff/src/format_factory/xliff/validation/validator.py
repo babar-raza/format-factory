@@ -288,8 +288,25 @@ def _data_ref_diagnostics(unit: Unit, diagnostics: list[Diagnostic]) -> None:
     the same unit's `<originalData>`; a pc's dataRefStart and dataRefEnd
     must be used as a pair (one present without the other is invalid),
     matching the pinned schematron's own assertions exactly, checked
-    separately per content type (source/target)."""
+    separately per content type (source/target).
 
+    The pinned core schema (schemas/xliff_core_2.0.xsd) declares `<data>`'s
+    own `id` attribute `use="required"`; a `<data>` element missing it is
+    invalid in its own right, independent of whether any inline element
+    happens to reference it -- checked here rather than silently dropped
+    from data_ids, which previously left a required-attribute violation
+    entirely undiagnosed.
+    """
+
+    for index, value in enumerate(unit.original_data):
+        if not value.id:
+            diagnostics.append(
+                Diagnostic(
+                    "xliff.originalData.data.id.missing",
+                    f"data element at index {index} in unit {unit.id!r} is "
+                    "missing its required id attribute",
+                )
+            )
     data_ids = {value.id for value in unit.original_data if value.id}
     for label in ("source", "target"):
         for segment in unit.segments:

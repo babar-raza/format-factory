@@ -175,3 +175,28 @@ def test_a_target_side_dataref_is_checked_independently_of_source() -> None:
     codes = {item.code for item in validate(document).diagnostics}
 
     assert "xliff.inline.dataRef.unresolved" in codes
+
+
+def test_a_data_element_missing_its_required_id_is_flagged() -> None:
+    """The pinned core schema (schemas/xliff_core_2.0.xsd) declares
+    <data>'s own id attribute use="required" -- a <data> element without
+    one is invalid in its own right, independent of whether any inline
+    element ever references it. Previously silently excluded from
+    data_ids with no diagnostic raised at all, confirmed by direct probing
+    before this fix."""
+    document = _document([DataElement(id="", content=["<br/>"])], ["plain text"])
+
+    codes = {item.code for item in validate(document).diagnostics}
+
+    assert "xliff.originalData.data.id.missing" in codes
+
+
+def test_a_data_element_with_its_required_id_present_is_unaffected() -> None:
+    document = _document(
+        [DataElement(id="d1", content=["<br/>"])],
+        [InlineElement("ph", {"id": "1", "dataRef": "d1"})],
+    )
+
+    codes = {item.code for item in validate(document).diagnostics}
+
+    assert "xliff.originalData.data.id.missing" not in codes
