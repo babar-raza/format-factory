@@ -86,6 +86,59 @@ def _validate_inline(segment: Segment, diagnostics: list[Diagnostic]) -> None:
                     )
 
 
+def _isolated_diagnostics(unit: Unit, diagnostics: list[Diagnostic]) -> None:
+    """(XLIFF Core start-code isolation, 2.1 schematron patterns F5S/F5T
+    plus the "no otherwise" direction of the same rule) An sc's isolated
+    attribute must be set to yes if and only if the ec element corresponding
+    to it (matched by startRef against this sc's id) is not present anywhere
+    in the same unit -- checked separately for source and target content,
+    since the schematron scopes each check to one content type. "no" is the
+    schema default when the attribute is absent.
+
+    This scans every segment/ignorable in the unit (not just one), matching
+    the schematron's ``ancestor::xlf:unit//xlf:ec[...]`` scope. The
+    pre-existing, per-segment sc/ec pairing check in ``_validate_inline``
+    (``xliff.inline.ec.unpaired``) is a separate, narrower check that does
+    not look across segment boundaries within a unit; a genuinely valid,
+    non-isolated sc/ec pair split across two segments of the same unit --
+    which the spec explicitly permits -- would still trip that older,
+    unit-unaware check today. That is a distinct, pre-existing limitation,
+    not something this function introduces or silently repairs.
+    """
+
+    for label in ("source", "target"):
+        starts: list[InlineElement] = []
+        end_refs: set[str] = set()
+        for segment in unit.segments:
+            content = segment.source if label == "source" else (segment.target or [])
+            for element in _inline_elements(content):
+                if element.tag == "sc" and element.id:
+                    starts.append(element)
+                elif element.tag == "ec":
+                    start_ref = element.attributes.get("startRef")
+                    if start_ref:
+                        end_refs.add(start_ref)
+        for sc in starts:
+            isolated = sc.attributes.get("isolated", "no")
+            has_matching_ec = sc.id in end_refs
+            if isolated == "yes" and has_matching_ec:
+                diagnostics.append(
+                    Diagnostic(
+                        "xliff.inline.isolated.unexpected_ec",
+                        f"sc {sc.id!r} in unit {unit.id!r} {label} is isolated='yes' "
+                        f"but a matching ec exists within the same unit",
+                    )
+                )
+            elif isolated != "yes" and not has_matching_ec:
+                diagnostics.append(
+                    Diagnostic(
+                        "xliff.inline.isolated.missing_ec",
+                        f"sc {sc.id!r} in unit {unit.id!r} {label} is not isolated "
+                        f"but no matching ec exists within the same unit",
+                    )
+                )
+
+
 def _extension_well_formed(
     extension: ExtensionNode, diagnostics: list[Diagnostic]
 ) -> None:
@@ -262,6 +315,7 @@ def validate(
                     )
                 for segment_extension in segment.extensions:
                     _extension_well_formed(segment_extension, diagnostics)
+            _isolated_diagnostics(unit, diagnostics)
         for file_child in file.children:
             if isinstance(file_child, ExtensionNode):
                 _extension_well_formed(file_child, diagnostics)
