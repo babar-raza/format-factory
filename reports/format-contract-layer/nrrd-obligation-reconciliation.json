@@ -165,7 +165,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "d8db76b295a913142d9032392e51252c176daee0f9adba1c221b3d3f0b04b80a",
+    "implementation_evidence": "71fbf2f70ab7de91d4a77939a8e563fec0d9ed73aaef4109b7ce2b33eb747a17",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -545,13 +545,14 @@
     {
       "capability_id": "NRRD-VALIDATE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-VERSION-SELECTION-RECONCILIATION-PROOF"
       ],
       "implemented_behavior": [
-        "Required fields, sizes/dimension, kinds arity, block rules, and decoded byte/value counts receive diagnostics."
+        "Required fields, sizes/dimension, kinds arity, block rules, and decoded byte/value counts receive diagnostics. Stale-bookkeeping correction: this obligation's own \"version-feature compatibility\" clause is also proven -- validate() checks the target/declared version against document.minimal_version_for() and raises nrrd.version.insufficient naming every blocking feature (see SAL-NRRD-OBL-1DAEF31DD0BB6EBB/SAL-NRRD-OBL-725881DB5590E608, reconciled this session), confirmed directly by reading validate() itself (lines 42-65) rather than assumed from the obligation's own stale text."
       ],
       "missing_behavior": [
-        "Conditional fields, version-feature rules, and trailing-payload policy are incomplete (all per-axis arities are now validated -- see SAL-NRRD-OBL-428BE326FCBC9A6E)."
+        "Conditional fields (e.g. space/space dimension/space origin/space directions mutual consistency -- build_space_transform() checks this but is not itself wired into validate()'s own diagnostics) and trailing-payload policy WITH VALIDATE()-TIME REPORTING (decode_encoding's trailing-byte rejection happens at read time as a hard exception before validate() ever runs, not as a non-fatal validate()-time diagnostic the way every other check in this function works) remain genuinely incomplete. \"Version-feature rules\" no longer belongs in this list (all per-axis arities are now validated -- see SAL-NRRD-OBL-428BE326FCBC9A6E)."
       ],
       "negative_test_selectors": [
         "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
