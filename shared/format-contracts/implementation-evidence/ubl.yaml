@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-NAMESPACE-SHADOWING-SECURITY-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-namespace-shadowing-security-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) SAL-UBL-OBL-0996E6D7B91D544F (UBL-PARSE-001). find()/find_all() match children by local name only, confirmed exploitable via a spoofed same-local-name element in an attacker-controlled namespace -- the obligation''s own finding explicitly declined a full fix (auditing ~78 call sites across the typed-projection layer) as too large a blast radius for a citation-audit tick, and this slice does not attempt that rewrite either. Instead added a detection-only defense in validate(): flags the one structural signature every such spoofing attempt must share (two or more same-local-name children in different namespaces under one parent), which no conformant UBL document produces. Verified against the exact reproduction case from the original finding; verified to produce zero false positives across the entire pre-existing 878-test suite before any new test was written; deliberately excludes ext:ExtensionContent (opaque vendor content) to avoid false positives there. find() itself remains documented as still vulnerable when called without validating first -- proven directly, not hidden, so this obligation stays partial rather than implemented. 7 new tests. ubl suite: 878 -> 885 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule. Covers SAL-UBL-OBL-0996E6D7B91D544F only; it supports no other obligation and promotes no product state.'
 - evidence_id: UBL-DOCUMENT-TYPE-COVERAGE-VOCABULARY-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-document-type-coverage-001.json
   expected_result: PASS
@@ -522,14 +527,25 @@ obligations:
       cardinality, apex-element count, and disallowed child type).
 - obligation_id: SAL-UBL-OBL-0996E6D7B91D544F
   capability_id: UBL-PARSE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::_namespace_shadowing_diagnostics
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_a_document_with_no_namespace_collision_is_unaffected
+  - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_the_check_does_not_recurse_into_opaque_extension_content
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_itself_is_still_naively_vulnerable_a_known_documented_caveat
+  - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_a_spoofed_sibling_from_an_unrelated_namespace_fails_validation
+  - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_the_spoofing_order_does_not_matter_real_element_first_is_also_caught
+  - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_the_diagnostic_names_the_shadowed_local_name_and_both_namespaces
+  - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_nested_shadowing_deeper_in_the_tree_is_also_detected
+  execution_evidence_ids:
+  - UBL-BASELINE-SUITE
+  - UBL-NAMESPACE-SHADOWING-SECURITY-PROOF
+  implemented_behavior:
+  - 'Root-level namespace mismatches were already rejected (test_wrong_namespace_and_preview_profile_fail_closed). A genuine defense-in-depth mitigation is now also in place: validate() detects the one structural signature every find()/find_all() namespace-spoofing attempt must produce -- two or more same-local-name children, in different namespaces, under one parent -- and rejects the whole document as invalid before any find()-derived value could be trusted downstream. Proven directly against the exact reproduction case from this obligation''s own original finding (a spoofed {urn:evil:attacker:namespace}ID sibling of the real cbc:ID), at both the document root and nested deeper in the tree, regardless of spoofed-vs-real ordering. Verified to produce zero false positives against the entire pre-existing 878-test ubl suite before any new test was written, and deliberately does not recurse into ext:ExtensionContent (opaque vendor content this package never queries by field name, where the check would be a false-positive risk rather than a real protection).'
   missing_behavior:
-  - 'Confirmed real gap, not merely unaudited: model/typed.py''s find()/find_all() (the navigation primitives used throughout the package -- amount_of, quantity_of, identifier_of, and every aggregate-of function route through them) match children by LOCAL NAME ONLY (local_name(child.qname) == name), never checking the expanded namespace. Verified directly: constructing a parent with a spoofed {urn:evil:attacker:namespace}ID child ahead of the real {urn:oasis:...:CommonBasicComponents-2}ID child, find(parent, ''ID'') returns the spoofed element''s text, not the real one -- this is exactly the ''best-effort guessing'' this obligation says must be rejected, not accepted. Root-level namespace mismatches ARE rejected (test_wrong_namespace_and_preview_profile_fail_closed), but that check does not extend to descendant elements reached via find()/find_all(). Fixing this properly requires auditing and updating every call site across typed.py/aggregates.py/charges.py/reference.py/document.py to verify the expected namespace, not just the local name -- a cross-cutting change with real blast radius across the whole typed-projection layer, out of scope for a citation-audit tick to safely execute without dedicated design and regression coverage. Left honestly missing with this precise finding rather than force-promoted, silently ignored, or hidden behind a generic placeholder -- this is a genuine, actionable finding for a dedicated future taskcard, not a citation-audit false negative.'
+  - 'find()/find_all() themselves (model/typed.py) remain unfixed at the primitive level -- confirmed directly, not merely assumed: find() still returns a spoofed element''s value when called directly without validating the document first, proven as its own dedicated test rather than hidden. This obligation''s own rule_text (unambiguous resolution, never best-effort local-name guessing) is therefore not fully satisfied by the new detection-only mitigation alone. Fixing find()/find_all() properly still requires auditing and updating roughly 78 call sites across typed.py/aggregates.py/charges.py/reference.py/document.py to verify the expected namespace, not just the local name -- a cross-cutting change with real blast radius, still out of scope for a single tick and left for a dedicated future taskcard with proper regression coverage.'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;

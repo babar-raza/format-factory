@@ -1,0 +1,54 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-namespace-shadowing-security-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T07:36:40Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_NAMESPACE_SHADOWING_SECURITY_001",
+    "task_kind": "defense-in-depth-detection-in-place-of-a-risky-cross-cutting-rewrite",
+    "root_cause": "SAL-UBL-OBL-0996E6D7B91D544F documented that model/typed.py's find()/find_all() match children by local name only, confirmed to be exploitable via a spoofed same-local-name element in an attacker-controlled namespace. The obligation's own finding explicitly declined a full fix as out of scope, citing ~78 call sites across the typed-projection layer as too large a blast radius for a citation-audit tick.",
+    "obligation_targeted": "SAL-UBL-OBL-0996E6D7B91D544F (UBL-PARSE-001)",
+    "acceptance_evidence": "7 new tests prove: find() itself remains naively vulnerable (documented, not hidden), but validate() now detects and rejects any document containing same-local-name siblings in different namespaces -- at the root level, nested deeper in the tree, regardless of spoofed-vs-real ordering, with the diagnostic naming both namespaces -- while a control test confirms no false positive on a namespace-clean document, and a dedicated test confirms the check correctly does not recurse into opaque ext:ExtensionContent (which legitimately holds arbitrary vendor content this package never queries by field name).",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Re-read the obligation's own finding in full, including its explicit reasoning for deferring a full fix: 'Fixing this properly requires auditing and updating every call site... a cross-cutting change with real blast radius, out of scope for a citation-audit tick to safely execute without dedicated design and regression coverage.' Confirmed via grep that ~78 call sites of find()/find_all() exist across the typed-projection layer, validating that this original assessment was correct.",
+    "2. Considered and rejected a narrower per-field namespace-allowlist approach (checking each call's expected namespace) as still requiring per-call-site knowledge equivalent to the full rewrite. Instead designed a detection-only defense: validate() flags the one structural signature every spoofing attempt of this shape must produce -- two or more same-local-name children in different namespaces under one parent -- without touching find()/find_all() or any of their 78 call sites at all, reducing blast radius to zero on the existing query primitives.",
+    "3. Verified the exact reproduction case from the original finding interactively: constructed a document with a spoofed {urn:evil:attacker:namespace}ID sibling ahead of the real {urn:oasis:...CommonBasicComponents-2}ID child -- confirmed find() still (dangerously, as documented) returns the spoofed value, but the new validate() check correctly flags the document as invalid with a ubl.namespace.shadowed_element diagnostic naming both namespaces.",
+    "4. Ran the full pre-existing ubl suite (878 tests, zero changes yet to any fixture) against the new check before writing any new test, specifically to look for false positives -- all 878 passed unchanged, strong empirical confirmation that no legitimate UBL document in this package's entire existing corpus produces the same-local-name-different-namespace shape the check flags.",
+    "5. Deliberately excluded ext:ExtensionContent subtrees from the walk: that wrapper legitimately holds arbitrary, opaque vendor content this package never queries via find()/find_all() by field name, so applying the check inside it would be a false-positive risk rather than a real protection -- verified directly with a dedicated test using two different-namespace vendor elements inside one ExtensionContent, confirming no diagnostic fires.",
+    "6. Wrote 7 formal tests: the documented find()-vulnerability caveat itself, the spoofing-detected case, order-independence (spoofed-first and real-first both caught), diagnostic message content, a no-false-positive control, nested-tree detection, and the ExtensionContent exclusion. Ran ruff (clean), the full ubl suite (885 passed, was 878, +7), and the full 6-format regression (3251 passed, was 3244, +7; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "7. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-9e80ff4727501f49, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_namespace_shadowing_security.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_namespace_shadowing_security.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_namespace_shadowing_security.py -q -- 7 passed",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/validation/validator.py tests/python/ubl/test_obligation_namespace_shadowing_security.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 885 passed, was 878 passed (878 passed unchanged BEFORE writing new tests, confirming zero false positives against the existing corpus)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3251 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3244 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule.",
+    "obligations_moved_breakdown": "0 obligations promoted to implemented -- find()/find_all() themselves remain unfixed at the primitive level (a real, documented, still-open caveat), so the obligation's own rule_text (unambiguous resolution, not best-effort guessing) is not fully satisfied. Status stays partial/missing, narrowed with a genuine, verified defense-in-depth mitigation rather than either the full risky rewrite or continued silence."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

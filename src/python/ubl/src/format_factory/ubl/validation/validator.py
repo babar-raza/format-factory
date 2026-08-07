@@ -5,7 +5,7 @@ from __future__ import annotations
 from format_factory.core import Diagnostic, ResourceLimits, Severity, ValidationReport
 
 from .._generated import ROOT_NAMESPACES, ROOT_NAME_SET
-from ..model import UblDocument
+from ..model import UblDocument, XmlNode
 
 _CBC_NAMESPACE = (
     "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
@@ -93,7 +93,67 @@ def validate(
             )
         )
     diagnostics.extend(_extension_diagnostics(value))
+    diagnostics.extend(_namespace_shadowing_diagnostics(value))
     return ValidationReport(diagnostics)
+
+
+def _namespace(qname: str) -> str:
+    return qname[1:].split("}", 1)[0] if qname.startswith("{") else ""
+
+
+def _namespace_shadowing_diagnostics(value: UblDocument) -> list[Diagnostic]:
+    """SAL-UBL-OBL-0996E6D7B91D544F: model/typed.py's find()/find_all() (the
+    navigation primitives used throughout this package) match children by
+    local name only, never checking the expanded namespace -- a spoofed
+    element sharing a real element's local name but placed in a different,
+    untrusted namespace could be returned instead of, or ahead of, the
+    genuine one.
+
+    Rewriting find()/find_all() to check an expected namespace per call
+    would need auditing and updating roughly 78 call sites across
+    typed.py/aggregates.py/charges.py/reference.py/document.py -- a
+    cross-cutting change with real blast radius, deliberately out of
+    scope here (see this obligation's own missing_behavior text). Instead
+    this detects the one structural signature every such spoofing attempt
+    must share: two or more same-local-name children, in different
+    namespaces, under one parent. No conformant UBL document produces
+    this shape -- every field name is namespace-scoped and siblings-unique
+    within its own vocabulary (cbc:/cac:/the root's own namespace). This
+    makes validate() the safety net: a spoofed sibling fails validation
+    before any find()-derived value is trusted downstream, even though
+    find() itself remains naively vulnerable if called directly without
+    validating first.
+
+    Deliberately does not recurse into ext:ExtensionContent -- that
+    subtree is explicitly opaque vendor content this package never reads
+    via find()/find_all() by field name, so applying this check inside it
+    would be a false-positive risk, not a real protection.
+    """
+    diagnostics: list[Diagnostic] = []
+
+    def walk(node: XmlNode) -> None:
+        by_local_name: dict[str, set[str]] = {}
+        for child in node.children:
+            by_local_name.setdefault(_local(child.qname), set()).add(
+                _namespace(child.qname)
+            )
+        for local, namespaces in sorted(by_local_name.items()):
+            if len(namespaces) > 1:
+                diagnostics.append(
+                    Diagnostic(
+                        "ubl.namespace.shadowed_element",
+                        f"element {local!r} appears under {_local(node.qname)!r} "
+                        f"in {len(namespaces)} different namespaces "
+                        f"{sorted(namespaces)!r} -- this shape never occurs in a "
+                        "conformant UBL document and may indicate a spoofed element",
+                    )
+                )
+        for child in node.children:
+            if child.qname != _EXTENSION_CONTENT_QNAME:
+                walk(child)
+
+    walk(value.root)
+    return diagnostics
 
 
 def _extension_diagnostics(value: UblDocument) -> list[Diagnostic]:
