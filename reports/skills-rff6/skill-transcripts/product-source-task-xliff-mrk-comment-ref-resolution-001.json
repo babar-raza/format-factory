@@ -1,0 +1,59 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-mrk-comment-ref-resolution-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T12:07:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_MRK_COMMENT_REF_RESOLUTION_001",
+    "task_kind": "build-new-capability-for-a-4-obligation-cluster-from-a-precisely-named-gap",
+    "root_cause": "Event 239 flagged the mrk-ref-resolution cluster as the one recurring, precisely-named remaining gap after dataRef/isolated-attribute/file-id work closed everything else nearby. 4 obligations (SAL-XLIFF-OBL-441E7C6F7C341B12, DA738080DC614E67, EC188D4F6DD138A0, F20C2CA429BA381B) share a 'references must resolve' rule_text whose ec/sc and dataRef halves were already closed, leaving mrk's own ref attribute confirmed genuinely unimplemented by grep.",
+    "obligation_targeted": "SAL-XLIFF-OBL-441E7C6F7C341B12 (XLIFF-MODEL-001), SAL-XLIFF-OBL-DA738080DC614E67 (XLIFF-VALIDATE-001), SAL-XLIFF-OBL-EC188D4F6DD138A0 (XLIFF-PARSE-001), SAL-XLIFF-OBL-F20C2CA429BA381B (XLIFF-INLINE-001) -- all promoted partial->implemented",
+    "acceptance_evidence": "6 new tests prove: a comment-type mrk ref resolving to a same-unit note validates cleanly; an unresolvable ref, and a ref with zero notes in the unit, are each flagged; a term-type mrk's external-URI ref is never checked; a comment-type mrk with no ref at all is not checked here; the check applies independently to target content.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read all 4 obligations' shared missing_behavior text confirming the exact remaining scope: mrk's own ref attribute, confirmed by a prior tick's grep to have no code path anywhere reading or resolving it.",
+    "2. Read the pinned XLIFF 2.1 spec source directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin) searching for every 'mrk' occurrence near 'ref' rather than guessing the mechanism from memory. Found two DISTINCT documented ref usages: type='term' (section on term annotations, ref points at an arbitrary external URI like a DBpedia page) and type='comment' (section 4.7.3.1.3 Comment Annotation, ref MUST point at a <note> element within the same enclosing <unit>, worked example using fragment form ref=\"#n=n1\").",
+    "3. Confirmed the term-type usage has no same-document resolution requirement stated anywhere in the spec -- deliberately scoped the new check to type='comment' only, to avoid inventing a constraint the spec never states for type='term'.",
+    "4. Probed the model directly before writing any code: confirmed mrk's type/ref attributes are stored generically in InlineElement.attributes (no special modeling needed), and Unit.notes/Note.id already exist and are sufficient to resolve against.",
+    "5. Added _MRK_COMMENT_REF_NOTE_ID (a regex extracting the trailing 'n=<id>' segment from a ref value, tolerant of a longer qualified path even though the spec's own same-unit case only needs the short form) and _mrk_comment_ref_diagnostics() to validator.py, reusing the exact same per-unit qname-agnostic walking pattern already proven for _data_ref_diagnostics -- added 'import re' since the module had none before.",
+    "6. Wired the new function into validate() at the same per-unit call site as _data_ref_diagnostics.",
+    "7. Probed directly before writing formal tests: a valid same-unit comment ref produced no mrk diagnostic; an unresolvable ref and a ref with zero notes in the unit both correctly fired xliff.mrk.comment.ref.unresolved; a term-type mrk with an external URI produced no diagnostic; a comment-type mrk with no ref at all produced no diagnostic. All 5 correct on the first attempt.",
+    "8. Ran the full pre-existing xliff suite (455 tests, zero new fixtures) against the new check to look for false positives before writing a single new test -- all 455 passed unchanged, confirming zero pre-existing fixture used a comment-type mrk with an unresolvable ref.",
+    "9. Wrote 6 formal tests in a new file (test_obligation_mrk_comment_ref_resolution.py), all passing on the first attempt.",
+    "10. Ran ruff (clean), the full xliff suite (461 passed, was 455, +6), and the full 6-format regression (3408 passed, was 3402, +6; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "11. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-8cfc5335d580dc6b, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "12. Promoted all 4 obligations to implemented: this was the final remaining named gap in their shared rule_text's 'references must resolve' clause -- ec/sc pairing, dataRef, and now mrk's own ref are all directly proven."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py -q -- 6 passed",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/validation/validator.py tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 461 passed, was 455 passed (455 passed unchanged BEFORE writing new tests, confirming zero false positives)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3408 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3402 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "4 obligations moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 4,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every claim grounded directly in the pinned spec's own prose and worked example.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-441E7C6F7C341B12 (XLIFF-MODEL-001), SAL-XLIFF-OBL-DA738080DC614E67 (XLIFF-VALIDATE-001), SAL-XLIFF-OBL-EC188D4F6DD138A0 (XLIFF-PARSE-001), SAL-XLIFF-OBL-F20C2CA429BA381B (XLIFF-INLINE-001), all sharing 'references must resolve' rule_text, all partial->implemented. The last remaining gap in this specific rule_text cluster after ec/sc pairing and dataRef were closed earlier this session."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

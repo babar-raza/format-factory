@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-MRK-COMMENT-REF-RESOLUTION-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-mrk-comment-ref-resolution-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes 4 obligations sharing "id attributes on file group unit and inline elements must be unique within their specification-defined scope and references must resolve" across XLIFF-MODEL-001/VALIDATE-001/PARSE-001/INLINE-001 (SAL-XLIFF-OBL-441E7C6F7C341B12, SAL-XLIFF-OBL-DA738080DC614E67, SAL-XLIFF-OBL-EC188D4F6DD138A0, SAL-XLIFF-OBL-F20C2CA429BA381B, all moved partial->implemented). This was the last remaining "references must resolve" gap after ec/sc pairing and dataRef were closed earlier this session -- confirmed genuinely unimplemented by grep before this slice: no code path anywhere in validator.py or model/inline.py read or resolved mrk''s own ref attribute. Read the pinned XLIFF 2.1 spec source directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin, section 4.7.3.1.3 Comment Annotation): "The ref attribute MUST be present and contain the URI of a <note> element within the same enclosing <unit> element that holds the comment," with the spec''s own worked example using the fragment form ref="#n=n1" against a sibling <note id="n1">. Also confirmed via the same source that the spec''s OTHER documented ref usage (type="term", e.g. ref="http://dbpedia.org/page/...") points at an arbitrary external URI with no same-document resolution requirement at all -- deliberately scoped this check to mrk[type="comment"] only, avoiding inventing a constraint for type="term" the spec never states. Added _mrk_comment_ref_diagnostics() to validator.py, wired at the same per-unit call site as the existing _data_ref_diagnostics(). Verified zero false positives against the entire pre-existing 455-test xliff suite before writing a single new test -- no existing fixture used a comment-type mrk with an unresolvable ref. 6 new tests prove: a comment ref resolving to a same-unit note validates cleanly; an unresolvable ref is flagged; a ref with zero notes in the unit is flagged; a term-type mrk''s external-URI ref is never checked; a comment-type mrk with no ref at all is not checked here (presence is a separate concern); and the check applies independently to target content. xliff suite: 455 -> 461 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, every claim grounded directly in the pinned spec''s own prose and worked example. Covers SAL-XLIFF-OBL-441E7C6F7C341B12, SAL-XLIFF-OBL-DA738080DC614E67, SAL-XLIFF-OBL-EC188D4F6DD138A0, and SAL-XLIFF-OBL-F20C2CA429BA381B only; it supports no other obligation and promotes no product state.'
 - evidence_id: XLIFF-ITS-MAPPING-LANG-ATTRIBUTE-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-its-mapping-lang-attribute-001.json
   expected_result: PASS
@@ -1496,7 +1501,7 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-441E7C6F7C341B12
   capability_id: XLIFF-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
@@ -1507,16 +1512,21 @@ obligations:
   - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_sibling_groups_in_one_file_sharing_an_id_are_flagged_as_duplicate
   - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_nested_group_sharing_its_parents_id_is_flagged_as_duplicate
   - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_the_same_group_id_reused_across_different_files_is_not_a_duplicate
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_comment_ref_that_resolves_to_a_note_in_the_same_unit_is_not_flagged
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_term_type_mrk_with_an_external_uri_ref_is_never_checked
   negative_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_comment_ref_that_does_not_match_any_note_id_is_a_violation
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_comment_ref_with_no_notes_in_the_unit_at_all_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   - XLIFF-FILE-GROUP-ID-UNIQUENESS-PROOF
+  - XLIFF-MRK-COMMENT-REF-RESOLUTION-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of XLIFF-PARSE-001''s SAL-XLIFF-OBL-EC188D4F6DD138A0 (identical rule_text): unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven. file-id uniqueness (document-wide) and group-id uniqueness (file-wide, grounded directly in the pinned spec''s own identifier-scope text) are now also proven, including correct nesting-depth flattening and correct non-flagging when the same group id is legitimately reused across different files. This obligation was citing stale evidence (claiming group-id detection did not exist and file-id detection was merely untested) that predated Event 208''s group-id work in this same session; corrected to match the canonical sibling obligation''s current, verified state.'
-  missing_behavior:
-  - 'Broader "references must resolve" beyond ec/sc pairing and dataRef (now closed by a later tick this session, src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics) is still genuinely unimplemented for mrk''s own ref attribute -- confirmed by grep that no code path anywhere in validator.py or model/inline.py reads or resolves it. Not attempted this slice, deliberately scoped separately from the id-uniqueness half this slice closes.'
+  - 'The remaining "references must resolve" gap -- mrk''s own ref attribute -- is now also directly proven. Grounded in the pinned spec''s own prose (section 4.7.3.1.3 Comment Annotation): "the ref attribute MUST be present and contain the URI of a <note> element within the same enclosing <unit>," using the worked example''s fragment form ref="#n=<note id>". Added _mrk_comment_ref_diagnostics() to validator.py, checked only for mrk[type="comment"] -- the spec''s other documented ref usage (type="term", an arbitrary external URI) has no same-document resolution requirement and is correctly left unchecked.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
@@ -3624,7 +3634,7 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-DA738080DC614E67
   capability_id: XLIFF-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
@@ -3635,16 +3645,21 @@ obligations:
   - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_sibling_groups_in_one_file_sharing_an_id_are_flagged_as_duplicate
   - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_nested_group_sharing_its_parents_id_is_flagged_as_duplicate
   - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_the_same_group_id_reused_across_different_files_is_not_a_duplicate
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_comment_ref_that_resolves_to_a_note_in_the_same_unit_is_not_flagged
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_term_type_mrk_with_an_external_uri_ref_is_never_checked
   negative_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_comment_ref_that_does_not_match_any_note_id_is_a_violation
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_comment_ref_with_no_notes_in_the_unit_at_all_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   - XLIFF-FILE-GROUP-ID-UNIQUENESS-PROOF
+  - XLIFF-MRK-COMMENT-REF-RESOLUTION-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of XLIFF-PARSE-001''s SAL-XLIFF-OBL-EC188D4F6DD138A0 (identical rule_text): unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven. file-id uniqueness (document-wide) and group-id uniqueness (file-wide, grounded directly in the pinned spec''s own identifier-scope text) are now also proven, including correct nesting-depth flattening and correct non-flagging when the same group id is legitimately reused across different files. This obligation was citing stale evidence (claiming group-id detection did not exist and file-id detection was merely untested) that predated Event 208''s group-id work in this same session; corrected to match the canonical sibling obligation''s current, verified state.'
-  missing_behavior:
-  - 'Broader "references must resolve" beyond ec/sc pairing and dataRef (now closed by a later tick this session, src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics) is still genuinely unimplemented for mrk''s own ref attribute -- confirmed by grep that no code path anywhere in validator.py or model/inline.py reads or resolves it. Not attempted this slice, deliberately scoped separately from the id-uniqueness half this slice closes.'
+  - 'The remaining "references must resolve" gap -- mrk''s own ref attribute -- is now also directly proven. Grounded in the pinned spec''s own prose (section 4.7.3.1.3 Comment Annotation): "the ref attribute MUST be present and contain the URI of a <note> element within the same enclosing <unit>," using the worked example''s fragment form ref="#n=<note id>". Added _mrk_comment_ref_diagnostics() to validator.py, checked only for mrk[type="comment"] -- the spec''s other documented ref usage (type="term", an arbitrary external URI) has no same-document resolution requirement and is correctly left unchecked.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
@@ -3804,7 +3819,7 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-EC188D4F6DD138A0
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
@@ -3815,16 +3830,21 @@ obligations:
   - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_sibling_groups_in_one_file_sharing_an_id_are_flagged_as_duplicate
   - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_nested_group_sharing_its_parents_id_is_flagged_as_duplicate
   - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_the_same_group_id_reused_across_different_files_is_not_a_duplicate
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_comment_ref_that_resolves_to_a_note_in_the_same_unit_is_not_flagged
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_term_type_mrk_with_an_external_uri_ref_is_never_checked
   negative_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_comment_ref_that_does_not_match_any_note_id_is_a_violation
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_comment_ref_with_no_notes_in_the_unit_at_all_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   - XLIFF-FILE-GROUP-ID-UNIQUENESS-PROOF
+  - XLIFF-MRK-COMMENT-REF-RESOLUTION-PROOF
   implemented_behavior:
   - 'unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven. file-id uniqueness (document-wide) and group-id uniqueness (a new check, file-wide -- grounded directly in the pinned spec''s own identifier-scope text, which scopes group ids to "the enclosing file element" rather than the whole document) are now also proven, including correct nesting-depth flattening and correct non-flagging when the same group id is legitimately reused across different files.'
-  missing_behavior:
-  - 'Broader "references must resolve" beyond ec/sc pairing and dataRef (now closed by a later tick this session, src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics) is still genuinely unimplemented for mrk''s own ref attribute -- confirmed by grep that no code path anywhere in validator.py or model/inline.py reads or resolves it. Not attempted this slice, deliberately scoped separately from the id-uniqueness half this slice closes.'
+  - 'The remaining "references must resolve" gap -- mrk''s own ref attribute -- is now also directly proven. Grounded in the pinned spec''s own prose (section 4.7.3.1.3 Comment Annotation): "the ref attribute MUST be present and contain the URI of a <note> element within the same enclosing <unit>," using the worked example''s fragment form ref="#n=<note id>". Added _mrk_comment_ref_diagnostics() to validator.py, checked only for mrk[type="comment"] -- the spec''s other documented ref usage (type="term", an arbitrary external URI) has no same-document resolution requirement and is correctly left unchecked.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -3877,7 +3897,7 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-F20C2CA429BA381B
   capability_id: XLIFF-INLINE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
@@ -3888,16 +3908,21 @@ obligations:
   - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_sibling_groups_in_one_file_sharing_an_id_are_flagged_as_duplicate
   - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_nested_group_sharing_its_parents_id_is_flagged_as_duplicate
   - tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_the_same_group_id_reused_across_different_files_is_not_a_duplicate
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_comment_ref_that_resolves_to_a_note_in_the_same_unit_is_not_flagged
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_term_type_mrk_with_an_external_uri_ref_is_never_checked
   negative_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_comment_ref_that_does_not_match_any_note_id_is_a_violation
+  - tests/python/xliff/test_obligation_mrk_comment_ref_resolution.py::test_a_comment_ref_with_no_notes_in_the_unit_at_all_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   - XLIFF-FILE-GROUP-ID-UNIQUENESS-PROOF
+  - XLIFF-MRK-COMMENT-REF-RESOLUTION-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of XLIFF-PARSE-001''s SAL-XLIFF-OBL-EC188D4F6DD138A0 (identical rule_text): unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven. file-id uniqueness (document-wide) and group-id uniqueness (file-wide, grounded directly in the pinned spec''s own identifier-scope text) are now also proven, including correct nesting-depth flattening and correct non-flagging when the same group id is legitimately reused across different files. This obligation was citing stale evidence (claiming group-id detection did not exist and file-id detection was merely untested) that predated Event 208''s group-id work in this same session; corrected to match the canonical sibling obligation''s current, verified state.'
-  missing_behavior:
-  - 'Broader "references must resolve" beyond ec/sc pairing and dataRef (now closed by a later tick this session, src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics) is still genuinely unimplemented for mrk''s own ref attribute -- confirmed by grep that no code path anywhere in validator.py or model/inline.py reads or resolves it. Not attempted this slice, deliberately scoped separately from the id-uniqueness half this slice closes.'
+  - 'The remaining "references must resolve" gap -- mrk''s own ref attribute -- is now also directly proven. Grounded in the pinned spec''s own prose (section 4.7.3.1.3 Comment Annotation): "the ref attribute MUST be present and contain the URI of a <note> element within the same enclosing <unit>," using the worked example''s fragment form ref="#n=<note id>". Added _mrk_comment_ref_diagnostics() to validator.py, checked only for mrk[type="comment"] -- the spec''s other documented ref usage (type="term", an arbitrary external URI) has no same-document resolution requirement and is correctly left unchecked.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves

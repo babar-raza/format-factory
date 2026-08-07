@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import xml.etree.ElementTree as ET
 from collections import Counter
 
@@ -327,6 +328,46 @@ def _data_ref_diagnostics(unit: Unit, diagnostics: list[Diagnostic]) -> None:
                             "xliff.inline.dataRef.unpaired",
                             f"{element.tag} {element.id!r} in unit {unit.id!r} {label} "
                             f"must use dataRefStart and dataRefEnd as a pair",
+                        )
+                    )
+
+
+#: A comment annotation's ref fragment is "#n=<note id>" (the pinned spec's
+#: own worked example, section 4.7.3.1.3 Comment Annotation); this extracts
+#: the note id from the trailing "n=..." segment, tolerant of a longer
+#: qualified path (e.g. "#f=f1/u=u1/n=n1") even though this package only
+#: ever needs the same-unit short form the spec's own MUST requires.
+_MRK_COMMENT_REF_NOTE_ID = re.compile(r"n=([^/]+)$")
+
+
+def _mrk_comment_ref_diagnostics(unit: Unit, diagnostics: list[Diagnostic]) -> None:
+    """(XLIFF Core comment annotation, section 4.7.3.1.3) "The ref
+    attribute MUST be present and contain the URI of a <note> element
+    within the same enclosing <unit> element that holds the comment."
+    Checked only for mrk elements whose type is "comment" -- the spec's
+    other documented ref usage (e.g. type="term", pointing at an arbitrary
+    external URI such as a DBpedia page) has no same-document resolution
+    requirement at all, and is deliberately left unchecked."""
+
+    note_ids = {note.id for note in unit.notes if note.id}
+    for label in ("source", "target"):
+        for segment in unit.segments:
+            content = segment.source if label == "source" else (segment.target or [])
+            for element in _inline_elements(content):
+                if element.tag != "mrk" or element.attributes.get("type") != "comment":
+                    continue
+                ref = element.attributes.get("ref")
+                if ref is None:
+                    continue
+                match = _MRK_COMMENT_REF_NOTE_ID.search(ref)
+                note_id = match.group(1) if match else None
+                if note_id is None or note_id not in note_ids:
+                    diagnostics.append(
+                        Diagnostic(
+                            "xliff.mrk.comment.ref.unresolved",
+                            f"mrk {element.id!r} in unit {unit.id!r} {label} has "
+                            f"type=comment and ref={ref!r}, which does not resolve to "
+                            f"a note in the same unit",
                         )
                     )
 
@@ -747,6 +788,7 @@ def validate(
             _isolated_diagnostics(unit, diagnostics)
             _isolated_pairing_attribute_diagnostics(unit, diagnostics)
             _data_ref_diagnostics(unit, diagnostics)
+            _mrk_comment_ref_diagnostics(unit, diagnostics)
             _format_style_module_diagnostics(unit, diagnostics)
         for file_child in file.children:
             if isinstance(file_child, ExtensionNode):
