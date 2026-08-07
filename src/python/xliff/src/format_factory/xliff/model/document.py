@@ -7,6 +7,8 @@ from typing import Iterator
 
 from .inline import InlineElement, InlineNode, flatten_inline_content
 
+_XML_SPACE = "{http://www.w3.org/XML/1998/namespace}space"
+
 
 def _copy_inline_nodes(nodes: list[InlineNode]) -> list[InlineNode]:
     """Deep-copy inline content so source and target never share mutable codes."""
@@ -141,6 +143,20 @@ class XliffDocument:
     #: would need. None on a document built directly in memory, since
     #: nothing was detected.
     detected_version: str | None = None
+
+    @property
+    def xml_space(self) -> str:
+        """"The xml:space attribute specifies how white spaces... are to
+        be treated. Value description: default or preserve... Default
+        value: ...When used in <xliff>: The value default."
+
+        Distinct from per-element xml:space inheritance (file/group/unit/
+        source/target/data each default to their PARENT's effective
+        value, not a document-wide constant) -- that broader chain is not
+        modeled here; this property answers only the one thing this
+        obligation's own rule_text names: the root's own default.
+        """
+        return self.attributes.get(_XML_SPACE, "default")
 
     @property
     def files(self) -> list[XliffFile]:

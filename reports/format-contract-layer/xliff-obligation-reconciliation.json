@@ -130,6 +130,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-009F2EB91831B248 (XLIFF-SEC-001) only. The obligation's own prior finding was already correct and not stale -- no feature anywhere in the package resolves a detached or referenced resource from parsed document content, confirmed again by reading model/document.py directly and grepping the whole package for filesystem-path construction (the only 2 hits are reader.py's caller-supplied top-level source path and writer.py's caller-supplied destination path). It was correctly left `missing` rather than force-promoted because the absence-of-attack-surface claim had no dedicated test. 6 new tests now prove it: a whole-package AST scan confirms no networking/execution/plugin module is imported; Note.text is a plain opaque string; and 4 hostile path shapes survive load/validate/dump/round-trip with Path.open/Path.read_bytes monkeypatched to raise if ever invoked with the hostile content -- none were. A separate 2 new tests, added to the existing test_obligation_security_limits.py file, prove SAL-XLIFF-OBL-130340BC212989D5's _enforce_tree_limits also bounds a width-shaped complexity vector (many siblings, shallow nesting) distinct from the already-tested deep-nesting case -- that obligation stays honestly partial since its own rule_text separately names checked arithmetic, which is not independently tested. xliff suite: 350 -> 358 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-009F2EB91831B248 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-ROOT-XML-SPACE-DEFAULT-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-root-xml-space-default-001.json",
+      "sha256": "8666cfed5b1df0b4b4df1540cb46d5ae673ebfe26c06933080a37682d3dc0f3a",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-D2BB0F0D8018D601 (XLIFF-PARSE-001). The reader previously never synthesized a default xml:space value on the root -- if absent from source XML it was simply absent from XliffDocument.attributes, confirmed directly. Read the pinned XLIFF 2.1 spec source directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin, section 4.3.2.2) for xml:space's own default-value entry: \"When used in <xliff>: The value default\", distinct from the broader per-element inheritance chain the same spec text also describes (file/group/unit/source/target inherit from their parent, data defaults to preserve) -- deliberately not modeled here, since this obligation's own rule_text names only the root's default. Added XliffDocument.xml_space, returning \"default\" when absent, the explicit value otherwise. 4 new tests prove absent-defaults-to-default, explicit-preserve, explicit-default, and that the raw attributes dict still separately distinguishes absent from explicit-default for XLIFF-PRESERVE-001's finer concern. xliff suite: 377 -> 381 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, with the default-value claim grounded directly in the pinned spec's own text. Covers SAL-XLIFF-OBL-D2BB0F0D8018D601 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-SEC-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -173,7 +181,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "cb44aa53d504d30ec93576ad937ca2c33337281d7457933b0d0d0a732c8942a4",
+    "implementation_evidence": "b7715f7b3482b68dccf36fd0e9f83e0a3214b6abe08098272e4d7b624db01651",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -4026,18 +4034,22 @@
       "capability_id": "XLIFF-PARSE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-ROOT-XML-SPACE-DEFAULT-PROOF"
       ],
       "implemented_behavior": [
-        "source and target permitting optional xml:lang and xml:space as generic passthrough attributes is proven."
+        "source and target permitting optional xml:lang and xml:space as generic passthrough attributes is proven. \"The xliff root declares xml:space with default value default\" is now also proven: a new XliffDocument.xml_space property returns the spec-mandated \"default\" when the attribute is absent from the source XML, and the explicit value verbatim when present -- grounded directly in the pinned spec's own per-attribute entry (\"When used in <xliff>: The value default\"), deliberately scoped to only the root's default rather than the broader per-element inheritance chain (file/group/unit/source/target each default from their parent, data defaults to preserve) that same spec text also describes but this obligation's own rule_text does not ask for."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: \"the xliff root declares xml:space with default value default\" is untested and not actually modeled -- the reader never synthesizes a default xml:space on the root; if absent from the source XML it is simply absent from the parsed attributes rather than defaulted. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_root_xml_space_default.py::test_absent_and_explicit_default_are_still_distinguishable_via_raw_attributes"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-D2BB0F0D8018D601",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_target_creation_and_token_aware_edit_preserve_inline_codes_and_xml_attributes"
+        "tests/python/xliff/test_production_namespace.py::test_target_creation_and_token_aware_edit_preserve_inline_codes_and_xml_attributes",
+        "tests/python/xliff/test_obligation_root_xml_space_default.py::test_an_absent_xml_space_attribute_defaults_to_default",
+        "tests/python/xliff/test_obligation_root_xml_space_default.py::test_an_explicit_preserve_is_reported_verbatim",
+        "tests/python/xliff/test_obligation_root_xml_space_default.py::test_an_explicit_default_is_reported_verbatim_too"
       ],
       "proof_requirements": {
         "negative": [
@@ -4047,11 +4059,12 @@
           "Version/namespace consistency fixtures per supported version; legacy-version refusal fixture."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
+        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument::xml_space"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODULE-001",
@@ -4681,6 +4694,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-preservation-mode-001.json": "3ce322c7f4990e64fa3573f6ebc57fb2cccf08767f18604bce82078c88136ec2",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-checks-001.json": "00a6d7c1b4d2fc48359f0484a08d0d639ee8fe136b11904870bd1acdda0e4d5c",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-source-language-001.json": "20704e391b435e219e635d1ad3b2da286e48e863bd64cf51ffa099aebc7fba27",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-root-xml-space-default-001.json": "8666cfed5b1df0b4b4df1540cb46d5ae673ebfe26c06933080a37682d3dc0f3a",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-sec-001-001.json": "b59624a8a8b11d0b3eb8db6076fb61aba59add049d2ad84cd92bee83aea0603d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-security-limits-001.json": "15f42fdeb25a403a632cbeca88772e794950c42e67c540c6384f09d31dfd84cd",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-seg-structure-language-001.json": "4e79d0650232d6bc7d61e45e7c0f203ab78e04faf29f792897448a44dcea6df8",
@@ -4691,7 +4705,7 @@
     "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py": "a9c296cbdfb6da4d2ba4d4621cb1d69e002f5ce85047aca1a77a3426c55ded7c",
     "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py": "ddec3e6154bf1ee6533b1a3438fa8f62355f4475b6072e7323cf5e61da7b534b",
     "src/python/xliff/src/format_factory/xliff/merge.py": "c16a0916c2a7ddaeb49dd200fbe89e4a0b08f0ca19dd5177f7001733c0882c1b",
-    "src/python/xliff/src/format_factory/xliff/model/document.py": "70b4173911c55f8ebb068cff6aefbb34fadbe2577793ba5147e5e68652db4bbf",
+    "src/python/xliff/src/format_factory/xliff/model/document.py": "75998dc0703b79e6009e89d428e829f66eb4af5015f88b80e53a06a87eb26a2b",
     "src/python/xliff/src/format_factory/xliff/model/inline.py": "044d04957bcc6db867494411063619c0640e152012285f744a3f2ef7d41058c3",
     "src/python/xliff/src/format_factory/xliff/model/segmentation.py": "c2c3f1f35573fa11fc4f6ae67bf0a9d4395824dc2589dd05d73d88d83b00576b",
     "src/python/xliff/src/format_factory/xliff/model/text_editing.py": "408d1e5f8ffb5c51f548faac3e45125924bf395844171eb0fe292b0b3a20b5c3",
@@ -4712,6 +4726,7 @@
     "tests/python/xliff/test_obligation_preservation_mode.py": "f30f484eed1a8585828f01fb325a79f22eb0138633afbc872629a67841f140fe",
     "tests/python/xliff/test_obligation_qa_checks.py": "28fac4e3d1c95d6a35e3e766ac34d895e7e00bf5ecf30347e9a9124dbaee9143",
     "tests/python/xliff/test_obligation_resource_resolution_security.py": "7bd8371c0a04ee1ecf6574d863d76e4ed6c8d449fbfd12d492ad45cfcc9d7720",
+    "tests/python/xliff/test_obligation_root_xml_space_default.py": "d0f84396f61e8c8e8de1b82035e6c7987414371ee1ccb284f52e5800a537b812",
     "tests/python/xliff/test_obligation_security_limits.py": "faea1be64cd4cf09be3a785aebad713f8af5b159aa84f2b3ca92c1cd15212ad7",
     "tests/python/xliff/test_obligation_segment_structure_and_language.py": "4147094fbe4e7af8284b21c0c92fdb3aa4a26bd1e923a244db09980937f2de93",
     "tests/python/xliff/test_obligation_state_transitions.py": "eb2fb6fa0f4503175da1904986563ca1a1ee97f317067a2d29466c5c35c9c1bf",
@@ -4722,12 +4737,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 71,
+      "implemented": 72,
       "missing": 22,
-      "partial": 49
+      "partial": 48
     },
     "total": 142,
-    "unresolved": 71
+    "unresolved": 70
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

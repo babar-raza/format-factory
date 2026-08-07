@@ -1,0 +1,53 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-root-xml-space-default-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T06:52:30Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_ROOT_XML_SPACE_DEFAULT_001",
+    "task_kind": "direct-spec-read-small-accessor",
+    "root_cause": "SAL-XLIFF-OBL-D2BB0F0D8018D601 (XLIFF-PARSE-001) named the xliff root's spec-mandated xml:space default value as untested and unmodeled -- the reader never synthesized a default when the attribute was absent from the source XML.",
+    "obligation_targeted": "SAL-XLIFF-OBL-D2BB0F0D8018D601 (XLIFF-PARSE-001)",
+    "acceptance_evidence": "4 new tests prove a new XliffDocument.xml_space property returns 'default' when the attribute is absent (the spec-mandated root default), the explicit value when present, and that the raw attributes dict still separately distinguishes absent from an explicitly-written 'default' for any caller needing that finer distinction.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the obligation's own rule_text precisely before scoping the fix: '(XLIFF core - whitespace and language) The xliff root declares xml:space with default value default, and source and target permit optional xml:lang and xml:space attributes' -- confirmed this is narrower than the full XML spec's per-element xml:space inheritance rule.",
+    "2. Read the pinned XLIFF 2.1 spec source directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin, section 4.3.2.2) for xml:space's own value-description and default-value entry: 'Value description: default or preserve... Default value: ...When used in <data>: The value preserve. When used in <xliff>: The value default. When used in any other element: The value of the xml:space attribute of its parent element.' Confirmed the obligation's own rule_text deliberately scopes to only the root's default (xliff -> 'default'), not the full file/group/unit/source/target/data inheritance chain -- correctly not attempting the broader chain as a separate, larger feature.",
+    "3. Added a new xml_space property to XliffDocument, returning attributes.get(XML_SPACE_KEY, 'default') -- exposing the spec-mandated root default explicitly, mirroring the same 'expose an existing default explicitly' pattern used elsewhere this session (e.g. ORA's version-drift warning, NRRD's version_requirements).",
+    "4. Verified interactively before writing formal tests: absent xml:space correctly reports 'default'; explicit 'preserve' and explicit 'default' both report verbatim; the raw attributes dict still distinguishes absent from explicit-default at the finer level XLIFF-PRESERVE-001 already cares about -- all 3 cases correct on the first attempt.",
+    "5. Wrote 4 formal tests covering all cases plus the absent-vs-explicit-default distinguishability check. Ran ruff (clean), the full xliff suite (381 passed, was 377, +4), and the full 6-format regression (3136 passed, was 3132, +4; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "6. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-27584d624a7398e7, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "tests/python/xliff/test_obligation_root_xml_space_default.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "tests/python/xliff/test_obligation_root_xml_space_default.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_root_xml_space_default.py -q -- 4 passed",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/model/document.py tests/python/xliff/test_obligation_root_xml_space_default.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 381 passed, was 377 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3136 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3132 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the default-value claim is grounded directly in the pinned spec's own per-attribute entry, not invented from memory.",
+    "obligations_moved_breakdown": "1 obligation promoted partial->implemented: the source/target optional xml:lang/xml:space passthrough clause was already proven; the root xml:space default clause is now also proven, closing the obligation fully."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
