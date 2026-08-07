@@ -35,6 +35,8 @@ _TAX_TOTAL_QNAME = f"{{{_CAC_NAMESPACE}}}TaxTotal"
 _LEGAL_MONETARY_TOTAL_QNAME = f"{{{_CAC_NAMESPACE}}}LegalMonetaryTotal"
 _EXTERNAL_REFERENCE_QNAME = f"{{{_CAC_NAMESPACE}}}ExternalReference"
 _ALLOWANCE_CHARGE_QNAME = f"{{{_CAC_NAMESPACE}}}AllowanceCharge"
+_ITEM_QNAME = f"{{{_CAC_NAMESPACE}}}Item"
+_PRICE_QNAME = f"{{{_CAC_NAMESPACE}}}Price"
 
 #: Per the pinned OASIS UBL 2.3 CommonAggregateComponents schema
 #: (xsd/common/UBL-CommonAggregateComponents-2.3.xsd, PartyType/AddressType/
@@ -130,6 +132,17 @@ _EXTERNAL_REFERENCE_SINGLE_OCCURRENCE_FIELDS = frozenset(
 _ALLOWANCE_CHARGE_SINGLE_OCCURRENCE_FIELDS = frozenset(
     {"ChargeIndicator", "AllowanceChargeReasonCode", "Amount"}
 )
+#: ItemType (read directly from the pinned schema ZIP) declares Name as
+#: maxOccurs=1, matching this package's own Item.name field -- the type's
+#: only single-occurrence child this package models at all (identifiers/
+#: classification_codes are deliberately excluded: ItemType has no direct
+#: cbc:ID or cbc:CommodityClassification child, a genuinely separate,
+#: unresolved model-field-mapping question, not a cardinality concern).
+_ITEM_SINGLE_OCCURRENCE_FIELDS = frozenset({"Name"})
+#: PriceType declares PriceAmount (1, required) and BaseQuantity (0..1) as
+#: maxOccurs=1, matching this package's own Price.price_amount/
+#: base_quantity fields exactly, in that declared order.
+_PRICE_SINGLE_OCCURRENCE_FIELDS = frozenset({"PriceAmount", "BaseQuantity"})
 
 
 def _local(qname: str) -> str:
@@ -265,6 +278,8 @@ _CARDINALITY_CHECKED_COMPONENTS: dict[str, tuple[frozenset[str], str]] = {
         _ALLOWANCE_CHARGE_SINGLE_OCCURRENCE_FIELDS,
         "cac:AllowanceCharge",
     ),
+    _ITEM_QNAME: (_ITEM_SINGLE_OCCURRENCE_FIELDS, "cac:Item"),
+    _PRICE_QNAME: (_PRICE_SINGLE_OCCURRENCE_FIELDS, "cac:Price"),
 }
 
 
@@ -318,6 +333,8 @@ _ORDER_CHECKED_COMPONENTS: dict[str, tuple[str, ...]] = {
     ),
     _EXTERNAL_REFERENCE_QNAME: ("URI", "DocumentHash", "MimeCode", "FileName"),
     _ALLOWANCE_CHARGE_QNAME: ("ChargeIndicator", "AllowanceChargeReasonCode", "Amount"),
+    _ITEM_QNAME: ("Name",),
+    _PRICE_QNAME: ("PriceAmount", "BaseQuantity"),
 }
 
 

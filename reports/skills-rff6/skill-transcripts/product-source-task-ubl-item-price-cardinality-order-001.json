@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-item-price-cardinality-order-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T12:19:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_ITEM_PRICE_CARDINALITY_ORDER_001",
+    "task_kind": "extend-proven-pattern-to-two-new-already-modeled-components",
+    "root_cause": "Event 240's next-action ranking pointed to surveying UBL's remaining typed model classes for one more cardinality/order cluster component, continuing the pattern proven 6 times this session (events 216-223, 231, 238). Checked Item and Price (model/aggregates.py, model/charges.py), neither previously covered by either cluster.",
+    "obligation_targeted": "11 cross-capability duplicate obligations across UBL-MODEL-001/PARSE-001/DOCTYPES-001/VALIDATE-001/REF-001/SIGN-001 -- all remain partial, missing_behavior text narrowed from 14 to 16 covered complexTypes",
+    "acceptance_evidence": "8 new tests prove: single-Name Item and well-formed Price validate cleanly; duplicate Item Name/Price PriceAmount/Price BaseQuantity are each cardinality violations; BaseQuantity before PriceAmount is an order violation; dumps() refuses out-of-order Price and writes well-formed Item+Price without incident.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read ItemType and PriceType directly from the pinned OASIS UBL 2.3 CommonAggregateComponents schema (.local/format-contracts/acquired/ubl/src-ubl-002.bin) rather than transcribing from memory: ItemType declares Name as maxOccurs=1, matching Item.name (the type's only single-occurrence child this package models -- identifiers/classification_codes deliberately excluded, matching the existing documented exclusion). PriceType declares PriceAmount (1, required) and BaseQuantity (0..1) as maxOccurs=1, matching Price.price_amount/base_quantity exactly, in that declared schema order.",
+    "2. Added _ITEM_QNAME/_PRICE_QNAME and their single-occurrence-field frozensets to validator.py, and one entry each to _CARDINALITY_CHECKED_COMPONENTS and _ORDER_CHECKED_COMPONENTS, reusing the identical qname-keyed dispatch pattern proven for every prior component -- zero changes to the dispatch functions themselves. Item's order entry is a 1-tuple, matching the existing precedent set by cac:TaxTotal's own single-field order entry.",
+    "3. Probed directly before writing formal tests: a document with a duplicate Item Name was refused by dumps() naming the exact cardinality violation; a duplicate Price PriceAmount and duplicate BaseQuantity were each refused; a Price with BaseQuantity before PriceAmount was refused naming the exact order violation; a well-formed Item+Price document serialized without incident. All 4 correct on the first attempt.",
+    "4. Ran the full pre-existing ubl suite (949 tests, zero new fixtures) against the new checks to look for false positives before writing a single new test -- all 949 passed unchanged.",
+    "5. Wrote 8 formal tests in a new file (test_obligation_item_and_price_cardinality_and_order_validation.py), all passing on the first attempt.",
+    "6. Ran ruff (clean), the full ubl suite (957 passed, was 949, +8), and the full 6-format regression (3416 passed, was 3408, +8; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "7. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-bda526340e04e1d6, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "8. Updated all 11 affected cross-capability duplicate obligations' missing_behavior/implemented_behavior text to reflect 16 (not 14) covered complexTypes and cite cac:Item/cac:Price explicitly, using replace_all edits per cluster since all obligations within each cluster shared byte-identical text (verified programmatically before editing). None promoted to implemented -- the underlying 'full schema and cardinality/order validation across every UBL complexType' claim remains a genuinely larger, separate undertaking."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py -q -- 8 passed",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/validation/validator.py tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 957 passed, was 949 passed (949 passed unchanged BEFORE writing new tests, confirming zero false positives)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3416 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3408 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations moved status (11 cross-capability duplicate obligations narrowed in scope, all remain partial)",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every declared field/order read directly from the pinned schema, not invented.",
+    "obligations_moved_breakdown": "SAL-UBL-OBL-03AF3A7D3A76F362, SAL-UBL-OBL-3C2E2EA8D3B697C9, SAL-UBL-OBL-783649FDF531B0F9, SAL-UBL-OBL-9736787B52CB148C, SAL-UBL-OBL-9C170E327B30FBD3 (cardinality cluster) and SAL-UBL-OBL-26CD31E7F8CF91E1, SAL-UBL-OBL-31DE92275AF5F6EF, SAL-UBL-OBL-3B43504E9C74003C, SAL-UBL-OBL-4936871F9800219B, SAL-UBL-OBL-71FF376D05E7219A, SAL-UBL-OBL-CDADC5CFB25A9B9E (order cluster) all narrowed from 14 to 16 covered complexTypes, status unchanged at partial."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

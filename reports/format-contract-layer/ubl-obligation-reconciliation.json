@@ -114,6 +114,14 @@
       "truth_boundary": "Selector-bound: cac:ExternalReference (URI, DocumentHash, MimeCode, FileName, Description, all optional per the verified SAL fact SAL-UBL-00119) had no model class anywhere in this package. New module model/reference.py adds ExternalReference and external_reference_of(), proven fully populated, fully absent, and partially populated (unset fields stay None, not empty string), plus refusal on a missing element. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-88EBC13520652DAE only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-item-price-cardinality-order-001.json",
+      "sha256": "2536fe081ddf4fdd5359614b3283a6352431a13813fe076a6ca560b62c8cff51",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) 11 obligations across UBL-MODEL-001/PARSE-001/DOCTYPES-001/VALIDATE-001/REF-001/SIGN-001: extends the already-proven cardinality cluster (events 216-223, 238) and element-order cluster (events 231, 238) to a 15th and 16th already-modeled component, cac:Item and cac:Price, following Event 240's pointer to survey remaining typed model classes for the next candidate. Read ItemType and PriceType directly from the pinned OASIS UBL 2.3 CommonAggregateComponents schema (.local/format-contracts/acquired/ubl/src-ubl-002.bin): ItemType declares Name as maxOccurs=1, matching this package's own Item.name field -- the type's only single-occurrence child this package models at all (identifiers/classification_codes deliberately excluded, matching the existing documented exclusion: ItemType has no direct cbc:ID or cbc:CommodityClassification child). PriceType declares PriceAmount (1, required) and BaseQuantity (0..1) as maxOccurs=1, matching this package's own Price.price_amount/base_quantity fields exactly, in that declared order. Added _ITEM_QNAME/_PRICE_QNAME and their single-occurrence-field frozensets to validator.py, and one entry each to _CARDINALITY_CHECKED_COMPONENTS and _ORDER_CHECKED_COMPONENTS, reusing the identical qname-keyed dispatch pattern proven for every prior component in this cluster (Item's order entry is a 1-tuple, matching the existing precedent set by cac:TaxTotal's own single-field order entry, even though a single checked field can never itself trigger an order violation). Verified zero false positives against the entire pre-existing 949-test ubl suite before writing a single new test. 8 new tests (tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py) prove: a single-Name Item and a well-formed Price validate cleanly; a duplicate Item Name, duplicate Price PriceAmount, and duplicate Price BaseQuantity are each independently flagged as cardinality violations; BaseQuantity before PriceAmount is an order violation; dumps() refuses an out-of-order Price and writes a well-formed Item+Price without incident. ubl suite: 949 -> 957 passed. Narrows all 11 affected obligations' missing_behavior text from \"14 complexTypes\"/\"...AllowanceCharge's already-modeled...\" to \"16 complexTypes\"/\"...AllowanceCharge/Item/Price's already-modeled...\", none promoted to implemented (the underlying \"full schema and cardinality/order validation across every UBL complexType\" claim remains a genuinely larger, separate undertaking). NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every declared field/order read directly from the pinned schema, not invented. Covers SAL-UBL-OBL-03AF3A7D3A76F362, SAL-UBL-OBL-3C2E2EA8D3B697C9, SAL-UBL-OBL-783649FDF531B0F9, SAL-UBL-OBL-9736787B52CB148C, SAL-UBL-OBL-9C170E327B30FBD3, SAL-UBL-OBL-26CD31E7F8CF91E1, SAL-UBL-OBL-31DE92275AF5F6EF, SAL-UBL-OBL-3B43504E9C74003C, SAL-UBL-OBL-4936871F9800219B, SAL-UBL-OBL-71FF376D05E7219A, and SAL-UBL-OBL-CDADC5CFB25A9B9E only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "UBL-LIFECYCLE-IO-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -293,7 +301,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "74b754609a1b007e7083876492b55beae49983b93260730c949ec33a2db7228b",
+    "implementation_evidence": "7d0c7ae2728536ad3c97e941c6ff9c7dd7a36e3ca56f401b21415d36a01cf8b7",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -374,13 +382,14 @@
         "UBL-LINES-CARDINALITY-PROOF",
         "UBL-AGGREGATES-CARDINALITY-PROOF",
         "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF",
-        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF"
+        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
+        "UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, or cac:AllowanceCharge -- the fourteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 14 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, or cac:Price -- the sixteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 16 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
       ],
       "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference/AllowanceCharge's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields are deliberately excluded: ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
+        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference/AllowanceCharge/Item/Price's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields remain deliberately excluded (only Name is checked): ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -409,7 +418,10 @@
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_mime_codes_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_file_names_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_charge_indicator_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_amount_is_a_cardinality_violation"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_amount_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_an_item_with_two_names_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_duplicate_price_amount_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_duplicate_base_quantity_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-03AF3A7D3A76F362",
       "positive_test_selectors": [
@@ -430,7 +442,9 @@
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_one_of_each_field_validates_cleanly",
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_multiple_descriptions_are_not_a_violation_the_schema_declares_them_repeatable",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_well_formed_allowance_charge_validates_cleanly",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_repeated_allowance_charge_reason_is_not_flagged_as_a_duplicate"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_repeated_allowance_charge_reason_is_not_flagged_as_a_duplicate",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_an_item_with_a_single_name_validates_cleanly",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_well_formed_price_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -1469,13 +1483,14 @@
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
         "UBL-ELEMENT-ORDER-VALIDATION-PROOF",
-        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF"
+        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
+        "UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, and cac:AllowanceCharge. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 14 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
+        "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, and cac:Price. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 16 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
       ],
       "missing_behavior": [
-        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 14 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
+        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 16 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation",
@@ -1483,7 +1498,8 @@
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_before_tax_exclusive_amount_is_a_violation",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_item_before_id_is_an_order_violation",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_amount_before_charge_indicator_is_an_order_violation",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_reason_code_after_amount_is_an_order_violation"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_reason_code_after_amount_is_an_order_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_base_quantity_before_price_amount_is_an_order_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-26CD31E7F8CF91E1",
       "positive_test_selectors": [
@@ -1492,7 +1508,8 @@
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_last_validates_cleanly",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_unchecked_fields_interspersed_among_checked_fields_do_not_disturb_ordering",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_id_before_invoiced_quantity_before_line_extension_amount_before_item_validates_cleanly",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_allowance_charge_without_incident"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_allowance_charge_without_incident",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_item_and_price_without_incident"
       ],
       "proof_requirements": {
         "negative": [
@@ -1768,13 +1785,14 @@
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
         "UBL-ELEMENT-ORDER-VALIDATION-PROOF",
-        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF"
+        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
+        "UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, and cac:AllowanceCharge. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 14 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
+        "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, and cac:Price. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 16 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
       ],
       "missing_behavior": [
-        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 14 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
+        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 16 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation",
@@ -1782,7 +1800,8 @@
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_before_tax_exclusive_amount_is_a_violation",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_item_before_id_is_an_order_violation",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_amount_before_charge_indicator_is_an_order_violation",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_reason_code_after_amount_is_an_order_violation"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_reason_code_after_amount_is_an_order_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_base_quantity_before_price_amount_is_an_order_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-31DE92275AF5F6EF",
       "positive_test_selectors": [
@@ -1791,7 +1810,8 @@
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_last_validates_cleanly",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_unchecked_fields_interspersed_among_checked_fields_do_not_disturb_ordering",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_id_before_invoiced_quantity_before_line_extension_amount_before_item_validates_cleanly",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_allowance_charge_without_incident"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_allowance_charge_without_incident",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_item_and_price_without_incident"
       ],
       "proof_requirements": {
         "negative": [
@@ -1986,13 +2006,14 @@
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
         "UBL-ELEMENT-ORDER-VALIDATION-PROOF",
-        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF"
+        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
+        "UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, and cac:AllowanceCharge. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 14 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
+        "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, and cac:Price. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 16 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
       ],
       "missing_behavior": [
-        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 14 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
+        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 16 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation",
@@ -2000,7 +2021,8 @@
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_before_tax_exclusive_amount_is_a_violation",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_item_before_id_is_an_order_violation",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_amount_before_charge_indicator_is_an_order_violation",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_reason_code_after_amount_is_an_order_violation"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_reason_code_after_amount_is_an_order_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_base_quantity_before_price_amount_is_an_order_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-3B43504E9C74003C",
       "positive_test_selectors": [
@@ -2009,7 +2031,8 @@
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_last_validates_cleanly",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_unchecked_fields_interspersed_among_checked_fields_do_not_disturb_ordering",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_id_before_invoiced_quantity_before_line_extension_amount_before_item_validates_cleanly",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_allowance_charge_without_incident"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_allowance_charge_without_incident",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_item_and_price_without_incident"
       ],
       "proof_requirements": {
         "negative": [
@@ -2035,13 +2058,14 @@
         "UBL-LINES-CARDINALITY-PROOF",
         "UBL-AGGREGATES-CARDINALITY-PROOF",
         "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF",
-        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF"
+        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
+        "UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, or cac:AllowanceCharge -- the fourteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 14 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, or cac:Price -- the sixteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 16 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
       ],
       "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference/AllowanceCharge's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields are deliberately excluded: ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
+        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference/AllowanceCharge/Item/Price's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields remain deliberately excluded (only Name is checked): ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -2070,7 +2094,10 @@
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_mime_codes_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_file_names_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_charge_indicator_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_amount_is_a_cardinality_violation"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_amount_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_an_item_with_two_names_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_duplicate_price_amount_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_duplicate_base_quantity_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-3C2E2EA8D3B697C9",
       "positive_test_selectors": [
@@ -2091,7 +2118,9 @@
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_one_of_each_field_validates_cleanly",
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_multiple_descriptions_are_not_a_violation_the_schema_declares_them_repeatable",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_well_formed_allowance_charge_validates_cleanly",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_repeated_allowance_charge_reason_is_not_flagged_as_a_duplicate"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_repeated_allowance_charge_reason_is_not_flagged_as_a_duplicate",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_an_item_with_a_single_name_validates_cleanly",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_well_formed_price_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -2429,13 +2458,14 @@
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
         "UBL-ELEMENT-ORDER-VALIDATION-PROOF",
-        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF"
+        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
+        "UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, and cac:AllowanceCharge. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 14 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
+        "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, and cac:Price. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 16 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
       ],
       "missing_behavior": [
-        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 14 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
+        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 16 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation",
@@ -2443,7 +2473,8 @@
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_before_tax_exclusive_amount_is_a_violation",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_item_before_id_is_an_order_violation",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_amount_before_charge_indicator_is_an_order_violation",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_reason_code_after_amount_is_an_order_violation"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_reason_code_after_amount_is_an_order_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_base_quantity_before_price_amount_is_an_order_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-4936871F9800219B",
       "positive_test_selectors": [
@@ -2452,7 +2483,8 @@
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_last_validates_cleanly",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_unchecked_fields_interspersed_among_checked_fields_do_not_disturb_ordering",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_id_before_invoiced_quantity_before_line_extension_amount_before_item_validates_cleanly",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_allowance_charge_without_incident"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_allowance_charge_without_incident",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_item_and_price_without_incident"
       ],
       "proof_requirements": {
         "negative": [
@@ -3564,13 +3596,14 @@
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
         "UBL-ELEMENT-ORDER-VALIDATION-PROOF",
-        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF"
+        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
+        "UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, and cac:AllowanceCharge. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 14 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
+        "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, and cac:Price. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 16 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
       ],
       "missing_behavior": [
-        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 14 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
+        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 16 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation",
@@ -3578,7 +3611,8 @@
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_before_tax_exclusive_amount_is_a_violation",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_item_before_id_is_an_order_violation",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_amount_before_charge_indicator_is_an_order_violation",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_reason_code_after_amount_is_an_order_violation"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_reason_code_after_amount_is_an_order_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_base_quantity_before_price_amount_is_an_order_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-71FF376D05E7219A",
       "positive_test_selectors": [
@@ -3587,7 +3621,8 @@
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_last_validates_cleanly",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_unchecked_fields_interspersed_among_checked_fields_do_not_disturb_ordering",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_id_before_invoiced_quantity_before_line_extension_amount_before_item_validates_cleanly",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_allowance_charge_without_incident"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_allowance_charge_without_incident",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_item_and_price_without_incident"
       ],
       "proof_requirements": {
         "negative": [
@@ -3748,13 +3783,14 @@
         "UBL-LINES-CARDINALITY-PROOF",
         "UBL-AGGREGATES-CARDINALITY-PROOF",
         "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF",
-        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF"
+        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
+        "UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, or cac:AllowanceCharge -- the fourteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 14 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, or cac:Price -- the sixteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 16 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
       ],
       "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference/AllowanceCharge's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields are deliberately excluded: ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
+        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference/AllowanceCharge/Item/Price's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields remain deliberately excluded (only Name is checked): ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -3783,7 +3819,10 @@
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_mime_codes_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_file_names_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_charge_indicator_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_amount_is_a_cardinality_violation"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_amount_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_an_item_with_two_names_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_duplicate_price_amount_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_duplicate_base_quantity_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-783649FDF531B0F9",
       "positive_test_selectors": [
@@ -3804,7 +3843,9 @@
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_one_of_each_field_validates_cleanly",
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_multiple_descriptions_are_not_a_violation_the_schema_declares_them_repeatable",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_well_formed_allowance_charge_validates_cleanly",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_repeated_allowance_charge_reason_is_not_flagged_as_a_duplicate"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_repeated_allowance_charge_reason_is_not_flagged_as_a_duplicate",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_an_item_with_a_single_name_validates_cleanly",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_well_formed_price_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -4802,13 +4843,14 @@
         "UBL-LINES-CARDINALITY-PROOF",
         "UBL-AGGREGATES-CARDINALITY-PROOF",
         "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF",
-        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF"
+        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
+        "UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, or cac:AllowanceCharge -- the fourteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 14 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, or cac:Price -- the sixteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 16 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
       ],
       "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference/AllowanceCharge's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields are deliberately excluded: ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
+        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference/AllowanceCharge/Item/Price's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields remain deliberately excluded (only Name is checked): ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -4837,7 +4879,10 @@
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_mime_codes_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_file_names_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_charge_indicator_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_amount_is_a_cardinality_violation"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_amount_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_an_item_with_two_names_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_duplicate_price_amount_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_duplicate_base_quantity_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-9736787B52CB148C",
       "positive_test_selectors": [
@@ -4858,7 +4903,9 @@
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_one_of_each_field_validates_cleanly",
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_multiple_descriptions_are_not_a_violation_the_schema_declares_them_repeatable",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_well_formed_allowance_charge_validates_cleanly",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_repeated_allowance_charge_reason_is_not_flagged_as_a_duplicate"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_repeated_allowance_charge_reason_is_not_flagged_as_a_duplicate",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_an_item_with_a_single_name_validates_cleanly",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_well_formed_price_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -4946,13 +4993,14 @@
         "UBL-LINES-CARDINALITY-PROOF",
         "UBL-AGGREGATES-CARDINALITY-PROOF",
         "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF",
-        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF"
+        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
+        "UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, or cac:AllowanceCharge -- the fourteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 14 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, or cac:Price -- the sixteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 16 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
       ],
       "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference/AllowanceCharge's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields are deliberately excluded: ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
+        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference/AllowanceCharge/Item/Price's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields remain deliberately excluded (only Name is checked): ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -4981,7 +5029,10 @@
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_mime_codes_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_file_names_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_charge_indicator_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_amount_is_a_cardinality_violation"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_amount_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_an_item_with_two_names_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_duplicate_price_amount_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_duplicate_base_quantity_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-9C170E327B30FBD3",
       "positive_test_selectors": [
@@ -5002,7 +5053,9 @@
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_one_of_each_field_validates_cleanly",
         "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_multiple_descriptions_are_not_a_violation_the_schema_declares_them_repeatable",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_well_formed_allowance_charge_validates_cleanly",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_repeated_allowance_charge_reason_is_not_flagged_as_a_duplicate"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_repeated_allowance_charge_reason_is_not_flagged_as_a_duplicate",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_an_item_with_a_single_name_validates_cleanly",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_well_formed_price_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -6133,13 +6186,14 @@
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
         "UBL-ELEMENT-ORDER-VALIDATION-PROOF",
-        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF"
+        "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
+        "UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, and cac:AllowanceCharge. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 14 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
+        "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, and cac:Price. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 16 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
       ],
       "missing_behavior": [
-        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 14 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
+        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 16 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation",
@@ -6147,7 +6201,8 @@
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_before_tax_exclusive_amount_is_a_violation",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_item_before_id_is_an_order_violation",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_amount_before_charge_indicator_is_an_order_violation",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_reason_code_after_amount_is_an_order_violation"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_reason_code_after_amount_is_an_order_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_base_quantity_before_price_amount_is_an_order_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-CDADC5CFB25A9B9E",
       "positive_test_selectors": [
@@ -6156,7 +6211,8 @@
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_last_validates_cleanly",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_unchecked_fields_interspersed_among_checked_fields_do_not_disturb_ordering",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_id_before_invoiced_quantity_before_line_extension_amount_before_item_validates_cleanly",
-        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_allowance_charge_without_incident"
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_allowance_charge_without_incident",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_dumps_writes_a_well_formed_item_and_price_without_incident"
       ],
       "proof_requirements": {
         "negative": [
@@ -7236,6 +7292,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-element-order-validation-001.json": "f28d3fb4c9aa1eb1a24364f6074eeb0680b4eecd6df86df6a7d20063f81f72af",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-extensions-structure-001.json": "bd4536de6158761bca11217c812e3272cb91f9621c4a6539378daaadeb11d5d2",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-external-reference-cardinality-001.json": "bb622b06442b7cdc03dd0718c9d519c47aec054d9790ff26eb8b1af5ff8cdf0b",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-item-price-cardinality-order-001.json": "2536fe081ddf4fdd5359614b3283a6352431a13813fe076a6ca560b62c8cff51",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lifecycle-io-001.json": "ed787921f2225a81573186c4cd81377a417d211b447444ba0807685ba1e837b8",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lines-cardinality-001.json": "e59fc35d67c0bfe1120e3e1841a38aa52649cf7a9c6b9b7b206be58f91e6a94c",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-maindoc-lines-001.json": "59537e2a072991398c7ec9a483c13e0abc19149487f1834e46668e43dce5d3c6",
@@ -7277,7 +7334,7 @@
     "src/python/ubl/src/format_factory/ubl/model/values.py": "4aaa55d4f2c6faa457b1a03ab6bf9a5ff83ffcd7ee90f87c0b649c18b39b642f",
     "src/python/ubl/src/format_factory/ubl/security/limits.py": "95ba5485bad5547fe800d4952518507824e217d15a197df822945f73921afc6d",
     "src/python/ubl/src/format_factory/ubl/validation/profiles.py": "9be1805b9ea265200e890fc833526dd3589b0be559d61f1d6ba76954f63b0c35",
-    "src/python/ubl/src/format_factory/ubl/validation/validator.py": "b26c5af23e3f0efbac142f046bd39dc1670c2ea3dec0152ff01afb6c9cb802ea",
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py": "35d9ef28d8d8d97a80cf87439ddbf2b65afed8cf0d6dacac6e7956db8add1a12",
     "tests/python/ubl/test_obligation_aggregate_components.py": "26e36e29e05e239f1fc17915ebf243ae61b55799c7811dbfe8c3fee0fac66242",
     "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py": "ec56ba759bb06b3ca638a7b030d5795cb9c3e9e673d90690334b8f18c7b5dfee",
     "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py": "15837df35e9208aca25e662bc6583ea04469a6cef1ed51e4f3cfaed10ea5105a",
@@ -7292,6 +7349,7 @@
     "tests/python/ubl/test_obligation_extensions_structure.py": "a25a8652d39fab6e3c146f64aaf7c9bbd28eb36be4df30d2ab914ab46d147c79",
     "tests/python/ubl/test_obligation_external_reference.py": "6ba99de8b1dab95aacf884176da6e3c59cf698d3017df4c95748f834fe854901",
     "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py": "81d098502df86e456b1bb752828faf41ba62dd32e5e001b842075aea467d5aae",
+    "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py": "bc8a0898823d622994546dee6480d496b8946bebae92c8842a7a2fbc904540a6",
     "tests/python/ubl/test_obligation_lifecycle_io.py": "6189da6be51a33cbe60b72e6d98b632dfda9232838d41788dfd7547ec824f7ed",
     "tests/python/ubl/test_obligation_lines_cardinality_validation.py": "9cc83daec77c593684701ba892221d488398e6ae8c782678d8c61361d1217cec",
     "tests/python/ubl/test_obligation_maindoc_lines.py": "2fdad6d4d11e62df2820eaf8ea2d499f38a2f587439497b3dd7369bdf05e2812",
