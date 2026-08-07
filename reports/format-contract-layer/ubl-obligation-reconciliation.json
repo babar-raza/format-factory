@@ -272,12 +272,20 @@
       "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-version-detection-refusal-001.json",
       "sha256": "cda5dbe2305e8e7260b726d72d38779bafe662be103b1d7190df86a01f99dd7e",
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) SAL-UBL-OBL-7B16479ACBBC8EFC (UBL-UPGRADE-001), promoted missing->partial. This obligation had zero shipped-namespace test coverage mapped to it at all, but the \"detect older specification versions\" and \"never label a document as the target version without structural migration\" halves of its rule_text were already real, correct, and separately proven under a different obligation (UBL-LIFECYCLE-001's test_obligation_detected_declared_version.py, which exercises dumps()'s write-time refusal). This slice proves validate()'s own, separate refusal path directly (a ubl.version.unsupported diagnostic for any non-\"2.3\" declared version), confirmed via an interactive probe before writing formal tests. \"Migrate via explicit transforms producing a migration report\" remains genuinely unbuilt -- no transform infrastructure exists for any UBL version pair, and building one honestly would need deep knowledge of inter-version schema changes not attempted here -- so status stays partial, not implemented. 4 new tests. ubl suite: 779 -> 783 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule. Covers SAL-UBL-OBL-7B16479ACBBC8EFC only; it supports no other obligation and promotes no product state."
+    },
+    {
+      "evidence_id": "UBL-WRITER-CANONICAL-ORDER-AND-PREFIX-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-writer-canonical-order-and-prefix-001.json",
+      "sha256": "e823a42b4eea20e964aa2184074dddea7d2bebf8092ee29bc22a28af36a479b6",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) SAL-UBL-OBL-4BD9BBC9F974C175 (UBL-WRITE-001), promoted missing->partial. This obligation's rule_text bundles three clauses. Investigated dumps() directly (src/python/ubl/src/format_factory/ubl/codec/writer/writer.py) before writing anything and found two genuinely already-true, previously-untested behaviors: dumps() already calls ET.register_namespace() with fixed cbc:/cac:/ext: prefixes, so ANY source document using a different prefix alias for these namespaces gets normalized to the canonical prefixes on write, regardless of the original alias -- proven directly with a document declaring xmlns:ns1/xmlns:x aliases instead of cbc:/cac:. Separately, dumps() already calls validate(document, profile=...) and raises UblWriteError if the report is invalid -- since the element-order validation cluster (an earlier tick this same session) added order-violation diagnostics to validate(), dumps() already, as a direct side effect, refuses to serialize a document whose checked components have elements in the wrong schema order -- proven directly with a Party constructed with Contact before PostalAddress, confirmed to raise UblWriteError naming the exact violation. Zero source changes were needed for either finding -- both were already real, shipped behavior, simply never tested from this obligation's own angle. The third clause (\"lossless mode preserving significant lexical values\") was already proven by the pre-existing test_obligation_preservation_mode.py and is cited, not re-proven. Honestly documented as still unbuilt: the obligation's own \"independent of mutation order\" framing asks for automatic silent reordering, not refusal -- a caller who assembles fields out of order today gets a clear error, not corrected output; building true auto-reordering would need either a canonicalization pass or a higher-level typed builder API this package does not currently have, deliberately not attempted without dedicated design review. 4 new tests (2 positive prefix-normalization proofs, 1 refusal proof, 1 correct-order-succeeds control). ubl suite: 937 -> 941 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule. Covers SAL-UBL-OBL-4BD9BBC9F974C175 only; it supports no other obligation and promotes no product state."
     }
   ],
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "914c92a73f36dbc0cd3f8ba112cea8d8877f9a64ac19524b29ea6718b07ff6b3",
+    "implementation_evidence": "9b0b28244af7a62a07c08a98050b84aa7fee1037a3b3f22493701dece27f3527",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2606,26 +2614,42 @@
     },
     {
       "capability_id": "UBL-WRITE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Same confirmed gap as SAL-UBL-OBL-3B43504E9C74003C (UBL-MODEL-001, element order) and SAL-UBL-OBL-B68F5F29F11197D6 (UBL-MODEL-001): nothing in the writer reorders elements assembled in arbitrary order into schema-valid sequence -- dumps()/dump() serialize whatever child order the XmlNode tree already has, with no schema-order-aware canonicalization pass. No canonical prefix/formatting policy option exists either. Genuinely unbuilt, not a citation-audit gap."
+      "execution_evidence_ids": [
+        "UBL-BASELINE-SUITE",
+        "UBL-ELEMENT-ORDER-VALIDATION-PROOF",
+        "UBL-WRITER-CANONICAL-ORDER-AND-PREFIX-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "This obligation's rule_text bundles three distinct clauses, and this slice proves two of them true for the first time (a third was already true and cited): (1) \"offer canonical prefix ... policies\" -- dumps() already normalizes ANY source namespace prefix alias (e.g. an ns1:/x: alias for the CommonBasicComponents/CommonAggregateComponents namespaces) to this package's own canonical cbc:/cac:/ext: prefixes via ET.register_namespace(), regardless of what prefix the original document used, proven directly for the first time; (2) \"write elements in schema-valid order\" (the enforcement half, not the \"independent of mutation order\" half) -- dumps() now REFUSES with UblWriteError to serialize a document whose already-checked components (the same 13 cac: types the element-order validation cluster covers) have elements in the wrong relative order, via validate()'s pre-existing \"refuse invalid documents\" integration, proven directly for the first time; (3) \"lossless mode preserving significant lexical values\" -- already proven by the pre-existing test_obligation_preservation_mode.py (PreservationMode.LOSSLESS is dumps()'s own default and preserves the extension container byte-for-byte), cited here rather than re-proven."
+      ],
+      "missing_behavior": [
+        "The obligation's own \"independent of mutation order\" clause remains genuinely unbuilt: dumps() currently REFUSES a document whose checked components are out of schema order rather than silently reordering them into valid output regardless of how a caller assembled the tree. A caller who constructs a Party with Contact before PostalAddress gets a clear UblWriteError, not automatically-reordered output -- refusal is a real, tested safety property but not the same guarantee as \"always producing schema-valid output regardless of input order,\" which this obligation's rule_text literally asks for. Building true mutation-order-independent auto-reordering would need either a canonicalization pass over the already-checked components' children before serialization, or a higher-level typed builder API this package does not currently have (construction today is via raw XmlNode child tuples, not settable named fields) -- deliberately not attempted this slice to avoid inventing an architecture-level API change without dedicated design review."
+      ],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_refuses_to_write_a_document_with_checked_components_in_the_wrong_order"
+      ],
       "obligation_id": "SAL-UBL-OBL-4BD9BBC9F974C175",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_normalizes_a_non_standard_source_prefix_to_the_canonical_cbc_prefix",
+        "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_normalizes_a_non_standard_cac_prefix_alias_too",
+        "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_writes_a_document_with_checked_components_in_correct_order_without_incident",
+        "tests/python/ubl/test_obligation_preservation_mode.py::TestPreservationModeDefault::test_default_mode_is_lossless",
+        "tests/python/ubl/test_obligation_preservation_mode.py::TestPreservationModeDefault::test_lossless_mode_preserves_extension_container"
+      ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "A document whose checked components (the 13 cac-namespaced types the element-order cluster covers) have children in the wrong schema order raises UblWriteError naming the violation, rather than being silently serialized or silently reordered."
         ],
         "positive": [
-          "Out-of-order property assignment still yields schema-valid output; determinism byte-compare.",
-          "Official-sample round trips per supported document type with canonical XML comparison."
+          "Non-standard source namespace prefix aliases (e.g. an ns1/x alias for the canonical cbc/cac prefixes) are normalized to the package's canonical prefixes on write; a document with checked components in correct schema order serializes without incident; lossless mode preserves the extension container byte-for-byte (cited from test_obligation_preservation_mode.py)."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps",
+        "src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "UBL-PARSE-001",
@@ -7175,6 +7199,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-small-clusters-citation-audit-001.json": "c3014f0982d137f4487dfb14bc9eddbebbb560d3d0088084de16d7969c54a54b",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-values-citation-audit-001.json": "f9ec4866f212093bd3387fa2053bbcff765bd6472733dcb0aa2849adfd1a267b",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-version-detection-refusal-001.json": "cda5dbe2305e8e7260b726d72d38779bafe662be103b1d7190df86a01f99dd7e",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-writer-canonical-order-and-prefix-001.json": "e823a42b4eea20e964aa2184074dddea7d2bebf8092ee29bc22a28af36a479b6",
     "src/python/ubl/src/format_factory/ubl/codec/preservation.py": "dab616ced8f5104f5bee89db229a32d14000f486b061ace0e7a29dd934f5ab99",
     "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "254743ef56212db8aebabac970793fee188634466b6907145e25b1b662e8f9fc",
     "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py": "e352a3442d0a31389f177c9a206d3a5d857c9a2d4f724833e9af90e31d5b4a7d",
@@ -7228,14 +7253,15 @@
     "tests/python/ubl/test_obligation_temporal_values.py": "6b280cba533c6d6370f06149257900b005784ff6702a10412c1d307a6a54f986",
     "tests/python/ubl/test_obligation_typed_projection.py": "2d035c4a83f5ff71729210eb83422f60c3d02a63c9f6b2dc92f3725f8d980b94",
     "tests/python/ubl/test_obligation_version_detection_and_refusal.py": "b02e4e8837fed773b02c76abf1d0585edba98191f9447ad20b06699c51e99301",
+    "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py": "dc606f07c0376d497f3caa3362fd44a2d2d6f28c357366fdb4c1ad101aff3f11",
     "tests/python/ubl/test_production_namespace.py": "a4dbeab77322aaeb8d35b8c7cba5d8a173f1fbe5566924c32363157a3b171ce6"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
       "implemented": 164,
-      "missing": 7,
-      "partial": 23
+      "missing": 6,
+      "partial": 24
     },
     "total": 194,
     "unresolved": 30

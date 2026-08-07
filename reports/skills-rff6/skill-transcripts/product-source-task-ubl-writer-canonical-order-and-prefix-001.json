@@ -1,0 +1,54 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-writer-canonical-order-and-prefix-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T10:52:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_WRITER_CANONICAL_ORDER_PREFIX_001",
+    "task_kind": "verify-and-test-already-shipped-behavior-discovered-mid-investigation",
+    "root_cause": "Event 231's exact_next_action named UBL-WRITE-001's companion 'write elements in schema-valid order independent of mutation order' obligation as a natural follow-on to the detection-only element-order validation work. While investigating the writer's dumps() function to assess feasibility of auto-reordering, discovered dumps() already calls validate() and raises on any invalid report -- meaning the element-order validation cluster (built in an earlier tick this same session) already, as a side effect, makes dumps() refuse to write out-of-order documents for the checked components. Also discovered dumps() already normalizes any source namespace prefix alias to canonical cbc:/cac:/ext: via ET.register_namespace(), a previously-untested existing behavior.",
+    "obligation_targeted": "SAL-UBL-OBL-4BD9BBC9F974C175 (UBL-WRITE-001) -- promoted missing->partial",
+    "acceptance_evidence": "4 new tests prove: non-standard source prefixes are normalized to canonical cbc:/cac: on write; dumps() refuses to write a document with checked components out of schema order; dumps() succeeds normally when order is correct.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the obligation's full rule_text: 'Write elements in schema-valid order independent of mutation order; offer canonical prefix/formatting policies and lossless mode preserving significant lexical values' -- a compound obligation with 3 distinct clauses.",
+    "2. Read writer.py's dumps() function directly before writing any code and found it already calls validate(document, profile=selected_profile, limits=limits) and raises UblWriteError if the report is invalid -- confirming, via direct code inspection, that the element-order validation cluster (an earlier tick this same session, event 231) already wired order-enforcement into the writer as an unplanned but genuine side effect.",
+    "3. Probed this directly: constructed a Party with Contact before PostalAddress (wrong schema order) and called dumps() -- confirmed it raises UblWriteError naming the exact violation ('PostalAddress appears after Contact...'), proving the refusal is real and already working, not something that needed new code.",
+    "4. Also inspected dumps()'s namespace-prefix handling and found ET.register_namespace() calls registering fixed cbc:/cac:/ext: prefixes -- probed directly with a document declaring a non-standard prefix alias (ns1: instead of cbc:) and confirmed the OUTPUT uses cbc: regardless, proving prefix normalization is also already real, previously-untested behavior.",
+    "5. Considered whether to attempt the genuinely unbuilt clause -- automatic silent reordering 'independent of mutation order' -- and deliberately declined: this package's UblDocument/XmlNode model is a raw, ordered-tuple-of-children representation with no higher-level typed builder API (construction is via XmlNode(children=(...)) tuples, not settable named fields), so true mutation-order-independent writing would require either a canonicalization pass or a new architecture-level typed builder API -- a substantial, higher-risk design decision deliberately deferred rather than rushed into this tick.",
+    "6. Wrote 4 formal tests proving the two genuinely-already-true findings plus a positive control (correct order succeeds normally), all passing on the first attempt -- zero source code changes were needed for any of them, since both behaviors were already shipped.",
+    "7. Ran ruff (clean), the full ubl suite (941 passed, was 937, +4), and the full 6-format regression (3371 passed, was 3367, +4; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "8. No skills-first governance invocation needed -- zero src/ files changed, only new tests and evidence, matching the 'skipped when only tests/evidence YAML change' rule.",
+    "9. Promoted the obligation to partial (not implemented): the 'independent of mutation order' clause remains honestly unbuilt, and refusal is a real but distinct guarantee from 'always produces valid output regardless of input order' -- documented transparently in missing_behavior rather than silently claimed as satisfied."
+  ],
+  "allowed_files": [
+    "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py -q -- 4 passed",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 941 passed, was 937 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3371 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3367 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation moved missing->partial",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every claim verified by direct code inspection and interactive probing of already-shipped behavior.",
+    "obligations_moved_breakdown": "SAL-UBL-OBL-4BD9BBC9F974C175 (UBL-WRITE-001) missing->partial. Two of the obligation's three clauses proven true (canonical prefix normalization, order-refusal via validate() integration); the third (lossless mode) already covered by pre-existing evidence; the 'independent of mutation order' framing honestly remains unbuilt, distinct from refusal-based enforcement."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
