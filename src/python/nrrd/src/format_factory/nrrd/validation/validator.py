@@ -17,6 +17,7 @@ from ..codec.payload import (
 from ..errors import NrrdParseError
 from ..model import NrrdDocument
 from ..security import effective_limits
+from ..space import build_space_transform
 
 
 def validate(
@@ -149,6 +150,25 @@ def validate(
                         f"per axis ({dimension})",
                     )
                 )
+        # NRRD-VALIDATE-001: space/space dimension/space origin/space
+        # directions mutual consistency, as a non-fatal diagnostic rather
+        # than the exception build_space_transform() raises on its own —
+        # both "space directions" and "space origin" are required inputs
+        # to that function, so this check only runs when a document
+        # declares both (space metadata is otherwise entirely optional).
+        space_directions = document.header.get("space directions")
+        space_origin = document.header.get("space origin")
+        if space_directions is not None and space_origin is not None:
+            try:
+                build_space_transform(
+                    space_directions=space_directions,
+                    space_origin=space_origin,
+                    space_dimension=document.header.get("space dimension"),
+                    space=document.header.get("space"),
+                    axis_count=dimension,
+                )
+            except NrrdParseError as exc:
+                diagnostics.append(Diagnostic("nrrd.space.inconsistent", str(exc)))
     except (KeyError, TypeError, ValueError, NrrdParseError) as exc:
         diagnostics.append(Diagnostic("nrrd.header.invalid", str(exc)))
     return ValidationReport(diagnostics)

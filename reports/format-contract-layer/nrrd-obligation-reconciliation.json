@@ -162,6 +162,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes NRRD-SEC-001's 4 obligations, the first dedicated security-baseline sweep for nrrd this session (the same never-audited-security-baseline pattern already closed for ubl/xliff/ipynb). A whole-package AST scan confirms no source file imports socket/urllib/http/ftplib/smtplib/subprocess/ importlib/pkgutil/ctypes -- no network, plugin, or dynamic-execution capability exists anywhere. Key-value pairs and comments are proven to survive shell-command-substitution and script-tag content byte-for-byte as inert text, never interpreted. checked_element_count's max_entries and checked-arithmetic overflow protection are both proven directly against hostile headers. Also fixed a genuine, confirmed algorithmic- complexity bug found while investigating this cluster: a detached printf multi-file sequence's declared file count was never bounded against limits.max_entries before allocating its filename list -- a header declaring an astronomically large range would attempt to materialize a correspondingly large list before any file was opened. NOT backed by an independent reference NRRD implementation -- SELF- CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-24B57E6A78478DB0, SAL-NRRD-OBL-9AB0A32906D88688, SAL-NRRD-OBL-2A95CBAA35F7BB05, and SAL-NRRD-OBL-38C2DECC64DF5145 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-SPACE-CONSISTENCY-VALIDATION-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-space-consistency-validation-001.json",
+      "sha256": "1d0eb0868c8c67f8960e37d737fd2fcdec5f2dbd2794e9415754230864574b26",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact test selectors proving validate() now calls build_space_transform() (built at FF6-EVENT-000273 for the separate named-space cross-check obligation, never wired into validate() itself until this event) whenever both \"space directions\" and \"space origin\" are present in a document's header, reporting NrrdParseError as a non-fatal nrrd.space.inconsistent diagnostic rather than raising. Covers three distinct disagreement shapes (origin/directions length mismatch, declared space-dimension mismatch, named-space cross-check mismatch), confirms documents with neither or only one of the two required fields are unaffected, and includes a dedicated regression test proving the check compares declared lengths/dimensions only and never infers or alters axis order. Narrows SAL-NRRD-OBL-2085AD256AFE6E96 (NRRD-VALIDATE-001); does not promote it to implemented, since its separate trailing-payload-policy clause remains open."
+    },
+    {
       "evidence_id": "NRRD-VERSION-SELECTION-RECONCILIATION-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -181,7 +189,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "b3c5bad8728b2b64de82680cdf0368d35c3ae6f84eb7a74be51dbc3d35a4eca8",
+    "implementation_evidence": "ff48c9b4a244dcef56c26b3547862d39fe87869745ac2b7b24d0297b3b4781c7",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -562,13 +570,14 @@
       "capability_id": "NRRD-VALIDATE-001",
       "execution_evidence_ids": [
         "NRRD-R1-SOURCE-TESTS",
-        "NRRD-VERSION-SELECTION-RECONCILIATION-PROOF"
+        "NRRD-VERSION-SELECTION-RECONCILIATION-PROOF",
+        "NRRD-SPACE-CONSISTENCY-VALIDATION-PROOF"
       ],
       "implemented_behavior": [
-        "Required fields, sizes/dimension, kinds arity, block rules, and decoded byte/value counts receive diagnostics. Stale-bookkeeping correction: this obligation's own \"version-feature compatibility\" clause is also proven -- validate() checks the target/declared version against document.minimal_version_for() and raises nrrd.version.insufficient naming every blocking feature (see SAL-NRRD-OBL-1DAEF31DD0BB6EBB/SAL-NRRD-OBL-725881DB5590E608, reconciled this session), confirmed directly by reading validate() itself (lines 42-65) rather than assumed from the obligation's own stale text."
+        "Required fields, sizes/dimension, kinds arity, block rules, and decoded byte/value counts receive diagnostics. Stale-bookkeeping correction: this obligation's own \"version-feature compatibility\" clause is also proven -- validate() checks the target/declared version against document.minimal_version_for() and raises nrrd.version.insufficient naming every blocking feature (see SAL-NRRD-OBL-1DAEF31DD0BB6EBB/SAL-NRRD-OBL-725881DB5590E608, reconciled this session), confirmed directly by reading validate() itself (lines 42-65) rather than assumed from the obligation's own stale text. FF6-EVENT-000276: space/space dimension/space origin/space directions mutual consistency is now also proven -- validate() calls build_space_transform() (already independently verified at FF6-EVENT-000273) whenever both 'space directions' and 'space origin' are present, and reports NrrdParseError as a non-fatal nrrd.space.inconsistent diagnostic."
       ],
       "missing_behavior": [
-        "Conditional fields (e.g. space/space dimension/space origin/space directions mutual consistency -- build_space_transform() checks this but is not itself wired into validate()'s own diagnostics) and trailing-payload policy WITH VALIDATE()-TIME REPORTING (decode_encoding's trailing-byte rejection happens at read time as a hard exception before validate() ever runs, not as a non-fatal validate()-time diagnostic the way every other check in this function works) remain genuinely incomplete. \"Version-feature rules\" no longer belongs in this list (all per-axis arities are now validated -- see SAL-NRRD-OBL-428BE326FCBC9A6E)."
+        "Trailing-payload policy WITH VALIDATE()-TIME REPORTING (decode_encoding's trailing-byte rejection happens at read time as a hard exception before validate() ever runs, not as a non-fatal validate()-time diagnostic the way every other check in this function works) remains genuinely incomplete. \"Version-feature rules\" no longer belongs in this list (all per-axis arities are now validated -- see SAL-NRRD-OBL-428BE326FCBC9A6E). Space-field mutual consistency no longer belongs in this list either -- see FF6-EVENT-000276."
       ],
       "negative_test_selectors": [
         "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
@@ -2596,6 +2605,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-named-space-dimension-cross-check-001.json": "8c86588afa853567dd264acd2f293ba893efbb47fb0602fd0af3d016ea88545a",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-sample-units-001.json": "ebdffdda4ad995da88900bc58b415ca7cbb3b42f554d667fb318a012f192b403",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-security-baseline-001.json": "75e80c2707a235afef3f1ab9980697a5e95e32a90fb18e8e1000fd29bbd2ee82",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-space-consistency-validation-001.json": "1d0eb0868c8c67f8960e37d737fd2fcdec5f2dbd2794e9415754230864574b26",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-reconciliation-001.json": "e5b54b72b12920fa20b64906a008fb432025569268ab0211532f04a04b2ecff1",
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
@@ -2608,7 +2618,7 @@
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "7bf04acb5645b957c12f6a5d22d358a89d510bd1d63fa4b1bd6f622d2a52ca39",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
     "src/python/nrrd/src/format_factory/nrrd/space.py": "85d5640445d14d653eab2ff6131b4b867be171c16f96fdb943f14e451965afe5",
-    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "691df2b0e148314d1738c4b144af6980a6906246f7435e289eb0d3e24153b2cb",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "5949feeee548f3ec2007e2f1174db183bab8a0833f0414e6c6960eab15a4ce89",
     "tests/python/nrrd/test_ascii_encoding_endian.py": "70aaff339ed8a91183ead5c3b87164d5d1542c393746125c95fb63e5f3f17c04",
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
     "tests/python/nrrd/test_obligation_axis_field_arity.py": "3528ed42454f8e5f9c3640f3b005ee3f7f3a0972081d0a2b81ce9d3dcd6751e0",

@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-space-consistency-validation-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T00:35:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_SPACE_CONSISTENCY_VALIDATION_001",
+    "task_kind": "wire-existing-capability-into-validator-diagnostics",
+    "root_cause": "SAL-NRRD-OBL-2085AD256AFE6E96 (NRRD-VALIDATE-001) named 'space/space dimension/space origin/space directions mutual consistency' as a genuinely incomplete conditional-field check: build_space_transform() (space.py, built at FF6-EVENT-000273 for the separate named-space cross-check obligation) already performs this exact consistency check internally via _infer_space_dimension(), but was never called from validate() itself -- a caller had to invoke it manually to learn a document's space fields disagreed with each other.",
+    "obligation_targeted": "SAL-NRRD-OBL-2085AD256AFE6E96 narrowed: the space-consistency clause of its missing_behavior is now resolved. The obligation's other remaining clause (trailing-payload policy reporting at validate()-time rather than as a hard read-time exception) is untouched and stays open.",
+    "acceptance_evidence": "8 new tests (tests/python/nrrd/test_obligation_space_consistency_validation.py) covering: consistent fields validate cleanly, origin-length disagreement reported, declared-space-dimension disagreement reported, named-space cross-check disagreement reported, neither/one-of-two fields present is unaffected, and a dedicated non-inference regression test.",
+    "regression_tier": "full nrrd package suite plus combined 6-format regression"
+  },
+  "execution_steps": [
+    "1. Pivoted from the prior tick's oracle-machinery fix (FF6-EVENT-000275) back to per-format obligation closure per the Stop hook's product-first reminder. Surveyed nrrd's 19 remaining unresolved obligations via the implementation-evidence ledger and picked SAL-NRRD-OBL-2085AD256AFE6E96's space-consistency clause as the most concretely scoped: an existing, already-tested function (build_space_transform) simply needed to be called from validate(), not new capability built from scratch.",
+    "2. Confirmed build_space_transform was exported at package top-level but never called internally anywhere in src/python/nrrd/src/format_factory/nrrd/ except its own module and __init__.py's re-export -- grep-verified zero internal call sites before this change.",
+    "3. Confirmed both 'space directions' and 'space origin' are REQUIRED arguments to build_space_transform (it raises on either being None), so the wiring only invokes it when a document's header actually declares both -- space metadata is otherwise entirely optional per NRRD0004+ and must not become a mandatory check.",
+    "4. Verified the exact header key strings ('space directions', 'space origin', 'space dimension', 'space') via existing usage in writer.py's field-order list and model/document.py's version_requirements(), and confirmed no overlap with per_axis_field_arities()'s own tracked-field set (spacings/axis mins/axis maxs/centers/labels/units/kinds/thicknesses) before adding the new check, ruling out duplicate or conflicting diagnostics.",
+    "5. Added the wiring inside validate()'s existing try block, catching NrrdParseError specifically (matching the function's own established exception-to-diagnostic pattern) and appending a new 'nrrd.space.inconsistent' diagnostic code rather than letting the exception propagate.",
+    "6. Manually verified via a real header round-tripped through dumps/loads (not a hand-built NrrdDocument, which the existing test suite's own _document() helper pattern in test_obligation_axis_field_arity.py establishes as the correct construction path) that: consistent fields validate cleanly, an origin/directions length mismatch is reported, and no-space-fields documents are unaffected.",
+    "7. Wrote 8 tests covering positive, three distinct disagreement shapes (origin-vs-directions length, declared-dimension-vs-derived, named-space-vs-derived), both single-field-only cases, and a dedicated non-axis-order-inference regression test mirroring FF6-EVENT-000273's own established test shape for the sibling named-space obligation.",
+    "8. Ran the full nrrd suite (616 passed, 1 skipped, was 608 passed 1 skipped before -- 8 new tests, zero regressions), ruff (clean on both changed files), and mypy --strict (2 pre-existing, unrelated PathLike-generic errors in writer.py confirmed untouched by this change; validator.py itself clean).",
+    "9. Ran the combined 6-format regression suite (nrrd/ora/xliff/ipynb/safetensors/ubl): 3604 passed, 2 skipped, same 4 pre-existing unrelated safetensors interop failures -- zero regression beyond the 8 intentional new tests."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+    "tests/python/nrrd/test_obligation_space_consistency_validation.py"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+    "tests/python/nrrd/test_obligation_space_consistency_validation.py"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_space_consistency_validation.py -v -- 8 passed",
+    ".venv/Scripts/pytest tests/python/nrrd -q -- 616 passed, 1 skipped",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/validation/validator.py tests/python/nrrd/test_obligation_space_consistency_validation.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/ -- 2 pre-existing unrelated errors in writer.py only, validator.py clean",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3604 passed, 2 skipped, 4 pre-existing unrelated safetensors interop failures"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation narrowed (SAL-NRRD-OBL-2085AD256AFE6E96): the space-consistency clause of its missing_behavior is resolved; the trailing-payload-policy clause remains open, obligation stays partial",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 65,
+    "oracle": "build_space_transform()'s own _infer_space_dimension() logic, already independently verified at FF6-EVENT-000273 against the pinned Teem 1.9.0 reference source"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
