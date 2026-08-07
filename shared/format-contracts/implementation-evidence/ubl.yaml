@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-CBC-CAC-NAMESPACE-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-cbc-cac-namespace-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Closes 4 obligations across UBL-MODEL-001 and UBL-PARSE-001 (2 sharing the CBC-namespace rule_text, 2 sharing the CAC-namespace rule_text). The underlying mechanism was already real and correct before this slice -- model/document.py''s _CBC_NAMESPACE constant and codec/writer/writer.py''s ET.register_namespace calls for cbc/cac both bind the exact CommonBasicComponents-2/CommonAggregateComponents-2 URIs -- simply never asserted as its own standalone fact. 6 new tests prove: a cbc-prefixed element resolves to the exact CBC URI; a cac-prefixed element resolves to the exact CAC URI; cbc elements are leaf values (text, no children) while cac elements are composite structures (children, no direct text); the writer declares both namespace bindings with the correct URIs; and the convention survives a full dumps()/loads() round trip. A related 3-obligation cluster (a ''qualified and unqualified data-type schemas'' rule_text) was deliberately left untouched -- its backing SAL facts are too generic to test without guessing spec semantics, per GAP-008. ubl suite: 713 -> 719 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-0AFE5C0F7BA8AC02, SAL-UBL-OBL-2E913739AA1D3A6C, SAL-UBL-OBL-EDA03586C360349D, and SAL-UBL-OBL-7B14DCF48B17C706 only; it supports no other obligation and promotes no product state.'
 - evidence_id: UBL-BASELINE-SUITE
   path: reports/skills-rff6/skill-transcripts/build-evidence-ledger-ubl-001.json
   expected_result: PASS
@@ -474,23 +479,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-0AFE5C0F7BA8AC02
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
   - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
   - src/python/ubl/src/format_factory/ubl/model/values.py::Code
   - src/python/ubl/src/format_factory/ubl/model/values.py::Identifier
   positive_test_selectors:
-  - tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes
+  - 'tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes'
+  - 'tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_a_cbc_prefixed_element_resolves_to_the_common_basic_components_uri'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_a_cac_prefixed_element_resolves_to_the_common_aggregate_components_uri'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_cbc_elements_are_leaf_values_with_no_children'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_cac_elements_are_composite_structures_with_children'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_writing_the_document_declares_both_namespace_bindings_with_the_correct_uris'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_the_namespace_convention_survives_a_full_round_trip'
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
-  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-CBC-CAC-NAMESPACE-PROOF
   implemented_behavior:
-  - 'Every cbc:-namespaced element (ID, Amount, Quantity, Code) is exercised and correctly typed across dozens of tests, individually proving each concrete leaf type.'
-  missing_behavior:
-  - 'No single test asserts the CommonBasicComponents-2/cbc-namespace convention itself as a standalone architectural fact -- it is only implicit in the per-type behavior of Amount/Quantity/Code/Identifier, never checked directly (e.g. no test asserts a cbc:-prefixed element''s namespace URI equals CommonBasicComponents-2).'
+  - 'Every cbc:-namespaced element (ID, Amount, Quantity, Code) is exercised and correctly typed across dozens of tests, individually proving each concrete leaf type. The CommonBasicComponents-2/cbc-namespace convention itself is now also proven as a standalone architectural fact: a cbc-prefixed element''s parsed QName resolves to the exact CommonBasicComponents-2 URI (model/document.py''s _CBC_NAMESPACE constant), it carries text with no children (a leaf value, distinct from cac''s composite structure), and the writer declares the xmlns:cbc binding to that exact URI, all surviving a full dumps()/loads() round trip.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -1213,27 +1223,31 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-2E913739AA1D3A6C
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
   - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
   - src/python/ubl/src/format_factory/ubl/model/values.py::Code
   - src/python/ubl/src/format_factory/ubl/model/values.py::Identifier
   positive_test_selectors:
-  - tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes
+  - 'tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes'
+  - 'tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_a_cbc_prefixed_element_resolves_to_the_common_basic_components_uri'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_a_cac_prefixed_element_resolves_to_the_common_aggregate_components_uri'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_cbc_elements_are_leaf_values_with_no_children'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_cac_elements_are_composite_structures_with_children'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_writing_the_document_declares_both_namespace_bindings_with_the_correct_uris'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_the_namespace_convention_survives_a_full_round_trip'
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
-  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-CBC-CAC-NAMESPACE-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-0AFE5C0F7BA8AC02 (identical rule_text): Every cbc:-namespaced element (ID, Amount, Quantity, Code) is exercised and correctly typed across dozens of tests, individually proving each concrete leaf type.'
-  missing_behavior:
-  - 'No single test asserts the CommonBasicComponents-2/cbc-namespace convention itself as a standalone architectural fact -- it is only implicit in the per-type behavior of Amount/Quantity/Code/Identifier, never checked directly (e.g. no test asserts a cbc:-prefixed element''s namespace URI equals CommonBasicComponents-2).'
+  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-0AFE5C0F7BA8AC02 (identical rule_text): every cbc:-namespaced element (ID, Amount, Quantity, Code) is exercised and correctly typed across dozens of tests. The CommonBasicComponents-2/cbc-namespace convention itself is now also proven as a standalone architectural fact through the real loads()/dumps() pipeline: a cbc-prefixed element''s parsed QName resolves to the exact CommonBasicComponents-2 URI, carries a leaf text value with no children, and the writer declares the xmlns:cbc binding to that exact URI, surviving a full round trip.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
-      spoofed-namespace fixtures rejected.
+    - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-2FCD900E00C1654E
@@ -2590,27 +2604,31 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-7B14DCF48B17C706
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::LegalMonetaryTotal
   positive_test_selectors:
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_tax_total_projects_with_its_subtotals
+  - 'tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components'
+  - 'tests/python/ubl/test_obligation_aggregate_components.py::test_a_tax_total_projects_with_its_subtotals'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_a_cbc_prefixed_element_resolves_to_the_common_basic_components_uri'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_a_cac_prefixed_element_resolves_to_the_common_aggregate_components_uri'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_cbc_elements_are_leaf_values_with_no_children'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_cac_elements_are_composite_structures_with_children'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_writing_the_document_declares_both_namespace_bindings_with_the_correct_uris'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_the_namespace_convention_survives_a_full_round_trip'
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
-  - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-CBC-CAC-NAMESPACE-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-EDA03586C360349D (identical rule_text): cac:-namespaced aggregates (InvoiceLine, Item, TaxTotal, LegalMonetaryTotal) are pervasively and correctly exercised as typed composites.'
-  missing_behavior:
-  - 'No single test asserts the CommonAggregateComponents-2/cac-namespace convention itself as a standalone architectural fact, the same gap as its CBC-namespace sibling SAL-UBL-OBL-0AFE5C0F7BA8AC02 in this cluster.'
+  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-EDA03586C360349D (identical rule_text): cac:-namespaced aggregates (InvoiceLine, Item, TaxTotal, LegalMonetaryTotal) are pervasively and correctly exercised as typed composites. The CommonAggregateComponents-2/cac-namespace convention itself is now also proven as a standalone architectural fact through the real loads()/dumps() pipeline: a cac-prefixed element''s parsed QName resolves to the exact CommonAggregateComponents-2 URI, carries children with no direct text, and the writer declares the xmlns:cac binding to that exact URI, surviving a full round trip.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
-      spoofed-namespace fixtures rejected.
+    - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-7B16479ACBBC8EFC
@@ -4381,23 +4399,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-EDA03586C360349D
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::Item
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::LegalMonetaryTotal
   positive_test_selectors:
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components
-  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_tax_total_projects_with_its_subtotals
+  - 'tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_carries_its_four_required_components'
+  - 'tests/python/ubl/test_obligation_aggregate_components.py::test_a_tax_total_projects_with_its_subtotals'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_a_cbc_prefixed_element_resolves_to_the_common_basic_components_uri'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_a_cac_prefixed_element_resolves_to_the_common_aggregate_components_uri'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_cbc_elements_are_leaf_values_with_no_children'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_cac_elements_are_composite_structures_with_children'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_writing_the_document_declares_both_namespace_bindings_with_the_correct_uris'
+  - 'tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py::test_the_namespace_convention_survives_a_full_round_trip'
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
-  - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-CBC-CAC-NAMESPACE-PROOF
   implemented_behavior:
-  - 'cac:-namespaced aggregates (InvoiceLine, Item, TaxTotal, LegalMonetaryTotal) are pervasively and correctly exercised as typed composites.'
-  missing_behavior:
-  - 'No single test asserts the CommonAggregateComponents-2/cac-namespace convention itself as a standalone architectural fact, the same gap as its CBC-namespace sibling SAL-UBL-OBL-0AFE5C0F7BA8AC02 in this cluster.'
+  - 'cac:-namespaced aggregates (InvoiceLine, Item, TaxTotal, LegalMonetaryTotal) are pervasively and correctly exercised as typed composites. The CommonAggregateComponents-2/cac-namespace convention itself is now also proven as a standalone architectural fact: a cac-prefixed element''s parsed QName resolves to the exact CommonAggregateComponents-2 URI (codec/writer/writer.py''s ET.register_namespace binding), it carries children with no direct text (a composite structure, distinct from cbc''s leaf value), and the writer declares the xmlns:cac binding to that exact URI, all surviving a full dumps()/loads() round trip.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.

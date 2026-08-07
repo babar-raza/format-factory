@@ -1,0 +1,49 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-cbc-cac-namespace-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T01:45:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_CBC_CAC_NAMESPACE_001",
+    "task_kind": "cross-capability-duplicate-closure-already-working-mechanism",
+    "root_cause": "4 obligations across UBL-MODEL-001 and UBL-PARSE-001 (2 sharing the CBC-namespace rule_text, 2 sharing the CAC-namespace rule_text) each flagged that no single test asserts the cbc/cac-namespace convention as a standalone architectural fact -- it was only implicit in the pervasive use of cbc:/cac:-qualified names throughout the rest of the suite.",
+    "obligation_targeted": "SAL-UBL-OBL-0AFE5C0F7BA8AC02, SAL-UBL-OBL-2E913739AA1D3A6C (CBC), SAL-UBL-OBL-EDA03586C360349D, SAL-UBL-OBL-7B14DCF48B17C706 (CAC)",
+    "acceptance_evidence": "6 new tests in a new file prove: a cbc-prefixed element resolves to the exact CommonBasicComponents-2 URI; a cac-prefixed element resolves to the exact CommonAggregateComponents-2 URI; cbc elements are leaf values (text, no children) while cac elements are composite structures (children, no direct text); the writer declares both namespace bindings with the correct prefixes and URIs; and the convention survives a full dumps()/loads() round trip.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read model/document.py directly: _CBC_NAMESPACE is bound to the exact 'urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2' string and used to construct QNames (e.g. cbc:UBLVersionID). Read codec/writer/writer.py: dumps() calls ET.register_namespace for both 'cbc' and 'cac' bound to their exact CommonBasicComponents-2/CommonAggregateComponents-2 URIs. Read model/aggregates.py: cac:Item/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal are all typed composites carrying child cbc: leaf values -- confirming the leaf-vs-composite distinction the rule_text names is real, already-built behavior, not a gap.",
+    "2. Ran an interactive probe before writing any test: parsed a minimal invoice fixture (reusing the existing test_obligation_business_calculation.py fixture pattern), confirmed the parsed cbc:ID and cac:InvoiceLine QNames carry the exact expected URIs, confirmed the written bytes declare both xmlns:cbc and xmlns:cac bindings with the correct URIs, and confirmed the convention survives a full dumps()/loads() round trip -- all passing on the first attempt.",
+    "3. Considered a third, related obligation cluster (3 more obligations sharing a 'qualified and unqualified data-type schemas' rule_text) but deliberately declined to force a test there: the referenced SAL facts (SAL-UBL-00105 through 00132) are generic document-root facts shared broadly across dozens of unrelated obligations, not a precise, dedicated definition of what 'qualified' vs 'unqualified' data-type schemas means at the XSD level. Rather than guess a specific interpretation and risk fabricating spec semantics (GAP-008), that cluster was left untouched this slice.",
+    "4. Wrote 6 new tests in a new file mirroring the existing fixture-building pattern from test_obligation_business_calculation.py. Ran ruff (clean) and the full ubl suite (719 passed, was 713, +6) before writing any evidence claim. Ran the full 6-format regression (2982 passed, was 2976, +6; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py -q -- 6 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 719 passed, was 713 passed",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 2982 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 2976 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 4,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not cross-checked against a reference UBL implementation.",
+    "obligations_moved_breakdown": "4 obligations promoted to implemented purely by testing an already-correct, already-working namespace mechanism (CBC/CAC URI binding, leaf-vs-composite structure) that had simply never been exercised as its own standalone fact. Zero new production source code. A related 3-obligation cluster ('qualified/unqualified data-type schemas') was deliberately left untouched -- its backing SAL facts are too generic to safely test without guessing spec semantics."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
