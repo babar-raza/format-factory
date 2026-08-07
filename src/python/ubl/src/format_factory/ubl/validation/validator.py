@@ -26,6 +26,9 @@ _POSTAL_ADDRESS_QNAME = f"{{{_CAC_NAMESPACE}}}PostalAddress"
 _CONTACT_QNAME = f"{{{_CAC_NAMESPACE}}}Contact"
 _PAYMENT_MEANS_QNAME = f"{{{_CAC_NAMESPACE}}}PaymentMeans"
 _PAYEE_FINANCIAL_ACCOUNT_QNAME = f"{{{_CAC_NAMESPACE}}}PayeeFinancialAccount"
+_CREDIT_NOTE_LINE_QNAME = f"{{{_CAC_NAMESPACE}}}CreditNoteLine"
+_RESPONSE_QNAME = f"{{{_CAC_NAMESPACE}}}Response"
+_DOCUMENT_REFERENCE_QNAME = f"{{{_CAC_NAMESPACE}}}DocumentReference"
 
 #: Per the pinned OASIS UBL 2.3 CommonAggregateComponents schema
 #: (xsd/common/UBL-CommonAggregateComponents-2.3.xsd, PartyType/AddressType/
@@ -58,6 +61,16 @@ _PAYMENT_MEANS_SINGLE_OCCURRENCE_FIELDS = frozenset(
 _FINANCIAL_ACCOUNT_SINGLE_OCCURRENCE_FIELDS = frozenset(
     {"ID", "Name", "CurrencyCode"}
 )
+_CREDIT_NOTE_LINE_SINGLE_OCCURRENCE_FIELDS = frozenset(
+    {"ID", "CreditedQuantity", "LineExtensionAmount", "Item"}
+)
+#: ResponseType.Description is deliberately excluded: the schema declares
+#: it minOccurs=0 maxOccurs=UNBOUNDED (genuinely repeatable), even though
+#: this package's own Response.description field models only the first
+#: occurrence as a singular value -- the same class of model-scoping
+#: question already documented for PaymentMeans.PaymentID above.
+_RESPONSE_SINGLE_OCCURRENCE_FIELDS = frozenset({"ResponseCode"})
+_DOCUMENT_REFERENCE_SINGLE_OCCURRENCE_FIELDS = frozenset({"ID", "DocumentTypeCode"})
 
 
 def _local(qname: str) -> str:
@@ -170,6 +183,12 @@ _CARDINALITY_CHECKED_COMPONENTS: dict[str, tuple[frozenset[str], str]] = {
     _PAYEE_FINANCIAL_ACCOUNT_QNAME: (
         _FINANCIAL_ACCOUNT_SINGLE_OCCURRENCE_FIELDS,
         "cac:PayeeFinancialAccount",
+    ),
+    _CREDIT_NOTE_LINE_QNAME: (_CREDIT_NOTE_LINE_SINGLE_OCCURRENCE_FIELDS, "cac:CreditNoteLine"),
+    _RESPONSE_QNAME: (_RESPONSE_SINGLE_OCCURRENCE_FIELDS, "cac:Response"),
+    _DOCUMENT_REFERENCE_QNAME: (
+        _DOCUMENT_REFERENCE_SINGLE_OCCURRENCE_FIELDS,
+        "cac:DocumentReference",
     ),
 }
 

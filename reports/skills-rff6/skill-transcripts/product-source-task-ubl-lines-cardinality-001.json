@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-lines-cardinality-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T08:09:30Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_LINES_CARDINALITY_001",
+    "task_kind": "extend-existing-cardinality-check-to-a-third-component-family",
+    "root_cause": "Events 216/217 established a repeatable pattern for the UBL schema-conformance cluster; this tick applies it to model/lines.py's CreditNoteLine/Response/DocumentReference types, the cluster's next already-modeled component family.",
+    "obligation_targeted": "The same 6-obligation cluster narrowed by events 216/217 (SAL-UBL-OBL-03AF3A7D3A76F362 and its cross-capability duplicates) -- extended with additional coverage, still not closed",
+    "acceptance_evidence": "8 new tests prove validate() now also detects cardinality violations for cac:CreditNoteLine's ID/CreditedQuantity fields, cac:Response's ResponseCode field, and cac:DocumentReference's DocumentTypeCode field, while correctly never flagging Response.Description (genuinely minOccurs=0 maxOccurs=UNBOUNDED per the schema, unlike its sibling field ResponseCode), proven as its own dedicated test.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Surveyed model/lines.py's other already-modeled dataclasses beyond OrderLine/DespatchLine (whose own fields are mostly required nested aggregates, not many direct optional leaf fields worth checking): CreditNoteLine (id/credited_quantity/line_extension_amount/item), Response (response_code/description), DocumentReference (id/document_type_code).",
+    "2. Extracted CreditNoteLineType's, ResponseType's, and DocumentReferenceType's complete field lists with exact minOccurs/maxOccurs directly from the pinned OASIS UBL 2.3 release ZIP (same source as events 216/217). Found a second genuine schema/model discrepancy, honestly documented rather than silently resolved: ResponseType declares cbc:Description as minOccurs=0 maxOccurs=UNBOUNDED (repeatable), even though this package's own Response.description field models only a single value -- deliberately excluded from the new check, the same discipline already applied to PaymentMeans.PaymentID in the prior slice.",
+    "3. Added 3 new QNAME constants, 3 new frozensets, and 3 new entries to the existing qname-keyed _CARDINALITY_CHECKED_COMPONENTS dispatch dict (introduced in event 217's refactor specifically to make this kind of extension mechanical).",
+    "4. Verified interactively before writing formal tests: a single CreditNoteLine ID validates cleanly; two IDs are flagged; a Response with two ResponseCode values is flagged; a Response with multiple Description values is correctly NOT flagged; a DocumentReference with two DocumentTypeCode values is flagged -- all 5 cases correct on the first attempt.",
+    "5. Ran the full pre-existing ubl suite (904 tests, zero new fixtures) against the extended check to look for false positives before writing a single new test -- all 904 passed unchanged.",
+    "6. Wrote 8 formal tests. One self-correction during writing: the first draft's cac:Response fixtures were incorrectly wrapped in a <cac:DiscrepancyResponse> element (confusing a sibling XSD field name from CreditNoteLineType's own field list with the actual cac:Response element structure) -- caught immediately by 1 test failure (report unexpectedly valid), fixed by using <cac:Response> directly (confirmed via response_of()'s actual caller, document_response_of, which calls find(node, 'Response')), after which all 8 tests passed.",
+    "7. Ran ruff (clean), the full ubl suite (912 passed, was 904, +8), and the full 6-format regression (3278 passed, was 3270, +8; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "8. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-d26655bb50bbdf70, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_lines_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_lines_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_lines_cardinality_validation.py -q -- 8 passed (after fixing 1 self-inflicted fixture bug)",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/validation/validator.py tests/python/ubl/test_obligation_lines_cardinality_validation.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 912 passed, was 904 passed (904 passed unchanged BEFORE writing new tests, confirming zero false positives)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3278 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3270 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every field's exact cardinality read directly from the pinned schema.",
+    "obligations_moved_breakdown": "0 obligations moved status this tick -- extends the same already-partial cluster's evidence further (8 complexTypes/component-families now checked: Party, PostalAddress, Contact, PaymentMeans, PayeeFinancialAccount, CreditNoteLine, Response, DocumentReference)."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
