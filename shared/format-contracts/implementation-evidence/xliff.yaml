@@ -745,20 +745,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-1097A25E15901A47
   capability_id: XLIFF-INLINE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
+  - tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_resolves_to_a_real_data_id_validates_cleanly
   negative_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
+  - tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_does_not_match_any_data_id_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-ORIGINAL-DATA-ELEMENT-MODELING-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of XLIFF-PARSE-001''s SAL-XLIFF-OBL-67ED3618EE6C709A (identical rule_text): The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused).'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: "Inline original-data references must resolve to data elements in the same unit" is entirely unimplemented -- there is no originalData/data element model or dataRef resolution check anywhere in this package. Not attempted this slice.'
+  - 'Cross-capability duplicate of XLIFF-PARSE-001''s SAL-XLIFF-OBL-67ED3618EE6C709A (identical rule_text): The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused). Stale-bookkeeping correction: this obligation''s other half, "inline original-data references must resolve to data elements in the same unit," was recorded as entirely unimplemented, but originalData/data element modeling and dataRef/dataRefStart/dataRefEnd resolution (_data_ref_diagnostics, validator.py) were built and proven in the meantime -- re-read directly and confirmed both halves of the rule_text are now satisfied. dataRef resolution is scoped to `unit.original_data`, i.e. the same unit, matching the rule_text''s own "in the same unit" requirement exactly.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
@@ -1559,20 +1562,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-44634C4175D505D0
   capability_id: XLIFF-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
+  - tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_resolves_to_a_real_data_id_validates_cleanly
   negative_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
+  - tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_does_not_match_any_data_id_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-ORIGINAL-DATA-ELEMENT-MODELING-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of XLIFF-PARSE-001''s SAL-XLIFF-OBL-67ED3618EE6C709A (identical rule_text): The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused).'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: "Inline original-data references must resolve to data elements in the same unit" is entirely unimplemented -- there is no originalData/data element model or dataRef resolution check anywhere in this package. Not attempted this slice.'
+  - 'Cross-capability duplicate of XLIFF-PARSE-001''s SAL-XLIFF-OBL-67ED3618EE6C709A (identical rule_text): The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused). Stale-bookkeeping correction: this obligation''s other half, "inline original-data references must resolve to data elements in the same unit," was recorded as entirely unimplemented, but originalData/data element modeling and dataRef/dataRefStart/dataRefEnd resolution (_data_ref_diagnostics, validator.py) were built and proven in the meantime -- re-read directly and confirmed both halves of the rule_text are now satisfied. dataRef resolution is scoped to `unit.original_data`, i.e. the same unit, matching the rule_text''s own "in the same unit" requirement exactly.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
@@ -2078,20 +2084,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-67ED3618EE6C709A
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
+  - tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_resolves_to_a_real_data_id_validates_cleanly
   negative_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
+  - tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_does_not_match_any_data_id_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-ORIGINAL-DATA-ELEMENT-MODELING-PROOF
   implemented_behavior:
-  - 'The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused).'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: "Inline original-data references must resolve to data elements in the same unit" is entirely unimplemented -- there is no originalData/data element model or dataRef resolution check anywhere in this package. Not attempted this slice.'
+  - 'The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused). Stale-bookkeeping correction: this obligation''s other half, "inline original-data references must resolve to data elements in the same unit," was recorded as entirely unimplemented, but originalData/data element modeling and dataRef/dataRefStart/dataRefEnd resolution (_data_ref_diagnostics, validator.py) were built and proven in the meantime -- re-read directly and confirmed both halves of the rule_text are now satisfied. dataRef resolution is scoped to `unit.original_data`, i.e. the same unit, matching the rule_text''s own "in the same unit" requirement exactly.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -2824,20 +2833,23 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-9A24FE03004035AC
   capability_id: XLIFF-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
+  - tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_resolves_to_a_real_data_id_validates_cleanly
   negative_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes
+  - tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_does_not_match_any_data_id_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-ORIGINAL-DATA-ELEMENT-MODELING-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of XLIFF-PARSE-001''s SAL-XLIFF-OBL-67ED3618EE6C709A (identical rule_text): The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused).'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: "Inline original-data references must resolve to data elements in the same unit" is entirely unimplemented -- there is no originalData/data element model or dataRef resolution check anywhere in this package. Not attempted this slice.'
+  - 'Cross-capability duplicate of XLIFF-PARSE-001''s SAL-XLIFF-OBL-67ED3618EE6C709A (identical rule_text): The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused). Stale-bookkeeping correction: this obligation''s other half, "inline original-data references must resolve to data elements in the same unit," was recorded as entirely unimplemented, but originalData/data element modeling and dataRef/dataRefStart/dataRefEnd resolution (_data_ref_diagnostics, validator.py) were built and proven in the meantime -- re-read directly and confirmed both halves of the rule_text are now satisfied. dataRef resolution is scoped to `unit.original_data`, i.e. the same unit, matching the rule_text''s own "in the same unit" requirement exactly.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.

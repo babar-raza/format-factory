@@ -309,7 +309,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "86a80eea03a42e4b4e032fbf49cc75653cbb1b24098a08faba3f0b7cdaf19b94",
+    "implementation_evidence": "4ef2af8e0eef98d7bb11be6422016a4fc9bb5d5e5e52154d1679726252da7465",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -689,20 +689,21 @@
       "capability_id": "XLIFF-INLINE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-ORIGINAL-DATA-ELEMENT-MODELING-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-67ED3618EE6C709A (identical rule_text): The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused)."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-67ED3618EE6C709A (identical rule_text): The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused). Stale-bookkeeping correction: this obligation's other half, \"inline original-data references must resolve to data elements in the same unit,\" was recorded as entirely unimplemented, but originalData/data element modeling and dataRef/dataRefStart/dataRefEnd resolution (_data_ref_diagnostics, validator.py) were built and proven in the meantime -- re-read directly and confirmed both halves of the rule_text are now satisfied. dataRef resolution is scoped to `unit.original_data`, i.e. the same unit, matching the rule_text's own \"in the same unit\" requirement exactly."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: \"Inline original-data references must resolve to data elements in the same unit\" is entirely unimplemented -- there is no originalData/data element model or dataRef resolution check anywhere in this package. Not attempted this slice."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_does_not_match_any_data_id_is_a_violation"
       ],
       "obligation_id": "SAL-XLIFF-OBL-1097A25E15901A47",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_resolves_to_a_real_data_id_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -712,11 +713,12 @@
           "Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves original data."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument"
+        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-INLINE-001",
@@ -1811,20 +1813,21 @@
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-ORIGINAL-DATA-ELEMENT-MODELING-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-67ED3618EE6C709A (identical rule_text): The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused)."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-67ED3618EE6C709A (identical rule_text): The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused). Stale-bookkeeping correction: this obligation's other half, \"inline original-data references must resolve to data elements in the same unit,\" was recorded as entirely unimplemented, but originalData/data element modeling and dataRef/dataRefStart/dataRefEnd resolution (_data_ref_diagnostics, validator.py) were built and proven in the meantime -- re-read directly and confirmed both halves of the rule_text are now satisfied. dataRef resolution is scoped to `unit.original_data`, i.e. the same unit, matching the rule_text's own \"in the same unit\" requirement exactly."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: \"Inline original-data references must resolve to data elements in the same unit\" is entirely unimplemented -- there is no originalData/data element model or dataRef resolution check anywhere in this package. Not attempted this slice."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_does_not_match_any_data_id_is_a_violation"
       ],
       "obligation_id": "SAL-XLIFF-OBL-44634C4175D505D0",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_resolves_to_a_real_data_id_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -1834,11 +1837,12 @@
           "Nested-structure fixtures verify order, inheritance, and ID preservation after round trip."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument"
+        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-INLINE-001",
@@ -2512,20 +2516,21 @@
       "capability_id": "XLIFF-PARSE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-ORIGINAL-DATA-ELEMENT-MODELING-PROOF"
       ],
       "implemented_behavior": [
-        "The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused)."
+        "The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused). Stale-bookkeeping correction: this obligation's other half, \"inline original-data references must resolve to data elements in the same unit,\" was recorded as entirely unimplemented, but originalData/data element modeling and dataRef/dataRefStart/dataRefEnd resolution (_data_ref_diagnostics, validator.py) were built and proven in the meantime -- re-read directly and confirmed both halves of the rule_text are now satisfied. dataRef resolution is scoped to `unit.original_data`, i.e. the same unit, matching the rule_text's own \"in the same unit\" requirement exactly."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: \"Inline original-data references must resolve to data elements in the same unit\" is entirely unimplemented -- there is no originalData/data element model or dataRef resolution check anywhere in this package. Not attempted this slice."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_does_not_match_any_data_id_is_a_violation"
       ],
       "obligation_id": "SAL-XLIFF-OBL-67ED3618EE6C709A",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_resolves_to_a_real_data_id_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -2535,11 +2540,12 @@
           "Version/namespace consistency fixtures per supported version; legacy-version refusal fixture."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument"
+        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-SEG-001",
@@ -3531,20 +3537,21 @@
       "capability_id": "XLIFF-VALIDATE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-ORIGINAL-DATA-ELEMENT-MODELING-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-67ED3618EE6C709A (identical rule_text): The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused)."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-67ED3618EE6C709A (identical rule_text): The sc/ec pairing constraint half is proven (an ec referencing no matching sc in the same unit is refused). Stale-bookkeeping correction: this obligation's other half, \"inline original-data references must resolve to data elements in the same unit,\" was recorded as entirely unimplemented, but originalData/data element modeling and dataRef/dataRefStart/dataRefEnd resolution (_data_ref_diagnostics, validator.py) were built and proven in the meantime -- re-read directly and confirmed both halves of the rule_text are now satisfied. dataRef resolution is scoped to `unit.original_data`, i.e. the same unit, matching the rule_text's own \"in the same unit\" requirement exactly."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: \"Inline original-data references must resolve to data elements in the same unit\" is entirely unimplemented -- there is no originalData/data element model or dataRef resolution check anywhere in this package. Not attempted this slice."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_does_not_match_any_data_id_is_a_violation"
       ],
       "obligation_id": "SAL-XLIFF-OBL-9A24FE03004035AC",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes",
+        "tests/python/xliff/test_obligation_original_data_element_modeling.py::test_a_dataref_that_resolves_to_a_real_data_id_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -3555,11 +3562,12 @@
           "Core element matrix and module matrix fixtures with per-layer diagnostics assertions."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument"
+        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-TEXT-001",
@@ -5351,12 +5359,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 107,
+      "implemented": 111,
       "missing": 11,
-      "partial": 24
+      "partial": 20
     },
     "total": 142,
-    "unresolved": 35
+    "unresolved": 31
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
