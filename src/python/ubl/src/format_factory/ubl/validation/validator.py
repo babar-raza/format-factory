@@ -33,6 +33,7 @@ _INVOICE_LINE_QNAME = f"{{{_CAC_NAMESPACE}}}InvoiceLine"
 _TAX_SUBTOTAL_QNAME = f"{{{_CAC_NAMESPACE}}}TaxSubtotal"
 _TAX_TOTAL_QNAME = f"{{{_CAC_NAMESPACE}}}TaxTotal"
 _LEGAL_MONETARY_TOTAL_QNAME = f"{{{_CAC_NAMESPACE}}}LegalMonetaryTotal"
+_EXTERNAL_REFERENCE_QNAME = f"{{{_CAC_NAMESPACE}}}ExternalReference"
 
 #: Per the pinned OASIS UBL 2.3 CommonAggregateComponents schema
 #: (xsd/common/UBL-CommonAggregateComponents-2.3.xsd, PartyType/AddressType/
@@ -98,6 +99,18 @@ _LEGAL_MONETARY_TOTAL_SINGLE_OCCURRENCE_FIELDS = frozenset(
         "AllowanceTotalAmount",
         "ChargeTotalAmount",
     }
+)
+#: Description is deliberately excluded: ExternalReferenceType declares it
+#: minOccurs=0 maxOccurs=UNBOUNDED (genuinely repeatable), unlike its
+#: sibling fields URI/DocumentHash/MimeCode/FileName (all maxOccurs=1).
+#: cac:ExternalReference itself is not currently reachable through this
+#: package's own typed document-parsing path (it is a child of
+#: cac:Attachment, which this package does not model at all) -- this check
+#: still applies directly to the raw parsed XML tree, so it is genuine,
+#: spec-grounded validation for any document containing the element,
+#: independent of whether a typed projector surfaces it today.
+_EXTERNAL_REFERENCE_SINGLE_OCCURRENCE_FIELDS = frozenset(
+    {"URI", "DocumentHash", "MimeCode", "FileName"}
 )
 
 
@@ -224,6 +237,10 @@ _CARDINALITY_CHECKED_COMPONENTS: dict[str, tuple[frozenset[str], str]] = {
     _LEGAL_MONETARY_TOTAL_QNAME: (
         _LEGAL_MONETARY_TOTAL_SINGLE_OCCURRENCE_FIELDS,
         "cac:LegalMonetaryTotal",
+    ),
+    _EXTERNAL_REFERENCE_QNAME: (
+        _EXTERNAL_REFERENCE_SINGLE_OCCURRENCE_FIELDS,
+        "cac:ExternalReference",
     ),
 }
 

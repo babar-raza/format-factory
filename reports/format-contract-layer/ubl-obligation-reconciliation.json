@@ -82,6 +82,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Closes 6 obligations sharing the identical \"UBL extension model\" rule_text across UBL-EXT-001/REF-001/DOCTYPES-001/MODEL-001/PARSE-001/VALIDATE-001. validator.py had zero handling of ext:UBLExtensions at all before this slice, confirmed by grepping the file; the one existing adjacent-looking test never actually built the real ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent structure this obligation names. Confirmed interactively before any fix: a document with UBLExtensions not first, or with ExtensionContent carrying zero or two apex-element children, both passed validate() with zero diagnostics. Fixed by adding _extension_diagnostics() to validator.py (4 new diagnostic codes: position, disallowed-child, ExtensionContent cardinality, apex-element count). Also fixed test_obligation_preservation_mode.py's _extensions_container() fixture, which had unknowingly built a spec-nonconformant ExtensionContent (bare text, zero apex-element children) that the new validation correctly now rejects -- repaired to wrap the payload in a real foreign-namespaced child element, preserving the test's original intent. 8 new tests in a new file prove the conformant case, all 4 violation types, the no-extensions-present case, and a full round trip. ubl suite: 719 -> 727 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-04ADBA28EFEAC74C, SAL-UBL-OBL-F13D8EC34F2D93BC, SAL-UBL-OBL-10201DA6E92E0E8F, SAL-UBL-OBL-957563FFE4EF0A64, SAL-UBL-OBL-A7A7F3A905D33782, and SAL-UBL-OBL-CB4B2809D1A7DD8F only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-external-reference-cardinality-001.json",
+      "sha256": "bb622b06442b7cdc03dd0718c9d519c47aec054d9790ff26eb8b1af5ff8cdf0b",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Extends (does not newly close) the same 6-obligation schema-conformance cluster UBL-PARTY-CARDINALITY-VALIDATION-PROOF, UBL-PAYMENT-MEANS-CARDINALITY-PROOF, UBL-LINES-CARDINALITY-PROOF, and UBL-AGGREGATES-CARDINALITY-PROOF already narrowed. Applies the same established pattern to a fifth component family, model/reference.py's ExternalReference -- flagged as the next candidate since event 219 and not yet investigated across the cluster's first 4 ticks. Extracted ExternalReferenceType's complete field list with exact minOccurs/maxOccurs directly from the pinned OASIS UBL 2.3 release ZIP. Found a fourth genuine schema/model discrepancy, honestly documented rather than silently resolved: ExternalReferenceType declares cbc:Description as minOccurs=0 maxOccurs=UNBOUNDED (repeatable), matching the precedent already set for PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal -- deliberately excluded from the new check. Unlike every prior component in this cluster, cac:ExternalReference is not currently reachable through this package's own typed document-parsing path: it is a child of cac:Attachment, which model/reference.py does not itself wire into any parent projector (cac:Attachment is not modeled by this package at all) -- confirmed by grepping the whole package for any reference to Attachment. The cardinality check still applies correctly since it operates on the raw parsed XML tree directly, not on typed projections, so it is genuine, spec-grounded validation for any real document containing a literal cac:ExternalReference element, honestly documented as reaching beyond the typed model's current wiring rather than silently assumed equivalent to the cluster's other, already-wired components. Verified zero false positives against the entire pre-existing 922-test ubl suite before writing a single new test. 6 new tests prove violation detection for ExternalReference's URI/DocumentHash/MimeCode/FileName fields, plus a dedicated proof that Description's genuine repeatability is honored, not flagged. ubl suite: 922 -> 928 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every field's cardinality read directly from the pinned schema. Covers the same 6 obligations UBL-PARTY-CARDINALITY-VALIDATION-PROOF covers; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "UBL-EXTERNAL-REFERENCE-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -261,7 +269,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "a6cb17148df6a093979e75db6dd949266dded51f01b53517a7159a2b79a1af4d",
+    "implementation_evidence": "ba91401693bee492cba64ebe1a9076a3ddc884278928aa90fd2e9e4b57a5b455",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -340,13 +348,14 @@
         "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
         "UBL-PAYMENT-MEANS-CARDINALITY-PROOF",
         "UBL-LINES-CARDINALITY-PROOF",
-        "UBL-AGGREGATES-CARDINALITY-PROOF"
+        "UBL-AGGREGATES-CARDINALITY-PROOF",
+        "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, or cac:LegalMonetaryTotal -- the twelve already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 12 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, or cac:ExternalReference -- the thirteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 13 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
       ],
       "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py, reference.py) also type. Item's identifiers/classification_codes fields are deliberately excluded: ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
+        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields are deliberately excluded: ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -369,7 +378,11 @@
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_subtotal_with_two_tax_categories_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_total_with_two_tax_amounts_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_payable_amounts_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_tax_exclusive_amounts_is_a_cardinality_violation"
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_tax_exclusive_amounts_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_uris_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_document_hashes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_mime_codes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_file_names_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-03AF3A7D3A76F362",
       "positive_test_selectors": [
@@ -386,7 +399,9 @@
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_an_invoice_line_with_a_single_id_validates_cleanly",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_subtotal_with_one_of_each_field_validates_cleanly",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_total_with_multiple_tax_subtotals_is_not_a_violation_the_schema_declares_them_repeatable",
-        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_one_of_each_field_validates_cleanly"
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_one_of_each_field_validates_cleanly",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_one_of_each_field_validates_cleanly",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_multiple_descriptions_are_not_a_violation_the_schema_declares_them_repeatable"
       ],
       "proof_requirements": {
         "negative": [
@@ -1920,13 +1935,14 @@
         "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
         "UBL-PAYMENT-MEANS-CARDINALITY-PROOF",
         "UBL-LINES-CARDINALITY-PROOF",
-        "UBL-AGGREGATES-CARDINALITY-PROOF"
+        "UBL-AGGREGATES-CARDINALITY-PROOF",
+        "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, or cac:LegalMonetaryTotal -- the twelve already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 12 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, or cac:ExternalReference -- the thirteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 13 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
       ],
       "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py, reference.py) also type. Item's identifiers/classification_codes fields are deliberately excluded: ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
+        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields are deliberately excluded: ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -1949,7 +1965,11 @@
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_subtotal_with_two_tax_categories_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_total_with_two_tax_amounts_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_payable_amounts_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_tax_exclusive_amounts_is_a_cardinality_violation"
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_tax_exclusive_amounts_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_uris_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_document_hashes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_mime_codes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_file_names_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-3C2E2EA8D3B697C9",
       "positive_test_selectors": [
@@ -1966,7 +1986,9 @@
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_an_invoice_line_with_a_single_id_validates_cleanly",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_subtotal_with_one_of_each_field_validates_cleanly",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_total_with_multiple_tax_subtotals_is_not_a_violation_the_schema_declares_them_repeatable",
-        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_one_of_each_field_validates_cleanly"
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_one_of_each_field_validates_cleanly",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_one_of_each_field_validates_cleanly",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_multiple_descriptions_are_not_a_violation_the_schema_declares_them_repeatable"
       ],
       "proof_requirements": {
         "negative": [
@@ -3559,13 +3581,14 @@
         "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
         "UBL-PAYMENT-MEANS-CARDINALITY-PROOF",
         "UBL-LINES-CARDINALITY-PROOF",
-        "UBL-AGGREGATES-CARDINALITY-PROOF"
+        "UBL-AGGREGATES-CARDINALITY-PROOF",
+        "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, or cac:LegalMonetaryTotal -- the twelve already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 12 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, or cac:ExternalReference -- the thirteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 13 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
       ],
       "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py, reference.py) also type. Item's identifiers/classification_codes fields are deliberately excluded: ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
+        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields are deliberately excluded: ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -3588,7 +3611,11 @@
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_subtotal_with_two_tax_categories_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_total_with_two_tax_amounts_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_payable_amounts_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_tax_exclusive_amounts_is_a_cardinality_violation"
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_tax_exclusive_amounts_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_uris_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_document_hashes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_mime_codes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_file_names_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-783649FDF531B0F9",
       "positive_test_selectors": [
@@ -3605,7 +3632,9 @@
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_an_invoice_line_with_a_single_id_validates_cleanly",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_subtotal_with_one_of_each_field_validates_cleanly",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_total_with_multiple_tax_subtotals_is_not_a_violation_the_schema_declares_them_repeatable",
-        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_one_of_each_field_validates_cleanly"
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_one_of_each_field_validates_cleanly",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_one_of_each_field_validates_cleanly",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_multiple_descriptions_are_not_a_violation_the_schema_declares_them_repeatable"
       ],
       "proof_requirements": {
         "negative": [
@@ -3630,19 +3659,21 @@
         "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
         "UBL-PAYMENT-MEANS-CARDINALITY-PROOF",
         "UBL-LINES-CARDINALITY-PROOF",
-        "UBL-AGGREGATES-CARDINALITY-PROOF"
+        "UBL-AGGREGATES-CARDINALITY-PROOF",
+        "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF"
       ],
       "implemented_behavior": [
-        "4 of the 5 named layers exist as separate, independently invokable, diagnostic-returning capabilities rather than one monolithic all-or-nothing check: syntax (XML parse errors), referential (DocumentIndex.duplicate_line_ids), code-list (CodeListRegistry.validate_code), and pluggable business-rule (ProfileValidatorRegistry) are each separately callable and each return structured diagnostics rather than raising. validate() itself returns a ValidationReport rather than an exception, proven directly. The 5th layer, schema/XSD-conformance, now has a genuine, growing slice too: validate() detects cardinality violations (a minOccurs=0(or 1) maxOccurs=1 element occurring more than once) for cac:Party/cac:PostalAddress/cac:Contact/cac:PaymentMeans/cac:PayeeFinancialAccount/cac:CreditNoteLine/cac:Response/cac:DocumentReference/cac:InvoiceLine/cac:TaxSubtotal/cac:TaxTotal/cac:LegalMonetaryTotal's already-modeled fields, grounded directly in the pinned OASIS UBL 2.3 schema."
+        "4 of the 5 named layers exist as separate, independently invokable, diagnostic-returning capabilities rather than one monolithic all-or-nothing check: syntax (XML parse errors), referential (DocumentIndex.duplicate_line_ids), code-list (CodeListRegistry.validate_code), and pluggable business-rule (ProfileValidatorRegistry) are each separately callable and each return structured diagnostics rather than raising. validate() itself returns a ValidationReport rather than an exception, proven directly. The 5th layer, schema/XSD-conformance, now has a genuine, growing slice too: validate() detects cardinality violations (a minOccurs=0(or 1) maxOccurs=1 element occurring more than once) for cac:Party/cac:PostalAddress/cac:Contact/cac:PaymentMeans/cac:PayeeFinancialAccount/cac:CreditNoteLine/cac:Response/cac:DocumentReference/cac:InvoiceLine/cac:TaxSubtotal/cac:TaxTotal/cac:LegalMonetaryTotal/cac:ExternalReference's already-modeled fields, grounded directly in the pinned OASIS UBL 2.3 schema."
       ],
       "missing_behavior": [
-        "Full schema/XSD-conformance validation remains the one confirmed incomplete layer -- only cardinality checking for 12 already-modeled complexTypes' single-occurrence fields exists so far, not type/pattern/full-cardinality validation across the whole UBL 2.3 schema's ~91 root document types and their many components, the same confirmed gap as SAL-UBL-OBL-03AF3A7D3A76F362 (UBL-MODEL-001). The 5 layers also are not unified into one combined call returning all diagnostics together -- a caller currently invokes each layer separately."
+        "Full schema/XSD-conformance validation remains the one confirmed incomplete layer -- only cardinality checking for 13 already-modeled complexTypes' single-occurrence fields exists so far, not type/pattern/full-cardinality validation across the whole UBL 2.3 schema's ~91 root document types and their many components, the same confirmed gap as SAL-UBL-OBL-03AF3A7D3A76F362 (UBL-MODEL-001). The 5 layers also are not unified into one combined call returning all diagnostics together -- a caller currently invokes each layer separately."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_means_codes_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_lines_cardinality_validation.py::test_a_credit_note_line_with_two_ids_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_payable_amounts_is_a_cardinality_violation"
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_payable_amounts_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_uris_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-788B2748204338B8",
       "positive_test_selectors": [
@@ -3652,7 +3683,8 @@
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_a_single_postal_address_validates_cleanly",
         "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_payment_means_with_a_single_code_validates_cleanly",
         "tests/python/ubl/test_obligation_lines_cardinality_validation.py::test_a_credit_note_line_with_a_single_id_validates_cleanly",
-        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_one_of_each_field_validates_cleanly"
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_one_of_each_field_validates_cleanly",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_one_of_each_field_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -4598,13 +4630,14 @@
         "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
         "UBL-PAYMENT-MEANS-CARDINALITY-PROOF",
         "UBL-LINES-CARDINALITY-PROOF",
-        "UBL-AGGREGATES-CARDINALITY-PROOF"
+        "UBL-AGGREGATES-CARDINALITY-PROOF",
+        "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, or cac:LegalMonetaryTotal -- the twelve already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 12 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, or cac:ExternalReference -- the thirteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 13 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
       ],
       "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py, reference.py) also type. Item's identifiers/classification_codes fields are deliberately excluded: ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
+        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields are deliberately excluded: ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -4627,7 +4660,11 @@
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_subtotal_with_two_tax_categories_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_total_with_two_tax_amounts_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_payable_amounts_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_tax_exclusive_amounts_is_a_cardinality_violation"
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_tax_exclusive_amounts_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_uris_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_document_hashes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_mime_codes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_file_names_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-9736787B52CB148C",
       "positive_test_selectors": [
@@ -4644,7 +4681,9 @@
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_an_invoice_line_with_a_single_id_validates_cleanly",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_subtotal_with_one_of_each_field_validates_cleanly",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_total_with_multiple_tax_subtotals_is_not_a_violation_the_schema_declares_them_repeatable",
-        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_one_of_each_field_validates_cleanly"
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_one_of_each_field_validates_cleanly",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_one_of_each_field_validates_cleanly",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_multiple_descriptions_are_not_a_violation_the_schema_declares_them_repeatable"
       ],
       "proof_requirements": {
         "negative": [
@@ -4730,13 +4769,14 @@
         "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
         "UBL-PAYMENT-MEANS-CARDINALITY-PROOF",
         "UBL-LINES-CARDINALITY-PROOF",
-        "UBL-AGGREGATES-CARDINALITY-PROOF"
+        "UBL-AGGREGATES-CARDINALITY-PROOF",
+        "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, or cac:LegalMonetaryTotal -- the twelve already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 12 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, or cac:ExternalReference -- the thirteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 13 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
       ],
       "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py, reference.py) also type. Item's identifiers/classification_codes fields are deliberately excluded: ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
+        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields are deliberately excluded: ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -4759,7 +4799,11 @@
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_subtotal_with_two_tax_categories_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_total_with_two_tax_amounts_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_payable_amounts_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_tax_exclusive_amounts_is_a_cardinality_violation"
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_tax_exclusive_amounts_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_uris_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_document_hashes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_mime_codes_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_file_names_is_a_cardinality_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-9C170E327B30FBD3",
       "positive_test_selectors": [
@@ -4776,7 +4820,9 @@
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_an_invoice_line_with_a_single_id_validates_cleanly",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_subtotal_with_one_of_each_field_validates_cleanly",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_tax_total_with_multiple_tax_subtotals_is_not_a_violation_the_schema_declares_them_repeatable",
-        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_one_of_each_field_validates_cleanly"
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_one_of_each_field_validates_cleanly",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_one_of_each_field_validates_cleanly",
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_multiple_descriptions_are_not_a_violation_the_schema_declares_them_repeatable"
       ],
       "proof_requirements": {
         "negative": [
@@ -6984,6 +7030,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-doctypes-citation-audit-001.json": "e5d72d55a468e859060fff36a118ce63d6d2dcf9c5fe747b0e2de5d0d66572bd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-document-type-coverage-001.json": "bc594b14e680b56525c85226eb559d4f2a56b69dff90923ba5e230c260d56df2",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-extensions-structure-001.json": "bd4536de6158761bca11217c812e3272cb91f9621c4a6539378daaadeb11d5d2",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-external-reference-cardinality-001.json": "bb622b06442b7cdc03dd0718c9d519c47aec054d9790ff26eb8b1af5ff8cdf0b",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lifecycle-io-001.json": "ed787921f2225a81573186c4cd81377a417d211b447444ba0807685ba1e837b8",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lines-cardinality-001.json": "e59fc35d67c0bfe1120e3e1841a38aa52649cf7a9c6b9b7b206be58f91e6a94c",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-maindoc-lines-001.json": "59537e2a072991398c7ec9a483c13e0abc19149487f1834e46668e43dce5d3c6",
@@ -7024,7 +7071,7 @@
     "src/python/ubl/src/format_factory/ubl/model/values.py": "4aaa55d4f2c6faa457b1a03ab6bf9a5ff83ffcd7ee90f87c0b649c18b39b642f",
     "src/python/ubl/src/format_factory/ubl/security/limits.py": "95ba5485bad5547fe800d4952518507824e217d15a197df822945f73921afc6d",
     "src/python/ubl/src/format_factory/ubl/validation/profiles.py": "9be1805b9ea265200e890fc833526dd3589b0be559d61f1d6ba76954f63b0c35",
-    "src/python/ubl/src/format_factory/ubl/validation/validator.py": "0d72ace3db9e4ee60763729e962f1a4887fad79825c07b311c07c0bf23897113",
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py": "be4d71974b01981ee3973d29b0be50e8d7bad668f56d750bc268eaecf7c8d5cd",
     "tests/python/ubl/test_obligation_aggregate_components.py": "26e36e29e05e239f1fc17915ebf243ae61b55799c7811dbfe8c3fee0fac66242",
     "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py": "ec56ba759bb06b3ca638a7b030d5795cb9c3e9e673d90690334b8f18c7b5dfee",
     "tests/python/ubl/test_obligation_business_calculation.py": "ebf8352d49b7d0bc6bf5aa4bfa0d034f6f98f896ba34aceb95cfe38efeeee150",
@@ -7036,6 +7083,7 @@
     "tests/python/ubl/test_obligation_document_type_coverage.py": "8d4b7b1d87b5f9a33cc836139d0c0ceac7656e2e2d5ed8392724cd0a0e17ddba",
     "tests/python/ubl/test_obligation_extensions_structure.py": "a25a8652d39fab6e3c146f64aaf7c9bbd28eb36be4df30d2ab914ab46d147c79",
     "tests/python/ubl/test_obligation_external_reference.py": "6ba99de8b1dab95aacf884176da6e3c59cf698d3017df4c95748f834fe854901",
+    "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py": "81d098502df86e456b1bb752828faf41ba62dd32e5e001b842075aea467d5aae",
     "tests/python/ubl/test_obligation_lifecycle_io.py": "6189da6be51a33cbe60b72e6d98b632dfda9232838d41788dfd7547ec824f7ed",
     "tests/python/ubl/test_obligation_lines_cardinality_validation.py": "9cc83daec77c593684701ba892221d488398e6ae8c782678d8c61361d1217cec",
     "tests/python/ubl/test_obligation_maindoc_lines.py": "2fdad6d4d11e62df2820eaf8ea2d499f38a2f587439497b3dd7369bdf05e2812",

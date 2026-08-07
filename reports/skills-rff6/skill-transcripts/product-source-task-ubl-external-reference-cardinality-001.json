@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-external-reference-cardinality-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T09:22:49Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_EXTERNAL_REFERENCE_CARDINALITY_001",
+    "task_kind": "extend-existing-cardinality-check-to-a-fifth-component-family",
+    "root_cause": "Event 219's exact_next_action named model/reference.py's ExternalReference as a next candidate for the cardinality-validation cluster, not yet investigated across the cluster's first 4 ticks (events 216-219). After two dead-end investigations this tick in NRRD (a genuine architectural tension already deliberately deferred by a prior session) and ORA (blocked on a rendering engine this package doesn't have), pivoted to this fresh, well-scoped candidate.",
+    "obligation_targeted": "The same 6-obligation cluster narrowed by events 216-219 (SAL-UBL-OBL-03AF3A7D3A76F362 and its cross-capability duplicates) -- extended with additional coverage, still not closed",
+    "acceptance_evidence": "6 new tests prove validate() now also detects cardinality violations for cac:ExternalReference's URI/DocumentHash/MimeCode/FileName fields, while correctly never flagging Description (genuinely minOccurs=0 maxOccurs=UNBOUNDED per the schema), proven as its own dedicated test.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Re-extracted ExternalReferenceType's complete field list with exact minOccurs/maxOccurs directly from the pinned OASIS UBL 2.3 release ZIP (.local/format-contracts/acquired/ubl/src-ubl-002.bin), fresh, not trusting any prior memory: URI/DocumentHash/HashAlgorithmMethod/ExpiryDate/ExpiryTime/MimeCode/FormatCode/EncodingCode/CharacterSetCode/FileName all minOccurs=0 maxOccurs=1; Description minOccurs=0 maxOccurs=unbounded.",
+    "2. Checked for any prior investigation/deferral note about ExternalReference before proceeding, given two near-misses this tick in NRRD/ORA where prior ticks had already deliberately deferred similar-looking opportunities for well-reasoned architectural reasons -- grepped ubl.yaml for 'ExternalReference' and found only construction/projection/security-related entries, no cardinality-related deferral, confirming this is genuinely fresh territory.",
+    "3. Confirmed via grep that cac:Attachment (ExternalReference's only schema parent, per a targeted XSD search) is not modeled anywhere in this package at all -- ExternalReference is not currently reachable through any typed document-parsing path. Verified the cardinality check still applies correctly since it operates on UblDocument.root.iter() directly (the raw parsed XML tree), not on typed projections, so it is genuine, spec-grounded validation for any real document containing a literal cac:ExternalReference element regardless of typed-model wiring.",
+    "4. Added 1 new QNAME constant, 1 new frozenset (excluding Description, matching the precedent from PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal), and 1 new dispatch-dict entry to validator.py's existing _CARDINALITY_CHECKED_COMPONENTS.",
+    "5. Verified interactively before writing formal tests: a single URI validates cleanly; duplicate URI flagged; multiple Description NOT flagged (repeatable); duplicate FileName flagged -- all 4 cases correct on the first attempt.",
+    "6. Ran the full pre-existing ubl suite (922 tests, zero new fixtures) against the extended check to look for false positives before writing a single new test -- all 922 passed unchanged.",
+    "7. Wrote 6 formal tests, all passing on the first attempt.",
+    "8. Ran ruff (clean), the full ubl suite (928 passed, was 922, +6), and the full 6-format regression (3320 passed, was 3314, +6; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "9. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-3582b1859c344518, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_external_reference_cardinality_validation.py -q -- 6 passed",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/validation/validator.py tests/python/ubl/test_obligation_external_reference_cardinality_validation.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 928 passed, was 922 passed (922 passed unchanged BEFORE writing new tests, confirming zero false positives)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3320 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3314 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every field's cardinality read directly from the pinned schema.",
+    "obligations_moved_breakdown": "0 obligations moved status this tick -- extends the same already-partial cluster's evidence further (13 complexTypes/component-families now checked: Party, PostalAddress, Contact, PaymentMeans, PayeeFinancialAccount, CreditNoteLine, Response, DocumentReference, InvoiceLine, TaxSubtotal, TaxTotal, LegalMonetaryTotal, ExternalReference). ExternalReference is honestly documented as reachable only via raw XML structure, not a typed accessor, since cac:Attachment (its schema parent) remains entirely unmodeled by this package -- a distinct honesty note from the cluster's other 12 components, all of which have wired typed projectors."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
