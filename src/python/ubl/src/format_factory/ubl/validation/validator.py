@@ -10,6 +10,12 @@ from ..model import UblDocument
 _CBC_NAMESPACE = (
     "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
 )
+_EXT_NAMESPACE = (
+    "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
+)
+_UBL_EXTENSIONS_QNAME = f"{{{_EXT_NAMESPACE}}}UBLExtensions"
+_UBL_EXTENSION_QNAME = f"{{{_EXT_NAMESPACE}}}UBLExtension"
+_EXTENSION_CONTENT_QNAME = f"{{{_EXT_NAMESPACE}}}ExtensionContent"
 _SIGNATURE_LOCAL_NAMES = frozenset({"Signature", "UBLDocumentSignatures"})
 
 
@@ -86,4 +92,56 @@ def validate(
                 severity=Severity.WARNING,
             )
         )
+    diagnostics.extend(_extension_diagnostics(value))
     return ValidationReport(diagnostics)
+
+
+def _extension_diagnostics(value: UblDocument) -> list[Diagnostic]:
+    """ext:UBLExtensions must be the first optional component in sequence
+    order; each ext:UBLExtension must contain exactly one ext:ExtensionContent,
+    which must itself contain exactly one apex element."""
+
+    diagnostics: list[Diagnostic] = []
+    for index, node in enumerate(value.root.children):
+        if node.qname != _UBL_EXTENSIONS_QNAME:
+            continue
+        if index != 0:
+            diagnostics.append(
+                Diagnostic(
+                    "ubl.extensions.position",
+                    "ext:UBLExtensions must be the first optional component "
+                    "in the document sequence",
+                )
+            )
+        for extension in node.children:
+            if extension.qname != _UBL_EXTENSION_QNAME:
+                diagnostics.append(
+                    Diagnostic(
+                        "ubl.extensions.child",
+                        "ext:UBLExtensions may only contain ext:UBLExtension "
+                        f"children, found {extension.qname!r}",
+                    )
+                )
+                continue
+            content_children = [
+                child for child in extension.children
+                if child.qname == _EXTENSION_CONTENT_QNAME
+            ]
+            if len(content_children) != 1:
+                diagnostics.append(
+                    Diagnostic(
+                        "ubl.extension.content.cardinality",
+                        "ext:UBLExtension must contain exactly one "
+                        f"ext:ExtensionContent, found {len(content_children)}",
+                    )
+                )
+                continue
+            if len(content_children[0].children) != 1:
+                diagnostics.append(
+                    Diagnostic(
+                        "ubl.extension.content.apex",
+                        "ext:ExtensionContent must contain exactly one apex "
+                        f"element, found {len(content_children[0].children)}",
+                    )
+                )
+    return diagnostics

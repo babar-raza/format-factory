@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-EXTENSIONS-STRUCTURE-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-extensions-structure-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Closes 6 obligations sharing the identical "UBL extension model" rule_text across UBL-EXT-001/REF-001/DOCTYPES-001/MODEL-001/PARSE-001/VALIDATE-001. validator.py had zero handling of ext:UBLExtensions at all before this slice, confirmed by grepping the file; the one existing adjacent-looking test never actually built the real ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent structure this obligation names. Confirmed interactively before any fix: a document with UBLExtensions not first, or with ExtensionContent carrying zero or two apex-element children, both passed validate() with zero diagnostics. Fixed by adding _extension_diagnostics() to validator.py (4 new diagnostic codes: position, disallowed-child, ExtensionContent cardinality, apex-element count). Also fixed test_obligation_preservation_mode.py''s _extensions_container() fixture, which had unknowingly built a spec-nonconformant ExtensionContent (bare text, zero apex-element children) that the new validation correctly now rejects -- repaired to wrap the payload in a real foreign-namespaced child element, preserving the test''s original intent. 8 new tests in a new file prove the conformant case, all 4 violation types, the no-extensions-present case, and a full round trip. ubl suite: 719 -> 727 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-04ADBA28EFEAC74C, SAL-UBL-OBL-F13D8EC34F2D93BC, SAL-UBL-OBL-10201DA6E92E0E8F, SAL-UBL-OBL-957563FFE4EF0A64, SAL-UBL-OBL-A7A7F3A905D33782, and SAL-UBL-OBL-CB4B2809D1A7DD8F only; it supports no other obligation and promotes no product state.'
 - evidence_id: UBL-CBC-CAC-NAMESPACE-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-cbc-cac-namespace-001.json
   expected_result: PASS
@@ -441,26 +446,35 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-04ADBA28EFEAC74C
   capability_id: UBL-EXT-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_extensions_first_in_sequence_is_valid'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_document_with_no_extensions_container_is_unaffected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_conformant_extension_round_trips_through_dumps_and_loads'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_extensions_not_first_in_sequence_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_content_with_zero_apex_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_content_with_two_apex_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_carrying_two_extension_content_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_non_extension_child_of_ublextensions_is_rejected'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-EXTENSIONS-STRUCTURE-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of UBL-PARSE-001''s SAL-UBL-OBL-A7A7F3A905D33782 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-957563FFE4EF0A64 (identical rule_text): preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged.'
-  missing_behavior:
-  - 'The specific structural constraints named in this obligation -- that UBLExtensions must be the first optional component in sequence order, that each UBLExtension permits exactly one foreign-namespaced apex element, and "lax" schema processing semantics for that content -- are not separately validated or enforced. The container is preserved losslessly as whatever generic subtree shape the input document already had, not checked against these specific structural rules.'
+  - 'preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged. The obligation''s own named structural constraints are now separately validated: validator.py''s _extension_diagnostics() confirms ext:UBLExtensions is the first optional component when present, that it only contains ext:UBLExtension children, that each ext:UBLExtension contains exactly one ext:ExtensionContent, and that each ExtensionContent contains exactly one apex-element child ("lax" processing of that apex element''s own content is satisfied by construction -- nothing inspects inside it beyond confirming its presence, exactly once). 8 new tests prove both the conformant case and all 4 structural violations, including a fix to an existing fixture (test_obligation_preservation_mode.py) that had unknowingly been spec-nonconformant (ExtensionContent with bare text, zero apex elements).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for extension-structure violations (position,
+      cardinality, apex-element count, and disallowed child type).
 - obligation_id: SAL-UBL-OBL-0996E6D7B91D544F
   capability_id: UBL-PARSE-001
   status: missing
@@ -588,27 +602,36 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-10201DA6E92E0E8F
   capability_id: UBL-DOCTYPES-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_extensions_first_in_sequence_is_valid'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_document_with_no_extensions_container_is_unaffected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_conformant_extension_round_trips_through_dumps_and_loads'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_extensions_not_first_in_sequence_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_content_with_zero_apex_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_content_with_two_apex_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_carrying_two_extension_content_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_non_extension_child_of_ublextensions_is_rejected'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-EXTENSIONS-STRUCTURE-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-957563FFE4EF0A64 (identical rule_text): preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged.'
-  missing_behavior:
-  - 'The specific structural constraints named in this obligation -- that UBLExtensions must be the first optional component in sequence order, that each UBLExtension permits exactly one foreign-namespaced apex element, and "lax" schema processing semantics for that content -- are not separately validated or enforced. The container is preserved losslessly as whatever generic subtree shape the input document already had, not checked against these specific structural rules.'
+  - 'preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged. The obligation''s own named structural constraints are now separately validated: validator.py''s _extension_diagnostics() confirms ext:UBLExtensions is the first optional component when present, that it only contains ext:UBLExtension children, that each ext:UBLExtension contains exactly one ext:ExtensionContent, and that each ExtensionContent contains exactly one apex-element child ("lax" processing of that apex element''s own content is satisfied by construction -- nothing inspects inside it beyond confirming its presence, exactly once). 8 new tests prove both the conformant case and all 4 structural violations, including a fix to an existing fixture (test_obligation_preservation_mode.py) that had unknowingly been spec-nonconformant (ExtensionContent with bare text, zero apex elements).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every
       official sample.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for extension-structure violations (position,
+      cardinality, apex-element count, and disallowed child type).
 - obligation_id: SAL-UBL-OBL-10FAFE831BDBFA43
   capability_id: UBL-VALUES-001
   status: implemented
@@ -3149,26 +3172,35 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-957563FFE4EF0A64
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_extensions_first_in_sequence_is_valid'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_document_with_no_extensions_container_is_unaffected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_conformant_extension_round_trips_through_dumps_and_loads'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_extensions_not_first_in_sequence_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_content_with_zero_apex_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_content_with_two_apex_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_carrying_two_extension_content_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_non_extension_child_of_ublextensions_is_rejected'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-EXTENSIONS-STRUCTURE-PROOF
   implemented_behavior:
-  - 'preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged.'
-  missing_behavior:
-  - 'The specific structural constraints named in this obligation -- that UBLExtensions must be the first optional component in sequence order, that each UBLExtension permits exactly one foreign-namespaced apex element, and "lax" schema processing semantics for that content -- are not separately validated or enforced. The container is preserved losslessly as whatever generic subtree shape the input document already had, not checked against these specific structural rules.'
+  - 'preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged. The obligation''s own named structural constraints are now separately validated: validator.py''s _extension_diagnostics() confirms ext:UBLExtensions is the first optional component when present, that it only contains ext:UBLExtension children, that each ext:UBLExtension contains exactly one ext:ExtensionContent, and that each ExtensionContent contains exactly one apex-element child ("lax" processing of that apex element''s own content is satisfied by construction -- nothing inspects inside it beyond confirming its presence, exactly once). 8 new tests prove both the conformant case and all 4 structural violations, including a fix to an existing fixture (test_obligation_preservation_mode.py) that had unknowingly been spec-nonconformant (ExtensionContent with bare text, zero apex elements).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for extension-structure violations (position,
+      cardinality, apex-element count, and disallowed child type).
 - obligation_id: SAL-UBL-OBL-965E8CAEA15E1281
   capability_id: UBL-PROFILE-001
   status: implemented
@@ -3424,27 +3456,36 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-A7A7F3A905D33782
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_extensions_first_in_sequence_is_valid'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_document_with_no_extensions_container_is_unaffected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_conformant_extension_round_trips_through_dumps_and_loads'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_extensions_not_first_in_sequence_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_content_with_zero_apex_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_content_with_two_apex_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_carrying_two_extension_content_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_non_extension_child_of_ublextensions_is_rejected'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-EXTENSIONS-STRUCTURE-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-957563FFE4EF0A64 (identical rule_text): preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged.'
-  missing_behavior:
-  - 'The specific structural constraints named in this obligation -- that UBLExtensions must be the first optional component in sequence order, that each UBLExtension permits exactly one foreign-namespaced apex element, and "lax" schema processing semantics for that content -- are not separately validated or enforced. The container is preserved losslessly as whatever generic subtree shape the input document already had, not checked against these specific structural rules.'
+  - 'preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged. The obligation''s own named structural constraints are now separately validated: validator.py''s _extension_diagnostics() confirms ext:UBLExtensions is the first optional component when present, that it only contains ext:UBLExtension children, that each ext:UBLExtension contains exactly one ext:ExtensionContent, and that each ExtensionContent contains exactly one apex-element child ("lax" processing of that apex element''s own content is satisfied by construction -- nothing inspects inside it beyond confirming its presence, exactly once). 8 new tests prove both the conformant case and all 4 structural violations, including a fix to an existing fixture (test_obligation_preservation_mode.py) that had unknowingly been spec-nonconformant (ExtensionContent with bare text, zero apex elements).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
       spoofed-namespace fixtures rejected.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for extension-structure violations (position,
+      cardinality, apex-element count, and disallowed child type).
 - obligation_id: SAL-UBL-OBL-AE02391EE2696F99
   capability_id: UBL-CALC-001
   status: missing
@@ -3919,26 +3960,35 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-CB4B2809D1A7DD8F
   capability_id: UBL-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_extensions_first_in_sequence_is_valid'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_document_with_no_extensions_container_is_unaffected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_conformant_extension_round_trips_through_dumps_and_loads'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_extensions_not_first_in_sequence_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_content_with_zero_apex_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_content_with_two_apex_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_carrying_two_extension_content_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_non_extension_child_of_ublextensions_is_rejected'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-EXTENSIONS-STRUCTURE-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of UBL-PARSE-001''s SAL-UBL-OBL-A7A7F3A905D33782 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-957563FFE4EF0A64 (identical rule_text): preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged.'
-  missing_behavior:
-  - 'The specific structural constraints named in this obligation -- that UBLExtensions must be the first optional component in sequence order, that each UBLExtension permits exactly one foreign-namespaced apex element, and "lax" schema processing semantics for that content -- are not separately validated or enforced. The container is preserved losslessly as whatever generic subtree shape the input document already had, not checked against these specific structural rules.'
+  - 'preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged. The obligation''s own named structural constraints are now separately validated: validator.py''s _extension_diagnostics() confirms ext:UBLExtensions is the first optional component when present, that it only contains ext:UBLExtension children, that each ext:UBLExtension contains exactly one ext:ExtensionContent, and that each ExtensionContent contains exactly one apex-element child ("lax" processing of that apex element''s own content is satisfied by construction -- nothing inspects inside it beyond confirming its presence, exactly once). 8 new tests prove both the conformant case and all 4 structural violations, including a fix to an existing fixture (test_obligation_preservation_mode.py) that had unknowingly been spec-nonconformant (ExtensionContent with bare text, zero apex elements).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Per-layer positive/negative fixtures; layered report structure asserted machine-readable.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for extension-structure violations (position,
+      cardinality, apex-element count, and disallowed child type).
 - obligation_id: SAL-UBL-OBL-CC931175029D1D9C
   capability_id: UBL-PARSE-001
   status: partial
@@ -4449,26 +4499,35 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-F13D8EC34F2D93BC
   capability_id: UBL-REF-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize
   - src/python/ubl/src/format_factory/ubl/model/document.py::XmlNode
   - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
   positive_test_selectors:
-  - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  negative_test_selectors: []
+  - 'tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_extensions_first_in_sequence_is_valid'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_document_with_no_extensions_container_is_unaffected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_conformant_extension_round_trips_through_dumps_and_loads'
+  negative_test_selectors:
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_extensions_not_first_in_sequence_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_content_with_zero_apex_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_content_with_two_apex_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_an_extension_carrying_two_extension_content_elements_is_rejected'
+  - 'tests/python/ubl/test_obligation_extensions_structure.py::test_a_non_extension_child_of_ublextensions_is_rejected'
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-EXTENSIONS-STRUCTURE-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of UBL-PARSE-001''s SAL-UBL-OBL-A7A7F3A905D33782 (identical rule_text): Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-957563FFE4EF0A64 (identical rule_text): preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged.'
-  missing_behavior:
-  - 'The specific structural constraints named in this obligation -- that UBLExtensions must be the first optional component in sequence order, that each UBLExtension permits exactly one foreign-namespaced apex element, and "lax" schema processing semantics for that content -- are not separately validated or enforced. The container is preserved losslessly as whatever generic subtree shape the input document already had, not checked against these specific structural rules.'
+  - 'preservation.py generically round-trips a root-level ext:UBLExtensions container (dropping it in CANONICAL mode, preserving it losslessly by default); test_unknown_extension_is_preserved_semantically proves a foreign-namespaced extension element and its attributes/text survive a full round-trip unchanged. The obligation''s own named structural constraints are now separately validated: validator.py''s _extension_diagnostics() confirms ext:UBLExtensions is the first optional component when present, that it only contains ext:UBLExtension children, that each ext:UBLExtension contains exactly one ext:ExtensionContent, and that each ExtensionContent contains exactly one apex-element child ("lax" processing of that apex element''s own content is satisfied by construction -- nothing inspects inside it beyond confirming its presence, exactly once). 8 new tests prove both the conformant case and all 4 structural violations, including a fix to an existing fixture (test_obligation_preservation_mode.py) that had unknowingly been spec-nonconformant (ExtensionContent with bare text, zero apex elements).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Duplicate-ID and broken-reference fixtures produce complete diagnostics.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - Selector-bound negative cases are cited for extension-structure violations (position,
+      cardinality, apex-element count, and disallowed child type).
 - obligation_id: SAL-UBL-OBL-F3EF323A48F1EB8A
   capability_id: UBL-LIFECYCLE-001
   status: implemented

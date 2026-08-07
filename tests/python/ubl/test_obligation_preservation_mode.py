@@ -43,18 +43,28 @@ from format_factory.ubl import (
 _CBC = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
 _EXT_NS = "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
 _EXT_QNAME = f"{{{_EXT_NS}}}UBLExtensions"
+_VENDOR_NS = "urn:example:vendor"
 _INVOICE_NAMESPACE = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
 Invoice = ROOT_CLASSES["Invoice"]
 
 
 def _extensions_container(payload: str = "vendor payload") -> XmlNode:
+    """ext:ExtensionContent must contain exactly one apex element (the
+    package's own validator now enforces this -- UBL-EXT-001's own
+    structural constraint), so the payload lives inside a foreign-namespaced
+    child element rather than as ExtensionContent's own bare text."""
     return XmlNode.create(
         _EXT_QNAME,
         children=(
             XmlNode.create(
                 f"{{{_EXT_NS}}}UBLExtension",
                 children=(
-                    XmlNode.create(f"{{{_EXT_NS}}}ExtensionContent", text=payload),
+                    XmlNode.create(
+                        f"{{{_EXT_NS}}}ExtensionContent",
+                        children=(
+                            XmlNode.create(f"{{{_VENDOR_NS}}}Payload", text=payload),
+                        ),
+                    ),
                 ),
             ),
         ),

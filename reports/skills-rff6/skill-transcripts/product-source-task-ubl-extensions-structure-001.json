@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-extensions-structure-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T02:20:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_EXTENSIONS_STRUCTURE_001",
+    "task_kind": "genuine-small-gap-closure-cross-capability-duplicate",
+    "root_cause": "6 obligations across UBL-EXT-001/REF-001/DOCTYPES-001/MODEL-001/PARSE-001/VALIDATE-001 share the identical rule_text: ext:UBLExtensions must be the first optional component in sequence order, each UBLExtension contains exactly one ExtensionContent, and ExtensionContent permits exactly one foreign-namespaced apex element. validator.py had zero handling of ext:UBLExtensions at all, confirmed by grepping the file -- and the one adjacent-looking existing test never actually constructed the real container structure this obligation names.",
+    "obligation_targeted": "SAL-UBL-OBL-04ADBA28EFEAC74C, SAL-UBL-OBL-F13D8EC34F2D93BC, SAL-UBL-OBL-10201DA6E92E0E8F, SAL-UBL-OBL-957563FFE4EF0A64, SAL-UBL-OBL-A7A7F3A905D33782, SAL-UBL-OBL-CB4B2809D1A7DD8F",
+    "acceptance_evidence": "validator.py gained _extension_diagnostics(), checking: ext:UBLExtensions position (must be index 0 among root children, if present), that it only contains ext:UBLExtension children, that each ext:UBLExtension contains exactly one ext:ExtensionContent, and that each ExtensionContent contains exactly one apex-element child. 8 new tests in a new file prove all 4 violation types are now rejected with distinct diagnostic codes, a conformant document still validates, a document with no extensions container is unaffected, and the structure survives a full dumps()/loads() round trip.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Grepped validator.py for UBLExtensions/ExtensionContent -- zero hits, confirming no existing handling at all.",
+    "2. Read codec/preservation.py: canonicalize()/check_preservation() handle the container generically (drop-or-keep at the root for CANONICAL mode) but never validate its internal structure -- confirming the citing obligations' own missing_behavior text was accurate, not stale.",
+    "3. Found the one existing test that looked adjacent (test_unknown_extension_is_preserved_semantically in test_production_namespace.py) places a foreign-namespaced element directly as a root child -- never actually building the real ext:UBLExtensions/ext:UBLExtension/ext:ExtensionContent structure this obligation names. Confirmed this is a different, unrelated test, not a stale citation for this cluster.",
+    "4. Wrote an interactive probe building 4 scenarios (extensions first, extensions not first, ExtensionContent with 2 apex children, ExtensionContent with 0 apex children) and ran them through the real validate() -- confirmed all 4 currently pass with zero diagnostics, a genuine confirmed gap, before writing any fix.",
+    "5. Implemented _extension_diagnostics() in validator.py with 4 distinct diagnostic codes (ubl.extensions.position, ubl.extensions.child, ubl.extension.content.cardinality, ubl.extension.content.apex). Re-ran the same probe -- all 4 scenarios now correctly rejected.",
+    "6. Ran the full ubl suite and found 3 pre-existing test failures in test_obligation_preservation_mode.py: its _extensions_container() fixture built ExtensionContent with bare text instead of a real apex-element child (0 apex elements), which the new validation correctly now rejects as spec-nonconformant. Fixed the fixture to wrap the payload in a foreign-namespaced vendor:Payload child element instead of ExtensionContent's own text, preserving the test's original intent (payload text still appears/disappears correctly in LOSSLESS/CANONICAL output) while making the fixture spec-conformant.",
+    "7. Wrote 8 new dedicated tests in a new file covering both the positive (conformant, round-trips, unaffected-when-absent) and all 4 negative structural violations. Ran ruff (clean) and the full ubl suite (727 passed, was 719, +8) before writing any evidence claim. Ran the full 6-format regression (2990 passed, was 2982, +8; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_extensions_structure.py",
+    "tests/python/ubl/test_obligation_preservation_mode.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_extensions_structure.py",
+    "tests/python/ubl/test_obligation_preservation_mode.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_extensions_structure.py -q -- 8 passed",
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_preservation_mode.py -q -- 19 passed (was 3 failing before the fixture fix)",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 727 passed, was 719 passed",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_extensions_structure.py tests/python/ubl/test_obligation_preservation_mode.py src/python/ubl/src/format_factory/ubl/validation/validator.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 2990 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 2982 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 6,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not cross-checked against a reference UBL implementation.",
+    "obligations_moved_breakdown": "6 obligations promoted to implemented by adding a genuine, confirmed structural-validation feature (position, child-type, and cardinality checks for ext:UBLExtensions) plus fixing an existing test fixture that had been unknowingly spec-nonconformant, with 8 new tests."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
