@@ -22,7 +22,7 @@ from .codec import (
     probe,
     read_header,
 )
-from .codec.payload import decode_binary, encode_binary
+from .codec.payload import available_encodings, decode_binary, encode_binary
 from .convert import (
     ConversionReport,
     OverflowPolicy,
@@ -53,6 +53,7 @@ __all__ = [
     "NrrdWriteError", "OverflowPolicy", "PayloadAccess", "PayloadAccessMode",
     "PreservationIssue", "PreservationReport", "RoundingPolicy",
     "SpaceTransform",
+    "available_encodings",
     "axis_sizes", "build_space_transform", "convert_dtype", "convert_endian",
     "decode_nrrd_data", "dump", "dump_detached", "dumps", "element_count",
     "encode_nrrd_data",

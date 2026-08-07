@@ -8,7 +8,7 @@ from .lazy import (
     open_lazy_payload,
     read_header,
 )
-from .payload import SUPPORTED_ENCODINGS
+from .payload import SUPPORTED_ENCODINGS, available_encodings
 from .reader import load, loads, probe
 from .writer import dump, dump_detached, dumps
 
@@ -18,6 +18,7 @@ __all__ = [
     "PayloadAccess",
     "PayloadAccessMode",
     "SUPPORTED_ENCODINGS",
+    "available_encodings",
     "dump",
     "dump_detached",
     "dumps",

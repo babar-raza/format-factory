@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-codec-availability-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T07:05:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_CODEC_AVAILABILITY_001",
+    "task_kind": "guarded-import-plus-availability-api",
+    "root_cause": "SAL-NRRD-OBL-09FD9B976DEEA254 (NRRD-ENC-001) named 'no public codec-availability API or optional-codec unavailable diagnostic contract'. bz2 was imported unconditionally at module level in payload.py -- a real CPython possibility (some minimal/container builds omit libbz2) that would crash the whole package at import time rather than failing explicitly at the point of use.",
+    "obligation_targeted": "SAL-NRRD-OBL-09FD9B976DEEA254 (NRRD-ENC-001)",
+    "acceptance_evidence": "6 new tests prove available_encodings() correctly reports the full SUPPORTED_ENCODINGS set when bz2 is present, correctly excludes bzip2/bz2 when simulated absent (via monkeypatch, the same technique this session already used to simulate conditions the environment cannot naturally produce), and that decode_encoding/encode_encoding raise a clear, explicit NrrdParseError/NrrdWriteError naming the missing module rather than an opaque AttributeError -- while gzip remains fully unaffected.",
+    "regression_tier": "full nrrd package suite (tests/python/nrrd) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read payload.py's imports directly: bz2, gzip, and zlib were all imported unconditionally at module level. Confirmed bz2 is the one genuinely optional stdlib module among the three (gzip/zlib are required internally for zip/wheel handling in any practical CPython distribution and are not realistically absent) -- a documented, real-world case (minimal container images sometimes omit libbz2 at build time).",
+    "2. Converted the bz2 import to a guarded try/except ImportError pattern, setting bz2 = None on failure, leaving gzip/zlib as ordinary unconditional imports (no speculative generality for modules that are not realistically optional).",
+    "3. Added available_encodings() (SUPPORTED_ENCODINGS minus {bzip2, bz2} when bz2 is None, else the full set) and _require_bz2(), a shared guard raising a clear, explicit error naming the missing module -- wired into both decode_encoding's and encode_encoding's bzip2 branches, using the correct error type for each direction (NrrdParseError for decode, NrrdWriteError for encode).",
+    "4. Verified interactively before writing formal tests: normal bzip2 round-trip still works; monkeypatching payload_module.bz2 = None correctly narrows available_encodings() and correctly raises the new explicit error on both decode and encode attempts, rather than crashing with an opaque AttributeError -- all cases correct on the first attempt.",
+    "5. Exported available_encodings from both codec/__init__.py and the top-level nrrd package, matching how SUPPORTED_ENCODINGS and other codec-level accessors are already surfaced.",
+    "6. Wrote 6 formal tests using pytest's monkeypatch fixture to simulate bz2 absence (the environment always has bz2 available, so this is the only way to exercise the guard). Ran ruff (clean) across all 4 changed files, the full nrrd suite (555 passed, was 549, +6), and the full 6-format regression (3142 passed, was 3136, +6; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "7. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-49c457a83ca4e0d1, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_codec_availability.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_codec_availability.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_codec_availability.py -q -- 6 passed",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/codec/payload.py src/python/nrrd/src/format_factory/nrrd/codec/__init__.py src/python/nrrd/src/format_factory/nrrd/__init__.py tests/python/nrrd/test_obligation_codec_availability.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 555 passed, 1 skipped, was 549 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3142 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3136 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 65,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the bz2-optionality claim is grounded in documented CPython build behavior, not invented from memory.",
+    "obligations_moved_breakdown": "1 obligation promoted partial->implemented: 'read and write every specified encoding' and correct container framing were already proven; 'expose codec availability' and 'fail explicitly when an optional codec is unavailable' are now also proven."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -2,12 +2,21 @@
 
 from __future__ import annotations
 
-import bz2
 import gzip
 import math
 import struct
 import zlib
 from typing import Any, Final
+
+try:
+    import bz2
+except ImportError:  # pragma: no cover - depends on the interpreter's own build
+    #: Some CPython builds are compiled without libbz2 support (e.g. minimal
+    #: container images), in which case the stdlib bz2 module does not exist
+    #: at all -- gzip and zlib are, for all practical purposes, always
+    #: present (required internally for zip/wheel handling), so only bz2
+    #: needs this guard.
+    bz2 = None  # type: ignore[assignment]
 
 from format_factory.core import (
     CheckedArithmeticError,
@@ -56,6 +65,30 @@ BYTE_ORDER_EXPOSING_ENCODINGS = SUPPORTED_ENCODINGS - TEXTUAL_ENCODINGS
 #: is not observable in output; it is fixed so the derived buffer is
 #: deterministic across platforms.
 _TEXTUAL_INTERNAL_BYTE_ORDER = "<"
+
+#: Encodings whose codec module may not exist in every interpreter build.
+_OPTIONAL_CODEC_ENCODINGS = frozenset({"bzip2", "bz2"})
+
+
+def available_encodings() -> frozenset[str]:
+    """The subset of SUPPORTED_ENCODINGS this interpreter can actually use.
+
+    "expose codec availability" -- always equals SUPPORTED_ENCODINGS unless
+    this build's stdlib lacks bz2 (see the guarded import above), in which
+    case bzip2/bz2 are excluded.
+    """
+    if bz2 is None:
+        return SUPPORTED_ENCODINGS - _OPTIONAL_CODEC_ENCODINGS
+    return SUPPORTED_ENCODINGS
+
+
+def _require_bz2(encoding: str, error_class: type[NrrdParseError | NrrdWriteError]) -> None:
+    if bz2 is None:
+        raise error_class(
+            f"encoding {encoding!r} requires the bz2 module, which is not "
+            "available in this Python build (compiled without libbz2 "
+            "support); call available_encodings() to check before use"
+        )
 
 
 def is_block_type(type_name: str) -> bool:
@@ -238,6 +271,7 @@ def decode_encoding(payload: bytes, encoding: str, *, limits: ResourceLimits) ->
         if gzip_decoder.unused_data:
             raise NrrdParseError("trailing data after gzip payload")
     elif normalized in {"bzip2", "bz2"}:
+        _require_bz2(normalized, NrrdParseError)
         bzip2_decoder = bz2.BZ2Decompressor()
         try:
             result = bzip2_decoder.decompress(
@@ -298,6 +332,7 @@ def encode_encoding(
     elif normalized in {"gzip", "gz"}:
         result = gzip.compress(binary, mtime=0)
     elif normalized in {"bzip2", "bz2"}:
+        _require_bz2(normalized, NrrdWriteError)
         result = bz2.compress(binary)
     elif normalized == "hex":
         result = binary.hex().encode("ascii")

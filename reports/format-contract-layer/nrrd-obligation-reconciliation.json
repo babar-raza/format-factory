@@ -18,6 +18,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-1FE17FFCC0572ABC and SAL-NRRD-OBL-556FAEE08EA61D1A (both NRRD-META-001). None of content/min/max/old-min/old-max/ number had any typed accessor before this slice, confirmed by grepping document.py directly. The pinned spec source confirms each field's exact semantics word-for-word: content is free text with no explicit delimiting; min/max are doubles where \"any value, infinite or not, NaN or not, is valid\"; old min/old max are doubles \"meaningless for floating-point and block nrrds\" (with unspaced oldmin/oldmax aliases); number is explicitly instructed to be \"always ignored on reading, without even an attempt to parse the field as an integer\" -- implemented exactly as instructed (raw text only, deliberately never parsed), not guessed. 9 new tests prove every field's projection, absence, NaN/infinite acceptance, both old-min/old-max spellings, no version gate (baseline since NRRD0001), and round-trip preservation. nrrd suite: 540 -> 549 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-1FE17FFCC0572ABC and SAL-NRRD-OBL-556FAEE08EA61D1A only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-CODEC-AVAILABILITY-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-codec-availability-001.json",
+      "sha256": "cafed57baf428e3e88e044b2ca36579e3ea13c111c54bac9741d48e3d8efbc80",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-09FD9B976DEEA254 (NRRD-ENC-001). bz2 was imported unconditionally at module level in payload.py -- a real CPython possibility (some minimal/container builds omit libbz2 support) that would crash the whole package at import time rather than failing explicitly at the point of use, with no public codec-availability API at all. gzip and zlib are, for all practical purposes, always present (required internally for zip/wheel handling) and were deliberately not given the same guard, avoiding speculative generality for modules that are not realistically optional. Converted the bz2 import to a guarded try/except, added available_encodings() (reporting the subset of SUPPORTED_ENCODINGS this interpreter can actually use), and wired an explicit refusal into decode_encoding/encode_encoding's bzip2 branches (NrrdParseError / NrrdWriteError respectively, naming the missing module) rather than letting an opaque AttributeError propagate from deep inside the codec call. 6 new tests use monkeypatch to simulate bz2 absence, the only way to exercise the guard since the dev environment always has bz2 present; a 6th confirms gzip stays fully unaffected. nrrd suite: 549 -> 555 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, with the bz2-optionality claim grounded in documented CPython build behavior. Covers SAL-NRRD-OBL-09FD9B976DEEA254 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "NRRD-DETACHED-PATH-VERSION-GATE-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -109,7 +117,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "b5124cdcae6b41e1058becfaa15c9e1f24fe941d02884c278fccb90ef4974eeb",
+    "implementation_evidence": "cd08ab2b53d31385c54b13a6d4876a454451b22aeafdb2a8d486b017f2209331",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -268,15 +276,20 @@
     {
       "capability_id": "NRRD-ENC-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-CODEC-AVAILABILITY-PROOF"
       ],
       "implemented_behavior": [
-        "Raw, ASCII/text/txt, hex, gzip/gz, and bzip2/bz2 read/write paths exist."
+        "Raw, ASCII/text/txt, hex, gzip/gz, and bzip2/bz2 read/write paths exist. \"Expose codec availability\" and \"fail explicitly when an optional codec is unavailable\" are now also implemented: bz2 (the one genuinely optional stdlib codec module -- some CPython builds omit libbz2 -- unlike gzip/zlib, which are for all practical purposes always present) is now imported via a guarded try/except, and a new available_encodings() function (src/python/nrrd/src/format_factory/nrrd/codec/payload.py) reports the subset of SUPPORTED_ENCODINGS this interpreter can actually use. decode_encoding/encode_encoding now raise a clear, explicit NrrdParseError/NrrdWriteError naming the missing module when bzip2 is requested but bz2 is unavailable, rather than crashing with an opaque AttributeError deep inside the codec call, proven via monkeypatch (the environment always has bz2 present, so this is the only way to exercise the guard)."
       ],
-      "missing_behavior": [
-        "No public codec-availability API or optional-codec unavailable diagnostic contract."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_codec_availability.py::test_available_encodings_matches_supported_encodings_when_bz2_is_present",
+        "tests/python/nrrd/test_obligation_codec_availability.py::test_available_encodings_excludes_bzip2_when_bz2_is_unavailable",
+        "tests/python/nrrd/test_obligation_codec_availability.py::test_decoding_bzip2_without_bz2_fails_explicitly_not_with_an_attribute_error",
+        "tests/python/nrrd/test_obligation_codec_availability.py::test_encoding_bzip2_without_bz2_fails_explicitly_not_with_an_attribute_error",
+        "tests/python/nrrd/test_obligation_codec_availability.py::test_gzip_is_unaffected_by_bz2_being_unavailable"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-09FD9B976DEEA254",
       "positive_test_selectors": [
         "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
@@ -289,13 +302,13 @@
           "Installed-wheel encoding/alias matrix with Teem and pynrrd."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_encoding",
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_ascii",
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::encode_encoding"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-PRESERVE-001",
@@ -2416,6 +2429,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-basic-metadata-001.json": "bfe3aadc50d89c4688ec73d62c94e027f164c1ba97f713bb8176035f3c57f3f0",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-codec-availability-001.json": "cafed57baf428e3e88e044b2ca36579e3ea13c111c54bac9741d48e3d8efbc80",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-path-version-gate-001.json": "0ddb74585effd11d8f31db536d8242dbcf347f14dba381a36faffab0b40a3add",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-writer-001.json": "459aee29fa15ac2f6d632f1d4d863923866957e8086da79dd6dde1ab6374d01f",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-grammar-001.json": "34ff1e271e63f2ceb26c72ebe47b1f44e9be6b2ddde57a06068be324b1383229",
@@ -2428,7 +2442,7 @@
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
     "src/python/nrrd/src/format_factory/nrrd/codec/kinds.py": "cf8517da058c0ce753866a46fdc5f1c652ab39b90b66e14b65c39d71891d8808",
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "738ef7feab3714ba69a4a56547714145e161ac8b22156bf7e868a18bc13ae847",
-    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "38520a9be8ff12f1266999d5f8d79761254ecc327e65e637e39f35c72a86d240",
+    "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "f40b683110082f666fefd99b096ca4c9e9b78f87d0020541477d7a62587f980a",
     "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "78ae8537ad384f925009106f92db6dab3421f71b3256a1275a4aebd3bf8fc2dd",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "9b2fc0b03f6c3f4dd42f1e091d465ddd7e887bdd2305f3c864f33d3e1ce39a11",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "83d96605f886fd24e9146410be552cb54d1bb93ee317102f46dc53b164448951",
@@ -2440,6 +2454,7 @@
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
     "tests/python/nrrd/test_obligation_axis_field_arity.py": "3528ed42454f8e5f9c3640f3b005ee3f7f3a0972081d0a2b81ce9d3dcd6751e0",
     "tests/python/nrrd/test_obligation_basic_metadata.py": "a47038126f8bafc580743b85fc7dfff4678a9bebda3afdea28a6590025087660",
+    "tests/python/nrrd/test_obligation_codec_availability.py": "d113afa7bc99f2f76e96cb0a4a65617ca765529582653cba30748064f5466b11",
     "tests/python/nrrd/test_obligation_compressed_trailing_data.py": "5d2e460aa29e58b85602ce8c4000ad9642e3aee4b38be1816d8297db1116f97e",
     "tests/python/nrrd/test_obligation_detached_forms_production.py": "67c0d1384acdb24a892f7fb7c0340a9bd5c3338e2be5069d5d034a996121263a",
     "tests/python/nrrd/test_obligation_detached_path_version_gate.py": "abb3da066d8d0872f0dae9003d39fbcb45d8262f011dc19625b28130c87b4f5a",
@@ -2462,12 +2477,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 41,
-      "partial": 21,
+      "implemented": 42,
+      "partial": 20,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 24
+    "unresolved": 23
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
