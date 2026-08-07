@@ -34,6 +34,7 @@ _TAX_SUBTOTAL_QNAME = f"{{{_CAC_NAMESPACE}}}TaxSubtotal"
 _TAX_TOTAL_QNAME = f"{{{_CAC_NAMESPACE}}}TaxTotal"
 _LEGAL_MONETARY_TOTAL_QNAME = f"{{{_CAC_NAMESPACE}}}LegalMonetaryTotal"
 _EXTERNAL_REFERENCE_QNAME = f"{{{_CAC_NAMESPACE}}}ExternalReference"
+_ALLOWANCE_CHARGE_QNAME = f"{{{_CAC_NAMESPACE}}}AllowanceCharge"
 
 #: Per the pinned OASIS UBL 2.3 CommonAggregateComponents schema
 #: (xsd/common/UBL-CommonAggregateComponents-2.3.xsd, PartyType/AddressType/
@@ -111,6 +112,23 @@ _LEGAL_MONETARY_TOTAL_SINGLE_OCCURRENCE_FIELDS = frozenset(
 #: independent of whether a typed projector surfaces it today.
 _EXTERNAL_REFERENCE_SINGLE_OCCURRENCE_FIELDS = frozenset(
     {"URI", "DocumentHash", "MimeCode", "FileName"}
+)
+#: AllowanceChargeType (read directly from the pinned schema ZIP) declares
+#: ChargeIndicator (1) and AllowanceChargeReasonCode/Amount (0..1) as
+#: maxOccurs=1, matching this package's own AllowanceCharge.charge_indicator/
+#: reason_code/amount fields. AllowanceChargeReason is deliberately
+#: excluded: the schema declares it minOccurs=0 maxOccurs=UNBOUNDED
+#: (genuinely repeatable), even though this package's own
+#: AllowanceCharge.reason field models only the first occurrence as a
+#: singular value -- the same model-scoping question already documented
+#: for PaymentMeans.PaymentID and Response.Description above. ID,
+#: MultiplierFactorNumeric, PrepaidIndicator, SequenceNumeric, BaseAmount,
+#: AccountingCostCode, AccountingCost, PerUnitAmount, TaxCategory, TaxTotal,
+#: and PaymentMeans (the type's other maxOccurs<=1 or repeatable children)
+#: are not modeled by this package's AllowanceCharge class at all -- left
+#: unchecked, consistent with covering exactly the fields already modeled.
+_ALLOWANCE_CHARGE_SINGLE_OCCURRENCE_FIELDS = frozenset(
+    {"ChargeIndicator", "AllowanceChargeReasonCode", "Amount"}
 )
 
 
@@ -243,6 +261,10 @@ _CARDINALITY_CHECKED_COMPONENTS: dict[str, tuple[frozenset[str], str]] = {
         _EXTERNAL_REFERENCE_SINGLE_OCCURRENCE_FIELDS,
         "cac:ExternalReference",
     ),
+    _ALLOWANCE_CHARGE_QNAME: (
+        _ALLOWANCE_CHARGE_SINGLE_OCCURRENCE_FIELDS,
+        "cac:AllowanceCharge",
+    ),
 }
 
 
@@ -295,6 +317,7 @@ _ORDER_CHECKED_COMPONENTS: dict[str, tuple[str, ...]] = {
         "PayableAmount",
     ),
     _EXTERNAL_REFERENCE_QNAME: ("URI", "DocumentHash", "MimeCode", "FileName"),
+    _ALLOWANCE_CHARGE_QNAME: ("ChargeIndicator", "AllowanceChargeReasonCode", "Amount"),
 }
 
 

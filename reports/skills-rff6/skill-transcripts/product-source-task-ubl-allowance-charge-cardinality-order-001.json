@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-allowance-charge-cardinality-order-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T11:49:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_ALLOWANCE_CHARGE_CARDINALITY_ORDER_001",
+    "task_kind": "extend-proven-pattern-to-a-new-already-modeled-component",
+    "root_cause": "Per Event 237's next-action ranking, surveyed UBL's remaining 30 unresolved obligations (untouched since event 233). Found the cardinality cluster (5 obligations) and element-order cluster (6-7 obligations) both share identical, already-proven scope-narrowing patterns from events 216-223 and 231. Surveyed this package's typed model classes for any modeled complexType not yet covered by either cluster's dispatch dicts and found cac:AllowanceCharge (charges.py), genuinely never checked by either.",
+    "obligation_targeted": "11 cross-capability duplicate obligations across UBL-MODEL-001/PARSE-001/DOCTYPES-001/VALIDATE-001/REF-001/SIGN-001 -- all remain partial, missing_behavior text narrowed from 13 to 14 covered complexTypes",
+    "acceptance_evidence": "8 new tests prove: a well-formed AllowanceCharge validates cleanly; duplicate ChargeIndicator/Amount are cardinality violations; out-of-order Amount/ChargeIndicator/AllowanceChargeReasonCode are order violations; a repeated AllowanceChargeReason is correctly not flagged; dumps() refuses out-of-order documents and writes correctly-ordered ones without incident.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Surveyed UBL's remaining 30 unresolved obligations, confirming the cardinality cluster (5 obligations, identical rule_text) and element-order cluster (6-7 obligations, identical rule_text) were both already extended multiple times this session (events 216-223, 231) using a proven, safe pattern: add one more already-modeled complexType to two qname-keyed dispatch dicts in validator.py.",
+    "2. Rather than transcribing a new component's field list from memory, grepped this package's own typed model classes (aggregates.py, charges.py, reference.py) for any class not yet present in _CARDINALITY_CHECKED_COMPONENTS or _ORDER_CHECKED_COMPONENTS, and found cac:AllowanceCharge (model/charges.py::AllowanceCharge) as the cleanest candidate: already modeled, with 3 single-occurrence fields (charge_indicator, reason_code, amount).",
+    "3. Extracted AllowanceChargeType's full xsd:sequence directly from the pinned OASIS UBL 2.3 CommonAggregateComponents schema (.local/format-contracts/acquired/ubl/src-ubl-002.bin) rather than guessing: confirmed ChargeIndicator (maxOccurs=1, required), AllowanceChargeReasonCode (maxOccurs=1, optional), and Amount (maxOccurs=1, optional) match this package's modeled fields, in that declared order; AllowanceChargeReason is maxOccurs=UNBOUNDED (genuinely repeatable) despite this package's own AllowanceCharge.reason field modeling only the first occurrence -- deliberately excluded from both checks, matching the same model-scoping exclusion already documented for PaymentMeans.PaymentID and Response.Description.",
+    "4. Added _ALLOWANCE_CHARGE_QNAME and _ALLOWANCE_CHARGE_SINGLE_OCCURRENCE_FIELDS to validator.py, and one entry each to _CARDINALITY_CHECKED_COMPONENTS and _ORDER_CHECKED_COMPONENTS, reusing the identical qname-keyed dispatch pattern already proven for every prior component in this cluster -- zero changes to the dispatch functions themselves.",
+    "5. Probed directly before writing formal tests: a document with a duplicate ChargeIndicator was refused by dumps() naming the exact cardinality violation; a document with Amount before ChargeIndicator was refused naming the exact order violation; a well-formed document (correct cardinality and order) serialized without incident. All 3 correct on the first attempt.",
+    "6. Ran the full pre-existing ubl suite (941 tests, zero new fixtures) against the new check to look for false positives before writing a single new test -- all 941 passed unchanged, confirming zero pre-existing fixture used cac:AllowanceCharge in a schema-violating way.",
+    "7. Wrote 8 formal tests in a new file (test_obligation_allowance_charge_cardinality_and_order_validation.py), all passing on the first attempt (after correcting one guessed diagnostic code from ubl.cardinality.violation to the actual ubl.cardinality.exceeded, confirmed by reading _single_occurrence_violations directly).",
+    "8. Ran ruff (clean), the full ubl suite (949 passed, was 941, +8), and the full 6-format regression (3401 passed, was 3393, +8; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "9. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-6d3d6b8c710b8a24, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "10. Updated all 11 affected cross-capability duplicate obligations' missing_behavior/implemented_behavior text to reflect 14 (not 13) covered complexTypes and cite cac:AllowanceCharge explicitly, using a single replace_all edit per cluster since all obligations within each cluster shared byte-identical text (verified programmatically before editing, not assumed). None promoted to implemented -- the underlying 'full schema and cardinality/order validation across every UBL complexType' claim remains a genuinely larger, separate undertaking these obligations' own rule_text still honestly describes as unmet."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py -q -- 8 passed",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/validation/validator.py tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 949 passed, was 941 passed (941 passed unchanged BEFORE writing new tests, confirming zero false positives)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3401 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3393 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations moved status (11 cross-capability duplicate obligations narrowed in scope, all remain partial)",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every declared field/order read directly from the pinned schema, not invented.",
+    "obligations_moved_breakdown": "SAL-UBL-OBL-03AF3A7D3A76F362, SAL-UBL-OBL-3C2E2EA8D3B697C9, SAL-UBL-OBL-783649FDF531B0F9, SAL-UBL-OBL-9736787B52CB148C, SAL-UBL-OBL-9C170E327B30FBD3 (cardinality cluster) and SAL-UBL-OBL-26CD31E7F8CF91E1, SAL-UBL-OBL-31DE92275AF5F6EF, SAL-UBL-OBL-3B43504E9C74003C, SAL-UBL-OBL-4936871F9800219B, SAL-UBL-OBL-71FF376D05E7219A, SAL-UBL-OBL-CDADC5CFB25A9B9E (order cluster) all narrowed from 13 to 14 covered complexTypes, status unchanged at partial."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
