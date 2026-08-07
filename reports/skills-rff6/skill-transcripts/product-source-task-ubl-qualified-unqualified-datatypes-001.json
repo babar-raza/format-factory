@@ -1,0 +1,50 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-qualified-unqualified-datatypes-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T04:40:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_QUALIFIED_UNQUALIFIED_DATATYPES_001",
+    "task_kind": "cross-capability-duplicate-closure-via-direct-xsd-read",
+    "root_cause": "3 obligations (UBL-MODEL-001/PARSE-001/VALIDATE-001) shared an identical rule_text about the CBC XSD declaring elements typed via both qualified and unqualified data-type schemas. Previously declined for lacking clear spec grounding -- the referenced SAL facts were too generic. Event 195's exact_next_action flagged this cluster as worth re-checking against the pinned XSD directly, the same technique that unblocked 32 other UBL obligations this session.",
+    "obligation_targeted": "SAL-UBL-OBL-433310901DD96A1A, SAL-UBL-OBL-2131251CF1650A4C, SAL-UBL-OBL-86ED6C7E674781EC",
+    "acceptance_evidence": "5 new tests prove this package's typed-value system (Identifier/Amount/Quantity for udt:-restricted elements, Code for qdt:-restricted ones) correctly represents a concrete instance from each data-type schema family as genuinely distinct dataclasses.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Extracted UBL-CommonBasicComponents-2.3.xsd from the pinned OASIS UBL 2.3 release ZIP and read its import declarations: it imports both qdt: (QualifiedDataTypes-2, UBL-QualifiedDataTypes-2.3.xsd) and udt: (bdndr:UnqualifiedDataTypes-1, BDNDR-UnqualifiedDataTypes-1.1.xsd) namespaces.",
+    "2. Read concrete complexType definitions directly: AccountIDType restricts udt:IdentifierType, PayableAmountType restricts udt:AmountType, InvoicedQuantityType restricts udt:QuantityType (all direct udt: restrictions) -- while PaymentMeansCodeType restricts qdt:PaymentMeansCodeType, itself restricting udt:CodeType (a qualification layer between the unqualified base and the cbc: element).",
+    "3. Counted restriction declarations across the whole file via regex: 1073 udt:-restricted elements vs 32 qdt:-restricted elements, confirming both categories are genuinely present and in active use, not a marginal or theoretical distinction.",
+    "4. Deliberately did NOT write a test that re-parses the XSD at runtime: the acquired schema lives under the gitignored .local/format-contracts/acquired/ cache, not guaranteed present in every checkout, so a runtime dependency on it would make the test non-portable, unlike every other test in this suite. Instead wrote tests proving the underlying fact the rule_text protects -- that the runtime type system genuinely distinguishes udt:-restricted (Identifier/Amount/Quantity) from qdt:-restricted (Code) elements as distinct dataclasses.",
+    "5. Ran ruff (clean) and the full ubl suite (776 passed, was 771, +5) before writing any evidence claim. Ran the full 6-format regression (3039 passed, was 3034, +5; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py -q -- 5 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 776 passed, was 771 passed",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3039 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3034 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 3,
+    "obligations_total_for_format": 194,
+    "oracle": "Verified against the pinned OASIS UBL 2.3 release package's own vendored XSD schema (extracted directly from the ZIP, not a SAL-fact paraphrase or memory) -- higher-confidence than typical SELF-CONSISTENT evidence, though still not cross-checked against an independent reference UBL implementation, per GAP-008. The test artifact itself deliberately does not depend on the gitignored XSD cache at runtime, for portability.",
+    "obligations_moved_breakdown": "3 obligations closed by proving the qualified/unqualified data-type schema distinction the rule_text describes is genuinely reflected in the runtime type system, grounded in a direct read of the pinned authoritative XSD rather than the previously-insufficient generic SAL facts."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

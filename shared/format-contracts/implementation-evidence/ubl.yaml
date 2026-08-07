@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-QDT-UDT-DATATYPE-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-qualified-unqualified-datatypes-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-433310901DD96A1A, SAL-UBL-OBL-2131251CF1650A4C, and SAL-UBL-OBL-86ED6C7E674781EC (3-way duplicate across UBL-MODEL-001/PARSE-001/VALIDATE-001). Previously declined for lacking clear spec grounding -- the referenced SAL facts were too generic to define what "qualified" vs "unqualified" data-type schemas means at the XSD level. Unblocked by reading UBL-CommonBasicComponents-2.3.xsd directly from the pinned OASIS UBL 2.3 release ZIP: confirmed it imports both qdt: (QualifiedDataTypes-2) and udt: (bdndr:UnqualifiedDataTypes-1) base-type namespaces, with 1073 elements restricting udt: bases directly and 32 restricting qdt: bases (a qualification layer between the unqualified base and the cbc: element, e.g. PaymentMeansCodeType restricts qdt:PaymentMeansCodeType which itself restricts udt:CodeType). 5 new tests prove the runtime type system (Identifier/Amount/Quantity for udt:-restricted elements, Code for qdt:-restricted ones) genuinely reflects this split as distinct dataclasses -- deliberately without a test-time dependency on the gitignored acquired-schema cache, for portability. ubl suite: 771 -> 776 passed. Verified against the pinned XSD directly -- higher-confidence than typical SELF-CONSISTENT evidence, though still not cross-checked against an independent reference UBL implementation, per GAP-008. Covers SAL-UBL-OBL-433310901DD96A1A, SAL-UBL-OBL-2131251CF1650A4C, and SAL-UBL-OBL-86ED6C7E674781EC only; it supports no other obligation and promotes no product state.'
 - evidence_id: UBL-MAINDOC-LINES-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-maindoc-lines-001.json
   expected_result: PASS
@@ -992,27 +997,31 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-2131251CF1650A4C
   capability_id: UBL-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
   - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
   - src/python/ubl/src/format_factory/ubl/model/values.py::Code
   - src/python/ubl/src/format_factory/ubl/model/values.py::Identifier
   positive_test_selectors:
-  - tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes
+  - 'tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes'
+  - 'tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes'
+  - 'tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py::test_a_udt_restricted_identifier_element_projects_as_identifier'
+  - 'tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py::test_a_udt_restricted_amount_element_projects_as_amount'
+  - 'tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py::test_a_udt_restricted_quantity_element_projects_as_quantity'
+  - 'tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py::test_a_qdt_restricted_code_element_projects_as_code'
+  - 'tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py::test_qualified_and_unqualified_elements_are_represented_by_distinct_types'
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-QDT-UDT-DATATYPE-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-433310901DD96A1A (identical rule_text): Restates SAL-UBL-OBL-0AFE5C0F7BA8AC02''s CBC-namespace/typed-leaf-value fact from the physical-XSD-file angle rather than the runtime-model angle; every cbc:-namespaced element is correctly typed and tested (same evidence).'
-  missing_behavior:
-  - 'Same gap as SAL-UBL-OBL-0AFE5C0F7BA8AC02: no test asserts the CBC-namespace convention as a standalone fact, and no code in this package parses the physical UBL-CommonBasicComponents-2.3.xsd file directly.'
+  - 'Restates SAL-UBL-OBL-0AFE5C0F7BA8AC02''s CBC-namespace/typed-leaf-value fact; every cbc:-namespaced element is correctly typed and tested. The qualified/unqualified data-type-schema split this rule_text specifically names is now also confirmed by reading UBL-CommonBasicComponents-2.3.xsd directly (not a SAL-fact paraphrase): the file imports both qdt: (QualifiedDataTypes-2) and udt: (bdndr:UnqualifiedDataTypes-1) base-type namespaces, and 1073 of its element types restrict a udt: base directly (e.g. AccountIDType restricts udt:IdentifierType) while 32 restrict a qdt: base instead (e.g. PaymentMeansCodeType restricts qdt:PaymentMeansCodeType, itself restricting the unqualified udt:CodeType) -- both categories genuinely present and in active use, not a marginal distinction. Proven at the runtime-model level (deliberately without a test-time dependency on the gitignored acquired-schema cache, for portability): Identifier/Amount/Quantity correctly represent udt:-restricted elements and Code correctly represents qdt:-restricted ones, as genuinely distinct dataclasses.'
+  missing_behavior: []
   proof_requirements:
     positive:
-    - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
-      spoofed-namespace fixtures rejected.
+    - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures rejected.
     negative:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-21513DE5D9694015
@@ -1600,23 +1609,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-433310901DD96A1A
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
   - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
   - src/python/ubl/src/format_factory/ubl/model/values.py::Code
   - src/python/ubl/src/format_factory/ubl/model/values.py::Identifier
   positive_test_selectors:
-  - tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes
+  - 'tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes'
+  - 'tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes'
+  - 'tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py::test_a_udt_restricted_identifier_element_projects_as_identifier'
+  - 'tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py::test_a_udt_restricted_amount_element_projects_as_amount'
+  - 'tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py::test_a_udt_restricted_quantity_element_projects_as_quantity'
+  - 'tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py::test_a_qdt_restricted_code_element_projects_as_code'
+  - 'tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py::test_qualified_and_unqualified_elements_are_represented_by_distinct_types'
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-QDT-UDT-DATATYPE-PROOF
   implemented_behavior:
-  - 'Restates SAL-UBL-OBL-0AFE5C0F7BA8AC02''s CBC-namespace/typed-leaf-value fact from the physical-XSD-file angle rather than the runtime-model angle; every cbc:-namespaced element is correctly typed and tested (same evidence).'
-  missing_behavior:
-  - 'Same gap as SAL-UBL-OBL-0AFE5C0F7BA8AC02: no test asserts the CBC-namespace convention as a standalone fact, and no code in this package parses the physical UBL-CommonBasicComponents-2.3.xsd file directly.'
+  - 'Restates SAL-UBL-OBL-0AFE5C0F7BA8AC02''s CBC-namespace/typed-leaf-value fact; every cbc:-namespaced element is correctly typed and tested. The qualified/unqualified data-type-schema split this rule_text specifically names is now also confirmed by reading UBL-CommonBasicComponents-2.3.xsd directly (not a SAL-fact paraphrase): the file imports both qdt: (QualifiedDataTypes-2) and udt: (bdndr:UnqualifiedDataTypes-1) base-type namespaces, and 1073 of its element types restrict a udt: base directly (e.g. AccountIDType restricts udt:IdentifierType) while 32 restrict a qdt: base instead (e.g. PaymentMeansCodeType restricts qdt:PaymentMeansCodeType, itself restricting the unqualified udt:CodeType) -- both categories genuinely present and in active use, not a marginal distinction. Proven at the runtime-model level (deliberately without a test-time dependency on the gitignored acquired-schema cache, for portability): Identifier/Amount/Quantity correctly represent udt:-restricted elements and Code correctly represents qdt:-restricted ones, as genuinely distinct dataclasses.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
@@ -2987,23 +3001,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-86ED6C7E674781EC
   capability_id: UBL-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/values.py::Amount
   - src/python/ubl/src/format_factory/ubl/model/values.py::Quantity
   - src/python/ubl/src/format_factory/ubl/model/values.py::Code
   - src/python/ubl/src/format_factory/ubl/model/values.py::Identifier
   positive_test_selectors:
-  - tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes
-  - tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes
+  - 'tests/python/ubl/test_obligation_typed_projection.py::test_an_id_element_projects_with_its_scheme_attributes'
+  - 'tests/python/ubl/test_obligation_business_value_types.py::test_an_identifier_preserves_its_scheme_attributes'
+  - 'tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py::test_a_udt_restricted_identifier_element_projects_as_identifier'
+  - 'tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py::test_a_udt_restricted_amount_element_projects_as_amount'
+  - 'tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py::test_a_udt_restricted_quantity_element_projects_as_quantity'
+  - 'tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py::test_a_qdt_restricted_code_element_projects_as_code'
+  - 'tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py::test_qualified_and_unqualified_elements_are_represented_by_distinct_types'
   negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-QDT-UDT-DATATYPE-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of UBL-MODEL-001''s SAL-UBL-OBL-433310901DD96A1A (identical rule_text): Restates SAL-UBL-OBL-0AFE5C0F7BA8AC02''s CBC-namespace/typed-leaf-value fact from the physical-XSD-file angle rather than the runtime-model angle; every cbc:-namespaced element is correctly typed and tested (same evidence).'
-  missing_behavior:
-  - 'Same gap as SAL-UBL-OBL-0AFE5C0F7BA8AC02: no test asserts the CBC-namespace convention as a standalone fact, and no code in this package parses the physical UBL-CommonBasicComponents-2.3.xsd file directly.'
+  - 'Restates SAL-UBL-OBL-0AFE5C0F7BA8AC02''s CBC-namespace/typed-leaf-value fact; every cbc:-namespaced element is correctly typed and tested. The qualified/unqualified data-type-schema split this rule_text specifically names is now also confirmed by reading UBL-CommonBasicComponents-2.3.xsd directly (not a SAL-fact paraphrase): the file imports both qdt: (QualifiedDataTypes-2) and udt: (bdndr:UnqualifiedDataTypes-1) base-type namespaces, and 1073 of its element types restrict a udt: base directly (e.g. AccountIDType restricts udt:IdentifierType) while 32 restrict a qdt: base instead (e.g. PaymentMeansCodeType restricts qdt:PaymentMeansCodeType, itself restricting the unqualified udt:CodeType) -- both categories genuinely present and in active use, not a marginal distinction. Proven at the runtime-model level (deliberately without a test-time dependency on the gitignored acquired-schema cache, for portability): Identifier/Amount/Quantity correctly represent udt:-restricted elements and Code correctly represents qdt:-restricted ones, as genuinely distinct dataclasses.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Per-layer positive/negative fixtures; layered report structure asserted machine-readable.
