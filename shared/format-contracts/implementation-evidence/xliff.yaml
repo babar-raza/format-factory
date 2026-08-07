@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-INLINE-REQUIRED-ID-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-inline-required-id-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-378A1E5A93B9F0E1 (XLIFF-INLINE-001) and SAL-XLIFF-OBL-3A70AA27631A594D (XLIFF-PARSE-001), identical rule_text: "Standalone placeholders use ph with a required id; paired containers use pc with a required id; spanning pairs use sc with a required id and non-isolated ec with a startRef to that id." Read _validate_inline directly before writing any test and confirmed it already checked duplicate inline ids and ec/sc pairing but never checked that ph/pc/sc actually carry an id at all -- a genuinely unenforced MUST-constraint, not merely untested behavior. Added a small check to _validate_inline: any ph/pc/sc element with a falsy id is flagged xliff.inline.id.required, checked independently for source and target content. ec is deliberately excluded from this new check -- it identifies its pairing via startRef, not its own id, and the spec text does not require one on ec itself (the pre-existing xliff.inline.ec.unpaired check already covers startRef resolution). Verified zero false positives against the entire pre-existing 447-test xliff suite before writing a single new test -- no existing fixture used a ph/pc/sc without an id. 7 new tests prove: ph/pc/sc each independently flagged when missing an id; ph with an id and ec without an id (correctly) are not flagged; a fully-id-carrying document validates cleanly; and the check applies independently to target content, not only source. xliff suite: 447 -> 454 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, every claim grounded directly in the pinned obligation''s own rule_text. Covers SAL-XLIFF-OBL-378A1E5A93B9F0E1 and SAL-XLIFF-OBL-3A70AA27631A594D only; it supports no other obligation and promotes no product state.'
 - evidence_id: XLIFF-FILE-REQUIRED-AND-FILE-ID-REQUIRED-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-file-required-and-file-id-required-001.json
   expected_result: PASS
@@ -1249,21 +1254,29 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-378A1E5A93B9F0E1
   capability_id: XLIFF-INLINE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
   - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_segment_split_join_reports_mapping_and_preserves_inline_content
   - tests/python/xliff/test_obligation_notes_and_annotations.py::test_sm_em_span_survives_overlap_with_another_inline_element
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_inline_required_id.py::test_a_ph_with_an_id_is_not_flagged
+  - tests/python/xliff/test_obligation_inline_required_id.py::test_an_ec_without_an_id_is_not_flagged_for_missing_id
+  - tests/python/xliff/test_obligation_inline_required_id.py::test_a_well_formed_document_with_every_inline_tag_carrying_an_id_is_clean
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_inline_required_id.py::test_a_ph_without_an_id_is_flagged
+  - tests/python/xliff/test_obligation_inline_required_id.py::test_a_pc_without_an_id_is_flagged
+  - tests/python/xliff/test_obligation_inline_required_id.py::test_an_sc_without_an_id_is_flagged
+  - tests/python/xliff/test_obligation_inline_required_id.py::test_id_required_is_checked_independently_in_target_content
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-INLINE-REQUIRED-ID-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of XLIFF-PARSE-001''s SAL-XLIFF-OBL-3A70AA27631A594D (identical rule_text): ph/pc/sc/ec inline elements are modeled and proven to round-trip with their ids present.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: the "required id" MUST-constraint itself is unenforced and untested -- no test constructs a ph/pc/sc lacking an id and confirms refusal; the validator only checks id duplicates and ec-without-matching-sc, not id presence. Not attempted this slice.'
+  - 'The "required id" MUST-constraint is now directly enforced and tested: ph, pc, and sc elements missing their id attribute are flagged xliff.inline.id.required, checked independently in both source and target content. ec is deliberately excluded -- it identifies its pairing via startRef, not its own id, and the spec text does not require one on ec itself; the pre-existing xliff.inline.ec.unpaired check already covers startRef resolution.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Paired-code corruption attempts (orphan, cross, duplicate) refused/diagnosed; token round trip preserves
@@ -1323,21 +1336,29 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-3A70AA27631A594D
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
   - src/python/xliff/src/format_factory/xliff/model/inline.py::InlineElement
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_segment_split_join_reports_mapping_and_preserves_inline_content
   - tests/python/xliff/test_obligation_notes_and_annotations.py::test_sm_em_span_survives_overlap_with_another_inline_element
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_inline_required_id.py::test_a_ph_with_an_id_is_not_flagged
+  - tests/python/xliff/test_obligation_inline_required_id.py::test_an_ec_without_an_id_is_not_flagged_for_missing_id
+  - tests/python/xliff/test_obligation_inline_required_id.py::test_a_well_formed_document_with_every_inline_tag_carrying_an_id_is_clean
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_inline_required_id.py::test_a_ph_without_an_id_is_flagged
+  - tests/python/xliff/test_obligation_inline_required_id.py::test_a_pc_without_an_id_is_flagged
+  - tests/python/xliff/test_obligation_inline_required_id.py::test_an_sc_without_an_id_is_flagged
+  - tests/python/xliff/test_obligation_inline_required_id.py::test_id_required_is_checked_independently_in_target_content
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-INLINE-REQUIRED-ID-PROOF
   implemented_behavior:
   - 'ph/pc/sc/ec inline elements are modeled and proven to round-trip with their ids present.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: the "required id" MUST-constraint itself is unenforced and untested -- no test constructs a ph/pc/sc lacking an id and confirms refusal; the validator only checks id duplicates and ec-without-matching-sc, not id presence. Not attempted this slice.'
+  - 'The "required id" MUST-constraint is now directly enforced and tested: ph, pc, and sc elements missing their id attribute are flagged xliff.inline.id.required, checked independently in both source and target content. ec is deliberately excluded -- it identifies its pairing via startRef, not its own id, and the spec text does not require one on ec itself; the pre-existing xliff.inline.ec.unpaired check already covers startRef resolution.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.

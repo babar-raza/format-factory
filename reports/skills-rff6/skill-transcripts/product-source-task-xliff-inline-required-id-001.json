@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-inline-required-id-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T11:37:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_INLINE_REQUIRED_ID_001",
+    "task_kind": "fix-real-unenforced-spec-requirement",
+    "root_cause": "Surveyed xliff's remaining 36 partial obligations per Event 236's next-action ranking. SAL-XLIFF-OBL-378A1E5A93B9F0E1 / SAL-XLIFF-OBL-3A70AA27631A594D (identical rule_text, XLIFF-INLINE-001/XLIFF-PARSE-001) named a precise, confirmed gap in their own missing_behavior: 'the required id MUST-constraint itself is unenforced and untested -- the validator only checks id duplicates and ec-without-matching-sc, not id presence.' Read _validate_inline directly and confirmed this is accurate: no check anywhere flags a ph/pc/sc lacking an id.",
+    "obligation_targeted": "SAL-XLIFF-OBL-378A1E5A93B9F0E1 (XLIFF-INLINE-001) and SAL-XLIFF-OBL-3A70AA27631A594D (XLIFF-PARSE-001) -- both promoted partial->implemented",
+    "acceptance_evidence": "7 new tests prove: ph/pc/sc each independently flagged when missing an id; ph-with-id and ec-without-id correctly not flagged; a fully-id-carrying document validates cleanly; the check applies independently to target content.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the shared rule_text: 'Standalone placeholders use ph with a required id; paired containers use pc with a required id; spanning pairs use sc with a required id and non-isolated ec with a startRef to that id' -- three distinct id-required tags (ph, pc, sc), with ec explicitly identified by startRef instead of its own id.",
+    "2. Read _validate_inline in validator.py directly before writing any code and confirmed the obligation's own missing_behavior claim precisely: the existing duplicate-id check (`ids = [value.id for value in elements if value.id]`) silently filters OUT id-less elements before checking for duplicates, meaning an id-less ph/pc/sc was never flagged for anything at all.",
+    "3. Added a new check to _validate_inline: for every inline element whose tag is in {ph, pc, sc}, if its id is falsy, emit a new xliff.inline.id.required diagnostic naming the tag and segment. Deliberately excluded ec, since the spec text does not require an id on ec itself (only that its startRef resolve, already covered by the pre-existing xliff.inline.ec.unpaired check).",
+    "4. Probed directly before writing formal tests: a ph without an id is flagged; a ph with an id is not; a pc without an id is flagged; an isolated sc without an id is flagged; an ec without an id (in an otherwise valid sc/ec pair) is correctly NOT flagged for missing id. All 5 correct on the first attempt.",
+    "5. Ran the full pre-existing xliff suite (447 tests, zero new fixtures) against the new check to look for false positives before writing a single new test -- all 447 passed unchanged, confirming zero pre-existing fixture used a ph/pc/sc without an id.",
+    "6. Wrote 7 formal tests in a new file (test_obligation_inline_required_id.py, matching this being a fresh, distinct rule_text clause from the existing paired-code-integrity test file's own scope), all passing on the first attempt.",
+    "7. Ran ruff (clean), the full xliff suite (454 passed, was 447, +7), and the full 6-format regression (3393 passed, was 3386, +7; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "8. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-1767e240aab1fe3e, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "9. Promoted both cross-capability duplicate obligations to implemented: the shared rule_text's full three-clause requirement (ph required id, pc required id, sc required id, with ec correctly excluded) is now directly proven for both source and target content."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_inline_required_id.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_inline_required_id.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_inline_required_id.py -q -- 7 passed",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/validation/validator.py tests/python/xliff/test_obligation_inline_required_id.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 454 passed, was 447 passed (447 passed unchanged BEFORE writing new tests, confirming zero false positives)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3393 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3386 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every claim grounded directly in the pinned obligation's own rule_text, the gap confirmed by direct code inspection before any fix was written.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-378A1E5A93B9F0E1 (XLIFF-INLINE-001) and SAL-XLIFF-OBL-3A70AA27631A594D (XLIFF-PARSE-001), identical rule_text, both partial->implemented. A genuine, real, previously-unenforced spec violation fixed with production source code."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -80,9 +80,24 @@ def _inline_elements(content: list[InlineNode]) -> list[InlineElement]:
     return result
 
 
+#: "Standalone placeholders use ph with a required id; paired containers use
+#: pc with a required id; spanning pairs use sc with a required id ... " --
+#: ec is deliberately excluded: it identifies its pairing via startRef, not
+#: its own id, and the spec does not require one on ec itself.
+_ID_REQUIRED_TAGS = frozenset({"ph", "pc", "sc"})
+
+
 def _validate_inline(segment: Segment, diagnostics: list[Diagnostic]) -> None:
     for label, content in (("source", segment.source), ("target", segment.target or [])):
         elements = _inline_elements(content)
+        for value in elements:
+            if value.tag in _ID_REQUIRED_TAGS and not value.id:
+                diagnostics.append(
+                    Diagnostic(
+                        "xliff.inline.id.required",
+                        f"<{value.tag}> in segment {segment.id!r} {label} is missing its required id",
+                    )
+                )
         ids = [value.id for value in elements if value.id]
         duplicates = sorted(
             key for key, count in Counter(ids).items() if count > 1
