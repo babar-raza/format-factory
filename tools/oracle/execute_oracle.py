@@ -785,7 +785,8 @@ def execute_generic_load_case(case: dict, pkg: dict, format_id: str, module: str
     try:
         sys.path.insert(0, str(REPO_ROOT))
         import importlib
-        mod = importlib.import_module(f"src.python.{module}")
+        module_path = module if module.startswith("format_factory.") else f"src.python.{module}"
+        mod = importlib.import_module(module_path)
         fn = getattr(mod, callable_name)
         result_val = fn(str(sample_path))
 
@@ -859,7 +860,8 @@ def execute_generic_invalid_case(
         src_py = str(REPO_ROOT / "src" / "python")
         if src_py not in sys.path:
             sys.path.insert(0, str(REPO_ROOT))
-        mod = importlib.import_module(f"src.python.{module}")
+        module_path = module if module.startswith("format_factory.") else f"src.python.{module}"
+        mod = importlib.import_module(module_path)
         fn = getattr(mod, callable_name)
         fn(input_data)
 

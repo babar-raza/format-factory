@@ -2,11 +2,16 @@ oracle_test_binding_id: oracle-xliff-test-binding-v1
 format_id: xliff
 oracle_package: oracle/formats/xliff/oracle-package.yaml
 binding_type: oracle_adapter
-executor_module: xliff.xliff_codec
+executor_module: format_factory.xliff
 executor_callable: load_xliff
+executor_note: >-
+  Repointed from the deprecated xliff.xliff_codec shim to the shipped
+  format_factory.xliff namespace at FF6-EVENT-000275 (2026-08-08) — the
+  shim is excluded from the built wheel, so the oracle was never
+  exercising shipped code before this fix.
 bound_test_files:
-- tests/python/xliff/test_xliff_codec.py
-generated_at: '2026-07-14'
+- tests/python/xliff/test_obligation_full_module_schema_validation.py
+generated_at: '2026-08-08'
 mission_id: select-6-acquisition
 taskcard: TC-ORACLE-XLIFF
 bound_cases:

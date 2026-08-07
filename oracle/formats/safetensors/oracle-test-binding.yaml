@@ -2,11 +2,17 @@ oracle_test_binding_id: oracle-safetensors-test-binding-v1
 format_id: safetensors
 oracle_package: oracle/formats/safetensors/oracle-package.yaml
 binding_type: oracle_adapter
-executor_module: safetensors.safetensors_codec
-executor_callable: load_safetensors
+executor_module: format_factory.safetensors
+executor_callable: load
+executor_note: >-
+  Repointed from the deprecated safetensors.safetensors_codec shim to the
+  shipped format_factory.safetensors namespace at FF6-EVENT-000275
+  (2026-08-08) — the shim is excluded from the built wheel, so the oracle
+  was never exercising shipped code before this fix. The shipped package
+  has no load_safetensors alias, only load().
 bound_test_files:
-- tests/python/safetensors/test_safetensors_codec.py
-generated_at: '2026-07-14'
+- tests/python/safetensors/test_obligation_bidirectional_interop.py
+generated_at: '2026-08-08'
 mission_id: select-6-acquisition
 taskcard: TC-ORACLE-SAFETENSORS
 bound_cases:

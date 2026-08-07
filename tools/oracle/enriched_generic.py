@@ -7,43 +7,57 @@ import importlib
 import sys
 
 
+# FF6-EVENT-000275: ipynb/nrrd/safetensors/ubl/xliff point at the shipped
+# format_factory.{fmt} namespace, not the deprecated flat {fmt}.{fmt}_codec
+# shim under src/python/{fmt}/ — the shim is excluded from the built wheel,
+# so an oracle bound to it was never exercising the shipped code. mtlx is
+# outside FF6 scope and is left on the legacy module intentionally.
 ENRICHED_LOADERS = {
-    "ipynb": ("ipynb.ipynb_codec", "load_ipynb"),
+    "ipynb": ("format_factory.ipynb", "load_ipynb"),
     "mtlx": ("mtlx.mtlx_codec", "load_mtlx"),
-    "nrrd": ("nrrd.nrrd_codec", "load_nrrd"),
-    "safetensors": ("safetensors.safetensors_codec", "load_safetensors"),
-    "ubl": ("ubl.ubl_codec", "load_ubl"),
-    "xliff": ("xliff.xliff_codec", "load_xliff"),
+    "nrrd": ("format_factory.nrrd", "load_nrrd"),
+    "safetensors": ("format_factory.safetensors", "load"),
+    "ubl": ("format_factory.ubl", "load"),
+    "xliff": ("format_factory.xliff", "load_xliff"),
 }
 
 
-def _enrich_model(result_val: dict, format_id: str) -> dict:
-    """Add derived properties used by expected_model_properties."""
-    if not isinstance(result_val, dict):
-        return result_val
-    enriched = dict(result_val)
+def _enrich_model(result_val, format_id: str) -> dict:
+    """Add derived properties used by expected_model_properties.
+
+    ipynb and nrrd's shipped loaders still return plain dicts, so the
+    original dict-shaped derivation applies unchanged. safetensors, ubl and
+    xliff's shipped loaders return typed model objects (SafeTensorsDocument /
+    UblDocument / XliffDocument) instead of the flat dicts the retired
+    shadow codecs returned — each branch below uses that object's own real,
+    tested accessor (.tensors, DocumentIndex(...).by_business_role("line"),
+    .unit_count) rather than a dict key that no longer exists.
+    """
+    if isinstance(result_val, dict):
+        enriched = dict(result_val)
+        if format_id == "ipynb":
+            cells = result_val.get("cells", [])
+            enriched["cell_count"] = len(cells) if isinstance(cells, list) else 0
+        elif format_id == "mtlx":
+            materials = result_val.get("materials", [])
+            enriched["material_count"] = len(materials) if isinstance(materials, list) else 0
+        elif format_id == "nrrd":
+            shape = result_val.get("array_shape", result_val.get("header", {}).get("sizes", []))
+            enriched["dimension"] = len(shape) if isinstance(shape, list) else 0
+        return enriched
+
+    enriched: dict = {}
     if format_id == "safetensors":
-        tensors = result_val.get("tensors", {})
-        enriched["tensor_count"] = len(tensors) if isinstance(tensors, dict) else 0
-        enriched["tensor_names"] = sorted(tensors) if isinstance(tensors, dict) else []
-    elif format_id == "ipynb":
-        cells = result_val.get("cells", [])
-        enriched["cell_count"] = len(cells) if isinstance(cells, list) else 0
-    elif format_id == "mtlx":
-        materials = result_val.get("materials", [])
-        enriched["material_count"] = len(materials) if isinstance(materials, list) else 0
-    elif format_id == "nrrd":
-        shape = result_val.get("array_shape", result_val.get("header", {}).get("sizes", []))
-        enriched["dimension"] = len(shape) if isinstance(shape, list) else 0
+        tensors = getattr(result_val, "tensors", {})
+        enriched["tensor_count"] = len(tensors)
+        enriched["tensor_names"] = sorted(tensors)
     elif format_id == "ubl":
-        lines = result_val.get("lines", [])
-        enriched["line_count"] = len(lines) if isinstance(lines, list) else 0
+        from format_factory.ubl import DocumentIndex
+
+        enriched["document_type"] = getattr(result_val, "root_name", None)
+        enriched["line_count"] = len(DocumentIndex(result_val.root).by_business_role("line"))
     elif format_id == "xliff":
-        files = result_val.get("files", [])
-        enriched["unit_count"] = sum(
-            len(item.get("units", item.get("trans_units", [])))
-            for item in files if isinstance(item, dict)
-        ) if isinstance(files, list) else 0
+        enriched["unit_count"] = result_val.unit_count
     return enriched
 
 
@@ -76,7 +90,8 @@ def execute_enriched_generic(core, case, pkg, format_id, module, callable_name):
     input_hash = core.sha256_file(sample_path)
     try:
         sys.path.insert(0, str(core.REPO_ROOT))
-        fn = getattr(importlib.import_module(f"src.python.{module}"), callable_name)
+        module_path = module if module.startswith("format_factory.") else f"src.python.{module}"
+        fn = getattr(importlib.import_module(module_path), callable_name)
         result_val = _enrich_model(fn(str(sample_path)), format_id)
         expected = case.get("expected_model_properties", [])
         observed, deviations, depth, diagnostics = core._compare_model_properties(

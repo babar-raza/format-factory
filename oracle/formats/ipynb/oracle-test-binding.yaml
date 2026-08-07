@@ -2,11 +2,17 @@ oracle_test_binding_id: oracle-ipynb-test-binding-v1
 format_id: ipynb
 oracle_package: oracle/formats/ipynb/oracle-package.yaml
 binding_type: oracle_adapter
-executor_module: ipynb.ipynb_codec
+executor_module: format_factory.ipynb
 executor_callable: load_ipynb
+executor_note: >-
+  Repointed from the deprecated ipynb.ipynb_codec shim to the shipped
+  format_factory.ipynb namespace at FF6-EVENT-000275 (2026-08-08) — the shim
+  is excluded from the built wheel, so the oracle was never exercising
+  shipped code before this fix.
 bound_test_files:
-- tests/python/ipynb/test_ipynb_codec.py
-generated_at: '2026-07-14'
+- tests/python/ipynb/test_obligation_output_mime_matrix.py
+- tests/python/ipynb/test_obligation_cell_identity.py
+generated_at: '2026-08-08'
 mission_id: select-6-acquisition
 taskcard: TC-ORACLE-IPYNB
 bound_cases:

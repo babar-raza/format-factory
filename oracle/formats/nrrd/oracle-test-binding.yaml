@@ -2,11 +2,16 @@ oracle_test_binding_id: oracle-nrrd-test-binding-v1
 format_id: nrrd
 oracle_package: oracle/formats/nrrd/oracle-package.yaml
 binding_type: oracle_adapter
-executor_module: nrrd.nrrd_codec
+executor_module: format_factory.nrrd
 executor_callable: load_nrrd
+executor_note: >-
+  Repointed from the deprecated nrrd.nrrd_codec shim to the shipped
+  format_factory.nrrd namespace at FF6-EVENT-000275 (2026-08-08) — the shim
+  is excluded from the built wheel, so the oracle was never exercising
+  shipped code before this fix.
 bound_test_files:
-- tests/python/nrrd/test_nrrd_codec.py
-generated_at: '2026-07-14'
+- tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py
+generated_at: '2026-08-08'
 mission_id: select-6-acquisition
 taskcard: TC-ORACLE-NRRD
 bound_cases:

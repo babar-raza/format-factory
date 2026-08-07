@@ -2,11 +2,17 @@ oracle_test_binding_id: oracle-ubl-test-binding-v1
 format_id: ubl
 oracle_package: oracle/formats/ubl/oracle-package.yaml
 binding_type: oracle_adapter
-executor_module: ubl.ubl_codec
-executor_callable: load_ubl
+executor_module: format_factory.ubl
+executor_callable: load
+executor_note: >-
+  Repointed from the deprecated ubl.ubl_codec shim to the shipped
+  format_factory.ubl namespace at FF6-EVENT-000275 (2026-08-08) — the shim
+  is excluded from the built wheel, so the oracle was never exercising
+  shipped code before this fix. The shipped package has no load_ubl alias,
+  only load().
 bound_test_files:
-- tests/python/ubl/test_ubl_codec.py
-generated_at: '2026-07-14'
+- tests/python/ubl/test_obligation_official_schema_validation.py
+generated_at: '2026-08-08'
 mission_id: select-6-acquisition
 taskcard: TC-ORACLE-UBL
 bound_cases:
