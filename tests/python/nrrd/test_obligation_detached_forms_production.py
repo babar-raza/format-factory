@@ -34,3 +34,28 @@ def test_printf_sequence_file_count_is_bounded_before_allocation(tmp_path: Path)
 
     with pytest.raises(ResourceLimitError, match="over the limit"):
         load(pattern_header, limits=ResourceLimits(max_entries=64))
+
+
+def test_list_sequence_file_count_is_bounded_before_allocation(tmp_path: Path) -> None:
+    """A declared LIST's file count is checked against max_entries before any
+    file is opened, mirroring the printf sequence's own file-count bound --
+    previously unenforced for LIST declarations specifically, confirmed
+    genuinely exploitable by direct probing before this fix (200 declared
+    names loaded successfully with max_entries=64 configured). No backing
+    files exist here on purpose: the rejection must happen before any of
+    them would be needed."""
+    names = "\n".join(f"f{i}.raw" for i in range(10))
+    list_header = tmp_path / "flood.nhdr"
+    list_header.write_bytes(_header(f"LIST\n{names}"))
+
+    with pytest.raises(ResourceLimitError, match="over the limit"):
+        load(list_header, limits=ResourceLimits(max_entries=5))
+
+
+def test_list_sequence_within_the_limit_still_loads(tmp_path: Path) -> None:
+    (tmp_path / "part-0.raw").write_bytes(b"\x01\x02")
+    (tmp_path / "part-1.raw").write_bytes(b"\x03\x04")
+    list_header = tmp_path / "small-list.nhdr"
+    list_header.write_bytes(_header("LIST\npart-0.raw\npart-1.raw"))
+
+    assert load(list_header, limits=ResourceLimits(max_entries=5)).array == [1, 2, 3, 4]

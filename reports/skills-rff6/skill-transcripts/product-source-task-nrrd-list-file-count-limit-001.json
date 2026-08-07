@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-list-file-count-limit-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T13:31:40Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_LIST_FILE_COUNT_LIMIT_001",
+    "task_kind": "fix-real-unenforced-resource-limit-found-by-cross-format-comparison",
+    "root_cause": "Applied the same cross-format resource-limit comparison technique that closed the equivalent ora obligation one tick earlier (event 248, SAL-ORA-OBL-1C91BEA24163FEE8): _safe_detached_payload's rule_text (SAL-NRRD-OBL-807586E5B4D0EDB2, NRRD-MULTIFILE-001) explicitly requires 'file count... before allocation' validated for both numbered sequences and LIST payloads. The printf branch already checked file_count against limits.max_entries before building any filename, but the LIST branch built its own names list directly from the header text with no equivalent check.",
+    "obligation_targeted": "SAL-NRRD-OBL-807586E5B4D0EDB2 (NRRD-MULTIFILE-001) -- remains partial; evidence strengthened, real bug fixed, no status crossing",
+    "acceptance_evidence": "2 new tests prove: a LIST declaring more names than max_entries is refused before any file is opened; a LIST safely within the limit still loads correctly.",
+    "regression_tier": "full nrrd package suite (tests/python/nrrd) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. After ora's attribute-count gap closed at event 248, checked NRRD's own resource-limit enforcement for the same class of gap, per event 248's own exact_next_action recommending the technique be tried against NRRD next.",
+    "2. NRRD's header/payload structure is not a recursive XML tree (confirmed structurally incomparable to ubl/xliff/ora's _Walker/_enforce_tree_limits pattern in an earlier tick), so the direct 4-vector comparison did not transfer. Instead read SAL-NRRD-OBL-807586E5B4D0EDB2's own rule_text directly: 'validate min/max/step/subdimension, filename expansion, file count, and bytes per file before allocation' -- naming file count for BOTH numbered sequences (printf) and LIST payloads.",
+    "3. Read _safe_detached_payload directly and found the printf branch already checks file_count = abs(stop-start)//abs(step)+1 against limits.max_entries before building any filename string. The LIST branch builds names = [line.strip() for line in value.splitlines()[1:] if line.strip()] with no equivalent check anywhere.",
+    "4. Confirmed this is a genuine, exploitable gap via direct probing before any fix: a NRRD header declaring 200 detached LIST file names (each backed by a real 1-byte file) loaded successfully via load() even with NRRD_DEFAULT_LIMITS.max_entries=64 explicitly configured.",
+    "5. Added if len(names) > limits.max_entries: raise ResourceLimitError(...) to the LIST branch immediately after names is built and validated non-empty, matching the printf branch's exact message style ('declares N files, over the limit of M') and its check-before-any-file-is-opened discipline.",
+    "6. Re-probed both cases: a 200-name LIST with max_entries=64 is now correctly rejected with 'detached LIST declares 200 files, over the limit of 64'; a 10-name LIST with real backing files still loads correctly and returns the expected array.",
+    "7. Ran the full pre-existing nrrd suite (569 tests, zero new fixtures) against the fix to look for false positives before writing a single new test -- all 569 passed unchanged.",
+    "8. Wrote 2 formal tests in the existing test_obligation_detached_forms_production.py (extending its established pattern next to the printf sibling test), both passing on the first attempt.",
+    "9. Ran ruff (clean), the full nrrd suite (571 passed, was 569, +2), and the full 6-format regression (3442 passed, was 3440, +2; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "10. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-3ca8ca9064138402, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "11. SAL-NRRD-OBL-807586E5B4D0EDB2 remains status=partial: missing_behavior still lists the multifile writer, the read-time profile gate, the LIST form's own optional <subdim>, and per-file byte validation as genuinely absent -- this tick strengthens evidence with a real, previously-unnoticed exploitable gap fixed, rather than crossing a status boundary."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_detached_forms_production.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_detached_forms_production.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_detached_forms_production.py -q -- 4 passed, was 2 passed",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py tests/python/nrrd/test_obligation_detached_forms_production.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 571 passed, 1 skipped, was 569 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3442 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3440 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations moved status; 1 already-partial obligation's evidence strengthened with a real fix",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 65,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the fix grounded directly in this obligation's own rule_text and its already-proven printf-branch sibling check.",
+    "obligations_moved_breakdown": "SAL-NRRD-OBL-807586E5B4D0EDB2 (NRRD-MULTIFILE-001) remains partial. A genuine, real, previously-unenforced resource-limit gap fixed with production source code (LIST-mode detached file count never checked against max_entries, unlike the sibling printf branch), found by the same cross-format comparison technique that closed the xliff and ora equivalents at events 247-248, here applied against the obligation's own rule_text rather than a sibling format's source directly, since NRRD's flat header structure is not comparable to the XML tree walkers."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

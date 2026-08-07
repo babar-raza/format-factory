@@ -230,6 +230,11 @@ def _safe_detached_payload(
         names = [line.strip() for line in value.splitlines()[1:] if line.strip()]
         if not names:
             raise NrrdParseError("detached LIST has no payload paths")
+        if len(names) > limits.max_entries:
+            raise ResourceLimitError(
+                f"detached LIST declares {len(names)} files, over the limit of "
+                f"{limits.max_entries}"
+            )
     elif "%" in value:
         parts = value.split()
         if len(parts) not in (4, 5) or not re.fullmatch(r"[^%]*%0?\d*d[^%]*", parts[0]):
