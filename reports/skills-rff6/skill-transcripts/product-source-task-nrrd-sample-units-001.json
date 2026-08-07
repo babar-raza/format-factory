@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-sample-units-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T06:30:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_SAMPLE_UNITS_001",
+    "task_kind": "genuine-small-gap-closure-real-spec-source-read",
+    "root_cause": "SAL-NRRD-OBL-00F18A8DA59864CD and SAL-NRRD-OBL-38F3D4743DF2B0F9 (both NRRD-PHYSICALMETA-001) require modeling 'sample units' (NRRD0004+, distinct from per-axis units/space units/thicknesses). No sample_units accessor existed anywhere in the model, and the field was not version-gated at all, confirmed by grepping document.py directly.",
+    "obligation_targeted": "SAL-NRRD-OBL-00F18A8DA59864CD, SAL-NRRD-OBL-38F3D4743DF2B0F9 (both NRRD-PHYSICALMETA-001)",
+    "acceptance_evidence": "NrrdDocument.sample_units now reads either the 'sample units' or 'sampleunits' header spelling (both spec-legal per the pinned source) and returns a plain unquoted string, correctly distinct from the per-axis quoted units/labels syntax. version_requirements() now gates it at NRRD0004+. 9 new tests prove both spellings, absence, unquoted-plain-text parsing, round-trip, distinctness from axis units, and write-time version-gate refusal.",
+    "regression_tier": "full nrrd package suite (tests/python/nrrd) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Grepped document.py for 'sample units'/'sample_units' -- zero hits, confirming the field is genuinely unmodeled, not a stale citation.",
+    "2. Read the pinned spec source directly (.local/format-contracts/acquired/nrrd/src-nrrd-001.bin, SRC-NRRD-001): found the field's exact definition -- 'sample units: <string>' / 'sampleunits: <string>', 'Always optional. This provides a way of storing the units of measurement associated with the scalar values stored in the array itself... Note that these units describe the individual scalar values, and not some non-scalar value stored along an axis of the array.' Also confirmed the worked example ('sample units: PPM') is unquoted plain text, correcting the obligation's own paraphrase ('a single quoted unit') against the actual spec wording before writing any code.",
+    "3. Confirmed via the spec's own field-list groupings that 'sample units' is a 'Basic field specification' (single, whole-document value) distinct from 'units' (a 'Per-axis field specification', quote-delimited per-axis list) -- the two are structurally different fields, not aliases of each other.",
+    "4. Added NrrdDocument.sample_units (reading either spelling via header.get() fallback chaining, matching the established line-skip/byte-skip alias pattern already used elsewhere in this codebase) and a version_requirements() entry gating it at NRRD0004+, mirroring the existing thicknesses gate exactly.",
+    "5. Verified interactively before writing any test: both field-name spellings project correctly, absence returns None, a round trip through dumps()/loads() preserves the value (writer.py's existing generic sorted-header-field loop already handles this field with no writer changes needed), and dumps(profile='NRRD0003') correctly refuses a document declaring sample units -- all 6 scenarios correct on the first attempt.",
+    "6. Caught and fixed a self-inflicted test-fixture bug before it reached a real test failure count: the first draft of a test file's _header() helper produced a spurious extra blank-line-terminator newline when the optional 'extra' field was empty, corrupting the payload boundary (confirmed via the actual NrrdParseError message: 'expected 2 bytes, got 3') -- fixed the helper to only emit the extra field line when non-empty, re-ran, all tests passed.",
+    "7. Wrote 9 new tests (7 in a new file, 2 extending the existing version-selection test file's established pattern). Ran ruff (clean) and the full nrrd suite (540 passed, was 531, +9) before writing any evidence claim. Ran the full 6-format regression (3079 passed, was 3070, +9; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "tests/python/nrrd/test_obligation_sample_units.py",
+    "tests/python/nrrd/test_obligation_version_selection.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "tests/python/nrrd/test_obligation_sample_units.py",
+    "tests/python/nrrd/test_obligation_version_selection.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_sample_units.py -q -- 7 passed",
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_version_selection.py -q -- 39 passed, was 37",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 540 passed, 1 skipped, was 531 passed",
+    ".venv/Scripts/python -m ruff check tests/python/nrrd/test_obligation_sample_units.py tests/python/nrrd/test_obligation_version_selection.py src/python/nrrd/src/format_factory/nrrd/model/document.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3079 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3070 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 65,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not cross-checked against a reference NRRD implementation. The field's exact syntax and version was read directly from the pinned, authority-locked spec source, correcting the obligation's own paraphrase ('quoted unit') against the actual spec text before implementing.",
+    "obligations_moved_breakdown": "2 obligations closed by adding a genuine, spec-grounded typed accessor (sample_units) with correct version gating and both accepted field-name spellings, matching the pinned Teem spec exactly."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

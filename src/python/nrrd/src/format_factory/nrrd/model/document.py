@@ -182,6 +182,15 @@ class NrrdDocument:
         value = self.header.get("thicknesses", "")
         return [float(token) for token in value.split()] if value else []
 
+    @property
+    def sample_units(self) -> str | None:
+        """`sample units:` (or `sampleunits:`) -- NRRD0004+, always optional.
+        "The units of measurement associated with the scalar values stored
+        in the array itself," a single unquoted string distinct from the
+        per-axis `units` field and from `space units` (SAL-NRRD-00023)."""
+        value = self.header.get("sample units", self.header.get("sampleunits"))
+        return value.strip() if value is not None else None
+
     def per_axis_field_arities(self) -> dict[str, int]:
         """The declared length of every per-axis field actually present.
 
@@ -220,6 +229,8 @@ class NrrdDocument:
             requirements.append((3, "kinds"))
         if "thicknesses" in self.header:
             requirements.append((4, "thicknesses"))
+        if "sample units" in self.header or "sampleunits" in self.header:
+            requirements.append((4, "sample units"))
         for field_name in ("space", "space dimension", "space units", "space origin", "space directions"):
             if field_name in self.header:
                 requirements.append((4, field_name))

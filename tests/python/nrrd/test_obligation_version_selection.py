@@ -75,6 +75,18 @@ def test_thicknesses_require_at_least_nrrd0004() -> None:
     assert document.minimal_version_for() == 4
 
 
+def test_sample_units_require_at_least_nrrd0004() -> None:
+    document = _document(**{"sample units": "PPM"})
+    assert (4, "sample units") in document.version_requirements()
+    assert document.minimal_version_for() == 4
+
+
+def test_sampleunits_unspaced_alias_also_requires_at_least_nrrd0004() -> None:
+    document = _document(sampleunits="PPM")
+    assert (4, "sample units") in document.version_requirements()
+    assert document.minimal_version_for() == 4
+
+
 @pytest.mark.parametrize(
     "field_name",
     ["space", "space dimension", "space units", "space origin", "space directions"],
