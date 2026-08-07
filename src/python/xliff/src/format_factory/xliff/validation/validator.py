@@ -179,6 +179,22 @@ def _iter_groups(children: list[Group | Unit | ExtensionNode]) -> list[Group]:
     return groups
 
 
+def _document_has_target_content(value: XliffDocument) -> bool:
+    """Whether a `<target>` element (empty or not) exists anywhere in the
+    document as a child of a `<segment>` or `<ignorable>` -- matching the
+    XLIFF 2.1 schematron's F1 pattern context exactly. `segment.target is
+    not None` iff the reader found a real `<target>` element in the source
+    XML (reader.py only assigns a non-None value when a `<target>` child
+    was actually present, even an empty one)."""
+
+    return any(
+        segment.target is not None
+        for file in value.files
+        for unit in file.iter_units()
+        for segment in unit.segments
+    )
+
+
 def validate(
     value: XliffDocument,
     *,
@@ -199,6 +215,13 @@ def validate(
         )
     if not value.source_language:
         diagnostics.append(Diagnostic("xliff.srcLang.required", "srcLang is required"))
+    if not value.target_language and _document_has_target_content(value):
+        diagnostics.append(
+            Diagnostic(
+                "xliff.trgLang.required",
+                "trgLang is required because the document contains target elements",
+            )
+        )
     if not value.files:
         diagnostics.append(Diagnostic("xliff.file.required", "at least one file is required"))
     file_ids = [item.id for item in value.files]

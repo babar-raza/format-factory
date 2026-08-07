@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-ROOT-LANGUAGE-ATTRIBUTE-REQUIREMENTS-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-root-language-attribute-requirements-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Narrows (does not fully close) 2 obligations sharing the "version and srcLang attributes are required on the xliff root; trgLang is required when target elements are present" finding across XLIFF-PARSE-001/TEXT-001 (both moved missing->partial). version-omitted and srcLang-omitted documents were already correctly refused at parse time (reader.py::_parse raises XliffParseError for both, confirmed directly by reading the reader source before writing anything), but had zero dedicated test coverage -- this slice adds it directly. trgLang was genuinely unbuilt: validator.py had zero references to it. Read the pinned XLIFF 2.1 schematron directly (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/xliff_core_2.1.sch, pattern F1): "The trgLang attribute is required if and only if the XLIFF Document contains target elements that are children of segment or ignorable" -- confirmed the schematron itself only asserts one direction (target present => trgLang required), not the reverse, so this slice implements exactly that direction and does not invent the unasserted reverse despite the obligation''s own rule_text using "if and only if" phrasing. Added _document_has_target_content() to validator.py, walking every file/unit/segment in the document (segment.target is not None iff the reader found a real <target> element, even an empty one, confirmed directly from reader.py), and wired an xliff.trgLang.required diagnostic into validate(). Verified zero false positives against the entire pre-existing 389-test xliff suite before writing a single new test. 8 new tests prove: version-omitted and srcLang-omitted are refused at parse time; a target with no trgLang is a violation; a target with trgLang set validates cleanly; no target anywhere and no trgLang validates cleanly (trgLang stays genuinely optional); an empty <target/> still counts as present; and a target in one unit still triggers the requirement even when other units are untranslated. xliff suite: 389 -> 397 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, every claim grounded directly in the pinned reader source and schematron text. Covers SAL-XLIFF-OBL-C96F6CB613A6F95D and SAL-XLIFF-OBL-2602F9167F95464B only; it supports no other obligation and promotes no product state.'
 - evidence_id: XLIFF-ISOLATED-START-CODE-VALIDATION-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-isolated-start-code-validation-001.json
   expected_result: PASS
@@ -1024,14 +1029,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-2602F9167F95464B
   capability_id: XLIFF-TEXT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_parse
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_document_has_target_content
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_document_with_version_and_srclang_present_parses_cleanly
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_target_element_with_trglang_set_validates_cleanly
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_no_target_element_anywhere_and_no_trglang_validates_cleanly
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_document_with_version_omitted_from_the_xml_is_refused_at_parse_time
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_document_with_srclang_omitted_from_the_xml_is_refused_at_parse_time
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_target_element_with_no_trglang_is_a_violation
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_an_empty_target_element_still_counts_as_present_and_requires_trglang
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_target_in_one_unit_requires_trglang_even_if_other_units_are_untranslated
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  - XLIFF-ROOT-LANGUAGE-ATTRIBUTE-REQUIREMENTS-PROOF
+  implemented_behavior:
+  - 'version and srcLang omission from the xliff root were already correctly refused at parse time (reader.py raises XliffParseError for both) -- this slice adds the first dedicated tests proving both refusals directly, closing the test-coverage half of this obligation. The trgLang half was genuinely unbuilt and is now implemented from scratch: validate() calls the new _document_has_target_content(), which walks every file/unit/segment in the document checking segment.target is not None (true iff the reader found a real <target> element, even an empty one), and raises xliff.trgLang.required when target content exists anywhere but value.target_language is unset -- grounded directly in the pinned XLIFF 2.1 schematron''s own F1 pattern (schemas/xliff_core_2.1.sch inside the pinned release ZIP): "The trgLang attribute is required if and only if the XLIFF Document contains target elements that are children of segment or ignorable".'
   missing_behavior:
-  - 'Same confirmed status as XLIFF-PARSE-001''s SAL-XLIFF-OBL-C96F6CB613A6F95D (identical rule_text). Confirmed gap, not an audit backlog: no shipped test exercises a document with version or srcLang omitted (only that they are read when present). More significantly, "trgLang required by the core Schematron when target elements are present" has zero implementation -- validator.py contains no reference to trgLang at all. Not attempted this slice.'
+  - 'The schematron''s F1 pattern itself only asserts one direction (target elements present => trgLang required); it does not also assert the reverse (trgLang present but no target elements => invalid), even though this obligation''s own rule_text uses "if and only if" phrasing. This slice implements exactly what the formal schematron checks and does not invent the unasserted reverse direction, which stays honestly undocumented as a possible future question rather than silently implemented without spec grounding.'
   proof_requirements:
     positive:
     - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
@@ -3069,14 +3088,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-C96F6CB613A6F95D
   capability_id: XLIFF-PARSE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_parse
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_document_has_target_content
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_document_with_version_and_srclang_present_parses_cleanly
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_target_element_with_trglang_set_validates_cleanly
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_no_target_element_anywhere_and_no_trglang_validates_cleanly
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_document_with_version_omitted_from_the_xml_is_refused_at_parse_time
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_document_with_srclang_omitted_from_the_xml_is_refused_at_parse_time
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_target_element_with_no_trglang_is_a_violation
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_an_empty_target_element_still_counts_as_present_and_requires_trglang
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_target_in_one_unit_requires_trglang_even_if_other_units_are_untranslated
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  - XLIFF-ROOT-LANGUAGE-ATTRIBUTE-REQUIREMENTS-PROOF
+  implemented_behavior:
+  - 'version and srcLang omission from the xliff root were already correctly refused at parse time (reader.py raises XliffParseError for both) -- this slice adds the first dedicated tests proving both refusals directly, closing the test-coverage half of this obligation. The trgLang half was genuinely unbuilt and is now implemented from scratch: validate() calls the new _document_has_target_content(), which walks every file/unit/segment in the document checking segment.target is not None (true iff the reader found a real <target> element, even an empty one), and raises xliff.trgLang.required when target content exists anywhere but value.target_language is unset -- grounded directly in the pinned XLIFF 2.1 schematron''s own F1 pattern (schemas/xliff_core_2.1.sch inside the pinned release ZIP): "The trgLang attribute is required if and only if the XLIFF Document contains target elements that are children of segment or ignorable".'
   missing_behavior:
-  - 'Confirmed gap, not an audit backlog: no shipped test exercises a document with version or srcLang omitted (only that they are read when present). More significantly, "trgLang required by the core Schematron when target elements are present" has zero implementation -- validator.py contains no reference to trgLang at all. Not attempted this slice.'
+  - 'The schematron''s F1 pattern itself only asserts one direction (target elements present => trgLang required); it does not also assert the reverse (trgLang present but no target elements => invalid), even though this obligation''s own rule_text uses "if and only if" phrasing. This slice implements exactly what the formal schematron checks and does not invent the unasserted reverse direction, which stays honestly undocumented as a possible future question rather than silently implemented without spec grounding.'
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.

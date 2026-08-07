@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-root-language-attribute-requirements-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T08:48:18Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_ROOT_LANG_ATTRS_001",
+    "task_kind": "close-test-coverage-gap-plus-build-a-genuinely-unbuilt-half-of-a-2-obligation-cluster",
+    "root_cause": "Event 220's exact_next_action named the version/srcLang-omission test cluster as a next candidate. Investigation found version/srcLang omission were already correctly refused at parse time (untested), while trgLang-required-when-target-present was genuinely unbuilt (zero references in validator.py).",
+    "obligation_targeted": "SAL-XLIFF-OBL-C96F6CB613A6F95D (XLIFF-PARSE-001) and SAL-XLIFF-OBL-2602F9167F95464B (XLIFF-TEXT-001), identical rule_text -- both promoted missing->partial",
+    "acceptance_evidence": "8 new tests: 3 prove version/srcLang omission is already correctly refused at parse time (2 negative, 1 positive control), 5 prove the newly-built trgLang-required-when-target-present validation (violation, valid, no-target-optional, empty-target-still-counts, multi-unit scope).",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the obligation register's rule_text for the 2-obligation cluster: 'version and srcLang attributes are required on the xliff root. trgLang is optional in the XSD but required by the core Schematron when target elements are present.'",
+    "2. Read reader.py directly: version omission (root.get('version','') not in SUPPORTED_VERSIONS) and srcLang omission (not source_language) both already raise XliffParseError at parse time -- confirmed correct, just untested.",
+    "3. Grepped validator.py for 'trgLang' -- zero matches, confirming the obligation's own claim of zero implementation.",
+    "4. Read the pinned XLIFF 2.1 schematron directly (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/xliff_core_2.1.sch), pattern F1: 'The trgLang attribute is required if and only if the XLIFF Document contains target elements that are children of segment or ignorable' -- confirmed the formal rule only asserts ONE direction (target present => trgLang required); no sibling rule asserts the reverse, so this slice deliberately does not invent that direction despite the obligation's own 'if and only if' phrasing.",
+    "5. Confirmed segment.target is not None iff the reader found a real <target> element (even empty) by reading reader.py's segment-parsing loop directly.",
+    "6. Added _document_has_target_content(value) to validator.py: walks every file/unit/segment in the document checking segment.target is not None. Wired an xliff.trgLang.required diagnostic into validate(), right after the existing srcLang check.",
+    "7. Verified interactively before writing formal tests: version-omitted and srcLang-omitted both correctly raise XliffParseError; target-present/no-trgLang is a violation; target-present/trgLang-set is valid; no-target/no-trgLang is valid; empty <target/> still counts as present -- all 6 cases correct on the first attempt.",
+    "8. Ran the full pre-existing xliff suite (389 tests, zero new fixtures) against the new check to look for false positives before writing a single new test -- all 389 passed unchanged.",
+    "9. Wrote 8 formal tests, all passing on the first attempt.",
+    "10. Ran ruff (clean), the full xliff suite (397 passed, was 389, +8), and the full 6-format regression (3304 passed, was 3296, +8; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "11. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-d3beec3e9e7fa4f8, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_root_language_attribute_requirements.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_root_language_attribute_requirements.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_root_language_attribute_requirements.py -q -- 8 passed",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/validation/validator.py tests/python/xliff/test_obligation_root_language_attribute_requirements.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 397 passed, was 389 passed (389 passed unchanged BEFORE writing new tests, confirming zero false positives)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3304 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3296 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations moved missing->partial",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every claim grounded directly in the pinned reader source and the pinned XLIFF 2.1 schematron text.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-C96F6CB613A6F95D (XLIFF-PARSE-001) and SAL-XLIFF-OBL-2602F9167F95464B (XLIFF-TEXT-001) both missing->partial. Stays partial, not implemented: the reverse direction (trgLang present but no target elements => invalid) is not asserted by the schematron itself and is deliberately not implemented, so the obligation's own 'if and only if' phrasing is only half-covered by design."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
