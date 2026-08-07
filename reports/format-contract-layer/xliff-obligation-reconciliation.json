@@ -66,6 +66,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors proving load() across path/stream/bytes, dump()/dumps() across path/text-stream/bytes with the library's own loader accepting every save form's output, deterministic serialization (repeated calls, separate destinations, and a load-save-load cycle all identical), validate() as a callable returning a structured report rather than raising, and detected vs. declared version (reader-only detected_version distinct from the mutable version field). SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-0CC8F5642F766D78, SAL-XLIFF-OBL-3901EF20FB3A778F, SAL-XLIFF-OBL-4847555DF5FC018E, SAL-XLIFF-OBL-7CC73B48A2DDD6E2, and SAL-XLIFF-OBL-A8BDC1BEFD51DF8A only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-MATCHES-MODULE-STRUCTURE-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-matches-module-structure-001.json",
+      "sha256": "68a6888f0e01130bd7481513ff0a8f391d4ab8b97d32c1967beb9e078e61c449",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes 3 obligations sharing \"matches contains one or more match elements, and each match requires ref plus one source and one target\" across XLIFF-TEXT-001/PARSE-001/MODULE-001 (all 3 moved partial->implemented). Before this slice, the Translation Candidates (Matches) module was preserved only as opaque extension content -- the same starting point Metadata and Resource Data were in before the two immediately preceding ticks this session. Grounded directly in the pinned XLIFF 2.1 Translation Candidates module schema (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/matches.xsd): mtc:matches declares minOccurs=\"1\" maxOccurs=\"unbounded\" for its mtc:match children; mtc:match itself declares ref use=\"required\" and requires EXACTLY one xlf:source and EXACTLY one xlf:target direct child, both using the XLIFF core namespace (imported from xliff_core_2.0.xsd), not the Matches module's own namespace. Added _matches_module_diagnostics() to validator.py, wired at the same 3 existing extension-walking call sites alongside the pre-existing _extension_well_formed()/_metadata_module_diagnostics()/_resource_data_module_diagnostics() checks. While verifying against the full pre-existing 421-test xliff suite before writing any new test, found and fixed a genuinely pre-existing, non-conformant fixture: test_translation_candidates_module_round_trips had an mtc:match with a ref attribute but no source or target children at all (raw text content directly inside match, which the schema also does not permit since mtc:match's complexType is mixed=\"false\") -- fixed by adding proper source/target children carrying the same \"candidate\" text the test already asserted on, the same \"correct the fixture, not the validation\" discipline already applied earlier this session for originalData/dataRef (event 222). 7 new tests prove: a well-formed match validates cleanly; matches with no match child is a violation; a match with no ref is a violation; a match with neither source nor target is flagged for both independently; a match with two sources is flagged only for source (not target, which is still exactly one); multiple well-formed matches all validate cleanly; and a non-Matches-namespaced extension is untouched. xliff suite: 421 -> 428 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every claim grounded directly in the pinned Translation Candidates module XSD. Covers SAL-XLIFF-OBL-73868B0E3F5A4C22, SAL-XLIFF-OBL-8CD918D3D6C70981, and SAL-XLIFF-OBL-D1E0B4FE10EAE4E3 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-MERGE-ADAPTER-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -221,7 +229,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "b7705b57be7d91b9b067d886e268ffbcabf9bd941a6e7ffea34413e1c9466683",
+    "implementation_evidence": "cc783d58be08a7b6762d3a1c053b39872e87440f96fa3ae6687446bf1f0c6802",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2717,19 +2725,26 @@
       "capability_id": "XLIFF-TEXT-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-MATCHES-MODULE-STRUCTURE-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-8CD918D3D6C70981 (identical rule_text): The Translation Candidates module namespace (urn:oasis:names:tc:xliff:matches:2.0) and matches/match round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-D1E0B4FE10EAE4E3), same evidence applies there."
+        "The Translation Candidates module namespace (urn:oasis:names:tc:xliff:matches:2.0) and matches/match round-trip as opaque extension content are both proven. Both halves of this obligation's own rule_text are now also proven: validate() re-parses every Matches-namespaced extension (grounded directly in the pinned XLIFF 2.1 Translation Candidates module schema, schemas/matches.xsd inside the pinned release ZIP) and flags a matches element with no match child, a match with no ref attribute, and a match without exactly one core-namespace source and exactly one core-namespace target child. Extensions using a different namespace are left untouched. While verifying this slice against the full pre-existing suite before writing any new test, a genuinely pre-existing, non-conformant fixture was found and fixed: test_translation_candidates_module_round_trips had a match with a ref attribute but no source or target children at all -- fixed by adding proper source/target children, the same 'correct the fixture, not the validation' discipline already applied earlier this session for originalData/dataRef."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: \"each match requires ref plus one source and one target\" is not enforced or tested -- no typed Match accessor exists; the module is preserved only as opaque extension content. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_matches_with_no_match_at_all_is_a_violation",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_a_match_with_no_ref_attribute_is_a_violation",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_a_match_with_neither_source_nor_target_is_flagged_for_both",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_a_match_with_two_sources_is_a_violation"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-73868B0E3F5A4C22",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
-        "tests/python/xliff/test_obligation_module_coverage.py::test_translation_candidates_module_round_trips"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_translation_candidates_module_round_trips",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_a_well_formed_match_validates_cleanly",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_multiple_well_formed_matches_all_validate_cleanly",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_a_non_matches_extension_is_untouched_by_this_check"
       ],
       "proof_requirements": {
         "negative": [
@@ -2739,11 +2754,13 @@
           "Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_matches_module_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -3125,19 +3142,26 @@
       "capability_id": "XLIFF-PARSE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-MATCHES-MODULE-STRUCTURE-PROOF"
       ],
       "implemented_behavior": [
-        "The Translation Candidates module namespace (urn:oasis:names:tc:xliff:matches:2.0) and matches/match round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-D1E0B4FE10EAE4E3), same evidence applies there."
+        "The Translation Candidates module namespace (urn:oasis:names:tc:xliff:matches:2.0) and matches/match round-trip as opaque extension content are both proven. Both halves of this obligation's own rule_text are now also proven: validate() re-parses every Matches-namespaced extension (grounded directly in the pinned XLIFF 2.1 Translation Candidates module schema, schemas/matches.xsd inside the pinned release ZIP) and flags a matches element with no match child, a match with no ref attribute, and a match without exactly one core-namespace source and exactly one core-namespace target child. Extensions using a different namespace are left untouched. While verifying this slice against the full pre-existing suite before writing any new test, a genuinely pre-existing, non-conformant fixture was found and fixed: test_translation_candidates_module_round_trips had a match with a ref attribute but no source or target children at all -- fixed by adding proper source/target children, the same 'correct the fixture, not the validation' discipline already applied earlier this session for originalData/dataRef."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: \"each match requires ref plus one source and one target\" is not enforced or tested -- no typed Match accessor exists; the module is preserved only as opaque extension content. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_matches_with_no_match_at_all_is_a_violation",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_a_match_with_no_ref_attribute_is_a_violation",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_a_match_with_neither_source_nor_target_is_flagged_for_both",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_a_match_with_two_sources_is_a_violation"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-8CD918D3D6C70981",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
-        "tests/python/xliff/test_obligation_module_coverage.py::test_translation_candidates_module_round_trips"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_translation_candidates_module_round_trips",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_a_well_formed_match_validates_cleanly",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_multiple_well_formed_matches_all_validate_cleanly",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_a_non_matches_extension_is_untouched_by_this_check"
       ],
       "proof_requirements": {
         "negative": [
@@ -3147,11 +3171,13 @@
           "Version/namespace consistency fixtures per supported version; legacy-version refusal fixture."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_matches_module_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-TEXT-001",
@@ -4293,19 +4319,26 @@
       "capability_id": "XLIFF-MODULE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-MATCHES-MODULE-STRUCTURE-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of SAL-XLIFF-OBL-8CD918D3D6C70981 (identical rule_text, XLIFF-PARSE-001): the Translation Candidates module namespace and matches/match round-trip as opaque extension content are both proven."
+        "The Translation Candidates module namespace (urn:oasis:names:tc:xliff:matches:2.0) and matches/match round-trip as opaque extension content are both proven. Both halves of this obligation's own rule_text are now also proven: validate() re-parses every Matches-namespaced extension (grounded directly in the pinned XLIFF 2.1 Translation Candidates module schema, schemas/matches.xsd inside the pinned release ZIP) and flags a matches element with no match child, a match with no ref attribute, and a match without exactly one core-namespace source and exactly one core-namespace target child. Extensions using a different namespace are left untouched. While verifying this slice against the full pre-existing suite before writing any new test, a genuinely pre-existing, non-conformant fixture was found and fixed: test_translation_candidates_module_round_trips had a match with a ref attribute but no source or target children at all -- fixed by adding proper source/target children, the same 'correct the fixture, not the validation' discipline already applied earlier this session for originalData/dataRef."
       ],
-      "missing_behavior": [
-        "Same confirmed gap as SAL-XLIFF-OBL-8CD918D3D6C70981: \"each match requires ref plus one source and one target\" is not enforced or tested. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_matches_with_no_match_at_all_is_a_violation",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_a_match_with_no_ref_attribute_is_a_violation",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_a_match_with_neither_source_nor_target_is_flagged_for_both",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_a_match_with_two_sources_is_a_violation"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-D1E0B4FE10EAE4E3",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
-        "tests/python/xliff/test_obligation_module_coverage.py::test_translation_candidates_module_round_trips"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_translation_candidates_module_round_trips",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_a_well_formed_match_validates_cleanly",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_multiple_well_formed_matches_all_validate_cleanly",
+        "tests/python/xliff/test_obligation_matches_module_structure.py::test_a_non_matches_extension_is_untouched_by_this_check"
       ],
       "proof_requirements": {
         "negative": [
@@ -4315,11 +4348,13 @@
           "Per-module round-trip fixtures; coverage manifest matches behavior."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_matches_module_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -5022,6 +5057,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-ignorable-elements-001.json": "b4eae20e8f1235e61fed5828dbb0d3880ae8c9762e85f1d6e488c777872a1a93",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-isolated-start-code-validation-001.json": "ae7462acea8d11cf3bbdd5c673987d2b4b82ae52b6c9e6ff4258312ce663b4b8",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-lifecycle-io-001.json": "02856c6f0ad09cf7b0352b9b777331dc5f6e2096e5f6576dbfe39f997669372d",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-matches-module-structure-001.json": "68a6888f0e01130bd7481513ff0a8f391d4ab8b97d32c1967beb9e078e61c449",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-merge-audit-001.json": "ad52bf9234b0abdb222fca9ca32f9fca835f0d73f2cab7e0709aca7a81e9c29a",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-metadata-module-structure-001.json": "774e8b594d89548d110b3377b80a678bdd0fcc10d80116d33aff6f7066a35e3a",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-model-text-001.json": "8b2159725c4b4b8307a0a7585f56f1592614172ef1bb5f950913e7215f40a95f",
@@ -5054,15 +5090,16 @@
     "src/python/xliff/src/format_factory/xliff/qa.py": "61c2a8f74d09f844e36bfc1d967a587b5e5e62cf6087577e1031347b3ee8fa2f",
     "src/python/xliff/src/format_factory/xliff/security/limits.py": "8cec6ffd2ccd8fe17fa6d76ab19b2deeda3578d558925d862b15494b3b06665a",
     "src/python/xliff/src/format_factory/xliff/state_transitions.py": "6b12476e31076a788cef37fb476e1b5eda7365e6eb640bbb7bedcebabb9d49ea",
-    "src/python/xliff/src/format_factory/xliff/validation/validator.py": "d816bf0eb5efd7506bd55c2dd40d6f9eaa5dd0206ccbbe99e3a41287c2deffe7",
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py": "a617c8992fefca38f5e6fba7ba393b53f92c57be79aca70b5b4008835b78a6a3",
     "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py": "3576c2a5c91c42fb0070f64d798078090e9af3118e3a6015663a4b7cbd111957",
     "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py": "13bd7850154306f68582918a5ffaca79a55f5b3145f703f76c3c3ef4e79328e5",
     "tests/python/xliff/test_obligation_ignorable_elements.py": "70908f9b90fa150715bd19b6c9a1abd46b36b818a3710c4ad82d851dc6a9c880",
     "tests/python/xliff/test_obligation_isolated_start_code_validation.py": "8b23d2f938ce7c6ce72a43dd04bb9420756b0dbb647ab9eedbb4d92903360f6c",
     "tests/python/xliff/test_obligation_lifecycle_io.py": "5d9973d4c931cea5f36247ac8f22b05ff57b335ab3dccf2d6c878da7b529c62b",
+    "tests/python/xliff/test_obligation_matches_module_structure.py": "6345a67d1044a532a59af264474a855e60057f988d77f83a67a84aad5740a26b",
     "tests/python/xliff/test_obligation_merge_adapter.py": "8ab808796f526b4497037ff207d9924382fe6833689529377210a80e60d95e88",
     "tests/python/xliff/test_obligation_metadata_module_structure.py": "35051e47bed5395598a8451ef08b8ad0028c2773580a661525e85de358a48f04",
-    "tests/python/xliff/test_obligation_module_coverage.py": "dbe6b40b4a668b46bc62aac2ce8819ae9c45bff05d6edd255da7060098c31783",
+    "tests/python/xliff/test_obligation_module_coverage.py": "2804d8ed972061266d4ee66b5fad52dbe3b9107f687bd8ba2c0a2eedd257400a",
     "tests/python/xliff/test_obligation_nested_group_hierarchy.py": "cb31f8d5782f920685c804e6283a44aa2196107d0069c8c3ed011c7d4003e122",
     "tests/python/xliff/test_obligation_notes_and_annotations.py": "357ae9aace9aab3cbb6bcda064a928b4934ccd7b6720094452aaedd75b69e587",
     "tests/python/xliff/test_obligation_original_data_element_modeling.py": "4b932ec3d11a2562463fb7b270c39882613e1ac2dcc08eef2014588c2b223940",
@@ -5083,12 +5120,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 83,
+      "implemented": 86,
       "missing": 12,
-      "partial": 47
+      "partial": 44
     },
     "total": 142,
-    "unresolved": 59
+    "unresolved": 56
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

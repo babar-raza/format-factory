@@ -7,7 +7,7 @@ from collections import Counter
 
 from format_factory.core import Diagnostic, ResourceLimits, ValidationReport
 
-from ..codec import SUPPORTED_VERSIONS
+from ..codec import SUPPORTED_VERSIONS, XLIFF_NAMESPACE
 from ..model import (
     ExtensionNode,
     Group,
@@ -30,6 +30,12 @@ _META_QNAME = f"{{{_METADATA_NAMESPACE}}}meta"
 _RESOURCE_DATA_NAMESPACE = "urn:oasis:names:tc:xliff:resourcedata:2.0"
 _RESOURCE_DATA_QNAME = f"{{{_RESOURCE_DATA_NAMESPACE}}}resourceData"
 _RESOURCE_REFERENCE_QNAME = f"{{{_RESOURCE_DATA_NAMESPACE}}}reference"
+
+_MATCHES_NAMESPACE = "urn:oasis:names:tc:xliff:matches:2.0"
+_MATCHES_QNAME = f"{{{_MATCHES_NAMESPACE}}}matches"
+_MATCH_QNAME = f"{{{_MATCHES_NAMESPACE}}}match"
+_CORE_SOURCE_QNAME = f"{{{XLIFF_NAMESPACE}}}source"
+_CORE_TARGET_QNAME = f"{{{XLIFF_NAMESPACE}}}target"
 
 
 def _language_compatible(enclosing: str, declared: str, *, exact_only: bool) -> bool:
@@ -296,6 +302,65 @@ def _resource_data_module_diagnostics(
             )
 
 
+def _matches_module_diagnostics(
+    extension: ExtensionNode, diagnostics: list[Diagnostic]
+) -> None:
+    """(XLIFF 2.1 Translation Candidates module) "matches contains one or
+    more match elements, and each match requires ref plus one source and
+    one target" -- grounded directly in the pinned XLIFF 2.1 Translation
+    Candidates module schema (inside
+    .local/format-contracts/acquired/xliff/src-xlf-002.bin,
+    schemas/matches.xsd): mtc:matches declares minOccurs="1"
+    maxOccurs="unbounded" for its mtc:match children; mtc:match itself
+    declares its own ref attribute use="required" and requires EXACTLY one
+    xlf:source and EXACTLY one xlf:target direct child -- both use the
+    XLIFF core namespace (imported from xliff_core_2.0.xsd), not the
+    Matches module's own namespace.
+
+    Only extensions actually carrying the Matches module's own namespace
+    are checked.
+    """
+
+    if extension.tag != _MATCHES_QNAME:
+        return
+    try:
+        element = ET.fromstring(extension.xml)
+    except ET.ParseError:
+        return
+    matches = [child for child in element if child.tag == _MATCH_QNAME]
+    if not matches:
+        diagnostics.append(
+            Diagnostic(
+                "xliff.module.matches.match.required",
+                "matches must contain at least one match element",
+            )
+        )
+    for match in matches:
+        if "ref" not in match.attrib:
+            diagnostics.append(
+                Diagnostic(
+                    "xliff.module.matches.match.ref.required",
+                    "match element requires a ref attribute",
+                )
+            )
+        source_count = sum(1 for child in match if child.tag == _CORE_SOURCE_QNAME)
+        target_count = sum(1 for child in match if child.tag == _CORE_TARGET_QNAME)
+        if source_count != 1:
+            diagnostics.append(
+                Diagnostic(
+                    "xliff.module.matches.match.source.required",
+                    f"match element must contain exactly one source, found {source_count}",
+                )
+            )
+        if target_count != 1:
+            diagnostics.append(
+                Diagnostic(
+                    "xliff.module.matches.match.target.required",
+                    f"match element must contain exactly one target, found {target_count}",
+                )
+            )
+
+
 def _walk_group(group: Group) -> list[Unit]:
     return list(group.iter_units())
 
@@ -478,6 +543,7 @@ def validate(
                     _extension_well_formed(segment_extension, diagnostics)
                     _metadata_module_diagnostics(segment_extension, diagnostics)
                     _resource_data_module_diagnostics(segment_extension, diagnostics)
+                    _matches_module_diagnostics(segment_extension, diagnostics)
             _isolated_diagnostics(unit, diagnostics)
             _data_ref_diagnostics(unit, diagnostics)
         for file_child in file.children:
@@ -485,6 +551,7 @@ def validate(
                 _extension_well_formed(file_child, diagnostics)
                 _metadata_module_diagnostics(file_child, diagnostics)
                 _resource_data_module_diagnostics(file_child, diagnostics)
+                _matches_module_diagnostics(file_child, diagnostics)
             elif isinstance(file_child, Group):
                 for group_unit in _walk_group(file_child):
                     for group_child in group_unit.children:
@@ -492,9 +559,11 @@ def validate(
                             _extension_well_formed(group_child, diagnostics)
                             _metadata_module_diagnostics(group_child, diagnostics)
                             _resource_data_module_diagnostics(group_child, diagnostics)
+                            _matches_module_diagnostics(group_child, diagnostics)
     for root_child in value.children:
         if isinstance(root_child, ExtensionNode):
             _extension_well_formed(root_child, diagnostics)
             _metadata_module_diagnostics(root_child, diagnostics)
             _resource_data_module_diagnostics(root_child, diagnostics)
+            _matches_module_diagnostics(root_child, diagnostics)
     return ValidationReport(diagnostics)

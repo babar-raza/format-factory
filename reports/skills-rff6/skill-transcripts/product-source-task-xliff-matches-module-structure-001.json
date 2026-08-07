@@ -1,0 +1,60 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-matches-module-structure-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T10:08:09Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_MATCHES_MODULE_STRUCTURE_001",
+    "task_kind": "build-new-capability-for-a-3-obligation-cluster",
+    "root_cause": "Event 227's exact_next_action named the Translation Candidates (Matches) module cluster as the next fresh, buildable candidate using the module-schema-scoped extension-validation pattern proven twice already (Metadata, Resource Data). The module round-tripped only as opaque extension content, zero structural validation.",
+    "obligation_targeted": "SAL-XLIFF-OBL-73868B0E3F5A4C22 (XLIFF-TEXT-001), SAL-XLIFF-OBL-8CD918D3D6C70981 (XLIFF-PARSE-001), SAL-XLIFF-OBL-D1E0B4FE10EAE4E3 (XLIFF-MODULE-001) -- identical rule_text, all promoted partial->implemented",
+    "acceptance_evidence": "7 new tests prove validate() now detects matches-with-no-match, match-with-no-ref, and match-missing-exactly-one-source-or-target violations, while correctly leaving well-formed matches and non-Matches extensions untouched.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Confirmed via grep that no existing code inspects Matches module structure at all -- same starting point as Metadata and Resource Data before their respective ticks.",
+    "2. Read the pinned XLIFF 2.1 Translation Candidates module XSD directly (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/matches.xsd): mtc:matches sequences mtc:match (minOccurs=1 maxOccurs=unbounded); mtc:match sequences optional mda:metadata (0..1), optional xlf:originalData (0..1), required xlf:source (exactly 1), required xlf:target (exactly 1), then any-other content -- source/target both use the XLIFF CORE namespace (imported from xliff_core_2.0.xsd), not the Matches module's own namespace; mtc:match itself declares ref use=\"required\".",
+    "3. Checked the existing Matches module test fixture (test_obligation_module_coverage.py) BEFORE implementing anything and found it was already non-conformant: an mtc:match with a ref attribute but no source or target children at all (just raw text 'candidate' directly inside match, which the schema's mixed=\"false\" complexType also does not permit).",
+    "4. Added XLIFF_NAMESPACE to validator.py's imports (already exported from ..codec) to reference the core source/target qname correctly. Added _matches_module_diagnostics() to validator.py: scoped to only Matches-namespaced extensions, re-parses the raw XML, flags a matches element with no match child, a match with no ref attribute, and a match without exactly one core-namespace source and exactly one core-namespace target (counted independently, so a match with 2 sources and 1 target is flagged only for the source count).",
+    "5. Wired the new check alongside the existing three extension checks at all 3 call sites (segment, file/group, root).",
+    "6. Fixed the pre-existing non-conformant fixture: added <source>candidate</source><target>candidate</target> children to the mtc:match element, preserving the 'candidate' substring the test already asserted on and the test's own round-trip-preservation purpose.",
+    "7. Verified interactively before writing formal tests: a well-formed match (ref, source, target) validates cleanly; matches with no match is a violation; a match with no ref is a violation; a match with neither source nor target is flagged for BOTH independently; a match with two sources is flagged only for source; a non-Matches-namespaced extension is untouched -- all 6 cases correct on the first attempt.",
+    "8. Ran the full pre-existing xliff suite (421 tests, with the fixture fix already applied, zero new fixtures beyond that) against the new check to look for false positives before writing a single new test -- all 421 passed, confirming the fixture fix was correct and sufficient.",
+    "9. Wrote 7 formal tests, all passing on the first attempt.",
+    "10. Ran ruff (clean across all 3 changed files), the full xliff suite (428 passed, was 421, +7), and the full 6-format regression (3341 passed, was 3334, +7; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "11. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-001680fe5e3920d7, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_matches_module_structure.py",
+    "tests/python/xliff/test_obligation_module_coverage.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_matches_module_structure.py",
+    "tests/python/xliff/test_obligation_module_coverage.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_matches_module_structure.py -q -- 7 passed",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/validation/validator.py tests/python/xliff/test_obligation_matches_module_structure.py tests/python/xliff/test_obligation_module_coverage.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 428 passed, was 421 passed (421 passed unchanged BEFORE writing new tests, after the fixture fix, confirming zero false positives against a spec-conformant baseline)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3341 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3334 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "3 obligations moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 3,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every claim grounded directly in the pinned XLIFF 2.1 Translation Candidates module XSD.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-73868B0E3F5A4C22 (XLIFF-TEXT-001), SAL-XLIFF-OBL-8CD918D3D6C70981 (XLIFF-PARSE-001), SAL-XLIFF-OBL-D1E0B4FE10EAE4E3 (XLIFF-MODULE-001) all partial->implemented. Both clauses of the shared rule_text (match required, ref+source+target required) fully and honestly proven -- third consecutive complete closure using this pattern."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

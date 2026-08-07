@@ -150,7 +150,11 @@ def _extension_of(document, index: int = 0):
 
 def test_translation_candidates_module_round_trips() -> None:
     body = '<mtc:matches xmlns:mtc="urn:oasis:names:tc:xliff:matches:2.0">'
-    body += '<mtc:match ref="#u1/source-text">candidate</mtc:match>'
+    body += (
+        '<mtc:match ref="#u1/source-text">'
+        "<source>candidate</source><target>candidate</target>"
+        "</mtc:match>"
+    )
     body += "</mtc:matches>"
     document = loads(_document(body))
     reparsed = loads(dumps(document))
