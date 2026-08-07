@@ -10,6 +10,14 @@
       "truth_boundary": "OVERSTATED -- READ GAP-022 BEFORE TRUSTING ANY `partial` HERE. The whole ubl package is 1,480 LOC, of which model/root_types.py is 652 comprising 91 five-line stubs that carry only a ROOT_NAME constant. Searching the package for the typed value components its obligations name -- AmountType, currencyID, CodeType, listID, LegalMonetaryTotal, TaxTotal, InvoiceLine -- returns nothing, and validator.py states that full schema and cardinality validation remains a mandatory open obligation. A large share of the 137 `partial` entries below therefore assert implemented behavior that does not exist. They were produced by mapping capabilities to modules that EXIST; the builder cannot check that a module IMPLEMENTS its obligation. Correcting them needs per-obligation judgement, not a wholesale demotion.\nSuite-level and NON-PROMOTING. The ubl suite is 334 passed with no failures, but that figure is dominated by the ten shadow-package files; only test_production_namespace.py exercises the shipped namespace. Binds no individual selector outcome to an obligation, so nothing here is verification; every obligation is recorded `partial` at most.\n2026-08-05 (post events 74-82 and this session's UBL-CALC-001 slice): the OVERSTATED framing above is no longer the current state of the package -- model/aggregates.py, model/values.py, model/temporal.py and model/charges.py now hold real typed components (InvoiceLine, Item, TaxTotal/TaxSubtotal, LegalMonetaryTotal, Amount/Quantity with Rounding policies, UblDate/UblTime/ UblDateTime, AllowanceCharge/Price/PaymentMeans) that did not exist when this truth_boundary was written, and reconcile_invoice() now performs tolerance- aware line-extension, tax-subtotal and allowance/charge reconciliation. This text is preserved as the historical record of the overstatement GAP-022 was written to catch, not as a current assessment -- see the capabilities section below and the notes above for what is actually mapped today. ubl suite: 488 passed.\n2026-08-06: UBL-QUERY-001 (model/query.py, DocumentIndex) and UBL-REF-001 (DocumentIndex.duplicate_line_ids()) add genuinely new source and tests since the 2026-08-05 addendum above. ubl suite: 507 -> 514 passed, ruff clean, mypy clean. ubl obligations: 165 partial/29 missing -> 182 partial/12 missing. No obligation reaches `implemented`.\n2026-08-06 (UBL-QUERY-001): model/query.py is new source, real and tested, not a remap of an existing stub. ubl suite: 488 -> 507 passed, ruff and mypy clean. Obligations: 163 partial/31 missing -> 165 partial/29 missing.\n2026-08-06 (later still): UBL's first `implemented` promotions. UBL-QUERY-001's two obligations both required \"indexed and linear scans agree\" -- proof that DocumentIndex's pre-built dict lookups return exactly what an independent, freshly-written linear scan finds, not proof the module merely exists. Added tests/python/ubl/test_obligation_query_index_agreement.py (10 new tests, zero source changes): a from-scratch linear-scan implementation (different traversal shape, no shared code with DocumentIndex._walk) cross-checked against by_qname/by_local_name/by_id/by_business_role across two structurally distinct fixtures. ubl suite: 514 -> 524 passed, ruff clean. Obligations: 182 partial/12 missing -> 180 partial/12 missing, 2 implemented (was 0)."
     },
     {
+      "evidence_id": "UBL-BINARY-OBJECT-CHECKSUM-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-binary-object-checksum-001.json",
+      "sha256": "621897ca705dd5134d672eaf89bb73d8243a35820d00cc5cad7ece7bafb2a6a7",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) SAL-UBL-OBL-E98EB489DAC77A1A (UBL-EXT-001). Its 3-clause rule_text (expose media types, expose checksums, gate external retrieval) already had media types proven and external-retrieval gating correctly characterized as a structural absence (no fetch capability exists at all, same as UBL-SEC-001); \"expose checksums\" was genuinely unbuilt. Added BinaryObject.checksum, a SHA-256 hex digest of the raw stored bytes, hashing only the payload as opaque data -- never the base64 wire form and never anything decoded from the declared mime_code. 3 new tests prove the digest matches a manual hashlib.sha256 computation, differs for different content, and is identical for the same bytes under two different declared media types (confirming the payload, not its declared type, drives the hash). The checksum clause's other half -- extension payloads, which have no dedicated model class or byte-serialization helper in this package -- remains deliberately out of scope, so the obligation stays honestly partial rather than force-closed. ubl suite: 776 -> 779 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule. Covers SAL-UBL-OBL-E98EB489DAC77A1A only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "UBL-CBC-CAC-NAMESPACE-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -197,7 +205,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "1f534c91b7bb29b0fca066c2198840ef20b1e6d0404196f21db000a5043d2e28",
+    "implementation_evidence": "401e38181f5fb6e5272c6c38dcffa017167e73e36c47e6bc91ec18cef12fba9e",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -6130,18 +6138,23 @@
       "capability_id": "UBL-EXT-001",
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
-        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF",
+        "UBL-BINARY-OBJECT-CHECKSUM-PROOF"
       ],
       "implemented_behavior": [
-        "BinaryObject exposes a required mime_code (media type) field for embedded binary attachments, directly tested. Extension and binary payloads are never evaluated (same evidence as SAL-UBL-OBL-0B23187F233A25E2 in this cluster)."
+        "BinaryObject exposes a required mime_code (media type) field for embedded binary attachments, directly tested. Extension and binary payloads are never evaluated (same evidence as SAL-UBL-OBL-0B23187F233A25E2 in this cluster). \"Expose their... checksums without decoding side effects\" is now also proven for embedded binary attachments specifically: a new BinaryObject.checksum property returns the SHA-256 hex digest of the raw stored bytes, hashing only the payload as opaque data -- never the base64 wire form and never anything decoded from the declared mime_code, confirmed directly by proving the checksum is identical for the same bytes under two different declared media types."
       ],
       "missing_behavior": [
-        "Checksum exposure for extension payloads specifically is not built -- ExternalReference's DocumentHash field (SAL-UBL-OBL-1D41106A5EF340AB) is stored as an opaque string, not computed or verified by the package. 'Gate any external attachment retrieval behind allowlists, byte limits, and timeouts' has no attack surface currently (same structural absence as SAL-UBL-OBL-4CA52BA5DDD8840F: nothing fetches an external attachment at all), so there is no retrieval path to gate yet."
+        "Checksum exposure for extension payloads specifically remains unbuilt (distinct from embedded binary attachments, now closed): no dedicated extension-content model class exists in this package -- extensions are preserved as raw XmlNode subtrees with no byte-serialization helper to hash -- so building this would need a new serialization primitive, deliberately left out of scope for this slice rather than rushed. ExternalReference's DocumentHash field (SAL-UBL-OBL-1D41106A5EF340AB) is stored as an opaque string, not computed or verified by the package. 'Gate any external attachment retrieval behind allowlists, byte limits, and timeouts' has no attack surface currently (same structural absence as SAL-UBL-OBL-4CA52BA5DDD8840F: nothing fetches an external attachment at all), so there is no retrieval path to gate yet."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_business_value_types.py::test_binary_object_checksum_is_independent_of_mime_code"
+      ],
       "obligation_id": "SAL-UBL-OBL-E98EB489DAC77A1A",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_business_value_types.py::test_a_binary_object_requires_a_mime_code"
+        "tests/python/ubl/test_obligation_business_value_types.py::test_a_binary_object_requires_a_mime_code",
+        "tests/python/ubl/test_obligation_business_value_types.py::test_binary_object_exposes_a_sha256_checksum_of_its_raw_bytes",
+        "tests/python/ubl/test_obligation_business_value_types.py::test_binary_object_checksum_differs_for_different_content"
       ],
       "proof_requirements": {
         "negative": [
@@ -6616,6 +6629,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ubl-001.json": "1e7b783cd545d3fcc56de100cfbd37c2d62ad9bf226093f940808de488756200",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-binary-object-checksum-001.json": "621897ca705dd5134d672eaf89bb73d8243a35820d00cc5cad7ece7bafb2a6a7",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-cbc-cac-namespace-001.json": "eccc2e54f8e79a06a1a7612f1408232778432d403e060465cc2bcd0e10b320ee",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-codelist-citation-audit-001.json": "e86ec085304fda4650c0a8e685459487d3fdf3ada7c4eab9b5d8b444c2222302",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-detected-declared-version-001.json": "1059a4d232058af1d560fc0e1e0732ad04bfe0079ef93b03de24f3f4ddfb61b0",
@@ -6653,13 +6667,13 @@
     "src/python/ubl/src/format_factory/ubl/model/root_types.py": "1ffc0eb226aaeb88c0a2ee941faf71cf0578fa7e5de94d77fae335bcfbccb126",
     "src/python/ubl/src/format_factory/ubl/model/temporal.py": "fa364fbcb2357cde3787518731cd9662d5f4933ebd2e46cd3e244a3616c36c43",
     "src/python/ubl/src/format_factory/ubl/model/typed.py": "3768fa130256f78078070bc083c3c571d3827e4a8074ffb224b56db5e753a31c",
-    "src/python/ubl/src/format_factory/ubl/model/values.py": "4d9fc62609afaa2b3d935db570ea6c9541b352d32403e07a1cc24a6922e424fc",
+    "src/python/ubl/src/format_factory/ubl/model/values.py": "4aaa55d4f2c6faa457b1a03ab6bf9a5ff83ffcd7ee90f87c0b649c18b39b642f",
     "src/python/ubl/src/format_factory/ubl/security/limits.py": "95ba5485bad5547fe800d4952518507824e217d15a197df822945f73921afc6d",
     "src/python/ubl/src/format_factory/ubl/validation/profiles.py": "9be1805b9ea265200e890fc833526dd3589b0be559d61f1d6ba76954f63b0c35",
     "src/python/ubl/src/format_factory/ubl/validation/validator.py": "4a7d8d71941f689bc5dd420ddd0413b6cf61499b2a10c6a920dfa40607558f80",
     "tests/python/ubl/test_obligation_aggregate_components.py": "26e36e29e05e239f1fc17915ebf243ae61b55799c7811dbfe8c3fee0fac66242",
     "tests/python/ubl/test_obligation_business_calculation.py": "ebf8352d49b7d0bc6bf5aa4bfa0d034f6f98f896ba34aceb95cfe38efeeee150",
-    "tests/python/ubl/test_obligation_business_value_types.py": "aefb8749170d03e5310add4d3ec5d183830eebbacce9dcabcc0e08f2893a83c5",
+    "tests/python/ubl/test_obligation_business_value_types.py": "5f4ee2e16fc785296a4fd493548197aaad50df1b384350ab7cee064e71ed8e10",
     "tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py": "c8ce979dcfd54b1e6117003a460078b86bbfe06288beafda92600b2ddadabac7",
     "tests/python/ubl/test_obligation_codelist_registry.py": "703e263896b28695ffac86f281b1588ed65e46c80c11e8a98ac465c3d3a7d657",
     "tests/python/ubl/test_obligation_detected_declared_version.py": "303950d7c328d8673c9d6d5546892afdba38c52653a5bb7b45a86eea37ea7991",

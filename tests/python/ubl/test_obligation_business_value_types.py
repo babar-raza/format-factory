@@ -29,6 +29,7 @@ Other rules quoted where they bind:
 from __future__ import annotations
 
 import base64
+import hashlib
 from decimal import Decimal
 
 import pytest
@@ -269,6 +270,35 @@ def test_binary_object_preserves_its_filename_when_given() -> None:
     attachment = BinaryObject(b"x", "text/plain", filename="notes.txt")
 
     assert attachment.filename == "notes.txt"
+
+
+def test_binary_object_exposes_a_sha256_checksum_of_its_raw_bytes() -> None:
+    """UBL-EXT-001: "expose their media types and checksums without
+    decoding side effects." mime_code (media type) was already exposed;
+    checksum is the raw SHA-256 digest of the stored bytes."""
+    payload = b"\x00\x01\x02 binary \xff\xfe"
+    attachment = BinaryObject(payload, "application/pdf")
+
+    assert attachment.checksum == hashlib.sha256(payload).hexdigest()
+
+
+def test_binary_object_checksum_differs_for_different_content() -> None:
+    first = BinaryObject(b"content one", "text/plain")
+    second = BinaryObject(b"content two", "text/plain")
+
+    assert first.checksum != second.checksum
+
+
+def test_binary_object_checksum_is_independent_of_mime_code() -> None:
+    """The checksum hashes the raw bytes only -- never anything decoded or
+    interpreted from the declared media type, since the attachment is
+    untrusted data this package never evaluates."""
+    payload = b"same bytes regardless of declared type"
+
+    as_pdf = BinaryObject(payload, "application/pdf")
+    as_text = BinaryObject(payload, "text/plain")
+
+    assert as_pdf.checksum == as_text.checksum
 
 
 # ── Values are immutable, so attributes survive edits ──────────────────────

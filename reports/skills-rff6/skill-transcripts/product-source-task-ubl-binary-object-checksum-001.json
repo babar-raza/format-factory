@@ -1,0 +1,54 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-binary-object-checksum-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T07:14:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_BINARY_OBJECT_CHECKSUM_001",
+    "task_kind": "small-accessor-addition",
+    "root_cause": "SAL-UBL-OBL-E98EB489DAC77A1A (UBL-EXT-001)'s 3-clause rule_text (expose media types, expose checksums, gate external retrieval) had media types already proven and external-retrieval gating correctly characterized as a structural absence (no fetch capability exists at all, same as UBL-SEC-001), but 'expose checksums' was genuinely unbuilt.",
+    "obligation_targeted": "SAL-UBL-OBL-E98EB489DAC77A1A (UBL-EXT-001)",
+    "acceptance_evidence": "3 new tests prove a new BinaryObject.checksum property returns the SHA-256 hex digest of the raw attachment bytes, differs for different content, and is independent of the declared mime_code (proving the payload is never decoded or interpreted, only hashed as opaque bytes).",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the obligation's full rule_text: 'Treat extension payloads and embedded binary attachments as untrusted data; expose their media types and checksums without decoding side effects, and gate any external attachment retrieval behind allowlists, byte limits, and timeouts.' Confirmed 3 distinct clauses, only the second (checksums) genuinely unbuilt for BinaryObject.",
+    "2. Considered the 'extension payloads' half of the checksum clause too: no dedicated ExtensionContent model class exists in this package (extensions are preserved as raw XmlNode subtrees with no built-in byte-serialization helper), so building a checksum for arbitrary extension content would need a new serialization primitive -- deliberately scoped OUT of this slice as a separate, larger piece of work, not silently claimed.",
+    "3. Read BinaryObject's existing fields (values.py): already has .data: bytes directly available, making a checksum property trivial and low-risk to add.",
+    "4. Added BinaryObject.checksum, returning hashlib.sha256(self.data).hexdigest() -- hashing only the raw stored bytes, never the base64 wire form and never anything decoded from the declared mime_code, matching 'without decoding side effects' precisely.",
+    "5. Verified interactively before writing formal tests: checksum matches a manually-computed hashlib.sha256 digest, differs for different content, and is identical for the same bytes under different declared mime_code values (proving the payload itself, not its declared type, drives the hash) -- all correct on the first attempt.",
+    "6. Wrote 3 formal tests directly in the existing BinaryObject test section of test_obligation_business_value_types.py. Ran ruff (clean), the full ubl suite (779 passed, was 776, +3), and the full 6-format regression (3145 passed, was 3142, +3; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "7. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-f7afa8f69f7e14c6, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/model/values.py",
+    "tests/python/ubl/test_obligation_business_value_types.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/model/values.py",
+    "tests/python/ubl/test_obligation_business_value_types.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_business_value_types.py -q -k checksum -- 3 passed",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/model/values.py tests/python/ubl/test_obligation_business_value_types.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 779 passed, was 776 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3145 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3142 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule.",
+    "obligations_moved_breakdown": "0 obligations promoted to implemented -- the obligation's checksum clause is now satisfied for embedded binary attachments (BinaryObject), but the same clause also names 'extension payloads', which remain genuinely unbuilt (no ExtensionContent model or byte-serialization helper exists to hash). Status stays partial, honestly narrowed rather than force-closed on partial coverage. 3 new tests ship real, durable test coverage and a genuine new accessor regardless."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

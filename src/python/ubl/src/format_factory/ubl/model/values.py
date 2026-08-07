@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import base64
 import binascii
+import hashlib
 import re
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation
@@ -241,6 +242,18 @@ class BinaryObject:
 
     def to_base64(self) -> str:
         return base64.b64encode(self.data).decode("ascii")
+
+    @property
+    def checksum(self) -> str:
+        """SHA-256 hex digest of the raw attachment bytes.
+
+        "expose their... checksums without decoding side effects" -- hashes
+        exactly the bytes stored on this object, never the base64 wire form
+        and never anything decoded/interpreted from the payload's declared
+        mime_code, since the attachment is untrusted data this package
+        never evaluates.
+        """
+        return hashlib.sha256(self.data).hexdigest()
 
     @classmethod
     def from_base64(
