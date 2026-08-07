@@ -10,6 +10,32 @@ from .inline import InlineElement, InlineNode, flatten_inline_content
 _XML_SPACE = "{http://www.w3.org/XML/1998/namespace}space"
 
 
+def effective_xml_space(
+    local_value: str | None, *, parent: str = "default", is_data: bool = False
+) -> str:
+    """Resolve one element's effective xml:space per the pinned XLIFF 2.1
+    spec's own default-value table (section 4.3.2.2 xml:space): "default
+    values for this attribute depend on the element in which it is used:
+    When used in <data>: The value preserve. When used in <xliff>: The
+    value default. When used in any other element: The value of the
+    xml:space attribute of its parent element."
+
+    This is the resolution RULE as a reusable primitive, not a tree-wide
+    walker: a caller composes it while descending the hierarchy it already
+    navigates (document.files -> file.children -> ... -> segment source/
+    target), passing each level's own attribute value and its parent's
+    already-resolved effective value. XliffDocument.xml_space answers the
+    root case (no parent to inherit from, defaults to "default") on its
+    own; this function handles every other element, including <data>'s own
+    distinct fixed default.
+    """
+    if local_value is not None:
+        return local_value
+    if is_data:
+        return "preserve"
+    return parent
+
+
 def _copy_inline_nodes(nodes: list[InlineNode]) -> list[InlineNode]:
     """Deep-copy inline content so source and target never share mutable codes."""
 

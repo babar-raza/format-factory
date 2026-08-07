@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-xml-space-inheritance-resolution-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T12:34:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_XML_SPACE_INHERITANCE_RESOLUTION_001",
+    "task_kind": "build-narrow-primitive-for-a-broad-obligation-deliberately-not-fully-closing-it",
+    "root_cause": "Event 240/241 flagged SAL-XLIFF-OBL-7DA078717EA60881 / SAL-XLIFF-OBL-867500AA0AC3D2C1's inherited-attribute-resolution gap as needing a genuine design decision, previously deferred rather than rushed. Re-examined with a narrower lens: the concrete example the obligation's own missing_behavior names (xml:space) has a fully-specified, unambiguous spec rule already extracted earlier this session, making the RESOLUTION RULE itself (as opposed to a full tree-walking API) a safe, well-scoped, closeable primitive.",
+    "obligation_targeted": "SAL-XLIFF-OBL-7DA078717EA60881 and SAL-XLIFF-OBL-867500AA0AC3D2C1 (both XLIFF-MODEL-001) -- remain partial, evidence strengthened with a genuinely new, narrow capability",
+    "acceptance_evidence": "5 new tests prove: a locally declared value always wins over the parent; an absent value inherits the parent's effective value; <data> always defaults to preserve regardless of parent; an explicit value on <data> still wins over its own fixed default; the function's own default parent argument matches the root's spec-mandated default.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Re-read both obligations' missing_behavior text: 'nothing walks up the tree to resolve an effective xml:space/xml:lang (or any other inheritable attribute) for a descendant that does not declare it locally.' Deliberately scoped this tick to xml:space only, the obligation's own concrete named example, not xml:lang or a fully generic 'any inheritable attribute' framework.",
+    "2. Re-confirmed the pinned XLIFF 2.1 spec's own default-value table for xml:space (section 4.3.2.2, already extracted earlier this session): 'default values for this attribute depend on the element in which it is used: When used in <data>: The value preserve. When used in <xliff>: The value default. When used in any other element: The value of the xml:space attribute of its parent element.' A complete, unambiguous, 3-branch rule with no remaining ambiguity.",
+    "3. Deliberately chose to build the resolution RULE as a reusable primitive function (effective_xml_space(local_value, *, parent, is_data)) rather than a full tree-walking API: this package's model has no parent back-references anywhere (confirmed by the prior grep this obligation's own evidence already cites), so a true 'ask any node its own effective value' method would require either adding parent pointers or redesigning the tree -- a genuine, larger architecture decision correctly deferred without dedicated design review, matching this session's established discipline for similarly-shaped questions (UBL-WRITE-001's auto-reordering, XLIFF's own tolerant-recovery-mode obligation, both left deliberately unbuilt for the same reason).",
+    "4. Added effective_xml_space() to model/document.py, next to the existing XliffDocument.xml_space property it complements (that property answers the root case; this function answers every other element, including <data>'s own distinct fixed default).",
+    "5. Exported the new function from model/__init__.py and the package's own top-level __init__.py, following the exact same export pattern already used for every other public model function.",
+    "6. Probed directly before writing formal tests: local value always wins regardless of parent or is_data; absent value inherits parent for both 'default' and 'preserve' parents; is_data=True always returns 'preserve' regardless of parent, even when the caller passes a non-default parent; an explicit local value on data still overrides its own fixed default. All 6 probes correct on the first attempt.",
+    "7. Wrote 5 formal tests in a new file (test_obligation_xml_space_inheritance_resolution.py, a fresh capability angle distinct from the existing root-only xml_space test file), all passing on the first attempt.",
+    "8. Ran ruff (clean), the full xliff suite (466 passed, was 461, +5), and the full 6-format regression (3421 passed, was 3416, +5; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "9. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-6be6fd11461bddd0, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "10. Kept both obligations at partial, not promoted to implemented: this slice proves the xml:space resolution RULE completely and honestly, but composing it across an actual document tree (the caller-facing 'give me this unit's effective xml:space' experience the obligation's own rule_text implies) remains unbuilt, as does xml:lang's separate inheritance chain entirely. Updated missing_behavior to precisely reflect this narrower remaining scope rather than leaving the old, now partially-stale 'nothing exists at all' framing."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_obligation_xml_space_inheritance_resolution.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_obligation_xml_space_inheritance_resolution.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_xml_space_inheritance_resolution.py -q -- 5 passed",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/model/document.py src/python/xliff/src/format_factory/xliff/model/__init__.py src/python/xliff/src/format_factory/xliff/__init__.py tests/python/xliff/test_obligation_xml_space_inheritance_resolution.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 466 passed, was 461 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3421 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3416 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations moved status (2 obligations strengthened, both remain partial)",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the resolution rule grounded directly in the pinned spec's own default-value table.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-7DA078717EA60881 and SAL-XLIFF-OBL-867500AA0AC3D2C1 (both XLIFF-MODEL-001) remain partial. A new, real, narrow capability (effective_xml_space resolution primitive) added and proven, deliberately not overclaimed as the full inherited-attribute-resolution API the broader rule_text describes."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
