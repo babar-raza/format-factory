@@ -162,7 +162,7 @@ def _write_notes(parent: ET.Element, notes: list[Note]) -> None:
             note.set("id", value.id)
         if value.applies_to:
             note.set("appliesTo", value.applies_to)
-        if value.category:
+        if value.category is not None:
             note.set("category", value.category)
         if value.priority is not None:
             note.set("priority", str(value.priority))

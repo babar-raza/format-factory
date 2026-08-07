@@ -1,0 +1,63 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-note-category-absent-vs-explicit-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T14:04:16Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_NOTE_CATEGORY_ABSENT_VS_EXPLICIT_001",
+    "task_kind": "make-narrow-public-api-type-change-named-verbatim-in-obligation-own-missing-behavior",
+    "root_cause": "SAL-XLIFF-OBL-612349C06EB3E809 (XLIFF-PRESERVE-001)'s own missing_behavior named the exact gap and the exact fix: Note.category is spec-declared unconstrained free 'Text' with 'Default value: undefined', so an explicit category=\"\" is syntactically legitimate and semantically distinct from absence, but Note.category (str, default \"\") could not tell them apart -- 'fixing it needs a public-API type change (str -> str | None) deliberately left out of scope for this slice.'",
+    "obligation_targeted": "SAL-XLIFF-OBL-612349C06EB3E809 (XLIFF-PRESERVE-001) -- promoted partial->implemented",
+    "acceptance_evidence": "3 tests (1 rewritten from a gap-documenting test, 2 new) prove: absent category is None and explicit-empty is \"\" (distinguishable); an explicit empty category survives a write-reload round trip; an absent category stays absent through a write-reload round trip.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. After ubl's status-crossing promotion at event 252, searched xliff's remaining 25 partial obligations for a similarly narrow, concretely-specified gap, per event 252's own exact_next_action pointing at SAL-XLIFF-OBL-612349C06EB3E809's Note.category as explicitly flagged needing only a public-API type change.",
+    "2. Read the obligation's own missing_behavior text and confirmed it names the exact fix already: change Note.category from str (default \"\") to str | None, mirroring Note.priority's own already-proven int | None pattern in the same dataclass.",
+    "3. Read model/document.py's Note dataclass, reader.py's _parse_notes, and writer.py's _write_notes directly to find every touch point before changing anything.",
+    "4. Grepped the whole xliff package for other .category usages to confirm only reader.py and writer.py touch it -- no other module assumes a str type.",
+    "5. Changed Note.category: str = \"\" to category: str | None = None. Changed reader.py's note.get(\"category\", \"\") to note.get(\"category\") (no default -> None when absent, \"\" when explicitly empty, matching ElementTree.Element.get's own semantics).",
+    "6. Changed writer.py's `if value.category:` to `if value.category is not None:`. Discovered while doing this that the falsy check had a SECOND, previously undocumented consequence: it also silently dropped an explicit category=\"\" on write, making an explicit empty category not just unreadable-as-distinct-from-absent but actually unwritable -- confirmed this was a genuine second bug, not just the documented read-side gap.",
+    "7. Ran the full pre-existing xliff suite (472 tests) against the fix to look for false positives before writing any new test -- exactly 1 test failed: the obligation's own gap-documenting test (test_note_category_absent_and_explicit_empty_collide_a_genuine_narrow_gap), which had asserted the collision as a known limitation -- the expected outcome of fixing the documented gap.",
+    "8. Rewrote that test into test_note_category_absent_is_distinguishable_from_explicit_empty, asserting the fix (absent is None, explicit-empty is \"\", the two differ). Added 2 new tests proving the write-reload round trip for both cases.",
+    "9. Ran ruff (clean), mypy on the 3 changed source files (clean), the full xliff suite (474 passed, was 472, net +2 after the 1 rewritten + 2 new - the old failing assertion no longer applies), and the full 6-format regression (3460 passed, was 3458, +2; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "10. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-50db6b4a985dcd5a, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "11. Promoted SAL-XLIFF-OBL-612349C06EB3E809 to implemented: all 6 optional fields this obligation's absent-vs-explicit sweep covers (state, sub_state, applies_to, target_language, priority, category) now correctly distinguish absence from an explicit value. missing_behavior cleared to empty list."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+    "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+    "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py -q -- 7 passed, was 5 passed",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/model/document.py src/python/xliff/src/format_factory/xliff/codec/reader/reader.py src/python/xliff/src/format_factory/xliff/codec/writer/writer.py tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py -- all checks passed",
+    ".venv/Scripts/python -m mypy src/python/xliff/src/format_factory/xliff/model/document.py src/python/xliff/src/format_factory/xliff/codec/reader/reader.py src/python/xliff/src/format_factory/xliff/codec/writer/writer.py --ignore-missing-imports -- Success: no issues found in 3 source files",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 474 passed, was 472 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3460 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3458 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the fix grounded directly in the obligation's own missing_behavior text and this package's own already-proven Note.priority pattern.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-612349C06EB3E809 (XLIFF-PRESERVE-001) partial->implemented. A genuine, narrow, precisely-specified public-API type fix (Note.category: str -> str | None) that closes the exact gap the obligation's own text named, plus a second, previously undocumented writer bug it surfaced along the way (explicit empty category was unwritable)."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

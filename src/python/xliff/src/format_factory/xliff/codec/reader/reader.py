@@ -113,7 +113,7 @@ def _parse_notes(element: ET.Element) -> list[Note]:
                     text="".join(note.itertext()),
                     id=note.get("id", ""),
                     applies_to=note.get("appliesTo", ""),
-                    category=note.get("category", ""),
+                    category=note.get("category"),
                     priority=priority,
                     attributes=_unknown_attributes(
                         note, {"id", "appliesTo", "category", "priority"}

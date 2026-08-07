@@ -89,7 +89,7 @@ class Note:
     text: str
     id: str = ""
     applies_to: str = ""
-    category: str = ""
+    category: str | None = None
     priority: int | None = None
     attributes: dict[str, str] = field(default_factory=dict)
 

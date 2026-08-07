@@ -170,6 +170,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes 4 obligations sharing \"id attributes on file group unit and inline elements must be unique within their specification-defined scope and references must resolve\" across XLIFF-MODEL-001/VALIDATE-001/PARSE-001/INLINE-001 (SAL-XLIFF-OBL-441E7C6F7C341B12, SAL-XLIFF-OBL-DA738080DC614E67, SAL-XLIFF-OBL-EC188D4F6DD138A0, SAL-XLIFF-OBL-F20C2CA429BA381B, all moved partial->implemented). This was the last remaining \"references must resolve\" gap after ec/sc pairing and dataRef were closed earlier this session -- confirmed genuinely unimplemented by grep before this slice: no code path anywhere in validator.py or model/inline.py read or resolved mrk's own ref attribute. Read the pinned XLIFF 2.1 spec source directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin, section 4.7.3.1.3 Comment Annotation): \"The ref attribute MUST be present and contain the URI of a <note> element within the same enclosing <unit> element that holds the comment,\" with the spec's own worked example using the fragment form ref=\"#n=n1\" against a sibling <note id=\"n1\">. Also confirmed via the same source that the spec's OTHER documented ref usage (type=\"term\", e.g. ref=\"http://dbpedia.org/page/...\") points at an arbitrary external URI with no same-document resolution requirement at all -- deliberately scoped this check to mrk[type=\"comment\"] only, avoiding inventing a constraint for type=\"term\" the spec never states. Added _mrk_comment_ref_diagnostics() to validator.py, wired at the same per-unit call site as the existing _data_ref_diagnostics(). Verified zero false positives against the entire pre-existing 455-test xliff suite before writing a single new test -- no existing fixture used a comment-type mrk with an unresolvable ref. 6 new tests prove: a comment ref resolving to a same-unit note validates cleanly; an unresolvable ref is flagged; a ref with zero notes in the unit is flagged; a term-type mrk's external-URI ref is never checked; a comment-type mrk with no ref at all is not checked here (presence is a separate concern); and the check applies independently to target content. xliff suite: 455 -> 461 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every claim grounded directly in the pinned spec's own prose and worked example. Covers SAL-XLIFF-OBL-441E7C6F7C341B12, SAL-XLIFF-OBL-DA738080DC614E67, SAL-XLIFF-OBL-EC188D4F6DD138A0, and SAL-XLIFF-OBL-F20C2CA429BA381B only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-NOTE-CATEGORY-ABSENT-VS-EXPLICIT-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-note-category-absent-vs-explicit-001.json",
+      "sha256": "427ceb34088672aa9777dcd27d758faf4b36f4fec20557327997aeb6cf0866cc",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-612349C06EB3E809 (XLIFF-PRESERVE-001), promoted partial->implemented. This obligation's own missing_behavior named the exact gap and the exact fix: Note.category is spec-declared as unconstrained free \"Text\" with \"Default value: undefined\", so an explicit category=\"\" is syntactically legitimate and semantically distinct from the attribute being absent, but Note.category (str, default \"\") could not tell them apart -- \"fixing it needs a public-API type change (str -> str | None)\". Made that exact change, mirroring Note.priority's own already-proven int | None pattern in the same dataclass: reader.py's note.get(\"category\") (no default) returns None when absent and \"\" when explicitly empty; writer.py's check changed from a falsy `if value.category:` to `if value.category is not None:`, since the falsy check had a second, previously undocumented consequence discovered while fixing this -- it silently dropped an explicit category=\"\" on write, making an explicit empty category not just unreadable-as-distinct but actually unwritable. Verified zero false positives against the entire pre-existing 472-test xliff suite before changing the one test that had documented the gap (test_note_category_absent_and_explicit_empty_collide_a_genuine_narrow_gap, which asserted the collision) into a fix-proving test asserting the two are now distinguishable. 2 additional new tests prove an explicit empty category and an absent category each survive a write-reload round trip correctly. xliff suite: 472 -> 474 passed. mypy clean. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the fix grounded directly in the obligation's own missing_behavior text and this package's own already-proven Note.priority pattern. Covers SAL-XLIFF-OBL-612349C06EB3E809 only; it supports no other obligation and promotes no other product state."
+    },
+    {
       "evidence_id": "XLIFF-NOTES-ANNOTATIONS-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -301,7 +309,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "059de88c073423a62c4bd2159599e23fbe8f778c38d2861b1c4dcda06cb2f5a2",
+    "implementation_evidence": "1454cb489332a13e9e6d37071acb3d26dc4a3fcb4278653337e2b4e79bf26f5a",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2388,24 +2396,24 @@
       "capability_id": "XLIFF-PRESERVE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-ABSENT-VS-EXPLICIT-SWEEP-PROOF"
+        "XLIFF-ABSENT-VS-EXPLICIT-SWEEP-PROOF",
+        "XLIFF-NOTE-CATEGORY-ABSENT-VS-EXPLICIT-PROOF"
       ],
       "implemented_behavior": [
-        "reader.py checks `if \"priority\" in note.attrib:` before parsing, so a note with no priority attribute leaves Note.priority as None -- distinguishable from an explicit priority value -- rather than defaulting it to a numeric placeholder. A systematic sweep now also verifies 4 further optional fields directly, each grounded in the pinned XLIFF 2.1 spec's own per-attribute value-format entry: Segment.state (constrained to exactly initial/translated/reviewed/final -- empty string is never a valid explicit value), Segment.sub_state (the spec requires a ':'-separated prefix:sub-value format -- same reasoning), Note.applies_to (constrained to exactly source/target), and XliffDocument.target_language (reader.py's root.get('trgLang') carries no default, so absent is None, never a string). All 5 fields now proven to correctly distinguish absent from explicit."
+        "reader.py checks `if \"priority\" in note.attrib:` before parsing, so a note with no priority attribute leaves Note.priority as None -- distinguishable from an explicit priority value -- rather than defaulting it to a numeric placeholder. A systematic sweep now also verifies 4 further optional fields directly, each grounded in the pinned XLIFF 2.1 spec's own per-attribute value-format entry: Segment.state (constrained to exactly initial/translated/reviewed/final -- empty string is never a valid explicit value), Segment.sub_state (the spec requires a ':'-separated prefix:sub-value format -- same reasoning), Note.applies_to (constrained to exactly source/target), and XliffDocument.target_language (reader.py's root.get('trgLang') carries no default, so absent is None, never a string). Note.category is now also fixed: the model's public type changed from str (defaulting both absent and explicit-empty to \"\") to str | None (mirroring Note.priority's own already-proven pattern), reader.py's note.get(\"category\") returns None when absent and \"\" when explicitly empty, and writer.py's check changed from a falsy `if value.category:` (which silently dropped an explicit empty category on write) to `if value.category is not None:`, so an explicit category=\"\" now survives a write-reload round trip. All 6 fields now proven to correctly distinguish absent from explicit."
       ],
-      "missing_behavior": [
-        "Note.category is a genuine, narrow remaining gap, not merely unverified: the spec's own entry declares it unconstrained free 'Text' with 'Default value: undefined' -- unlike state/subState/appliesTo, an explicit category=\"\" is syntactically legitimate and semantically distinct from the attribute being absent, but this package's Note.category defaults to \"\" for both and reader.py's note.get('category', '') cannot tell them apart, confirmed directly. Fixing it needs a public-API type change (str -> str | None) deliberately left out of scope for this slice."
-      ],
-      "negative_test_selectors": [
-        "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py::test_note_category_absent_and_explicit_empty_collide_a_genuine_narrow_gap"
-      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-612349C06EB3E809",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented",
         "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py::test_segment_state_absent_is_distinguishable_from_explicit_initial",
         "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py::test_segment_sub_state_absent_is_distinguishable_from_any_explicit_value",
         "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py::test_note_applies_to_absent_is_distinguishable_from_explicit_source",
-        "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py::test_target_language_absent_is_none_not_an_empty_string"
+        "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py::test_target_language_absent_is_none_not_an_empty_string",
+        "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py::test_note_category_absent_is_distinguishable_from_explicit_empty",
+        "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py::test_note_explicit_empty_category_survives_a_write_reload_round_trip",
+        "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py::test_note_absent_category_stays_absent_through_a_write_reload_round_trip"
       ],
       "proof_requirements": {
         "negative": [
@@ -2415,11 +2423,13 @@
           "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/model/document.py::Note"
+        "src/python/xliff/src/format_factory/xliff/model/document.py::Note",
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_parse_notes",
+        "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py::_write_notes"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-PARSE-001",
@@ -5280,6 +5290,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-model-text-001.json": "8b2159725c4b4b8307a0a7585f56f1592614172ef1bb5f950913e7215f40a95f",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-module-citation-audit-001.json": "1034d53323ce68762453b90f8c08084c140a8e738aa82d5fd17f8ba086df65d8",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-mrk-comment-ref-resolution-001.json": "107756c52996095fc6f5974b3dd5446d4a4a0048c30025910dd82ff2cae2c4c9",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-note-category-absent-vs-explicit-001.json": "427ceb34088672aa9777dcd27d758faf4b36f4fec20557327997aeb6cf0866cc",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-notes-annotations-001.json": "0a5ffae1a5449741f166f644c5fce33059572098a8ab9624573162869da8eefd",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-original-data-element-modeling-001.json": "143908e68bbc95e26c8c82cb877b7ff5b81bbb2b84743f9677b1586d0b607fca",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-paired-code-integrity-001.json": "6b16b781c4d9f2bf3962817c754e384e54a313cc9200d82e311b5acda712c31d",
@@ -5298,10 +5309,10 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-version-downgrade-loss-001.json": "d883e3d53d90b3cdc9f8163ff159837437339a2d0fde9275a8235d04e9a8d969",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-xml-space-inheritance-resolution-001.json": "16ed744c0996ba2daa82b718193862b57317c5120f5bcf8b3a25d26948babd76",
     "src/python/xliff/src/format_factory/xliff/codec/preservation.py": "117c0c1dd41f34535267d67b1d387302ac3e5d16af927a5a44a58ed506910768",
-    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py": "3826d878d653c01f9e021334a59aa4b123b9c5bdc64c046f72d3574be554beb7",
-    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py": "77a7a9b211d061098160e1fb827e7e5cd87aaf57871396431630d423c4f9da42",
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py": "f0002f175ef270014cb588902d392daed3abaf577618275c33826c66bff8330a",
+    "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py": "e2e143e75b2f34a5145130d83a6b4ce3a40df22c1706eef9a6f05cdc31021a85",
     "src/python/xliff/src/format_factory/xliff/merge.py": "c16a0916c2a7ddaeb49dd200fbe89e4a0b08f0ca19dd5177f7001733c0882c1b",
-    "src/python/xliff/src/format_factory/xliff/model/document.py": "2dfce111c09f486b31bef3f55bbfb1c4a403b57000132a57e3ef5a7e0b6fc139",
+    "src/python/xliff/src/format_factory/xliff/model/document.py": "8b87fce6e14efae974040ffa8094cf57df557f6f5f26675956aec53fdf640bd4",
     "src/python/xliff/src/format_factory/xliff/model/inline.py": "044d04957bcc6db867494411063619c0640e152012285f744a3f2ef7d41058c3",
     "src/python/xliff/src/format_factory/xliff/model/segmentation.py": "c2c3f1f35573fa11fc4f6ae67bf0a9d4395824dc2589dd05d73d88d83b00576b",
     "src/python/xliff/src/format_factory/xliff/model/text_editing.py": "408d1e5f8ffb5c51f548faac3e45125924bf395844171eb0fe292b0b3a20b5c3",
@@ -5310,7 +5321,7 @@
     "src/python/xliff/src/format_factory/xliff/security/limits.py": "8cec6ffd2ccd8fe17fa6d76ab19b2deeda3578d558925d862b15494b3b06665a",
     "src/python/xliff/src/format_factory/xliff/state_transitions.py": "6b12476e31076a788cef37fb476e1b5eda7365e6eb640bbb7bedcebabb9d49ea",
     "src/python/xliff/src/format_factory/xliff/validation/validator.py": "18362cb9c92c0fbc775be7aa126b3341aeaf52566e1aaf056c79207cfa84099b",
-    "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py": "3576c2a5c91c42fb0070f64d798078090e9af3118e3a6015663a4b7cbd111957",
+    "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py": "0cf2b5f76b217e7768f56a9302d7012c450a1dc95cd05b823bb7476bd8db7761",
     "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py": "4608bfab942b23e748dc4010785ec78e72a668f796a3d93401e208fc2365ab80",
     "tests/python/xliff/test_obligation_format_style_module_fs_values.py": "5e03baa15603d37ab30de64ad46e889955bf3be3694e2f515b3acde3bf1fac24",
     "tests/python/xliff/test_obligation_ignorable_elements.py": "70908f9b90fa150715bd19b6c9a1abd46b36b818a3710c4ad82d851dc6a9c880",
@@ -5344,12 +5355,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 104,
+      "implemented": 105,
       "missing": 11,
-      "partial": 27
+      "partial": 26
     },
     "total": 142,
-    "unresolved": 38
+    "unresolved": 37
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

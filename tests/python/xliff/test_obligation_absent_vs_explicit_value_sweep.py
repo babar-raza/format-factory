@@ -45,7 +45,7 @@ section 4.3.1), rather than assuming every field behaves like priority:
 
 from __future__ import annotations
 
-from format_factory.xliff import loads
+from format_factory.xliff import dumps, loads
 
 _NS = "urn:oasis:names:tc:xliff:document:2.0"
 
@@ -121,17 +121,14 @@ def test_target_language_absent_is_none_not_an_empty_string() -> None:
     assert explicit.target_language == "fr"
 
 
-def test_note_category_absent_and_explicit_empty_collide_a_genuine_narrow_gap() -> None:
-    """Confirms the one real remaining case, rather than assuming every
-    optional field behaves like state/subState/appliesTo/trgLang above:
-    category is unconstrained free text per the spec ("Value description:
-    Text. Default value: undefined"), so an explicit category="" is
-    syntactically legitimate and semantically distinct from the attribute
-    being absent -- but this package's Note.category defaults to "" for
-    both, and reader.py's note.get("category", "") cannot tell them apart.
-    This is intentionally proven as a documented gap, not silently
-    accepted: fixing it needs a public-API type change (str -> str | None)
-    out of scope for this slice."""
+def test_note_category_absent_is_distinguishable_from_explicit_empty() -> None:
+    """category is unconstrained free text per the spec ("Value
+    description: Text. Default value: undefined"), so an explicit
+    category="" is syntactically legitimate and semantically distinct from
+    the attribute being absent. Note.category is now str | None (was str,
+    defaulting both cases to ""): reader.py's note.get("category") returns
+    None when the attribute is absent and "" when it is explicitly empty,
+    the same distinguishing pattern already proven for Note.priority."""
     absent_xml = '<unit id="u1"><notes><note>plain</note></notes>' + _segment().split(">", 1)[1]
     explicit_empty_xml = (
         '<unit id="u1"><notes><note category="">plain</note></notes>'
@@ -141,6 +138,32 @@ def test_note_category_absent_and_explicit_empty_collide_a_genuine_narrow_gap() 
     absent = loads(_document(absent_xml)).files[0].children[0].notes[0]
     explicit_empty = loads(_document(explicit_empty_xml)).files[0].children[0].notes[0]
 
-    assert absent.category == ""
+    assert absent.category is None
     assert explicit_empty.category == ""
-    assert absent.category == explicit_empty.category  # documented collision, not a bug fix
+    assert absent.category != explicit_empty.category
+
+
+def test_note_explicit_empty_category_survives_a_write_reload_round_trip() -> None:
+    """The writer previously used `if value.category:` (falsy check), which
+    dropped an explicit category="" on write -- indistinguishable from
+    never having one. Confirmed fixed: `if value.category is not None:`
+    writes the attribute whenever it is not None, including when it is an
+    explicit empty string."""
+    explicit_empty_xml = (
+        '<unit id="u1"><notes><note category="">plain</note></notes>'
+        + _segment().split(">", 1)[1]
+    )
+
+    document = loads(_document(explicit_empty_xml))
+    reloaded = loads(dumps(document).encode())
+
+    assert reloaded.files[0].children[0].notes[0].category == ""
+
+
+def test_note_absent_category_stays_absent_through_a_write_reload_round_trip() -> None:
+    absent_xml = '<unit id="u1"><notes><note>plain</note></notes>' + _segment().split(">", 1)[1]
+
+    document = loads(_document(absent_xml))
+    reloaded = loads(dumps(document).encode())
+
+    assert reloaded.files[0].children[0].notes[0].category is None
