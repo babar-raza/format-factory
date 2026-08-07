@@ -1,0 +1,73 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-official-schema-validation-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T22:53:14Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_OFFICIAL_SCHEMA_VALIDATION_001",
+    "task_kind": "new-capability-closing-largest-obligation-cluster-this-session",
+    "root_cause": "11 obligations across UBL-MODEL-001/PARSE-001/DOCTYPES-001/VALIDATE-001/REF-001/SIGN-001 repeatedly named 'full schema and cardinality validation' and 'full element-order validation' across the UBL 2.3 schema's ~91 root document types as a 'genuinely large, separate undertaking' -- correct if hand-building an independent structural validator, but the pinned distribution ZIP (already used earlier this session for genericode code lists) also contains the complete, real OASIS schema.",
+    "obligation_targeted": "10 obligations promoted partial->implemented (SAL-UBL-OBL-03AF3A7D3A76F362, 3C2E2EA8D3B697C9, 783649FDF531B0F9, 9736787B52CB148C, 9C170E327B30FBD3, 26CD31E7F8CF91E1, 31DE92275AF5F6EF, 3B43504E9C74003C, 4936871F9800219B, 71FF376D05E7219A, CDADC5CFB25A9B9E); 1 narrowed (SAL-UBL-OBL-788B2748204338B8, stays partial).",
+    "acceptance_evidence": "10 new tests (tests/python/ubl/test_obligation_official_schema_validation.py) covering per-root-type validation, cardinality+order violations, auto-detection, and graceful degradation.",
+    "regression_tier": "full ubl package suite plus combined 6-format regression, plus a real wheel build verifying all 106 schema files"
+  },
+  "execution_steps": [
+    "1. Continuing the FF6 mission per event 273's own exact_next_action, checked ipynb's and safetensors's own decompressed reference-implementation tarballs (found already fully leveraged -- an existing test_obligation_official_schema_validation.py for ipynb confirmed no further gap there) before re-examining ubl's own already-known distribution ZIP for content beyond the genericode files extracted earlier this session.",
+    "2. Found xsd/common/ (15 files) and xsd/maindoc/ (91 files, one per this package's own ROOT_CLASSES-modeled root document type) in the same src-ubl-002.bin -- the complete official UBL 2.3 schema, 106 files, 6.4MB.",
+    "3. Verified feasibility before committing: loaded UBL-Invoice-2.3.xsd directly with xmlschema, confirmed its own relative xs:import of the common schemas resolves automatically once bundled together, and validated a real, well-formed Invoice document (valid) plus deliberately broken order/cardinality variants (both correctly rejected) -- proving XSD sequence validation inherently checks cardinality and order together in one pass.",
+    "4. Read each of the 12 candidate obligations' own precise rule_text (not just missing_behavior) to classify correctly: 26CD31E7F8CF91E1's own rule_text ('elements must appear in the order declared... for the document to be valid') is pure detection/validation, distinct from the writer-reordering capability named only in its missing_behavior as a pointer to a SEPARATE, already-tracked obligation -- confirming order-validation obligations should promote, not merely narrow. 9C170E327B30FBD3's own rule_text ('conforming documents must be valid against the maindoc schema of their declared type') is an exact, direct match for the new capability. 788B2748204338B8's own rule_text (5 named validation layers) is a compound obligation where only the 'schema' layer is now resolved -- correctly narrowed, not closed.",
+    "5. Wrote schema_validator.py: auto-detects a document's own root element (via a lightweight ET.iterparse peek, not a full parse) to select its matching maindoc schema, since UBL has 91 distinct root-typed schemas rather than one composable core+modules set like xliff's own equivalent feature built earlier this session. Wrapped xmlschema's own XMLSchemaValidationError/XMLResourceParseError into this package's existing UblParseError/SchemaValidationUnavailable hierarchy for a consistent interface.",
+    "6. Ran the pre-existing ubl suite (1001 passed) BEFORE writing any new test, confirming zero regressions from the wiring alone.",
+    "7. Probed interactively: a real Invoice and CreditNote each validate cleanly (proving the auto-detection generalizes beyond one document type); wrong-order and duplicate-element variants are each correctly rejected; an unsupported root type and malformed XML each raise clearly.",
+    "8. Built a real wheel via `pip wheel .` and confirmed all 106 bundled .xsd files ship inside it, byte-identical to source (spot-checked UBL-Invoice-2.3.xsd), before writing any dependent code.",
+    "9. Wrote 10 new tests, ran the full ubl suite (1001 -> 1011 passed), ruff, and mypy --strict (36 source files) -- all clean.",
+    "10. Ran the combined 6-format regression suite (3586 -> 3596 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped) -- zero regression beyond the 10 new tests.",
+    "11. Bulk-updated the evidence YAML for all 11 obligations via a Python script (status flip + missing_behavior clearing/narrowing, both clusters sharing byte-identical missing_behavior text across their own 5 and 6 members respectively, verified via exact occurrence counts before any replacement) -- a THIRD script step (inserting new source_symbols/execution_evidence_ids lines) contained a bug that discarded the file's own header and execution_evidence section (504 lines) by starting its rewrite from the first obligation entry rather than preserving everything before it. Caught IMMEDIATELY via a failed yaml.safe_load before any commit; repaired by reconstructing the header from the last-committed HEAD revision and verifying the obligation-ID set (194, unchanged) and evidence-ID set (43, exactly +1 new) both matched expectations before proceeding further.",
+    "12. Added the new UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF evidence entry and re-validated the full file parses cleanly with all intended edits present."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py",
+    "src/python/ubl/src/format_factory/ubl/errors.py",
+    "src/python/ubl/src/format_factory/ubl/validation/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "src/python/ubl/pyproject.toml",
+    "src/python/ubl/src/format_factory/ubl/validation/schemas",
+    "tests/python/ubl/test_obligation_official_schema_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py",
+    "src/python/ubl/src/format_factory/ubl/errors.py",
+    "src/python/ubl/src/format_factory/ubl/validation/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "src/python/ubl/pyproject.toml",
+    "src/python/ubl/src/format_factory/ubl/validation/schemas/common/ (15 files)",
+    "src/python/ubl/src/format_factory/ubl/validation/schemas/maindoc/ (91 files)",
+    "tests/python/ubl/test_obligation_official_schema_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 1001 passed (before new tests, sanity check)",
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_official_schema_validation.py -v -- 10 passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 1011 passed (after new tests)",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/ -- Success: no issues found in 36 source files",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3596 passed, 2 skipped, 4 pre-existing unrelated safetensors interop failures",
+    "pip wheel . (built real wheel, confirmed all 106 bundled .xsd files present, byte-identical to source)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "10 obligations moved partial->implemented; 1 obligation narrowed (missing_behavior reduced), remains partial",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 10,
+    "obligations_total_for_format": 194,
+    "oracle": "The bundled schemas are the authoritative OASIS-published normative files, extracted byte-for-byte from the pinned official UBL 2.3 distribution package.",
+    "obligations_moved_breakdown": "The 'full schema and cardinality validation' cluster (5 obligations: 03AF3A7D3A76F362, 3C2E2EA8D3B697C9, 783649FDF531B0F9, 9736787B52CB148C, 9C170E327B30FBD3) and the 'full element-order validation' cluster (6 obligations: 26CD31E7F8CF91E1, 31DE92275AF5F6EF, 3B43504E9C74003C, 4936871F9800219B, 71FF376D05E7219A, CDADC5CFB25A9B9E) both fully resolved via schema_validate(); 788B2748204338B8's own separate 'unify 5 layers' clause remains genuinely unbuilt and correctly stays partial."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

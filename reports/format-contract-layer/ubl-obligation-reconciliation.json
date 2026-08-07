@@ -186,6 +186,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-C717DEB32BC6F815 and SAL-UBL-OBL-DE7D98EAE4344EDA (both UBL-CODELIST-001), both promoted partial->implemented. codelist.py's own module docstring had honestly documented the gap: \"does NOT bundle actual official code-list data ... and does not parse the OASIS genericode XML distribution format ... No SAL fact in this repository's committed spec cache enumerates any such list's actual values or documents the genericode schema with enough precision ... building either from memory would risk fabricating spec content.\" That was true of the SAL fact cache specifically, not of the pinned RAW spec acquisition cache -- applying the \"read the pinned acquisition cache directly, do not trust the missing_behavior's own framing of what it can and cannot contain\" discipline just proven three times this session for xliff's module schemas, found .local/format-contracts/acquired/ubl/src-ubl-002.bin (261,521 lines as a text dump, previously never opened as anything but spec HTML) is actually a ZIP archive -- confirmed by its own \"PK\" magic bytes -- and IS the real official UBL 2.3 distribution package (927 total archive entries), not spec prose at all. Its cl/gc/default/ directory contains the genuine OASIS-published genericode files for all of UBL 2.3's standard code lists. Extracted and bundled 11 of them verbatim as package data (excluding the \"-incl-deprecated\"/\"-incl-deleted\" superset variants): AllowanceChargeReasonCode, BinaryObjectMimeCode, ChannelCode, CountryIdentificationCode (=ISO 3166), CurrencyCode (=ISO 4217), LanguageCode, PackagingTypeCode, PaymentMeansCode, TransportEquipmentTypeCode, TransportModeCode, UnitOfMeasureCode -- 4.87MB combined uncompressed, ~330KB compressed in a built wheel. Wrote a new genericode.py parsing the real OASIS genericode 1.0 structure these files themselves exhibit (confirmed directly against the parsed ElementTree, not assumed from memory: only the document's own root element carries the genericode namespace prefix, every descendant is unprefixed/no-namespace) -- reads the document's own declared ColumnSet/Key/ColumnRef to find the primary identifying column rather than hardcoding \"code\" as a column name, proven against a differently-named-column fixture. official_code_list_registry() composes load_bundled_code_lists() with the already-existing, already-proven CodeListRegistry with zero special-casing (matching codelist.py's own \"official and custom register identically\" design). Verified against real, spot-checked values: USD/EUR/GBP are members of CurrencyCode; US/DE are members of CountryIdentificationCode; KGM/MTR are members of UnitOfMeasureCode; CurrencyCode's own agency_id (\"5\", the UN/EDIFACT code for ISO) and version (\"2018-08-29\") are both extracted from the file's own Identification block, not hardcoded. A real wheel was built via `pip wheel .` and all 11 bundled .gc files confirmed to ship inside it, byte-identical to source, before any dependent code was written -- catching a class of packaging misconfiguration that would only surface for actual pip-installed users. Hit one real security-baseline constraint while implementing: this package's own test suite forbids importing `importlib` anywhere in src/ (a supply-chain-hardening rule already enforced for every other module) -- switched from `importlib.resources` to plain `pathlib.Path(__file__).parent`, matching the exact same pattern the xliff package's own bundled-schema loader (built in a prior tick this session) already uses. Verified zero false positives against the entire pre-existing 987-test ubl suite before writing a single new test. 14 new tests (tests/python/ubl/test_obligation_official_code_lists.py) prove: all 11 lists load; every list has nonempty values; known-good/known-bad membership for 3 spot-checked lists; agency/version metadata extraction; the composed registry validates correctly and composes with a user-supplied list; a fresh registry each call does not leak mutation across callers; the genericode parser handles a non-standard key-column name and rejects malformed documents; every bundled filename is present on disk (a packaging-drift guard). Also updated codelist.py's and the sibling test file's own module docstrings, which had explicitly and specifically claimed this data/loader combination was unavailable -- both corrected to point at genericode.py rather than left to drift into stale-claim territory for a future tick to rediscover. ubl suite: 987 -> 1001 passed. ruff and mypy --strict clean (35 source files). Combined 6-format run: 3538 -> 3552 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped -- zero regression beyond the 14 intentional new tests. NOT backed by an independent reference UBL implementation for cross-validation, but the bundled data ITSELF is the authoritative OASIS-published genericode files, extracted byte-for-byte from the pinned official distribution package -- the same strength of grounding as xliff's own core-schema extraction earlier this session. Covers SAL-UBL-OBL-C717DEB32BC6F815 and SAL-UBL-OBL-DE7D98EAE4344EDA only; it supports no other obligation."
     },
     {
+      "evidence_id": "UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-official-schema-validation-001.json",
+      "sha256": "9e48b2952cd14ee2182c54ee5e6433cd52390cedf6cd1f630d551e1c8ce3c8e5",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Closes 10 obligations and narrows 1 more, all promoted or updated together: SAL-UBL-OBL-03AF3A7D3A76F362/3C2E2EA8D3B697C9/783649FDF531B0F9/9736787B52CB148C/9C170E327B30FBD3 (the \"full schema and cardinality validation\" cluster, UBL-MODEL-001/DOCTYPES-001/PARSE-001/VALIDATE-001/REF-001) and SAL-UBL-OBL-26CD31E7F8CF91E1/31DE92275AF5F6EF/3B43504E9C74003C/4936871F9800219B/71FF376D05E7219A/CDADC5CFB25A9B9E (the \"full element-order validation\" cluster, UBL-SIGN-001/REF-001/MODEL-001/DOCTYPES-001/PARSE-001/VALIDATE-001) all promoted partial->implemented; SAL-UBL-OBL-788B2748204338B8 (UBL-VALIDATE-001, the 5-layer validation obligation) narrowed, remains partial. Both clusters' own missing_behavior repeatedly named \"the full UBL 2.3 schema's ~91 root document types\" as the scale of a \"genuinely large, separate undertaking\" if built as an independent, hand-written structural validator matching all 91 types' own real schemas from scratch. Composing the REAL schemas the OASIS distribution itself ships is a fundamentally different, much smaller task -- applying the \"systematically check every acquired/*.bin file for hidden data, magic numbers included\" discipline proven repeatedly this session (xliff core+module schemas, ubl's own genericode code lists earlier this same tick), re-examined .local/format-contracts/acquired/ubl/src-ubl-002.bin (already known to be the official UBL 2.3 distribution ZIP) for XSD content beyond the genericode files already extracted, and found xsd/common/ (15 shared component schemas) and xsd/maindoc/ (91 root-document-type schemas, one per document this package's own ROOT_CLASSES models) -- the complete, authoritative OASIS UBL 2.3 schema, 106 files, 6.4MB uncompressed. Each maindoc schema's own xs:import of the common schemas resolves via a plain relative schemaLocation path once all files are bundled together, unmodified, in the same directory structure OASIS itself ships. Added schema_validator.py (auto-detects a document's own root element to select its matching maindoc schema, since UBL has 91 distinct root-typed schemas rather than one composable core+modules set like xliff), wrapping xmlschema's own XMLSchemaValidationError/XMLResourceParseError into this package's existing UblParseError/SchemaValidationUnavailable exception hierarchy for a consistent interface. Verified directly, before writing any test, that XSD sequence validation inherently catches BOTH cardinality and element-order violations together in one pass (an out-of-order or over-repeated child is structurally the same kind of violation to an XSD validator) -- proven against a real, well-formed Invoice (validates cleanly), a real CreditNote (validates cleanly, proving this isn't hardcoded to one document type), a wrong-order Invoice (correctly rejected, \"Unexpected child... Tag InvoiceLine expected\"), and a duplicate-LegalMonetaryTotal Invoice (correctly rejected). Deliberately did NOT bundle the distribution's own per-module ISO Schematron (.sch) files (a separate, XSLT-based toolchain, not required by any of these obligations' own rule_text) or attempt to make the writer auto-reorder elements (UBL-WRITE-001's own separate, still-unbuilt \"independent of mutation order\" clause, correctly left out of scope and preserved in narrowed obligation SAL-UBL-OBL-788B2748204338B8's own missing_behavior alongside the still-genuinely-unbuilt pluggable-business-rule/code-list-field-mapping unification). Verified zero false positives against the entire pre-existing 1001-test ubl suite before writing a single new test. 10 new tests (tests/python/ubl/test_obligation_official_schema_validation.py) prove: a well-formed Invoice and CreditNote each validate cleanly; root_name auto-detection and explicit root_name both work; element-order and cardinality violations are each independently caught; every violation is reported, not just the first; an unsupported root document type and malformed XML each raise a clear UblParseError; the optional-dependency-unavailable path degrades gracefully. A real wheel was built via `pip wheel .` and all 106 bundled .xsd files confirmed to ship inside it, byte-identical to source (spot-checked UBL-Invoice-2.3.xsd), before any dependent code was written. ubl suite: 1001 -> 1011 passed. ruff and mypy --strict clean (36 source files). Combined 6-format run: 3586 -> 3596 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped -- zero regression beyond the 10 intentional new tests. A self-inflicted YAML corruption during evidence authoring (a bulk-edit script that rewrote the file starting from the first obligation entry, discarding the preceding header and execution_evidence section) was caught immediately via a failed yaml.safe_load, before any commit, and fully repaired by reconstructing the header from the last-committed HEAD revision and re-verifying the obligation-ID and evidence-ID sets were unchanged before proceeding. NOT backed by an independent reference UBL implementation for cross-validation, but the bundled schemas ARE themselves the authoritative OASIS-published normative files, extracted byte-for-byte from the pinned official distribution package -- the same strength of grounding as xliff's own core+module schema discovery and ubl's own genericode code-list discovery earlier this session. Covers the 11 obligations named above only; it supports no other obligation."
+    },
+    {
       "evidence_id": "UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -341,7 +349,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "78572e3e8ca8699883fd2fae05265c2ac0fdf81f59e8ff27ab4774c651447429",
+    "implementation_evidence": "7842a50cbc8696a866ea150b75dc4853e607bea149b29be08361b833546d7c1b",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -416,6 +424,7 @@
     {
       "capability_id": "UBL-MODEL-001",
       "execution_evidence_ids": [
+        "UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF",
         "UBL-BASELINE-SUITE",
         "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
         "UBL-PAYMENT-MEANS-CARDINALITY-PROOF",
@@ -428,9 +437,7 @@
       "implemented_behavior": [
         "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, or cac:Price -- the sixteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 16 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
       ],
-      "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference/AllowanceCharge/Item/Price's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields remain deliberately excluded (only Name is checked): ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_contacts_is_a_cardinality_violation",
@@ -494,12 +501,13 @@
           "Typed access for every first-wave component; cardinality violations diagnosed on mutation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-EXT-001",
@@ -1533,6 +1541,7 @@
     {
       "capability_id": "UBL-SIGN-001",
       "execution_evidence_ids": [
+        "UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF",
         "UBL-BASELINE-SUITE",
         "UBL-ELEMENT-ORDER-VALIDATION-PROOF",
         "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
@@ -1541,9 +1550,7 @@
       "implemented_behavior": [
         "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, and cac:Price. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 16 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
       ],
-      "missing_behavior": [
-        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 16 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_postal_zone_before_city_name_is_an_order_violation",
@@ -1571,12 +1578,13 @@
           "Signed-document round-trip byte-preserves signed subtrees; edit-warning fixture."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -1835,6 +1843,7 @@
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
+        "UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF",
         "UBL-BASELINE-SUITE",
         "UBL-ELEMENT-ORDER-VALIDATION-PROOF",
         "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
@@ -1843,9 +1852,7 @@
       "implemented_behavior": [
         "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, and cac:Price. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 16 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
       ],
-      "missing_behavior": [
-        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 16 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_postal_zone_before_city_name_is_an_order_violation",
@@ -1873,12 +1880,13 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-QUERY-001",
@@ -2056,6 +2064,7 @@
     {
       "capability_id": "UBL-MODEL-001",
       "execution_evidence_ids": [
+        "UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF",
         "UBL-BASELINE-SUITE",
         "UBL-ELEMENT-ORDER-VALIDATION-PROOF",
         "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
@@ -2064,9 +2073,7 @@
       "implemented_behavior": [
         "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, and cac:Price. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 16 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
       ],
-      "missing_behavior": [
-        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 16 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_postal_zone_before_city_name_is_an_order_violation",
@@ -2094,16 +2101,18 @@
           "Typed access for every first-wave component; cardinality violations diagnosed on mutation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
+        "UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF",
         "UBL-BASELINE-SUITE",
         "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
         "UBL-PAYMENT-MEANS-CARDINALITY-PROOF",
@@ -2116,9 +2125,7 @@
       "implemented_behavior": [
         "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, or cac:Price -- the sixteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 16 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
       ],
-      "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference/AllowanceCharge/Item/Price's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields remain deliberately excluded (only Name is checked): ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_contacts_is_a_cardinality_violation",
@@ -2182,12 +2189,13 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-REF-001",
@@ -2512,6 +2520,7 @@
     {
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
+        "UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF",
         "UBL-BASELINE-SUITE",
         "UBL-ELEMENT-ORDER-VALIDATION-PROOF",
         "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
@@ -2520,9 +2529,7 @@
       "implemented_behavior": [
         "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, and cac:Price. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 16 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
       ],
-      "missing_behavior": [
-        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 16 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_postal_zone_before_city_name_is_an_order_violation",
@@ -2550,12 +2557,13 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-REF-001",
@@ -3650,6 +3658,7 @@
     {
       "capability_id": "UBL-PARSE-001",
       "execution_evidence_ids": [
+        "UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF",
         "UBL-BASELINE-SUITE",
         "UBL-ELEMENT-ORDER-VALIDATION-PROOF",
         "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
@@ -3658,9 +3667,7 @@
       "implemented_behavior": [
         "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, and cac:Price. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 16 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
       ],
-      "missing_behavior": [
-        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 16 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_postal_zone_before_city_name_is_an_order_violation",
@@ -3688,12 +3695,13 @@
           "Same document under default namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures rejected."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-CODELIST-001",
@@ -3833,6 +3841,7 @@
     {
       "capability_id": "UBL-PARSE-001",
       "execution_evidence_ids": [
+        "UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF",
         "UBL-BASELINE-SUITE",
         "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
         "UBL-PAYMENT-MEANS-CARDINALITY-PROOF",
@@ -3845,9 +3854,7 @@
       "implemented_behavior": [
         "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, or cac:Price -- the sixteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 16 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
       ],
-      "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference/AllowanceCharge/Item/Price's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields remain deliberately excluded (only Name is checked): ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_contacts_is_a_cardinality_violation",
@@ -3911,12 +3918,13 @@
           "Same document under default namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures rejected."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALIDATE-001",
@@ -3927,13 +3935,14 @@
         "UBL-PAYMENT-MEANS-CARDINALITY-PROOF",
         "UBL-LINES-CARDINALITY-PROOF",
         "UBL-AGGREGATES-CARDINALITY-PROOF",
-        "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF"
+        "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF",
+        "UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF"
       ],
       "implemented_behavior": [
-        "4 of the 5 named layers exist as separate, independently invokable, diagnostic-returning capabilities rather than one monolithic all-or-nothing check: syntax (XML parse errors), referential (DocumentIndex.duplicate_line_ids), code-list (CodeListRegistry.validate_code), and pluggable business-rule (ProfileValidatorRegistry) are each separately callable and each return structured diagnostics rather than raising. validate() itself returns a ValidationReport rather than an exception, proven directly. The 5th layer, schema/XSD-conformance, now has a genuine, growing slice too: validate() detects cardinality violations (a minOccurs=0(or 1) maxOccurs=1 element occurring more than once) for cac:Party/cac:PostalAddress/cac:Contact/cac:PaymentMeans/cac:PayeeFinancialAccount/cac:CreditNoteLine/cac:Response/cac:DocumentReference/cac:InvoiceLine/cac:TaxSubtotal/cac:TaxTotal/cac:LegalMonetaryTotal/cac:ExternalReference's already-modeled fields, grounded directly in the pinned OASIS UBL 2.3 schema."
+        "4 of the 5 named layers exist as separate, independently invokable, diagnostic-returning capabilities rather than one monolithic all-or-nothing check: syntax (XML parse errors), referential (DocumentIndex.duplicate_line_ids), code-list (CodeListRegistry.validate_code), and pluggable business-rule (ProfileValidatorRegistry) are each separately callable and each return structured diagnostics rather than raising. validate() itself returns a ValidationReport rather than an exception, proven directly. The 5th layer, schema/XSD-conformance, is now also fully proven, not just a growing slice: schema_validate() (validation/schema_validator.py) validates raw UBL XML against the real, official OASIS UBL 2.3 schema for any of this package's 91 supported root document types, auto-detecting the type from the document's own root element -- grounded directly in the pinned raw acquisition cache's own official schema distribution (.local/format-contracts/acquired/ubl/src-ubl-002.bin), not the package's own narrower 16-complexType typed-model cardinality checker."
       ],
       "missing_behavior": [
-        "Full schema/XSD-conformance validation remains the one confirmed incomplete layer -- only cardinality checking for 13 already-modeled complexTypes' single-occurrence fields exists so far, not type/pattern/full-cardinality validation across the whole UBL 2.3 schema's ~91 root document types and their many components, the same confirmed gap as SAL-UBL-OBL-03AF3A7D3A76F362 (UBL-MODEL-001). The 5 layers also are not unified into one combined call returning all diagnostics together -- a caller currently invokes each layer separately."
+        "The 5 layers are still not unified into one combined call returning all diagnostics together -- a caller currently invokes each layer separately (validate(), schema_validate(), DocumentIndex methods, CodeListRegistry.validate_code, ProfileValidatorRegistry). Unifying them would additionally require a pluggable business-rule mechanism with a real default rule set and a code-list-to-field mapping neither of which exists yet, both genuinely separate, larger undertakings."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -3967,7 +3976,8 @@
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics",
         "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex",
         "src/python/ubl/src/format_factory/ubl/model/codelist.py::CodeListRegistry",
-        "src/python/ubl/src/format_factory/ubl/validation/profiles.py::ProfileValidatorRegistry"
+        "src/python/ubl/src/format_factory/ubl/validation/profiles.py::ProfileValidatorRegistry",
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate"
       ],
       "status": "partial"
     },
@@ -4893,6 +4903,7 @@
     {
       "capability_id": "UBL-VALIDATE-001",
       "execution_evidence_ids": [
+        "UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF",
         "UBL-BASELINE-SUITE",
         "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
         "UBL-PAYMENT-MEANS-CARDINALITY-PROOF",
@@ -4905,9 +4916,7 @@
       "implemented_behavior": [
         "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, or cac:Price -- the sixteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 16 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
       ],
-      "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference/AllowanceCharge/Item/Price's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields remain deliberately excluded (only Name is checked): ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_contacts_is_a_cardinality_violation",
@@ -4971,12 +4980,13 @@
           "Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-SEC-001",
@@ -5043,6 +5053,7 @@
     {
       "capability_id": "UBL-REF-001",
       "execution_evidence_ids": [
+        "UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF",
         "UBL-BASELINE-SUITE",
         "UBL-PARTY-CARDINALITY-VALIDATION-PROOF",
         "UBL-PAYMENT-MEANS-CARDINALITY-PROOF",
@@ -5055,9 +5066,7 @@
       "implemented_behavior": [
         "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, or cac:Price -- the sixteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 16 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
       ],
-      "missing_behavior": [
-        "Full schema and cardinality validation across every UBL complexType remains a genuinely large, separate undertaking -- only Party/PostalAddress/Contact/PaymentMeans/PayeeFinancialAccount/CreditNoteLine/Response/DocumentReference/InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal/ExternalReference/AllowanceCharge/Item/Price's already-modeled single-occurrence fields are checked so far, out of the many complexTypes this package's other modules (values.py) also type. Item's identifiers/classification_codes fields remain deliberately excluded (only Name is checked): ItemType's own schema has no direct cbc:ID or cbc:CommodityClassification child at all, a genuinely separate, unresolved model-field-mapping question outside a cardinality-only tick's scope. cac:Attachment itself remains entirely unmodeled by this package, so ExternalReference is only reachable via raw XML structure, not a typed accessor. validator.py's own docstring still correctly states this chassis validation is not a complete XSD-conformance claim."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_contacts_is_a_cardinality_violation",
@@ -5121,12 +5130,13 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-QUERY-001",
@@ -6275,6 +6285,7 @@
     {
       "capability_id": "UBL-VALIDATE-001",
       "execution_evidence_ids": [
+        "UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF",
         "UBL-BASELINE-SUITE",
         "UBL-ELEMENT-ORDER-VALIDATION-PROOF",
         "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
@@ -6283,9 +6294,7 @@
       "implemented_behavior": [
         "A genuine, spec-grounded slice of element-order validation now exists: validate() detects a present, checked child element appearing out of its declared relative order (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own xsd:sequence declarations) among the same already-typed aggregate components the cardinality cluster already checks -- cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, and cac:Price. Every component's exact declared child order was extracted programmatically from the pinned schema (filtering each complexType's full sequence down to only the already-modeled fields, preserving true schema order) rather than transcribed by hand -- this caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second, despite appearing second in this package's own cardinality-check frozenset's insertion order. This is deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 16 complexTypes, not every child of every UBL complexType, and does not re-check cardinality (a genuinely duplicated field is handled separately by the existing cardinality check; this function simply compares each occurrence against a running high-water mark, so a duplicate does not spuriously trigger a false order violation)."
       ],
-      "missing_behavior": [
-        "Full element-order validation across every UBL complexType remains a genuinely large, separate undertaking -- only the already-modeled single-occurrence fields of the same 16 complexTypes the cardinality cluster covers are checked, out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. UBL-WRITE-001's companion obligation ('write elements in schema-valid order independent of mutation order') remains separately unbuilt: this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_party_with_contact_before_postal_address_is_an_order_violation",
         "tests/python/ubl/test_obligation_element_order_validation.py::test_a_postal_address_with_postal_zone_before_city_name_is_an_order_violation",
@@ -6313,12 +6322,13 @@
           "Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-EXT-001",
@@ -7403,6 +7413,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-model-citation-audit-001.json": "d2c7dfa39a36272ee884db3f991425e0013760681491767abedad051028572e6",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-namespace-shadowing-security-001.json": "8b8e5a614adac3135fe20e31f21dd43aa6bc972c3e4d5e28c9697e780c5ee3b0",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-official-code-lists-genericode-loader-001.json": "5ae1937e4c93637a8daf778a047f2eb7d6610817c552401da470f1eb7ab42fa3",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-official-schema-validation-001.json": "9e48b2952cd14ee2182c54ee5e6433cd52390cedf6cd1f630d551e1c8ce3c8e5",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-parse-citation-audit-001.json": "2bb3b3fd3318a9290b0a50d890416906f28500d899bd0efe330e77f39efd12be",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-party-cardinality-validation-001.json": "dfe85e459754a946ee28ef47aea20d0d99b9d39c75dc791ac74be156245d5112",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-party-postal-address-001.json": "d6a1518c42b9db1cd8e7f3608c1c437e0b9c9fc7e03b91cb0280021cff0b2201",
@@ -7444,6 +7455,7 @@
     "src/python/ubl/src/format_factory/ubl/model/values.py": "4aaa55d4f2c6faa457b1a03ab6bf9a5ff83ffcd7ee90f87c0b649c18b39b642f",
     "src/python/ubl/src/format_factory/ubl/security/limits.py": "95ba5485bad5547fe800d4952518507824e217d15a197df822945f73921afc6d",
     "src/python/ubl/src/format_factory/ubl/validation/profiles.py": "9be1805b9ea265200e890fc833526dd3589b0be559d61f1d6ba76954f63b0c35",
+    "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py": "3b722ccac71d0ce7d8804c90bf609623bece6141d8f559658c119930167dd1e7",
     "src/python/ubl/src/format_factory/ubl/validation/validator.py": "35d9ef28d8d8d97a80cf87439ddbf2b65afed8cf0d6dacac6e7956db8add1a12",
     "tests/python/ubl/test_obligation_aggregate_components.py": "26e36e29e05e239f1fc17915ebf243ae61b55799c7811dbfe8c3fee0fac66242",
     "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py": "ec56ba759bb06b3ca638a7b030d5795cb9c3e9e673d90690334b8f18c7b5dfee",
@@ -7490,12 +7502,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 171,
+      "implemented": 182,
       "missing": 6,
-      "partial": 17
+      "partial": 6
     },
     "total": 194,
-    "unresolved": 23
+    "unresolved": 12
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

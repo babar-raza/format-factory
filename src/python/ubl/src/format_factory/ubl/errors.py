@@ -22,3 +22,11 @@ class UblWriteError(FormatWriteError, UblError):
 
 class UblValidationError(FormatValidationError, UblError):
     """The document violates a supported UBL model invariant."""
+
+
+class SchemaValidationUnavailable(UblError):
+    """The optional `xmlschema` dependency is not installed.
+
+    Install the ``schema`` extra (``pip install format-factory-ubl[schema]``)
+    to enable XSD conformance checking against the bundled UBL 2.3 schema.
+    """

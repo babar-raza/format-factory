@@ -35,7 +35,13 @@ from .document_types import (
     document_type_coverage_manifest,
     supported_document_types,
 )
-from .errors import UblError, UblParseError, UblValidationError, UblWriteError
+from .errors import (
+    SchemaValidationUnavailable,
+    UblError,
+    UblParseError,
+    UblValidationError,
+    UblWriteError,
+)
 from .model import (
     ROOT_CLASSES,
     AllowanceCharge,
@@ -141,7 +147,13 @@ from .model import (
     ubl_version_id,
 )
 from .security import UBL_DEFAULT_LIMITS
-from .validation import ProfileValidator, ProfileValidatorRegistry, validate, validate_profile
+from .validation import (
+    ProfileValidator,
+    ProfileValidatorRegistry,
+    schema_validate,
+    validate,
+    validate_profile,
+)
 
 __all__ = [
     "DocumentTypeCoverage",
@@ -253,6 +265,7 @@ __all__ = [
     "ROOT_NAMESPACES",
     "ROOT_NAMES_SHA256",
     "SUPPORTED_PROFILE",
+    "SchemaValidationUnavailable",
     "UBL_DEFAULT_LIMITS",
     "UblDocument",
     "UblError",
@@ -271,6 +284,7 @@ __all__ = [
     "probe",
     "qname_histogram",
     "roundtrip",
+    "schema_validate",
     "semantic_sha256",
     "ubl_installed_workflow",
     "validate",
