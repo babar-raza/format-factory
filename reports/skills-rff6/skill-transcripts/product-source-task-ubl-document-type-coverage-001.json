@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-document-type-coverage-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T07:28:30Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_DOCUMENT_TYPE_COVERAGE_001",
+    "task_kind": "small-formalization-of-an-already-true-fact",
+    "root_cause": "SAL-UBL-OBL-4AEF6E978EC11AA1 (UBL-DOCTYPES-001) named the three-tier document-type coverage vocabulary (supported/preservation-only/unsupported) as not existing as a formal concept anywhere, even though the underlying fact (all 91 roots fully typed and supported) was already true and already exposed via supported_document_types()/ROOT_CLASSES.",
+    "obligation_targeted": "SAL-UBL-OBL-4AEF6E978EC11AA1 (UBL-DOCTYPES-001)",
+    "acceptance_evidence": "6 test groups (95 test cases including 91 parametrized-per-root) prove a new DocumentTypeCoverage enum and document_type_coverage()/document_type_coverage_manifest() functions correctly classify every known root as SUPPORTED, an unrecognized name as UNSUPPORTED, and that the vocabulary itself carries all three tiers even though PRESERVATION_ONLY is not currently reachable from this package's own data.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read the obligation's rule_text: 'Document-type coverage is declared per type (supported/preservation-only/unsupported) - never claimed globally.' Confirmed via the existing missing_behavior finding that no per-type classification function existed, only the flat supported_document_types() enumeration.",
+    "2. Investigated whether this needed real new capability or just a reporting layer: confirmed ROOT_CLASSES already has exactly 91 fully-typed root types (matching the existing test's own assertion), and that loads() already genuinely refuses (UblParseError) any document declaring a root name outside that set -- confirming 'unsupported' already has real, correct runtime behavior, just no formal per-name classification API exposing it.",
+    "3. Mirrored the pattern this session already used successfully for XLIFF-MODULE-001's STANDARD_MODULES/ModuleCoverage: added a DocumentTypeCoverage enum (SUPPORTED/PRESERVATION_ONLY/UNSUPPORTED) plus document_type_coverage(name) and document_type_coverage_manifest() functions in the existing document_types.py module (already the natural home for UBL-DOCTYPES-001's other named operations, supported_document_types/detect_document_type/create_empty).",
+    "4. Verified interactively before writing formal tests: a known root name (Invoice, CreditNote) correctly reports SUPPORTED; an unrecognized name reports UNSUPPORTED; the manifest covers all 91 names, all SUPPORTED -- all correct on the first attempt.",
+    "5. Extended the existing, capability-matched test file (test_obligation_document_type_coverage.py) with 6 new test functions, including a parametrize-over-all-91-roots case confirming every currently-known root reports SUPPORTED, and a dedicated test proving the enum itself carries all three tier values (not only the two currently reachable), since the obligation's own rule_text names the vocabulary as the requirement, not merely today's classification outcome.",
+    "6. Ran ruff (clean) across all 3 changed/extended files, the full ubl suite (878 passed, was 783, +95), and the full 6-format regression (3244 passed, was 3149, +95; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "7. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-944978379b210af0, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/document_types.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_document_type_coverage.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/document_types.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_document_type_coverage.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_document_type_coverage.py -q -- 190 passed",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/document_types.py src/python/ubl/src/format_factory/ubl/__init__.py tests/python/ubl/test_obligation_document_type_coverage.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 878 passed, was 783 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3244 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3149 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule.",
+    "obligations_moved_breakdown": "1 obligation promoted partial->implemented: the three-tier vocabulary now exists as a formal, per-type classification API, declared per name rather than as a global claim, matching the obligation's own rule_text exactly."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -58,6 +58,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. UBL-DOCTYPES-001's 22 obligations all shared one generic citation and are near-verbatim restatements of UBL-MODEL-001/VALUES-001 facts (both resolved in preceding ticks). A programmatic exact-rule_text matcher found 18 of 22 are exact-text duplicates, cross-referenced to that real evidence. 2 (near-identical wording naming create_empty/detect_document_type/ supported_document_types as required named operations) were a genuine, confirmed, buildable gap -- the underlying typed-root capability already existed (ROOT_CLASSES, UblDocument.build(), loads()) but not under these named functions -- closed this slice with a new module, document_types.py, exposing exactly the three named operations as thin wrappers, plus 5 new tests including a parametrized round-trip across all 91 supported document types. 1 stays honestly partial: supported_document_types() gives a precise per-type enumerable declaration (never a vague global claim), but the specific three-tier vocabulary this obligation names (supported/preservation-only/unsupported) does not exist as a formal concept -- confirmed absent by grepping the whole package. 1 stays honestly missing: a SPEC-PACKAGE-FACT about the physical OASIS distribution package's file count (91 XSD files), not runtime behavior, with no XSD files vendored in this repo to test against -- same category as XLIFF-PARSE-001's spec-package facts identified earlier this session. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Promotes no product state beyond the 20 obligations moved to `implemented`."
     },
     {
+      "evidence_id": "UBL-DOCUMENT-TYPE-COVERAGE-VOCABULARY-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-document-type-coverage-001.json",
+      "sha256": "bc594b14e680b56525c85226eb559d4f2a56b69dff90923ba5e230c260d56df2",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-4AEF6E978EC11AA1 (UBL-DOCTYPES-001). The three-tier document-type coverage vocabulary (supported/preservation-only/unsupported) the obligation names did not exist as a formal concept, even though the underlying fact (all 91 roots fully typed) was already true and already exposed via supported_document_types()/ROOT_CLASSES, and loads() already genuinely refused any unrecognized root name with UblParseError. Mirrored the pattern already used successfully for XLIFF-MODULE-001's STANDARD_MODULES/ModuleCoverage this session: added a DocumentTypeCoverage enum plus document_type_coverage(name)/document_type_coverage_manifest() in the existing document_types.py module, formalizing per-type classification rather than the prior flat enumeration alone. 6 test groups (95 cases, including all 91 roots individually parametrized) prove every known root reports SUPPORTED, an unrecognized name reports UNSUPPORTED, the manifest covers every supported type exactly once, and the vocabulary itself carries all three tiers even though PRESERVATION_ONLY is not currently reachable from this package's own data. ubl suite: 783 -> 878 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule. Covers SAL-UBL-OBL-4AEF6E978EC11AA1 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "UBL-EXTENSIONS-STRUCTURE-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -213,7 +221,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "110221c892ff700ad7c00e99f96411b289d5a81bba7d68567954dab70569805b",
+    "implementation_evidence": "b835f8817bd7b13b5854ba8294aef10fa8f968a40f4d970bdb493c9f0c4ebb5c",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2302,18 +2310,23 @@
       "capability_id": "UBL-DOCTYPES-001",
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
-        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF"
+        "UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF",
+        "UBL-DOCUMENT-TYPE-COVERAGE-VOCABULARY-PROOF"
       ],
       "implemented_behavior": [
-        "supported_document_types() (added this slice) gives a precise, enumerable, per-type declaration of exactly which 91 document types are supported -- coverage is never claimed as a vague global 'we support UBL' statement, satisfying the 'declared per type, never claimed globally' half of this obligation."
+        "supported_document_types() gives a precise, enumerable, per-type declaration of exactly which 91 document types are supported -- coverage is never claimed as a vague global 'we support UBL' statement. The three-tier vocabulary itself is now also formalized: a new DocumentTypeCoverage enum (SUPPORTED/PRESERVATION_ONLY/UNSUPPORTED) plus document_type_coverage(name) and document_type_coverage_manifest() classify coverage per type rather than globally, exactly matching the obligation's own rule_text. All 91 currently-known roots correctly report SUPPORTED (proven for every one via a parametrized test), an unrecognized name correctly reports UNSUPPORTED (matching loads()'s own genuine refusal of unknown root names), and the vocabulary carries all three tiers even though PRESERVATION_ONLY is not currently reachable from this package's own data -- a future root added as preservation-only would use this same vocabulary without changing it."
       ],
-      "missing_behavior": [
-        "The specific three-tier vocabulary this obligation names (supported / preservation-only / unsupported) does not exist as a formal concept anywhere in the package. All 91 roots are uniformly fully typed and supported; there is no 'preservation-only' tier (a document type that round-trips losslessly but has no typed accessors) implemented or distinguished from 'unsupported' (a type absent from ROOT_CLASSES entirely). Confirmed by grepping the whole package for 'preservation-only' / 'preservation_only'."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_an_unrecognized_root_name_reports_the_unsupported_tier"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-4AEF6E978EC11AA1",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_document_type_coverage.py::test_supported_document_types_matches_the_pinned_root_inventory"
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_supported_document_types_matches_the_pinned_root_inventory",
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_a_supported_root_reports_the_supported_tier",
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_every_known_root_reports_supported",
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_the_coverage_manifest_covers_every_supported_type_exactly_once",
+        "tests/python/ubl/test_obligation_document_type_coverage.py::test_the_coverage_vocabulary_names_all_three_tiers"
       ],
       "proof_requirements": {
         "negative": [
@@ -2323,12 +2336,15 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/document_types.py::supported_document_types",
+        "src/python/ubl/src/format_factory/ubl/document_types.py::document_type_coverage",
+        "src/python/ubl/src/format_factory/ubl/document_types.py::document_type_coverage_manifest",
+        "src/python/ubl/src/format_factory/ubl/document_types.py::DocumentTypeCoverage",
         "src/python/ubl/src/format_factory/ubl/model/root_types.py::Invoice"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-WRITE-001",
@@ -6655,6 +6671,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-codelist-citation-audit-001.json": "e86ec085304fda4650c0a8e685459487d3fdf3ada7c4eab9b5d8b444c2222302",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-detected-declared-version-001.json": "1059a4d232058af1d560fc0e1e0732ad04bfe0079ef93b03de24f3f4ddfb61b0",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-doctypes-citation-audit-001.json": "e5d72d55a468e859060fff36a118ce63d6d2dcf9c5fe747b0e2de5d0d66572bd",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-document-type-coverage-001.json": "bc594b14e680b56525c85226eb559d4f2a56b69dff90923ba5e230c260d56df2",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-extensions-structure-001.json": "bd4536de6158761bca11217c812e3272cb91f9621c4a6539378daaadeb11d5d2",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lifecycle-io-001.json": "ed787921f2225a81573186c4cd81377a417d211b447444ba0807685ba1e837b8",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-maindoc-lines-001.json": "59537e2a072991398c7ec9a483c13e0abc19149487f1834e46668e43dce5d3c6",
@@ -6676,7 +6693,7 @@
     "src/python/ubl/src/format_factory/ubl/codec/preservation.py": "dab616ced8f5104f5bee89db229a32d14000f486b061ace0e7a29dd934f5ab99",
     "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "254743ef56212db8aebabac970793fee188634466b6907145e25b1b662e8f9fc",
     "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py": "e352a3442d0a31389f177c9a206d3a5d857c9a2d4f724833e9af90e31d5b4a7d",
-    "src/python/ubl/src/format_factory/ubl/document_types.py": "3d2c4333b1544a3f45b4c6dd52b759aa528c5dd9ac2a1d102607688b8722819c",
+    "src/python/ubl/src/format_factory/ubl/document_types.py": "29d23f297711c1681905d91a1dd163c3bdac62a7aabb8d3b056c95b89d22aa33",
     "src/python/ubl/src/format_factory/ubl/model/__init__.py": "c827a62935dfdc3ce685baf665b6a45f541b93ed7a7040680f7c1b986a23f7be",
     "src/python/ubl/src/format_factory/ubl/model/aggregates.py": "c0f02a00ad6065ea0359dd379f30d0db94b95d63f772d2247ab521ea7a49886a",
     "src/python/ubl/src/format_factory/ubl/model/charges.py": "f72762e8f2fe1f95f967b6842321265d1815dfcacf6e0c49aa83cda617069277",
@@ -6700,7 +6717,7 @@
     "tests/python/ubl/test_obligation_codelist_registry.py": "703e263896b28695ffac86f281b1588ed65e46c80c11e8a98ac465c3d3a7d657",
     "tests/python/ubl/test_obligation_detected_declared_version.py": "303950d7c328d8673c9d6d5546892afdba38c52653a5bb7b45a86eea37ea7991",
     "tests/python/ubl/test_obligation_document_query.py": "43151bb1577f2c57f8f9782753d37cac8595d3e2efde33bf25d03d71705b3f21",
-    "tests/python/ubl/test_obligation_document_type_coverage.py": "71bc1369b8359defe87e2deb2584569c1f6b87f3db4c9578e91cd34473f253b0",
+    "tests/python/ubl/test_obligation_document_type_coverage.py": "8d4b7b1d87b5f9a33cc836139d0c0ceac7656e2e2d5ed8392724cd0a0e17ddba",
     "tests/python/ubl/test_obligation_extensions_structure.py": "a25a8652d39fab6e3c146f64aaf7c9bbd28eb36be4df30d2ab914ab46d147c79",
     "tests/python/ubl/test_obligation_external_reference.py": "6ba99de8b1dab95aacf884176da6e3c59cf698d3017df4c95748f834fe854901",
     "tests/python/ubl/test_obligation_lifecycle_io.py": "6189da6be51a33cbe60b72e6d98b632dfda9232838d41788dfd7547ec824f7ed",
@@ -6724,12 +6741,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 163,
+      "implemented": 164,
       "missing": 19,
-      "partial": 12
+      "partial": 11
     },
     "total": 194,
-    "unresolved": 31
+    "unresolved": 30
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

@@ -18,8 +18,11 @@ import pytest
 
 from format_factory.ubl import (
     ROOT_CLASSES,
+    DocumentTypeCoverage,
     create_empty,
     detect_document_type,
+    document_type_coverage,
+    document_type_coverage_manifest,
     dumps,
     supported_document_types,
 )
@@ -58,3 +61,44 @@ def test_create_empty_and_detect_document_type_round_trip_every_root(
     written = dumps(create_empty(root_name))
 
     assert detect_document_type(written) == root_name
+
+
+# ── SAL-UBL-OBL-4AEF6E978EC11AA1: the three-tier coverage vocabulary ───────
+
+
+def test_a_supported_root_reports_the_supported_tier() -> None:
+    """"Document-type coverage is declared per type... never claimed
+    globally" -- a per-name classification, not a single blanket fact."""
+    assert document_type_coverage("Invoice") == DocumentTypeCoverage.SUPPORTED
+
+
+def test_an_unrecognized_root_name_reports_the_unsupported_tier() -> None:
+    assert (
+        document_type_coverage("NotARealUblDocumentType")
+        == DocumentTypeCoverage.UNSUPPORTED
+    )
+
+
+@pytest.mark.parametrize("root_name", sorted(ROOT_CLASSES))
+def test_every_known_root_reports_supported(root_name: str) -> None:
+    """All 91 UBL 2.3 root types this package recognizes are fully typed
+    today -- there is currently no preservation-only tier in practice."""
+    assert document_type_coverage(root_name) == DocumentTypeCoverage.SUPPORTED
+
+
+def test_the_coverage_manifest_covers_every_supported_type_exactly_once() -> None:
+    manifest = document_type_coverage_manifest()
+
+    assert set(manifest) == set(supported_document_types())
+    assert all(value == DocumentTypeCoverage.SUPPORTED for value in manifest.values())
+
+
+def test_the_coverage_vocabulary_names_all_three_tiers() -> None:
+    """The obligation names the vocabulary itself as the requirement --
+    proving the enum carries all three tiers, not only the two currently
+    reachable from this package's own data."""
+    assert {tier.value for tier in DocumentTypeCoverage} == {
+        "supported",
+        "preservation_only",
+        "unsupported",
+    }

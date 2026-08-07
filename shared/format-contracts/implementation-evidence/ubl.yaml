@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-DOCUMENT-TYPE-COVERAGE-VOCABULARY-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-document-type-coverage-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-4AEF6E978EC11AA1 (UBL-DOCTYPES-001). The three-tier document-type coverage vocabulary (supported/preservation-only/unsupported) the obligation names did not exist as a formal concept, even though the underlying fact (all 91 roots fully typed) was already true and already exposed via supported_document_types()/ROOT_CLASSES, and loads() already genuinely refused any unrecognized root name with UblParseError. Mirrored the pattern already used successfully for XLIFF-MODULE-001''s STANDARD_MODULES/ModuleCoverage this session: added a DocumentTypeCoverage enum plus document_type_coverage(name)/document_type_coverage_manifest() in the existing document_types.py module, formalizing per-type classification rather than the prior flat enumeration alone. 6 test groups (95 cases, including all 91 roots individually parametrized) prove every known root reports SUPPORTED, an unrecognized name reports UNSUPPORTED, the manifest covers every supported type exactly once, and the vocabulary itself carries all three tiers even though PRESERVATION_ONLY is not currently reachable from this package''s own data. ubl suite: 783 -> 878 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule. Covers SAL-UBL-OBL-4AEF6E978EC11AA1 only; it supports no other obligation and promotes no product state.'
 - evidence_id: UBL-VERSION-DETECTION-REFUSAL-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-version-detection-refusal-001.json
   expected_result: PASS
@@ -1920,20 +1925,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-4AEF6E978EC11AA1
   capability_id: UBL-DOCTYPES-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/document_types.py::supported_document_types
+  - src/python/ubl/src/format_factory/ubl/document_types.py::document_type_coverage
+  - src/python/ubl/src/format_factory/ubl/document_types.py::document_type_coverage_manifest
+  - src/python/ubl/src/format_factory/ubl/document_types.py::DocumentTypeCoverage
   - src/python/ubl/src/format_factory/ubl/model/root_types.py::Invoice
   positive_test_selectors:
   - tests/python/ubl/test_obligation_document_type_coverage.py::test_supported_document_types_matches_the_pinned_root_inventory
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_document_type_coverage.py::test_a_supported_root_reports_the_supported_tier
+  - tests/python/ubl/test_obligation_document_type_coverage.py::test_every_known_root_reports_supported
+  - tests/python/ubl/test_obligation_document_type_coverage.py::test_the_coverage_manifest_covers_every_supported_type_exactly_once
+  - tests/python/ubl/test_obligation_document_type_coverage.py::test_the_coverage_vocabulary_names_all_three_tiers
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_document_type_coverage.py::test_an_unrecognized_root_name_reports_the_unsupported_tier
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-DOCTYPES-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-DOCUMENT-TYPE-COVERAGE-VOCABULARY-PROOF
   implemented_behavior:
-  - 'supported_document_types() (added this slice) gives a precise, enumerable, per-type declaration of exactly which 91 document types are supported -- coverage is never claimed as a vague global ''we support UBL'' statement, satisfying the ''declared per type, never claimed globally'' half of this obligation.'
-  missing_behavior:
-  - 'The specific three-tier vocabulary this obligation names (supported / preservation-only / unsupported) does not exist as a formal concept anywhere in the package. All 91 roots are uniformly fully typed and supported; there is no ''preservation-only'' tier (a document type that round-trips losslessly but has no typed accessors) implemented or distinguished from ''unsupported'' (a type absent from ROOT_CLASSES entirely). Confirmed by grepping the whole package for ''preservation-only'' / ''preservation_only''.'
+  - 'supported_document_types() gives a precise, enumerable, per-type declaration of exactly which 91 document types are supported -- coverage is never claimed as a vague global ''we support UBL'' statement. The three-tier vocabulary itself is now also formalized: a new DocumentTypeCoverage enum (SUPPORTED/PRESERVATION_ONLY/UNSUPPORTED) plus document_type_coverage(name) and document_type_coverage_manifest() classify coverage per type rather than globally, exactly matching the obligation''s own rule_text. All 91 currently-known roots correctly report SUPPORTED (proven for every one via a parametrized test), an unrecognized name correctly reports UNSUPPORTED (matching loads()''s own genuine refusal of unknown root names), and the vocabulary carries all three tiers even though PRESERVATION_ONLY is not currently reachable from this package''s own data -- a future root added as preservation-only would use this same vocabulary without changing it.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every
