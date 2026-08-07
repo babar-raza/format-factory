@@ -62,6 +62,10 @@ _VAL_CONDITION_ATTRS = ("isPresent", "isNotPresent", "startsWith", "endsWith")
 _CORE_SOURCE_QNAME = f"{{{XLIFF_NAMESPACE}}}source"
 _CORE_TARGET_QNAME = f"{{{XLIFF_NAMESPACE}}}target"
 
+_SLR_NAMESPACE = "urn:oasis:names:tc:xliff:sizerestriction:2.0"
+_SLR_SIZE_INFO_ATTR = f"{{{_SLR_NAMESPACE}}}sizeInfo"
+_SLR_SIZE_INFO_REF_ATTR = f"{{{_SLR_NAMESPACE}}}sizeInfoRef"
+
 _FS_NAMESPACE = "urn:oasis:names:tc:xliff:fs:2.0"
 _FS_FS_ATTR = f"{{{_FS_NAMESPACE}}}fs"
 #: Per the pinned XLIFF 2.1 Format Style module schema (schemas/fs.xsd,
@@ -479,6 +483,88 @@ def _format_style_module_diagnostics(unit: Unit, diagnostics: list[Diagnostic]) 
             content = segment.source if label == "source" else (segment.target or [])
             for element in _inline_elements(content):
                 _check_fs_value(
+                    element.attributes,
+                    host_label=f"{element.tag} {element.id!r} in {segment.kind} "
+                    f"{segment.id!r} {label}",
+                    unit_id=unit.id,
+                    diagnostics=diagnostics,
+                )
+
+
+def _check_slr_size_info(
+    attributes: dict[str, str],
+    *,
+    host_label: str,
+    unit_id: str,
+    diagnostics: list[Diagnostic],
+) -> None:
+    if _SLR_SIZE_INFO_ATTR in attributes and _SLR_SIZE_INFO_REF_ATTR in attributes:
+        diagnostics.append(
+            Diagnostic(
+                "xliff.module.slr.sizeinfo.conflict",
+                f"{host_label} in unit {unit_id!r} has both slr:sizeInfo and "
+                f"slr:sizeInfoRef, which the Size and Length Restriction "
+                f"module's own Constraints section forbids specifying at "
+                f"the same time",
+            )
+        )
+
+
+def _size_restriction_module_diagnostics(unit: Unit, diagnostics: list[Diagnostic]) -> None:
+    """(XLIFF 2.1 Size and Length Restriction module) grounded directly in
+    the pinned XLIFF 2.1 spec text (inside
+    .local/format-contracts/acquired/xliff/src-xliff-003.bin, Section 5.7
+    "Size and Length Restriction Module"): sizeInfo's own prose Constraints
+    section states "This attribute MUST NOT be specified if and only if
+    sizeInfoRef is used. They MUST NOT be specified at the same time" --
+    restated identically, from the other side, in sizeInfoRef's own
+    Constraints section. This is the one universally-true (profile-
+    independent) structural constraint the module defines; sizeRestriction/
+    storageRestriction's own value format ("[minsize,]maxsize") is scoped
+    to specific named standard profiles (xliff:codepoints, xliff:utf8, ...)
+    selected via generalProfile/storageProfile, which can be declared at
+    file/group/unit level and inherited -- resolving the active profile
+    for an arbitrary host would need the same whole-tree, parent-aware
+    resolution this package has deliberately not built for xml:space/
+    xml:lang inheritance either, so that value-format check is correctly
+    left unbuilt here, not attempted.
+
+    slr:sizeInfo/slr:sizeInfoRef "attach to existing core elements rather
+    than introducing their own" (confirmed directly by the spec's own
+    "Used in:" list for both attributes: file, group, unit, pc, sc, ec,
+    ph) -- the same wildcard-attribute shape as the Format Style module's
+    own fs:fs/fs:subFs, so this checks the identical set of hosts
+    _format_style_module_diagnostics already walks: the unit itself, each
+    segment/ignorable and its own source/target attribute dicts, and
+    every inline code element within source/target content.
+    """
+
+    _check_slr_size_info(
+        unit.attributes, host_label=f"unit {unit.id!r}", unit_id=unit.id, diagnostics=diagnostics
+    )
+    for segment in unit.segments:
+        _check_slr_size_info(
+            segment.attributes,
+            host_label=f"{segment.kind} {segment.id!r}",
+            unit_id=unit.id,
+            diagnostics=diagnostics,
+        )
+        _check_slr_size_info(
+            segment.source_attributes,
+            host_label=f"source of {segment.kind} {segment.id!r}",
+            unit_id=unit.id,
+            diagnostics=diagnostics,
+        )
+        _check_slr_size_info(
+            segment.target_attributes,
+            host_label=f"target of {segment.kind} {segment.id!r}",
+            unit_id=unit.id,
+            diagnostics=diagnostics,
+        )
+        for label in ("source", "target"):
+            content = segment.source if label == "source" else (segment.target or [])
+            for element in _inline_elements(content):
+                _check_slr_size_info(
                     element.attributes,
                     host_label=f"{element.tag} {element.id!r} in {segment.kind} "
                     f"{segment.id!r} {label}",
@@ -1023,6 +1109,7 @@ def validate(
             _data_ref_diagnostics(unit, diagnostics)
             _mrk_comment_ref_diagnostics(unit, diagnostics)
             _format_style_module_diagnostics(unit, diagnostics)
+            _size_restriction_module_diagnostics(unit, diagnostics)
         for file_child in file.children:
             if isinstance(file_child, ExtensionNode):
                 _extension_well_formed(file_child, diagnostics)

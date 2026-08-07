@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-size-restriction-sizeinfo-conflict-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T16:23:18Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_SIZE_RESTRICTION_SIZEINFO_CONFLICT_001",
+    "task_kind": "new-capability-mirroring-established-attribute-diagnostic-pattern",
+    "root_cause": "Three obligations (SAL-XLIFF-OBL-05547046CBCB57F7/57668EDF714BE172/EEA9C58A385F7C96, spanning XLIFF-MODEL-001/PARSE-001/MODULE-001) shared identical rule_text and identical 'confirmed gap, not an audit backlog' missing_behavior for the Size and Length Restriction module: no typed attribute parsing exists at all, content only round-trips as opaque extension XML.",
+    "obligation_targeted": "SAL-XLIFF-OBL-05547046CBCB57F7, SAL-XLIFF-OBL-57668EDF714BE172, SAL-XLIFF-OBL-EEA9C58A385F7C96 -- all three narrowed, remain partial (the broader typed value-format model stays genuinely unaddressed).",
+    "acceptance_evidence": "6 new tests (tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py) covering 3 valid-shape cases and 3 violation-location cases.",
+    "regression_tier": "full xliff package suite plus combined 6-format regression"
+  },
+  "execution_steps": [
+    "1. Continuing the FF6 mission after UBL's remaining 18 partial obligations were thoroughly investigated and confirmed to all require genuinely large architecture (full 91-root-type schema conformance, cross-document reference resolution needing multi-document context the library structurally lacks, official code-list data blocked on no verified source, a migration/transform engine needing deep spec knowledge, a tolerant recovery mode needing new architecture, a mutation-order-independent writer needing a new typed builder API) -- no forced fix attempted there.",
+    "2. Applied the session's own strongest-proven discipline once more: re-read the pinned spec source directly for the sizeRestriction module DESPITE its own 'confirmed gap, not an audit backlog' framing, since the Glossary and Validation modules had carried the identical framing and both still yielded real narrow wins once actually read.",
+    "3. Read the pinned XLIFF 2.1 spec's own Section 5.7 'Size and Length Restriction Module' text directly (.local/format-contracts/acquired/xliff/src-xliff-003.bin, lines 2655-2780): found the module's attributes (sizeInfo, sizeInfoRef, storageRestriction, sizeRestriction, equivStorage) attach directly to core elements (file/group/unit/pc/sc/ec/ph) via their own 'Used in:' lists -- the same wildcard-attribute shape as the already-implemented Format Style module (fs:fs/fs:subFs), not the standalone-extension-element shape Glossary/Validation used.",
+    "4. Found ONE universally-true, profile-independent structural constraint stated identically in two places: sizeInfo's own Constraints section ('This attribute MUST NOT be specified if and only if sizeInfoRef is used. They MUST NOT be specified at the same time') and sizeInfoRef's own Constraints section (the same rule from the other side).",
+    "5. Confirmed sizeRestriction/storageRestriction's own value format ('[minsize,]maxsize') is genuinely out of scope: it is defined only for specific named standard profiles (xliff:codepoints, xliff:utf8/16/32) selected via generalProfile/storageProfile, which can be declared at file/group/unit level and inherited -- re-read the already-existing xml:space/xml:lang inheritance obligations' own evidence to confirm this package has deliberately not built whole-tree parent-aware attribute resolution, the same limitation that would block a value-format check here.",
+    "6. Mirrored _check_fs_value/_format_style_module_diagnostics exactly (verified attribute preservation mechanism first via direct probe: unit/segment/inline .attributes dicts generically preserve any unknown-namespace attribute by Clark-notation key, not just fs:*) to add _check_slr_size_info/_size_restriction_module_diagnostics, walking the identical host set: unit, segment/source/target attributes, inline elements.",
+    "7. Ran the pre-existing xliff suite (511 passed) BEFORE writing any new test, confirming zero regressions from the validator.py changes alone.",
+    "8. Probed interactively 6 scenarios (sizeInfo alone, sizeInfoRef alone, neither, both on unit, both on source attributes, both on inline element) confirming correct behavior before writing any test.",
+    "9. Wrote 6 new tests in tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py, mirroring the fs-value test file's own style.",
+    "10. Ran the full xliff suite (511 -> 517 passed), ruff, and mypy on the changed validator module -- all clean.",
+    "11. Ran the combined 6-format regression suite (3526 -> 3532 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped) -- zero regression beyond the 6 new tests.",
+    "12. Updated all 3 obligations' evidence: NARROWED (not closed) missing_behavior to remove the resolved sizeInfo/sizeInfoRef clause while keeping the genuinely-still-true typed value-format gap honestly documented; added the 6 new tests to positive/negative selectors, added XLIFF-SIZE-RESTRICTION-SIZEINFO-CONFLICT-PROOF to execution_evidence_ids. All three obligations correctly stay partial."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 511 passed (before new tests, sanity check)",
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py -v -- 6 passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 517 passed (after new tests)",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/xliff/src/format_factory/xliff/validation/validator.py -- Success: no issues found",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3532 passed, 2 skipped, 4 pre-existing unrelated safetensors interop failures"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations moved status; 3 obligations narrowed (missing_behavior reduced), all remain partial",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the constraint grounded directly in the pinned spec's own two Constraints sections.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-05547046CBCB57F7 (XLIFF-MODEL-001), SAL-XLIFF-OBL-57668EDF714BE172 (XLIFF-PARSE-001), SAL-XLIFF-OBL-EEA9C58A385F7C96 (XLIFF-MODULE-001): sizeInfo/sizeInfoRef mutual-exclusivity clause resolved and removed from missing_behavior; the broader typed value-format model remains genuinely unaddressed, so all three stay partial."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
