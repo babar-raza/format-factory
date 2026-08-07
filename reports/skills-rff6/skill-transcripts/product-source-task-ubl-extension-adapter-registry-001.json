@@ -1,0 +1,66 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-extension-adapter-registry-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T13:57:44Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_EXTENSION_ADAPTER_REGISTRY_001",
+    "task_kind": "build-narrow-missing-feature-named-in-obligation-own-missing-behavior-mirroring-proven-sibling-pattern",
+    "root_cause": "SAL-UBL-OBL-B36305DA0BCEE0F6 (UBL-EXT-001)'s rule_text bundles two clauses: 'read and write extension containers with arbitrary namespaces and payloads without loss' (already proven) and 'expose registered typed adapters as opt-in' (not built). The obligation's own missing_behavior named the exact gap: no registry lets a caller register a typed decoder for a specific extension namespace, distinct from CodeListRegistry (business code-list values, not extension payload types).",
+    "obligation_targeted": "SAL-UBL-OBL-B36305DA0BCEE0F6 (UBL-EXT-001) -- promoted partial->implemented",
+    "acceptance_evidence": "10 new tests prove registry population (empty length, register/get round-trip, contains, replace-on-re-register) and decode behavior (registered adapter decodes correctly, unregistered QName is unknown not an error, unregistered node returned unchanged by identity, deterministic decoding, independent adapters per QName).",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. After five consecutive evidence-strengthening ticks (events 247-251), surveyed ubl's remaining 29 unresolved obligations for both an already-diagnosed narrow gap AND a genuine status-crossing opportunity, per event 251's own exact_next_action noting a diversification was worth attempting.",
+    "2. Re-investigated SAL-UBL-OBL-49E8A72A55F540E1 (UBL-REF-001, 'broken references') first, since it had been repeatedly flagged as worth one more attempt -- confirmed via the original implementer's own commit message (d2e846bf) that cross-document reference resolution and wrapper-vs-leaf *Reference completeness both remain genuinely ambiguous/unbuildable without verified UBL schema data not available. Correctly deferred again rather than fabricating a rule.",
+    "3. Found SAL-UBL-OBL-B36305DA0BCEE0F6 (UBL-EXT-001) instead: its own missing_behavior text named a concrete, narrow, well-specified gap distinct from the already-implemented round-trip half.",
+    "4. Read codec/preservation.py directly and confirmed the round-trip-without-loss half is already fully proven (LOSSLESS mode preserves arbitrary foreign-namespace payloads by default).",
+    "5. Read model/codelist.py (CodeListRegistry) directly as the pattern to mirror -- an in-memory, caller-populated registry with immutable-on-register semantics and a tri-state (known/unknown) validation result shape (CodeListValidation).",
+    "6. Designed ExtensionAdapterRegistry (model/extension_adapters.py) as the QName-keyed analogue: register(qname, adapter)/get(qname)/__len__/__contains__ mirroring CodeListRegistry's exact method shapes, plus decode_extension(registry, node) returning ExtensionDecodeResult (qname, adapter_known, decoded, node) mirroring CodeListValidation's (list_known, is_valid, detail) shape.",
+    "7. Verified opt-in is structural, not just documented: an unregistered node's .node field is the SAME object passed in (identity-checked in tests), and decode_extension never raises -- calling it on every extension node in a document is always safe.",
+    "8. Wired ExtensionAdapter/ExtensionAdapterRegistry/ExtensionDecodeResult/decode_extension into model/__init__.py and the top-level ubl/__init__.py exports, following the exact import-ordering convention already used for CodeListRegistry's own exports.",
+    "9. Probed interactively before writing any test: registered an adapter for a vendor Audit QName, decoded a matching node (correct dict returned) and an unregistered QName (unknown, not an error, node returned unchanged by identity) -- both behaved correctly on the first attempt.",
+    "10. Ran the full pre-existing ubl suite (962 tests, zero new fixtures) against the new module and export wiring to look for false positives before writing a single new test -- all 962 passed unchanged.",
+    "11. Wrote 10 formal tests in a new test_obligation_extension_adapter_registry.py, mirroring test_obligation_codelist_registry.py's established two-class (TestRegistryPopulation/TestDecodeExtension) structure precisely. All passed on the first attempt.",
+    "12. Ran ruff (clean), mypy on the new module (clean), the full ubl suite (972 passed, was 962, +10), and the full 6-format regression (3458 passed, was 3448, +10; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "13. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-ec9aa0fa449af34f, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "14. Promoted SAL-UBL-OBL-B36305DA0BCEE0F6 to implemented: both halves of its rule_text are now genuinely satisfied -- round-trip without loss (pre-existing) and registered typed adapters as opt-in (this slice). missing_behavior cleared to empty list."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/model/extension_adapters.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_extension_adapter_registry.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/model/extension_adapters.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_extension_adapter_registry.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_extension_adapter_registry.py -q -- 10 passed",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/model/extension_adapters.py src/python/ubl/src/format_factory/ubl/model/__init__.py src/python/ubl/src/format_factory/ubl/__init__.py tests/python/ubl/test_obligation_extension_adapter_registry.py -- all checks passed",
+    ".venv/Scripts/python -m mypy src/python/ubl/src/format_factory/ubl/model/extension_adapters.py --ignore-missing-imports -- Success: no issues found",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 972 passed, was 962 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3458 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3448 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the registry pattern grounded directly in this package's own already-proven CodeListRegistry, not invented from memory.",
+    "obligations_moved_breakdown": "SAL-UBL-OBL-B36305DA0BCEE0F6 (UBL-EXT-001) partial->implemented. A genuine new capability (a pluggable typed-adapter registry for extension content) built by directly mirroring an already-proven sibling pattern (CodeListRegistry) in the same package, closing both halves of the obligation's own rule_text without inventing any new architecture."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

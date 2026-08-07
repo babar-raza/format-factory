@@ -26,6 +26,12 @@ from .charges import (
     price_of,
 )
 from .codelist import CodeList, CodeListRegistry, CodeListValidation, validate_code
+from .extension_adapters import (
+    ExtensionAdapter,
+    ExtensionAdapterRegistry,
+    ExtensionDecodeResult,
+    decode_extension,
+)
 from .lines import (
     CreditNoteLine,
     DespatchLine,
@@ -108,6 +114,10 @@ __all__ = [
     "CodeList",
     "CodeListRegistry",
     "CodeListValidation",
+    "ExtensionAdapter",
+    "ExtensionAdapterRegistry",
+    "ExtensionDecodeResult",
+    "decode_extension",
     "DocumentIndex",
     "DuplicateId",
     "ExternalReference",

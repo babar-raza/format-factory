@@ -90,6 +90,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) 6 obligations sharing \"Child elements inside UBL aggregate components must appear in the order declared by the schema sequence model for the document to be valid\" across UBL-SIGN-001/REF-001/MODEL-001/DOCTYPES-001/PARSE-001/VALIDATE-001 (all 6 moved missing->partial). Before this slice, neither XmlNode.with_children nor validate() checked child-element sequence order against the schema at all -- a document assembled or edited with elements in the wrong order was silently accepted and would be written by dumps() without complaint. Added _order_diagnostics()/_order_violations()/_ORDER_CHECKED_COMPONENTS to validator.py, reusing the exact same qname-keyed dispatch pattern already proven for the cardinality cluster (events 216-223), applied to the identical 13 already-modeled complexTypes: cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference. Every component's exact declared child order was extracted PROGRAMMATICALLY from the pinned OASIS UBL 2.3 CommonAggregateComponents schema (.local/format-contracts/acquired/ubl/src-ubl-002.bin, xsd/common/UBL-CommonAggregateComponents-2.3.xsd) -- filtering each complexType's full xsd:sequence down to only the already-modeled single-occurrence fields while preserving true schema order -- rather than transcribed by hand. This caught a genuine transcription risk directly: cac:LegalMonetaryTotal's underlying MonetaryTotalType declares cbc:PayableAmount LAST in its sequence (after ChargeTotalAmount), not second (after LineExtensionAmount) as this package's own pre-existing cardinality-check frozenset's insertion order might suggest if read carelessly -- caught and corrected before any code was written, confirmed via the programmatic extraction script's own assertion that the filtered set exactly matches the expected field set. Verified zero false positives against the entire pre-existing 928-test ubl suite before writing a single new test. 9 new tests prove: Party with PostalAddress before Contact validates cleanly, the reverse is a violation; PostalAddress with fields in declared order validates cleanly, PostalZone before CityName is a violation; LegalMonetaryTotal with PayableAmount correctly last validates cleanly, PayableAmount before TaxExclusiveAmount is a violation (directly proving the caught transcription risk is handled correctly); fields this package does not yet model as checkable may legitimately appear interspersed among checked fields without a false violation; and InvoiceLine's ID/InvoicedQuantity/LineExtensionAmount/Item ordering is checked both ways. ubl suite: 928 -> 937 passed. Deliberately narrow, matching the cardinality cluster's own established scope discipline: covers only relative order among already-modeled fields of these 13 complexTypes, not every child of every UBL complexType (a genuinely larger, separate undertaking), and does not re-check cardinality (a duplicate field does not spuriously trigger a false order violation, since the check only compares against a running high-water mark). UBL-WRITE-001's companion \"write elements in schema-valid order independent of mutation order\" obligation remains separately unbuilt -- this slice only detects and diagnoses existing out-of-order documents, it does not make the writer reorder elements automatically. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every declared order read directly from the pinned schema, not invented. Covers SAL-UBL-OBL-26CD31E7F8CF91E1, SAL-UBL-OBL-31DE92275AF5F6EF, SAL-UBL-OBL-3B43504E9C74003C, SAL-UBL-OBL-4936871F9800219B, SAL-UBL-OBL-71FF376D05E7219A, and SAL-UBL-OBL-CDADC5CFB25A9B9E only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "UBL-EXTENSION-ADAPTER-REGISTRY-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-extension-adapter-registry-001.json",
+      "sha256": "e1f2ff4b663d57908a380aef368d86bb2fd1c0aa327227c2a6e77c26f7be1360",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-B36305DA0BCEE0F6 (UBL-EXT-001), promoted partial->implemented. The obligation's rule_text bundles two clauses: \"read and write extension containers with arbitrary namespaces and payloads without loss\" (already proven, test_unknown_extension_is_preserved_semantically) and \"expose registered typed adapters as opt-in\" (not previously built -- the obligation's own missing_behavior named the exact gap: no registry lets a caller register a typed decoder for a specific extension namespace, distinct from CodeListRegistry which is for business code-list values). Built a new ExtensionAdapterRegistry (model/extension_adapters.py) mirroring CodeListRegistry's own already-proven pluggable-registry pattern (proven at UBL-CODELIST-001) exactly: an in-memory registry populated at runtime, keyed here by QName rather than (list_id, agency_id, version), and decode_extension(registry, node) returning an ExtensionDecodeResult with the same known/unknown tri-state shape as CodeListValidation. A node with no registered adapter is reported as unknown, not an error, and returned unchanged via .node, proven by identity -- this is what makes adapter use structurally opt-in: decode_extension is always safe to call on every extension node in a document, decoded or not, and never alters parsing/serialization behavior (proven by leaving codec/preservation.py and the reader/writer entirely untouched). Verified zero false positives against the entire pre-existing 962-test ubl suite before writing a single new test. 10 new tests (tests/python/ubl/test_obligation_extension_adapter_registry.py) prove: registry population (empty length, register/get round-trip, contains, replace-on-re-register) and decode behavior (a registered adapter decodes correctly, an unregistered QName is unknown not an error, an unregistered node is returned unchanged by identity, decoding is deterministic, and two distinct QNames use independent adapters). ubl suite: 962 -> 972 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the registry pattern grounded directly in this package's own already-proven CodeListRegistry, not invented from memory. Covers SAL-UBL-OBL-B36305DA0BCEE0F6 only; it supports no other obligation and promotes no other product state."
+    },
+    {
       "evidence_id": "UBL-EXTENSION-PAYLOAD-CHECKSUM-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -309,7 +317,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "d924d3779fae0faeee26819497ec376a5d86e3d274ce133bb21dc493ef87b17a",
+    "implementation_evidence": "78bae9316acf0318b710a503743c2a885ecf22443b3f766e7bba5bdbbd05e58f",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -5455,33 +5463,46 @@
       "capability_id": "UBL-EXT-001",
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
-        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF"
+        "UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF",
+        "UBL-EXTENSION-ADAPTER-REGISTRY-PROOF"
       ],
       "implemented_behavior": [
-        "Extension containers with arbitrary foreign namespaces and payloads round-trip losslessly by default (LOSSLESS preservation mode), proven directly against a foreign vendor-namespaced payload with its own attributes and text."
+        "Extension containers with arbitrary foreign namespaces and payloads round-trip losslessly by default (LOSSLESS preservation mode), proven directly against a foreign vendor-namespaced payload with its own attributes and text. 'Expose registered typed adapters as opt-in' is now also implemented: a new ExtensionAdapterRegistry (model/extension_adapters.py) mirrors CodeListRegistry's already-proven pluggable-registry pattern exactly -- a caller registers a decoder callable keyed by QName, and decode_extension(registry, node) returns an ExtensionDecodeResult with the same known/unknown tri-state shape as CodeListValidation. A node with no registered adapter is reported as unknown (not an error) and returned unchanged via .node, proven by identity -- decoding is structurally opt-in: calling decode_extension on every extension node in a document is always safe, decoded or not, and never alters parsing/serialization behavior."
       ],
-      "missing_behavior": [
-        "'Expose registered typed adapters as opt-in' for extension CONTENT specifically does not exist -- distinct from CodeListRegistry (which is for business code-list values, not extension payload types), there is no registry that lets a caller register a typed decoder for a specific extension namespace. Extensions are always exposed as generic XmlNode subtrees."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_extension_adapter_registry.py::TestRegistryPopulation::test_get_on_unregistered_qname_returns_none",
+        "tests/python/ubl/test_obligation_extension_adapter_registry.py::TestDecodeExtension::test_a_node_with_no_registered_adapter_is_unknown_not_an_error",
+        "tests/python/ubl/test_obligation_extension_adapter_registry.py::TestDecodeExtension::test_an_unregistered_node_round_trips_unchanged_through_decode"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-B36305DA0BCEE0F6",
       "positive_test_selectors": [
-        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically"
+        "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically",
+        "tests/python/ubl/test_obligation_extension_adapter_registry.py::TestRegistryPopulation::test_empty_registry_has_length_zero",
+        "tests/python/ubl/test_obligation_extension_adapter_registry.py::TestRegistryPopulation::test_register_then_get_round_trips",
+        "tests/python/ubl/test_obligation_extension_adapter_registry.py::TestRegistryPopulation::test_contains_reflects_registration",
+        "tests/python/ubl/test_obligation_extension_adapter_registry.py::TestRegistryPopulation::test_registering_a_second_adapter_for_the_same_qname_replaces_it",
+        "tests/python/ubl/test_obligation_extension_adapter_registry.py::TestDecodeExtension::test_a_node_with_a_registered_adapter_is_decoded",
+        "tests/python/ubl/test_obligation_extension_adapter_registry.py::TestDecodeExtension::test_decoding_is_deterministic_and_repeatable",
+        "tests/python/ubl/test_obligation_extension_adapter_registry.py::TestDecodeExtension::test_two_different_extension_qnames_use_their_own_adapters_independently"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "An unregistered QName is reported as unknown, not an error, and the node is returned unchanged by identity."
         ],
         "positive": [
-          "Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode."
+          "Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode.",
+          "A registered adapter decodes its matching QName; two distinct QNames use independent adapters; decoding is deterministic."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize",
-        "src/python/ubl/src/format_factory/ubl/codec/preservation.py::check_preservation"
+        "src/python/ubl/src/format_factory/ubl/codec/preservation.py::check_preservation",
+        "src/python/ubl/src/format_factory/ubl/model/extension_adapters.py::ExtensionAdapterRegistry",
+        "src/python/ubl/src/format_factory/ubl/model/extension_adapters.py::decode_extension"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALUES-001",
@@ -7304,6 +7325,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-doctypes-citation-audit-001.json": "e5d72d55a468e859060fff36a118ce63d6d2dcf9c5fe747b0e2de5d0d66572bd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-document-type-coverage-001.json": "bc594b14e680b56525c85226eb559d4f2a56b69dff90923ba5e230c260d56df2",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-element-order-validation-001.json": "f28d3fb4c9aa1eb1a24364f6074eeb0680b4eecd6df86df6a7d20063f81f72af",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-extension-adapter-registry-001.json": "e1f2ff4b663d57908a380aef368d86bb2fd1c0aa327227c2a6e77c26f7be1360",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-extension-payload-checksum-001.json": "7f8f3d5c94d85f1eb35ccde201e75f0890576b40c0afe14553851a9a7d843dce",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-extensions-structure-001.json": "bd4536de6158761bca11217c812e3272cb91f9621c4a6539378daaadeb11d5d2",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-external-reference-cardinality-001.json": "bb622b06442b7cdc03dd0718c9d519c47aec054d9790ff26eb8b1af5ff8cdf0b",
@@ -7334,11 +7356,12 @@
     "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "254743ef56212db8aebabac970793fee188634466b6907145e25b1b662e8f9fc",
     "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py": "e352a3442d0a31389f177c9a206d3a5d857c9a2d4f724833e9af90e31d5b4a7d",
     "src/python/ubl/src/format_factory/ubl/document_types.py": "29d23f297711c1681905d91a1dd163c3bdac62a7aabb8d3b056c95b89d22aa33",
-    "src/python/ubl/src/format_factory/ubl/model/__init__.py": "c827a62935dfdc3ce685baf665b6a45f541b93ed7a7040680f7c1b986a23f7be",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py": "10b9f923a5c27b3eeaa6bced743aef51ea85c03a9f760cb0868ed0f020e3dc52",
     "src/python/ubl/src/format_factory/ubl/model/aggregates.py": "c0f02a00ad6065ea0359dd379f30d0db94b95d63f772d2247ab521ea7a49886a",
     "src/python/ubl/src/format_factory/ubl/model/charges.py": "f72762e8f2fe1f95f967b6842321265d1815dfcacf6e0c49aa83cda617069277",
     "src/python/ubl/src/format_factory/ubl/model/codelist.py": "1f17c8c2a0e0acafe8665c8695fbdf3226562a20c423fa2e4b388a4d2e5dd83f",
     "src/python/ubl/src/format_factory/ubl/model/document.py": "290f98c8dadab4154fd6c517c392c6ff1d66c29b103c6790e305d0a50899f122",
+    "src/python/ubl/src/format_factory/ubl/model/extension_adapters.py": "d81836748610f3a01c6a7fc3e4757bc9a123d840bc383e3da215e9da06c82925",
     "src/python/ubl/src/format_factory/ubl/model/lines.py": "7d3a0d5b5f6715690630b1d580aa1b5f8f2b6a494a12fd950661bd7b07c55d0e",
     "src/python/ubl/src/format_factory/ubl/model/party.py": "ebc5685aa9ceb698e5a6ce60ac65a37a35cd88023162520b4f2ac6ec18246bb1",
     "src/python/ubl/src/format_factory/ubl/model/query.py": "b88a8be52595daac91f4e68f78b0c018339eb1612d9bb7e42d562bcedee5b4b4",
@@ -7361,6 +7384,7 @@
     "tests/python/ubl/test_obligation_document_query.py": "43151bb1577f2c57f8f9782753d37cac8595d3e2efde33bf25d03d71705b3f21",
     "tests/python/ubl/test_obligation_document_type_coverage.py": "8d4b7b1d87b5f9a33cc836139d0c0ceac7656e2e2d5ed8392724cd0a0e17ddba",
     "tests/python/ubl/test_obligation_element_order_validation.py": "54a081993ab5237c7c78f035a9bf7daca90b32aa47c1d9cc7b460c5d88dc3911",
+    "tests/python/ubl/test_obligation_extension_adapter_registry.py": "6c1487c560a2439d0478bb39064d40f295c14e8efcf1f413179933e9e822de35",
     "tests/python/ubl/test_obligation_extension_payload_checksum.py": "4c90ef4a4b493a7be906b132747499711415772b4b1c7c0daf390c8b18f5a171",
     "tests/python/ubl/test_obligation_extensions_structure.py": "a25a8652d39fab6e3c146f64aaf7c9bbd28eb36be4df30d2ab914ab46d147c79",
     "tests/python/ubl/test_obligation_external_reference.py": "6ba99de8b1dab95aacf884176da6e3c59cf698d3017df4c95748f834fe854901",
@@ -7392,12 +7416,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 165,
+      "implemented": 166,
       "missing": 6,
-      "partial": 23
+      "partial": 22
     },
     "total": 194,
-    "unresolved": 29
+    "unresolved": 28
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

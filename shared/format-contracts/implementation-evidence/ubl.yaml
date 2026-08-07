@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-EXTENSION-ADAPTER-REGISTRY-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-extension-adapter-registry-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-B36305DA0BCEE0F6 (UBL-EXT-001), promoted partial->implemented. The obligation''s rule_text bundles two clauses: "read and write extension containers with arbitrary namespaces and payloads without loss" (already proven, test_unknown_extension_is_preserved_semantically) and "expose registered typed adapters as opt-in" (not previously built -- the obligation''s own missing_behavior named the exact gap: no registry lets a caller register a typed decoder for a specific extension namespace, distinct from CodeListRegistry which is for business code-list values). Built a new ExtensionAdapterRegistry (model/extension_adapters.py) mirroring CodeListRegistry''s own already-proven pluggable-registry pattern (proven at UBL-CODELIST-001) exactly: an in-memory registry populated at runtime, keyed here by QName rather than (list_id, agency_id, version), and decode_extension(registry, node) returning an ExtensionDecodeResult with the same known/unknown tri-state shape as CodeListValidation. A node with no registered adapter is reported as unknown, not an error, and returned unchanged via .node, proven by identity -- this is what makes adapter use structurally opt-in: decode_extension is always safe to call on every extension node in a document, decoded or not, and never alters parsing/serialization behavior (proven by leaving codec/preservation.py and the reader/writer entirely untouched). Verified zero false positives against the entire pre-existing 962-test ubl suite before writing a single new test. 10 new tests (tests/python/ubl/test_obligation_extension_adapter_registry.py) prove: registry population (empty length, register/get round-trip, contains, replace-on-re-register) and decode behavior (a registered adapter decodes correctly, an unregistered QName is unknown not an error, an unregistered node is returned unchanged by identity, decoding is deterministic, and two distinct QNames use independent adapters). ubl suite: 962 -> 972 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, the registry pattern grounded directly in this package''s own already-proven CodeListRegistry, not invented from memory. Covers SAL-UBL-OBL-B36305DA0BCEE0F6 only; it supports no other obligation and promotes no other product state.'
 - evidence_id: UBL-EXTENSION-PAYLOAD-CHECKSUM-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-extension-payload-checksum-001.json
   expected_result: PASS
@@ -4305,25 +4310,38 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-B36305DA0BCEE0F6
   capability_id: UBL-EXT-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/codec/preservation.py::canonicalize
   - src/python/ubl/src/format_factory/ubl/codec/preservation.py::check_preservation
+  - src/python/ubl/src/format_factory/ubl/model/extension_adapters.py::ExtensionAdapterRegistry
+  - src/python/ubl/src/format_factory/ubl/model/extension_adapters.py::decode_extension
   positive_test_selectors:
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_extension_adapter_registry.py::TestRegistryPopulation::test_empty_registry_has_length_zero
+  - tests/python/ubl/test_obligation_extension_adapter_registry.py::TestRegistryPopulation::test_register_then_get_round_trips
+  - tests/python/ubl/test_obligation_extension_adapter_registry.py::TestRegistryPopulation::test_contains_reflects_registration
+  - tests/python/ubl/test_obligation_extension_adapter_registry.py::TestRegistryPopulation::test_registering_a_second_adapter_for_the_same_qname_replaces_it
+  - tests/python/ubl/test_obligation_extension_adapter_registry.py::TestDecodeExtension::test_a_node_with_a_registered_adapter_is_decoded
+  - tests/python/ubl/test_obligation_extension_adapter_registry.py::TestDecodeExtension::test_decoding_is_deterministic_and_repeatable
+  - tests/python/ubl/test_obligation_extension_adapter_registry.py::TestDecodeExtension::test_two_different_extension_qnames_use_their_own_adapters_independently
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_extension_adapter_registry.py::TestRegistryPopulation::test_get_on_unregistered_qname_returns_none
+  - tests/python/ubl/test_obligation_extension_adapter_registry.py::TestDecodeExtension::test_a_node_with_no_registered_adapter_is_unknown_not_an_error
+  - tests/python/ubl/test_obligation_extension_adapter_registry.py::TestDecodeExtension::test_an_unregistered_node_round_trips_unchanged_through_decode
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-EXTENSION-ADAPTER-REGISTRY-PROOF
   implemented_behavior:
-  - 'Extension containers with arbitrary foreign namespaces and payloads round-trip losslessly by default (LOSSLESS preservation mode), proven directly against a foreign vendor-namespaced payload with its own attributes and text.'
-  missing_behavior:
-  - '''Expose registered typed adapters as opt-in'' for extension CONTENT specifically does not exist -- distinct from CodeListRegistry (which is for business code-list values, not extension payload types), there is no registry that lets a caller register a typed decoder for a specific extension namespace. Extensions are always exposed as generic XmlNode subtrees.'
+  - 'Extension containers with arbitrary foreign namespaces and payloads round-trip losslessly by default (LOSSLESS preservation mode), proven directly against a foreign vendor-namespaced payload with its own attributes and text. ''Expose registered typed adapters as opt-in'' is now also implemented: a new ExtensionAdapterRegistry (model/extension_adapters.py) mirrors CodeListRegistry''s already-proven pluggable-registry pattern exactly -- a caller registers a decoder callable keyed by QName, and decode_extension(registry, node) returns an ExtensionDecodeResult with the same known/unknown tri-state shape as CodeListValidation. A node with no registered adapter is reported as unknown (not an error) and returned unchanged via .node, proven by identity -- decoding is structurally opt-in: calling decode_extension on every extension node in a document is always safe, decoded or not, and never alters parsing/serialization behavior.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Unknown-namespace extension payloads survive load-save byte-semantically in lossless mode.
+    - A registered adapter decodes its matching QName; two distinct QNames use independent adapters; decoding is deterministic.
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - An unregistered QName is reported as unknown, not an error, and the node is returned unchanged by identity.
 - obligation_id: SAL-UBL-OBL-B47D8E797924BBD4
   capability_id: UBL-VALUES-001
   status: implemented
