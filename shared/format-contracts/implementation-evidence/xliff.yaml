@@ -8,6 +8,11 @@ execution_evidence:
   expected_result: PASS
   granularity: selector
   truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-BF7C86F8AFED34D6 (XLIFF-VALIDATE-001), promoted partial->implemented. Investigated alongside the sibling obligation SAL-XLIFF-OBL-0E27D8074CB0A72C''s citation-audit fix in the same tick and found a MIXED case rather than a pure reconciliation: "deeply nested and overlapping markers," "paired-code errors," and "every core structural and inline element plus each optional module" were already comprehensively proven elsewhere in the suite but never cited here (same citation-audit correction as the sibling), while "bidi content" and "supplementary Unicode code points" had genuinely zero test coverage anywhere -- confirmed by grep for "bidi" and "supplementary" across the entire xliff test suite before writing anything, returning zero matches. Rather than force-closing on citation alone, investigated whether this package''s text pipeline could actually mishandle either: confirmed by direct interactive probe before writing any test that Right-to-Left-Embedding/Pop-Directional-Formatting bidi control characters and a non-BMP supplementary-plane code point (an emoji requiring a UTF-16 surrogate pair, though Python represents it as a single code point) both round-trip correctly through load and a full dumps/reload cycle -- this package''s text handling is Python-string-native throughout with no custom byte-level logic, and ElementTree''s own XML serialization is UTF-8 by default, so there was no structural reason to expect a bug, and none was found. Added test_obligation_bidi_and_supplementary_unicode.py, 5 new tests proving both categories individually and mixed together in one segment. Verified zero false positives against the entire pre-existing 480-test xliff suite before writing these tests. xliff suite: 480 -> 485 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, confirming correct behavior via new tests rather than fixing a bug. Covers SAL-XLIFF-OBL-BF7C86F8AFED34D6 only; it supports no other obligation and promotes no other product state.'
+- evidence_id: XLIFF-GLOSSARY-MODULE-CARDINALITY-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-glossary-module-cardinality-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-3C4EB05F176E240D (XLIFF-PARSE-001) and SAL-XLIFF-OBL-0F4BED4809335F28 (XLIFF-MODULE-001), both promoted partial->implemented. Both obligations'' own missing_behavior was a confirmed-genuine gap, not a stale claim: "the ''one or more glossEntry / zero-or-more translation / at most one definition'' cardinality constraints are not enforced or tested -- Glossary is preserved only as opaque extension content." Read the pinned XLIFF 2.1 spec''s own Section 5.2 Glossary Module text directly (.local/format-contracts/acquired/xliff/src-xliff-003.bin), confirming glossary requires 1+ glossEntry; glossEntry requires exactly one term, 0+ translation, and at most one definition; the spec''s own prose Constraints section separately states a glossEntry MUST contain a translation or a definition to be valid, and id values must be unique among glossEntry and translation elements within the enclosing glossary. Found this package''s validator.py already has an established, directly reusable pattern for exactly this shape: a family of `_{module}_module_diagnostics(extension, diagnostics)` functions (metadata, resource data, matches), each keyed on the module''s own namespace QNAME, walking the preserved ExtensionNode XML with ElementTree and appending Diagnostic entries -- added `_glossary_module_diagnostics` following that exact template and wired it into the same 4 call sites (segment/file/group/root-level extensions) the sibling module checks already use. Deliberately scoped to validation only: no typed Glossary/GlossEntry/Term/Translation/Definition object model was added, and glossary content continues to round-trip as opaque ExtensionNode XML exactly as before. Verified zero false positives against the entire pre-existing 485-test xliff suite before writing a single new test; probed all 6 constraint violations interactively (empty glossary, missing term, duplicate term, duplicate definition, missing translation-or-definition, duplicate id) confirming correct behavior before writing any assertion. 11 new tests (tests/python/xliff/test_obligation_glossary_module_cardinality.py) prove each violation independently plus 3 valid-shape non-violation cases and a non-glossary-extension no-op case. xliff suite: 485 -> 496 passed. ruff and mypy clean. Combined 6-format run: 3500 -> 3511 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped -- zero regression beyond the 11 intentional new tests. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, the cardinality rules grounded directly in the pinned spec''s own prose and schema text. Covers SAL-XLIFF-OBL-3C4EB05F176E240D and SAL-XLIFF-OBL-0F4BED4809335F28 only; it supports no other obligation.'
 - evidence_id: XLIFF-VALIDATE-SEMANTIC-CONSTRAINT-CITATION-AUDIT-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-validate-semantic-constraint-citation-audit-001.json
   expected_result: PASS
@@ -751,20 +756,31 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-0F4BED4809335F28
   capability_id: XLIFF-MODULE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_glossary_module_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   - tests/python/xliff/test_obligation_module_coverage.py::test_glossary_module_round_trips
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_well_formed_glossary_entry_validates_cleanly
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_only_a_definition_validates_cleanly
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_multiple_translations_with_no_definition_validates_cleanly
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_an_empty_glossary_is_a_violation
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_missing_term_is_a_violation
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_two_terms_is_a_violation
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_two_definitions_is_a_violation
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_neither_translation_nor_definition_is_a_violation
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_duplicate_id_between_two_glossentries_is_a_violation
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_duplicate_id_between_a_glossentry_and_a_translation_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-GLOSSARY-MODULE-CARDINALITY-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of SAL-XLIFF-OBL-3C4EB05F176E240D (identical rule_text, XLIFF-PARSE-001): the Glossary module namespace and glossEntry/term round-trip as opaque extension content are both proven.'
-  missing_behavior:
-  - 'Same confirmed gap as SAL-XLIFF-OBL-3C4EB05F176E240D: the "one or more glossEntry / zero-or-more translation / at most one definition" cardinality constraints are not enforced or tested. Not attempted this slice.'
+  - 'Cross-capability duplicate of SAL-XLIFF-OBL-3C4EB05F176E240D (identical rule_text, XLIFF-PARSE-001): the Glossary module namespace and glossEntry/term round-trip as opaque extension content are both proven. validate() now also enforces the module''s own cardinality constraints on any extension carrying the Glossary module namespace: a glossary must contain at least one glossEntry; each glossEntry must contain exactly one term, at most one definition, and must contain a translation or a definition to be valid; id values must be unique among glossEntry and translation elements within the same enclosing glossary. Content continues to round-trip as opaque ExtensionNode XML -- no typed Glossary/GlossEntry object model was added, only validation diagnostics.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.
@@ -1455,20 +1471,31 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-3C4EB05F176E240D
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
+  - src/python/xliff/src/format_factory/xliff/validation/validator.py::_glossary_module_diagnostics
   positive_test_selectors:
   - tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts
   - tests/python/xliff/test_obligation_module_coverage.py::test_glossary_module_round_trips
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_well_formed_glossary_entry_validates_cleanly
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_only_a_definition_validates_cleanly
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_multiple_translations_with_no_definition_validates_cleanly
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_an_empty_glossary_is_a_violation
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_missing_term_is_a_violation
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_two_terms_is_a_violation
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_two_definitions_is_a_violation
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_neither_translation_nor_definition_is_a_violation
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_duplicate_id_between_two_glossentries_is_a_violation
+  - tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_duplicate_id_between_a_glossentry_and_a_translation_is_a_violation
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
+  - XLIFF-GLOSSARY-MODULE-CARDINALITY-PROOF
   implemented_behavior:
-  - 'The Glossary module namespace (urn:oasis:names:tc:xliff:glossary:2.0) and glossEntry/term round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-0F4BED4809335F28), same evidence applies there.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: the "one or more glossEntry / zero-or-more translation / at most one definition" cardinality constraints are not enforced or tested -- Glossary is preserved only as opaque extension content. Not attempted this slice.'
+  - 'The Glossary module namespace (urn:oasis:names:tc:xliff:glossary:2.0) and glossEntry/term round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-0F4BED4809335F28), same evidence applies there. validate() now also enforces the module''s own cardinality constraints on any extension carrying the Glossary module namespace: a glossary must contain at least one glossEntry; each glossEntry must contain exactly one term, at most one definition, and must contain a translation or a definition to be valid; id values must be unique among glossEntry and translation elements within the same enclosing glossary. Content continues to round-trip as opaque ExtensionNode XML -- no typed Glossary/GlossEntry object model was added, only validation diagnostics.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.

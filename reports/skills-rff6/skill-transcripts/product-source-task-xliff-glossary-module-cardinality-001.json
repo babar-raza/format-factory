@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-glossary-module-cardinality-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T16:02:16Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_GLOSSARY_MODULE_CARDINALITY_001",
+    "task_kind": "new-capability-mirroring-established-module-diagnostic-pattern",
+    "root_cause": "SAL-XLIFF-OBL-3C4EB05F176E240D and SAL-XLIFF-OBL-0F4BED4809335F28 (both citing the Glossary module) had a confirmed-genuine, honestly-labeled gap: the module's own cardinality constraints (one or more glossEntry, exactly one term, zero-or-more translation, at most one definition, translation-or-definition required, id uniqueness) were never enforced -- glossary content only round-tripped as opaque extension XML with zero validation.",
+    "obligation_targeted": "SAL-XLIFF-OBL-3C4EB05F176E240D (XLIFF-PARSE-001) and SAL-XLIFF-OBL-0F4BED4809335F28 (XLIFF-MODULE-001), both promoted partial->implemented.",
+    "acceptance_evidence": "11 new tests (tests/python/xliff/test_obligation_glossary_module_cardinality.py) covering all 6 violation types plus 3 valid-shape cases and a non-glossary-extension no-op case.",
+    "regression_tier": "full xliff package suite plus combined 6-format regression"
+  },
+  "execution_steps": [
+    "1. Continuing the FF6 mission per event 266's exact_next_action option (a) -- sweeping xliff's remaining 17 partial obligations for the thin-citation/stale-claim pattern. Found SAL-XLIFF-OBL-05547046CBCB57F7/57668EDF714BE172/EEA9C58A385F7C96 (sizeRestriction) and SAL-XLIFF-OBL-078DE5F17834C232/C1BB9934B09B3B70 (XSD/Schematron) both explicitly labeled 'confirmed gap, not an audit backlog' -- genuinely large scope, correctly deferred, not attempted.",
+    "2. Found SAL-XLIFF-OBL-3C4EB05F176E240D/0F4BED4809335F28 (Glossary module cardinality) and SAL-XLIFF-OBL-251C3608521B6A97/CC8F94A8623CA191 (Validation module constraint types) as smaller, more tractable confirmed gaps. Selected Glossary as the most self-contained (5 elements, well-bounded cardinality rules).",
+    "3. Read the pinned XLIFF 2.1 specification's own Section 5.2 'Glossary Module' text directly (.local/format-contracts/acquired/xliff/src-xliff-003.bin, lines 1786-1900): tree structure, per-element cardinality (glossary: 1+ glossEntry; glossEntry: 1 term, 0+ translation, 0-1 definition), the prose Constraints section's 'MUST contain a translation or a definition' rule, and the id-attribute Constraints section's uniqueness rule spanning both glossEntry and translation elements.",
+    "4. Read validator.py directly and found an already-established, directly reusable pattern: _metadata_module_diagnostics, _resource_data_module_diagnostics, and _matches_module_diagnostics each follow an identical shape -- keyed on the module's own namespace QNAME, parsing extension.xml with ElementTree, appending Diagnostic entries for schema-grounded constraint violations. Wired into 4 call sites: segment.extensions, file.children, group_unit.children, and root value.children.",
+    "5. Added _GLOSSARY_QNAME and 4 child-element QNAME constants, then _glossary_module_diagnostics following the exact same template: glossary requires >=1 glossEntry (xliff.module.glossary.glossentry.required); glossEntry requires exactly 1 term (xliff.module.glossary.term.required); at most 1 definition (xliff.module.glossary.definition.multiple); translation-or-definition required (xliff.module.glossary.translation_or_definition.required); id uniqueness across glossEntry and translation within the enclosing glossary (xliff.module.glossary.id.duplicate).",
+    "6. Wired _glossary_module_diagnostics into the same 4 call sites as the 3 sibling module checks (segment_extension, file_child, group_child, root_child) -- no new architecture, matching the package's own existing precedent exactly rather than inventing a 5th (e.g. unit.children) call site none of the sibling modules use either.",
+    "7. Ran the pre-existing xliff suite (485 passed) BEFORE writing any new test, confirming zero regressions from the validator.py changes alone.",
+    "8. Probed interactively (a well-formed entry, missing translation-or-definition, empty glossary, two terms, two definitions, duplicate id) confirming all 6 behaviors correct before writing any test.",
+    "9. Wrote 11 new tests in tests/python/xliff/test_obligation_glossary_module_cardinality.py, constructing XliffDocument/ExtensionNode fixtures directly (mirroring test_obligation_format_style_module_fs_values.py's own style) rather than round-tripping through loads()/dumps() XML text.",
+    "10. Ran the full xliff suite (485 -> 496 passed), ruff, and mypy on the changed validator module -- all clean.",
+    "11. Ran the combined 6-format regression suite (3500 -> 3511 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped) -- zero regression beyond the 11 new tests.",
+    "12. Updated both obligations' evidence: promoted partial->implemented, cleared missing_behavior, added the 11 new tests to positive/negative selectors, added XLIFF-GLOSSARY-MODULE-CARDINALITY-PROOF to execution_evidence_ids. Deliberately scoped to validation only -- no typed Glossary/GlossEntry object model was added; content continues to round-trip as opaque ExtensionNode XML."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_glossary_module_cardinality.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_obligation_glossary_module_cardinality.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 485 passed (before new tests, sanity check)",
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_glossary_module_cardinality.py -v -- 11 passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 496 passed (after new tests)",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/python -m mypy src/python/xliff/src/format_factory/xliff/validation/validator.py -- Success: no issues found",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3511 passed, 2 skipped, 4 pre-existing unrelated safetensors interop failures"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations moved partial->implemented",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the cardinality rules grounded directly in the pinned spec's own prose and schema text.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-3C4EB05F176E240D (XLIFF-PARSE-001) and SAL-XLIFF-OBL-0F4BED4809335F28 (XLIFF-MODULE-001): Glossary module cardinality constraints now enforced by validate() via a new _glossary_module_diagnostics function mirroring the existing metadata/resourcedata/matches module diagnostic pattern exactly."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -35,6 +35,13 @@ _RESOURCE_REFERENCE_QNAME = f"{{{_RESOURCE_DATA_NAMESPACE}}}reference"
 _MATCHES_NAMESPACE = "urn:oasis:names:tc:xliff:matches:2.0"
 _MATCHES_QNAME = f"{{{_MATCHES_NAMESPACE}}}matches"
 _MATCH_QNAME = f"{{{_MATCHES_NAMESPACE}}}match"
+
+_GLOSSARY_NAMESPACE = "urn:oasis:names:tc:xliff:glossary:2.0"
+_GLOSSARY_QNAME = f"{{{_GLOSSARY_NAMESPACE}}}glossary"
+_GLOSSENTRY_QNAME = f"{{{_GLOSSARY_NAMESPACE}}}glossEntry"
+_GLS_TERM_QNAME = f"{{{_GLOSSARY_NAMESPACE}}}term"
+_GLS_TRANSLATION_QNAME = f"{{{_GLOSSARY_NAMESPACE}}}translation"
+_GLS_DEFINITION_QNAME = f"{{{_GLOSSARY_NAMESPACE}}}definition"
 _CORE_SOURCE_QNAME = f"{{{XLIFF_NAMESPACE}}}source"
 _CORE_TARGET_QNAME = f"{{{XLIFF_NAMESPACE}}}target"
 
@@ -619,6 +626,86 @@ def _matches_module_diagnostics(
             )
 
 
+def _glossary_module_diagnostics(
+    extension: ExtensionNode, diagnostics: list[Diagnostic]
+) -> None:
+    """(XLIFF 2.1 Glossary module) "glossary contains one or more glossEntry
+    elements; each glossEntry contains exactly one term, zero or more
+    translation, and at most one definition" -- grounded directly in the
+    pinned XLIFF 2.1 Glossary module spec text and schema (inside
+    .local/format-contracts/acquired/xliff/src-xliff-003.bin, Section 5.2
+    "Glossary Module" and its bundled glossary.xsd): glossary's own
+    sequence declares minOccurs="1" maxOccurs="unbounded" for glossEntry;
+    glossEntry declares minOccurs="1" maxOccurs="1" for term, minOccurs="0"
+    maxOccurs="unbounded" for translation, and minOccurs="0" maxOccurs="1"
+    for definition. The spec's own prose Constraints section for
+    glossEntry separately states: "A glossEntry element MUST contain a
+    translation or a definition element to be valid." The spec's own
+    prose Constraints section for the id attribute separately states:
+    "The values of id attributes MUST be unique among all glossEntry and
+    translation elements within the given enclosing glossary element."
+
+    Only extensions actually carrying the Glossary module's own namespace
+    are checked; every other extension (including malformed XML, already
+    reported by _extension_well_formed) is left untouched.
+    """
+
+    if extension.tag != _GLOSSARY_QNAME:
+        return
+    try:
+        element = ET.fromstring(extension.xml)
+    except ET.ParseError:
+        return
+    entries = [child for child in element if child.tag == _GLOSSENTRY_QNAME]
+    if not entries:
+        diagnostics.append(
+            Diagnostic(
+                "xliff.module.glossary.glossentry.required",
+                "glossary must contain at least one glossEntry element",
+            )
+        )
+    seen_ids: set[str] = set()
+    for entry in entries:
+        terms = [child for child in entry if child.tag == _GLS_TERM_QNAME]
+        if len(terms) != 1:
+            diagnostics.append(
+                Diagnostic(
+                    "xliff.module.glossary.term.required",
+                    f"glossEntry must contain exactly one term element, found {len(terms)}",
+                )
+            )
+        translations = [child for child in entry if child.tag == _GLS_TRANSLATION_QNAME]
+        definitions = [child for child in entry if child.tag == _GLS_DEFINITION_QNAME]
+        if len(definitions) > 1:
+            diagnostics.append(
+                Diagnostic(
+                    "xliff.module.glossary.definition.multiple",
+                    "glossEntry must contain at most one definition element, "
+                    f"found {len(definitions)}",
+                )
+            )
+        if not translations and not definitions:
+            diagnostics.append(
+                Diagnostic(
+                    "xliff.module.glossary.translation_or_definition.required",
+                    "glossEntry must contain a translation or a definition element",
+                )
+            )
+        for id_holder in (entry, *translations):
+            entry_id = id_holder.attrib.get("id")
+            if entry_id is None:
+                continue
+            if entry_id in seen_ids:
+                diagnostics.append(
+                    Diagnostic(
+                        "xliff.module.glossary.id.duplicate",
+                        f"glossary id {entry_id!r} is not unique within its "
+                        "enclosing glossary element",
+                    )
+                )
+            seen_ids.add(entry_id)
+
+
 def _walk_group(group: Group) -> list[Unit]:
     return list(group.iter_units())
 
@@ -802,6 +889,7 @@ def validate(
                     _metadata_module_diagnostics(segment_extension, diagnostics)
                     _resource_data_module_diagnostics(segment_extension, diagnostics)
                     _matches_module_diagnostics(segment_extension, diagnostics)
+                    _glossary_module_diagnostics(segment_extension, diagnostics)
             _isolated_diagnostics(unit, diagnostics)
             _isolated_pairing_attribute_diagnostics(unit, diagnostics)
             _data_ref_diagnostics(unit, diagnostics)
@@ -813,6 +901,7 @@ def validate(
                 _metadata_module_diagnostics(file_child, diagnostics)
                 _resource_data_module_diagnostics(file_child, diagnostics)
                 _matches_module_diagnostics(file_child, diagnostics)
+                _glossary_module_diagnostics(file_child, diagnostics)
             elif isinstance(file_child, Group):
                 for group_unit in _walk_group(file_child):
                     for group_child in group_unit.children:
@@ -821,10 +910,12 @@ def validate(
                             _metadata_module_diagnostics(group_child, diagnostics)
                             _resource_data_module_diagnostics(group_child, diagnostics)
                             _matches_module_diagnostics(group_child, diagnostics)
+                            _glossary_module_diagnostics(group_child, diagnostics)
     for root_child in value.children:
         if isinstance(root_child, ExtensionNode):
             _extension_well_formed(root_child, diagnostics)
             _metadata_module_diagnostics(root_child, diagnostics)
             _resource_data_module_diagnostics(root_child, diagnostics)
             _matches_module_diagnostics(root_child, diagnostics)
+            _glossary_module_diagnostics(root_child, diagnostics)
     return ValidationReport(diagnostics)

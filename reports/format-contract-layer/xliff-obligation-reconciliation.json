@@ -74,6 +74,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes 2 obligations sharing \"The Format Style module uses namespace urn:oasis:names:tc:xliff:fs:2.0 and defines fs and subFs attributes; fs values are constrained by the module schema\" across XLIFF-MODULE-001/PARSE-001 (both moved partial->implemented). Unlike the Metadata/Resource Data/Matches modules closed in the three immediately preceding ticks (each a single top-level extension element), fs and subFs \"attach to existing core elements rather than introducing their own\" -- confirmed directly by this package's own pre-existing fixture (test_format_style_attributes_round_trip_on_a_unit), which attaches them to a <unit>, not an inline element. Grounded directly in the pinned XLIFF 2.1 Format Style module schema (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/fs.xsd): fs:fs is restricted to a fixed 58-value enumeration of HTML-tag-like tokens, cross-verified programmatically against every <xs:enumeration> entry in the pinned XSD (not typed from memory) to confirm an exact 58/58 match; fs:subFs is an unrestricted xs:string with no value to check. Added _format_style_module_diagnostics() to validator.py, checking every host this package generically preserves unknown attributes on: the unit itself, each segment/ignorable and its own source/target attribute dicts, and every inline code element (ph/pc/sc/ec/mrk) within source/target content -- broader scope than the three prior module ticks, which only needed to check a single top-level extension's own re-parsed XML. Verified zero false positives against the entire pre-existing 428-test xliff suite before writing a single new test -- the package's own existing fs:fs=\"span\" fixture was already a valid enumerated value. 8 new tests prove: valid fs values on a unit and on an inline element validate cleanly; invalid values on a unit, an inline element, and source_attributes are each independently flagged; subFs accepts any string; no fs attributes anywhere stays clean; and a representative spot-check across 8 of the 58 enumerated values (a, h1, h6, table, tt, ul, div, span) are all individually accepted. xliff suite: 428 -> 436 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every enumerated value cross-checked programmatically against the pinned schema. Covers SAL-XLIFF-OBL-D8C6CC9733716C74 and SAL-XLIFF-OBL-CF05EFE9DC2D7502 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-GLOSSARY-MODULE-CARDINALITY-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-glossary-module-cardinality-001.json",
+      "sha256": "aa386f57739076811178357cc36f88f2d0ff59c16834a47a4ae97b7db9ff79c2",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-3C4EB05F176E240D (XLIFF-PARSE-001) and SAL-XLIFF-OBL-0F4BED4809335F28 (XLIFF-MODULE-001), both promoted partial->implemented. Both obligations' own missing_behavior was a confirmed-genuine gap, not a stale claim: \"the 'one or more glossEntry / zero-or-more translation / at most one definition' cardinality constraints are not enforced or tested -- Glossary is preserved only as opaque extension content.\" Read the pinned XLIFF 2.1 spec's own Section 5.2 Glossary Module text directly (.local/format-contracts/acquired/xliff/src-xliff-003.bin), confirming glossary requires 1+ glossEntry; glossEntry requires exactly one term, 0+ translation, and at most one definition; the spec's own prose Constraints section separately states a glossEntry MUST contain a translation or a definition to be valid, and id values must be unique among glossEntry and translation elements within the enclosing glossary. Found this package's validator.py already has an established, directly reusable pattern for exactly this shape: a family of `_{module}_module_diagnostics(extension, diagnostics)` functions (metadata, resource data, matches), each keyed on the module's own namespace QNAME, walking the preserved ExtensionNode XML with ElementTree and appending Diagnostic entries -- added `_glossary_module_diagnostics` following that exact template and wired it into the same 4 call sites (segment/file/group/root-level extensions) the sibling module checks already use. Deliberately scoped to validation only: no typed Glossary/GlossEntry/Term/Translation/Definition object model was added, and glossary content continues to round-trip as opaque ExtensionNode XML exactly as before. Verified zero false positives against the entire pre-existing 485-test xliff suite before writing a single new test; probed all 6 constraint violations interactively (empty glossary, missing term, duplicate term, duplicate definition, missing translation-or-definition, duplicate id) confirming correct behavior before writing any assertion. 11 new tests (tests/python/xliff/test_obligation_glossary_module_cardinality.py) prove each violation independently plus 3 valid-shape non-violation cases and a non-glossary-extension no-op case. xliff suite: 485 -> 496 passed. ruff and mypy clean. Combined 6-format run: 3500 -> 3511 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped -- zero regression beyond the 11 intentional new tests. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the cardinality rules grounded directly in the pinned spec's own prose and schema text. Covers SAL-XLIFF-OBL-3C4EB05F176E240D and SAL-XLIFF-OBL-0F4BED4809335F28 only; it supports no other obligation."
+    },
+    {
       "evidence_id": "XLIFF-IGNORABLE-ELEMENT-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -333,7 +341,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "ffb7aa80f10b6d5c93af9093c6a3b60fcfab48a4b5d692f49e25a12662929992",
+    "implementation_evidence": "e5edad26d57dfd28fcbcfb8165c569d04d040318f17c59abb61914692e0eceb3",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -696,19 +704,29 @@
       "capability_id": "XLIFF-MODULE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-GLOSSARY-MODULE-CARDINALITY-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of SAL-XLIFF-OBL-3C4EB05F176E240D (identical rule_text, XLIFF-PARSE-001): the Glossary module namespace and glossEntry/term round-trip as opaque extension content are both proven."
+        "Cross-capability duplicate of SAL-XLIFF-OBL-3C4EB05F176E240D (identical rule_text, XLIFF-PARSE-001): the Glossary module namespace and glossEntry/term round-trip as opaque extension content are both proven. validate() now also enforces the module's own cardinality constraints on any extension carrying the Glossary module namespace: a glossary must contain at least one glossEntry; each glossEntry must contain exactly one term, at most one definition, and must contain a translation or a definition to be valid; id values must be unique among glossEntry and translation elements within the same enclosing glossary. Content continues to round-trip as opaque ExtensionNode XML -- no typed Glossary/GlossEntry object model was added, only validation diagnostics."
       ],
-      "missing_behavior": [
-        "Same confirmed gap as SAL-XLIFF-OBL-3C4EB05F176E240D: the \"one or more glossEntry / zero-or-more translation / at most one definition\" cardinality constraints are not enforced or tested. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_an_empty_glossary_is_a_violation",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_missing_term_is_a_violation",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_two_terms_is_a_violation",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_two_definitions_is_a_violation",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_neither_translation_nor_definition_is_a_violation",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_duplicate_id_between_two_glossentries_is_a_violation",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_duplicate_id_between_a_glossentry_and_a_translation_is_a_violation"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-0F4BED4809335F28",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
-        "tests/python/xliff/test_obligation_module_coverage.py::test_glossary_module_round_trips"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_glossary_module_round_trips",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_well_formed_glossary_entry_validates_cleanly",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_only_a_definition_validates_cleanly",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_multiple_translations_with_no_definition_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -718,11 +736,12 @@
           "Per-module round-trip fixtures; coverage manifest matches behavior."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_glossary_module_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-INLINE-001",
@@ -1675,19 +1694,29 @@
       "capability_id": "XLIFF-PARSE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-GLOSSARY-MODULE-CARDINALITY-PROOF"
       ],
       "implemented_behavior": [
-        "The Glossary module namespace (urn:oasis:names:tc:xliff:glossary:2.0) and glossEntry/term round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-0F4BED4809335F28), same evidence applies there."
+        "The Glossary module namespace (urn:oasis:names:tc:xliff:glossary:2.0) and glossEntry/term round-trip as opaque extension content are both proven. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-0F4BED4809335F28), same evidence applies there. validate() now also enforces the module's own cardinality constraints on any extension carrying the Glossary module namespace: a glossary must contain at least one glossEntry; each glossEntry must contain exactly one term, at most one definition, and must contain a translation or a definition to be valid; id values must be unique among glossEntry and translation elements within the same enclosing glossary. Content continues to round-trip as opaque ExtensionNode XML -- no typed Glossary/GlossEntry object model was added, only validation diagnostics."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: the \"one or more glossEntry / zero-or-more translation / at most one definition\" cardinality constraints are not enforced or tested -- Glossary is preserved only as opaque extension content. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_an_empty_glossary_is_a_violation",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_missing_term_is_a_violation",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_two_terms_is_a_violation",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_two_definitions_is_a_violation",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_neither_translation_nor_definition_is_a_violation",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_duplicate_id_between_two_glossentries_is_a_violation",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_duplicate_id_between_a_glossentry_and_a_translation_is_a_violation"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-3C4EB05F176E240D",
       "positive_test_selectors": [
         "tests/python/xliff/test_obligation_module_coverage.py::test_confirmed_module_namespaces_match_the_sal_facts",
-        "tests/python/xliff/test_obligation_module_coverage.py::test_glossary_module_round_trips"
+        "tests/python/xliff/test_obligation_module_coverage.py::test_glossary_module_round_trips",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_well_formed_glossary_entry_validates_cleanly",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_a_glossentry_with_only_a_definition_validates_cleanly",
+        "tests/python/xliff/test_obligation_glossary_module_cardinality.py::test_multiple_translations_with_no_definition_validates_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -1697,11 +1726,12 @@
           "Version/namespace consistency fixtures per supported version; legacy-version refusal fixture."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest"
+        "src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_glossary_module_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-SEG-001",
@@ -5351,6 +5381,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-file-group-id-uniqueness-001.json": "50333c4f0bea5929373b26cd75ceb05590c18f4173000e194334be720f7f3e73",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-file-required-and-file-id-required-001.json": "a39c6208d21397ccaa1ba7d4c49360095c48b8509cd60b75508274bd38f4f1b7",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-format-style-fs-values-001.json": "32dff4783e57f339a5b51c52c491eb55739ef51cb6a4d6d198aeddf100fbc970",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-glossary-module-cardinality-001.json": "aa386f57739076811178357cc36f88f2d0ff59c16834a47a4ae97b7db9ff79c2",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-ignorable-elements-001.json": "b4eae20e8f1235e61fed5828dbb0d3880ae8c9762e85f1d6e488c777872a1a93",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-inline-required-id-001.json": "33d8fe481a9892e47f0d5b9886059f7a3c6290e0db4cbd20e544081f01ab8255",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-isolated-pairing-attrs-001.json": "bab9d700b6907f730117050549aa3f075ac7a33b9f6c25c0306f4264cfc0f146",
@@ -5395,11 +5426,12 @@
     "src/python/xliff/src/format_factory/xliff/qa.py": "61c2a8f74d09f844e36bfc1d967a587b5e5e62cf6087577e1031347b3ee8fa2f",
     "src/python/xliff/src/format_factory/xliff/security/limits.py": "8cec6ffd2ccd8fe17fa6d76ab19b2deeda3578d558925d862b15494b3b06665a",
     "src/python/xliff/src/format_factory/xliff/state_transitions.py": "6b12476e31076a788cef37fb476e1b5eda7365e6eb640bbb7bedcebabb9d49ea",
-    "src/python/xliff/src/format_factory/xliff/validation/validator.py": "18362cb9c92c0fbc775be7aa126b3341aeaf52566e1aaf056c79207cfa84099b",
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py": "d0f1cff0938d3dc666df28ab2aa31c2c6158f7bb9b02ca4d600c90fc47f13eb1",
     "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py": "0cf2b5f76b217e7768f56a9302d7012c450a1dc95cd05b823bb7476bd8db7761",
     "tests/python/xliff/test_obligation_bidi_and_supplementary_unicode.py": "43045d1ebd13179843aaffbbbeb1fbbe50694f34d50f380eb5e7d409c2f65110",
     "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py": "4608bfab942b23e748dc4010785ec78e72a668f796a3d93401e208fc2365ab80",
     "tests/python/xliff/test_obligation_format_style_module_fs_values.py": "5e03baa15603d37ab30de64ad46e889955bf3be3694e2f515b3acde3bf1fac24",
+    "tests/python/xliff/test_obligation_glossary_module_cardinality.py": "3d6aaad34401cb21386b9148d4f708cc50076f621f16acc1aea58f96d556d47a",
     "tests/python/xliff/test_obligation_ignorable_elements.py": "70908f9b90fa150715bd19b6c9a1abd46b36b818a3710c4ad82d851dc6a9c880",
     "tests/python/xliff/test_obligation_inline_required_id.py": "a499d28a49fc003b29ebaeb93dcb4619ee5767d344cc19a05fe432a6a4420eac",
     "tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py": "325fa2bd6193acdffb070a843633132e89f9f0a763c156714012baff1a95c4dd",
@@ -5432,12 +5464,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 113,
+      "implemented": 115,
       "missing": 11,
-      "partial": 18
+      "partial": 16
     },
     "total": 142,
-    "unresolved": 29
+    "unresolved": 27
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
