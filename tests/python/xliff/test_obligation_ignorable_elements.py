@@ -106,3 +106,46 @@ def test_a_unit_with_neither_segment_nor_ignorable_is_invalid() -> None:
 
     assert not report.is_valid
     assert "xliff.unit.segment.required" in {item.code for item in report.diagnostics}
+
+
+def _document_with_file_body(file_body: str) -> bytes:
+    return (
+        f'<?xml version="1.0" encoding="UTF-8"?>\n'
+        f'<xliff xmlns="{NAMESPACE}" version="2.1" srcLang="en">'
+        f'<file id="f1">{file_body}</file>'
+        f"</xliff>"
+    ).encode()
+
+
+def test_an_ignorable_only_unit_nested_inside_a_group_still_satisfies_the_cardinality_constraint() -> None:
+    """The cardinality constraint applies per-unit regardless of nesting
+    depth -- a <group> wrapping an ignorable-only unit is just as valid as
+    a top-level one."""
+    document = loads(
+        _document_with_file_body(
+            '<group id="g1"><unit id="u1">'
+            '<ignorable id="i1"><source>x</source></ignorable>'
+            "</unit></group>"
+        )
+    )
+
+    report = validate(document)
+
+    assert report.is_valid
+
+
+def test_one_ignorable_only_unit_among_several_segment_only_units_validates_cleanly() -> None:
+    """Each unit is checked independently -- a file mixing ordinary
+    segment-only units with an ignorable-only unit is fully valid; the
+    ignorable-only unit does not need a sibling segment of its own."""
+    document = loads(
+        _document_with_file_body(
+            '<unit id="u1"><segment id="s1"><source>hi</source></segment></unit>'
+            '<unit id="u2"><ignorable id="i1"><source>  </source></ignorable></unit>'
+        )
+    )
+
+    assert document.unit_count == 2
+    report = validate(document)
+
+    assert report.is_valid
