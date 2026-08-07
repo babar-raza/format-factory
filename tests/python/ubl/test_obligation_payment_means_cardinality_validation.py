@@ -24,7 +24,8 @@ directly below, not merely assumed.
 
 from __future__ import annotations
 
-from format_factory.ubl import XmlNode, loads, validate
+import pytest
+from format_factory.ubl import UblWriteError, XmlNode, dumps, loads, validate
 
 _CBC = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
 _CAC = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
@@ -103,6 +104,60 @@ def test_multiple_payment_ids_are_not_a_violation_the_schema_declares_them_repea
     report = validate(loads(_invoice_with_payment_means(body)))
 
     assert report.is_valid is True
+
+
+# ── cac:PaymentMeans element order: PaymentMeansCode/PaymentDueDate/
+#    PayeeFinancialAccount, in that schema-declared order ─────────────────
+
+
+def test_payment_means_fields_in_declared_order_validate_cleanly() -> None:
+    body = (
+        "<cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>"
+        "<cbc:PaymentDueDate>2024-01-01</cbc:PaymentDueDate>"
+        '<cac:PayeeFinancialAccount><cbc:ID>ACC1</cbc:ID></cac:PayeeFinancialAccount>'
+    )
+
+    report = validate(loads(_invoice_with_payment_means(body)))
+
+    assert report.is_valid is True
+
+
+def test_payee_financial_account_before_payment_due_date_is_an_order_violation() -> None:
+    body = (
+        "<cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>"
+        '<cac:PayeeFinancialAccount><cbc:ID>ACC1</cbc:ID></cac:PayeeFinancialAccount>'
+        "<cbc:PaymentDueDate>2024-01-01</cbc:PaymentDueDate>"
+    )
+
+    report = validate(loads(_invoice_with_payment_means(body)))
+
+    assert report.is_valid is False
+    assert any(item.code == "ubl.order.violation" for item in report.diagnostics)
+
+
+def test_dumps_refuses_a_document_with_an_out_of_order_payment_means() -> None:
+    body = (
+        "<cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>"
+        '<cac:PayeeFinancialAccount><cbc:ID>ACC1</cbc:ID></cac:PayeeFinancialAccount>'
+        "<cbc:PaymentDueDate>2024-01-01</cbc:PaymentDueDate>"
+    )
+    document = loads(_invoice_with_payment_means(body))
+
+    with pytest.raises(UblWriteError, match="PaymentDueDate"):
+        dumps(document)
+
+
+def test_dumps_writes_a_well_formed_payment_means_without_incident() -> None:
+    body = (
+        "<cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>"
+        "<cbc:PaymentDueDate>2024-01-01</cbc:PaymentDueDate>"
+        '<cac:PayeeFinancialAccount><cbc:ID>ACC1</cbc:ID></cac:PayeeFinancialAccount>'
+    )
+    document = loads(_invoice_with_payment_means(body))
+
+    out = dumps(document)
+
+    assert b"PaymentMeansCode" in out
 
 
 # ── cac:PayeeFinancialAccount: ID/Name/CurrencyCode are each 0..1 ──────────

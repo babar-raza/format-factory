@@ -226,6 +226,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Extends (does not newly close) the same 6-obligation schema-conformance cluster UBL-PARTY-CARDINALITY-VALIDATION-PROOF already narrowed. Applies the same established pattern to a second component family: extracted PaymentMeansType's and FinancialAccountType's complete field lists with exact minOccurs/maxOccurs directly from the pinned OASIS UBL 2.3 release ZIP. Found and honestly documented a genuine discrepancy: PaymentMeansType declares cbc:PaymentID as minOccurs=0 maxOccurs=UNBOUNDED (repeatable), even though this package's own PaymentMeans.payment_id field models only a single value -- deliberately excluded from the new check rather than either false-flagging legitimate repetition or silently altering the model's own field typing, which is a separate concern. Refactored _cardinality_diagnostics() from a growing if/elif chain into a qname-keyed dict (_CARDINALITY_CHECKED_COMPONENTS) for straightforward future extension. Verified zero false positives against the entire pre-existing 896-test ubl suite before writing a single new test. 8 new tests prove violation detection for PaymentMeansCode/PaymentDueDate/PayeeFinancialAccount/PayeeFinancialAccount's own ID/Name/CurrencyCode fields, plus a dedicated proof that PaymentID's genuine repeatability is honored, not flagged. ubl suite: 896 -> 904 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every field's cardinality read directly from the pinned schema. Covers the same 6 obligations UBL-PARTY-CARDINALITY-VALIDATION-PROOF covers; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "UBL-PAYMENT-MEANS-ORDER-VALIDATION-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-payment-means-order-validation-001.json",
+      "sha256": "c74b0e8a007bf0765a927bdadc1866d5ce61294a2acb2222f415af43dd4fcd0e",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-B68F5F29F11197D6 (UBL-MODEL-001), promoted partial->implemented. The obligation's own missing_behavior claimed \"element order is not reflected or enforced anywhere in the model or validator,\" but reading _ORDER_CHECKED_COMPONENTS (validator.py) directly found all 6 of this obligation's own source components (PaymentMeans, InvoiceLine, TaxTotal, LegalMonetaryTotal, AllowanceCharge, Price) already present -- the claim was stale for this obligation's own specific scope, though the broader cluster claim (order-checking across every UBL complexType) remains genuinely true and is tracked separately. Cross-checked test coverage for each of the 6 components and found 5 already had dedicated order-violation tests (LegalMonetaryTotal, InvoiceLine, AllowanceCharge, Price, and TaxTotal correctly exempt since its own order tuple is a single element that can never itself violate order) -- only PaymentMeans lacked one. Confirmed exploitable-if-untested by direct probe before writing anything: a PayeeFinancialAccount-before-PaymentDueDate PaymentMeans document correctly failed validate() with ubl.order.violation and correctly refused dumps() with UblWriteError, proving the underlying enforcement already worked and only the test was missing. Added 4 new tests (tests/python/ubl/test_obligation_payment_means_cardinality_validation.py) closing that gap: fields in declared order validate cleanly, PayeeFinancialAccount before PaymentDueDate is an order violation, dumps() refuses the out-of-order document, dumps() writes a well-formed one without incident. Verified zero false positives against the entire pre-existing 983-test ubl suite before writing these tests, and individually re-ran all 15 cited positive+negative tests via pytest -v before finalizing the promotion. ubl suite: 983 -> 987 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the order rule grounded directly in the pinned OASIS UBL 2.3 schema already cited by the sibling order-cluster obligations. Covers SAL-UBL-OBL-B68F5F29F11197D6 only; it supports no other obligation and promotes no other product state."
+    },
+    {
       "evidence_id": "UBL-PRESERVATION-MODE-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -325,7 +333,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "e8aa31632edb2ecafed9e8068f551e88ae671d0b501e9fd7e67f663b4af18021",
+    "implementation_evidence": "1054cc486133ea59b488a49b8aac9249700cafbe86fb837c20980e3dd15ad2bf",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -5651,18 +5659,29 @@
       "capability_id": "UBL-MODEL-001",
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
-        "UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF"
+        "UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF",
+        "UBL-PAYMENT-MEANS-ORDER-VALIDATION-PROOF"
       ],
       "implemented_behavior": [
-        "Cardinality and optionality are reflected and diagnosed at construction time across every typed aggregate (InvoiceLine, LegalMonetaryTotal, TaxTotal, Price, PaymentMeans, AllowanceCharge all raise on a missing required field)."
+        "Cardinality and optionality are reflected and diagnosed at construction time across every typed aggregate (InvoiceLine, LegalMonetaryTotal, TaxTotal, Price, PaymentMeans, AllowanceCharge all raise on a missing required field). Stale-bookkeeping correction plus a narrow new-test addition: this obligation's own missing_behavior claimed element order was \"not reflected or enforced anywhere in the model or validator,\" but _ORDER_CHECKED_COMPONENTS (validator.py) already includes all 6 of this obligation's own source components (PaymentMeans, InvoiceLine, TaxTotal, LegalMonetaryTotal, AllowanceCharge, Price) -- confirmed directly by reading the dict. TaxTotal's own order tuple is a single element (\"TaxAmount\",) and can never itself trigger an order violation, matching the established precedent for other single-field order entries elsewhere in this cluster. The one genuine test-coverage gap found was PaymentMeans: cardinality was tested but no order-violation test existed -- confirmed exploitable-if-untested by direct probe before writing anything (a PayeeFinancialAccount-before-PaymentDueDate document correctly failed validate() and correctly refused dumps(), proving the underlying enforcement already worked; only the test was missing). Added 4 new tests (test_obligation_payment_means_cardinality_validation.py) closing that gap. This obligation's own rule_text (\"Reflect schema element order, cardinality, and optionality in the model\") is now fully proven for its own specific 6-component scope -- the BROADER cluster claim (order-checking incomplete across every UBL complexType, ~91 root document types) remains genuinely true and is tracked separately under SAL-UBL-OBL-3B43504E9C74003C and its siblings, not claimed here."
       ],
-      "missing_behavior": [
-        "Element order is not reflected or enforced anywhere in the model or validator -- the same confirmed gap as SAL-UBL-OBL-3B43504E9C74003C in this cluster. XmlNode preserves whatever child order was present in the source document for round-trip fidelity, but nothing validates that order against the schema-declared sequence."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_before_tax_exclusive_amount_is_a_violation",
+        "tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_item_before_id_is_an_order_violation",
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_amount_before_charge_indicator_is_an_order_violation",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_base_quantity_before_price_amount_is_an_order_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_payee_financial_account_before_payment_due_date_is_an_order_violation",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_dumps_refuses_a_document_with_an_out_of_order_payment_means"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-B68F5F29F11197D6",
       "positive_test_selectors": [
-        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component"
+        "tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component",
+        "tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_last_validates_cleanly",
+        "tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_id_before_invoiced_quantity_before_line_extension_amount_before_item_validates_cleanly",
+        "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_well_formed_allowance_charge_validates_cleanly",
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_well_formed_price_validates_cleanly",
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_payment_means_fields_in_declared_order_validate_cleanly"
       ],
       "proof_requirements": {
         "negative": [
@@ -5672,16 +5691,17 @@
           "Typed access for every first-wave component; cardinality violations diagnosed on mutation."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine",
         "src/python/ubl/src/format_factory/ubl/model/aggregates.py::LegalMonetaryTotal",
         "src/python/ubl/src/format_factory/ubl/model/aggregates.py::TaxTotal",
         "src/python/ubl/src/format_factory/ubl/model/charges.py::Price",
         "src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans",
-        "src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge"
+        "src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge",
+        "src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_violations"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -7365,6 +7385,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-payee-financial-account-001.json": "871c30fea014cdad6674a806f06c1f7c38d9ea4ab650d5cda0fa352d8edf6aea",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-payee-financial-account-stale-citation-001.json": "dbb79cbba24aa88c7876421ad9f2b508fa46ef5a735df122a9efa9e45bc80733",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-payment-means-cardinality-001.json": "3bd7f46c23e4f745b9ea296fe55a8177c0155ad94f02d516088d69d0c0f00697",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-payment-means-order-validation-001.json": "c74b0e8a007bf0765a927bdadc1866d5ce61294a2acb2222f415af43dd4fcd0e",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-preservation-mode-001.json": "088e0985934fa48774b39f185c541d9d3c3f038b561d70bb1d30359755986909",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-profile-identifiers-001.json": "48879903a7e0b13d2411bfdb1a24c27529a89fbf06f5f2dd0de655d21e7ab871",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-profile-validator-registry-001.json": "4fa90752a767767e0ead729d416bbbd68836191ef0a7c2f62480a640b5b2b9cd",
@@ -7422,7 +7443,7 @@
     "tests/python/ubl/test_obligation_namespace_shadowing_security.py": "09f618f4e2dc90fc400cd35109fe302bae72ab17d7087edce0bfaf6d580718fb",
     "tests/python/ubl/test_obligation_party_and_postal_address.py": "d35d55402a5d020574bcd2af1f841f59a3e1097929d17eddfcfab0d8bada261b",
     "tests/python/ubl/test_obligation_party_cardinality_validation.py": "7338dd69a0cb0b2907380229b94ec340d8494439240bb59686714076c930762d",
-    "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py": "099be7dab04dfce9141d2a29a19e05954f616119228f736d3fdc0d9bb23a56d0",
+    "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py": "8a61e28c2ae1e8ebdd9c3493a5761f8b6fb52591c8805971d0e96b8d8115ed11",
     "tests/python/ubl/test_obligation_preservation_mode.py": "0fa525baf6a5836bd2ebd456cad1259f5e3b80c3e1b692864a45471bf6ff0873",
     "tests/python/ubl/test_obligation_profile_identifiers.py": "dd1a6ee497466d8a62d1ab81a91e478328d3ac2a1cec48e90461cadbe7ea8e77",
     "tests/python/ubl/test_obligation_profile_validator_registry.py": "b874e4d0c934f0496470bb854a6d90fafd98dc39f0ff744daac780909e2f2cb1",
@@ -7443,12 +7464,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 168,
+      "implemented": 169,
       "missing": 6,
-      "partial": 20
+      "partial": 19
     },
     "total": 194,
-    "unresolved": 26
+    "unresolved": 25
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

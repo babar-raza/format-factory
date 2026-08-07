@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-payment-means-order-validation-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T15:30:43Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_PAYMENT_MEANS_ORDER_VALIDATION_001",
+    "task_kind": "citation-audit-correction-plus-narrow-new-test-closing-a-real-test-coverage-gap",
+    "root_cause": "SAL-UBL-OBL-B68F5F29F11197D6's own missing_behavior claimed 'element order is not reflected or enforced anywhere in the model or validator,' but _ORDER_CHECKED_COMPONENTS (validator.py) already includes all 6 of this obligation's own source components. Cross-checking test coverage found 5 of 6 already had dedicated order-violation tests; PaymentMeans was the sole gap.",
+    "obligation_targeted": "SAL-UBL-OBL-B68F5F29F11197D6 (UBL-MODEL-001) -- promoted partial->implemented",
+    "acceptance_evidence": "4 new tests prove PaymentMeans fields in declared order validate cleanly, PayeeFinancialAccount before PaymentDueDate is an order violation, dumps() refuses the out-of-order document, dumps() writes a well-formed one without incident.",
+    "regression_tier": "full ubl package suite (tests/python/ubl) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Following event 263's own exact_next_action, searched nrrd/xliff/ubl/ora for the 'thin citation' or 'stale claim' signature proven productive this session. ubl did not show the same 'not yet audited' placeholder pattern as xliff, and most ubl obligations already had substantial, specific test citations.",
+    "2. Checked UBL's thinnest remaining obligation, SAL-UBL-OBL-B68F5F29F11197D6 (1 positive test cited), and read its missing_behavior claiming element order was entirely unenforced -- a claim that cited a sibling obligation (SAL-UBL-OBL-3B43504E9C74003C) as the source of the same gap.",
+    "3. Read _ORDER_CHECKED_COMPONENTS (validator.py) directly and found all 6 of THIS obligation's own source components (PaymentMeans, InvoiceLine, TaxTotal, LegalMonetaryTotal, AllowanceCharge, Price) already present in the dict -- the missing_behavior claim was stale for this obligation's OWN specific scope, even though the broader cluster claim (order-checking across all ~91 UBL root document types) remains genuinely true.",
+    "4. Read this obligation's own rule_text: 'Reflect schema element order, cardinality, and optionality in the model so invalid structures are diagnosable at edit time' -- confirmed order IS explicitly required by this obligation itself, not merely borrowed from a sibling, and confirmed cardinality/optionality were already separately proven in the pre-existing implemented_behavior text.",
+    "5. Cross-checked test coverage for each of the 6 components: found dedicated order-violation tests for LegalMonetaryTotal, InvoiceLine, AllowanceCharge, and Price; confirmed TaxTotal is correctly exempt (its own order tuple is a single element, 'TaxAmount', which can never itself trigger an order violation, matching the established precedent for single-field order entries elsewhere in this cluster); found PaymentMeans was the sole component with cardinality tests but no order test.",
+    "6. Confirmed exploitable-if-untested by direct probe before writing anything: constructed a PaymentMeans document with PayeeFinancialAccount appearing before PaymentDueDate and confirmed validate() correctly flagged ubl.order.violation, and dumps() correctly refused with UblWriteError -- the underlying enforcement already worked correctly, only the formal test was missing.",
+    "7. Ran the full pre-existing ubl suite (983 tests, zero new fixtures) before writing any test -- all passed unchanged.",
+    "8. Added 4 formal tests to the existing test_obligation_payment_means_cardinality_validation.py, mirroring the established order-violation test pattern from test_obligation_allowance_charge_cardinality_and_order_validation.py precisely. Caught and fixed a bytes-vs-str assertion bug in the first draft (dumps() returns bytes, not str) before all tests passed.",
+    "9. Ran ruff (clean), the full ubl suite (987 passed, was 983, +4), and the full 6-format regression (3494 passed, was 3490, +4; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "10. Updated the obligation's evidence citing 6 already-existing tests (one per component, verifying both the well-formed and violation cases) plus the 4 new PaymentMeans tests, individually re-running all 15 cited tests via pytest -v before finalizing the promotion.",
+    "11. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-d7212623364a15d8, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "12. Promoted SAL-UBL-OBL-B68F5F29F11197D6 to implemented: its own rule_text (order, cardinality, optionality for its own 6-component scope) is now fully proven; the broader cluster claim remains correctly tracked under its own separate sibling obligations."
+  ],
+  "allowed_files": [
+    "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_payment_means_cardinality_validation.py -q -- 12 passed, was 8 passed",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_payment_means_cardinality_validation.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 987 passed, was 983 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3494 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3490 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation moved partial->implemented",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 194,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the order rule grounded directly in the pinned OASIS UBL 2.3 schema already cited by the sibling order-cluster obligations.",
+    "obligations_moved_breakdown": "SAL-UBL-OBL-B68F5F29F11197D6 (UBL-MODEL-001) partial->implemented. A citation-audit correction (the claimed gap was stale for this obligation's own 6-component scope) plus a narrow new-test addition (PaymentMeans was the one genuine test-coverage gap among the 6, closed with 4 new tests proving already-working enforcement)."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

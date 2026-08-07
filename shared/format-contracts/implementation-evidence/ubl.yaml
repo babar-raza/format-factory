@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-PAYMENT-MEANS-ORDER-VALIDATION-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-payment-means-order-validation-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-B68F5F29F11197D6 (UBL-MODEL-001), promoted partial->implemented. The obligation''s own missing_behavior claimed "element order is not reflected or enforced anywhere in the model or validator," but reading _ORDER_CHECKED_COMPONENTS (validator.py) directly found all 6 of this obligation''s own source components (PaymentMeans, InvoiceLine, TaxTotal, LegalMonetaryTotal, AllowanceCharge, Price) already present -- the claim was stale for this obligation''s own specific scope, though the broader cluster claim (order-checking across every UBL complexType) remains genuinely true and is tracked separately. Cross-checked test coverage for each of the 6 components and found 5 already had dedicated order-violation tests (LegalMonetaryTotal, InvoiceLine, AllowanceCharge, Price, and TaxTotal correctly exempt since its own order tuple is a single element that can never itself violate order) -- only PaymentMeans lacked one. Confirmed exploitable-if-untested by direct probe before writing anything: a PayeeFinancialAccount-before-PaymentDueDate PaymentMeans document correctly failed validate() with ubl.order.violation and correctly refused dumps() with UblWriteError, proving the underlying enforcement already worked and only the test was missing. Added 4 new tests (tests/python/ubl/test_obligation_payment_means_cardinality_validation.py) closing that gap: fields in declared order validate cleanly, PayeeFinancialAccount before PaymentDueDate is an order violation, dumps() refuses the out-of-order document, dumps() writes a well-formed one without incident. Verified zero false positives against the entire pre-existing 983-test ubl suite before writing these tests, and individually re-ran all 15 cited positive+negative tests via pytest -v before finalizing the promotion. ubl suite: 983 -> 987 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, the order rule grounded directly in the pinned OASIS UBL 2.3 schema already cited by the sibling order-cluster obligations. Covers SAL-UBL-OBL-B68F5F29F11197D6 only; it supports no other obligation and promotes no other product state.'
 - evidence_id: UBL-SIGNATURE-BACKEND-REGISTRY-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-signature-backend-registry-001.json
   expected_result: PASS
@@ -4445,7 +4450,7 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-B68F5F29F11197D6
   capability_id: UBL-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::InvoiceLine
   - src/python/ubl/src/format_factory/ubl/model/aggregates.py::LegalMonetaryTotal
@@ -4453,16 +4458,28 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/charges.py::Price
   - src/python/ubl/src/format_factory/ubl/model/charges.py::PaymentMeans
   - src/python/ubl/src/format_factory/ubl/model/charges.py::AllowanceCharge
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_violations
   positive_test_selectors:
   - tests/python/ubl/test_obligation_aggregate_components.py::test_an_invoice_line_refuses_a_missing_required_component
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_last_validates_cleanly
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_id_before_invoiced_quantity_before_line_extension_amount_before_item_validates_cleanly
+  - tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_well_formed_allowance_charge_validates_cleanly
+  - tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_well_formed_price_validates_cleanly
+  - tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_payment_means_fields_in_declared_order_validate_cleanly
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_a_legal_monetary_total_with_payable_amount_before_tax_exclusive_amount_is_a_violation
+  - tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_item_before_id_is_an_order_violation
+  - tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_amount_before_charge_indicator_is_an_order_violation
+  - tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_base_quantity_before_price_amount_is_an_order_violation
+  - tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_payee_financial_account_before_payment_due_date_is_an_order_violation
+  - tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_dumps_refuses_a_document_with_an_out_of_order_payment_means
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF
+  - UBL-PAYMENT-MEANS-ORDER-VALIDATION-PROOF
   implemented_behavior:
-  - 'Cardinality and optionality are reflected and diagnosed at construction time across every typed aggregate (InvoiceLine, LegalMonetaryTotal, TaxTotal, Price, PaymentMeans, AllowanceCharge all raise on a missing required field).'
-  missing_behavior:
-  - 'Element order is not reflected or enforced anywhere in the model or validator -- the same confirmed gap as SAL-UBL-OBL-3B43504E9C74003C in this cluster. XmlNode preserves whatever child order was present in the source document for round-trip fidelity, but nothing validates that order against the schema-declared sequence.'
+  - 'Cardinality and optionality are reflected and diagnosed at construction time across every typed aggregate (InvoiceLine, LegalMonetaryTotal, TaxTotal, Price, PaymentMeans, AllowanceCharge all raise on a missing required field). Stale-bookkeeping correction plus a narrow new-test addition: this obligation''s own missing_behavior claimed element order was "not reflected or enforced anywhere in the model or validator," but _ORDER_CHECKED_COMPONENTS (validator.py) already includes all 6 of this obligation''s own source components (PaymentMeans, InvoiceLine, TaxTotal, LegalMonetaryTotal, AllowanceCharge, Price) -- confirmed directly by reading the dict. TaxTotal''s own order tuple is a single element ("TaxAmount",) and can never itself trigger an order violation, matching the established precedent for other single-field order entries elsewhere in this cluster. The one genuine test-coverage gap found was PaymentMeans: cardinality was tested but no order-violation test existed -- confirmed exploitable-if-untested by direct probe before writing anything (a PayeeFinancialAccount-before-PaymentDueDate document correctly failed validate() and correctly refused dumps(), proving the underlying enforcement already worked; only the test was missing). Added 4 new tests (test_obligation_payment_means_cardinality_validation.py) closing that gap. This obligation''s own rule_text ("Reflect schema element order, cardinality, and optionality in the model") is now fully proven for its own specific 6-component scope -- the BROADER cluster claim (order-checking incomplete across every UBL complexType, ~91 root document types) remains genuinely true and is tracked separately under SAL-UBL-OBL-3B43504E9C74003C and its siblings, not claimed here.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Typed access for every first-wave component; cardinality violations diagnosed on mutation.
