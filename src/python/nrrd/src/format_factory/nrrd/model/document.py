@@ -191,6 +191,55 @@ class NrrdDocument:
         value = self.header.get("sample units", self.header.get("sampleunits"))
         return value.strip() if value is not None else None
 
+    @property
+    def content(self) -> str | None:
+        """`content:` -- always optional, baseline (no version gate). "A
+        very concise textual description," an unquoted string running to
+        the line's end with no explicit delimiting (SAL-NRRD-00026)."""
+        return self.header.get("content")
+
+    @property
+    def min_value(self) -> float | None:
+        """`min:` -- always optional, baseline. "The minimum value in the
+        array." Any value is legal, including infinite or NaN (SAL-NRRD-00026)."""
+        value = self.header.get("min")
+        return float(value) if value is not None else None
+
+    @property
+    def max_value(self) -> float | None:
+        """`max:` -- always optional, baseline. Same as `min`, but the
+        maximum value in the array (SAL-NRRD-00026)."""
+        value = self.header.get("max")
+        return float(value) if value is not None else None
+
+    @property
+    def old_min(self) -> float | None:
+        """`old min:` (or `oldmin:`) -- always optional, baseline, but
+        "meaningless for floating-point and block nrrds." For integral
+        data produced by linear quantization, the lowest input value
+        mapped to the lowest output integer (SAL-NRRD-00026)."""
+        value = self.header.get("old min", self.header.get("oldmin"))
+        return float(value) if value is not None else None
+
+    @property
+    def old_max(self) -> float | None:
+        """`old max:` (or `oldmax:`) -- same as `old min`, but the highest
+        of the input values mapped to the highest output integer
+        (SAL-NRRD-00026)."""
+        value = self.header.get("old max", self.header.get("oldmax"))
+        return float(value) if value is not None else None
+
+    @property
+    def number(self) -> str | None:
+        """`number:` -- an obsolete, vestigial field from pre-NRRD0001.01
+        magics. The spec's own instruction is followed exactly: "the number
+        field should never be written, and always ignored on reading,
+        without even an attempt to parse the field as an integer"
+        (SAL-NRRD-00026) -- exposed as raw text only, deliberately never
+        parsed as a number, carried through lossless output like any other
+        obsolete/legacy field."""
+        return self.header.get("number")
+
     def per_axis_field_arities(self) -> dict[str, int]:
         """The declared length of every per-axis field actually present.
 

@@ -10,6 +10,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact positive and negative test selectors for every baseline and later-version per-axis metadata field (spacings, axis mins, axis maxs, centers, labels, units, kinds, thicknesses), plus the quote-delimited label/unit tokenizer's embedded-quote escaping, unterminated-quote rejection, and no-other-escaping behavior (2 tests added 2026-08-06 when this evidence was extended to cover 2 more obligations whose stale missing_behavior claimed arity/quoting was unenforced when it already was). Unlike NRRD-ENDIAN-SELECTOR-PROOF, this is NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-428BE326FCBC9A6E, SAL-NRRD-OBL-41CA935399A5A312, and SAL-NRRD-OBL-D8AFDA0097117585 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-BASIC-METADATA-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-basic-metadata-001.json",
+      "sha256": "bfe3aadc50d89c4688ec73d62c94e027f164c1ba97f713bb8176035f3c57f3f0",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-1FE17FFCC0572ABC and SAL-NRRD-OBL-556FAEE08EA61D1A (both NRRD-META-001). None of content/min/max/old-min/old-max/ number had any typed accessor before this slice, confirmed by grepping document.py directly. The pinned spec source confirms each field's exact semantics word-for-word: content is free text with no explicit delimiting; min/max are doubles where \"any value, infinite or not, NaN or not, is valid\"; old min/old max are doubles \"meaningless for floating-point and block nrrds\" (with unspaced oldmin/oldmax aliases); number is explicitly instructed to be \"always ignored on reading, without even an attempt to parse the field as an integer\" -- implemented exactly as instructed (raw text only, deliberately never parsed), not guessed. 9 new tests prove every field's projection, absence, NaN/infinite acceptance, both old-min/old-max spellings, no version gate (baseline since NRRD0001), and round-trip preservation. nrrd suite: 540 -> 549 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-1FE17FFCC0572ABC and SAL-NRRD-OBL-556FAEE08EA61D1A only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "NRRD-DETACHED-PATH-VERSION-GATE-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -101,7 +109,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "a9e7dbb1c217b41f3f3d361c5493a630df282235de24624dc89fd0339f80e27f",
+    "implementation_evidence": "db531b03caa6899a6ed389b009e29de9903b400cef8715a1506776a6147f3b53",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -424,18 +432,24 @@
     {
       "capability_id": "NRRD-META-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-BASIC-METADATA-PROOF"
       ],
       "implemented_behavior": [
-        "Optional metadata, explicit empty quoted content, unknown fields, and absence survive semantic roundtrip as raw strings."
+        "Optional metadata, explicit empty quoted content, unknown fields, and absence survive semantic roundtrip as raw strings. content/min/max/old min/old max/number are now typed accessors on NrrdDocument (model/document.py), each grounded in the pinned spec's own Section 5 field definitions: content is free text; min/max are doubles accepting any value including NaN/infinite; old min/old max are doubles (with unspaced oldmin/oldmax aliases) meaningless for floating-point/block types; number is deliberately exposed as raw text only, never parsed as an integer, following the spec's own explicit reader instruction to never attempt to parse it. Per-axis quote/escape parsing (labels/units) was already implemented in an earlier tick this session (NRRD-SHAPE-001's arity work). Obsolete number and range (old min/old max) fields already carry through lossless output via the generic header-dict preservation mechanism, unchanged by this slice."
       ],
-      "missing_behavior": [
-        "No typed optionality, arity, quote/escape parsing, or obsolete number/range model."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_basic_metadata.py::test_all_six_baseline_fields_are_none_when_absent"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-1FE17FFCC0572ABC",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip",
+        "tests/python/nrrd/test_obligation_basic_metadata.py::test_content_projects_as_a_plain_unquoted_string",
+        "tests/python/nrrd/test_obligation_basic_metadata.py::test_min_and_max_project_as_doubles",
+        "tests/python/nrrd/test_obligation_basic_metadata.py::test_number_is_exposed_as_raw_text_never_parsed",
+        "tests/python/nrrd/test_obligation_basic_metadata.py::test_baseline_metadata_requires_no_version_beyond_nrrd0001",
+        "tests/python/nrrd/test_obligation_basic_metadata.py::test_baseline_metadata_survives_a_round_trip"
       ],
       "proof_requirements": {
         "negative": [
@@ -445,12 +459,12 @@
           "Typed basic/per-axis metadata and legacy-field corpus matrix."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-VALIDATE-001",
@@ -864,18 +878,22 @@
     {
       "capability_id": "NRRD-META-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-BASIC-METADATA-PROOF"
       ],
       "implemented_behavior": [
-        "Content/min/max/old min/old max/number can be preserved as raw optional fields."
+        "Content/min/max/old min/old max/number now have typed numeric meaning and legacy semantics, grounded directly in the pinned spec's Section 5 definitions: min/max are doubles permitting any value (including NaN/infinite, exactly as the spec allows); old min/old max are doubles documented as meaningless for floating-point/block types, recording a linear-quantization input range; number is exposed as raw text only, deliberately never parsed as an integer, matching the spec's own explicit instruction word-for-word ('always ignored on reading, without even an attempt to parse the field as an integer') rather than inventing int-parsing that would contradict it."
       ],
-      "missing_behavior": [
-        "No typed numeric meaning, legacy semantics, or field-specific validation."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_basic_metadata.py::test_all_six_baseline_fields_are_none_when_absent"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-556FAEE08EA61D1A",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip",
+        "tests/python/nrrd/test_obligation_basic_metadata.py::test_old_min_and_old_max_project_as_doubles",
+        "tests/python/nrrd/test_obligation_basic_metadata.py::test_old_min_and_old_max_unspaced_aliases_also_project",
+        "tests/python/nrrd/test_obligation_basic_metadata.py::test_min_accepts_nan_and_max_accepts_infinite"
       ],
       "proof_requirements": {
         "negative": [
@@ -885,12 +903,12 @@
           "Typed baseline and legacy metadata corpus."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-ENC-001",
@@ -2399,6 +2417,7 @@
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-basic-metadata-001.json": "bfe3aadc50d89c4688ec73d62c94e027f164c1ba97f713bb8176035f3c57f3f0",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-path-version-gate-001.json": "0ddb74585effd11d8f31db536d8242dbcf347f14dba381a36faffab0b40a3add",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-writer-001.json": "459aee29fa15ac2f6d632f1d4d863923866957e8086da79dd6dde1ab6374d01f",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-grammar-001.json": "34ff1e271e63f2ceb26c72ebe47b1f44e9be6b2ddde57a06068be324b1383229",
@@ -2415,13 +2434,14 @@
     "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "78ae8537ad384f925009106f92db6dab3421f71b3256a1275a4aebd3bf8fc2dd",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "9b2fc0b03f6c3f4dd42f1e091d465ddd7e887bdd2305f3c864f33d3e1ce39a11",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "83d96605f886fd24e9146410be552cb54d1bb93ee317102f46dc53b164448951",
-    "src/python/nrrd/src/format_factory/nrrd/model/document.py": "887d36416523fc1dbe6b8c43e1ff82fc8dfdc06050bb53ecd1585ed59355847f",
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py": "7bf04acb5645b957c12f6a5d22d358a89d510bd1d63fa4b1bd6f622d2a52ca39",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
     "src/python/nrrd/src/format_factory/nrrd/space.py": "887ea01c8f5e6867c8522335375d717198f1430911728fe6575009dc9a037679",
     "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "691df2b0e148314d1738c4b144af6980a6906246f7435e289eb0d3e24153b2cb",
     "tests/python/nrrd/test_ascii_encoding_endian.py": "70aaff339ed8a91183ead5c3b87164d5d1542c393746125c95fb63e5f3f17c04",
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
     "tests/python/nrrd/test_obligation_axis_field_arity.py": "3528ed42454f8e5f9c3640f3b005ee3f7f3a0972081d0a2b81ce9d3dcd6751e0",
+    "tests/python/nrrd/test_obligation_basic_metadata.py": "a47038126f8bafc580743b85fc7dfff4678a9bebda3afdea28a6590025087660",
     "tests/python/nrrd/test_obligation_compressed_trailing_data.py": "5d2e460aa29e58b85602ce8c4000ad9642e3aee4b38be1816d8297db1116f97e",
     "tests/python/nrrd/test_obligation_detached_forms_production.py": "67c0d1384acdb24a892f7fb7c0340a9bd5c3338e2be5069d5d034a996121263a",
     "tests/python/nrrd/test_obligation_detached_path_version_gate.py": "abb3da066d8d0872f0dae9003d39fbcb45d8262f011dc19625b28130c87b4f5a",
@@ -2444,12 +2464,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 38,
-      "partial": 24,
+      "implemented": 40,
+      "partial": 22,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 27
+    "unresolved": 25
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

@@ -1,0 +1,53 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-basic-metadata-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T07:00:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_BASIC_METADATA_001",
+    "task_kind": "genuine-new-feature-typed-baseline-field-accessors",
+    "root_cause": "SAL-NRRD-OBL-1FE17FFCC0572ABC and SAL-NRRD-OBL-556FAEE08EA61D1A (both NRRD-META-001) require typed access to content/min/max/old-min/old-max/number with their spec-defined optionality, numeric meaning, and legacy-preservation behavior. None of the 6 fields had any typed accessor, confirmed by grepping document.py directly.",
+    "obligation_targeted": "SAL-NRRD-OBL-1FE17FFCC0572ABC, SAL-NRRD-OBL-556FAEE08EA61D1A (both NRRD-META-001)",
+    "acceptance_evidence": "NrrdDocument gains content, min_value, max_value, old_min, old_max, and number properties, each grounded in the pinned spec's own Section 5 field definitions. number is deliberately exposed as raw text only, never parsed as an integer, matching the spec's own explicit reader instruction. 9 new tests prove each field's projection, absence, both old-min/old-max spellings, NaN/infinite value support, no version gate (baseline), and round-trip preservation.",
+    "regression_tier": "full nrrd package suite (tests/python/nrrd) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Grepped document.py for content/min/max/'old min'/'old max'/number -- zero hits, confirming all 6 fields are genuinely unmodeled.",
+    "2. Read the pinned spec source directly (.local/format-contracts/acquired/nrrd/src-nrrd-001.bin, SRC-NRRD-001), Section 5, field by field: content is a free-text string with 'no explicit delimiting'; min/max are doubles where 'any value, infinite or not, NaN or not, is valid'; old min/old max are doubles 'meaningless for floating-point and block nrrds', recording a linear-quantization input range, each with an unspaced alias (oldmin/oldmax); number is explicitly described as obsolete -- the spec's own instruction: 'the number field should never be written, and always ignored on reading, without even an attempt to parse the field as an integer'.",
+    "3. Deliberately implemented number as a raw-string-only accessor, following the spec's explicit anti-parsing instruction exactly rather than inventing int-parsing that would contradict it -- confirmed via a test using a non-numeric value ('not-a-number-at-all') to prove no parsing is ever attempted, not merely that valid integers happen to parse.",
+    "4. Confirmed none of the 6 fields carry a version gate (unlike thicknesses/sample_units at NRRD0004+) -- all are baseline, present since NRRD0001.",
+    "5. Verified interactively before writing any test: all 6 fields project correctly with real values, all return None when absent, NaN/infinite are accepted for min/max, both old-min/old-max spellings work, number preserves non-numeric garbage untouched, and a full round trip through dumps()/loads() preserves every value -- all correct on the first attempt.",
+    "6. Wrote 9 new tests. Ran ruff (clean) and the full nrrd suite (549 passed, was 540, +9) before writing any evidence claim. Ran the full 6-format regression (3088 passed, was 3079, +9; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "tests/python/nrrd/test_obligation_basic_metadata.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "tests/python/nrrd/test_obligation_basic_metadata.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_basic_metadata.py -q -- 9 passed",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 549 passed, 1 skipped, was 540 passed",
+    ".venv/Scripts/python -m ruff check tests/python/nrrd/test_obligation_basic_metadata.py src/python/nrrd/src/format_factory/nrrd/model/document.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3088 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3079 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 65,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not cross-checked against a reference NRRD implementation. Every field's exact optionality/type/legacy-behavior was read directly from the pinned, authority-locked spec source.",
+    "obligations_moved_breakdown": "2 obligations closed by adding 6 genuine, spec-grounded typed accessors (content/min/max/old-min/old-max/number), each matching the pinned spec's own precise definition, including deliberately NOT parsing the obsolete number field as the spec explicitly instructs."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
