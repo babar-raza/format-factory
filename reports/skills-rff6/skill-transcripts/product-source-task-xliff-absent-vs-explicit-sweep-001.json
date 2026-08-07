@@ -1,0 +1,50 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-absent-vs-explicit-sweep-001",
+  "skill_id": "product-source-task",
+  "mode": "live",
+  "timestamp": "2026-08-07T06:45:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_ABSENT_VS_EXPLICIT_SWEEP_001",
+    "task_kind": "systematic-verification-sweep-with-one-genuine-narrow-gap-found",
+    "root_cause": "SAL-XLIFF-OBL-612349C06EB3E809 (XLIFF-PRESERVE-001) named 'a systematic sweep of every other optional field's absent-vs-explicit-default handling... has not been done' as its remaining gap, after only Note.priority had been directly verified.",
+    "obligation_targeted": "SAL-XLIFF-OBL-612349C06EB3E809 (XLIFF-PRESERVE-001)",
+    "acceptance_evidence": "5 new tests systematically prove the absent-vs-explicit distinction for Segment.state, Segment.sub_state, Note.applies_to, and XliffDocument.target_language (all correctly distinguishing, grounded in each attribute's own spec-declared value-format constraint that makes empty string never a valid explicit value), plus a 5th test that PROVES a genuine, narrow remaining gap for Note.category (unconstrained free text, where absent and explicit-empty collide) rather than silently ignoring it.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read reader.py's optional-attribute handling for every candidate field named or implied by the obligation's own finding: Segment.state (element.get('state', '')), Segment.sub_state (element.get('subState', '')), Note.applies_to (note.get('appliesTo', '')), Note.category (note.get('category', '')), and XliffDocument.target_language (root.get('trgLang'), no default).",
+    "2. Rather than assuming str-typed fields all share the same risk as an unverified hypothesis, read the pinned XLIFF 2.1 spec source directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin, section 4.3.1's per-attribute 'Value description'/'Default value' entries) for each field: state is constrained to exactly {initial, translated, reviewed, final}; subState's value format always requires a ':' separator; appliesTo (on note) is constrained to exactly {source, target}. None of these three can ever be validly set to an explicit empty string, so the shared '' sentinel for 'absent' is genuinely unambiguous for all three in conformant input. category, by contrast, is spec-declared as unconstrained 'Text' with 'Default value: undefined' -- a real, format-unconstrained field where an explicit empty string is legitimate and semantically different from absence.",
+    "3. Verified all 5 hypotheses interactively before writing any formal test: state/subState/appliesTo/trgLang all correctly distinguish absent from explicit (confirmed distinct values), while category's absent and explicit-empty cases both produced '' (confirmed collision) -- exactly as the spec-grounded reasoning predicted, on the first attempt.",
+    "4. Wrote 5 formal tests: 4 proving the correct distinction for state/subState/appliesTo/trgLang, and 1 explicitly proving (not silently accepting) the category collision as a genuine, narrow, documented remaining gap -- noting that fixing it would require changing Note.category's public type from str to str | None, a breaking API change deliberately left out of scope for this slice.",
+    "5. Ran ruff (clean) on the new test file. Ran the full xliff suite (371 passed, was 366, +5) and the full 6-format regression (3126 passed, was 3121, +5; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression."
+  ],
+  "allowed_files": [
+    "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py -q -- 5 passed",
+    ".venv/Scripts/python -m ruff check tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 371 passed, was 366 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3126 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3121 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; every per-field constraint claim (state/subState/appliesTo's enum/format restrictions, category's unconstrained-text declaration) is grounded directly in the pinned spec's own per-attribute entries, not invented from memory.",
+    "obligations_moved_breakdown": "0 obligations promoted -- the obligation's own rule_text (preserve the distinction between absent and explicit-empty) is NOT fully satisfied, since Note.category genuinely fails it. Status stays partial, but the finding is now precise and narrow (1 confirmed field, with a stated reason it is out of scope to fix this slice) rather than the prior broad, unverified 'sweep has not been done' claim. 5 new tests ship real, durable test coverage regardless of the status not flipping."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

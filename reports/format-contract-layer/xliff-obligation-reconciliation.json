@@ -2,6 +2,14 @@
   "contract_id": "FC-XLIFF-V1",
   "execution_evidence": [
     {
+      "evidence_id": "XLIFF-ABSENT-VS-EXPLICIT-SWEEP-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-absent-vs-explicit-sweep-001.json",
+      "sha256": "4efe94db3235492a71a6bc7f3fda3b3b727e630e0aa6998facbb45384d9f8959",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Narrows (does not fully close) SAL-XLIFF-OBL-612349C06EB3E809 (XLIFF-PRESERVE-001). Only Note.priority had been directly verified before this slice; the obligation's own finding named a broader, unverified sweep as the remaining gap. Read the pinned XLIFF 2.1 spec source directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin, section 4.3.1's per-attribute entries) for 5 candidate fields rather than assuming they all behave alike: Segment.state, Segment.sub_state, and Note.applies_to are each spec-constrained to a fixed enum or required format that makes an empty string never a valid explicit value, so the shared \"\" absent-sentinel is genuinely unambiguous for all three; XliffDocument.target_language uses no default at all (None when absent). All 4 confirmed via interactive probe and then formal tests to correctly distinguish absent from explicit. Note.category, by contrast, is spec-declared as unconstrained free \"Text\" with \"Default value: undefined\" -- a genuine, narrow remaining gap where an explicit empty category collides with absence, confirmed directly and proven with a dedicated negative test rather than silently ignored; fixing it needs a public-API type change (str -> str | None) left out of scope for this slice. 5 new tests. xliff suite: 366 -> 371 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, with the per-field constraint claims grounded directly in the pinned spec's own text. Covers SAL-XLIFF-OBL-612349C06EB3E809 only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-BASELINE-SUITE",
       "expected_result": "PASS",
       "granularity": "suite",
@@ -157,7 +165,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "c0aaf95111fb89b71524704c1e84735344d1ea92d4098ad306dd31fc8044ca25",
+    "implementation_evidence": "d17092d3e03931ea369d943dfe5a973516fe9313ba4641fbc328cd5c92eccdec",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2062,18 +2070,25 @@
     {
       "capability_id": "XLIFF-PRESERVE-001",
       "execution_evidence_ids": [
-        "XLIFF-BASELINE-SUITE"
+        "XLIFF-BASELINE-SUITE",
+        "XLIFF-ABSENT-VS-EXPLICIT-SWEEP-PROOF"
       ],
       "implemented_behavior": [
-        "reader.py checks `if \"priority\" in note.attrib:` before parsing, so a note with no priority attribute leaves Note.priority as None -- distinguishable from an explicit priority value -- rather than defaulting it to a numeric placeholder. Proven for Note.priority specifically; the same presence-checked-before-parse pattern recurs elsewhere in reader.py but has not been individually verified for every optional field in this pass."
+        "reader.py checks `if \"priority\" in note.attrib:` before parsing, so a note with no priority attribute leaves Note.priority as None -- distinguishable from an explicit priority value -- rather than defaulting it to a numeric placeholder. A systematic sweep now also verifies 4 further optional fields directly, each grounded in the pinned XLIFF 2.1 spec's own per-attribute value-format entry: Segment.state (constrained to exactly initial/translated/reviewed/final -- empty string is never a valid explicit value), Segment.sub_state (the spec requires a ':'-separated prefix:sub-value format -- same reasoning), Note.applies_to (constrained to exactly source/target), and XliffDocument.target_language (reader.py's root.get('trgLang') carries no default, so absent is None, never a string). All 5 fields now proven to correctly distinguish absent from explicit."
       ],
       "missing_behavior": [
-        "Only Note.priority has been directly verified; a systematic sweep of every other optional field's absent-vs-explicit-default handling (segment/@state empty-string normalization, other note/unit attributes) has not been done."
+        "Note.category is a genuine, narrow remaining gap, not merely unverified: the spec's own entry declares it unconstrained free 'Text' with 'Default value: undefined' -- unlike state/subState/appliesTo, an explicit category=\"\" is syntactically legitimate and semantically distinct from the attribute being absent, but this package's Note.category defaults to \"\" for both and reader.py's note.get('category', '') cannot tell them apart, confirmed directly. Fixing it needs a public-API type change (str -> str | None) deliberately left out of scope for this slice."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py::test_note_category_absent_and_explicit_empty_collide_a_genuine_narrow_gap"
+      ],
       "obligation_id": "SAL-XLIFF-OBL-612349C06EB3E809",
       "positive_test_selectors": [
-        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented"
+        "tests/python/xliff/test_obligation_notes_and_annotations.py::test_note_priority_and_category_are_represented",
+        "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py::test_segment_state_absent_is_distinguishable_from_explicit_initial",
+        "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py::test_segment_sub_state_absent_is_distinguishable_from_any_explicit_value",
+        "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py::test_note_applies_to_absent_is_distinguishable_from_explicit_source",
+        "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py::test_target_language_absent_is_none_not_an_empty_string"
       ],
       "proof_requirements": {
         "negative": [
@@ -4627,6 +4642,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-xliff-001.json": "bb85918b335cbc4c82b7993cdbb1506f2e87c77626e871628989ce6fc87ac4d4",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-absent-vs-explicit-sweep-001.json": "4efe94db3235492a71a6bc7f3fda3b3b727e630e0aa6998facbb45384d9f8959",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-cross-cluster-citation-audit-001.json": "a13c27fe5a277fc1cbda003532f02792fee40b10bdafe966c4052601e8f9ae6e",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-ignorable-elements-001.json": "b4eae20e8f1235e61fed5828dbb0d3880ae8c9762e85f1d6e488c777872a1a93",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-lifecycle-io-001.json": "02856c6f0ad09cf7b0352b9b777331dc5f6e2096e5f6576dbfe39f997669372d",
@@ -4658,6 +4674,7 @@
     "src/python/xliff/src/format_factory/xliff/security/limits.py": "8cec6ffd2ccd8fe17fa6d76ab19b2deeda3578d558925d862b15494b3b06665a",
     "src/python/xliff/src/format_factory/xliff/state_transitions.py": "6b12476e31076a788cef37fb476e1b5eda7365e6eb640bbb7bedcebabb9d49ea",
     "src/python/xliff/src/format_factory/xliff/validation/validator.py": "b68a1e14beb3003790d60c39e5043a83964dc217423915dc0061e1aa0be6e451",
+    "tests/python/xliff/test_obligation_absent_vs_explicit_value_sweep.py": "3576c2a5c91c42fb0070f64d798078090e9af3118e3a6015663a4b7cbd111957",
     "tests/python/xliff/test_obligation_ignorable_elements.py": "2deedf81feffbfaaeb5c39fbdf24be6dd6687a00d25ffd94d94c460aa44b8ad7",
     "tests/python/xliff/test_obligation_lifecycle_io.py": "5d9973d4c931cea5f36247ac8f22b05ff57b335ab3dccf2d6c878da7b529c62b",
     "tests/python/xliff/test_obligation_merge_adapter.py": "8ab808796f526b4497037ff207d9924382fe6833689529377210a80e60d95e88",
