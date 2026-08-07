@@ -1,0 +1,64 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-xml-lang-inheritance-resolution-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T14:22:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_XML_LANG_INHERITANCE_001",
+    "task_kind": "narrow-broad-obligation-to-one-fully-specified-spec-example-mirroring-proven-sibling-primitive",
+    "root_cause": "Both SAL-XLIFF-OBL-7DA078717EA60881 and SAL-XLIFF-OBL-867500AA0AC3D2C1 (XLIFF-MODEL-001)'s own missing_behavior text already named the exact remaining gap: 'xml:lang's own inheritance chain (distinct from source/target language compatibility checking, which is a different, already-built concern) remains entirely unaddressed -- the spec's own default-value table for xml:lang was not investigated this slice.' This directly parallels how effective_xml_space() closed the analogous xml:space gap at event 243.",
+    "obligation_targeted": "SAL-XLIFF-OBL-7DA078717EA60881 and SAL-XLIFF-OBL-867500AA0AC3D2C1 (both XLIFF-MODEL-001) -- remain partial; evidence strengthened, real new primitive built, no status crossing (same architectural limitation -- no whole-tree walker -- already accepted for xml:space applies identically to xml:lang)",
+    "acceptance_evidence": "6 new tests prove: a local value always wins; <source>/<target> each independently inherit their own root-anchored default (srcLang/trgLang); any other element inherits its parent's already-resolved value; an element with nothing declared anywhere resolves to None.",
+    "regression_tier": "full xliff package suite (tests/python/xliff) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. After 3 stale-bookkeeping reconciliations closed 6 xliff obligations in a row (events 254-255), continued sweeping xliff's remaining 20 partial obligations for either further stale claims or a genuine narrow-primitive candidate.",
+    "2. Found SAL-XLIFF-OBL-7DA078717EA60881/867500AA0AC3D2C1's missing_behavior explicitly pointing at xml:lang's inheritance chain as the one remaining, not-yet-investigated half of the obligation, directly parallel to how xml:space's own inheritance was closed via effective_xml_space() at event 243.",
+    "3. Read the pinned XLIFF 2.1 spec's own xml:lang section directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin, section 4.3.2.1 xml:lang) and found its default-value table: <source> inherits the enclosing <xliff>'s srcLang; <target> inherits the enclosing <xliff>'s trgLang; any other element inherits its parent's xml:lang.",
+    "4. Noted the key structural difference from xml:space: <source>/<target>'s own defaults are anchored to the document ROOT's srcLang/trgLang specifically, not their immediate parent (unlike xml:space, where every non-<data>/<xliff> element inherits uniformly from its immediate parent) -- modeled as a distinct is_source/is_target branch rather than folded into generic parent inheritance.",
+    "5. Added effective_xml_lang() to model/document.py directly after effective_xml_space(), mirroring its exact reusable-primitive shape and docstring style: a caller composes it while descending the hierarchy it already navigates, not a magic whole-tree walker, since this package's model has no parent back-references at all -- the identical, already-accepted architecture limitation for xml:space.",
+    "6. Wired ExtensionAdapter-style exports: effective_xml_lang added to model/__init__.py and the top-level xliff/__init__.py, matching effective_xml_space's own existing import/export ordering.",
+    "7. Probed interactively before writing any test: source/target inheriting root srcLang/trgLang independently, an explicit local value always winning, any other element inheriting a caller-supplied parent value, and an element with nothing declared anywhere resolving to None (confirmed xml:lang, unlike xml:space, has no universal fallback default) -- all 5 cases behaved correctly on the first attempt.",
+    "8. Ran the full pre-existing xliff suite (474 tests, zero new fixtures) against the new function and export wiring to look for false positives before writing a single new test -- all 474 passed unchanged.",
+    "9. Wrote 6 formal tests in a new test_obligation_xml_lang_inheritance_resolution.py, mirroring test_obligation_xml_space_inheritance_resolution.py's established structure and docstring conventions precisely. All passed on the first attempt.",
+    "10. Ran ruff (clean), mypy on the changed source file (clean), the full xliff suite (480 passed, was 474, +6), and the full 6-format regression (3466 passed, was 3460, +6; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "11. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-a372a1f5d8fa85ea, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK.",
+    "12. Both obligations remain status=partial: their missing_behavior now names only the shared, already-accepted 'no whole-tree walker without parent back-references' architecture limitation applying to BOTH xml:space and xml:lang, rather than a distinct unaddressed attribute -- narrowing, not fully closing, since the broader 'inherited attributes resolved' rule_text still asks for more than either reusable primitive alone provides."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py -q -- 6 passed",
+    ".venv/Scripts/python -m ruff check src/python/xliff/src/format_factory/xliff/model/document.py src/python/xliff/src/format_factory/xliff/model/__init__.py src/python/xliff/src/format_factory/xliff/__init__.py tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py -- all checks passed",
+    ".venv/Scripts/python -m mypy src/python/xliff/src/format_factory/xliff/model/document.py --ignore-missing-imports -- Success: no issues found",
+    ".venv/Scripts/pytest tests/python/xliff/ -q -- 480 passed, was 474 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3466 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3460 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations moved status; 2 already-partial obligations' evidence strengthened with a genuine new reusable primitive",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_total_for_format": 142,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the resolution rule grounded directly in the pinned spec's own default-value table.",
+    "obligations_moved_breakdown": "SAL-XLIFF-OBL-7DA078717EA60881 and SAL-XLIFF-OBL-867500AA0AC3D2C1 (both XLIFF-MODEL-001) remain partial. A genuine new capability (effective_xml_lang(), mirroring the already-proven effective_xml_space() primitive) closing exactly the narrow gap both obligations' own text named, without crossing a status boundary since the same architecture limitation (no whole-tree walker) already accepted for xml:space applies identically here."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

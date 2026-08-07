@@ -9,6 +9,7 @@ from .document import (
     Unit,
     XliffDocument,
     XliffFile,
+    effective_xml_lang,
     effective_xml_space,
 )
 from .inline import InlineElement, InlineNode, flatten_inline_content
@@ -28,6 +29,7 @@ __all__ = [
     "XliffDocument",
     "XliffFile",
     "copy_source_to_target",
+    "effective_xml_lang",
     "effective_xml_space",
     "flatten_inline_content",
     "join_segments",

@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-XML-LANG-INHERITANCE-RESOLUTION-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-xml-lang-inheritance-resolution-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Narrows (does not fully close) SAL-XLIFF-OBL-7DA078717EA60881 and SAL-XLIFF-OBL-867500AA0AC3D2C1 (both XLIFF-MODEL-001). Both obligations'' own missing_behavior already named this exact remaining gap: "xml:lang''s own inheritance chain... remains entirely unaddressed -- the spec''s own default-value table for xml:lang was not investigated this slice." Read the pinned XLIFF 2.1 spec''s own default-value table directly (.local/format-contracts/acquired/xliff/src-xliff-001.bin, section 4.3.2.1 xml:lang): "default values for this attribute depend on the element in which it is used: When used in a <source> element: The value set in the srcLang attribute of the enclosing <xliff> element. When used in a <target> element: The value set in the trgLang attribute of the enclosing <xliff> element. When used in any other element: The value of the xml:lang attribute of its parent element." Added effective_xml_lang() to model/document.py, the same reusable-primitive shape as the already-proven effective_xml_space() (event 243): a caller composes it while descending the hierarchy it already navigates, not a magic whole-tree walker, since this package''s model has no parent back-references at all -- the identical architecture limitation already accepted for xml:space, deliberately not revisited here either. Unlike xml:space, modeled <source>/<target>''s own defaults as a distinct root-anchored branch (srcLang/trgLang from the document root) rather than folding into generic parent inheritance, since the spec anchors them to the root, not the immediate parent. Verified zero false positives against the entire pre-existing 474-test xliff suite before writing a single new test. 6 new tests (tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py) prove: a local value always wins; <source>/<target> each independently inherit their own root-level default; any other element inherits its parent''s already-resolved value; an element with nothing declared anywhere resolves to None (xml:lang, unlike xml:space, has no universal fallback default). xliff suite: 474 -> 480 passed. mypy clean. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, the resolution rule grounded directly in the pinned spec''s own default-value table. Covers SAL-XLIFF-OBL-7DA078717EA60881 and SAL-XLIFF-OBL-867500AA0AC3D2C1 only; it supports no other obligation and promotes no product state.'
 - evidence_id: XLIFF-NOTE-CATEGORY-ABSENT-VS-EXPLICIT-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-note-category-absent-vs-explicit-001.json
   expected_result: PASS
@@ -2520,16 +2525,24 @@ obligations:
   - tests/python/xliff/test_obligation_xml_space_inheritance_resolution.py::test_data_always_defaults_to_preserve_regardless_of_parent
   - tests/python/xliff/test_obligation_xml_space_inheritance_resolution.py::test_an_explicit_value_on_data_still_wins_over_its_own_fixed_default
   - tests/python/xliff/test_obligation_xml_space_inheritance_resolution.py::test_the_default_parent_argument_matches_the_root_default
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py::test_a_locally_declared_value_always_wins_over_inheritance
+  - tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py::test_source_with_no_local_value_inherits_the_root_src_lang
+  - tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py::test_target_with_no_local_value_inherits_the_root_trg_lang
+  - tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py::test_any_other_element_inherits_the_parents_already_resolved_value
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py::test_source_and_target_defaults_are_independent_of_each_other
+  - tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py::test_an_absent_parent_and_absent_root_language_resolves_to_none
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-MODEL-TEXT-SELECTOR-PROOF
   - XLIFF-XML-SPACE-INHERITANCE-RESOLUTION-PROOF
+  - XLIFF-XML-LANG-INHERITANCE-RESOLUTION-PROOF
   implemented_behavior:
   - 'XliffDocument/XliffFile/Group/Unit/Segment (Group and Unit ship without the Xliff-prefixed name the rule_text uses descriptively -- format-prefixed names are deliberately not the canonical implementation target per this repo''s naming convention) are fully typed, and tree order/ID preservation through load, nested traversal, and a full round trip are proven at depth: added this slice, test_iter_units_visits_nested_group_units_in_document_order and test_nested_group_and_unit_ids_survive_a_full_round_trip exercise a group-within-group document (the only prior nested-group fixture, test_xliff_structural_fidelity.py, imports the deprecated bare xliff.* shadow package and does not count as shipped-namespace evidence).'
   - 'effective_xml_space() now exists (model/document.py), a reusable primitive resolving one element''s effective xml:space per the pinned spec''s own default-value table (section 4.3.2.2): data always defaults to preserve regardless of parent; every other element inherits its parent''s already-resolved effective value when not locally declared; a locally declared value always wins over any inherited default. This is the resolution RULE, proven completely and directly -- composing it across an actual document tree (this package''s model has no parent back-references) remains a caller responsibility, honestly documented as a separate, larger architecture question rather than silently claimed as a full walking API.'
+  - 'effective_xml_lang() now also exists (model/document.py), the same reusable-primitive shape as effective_xml_space(), grounded directly in the pinned spec''s own default-value table (section 4.3.2.1 xml:lang): a locally declared value always wins; <source> with no local value inherits the document root''s srcLang; <target> with no local value inherits the document root''s trgLang (a distinct root-anchored branch, unlike xml:space''s parent-only inheritance); any other element inherits its parent''s already-resolved value; an element with nothing declared anywhere in its chain resolves to None (xml:lang has no universal fallback default the way xml:space does). Distinct from source/target language compatibility checking, already built separately.'
   missing_behavior:
-  - 'xml:space''s own inheritance RULE is now directly proven (effective_xml_space(), grounded in the pinned spec''s own default-value table: data always defaults to preserve; every other element inherits its parent''s effective value when not locally declared), but this is a reusable primitive a caller composes while descending the tree, not a magic whole-tree walker -- this package''s model has no parent back-references at all, so an actual method that returns "this unit''s effective xml:space" without the caller supplying its own ancestor chain would need a larger, separate architecture change (either parent pointers or a redesigned tree), deliberately not attempted here. xml:lang''s own inheritance chain (distinct from source/target language *compatibility* checking, which is a different, already-built concern) remains entirely unaddressed -- the spec''s own default-value table for xml:lang was not investigated this slice.'
+  - 'Both xml:space''s and xml:lang''s own inheritance RULES are now directly proven as reusable primitives (effective_xml_space(), effective_xml_lang()), but neither is a magic whole-tree walker -- this package''s model has no parent back-references at all, so an actual method that returns "this unit''s effective xml:space/xml:lang" without the caller supplying its own ancestor chain would need a larger, separate architecture change (either parent pointers or a redesigned tree), deliberately not attempted here for either attribute.'
   proof_requirements:
     positive:
     - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
@@ -2624,16 +2637,24 @@ obligations:
   - tests/python/xliff/test_obligation_xml_space_inheritance_resolution.py::test_data_always_defaults_to_preserve_regardless_of_parent
   - tests/python/xliff/test_obligation_xml_space_inheritance_resolution.py::test_an_explicit_value_on_data_still_wins_over_its_own_fixed_default
   - tests/python/xliff/test_obligation_xml_space_inheritance_resolution.py::test_the_default_parent_argument_matches_the_root_default
-  negative_test_selectors: []
+  - tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py::test_a_locally_declared_value_always_wins_over_inheritance
+  - tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py::test_source_with_no_local_value_inherits_the_root_src_lang
+  - tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py::test_target_with_no_local_value_inherits_the_root_trg_lang
+  - tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py::test_any_other_element_inherits_the_parents_already_resolved_value
+  negative_test_selectors:
+  - tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py::test_source_and_target_defaults_are_independent_of_each_other
+  - tests/python/xliff/test_obligation_xml_lang_inheritance_resolution.py::test_an_absent_parent_and_absent_root_language_resolves_to_none
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-MODEL-TEXT-SELECTOR-PROOF
   - XLIFF-XML-SPACE-INHERITANCE-RESOLUTION-PROOF
+  - XLIFF-XML-LANG-INHERITANCE-RESOLUTION-PROOF
   implemented_behavior:
   - 'Same evidence as SAL-XLIFF-OBL-7DA078717EA60881 in this cluster: tree order and IDs are proven at nesting depth through load, traversal, and round trip. References (startRef/dataRef) are proven by XLIFF-INLINE-001''s paired-code tests; scope preservation through edits is proven by the target-creation and text-editing tests in this and the XLIFF-TEXT-001 cluster.'
   - 'effective_xml_space()''s resolution rule is also proven here, same evidence as SAL-XLIFF-OBL-7DA078717EA60881: data always defaults to preserve regardless of parent; every other element inherits its parent''s already-resolved effective value when not locally declared; a locally declared value always wins.'
+  - 'effective_xml_lang()''s resolution rule is also proven here, same evidence as SAL-XLIFF-OBL-7DA078717EA60881: <source>/<target> inherit the document root''s srcLang/trgLang independently of each other when no local value is declared; any other element inherits its parent''s already-resolved value; a locally declared value always wins; an element with nothing declared anywhere resolves to None.'
   missing_behavior:
-  - 'xml:space''s own inheritance RULE is now directly proven (effective_xml_space(), grounded in the pinned spec''s own default-value table: data always defaults to preserve; every other element inherits its parent''s effective value when not locally declared), but this is a reusable primitive a caller composes while descending the tree, not a magic whole-tree walker -- this package''s model has no parent back-references at all, so an actual method that returns "this unit''s effective xml:space" without the caller supplying its own ancestor chain would need a larger, separate architecture change (either parent pointers or a redesigned tree), deliberately not attempted here. xml:lang''s own inheritance chain (distinct from source/target language *compatibility* checking, which is a different, already-built concern) remains entirely unaddressed -- the spec''s own default-value table for xml:lang was not investigated this slice.'
+  - 'Both xml:space''s and xml:lang''s own inheritance RULES are now directly proven as reusable primitives (effective_xml_space(), effective_xml_lang()), but neither is a magic whole-tree walker -- this package''s model has no parent back-references at all, so an actual method that returns "this unit''s effective xml:space/xml:lang" without the caller supplying its own ancestor chain would need a larger, separate architecture change (either parent pointers or a redesigned tree), deliberately not attempted here for either attribute.'
   proof_requirements:
     positive:
     - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.

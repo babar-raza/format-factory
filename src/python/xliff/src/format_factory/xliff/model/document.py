@@ -36,6 +36,44 @@ def effective_xml_space(
     return parent
 
 
+def effective_xml_lang(
+    local_value: str | None,
+    *,
+    parent: str | None = None,
+    is_source: bool = False,
+    is_target: bool = False,
+    src_lang: str | None = None,
+    trg_lang: str | None = None,
+) -> str | None:
+    """Resolve one element's effective xml:lang per the pinned XLIFF 2.1
+    spec's own default-value table (section 4.3.2.1 xml:lang): "default
+    values for this attribute depend on the element in which it is used:
+    When used in a <source> element: The value set in the srcLang attribute
+    of the enclosing <xliff> element. When used in a <target> element: The
+    value set in the trgLang attribute of the enclosing <xliff> element.
+    When used in any other element: The value of the xml:lang attribute of
+    its parent element."
+
+    Unlike xml:space, <source> and <target>'s own defaults come from the
+    document ROOT's srcLang/trgLang, not their immediate parent -- a
+    distinct branch this function models explicitly rather than folding
+    into the generic parent-inheritance case. Same reusable-primitive
+    shape as effective_xml_space(): a caller composes it while descending
+    the hierarchy it already navigates, passing is_source/is_target for
+    the two root-anchored cases and the already-resolved parent value for
+    every other element. Distinct from source/target language
+    *compatibility* checking (a different, already-built concern) --
+    this only resolves the effective xml:lang value itself.
+    """
+    if local_value is not None:
+        return local_value
+    if is_source:
+        return src_lang
+    if is_target:
+        return trg_lang
+    return parent
+
+
 def _copy_inline_nodes(nodes: list[InlineNode]) -> list[InlineNode]:
     """Deep-copy inline content so source and target never share mutable codes."""
 
