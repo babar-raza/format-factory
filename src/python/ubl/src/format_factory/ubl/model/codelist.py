@@ -7,23 +7,23 @@ profile-supplied lists pluggable at runtime" and "Load official code-list
 resources, map them to coded properties, validate identifiers/agencies/
 versions/values, and support user-supplied lists."
 
-Scope chosen, documented honestly rather than silently narrowed: this
-module builds the full pluggable registry and offline validation
+This module builds the full pluggable registry and offline validation
 mechanism -- immutable :class:`CodeList` entries, a registry callers
 populate at runtime, and :func:`validate_code`, which is deterministic
-and makes no network or filesystem access. It does NOT bundle actual
-official code-list data (UN/CEFACT UNCL lists, ISO 4217 currency codes,
-ISO 3166 country codes, and similar) and does not parse the OASIS
-genericode XML distribution format those lists ship in. No SAL fact in
-this repository's committed spec cache enumerates any such list's actual
-values or documents the genericode schema with enough precision to
-implement a loader against; building either from memory would risk
-fabricating spec content, which this codebase does not do. An official
-list is registered through exactly the same :func:`CodeListRegistry.register`
+and makes no network or filesystem access. An official list is
+registered through exactly the same :func:`CodeListRegistry.register`
 call a user- or profile-supplied list uses -- there is no architectural
-difference between "official" and "custom" once the data is in hand, so
-this is a real, complete implementation of everything the obligations ask
-for except the officially-sourced data itself.
+difference between "official" and "custom" once the data is in hand.
+
+The official code-list data itself (UN/CEFACT UNCL lists, ISO 4217
+currency codes, ISO 3166 country codes, and similar) and the OASIS
+genericode XML loader those lists ship in both now exist, in
+``.genericode`` -- the pinned raw acquisition cache
+(.local/format-contracts/acquired/ubl/src-ubl-002.bin) turned out to be
+the actual official UBL 2.3 distribution ZIP, not spec prose, and its
+``cl/gc/default/`` directory contains the genuine OASIS-published
+genericode files. See :func:`.genericode.official_code_list_registry`
+for a ready-populated registry.
 """
 
 from __future__ import annotations

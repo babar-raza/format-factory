@@ -178,6 +178,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) SAL-UBL-OBL-0996E6D7B91D544F (UBL-PARSE-001). find()/find_all() match children by local name only, confirmed exploitable via a spoofed same-local-name element in an attacker-controlled namespace -- the obligation's own finding explicitly declined a full fix (auditing ~78 call sites across the typed-projection layer) as too large a blast radius for a citation-audit tick, and this slice does not attempt that rewrite either. Instead added a detection-only defense in validate(): flags the one structural signature every such spoofing attempt must share (two or more same-local-name children in different namespaces under one parent), which no conformant UBL document produces. Verified against the exact reproduction case from the original finding; verified to produce zero false positives across the entire pre-existing 878-test suite before any new test was written; deliberately excludes ext:ExtensionContent (opaque vendor content) to avoid false positives there. find() itself remains documented as still vulnerable when called without validating first -- proven directly, not hidden, so this obligation stays partial rather than implemented. 7 new tests. ubl suite: 878 -> 885 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule. Covers SAL-UBL-OBL-0996E6D7B91D544F only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "UBL-OFFICIAL-CODE-LISTS-GENERICODE-LOADER-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-official-code-lists-genericode-loader-001.json",
+      "sha256": "5ae1937e4c93637a8daf778a047f2eb7d6610817c552401da470f1eb7ab42fa3",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-C717DEB32BC6F815 and SAL-UBL-OBL-DE7D98EAE4344EDA (both UBL-CODELIST-001), both promoted partial->implemented. codelist.py's own module docstring had honestly documented the gap: \"does NOT bundle actual official code-list data ... and does not parse the OASIS genericode XML distribution format ... No SAL fact in this repository's committed spec cache enumerates any such list's actual values or documents the genericode schema with enough precision ... building either from memory would risk fabricating spec content.\" That was true of the SAL fact cache specifically, not of the pinned RAW spec acquisition cache -- applying the \"read the pinned acquisition cache directly, do not trust the missing_behavior's own framing of what it can and cannot contain\" discipline just proven three times this session for xliff's module schemas, found .local/format-contracts/acquired/ubl/src-ubl-002.bin (261,521 lines as a text dump, previously never opened as anything but spec HTML) is actually a ZIP archive -- confirmed by its own \"PK\" magic bytes -- and IS the real official UBL 2.3 distribution package (927 total archive entries), not spec prose at all. Its cl/gc/default/ directory contains the genuine OASIS-published genericode files for all of UBL 2.3's standard code lists. Extracted and bundled 11 of them verbatim as package data (excluding the \"-incl-deprecated\"/\"-incl-deleted\" superset variants): AllowanceChargeReasonCode, BinaryObjectMimeCode, ChannelCode, CountryIdentificationCode (=ISO 3166), CurrencyCode (=ISO 4217), LanguageCode, PackagingTypeCode, PaymentMeansCode, TransportEquipmentTypeCode, TransportModeCode, UnitOfMeasureCode -- 4.87MB combined uncompressed, ~330KB compressed in a built wheel. Wrote a new genericode.py parsing the real OASIS genericode 1.0 structure these files themselves exhibit (confirmed directly against the parsed ElementTree, not assumed from memory: only the document's own root element carries the genericode namespace prefix, every descendant is unprefixed/no-namespace) -- reads the document's own declared ColumnSet/Key/ColumnRef to find the primary identifying column rather than hardcoding \"code\" as a column name, proven against a differently-named-column fixture. official_code_list_registry() composes load_bundled_code_lists() with the already-existing, already-proven CodeListRegistry with zero special-casing (matching codelist.py's own \"official and custom register identically\" design). Verified against real, spot-checked values: USD/EUR/GBP are members of CurrencyCode; US/DE are members of CountryIdentificationCode; KGM/MTR are members of UnitOfMeasureCode; CurrencyCode's own agency_id (\"5\", the UN/EDIFACT code for ISO) and version (\"2018-08-29\") are both extracted from the file's own Identification block, not hardcoded. A real wheel was built via `pip wheel .` and all 11 bundled .gc files confirmed to ship inside it, byte-identical to source, before any dependent code was written -- catching a class of packaging misconfiguration that would only surface for actual pip-installed users. Hit one real security-baseline constraint while implementing: this package's own test suite forbids importing `importlib` anywhere in src/ (a supply-chain-hardening rule already enforced for every other module) -- switched from `importlib.resources` to plain `pathlib.Path(__file__).parent`, matching the exact same pattern the xliff package's own bundled-schema loader (built in a prior tick this session) already uses. Verified zero false positives against the entire pre-existing 987-test ubl suite before writing a single new test. 14 new tests (tests/python/ubl/test_obligation_official_code_lists.py) prove: all 11 lists load; every list has nonempty values; known-good/known-bad membership for 3 spot-checked lists; agency/version metadata extraction; the composed registry validates correctly and composes with a user-supplied list; a fresh registry each call does not leak mutation across callers; the genericode parser handles a non-standard key-column name and rejects malformed documents; every bundled filename is present on disk (a packaging-drift guard). Also updated codelist.py's and the sibling test file's own module docstrings, which had explicitly and specifically claimed this data/loader combination was unavailable -- both corrected to point at genericode.py rather than left to drift into stale-claim territory for a future tick to rediscover. ubl suite: 987 -> 1001 passed. ruff and mypy --strict clean (35 source files). Combined 6-format run: 3538 -> 3552 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped -- zero regression beyond the 14 intentional new tests. NOT backed by an independent reference UBL implementation for cross-validation, but the bundled data ITSELF is the authoritative OASIS-published genericode files, extracted byte-for-byte from the pinned official distribution package -- the same strength of grounding as xliff's own core-schema extraction earlier this session. Covers SAL-UBL-OBL-C717DEB32BC6F815 and SAL-UBL-OBL-DE7D98EAE4344EDA only; it supports no other obligation."
+    },
+    {
       "evidence_id": "UBL-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -333,7 +341,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "1054cc486133ea59b488a49b8aac9249700cafbe86fb837c20980e3dd15ad2bf",
+    "implementation_evidence": "78572e3e8ca8699883fd2fae05265c2ac0fdf81f59e8ff27ab4774c651447429",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -6006,24 +6014,32 @@
       "capability_id": "UBL-CODELIST-001",
       "execution_evidence_ids": [
         "UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF",
-        "UBL-CODELIST-REGISTRY-SELECTOR-PROOF"
+        "UBL-CODELIST-REGISTRY-SELECTOR-PROOF",
+        "UBL-OFFICIAL-CODE-LISTS-GENERICODE-LOADER-PROOF"
       ],
       "implemented_behavior": [
-        "A new pluggable registry (model/codelist.py) now exists: immutable CodeList entries keyed by (list_id, agency_id, version), a CodeListRegistry callers populate at runtime, and validate_code() which is deterministic and makes no network or filesystem access -- proven idempotent across repeated calls. An official code list and a user-/profile-supplied code list register through exactly the same method, with no special-casing, proven by registering both kinds side by side."
+        "A new pluggable registry (model/codelist.py) now exists: immutable CodeList entries keyed by (list_id, agency_id, version), a CodeListRegistry callers populate at runtime, and validate_code() which is deterministic and makes no network or filesystem access -- proven idempotent across repeated calls. An official code list and a user-/profile-supplied code list register through exactly the same method, with no special-casing, proven by registering both kinds side by side. Both previously-missing pieces now also exist: the pinned raw acquisition cache (.local/format-contracts/acquired/ubl/src-ubl-002.bin) turned out to be the actual official UBL 2.3 distribution ZIP (confirmed by its own \"PK\" magic bytes and 927 archive entries), containing the genuine OASIS-published genericode code-list files. 11 of them (CurrencyCode=ISO 4217, CountryIdentificationCode=ISO 3166, UnitOfMeasureCode, PaymentMeansCode, LanguageCode, and 6 others; the \"-incl-deprecated\"/\"-incl-deleted\" superset variants excluded) are bundled verbatim as package data. A new genericode.py parses the OASIS genericode 1.0 format directly against the real files' own structure (reading the declared Key/ColumnRef rather than assuming a fixed \"code\" column name), and official_code_list_registry() returns a ready-populated CodeListRegistry. Verified against real values: USD/EUR/GBP are members of CurrencyCode; US/DE are members of CountryIdentificationCode; KGM/MTR are members of UnitOfMeasureCode. A real wheel was built and the 11 bundled .gc files confirmed to ship inside it byte-identical to source before any dependent code was written."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: this obligation asks to \"load official code lists from their distribution artifacts\" -- no actual official code-list data (UN/CEFACT UNCL lists, ISO 4217, ISO 3166, and similar) is bundled, and no OASIS genericode XML loader is implemented. No SAL fact in this repository's committed spec cache enumerates any such list's real values or documents the genericode distribution schema with enough precision to build a loader against; building either from memory would risk fabricating spec content. The registry and validation mechanism this obligation also asks for is fully built and tested -- only the officially-sourced data and its distribution-format loader remain unattempted."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_code_not_a_member_of_a_registered_list_is_invalid",
-        "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_code_naming_an_unregistered_list_is_unknown_not_invalid"
+        "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_code_naming_an_unregistered_list_is_unknown_not_invalid",
+        "tests/python/ubl/test_obligation_official_code_lists.py::test_official_code_list_registry_rejects_an_unknown_code",
+        "tests/python/ubl/test_obligation_official_code_lists.py::test_parse_genericode_rejects_a_non_genericode_root",
+        "tests/python/ubl/test_obligation_official_code_lists.py::test_parse_genericode_rejects_a_document_missing_identification"
       ],
       "obligation_id": "SAL-UBL-OBL-C717DEB32BC6F815",
       "positive_test_selectors": [
         "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_code_member_of_a_registered_list_is_valid",
         "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_official_and_user_supplied_lists_register_identically",
         "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_validation_is_deterministic_and_repeatable",
-        "tests/python/ubl/test_obligation_codelist_registry.py::TestCodeListImmutability::test_code_list_is_frozen"
+        "tests/python/ubl/test_obligation_codelist_registry.py::TestCodeListImmutability::test_code_list_is_frozen",
+        "tests/python/ubl/test_obligation_official_code_lists.py::test_all_eleven_bundled_lists_load_successfully",
+        "tests/python/ubl/test_obligation_official_code_lists.py::test_currency_code_list_contains_iso_4217_alpha_codes",
+        "tests/python/ubl/test_obligation_official_code_lists.py::test_country_identification_code_list_contains_iso_3166_codes",
+        "tests/python/ubl/test_obligation_official_code_lists.py::test_official_code_list_registry_is_populated_and_ready_to_validate",
+        "tests/python/ubl/test_obligation_official_code_lists.py::test_official_code_list_registry_composes_with_a_user_supplied_list",
+        "tests/python/ubl/test_obligation_official_code_lists.py::test_parse_genericode_extracts_the_declared_key_column_not_a_hardcoded_name"
       ],
       "proof_requirements": {
         "negative": [
@@ -6033,12 +6049,14 @@
           "Known-good and known-bad coded values per first-wave list; offline determinism verified."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/model/codelist.py::CodeListRegistry",
-        "src/python/ubl/src/format_factory/ubl/model/codelist.py::validate_code"
+        "src/python/ubl/src/format_factory/ubl/model/codelist.py::validate_code",
+        "src/python/ubl/src/format_factory/ubl/model/genericode.py::official_code_list_registry",
+        "src/python/ubl/src/format_factory/ubl/model/genericode.py::parse_genericode"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-EDIT-001",
@@ -6546,22 +6564,25 @@
       "capability_id": "UBL-CODELIST-001",
       "execution_evidence_ids": [
         "UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF",
-        "UBL-CODELIST-REGISTRY-SELECTOR-PROOF"
+        "UBL-CODELIST-REGISTRY-SELECTOR-PROOF",
+        "UBL-OFFICIAL-CODE-LISTS-GENERICODE-LOADER-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of the loading/validation mechanism SAL-UBL-OBL-C717DEB32BC6F815 also names: coded properties (Code.list_id/list_agency_id/list_version_id) map directly onto a CodeList's identity, and validate_code() checks identifiers/agencies/versions/values together -- proven that agency and version each independently distinguish otherwise-identical list_ids, and that a Code with no list_id has nothing to validate against. User-supplied lists are supported identically to any other registered list."
+        "Cross-capability duplicate of the loading/validation mechanism SAL-UBL-OBL-C717DEB32BC6F815 also names: coded properties (Code.list_id/list_agency_id/list_version_id) map directly onto a CodeList's identity, and validate_code() checks identifiers/agencies/versions/values together -- proven that agency and version each independently distinguish otherwise-identical list_ids, and that a Code with no list_id has nothing to validate against. User-supplied lists are supported identically to any other registered list. Official code-list resources and their distribution-format loader now also exist -- see SAL-UBL-OBL-C717DEB32BC6F815's own implemented_behavior for the full detail. Each bundled list's agency_id/version metadata is itself extracted from the genericode file's own Identification/Agency/Identifier and Identification/Version elements, not hardcoded, proven directly against CurrencyCode's real ISO agency code and publication date."
       ],
-      "missing_behavior": [
-        "Same confirmed gap as SAL-UBL-OBL-C717DEB32BC6F815: no official code-list resources or their distribution-format loader are implemented, for the same reason (no verified spec source for either the list content or the genericode schema)."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_code_with_no_list_id_is_unknown_not_invalid"
+        "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_code_with_no_list_id_is_unknown_not_invalid",
+        "tests/python/ubl/test_obligation_official_code_lists.py::test_official_code_list_registry_returns_a_fresh_registry_each_call"
       ],
       "obligation_id": "SAL-UBL-OBL-DE7D98EAE4344EDA",
       "positive_test_selectors": [
         "tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_validation_is_scoped_by_agency_and_version_together",
         "tests/python/ubl/test_obligation_codelist_registry.py::TestRegistryLookup::test_agency_id_distinguishes_otherwise_identical_list_ids",
-        "tests/python/ubl/test_obligation_codelist_registry.py::TestRegistryLookup::test_version_distinguishes_otherwise_identical_list_ids"
+        "tests/python/ubl/test_obligation_codelist_registry.py::TestRegistryLookup::test_version_distinguishes_otherwise_identical_list_ids",
+        "tests/python/ubl/test_obligation_official_code_lists.py::test_currency_code_carries_iso_agency_and_version_metadata",
+        "tests/python/ubl/test_obligation_official_code_lists.py::test_every_bundled_list_carries_a_nonempty_value_set",
+        "tests/python/ubl/test_obligation_official_code_lists.py::test_unit_of_measure_code_list_contains_common_units"
       ],
       "proof_requirements": {
         "negative": [
@@ -6571,12 +6592,14 @@
           "Known-good and known-bad coded values per first-wave list; offline determinism verified."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/model/codelist.py::CodeListRegistry",
-        "src/python/ubl/src/format_factory/ubl/model/codelist.py::validate_code"
+        "src/python/ubl/src/format_factory/ubl/model/codelist.py::validate_code",
+        "src/python/ubl/src/format_factory/ubl/model/genericode.py::official_code_list_registry",
+        "src/python/ubl/src/format_factory/ubl/model/genericode.py::parse_genericode"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-PARSE-001",
@@ -7379,6 +7402,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-maindoc-lines-001.json": "59537e2a072991398c7ec9a483c13e0abc19149487f1834e46668e43dce5d3c6",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-model-citation-audit-001.json": "d2c7dfa39a36272ee884db3f991425e0013760681491767abedad051028572e6",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-namespace-shadowing-security-001.json": "8b8e5a614adac3135fe20e31f21dd43aa6bc972c3e4d5e28c9697e780c5ee3b0",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-official-code-lists-genericode-loader-001.json": "5ae1937e4c93637a8daf778a047f2eb7d6610817c552401da470f1eb7ab42fa3",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-parse-citation-audit-001.json": "2bb3b3fd3318a9290b0a50d890416906f28500d899bd0efe330e77f39efd12be",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-party-cardinality-validation-001.json": "dfe85e459754a946ee28ef47aea20d0d99b9d39c75dc791ac74be156245d5112",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-party-postal-address-001.json": "d6a1518c42b9db1cd8e7f3608c1c437e0b9c9fc7e03b91cb0280021cff0b2201",
@@ -7402,12 +7426,13 @@
     "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "254743ef56212db8aebabac970793fee188634466b6907145e25b1b662e8f9fc",
     "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py": "e352a3442d0a31389f177c9a206d3a5d857c9a2d4f724833e9af90e31d5b4a7d",
     "src/python/ubl/src/format_factory/ubl/document_types.py": "29d23f297711c1681905d91a1dd163c3bdac62a7aabb8d3b056c95b89d22aa33",
-    "src/python/ubl/src/format_factory/ubl/model/__init__.py": "7ce7622158004fc1c26f3ef5c692c9b9ebf75f089ff056c38b26560c4dda4ea5",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py": "66e97c2f80b7cd942abf87f31457def59ae57f9ae759aa9f1910237275b6f4b6",
     "src/python/ubl/src/format_factory/ubl/model/aggregates.py": "c0f02a00ad6065ea0359dd379f30d0db94b95d63f772d2247ab521ea7a49886a",
     "src/python/ubl/src/format_factory/ubl/model/charges.py": "f72762e8f2fe1f95f967b6842321265d1815dfcacf6e0c49aa83cda617069277",
-    "src/python/ubl/src/format_factory/ubl/model/codelist.py": "1f17c8c2a0e0acafe8665c8695fbdf3226562a20c423fa2e4b388a4d2e5dd83f",
+    "src/python/ubl/src/format_factory/ubl/model/codelist.py": "ae1ca02a99bbc9aceab6bfa7513ef47e6b194aabbd2f6a3e7828c59455ac03db",
     "src/python/ubl/src/format_factory/ubl/model/document.py": "290f98c8dadab4154fd6c517c392c6ff1d66c29b103c6790e305d0a50899f122",
     "src/python/ubl/src/format_factory/ubl/model/extension_adapters.py": "d81836748610f3a01c6a7fc3e4757bc9a123d840bc383e3da215e9da06c82925",
+    "src/python/ubl/src/format_factory/ubl/model/genericode.py": "fa8d9e8eba8d45add40ea4b05506a33af0b02c7dc91f49b44992a9b64bbc09ec",
     "src/python/ubl/src/format_factory/ubl/model/lines.py": "7d3a0d5b5f6715690630b1d580aa1b5f8f2b6a494a12fd950661bd7b07c55d0e",
     "src/python/ubl/src/format_factory/ubl/model/party.py": "ebc5685aa9ceb698e5a6ce60ac65a37a35cd88023162520b4f2ac6ec18246bb1",
     "src/python/ubl/src/format_factory/ubl/model/query.py": "b88a8be52595daac91f4e68f78b0c018339eb1612d9bb7e42d562bcedee5b4b4",
@@ -7426,7 +7451,7 @@
     "tests/python/ubl/test_obligation_business_calculation.py": "ebf8352d49b7d0bc6bf5aa4bfa0d034f6f98f896ba34aceb95cfe38efeeee150",
     "tests/python/ubl/test_obligation_business_value_types.py": "5f4ee2e16fc785296a4fd493548197aaad50df1b384350ab7cee064e71ed8e10",
     "tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py": "c8ce979dcfd54b1e6117003a460078b86bbfe06288beafda92600b2ddadabac7",
-    "tests/python/ubl/test_obligation_codelist_registry.py": "703e263896b28695ffac86f281b1588ed65e46c80c11e8a98ac465c3d3a7d657",
+    "tests/python/ubl/test_obligation_codelist_registry.py": "51cbce8874947da48ec7bb59ca0c76ffa7ae59d56c94e9d69dceabe3c8491094",
     "tests/python/ubl/test_obligation_detected_declared_version.py": "303950d7c328d8673c9d6d5546892afdba38c52653a5bb7b45a86eea37ea7991",
     "tests/python/ubl/test_obligation_document_query.py": "43151bb1577f2c57f8f9782753d37cac8595d3e2efde33bf25d03d71705b3f21",
     "tests/python/ubl/test_obligation_document_type_coverage.py": "8d4b7b1d87b5f9a33cc836139d0c0ceac7656e2e2d5ed8392724cd0a0e17ddba",
@@ -7441,6 +7466,7 @@
     "tests/python/ubl/test_obligation_lines_cardinality_validation.py": "9cc83daec77c593684701ba892221d488398e6ae8c782678d8c61361d1217cec",
     "tests/python/ubl/test_obligation_maindoc_lines.py": "2fdad6d4d11e62df2820eaf8ea2d499f38a2f587439497b3dd7369bdf05e2812",
     "tests/python/ubl/test_obligation_namespace_shadowing_security.py": "09f618f4e2dc90fc400cd35109fe302bae72ab17d7087edce0bfaf6d580718fb",
+    "tests/python/ubl/test_obligation_official_code_lists.py": "9020e26658e6c89b21ddbe3199d78b101d768340671a15449dc9f703970a2e97",
     "tests/python/ubl/test_obligation_party_and_postal_address.py": "d35d55402a5d020574bcd2af1f841f59a3e1097929d17eddfcfab0d8bada261b",
     "tests/python/ubl/test_obligation_party_cardinality_validation.py": "7338dd69a0cb0b2907380229b94ec340d8494439240bb59686714076c930762d",
     "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py": "8a61e28c2ae1e8ebdd9c3493a5761f8b6fb52591c8805971d0e96b8d8115ed11",
@@ -7464,12 +7490,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 169,
+      "implemented": 171,
       "missing": 6,
-      "partial": 19
+      "partial": 17
     },
     "total": 194,
-    "unresolved": 25
+    "unresolved": 23
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

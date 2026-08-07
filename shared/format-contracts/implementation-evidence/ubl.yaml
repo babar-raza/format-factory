@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-OFFICIAL-CODE-LISTS-GENERICODE-LOADER-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-official-code-lists-genericode-loader-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-C717DEB32BC6F815 and SAL-UBL-OBL-DE7D98EAE4344EDA (both UBL-CODELIST-001), both promoted partial->implemented. codelist.py''s own module docstring had honestly documented the gap: "does NOT bundle actual official code-list data ... and does not parse the OASIS genericode XML distribution format ... No SAL fact in this repository''s committed spec cache enumerates any such list''s actual values or documents the genericode schema with enough precision ... building either from memory would risk fabricating spec content." That was true of the SAL fact cache specifically, not of the pinned RAW spec acquisition cache -- applying the "read the pinned acquisition cache directly, do not trust the missing_behavior''s own framing of what it can and cannot contain" discipline just proven three times this session for xliff''s module schemas, found .local/format-contracts/acquired/ubl/src-ubl-002.bin (261,521 lines as a text dump, previously never opened as anything but spec HTML) is actually a ZIP archive -- confirmed by its own "PK" magic bytes -- and IS the real official UBL 2.3 distribution package (927 total archive entries), not spec prose at all. Its cl/gc/default/ directory contains the genuine OASIS-published genericode files for all of UBL 2.3''s standard code lists. Extracted and bundled 11 of them verbatim as package data (excluding the "-incl-deprecated"/"-incl-deleted" superset variants): AllowanceChargeReasonCode, BinaryObjectMimeCode, ChannelCode, CountryIdentificationCode (=ISO 3166), CurrencyCode (=ISO 4217), LanguageCode, PackagingTypeCode, PaymentMeansCode, TransportEquipmentTypeCode, TransportModeCode, UnitOfMeasureCode -- 4.87MB combined uncompressed, ~330KB compressed in a built wheel. Wrote a new genericode.py parsing the real OASIS genericode 1.0 structure these files themselves exhibit (confirmed directly against the parsed ElementTree, not assumed from memory: only the document''s own root element carries the genericode namespace prefix, every descendant is unprefixed/no-namespace) -- reads the document''s own declared ColumnSet/Key/ColumnRef to find the primary identifying column rather than hardcoding "code" as a column name, proven against a differently-named-column fixture. official_code_list_registry() composes load_bundled_code_lists() with the already-existing, already-proven CodeListRegistry with zero special-casing (matching codelist.py''s own "official and custom register identically" design). Verified against real, spot-checked values: USD/EUR/GBP are members of CurrencyCode; US/DE are members of CountryIdentificationCode; KGM/MTR are members of UnitOfMeasureCode; CurrencyCode''s own agency_id ("5", the UN/EDIFACT code for ISO) and version ("2018-08-29") are both extracted from the file''s own Identification block, not hardcoded. A real wheel was built via `pip wheel .` and all 11 bundled .gc files confirmed to ship inside it, byte-identical to source, before any dependent code was written -- catching a class of packaging misconfiguration that would only surface for actual pip-installed users. Hit one real security-baseline constraint while implementing: this package''s own test suite forbids importing `importlib` anywhere in src/ (a supply-chain-hardening rule already enforced for every other module) -- switched from `importlib.resources` to plain `pathlib.Path(__file__).parent`, matching the exact same pattern the xliff package''s own bundled-schema loader (built in a prior tick this session) already uses. Verified zero false positives against the entire pre-existing 987-test ubl suite before writing a single new test. 14 new tests (tests/python/ubl/test_obligation_official_code_lists.py) prove: all 11 lists load; every list has nonempty values; known-good/known-bad membership for 3 spot-checked lists; agency/version metadata extraction; the composed registry validates correctly and composes with a user-supplied list; a fresh registry each call does not leak mutation across callers; the genericode parser handles a non-standard key-column name and rejects malformed documents; every bundled filename is present on disk (a packaging-drift guard). Also updated codelist.py''s and the sibling test file''s own module docstrings, which had explicitly and specifically claimed this data/loader combination was unavailable -- both corrected to point at genericode.py rather than left to drift into stale-claim territory for a future tick to rediscover. ubl suite: 987 -> 1001 passed. ruff and mypy --strict clean (35 source files). Combined 6-format run: 3538 -> 3552 passed, same 4 pre-existing unrelated safetensors interop failures, 2 skipped -- zero regression beyond the 14 intentional new tests. NOT backed by an independent reference UBL implementation for cross-validation, but the bundled data ITSELF is the authoritative OASIS-published genericode files, extracted byte-for-byte from the pinned official distribution package -- the same strength of grounding as xliff''s own core-schema extraction earlier this session. Covers SAL-UBL-OBL-C717DEB32BC6F815 and SAL-UBL-OBL-DE7D98EAE4344EDA only; it supports no other obligation.'
 - evidence_id: UBL-PAYMENT-MEANS-ORDER-VALIDATION-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-payment-means-order-validation-001.json
   expected_result: PASS
@@ -4695,25 +4700,36 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-C717DEB32BC6F815
   capability_id: UBL-CODELIST-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/codelist.py::CodeListRegistry
   - src/python/ubl/src/format_factory/ubl/model/codelist.py::validate_code
+  - src/python/ubl/src/format_factory/ubl/model/genericode.py::official_code_list_registry
+  - src/python/ubl/src/format_factory/ubl/model/genericode.py::parse_genericode
   positive_test_selectors:
   - tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_code_member_of_a_registered_list_is_valid
   - tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_official_and_user_supplied_lists_register_identically
   - tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_validation_is_deterministic_and_repeatable
   - tests/python/ubl/test_obligation_codelist_registry.py::TestCodeListImmutability::test_code_list_is_frozen
+  - tests/python/ubl/test_obligation_official_code_lists.py::test_all_eleven_bundled_lists_load_successfully
+  - tests/python/ubl/test_obligation_official_code_lists.py::test_currency_code_list_contains_iso_4217_alpha_codes
+  - tests/python/ubl/test_obligation_official_code_lists.py::test_country_identification_code_list_contains_iso_3166_codes
+  - tests/python/ubl/test_obligation_official_code_lists.py::test_official_code_list_registry_is_populated_and_ready_to_validate
+  - tests/python/ubl/test_obligation_official_code_lists.py::test_official_code_list_registry_composes_with_a_user_supplied_list
+  - tests/python/ubl/test_obligation_official_code_lists.py::test_parse_genericode_extracts_the_declared_key_column_not_a_hardcoded_name
   negative_test_selectors:
   - tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_code_not_a_member_of_a_registered_list_is_invalid
   - tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_code_naming_an_unregistered_list_is_unknown_not_invalid
+  - tests/python/ubl/test_obligation_official_code_lists.py::test_official_code_list_registry_rejects_an_unknown_code
+  - tests/python/ubl/test_obligation_official_code_lists.py::test_parse_genericode_rejects_a_non_genericode_root
+  - tests/python/ubl/test_obligation_official_code_lists.py::test_parse_genericode_rejects_a_document_missing_identification
   execution_evidence_ids:
   - UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF
   - UBL-CODELIST-REGISTRY-SELECTOR-PROOF
+  - UBL-OFFICIAL-CODE-LISTS-GENERICODE-LOADER-PROOF
   implemented_behavior:
-  - 'A new pluggable registry (model/codelist.py) now exists: immutable CodeList entries keyed by (list_id, agency_id, version), a CodeListRegistry callers populate at runtime, and validate_code() which is deterministic and makes no network or filesystem access -- proven idempotent across repeated calls. An official code list and a user-/profile-supplied code list register through exactly the same method, with no special-casing, proven by registering both kinds side by side.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: this obligation asks to "load official code lists from their distribution artifacts" -- no actual official code-list data (UN/CEFACT UNCL lists, ISO 4217, ISO 3166, and similar) is bundled, and no OASIS genericode XML loader is implemented. No SAL fact in this repository''s committed spec cache enumerates any such list''s real values or documents the genericode distribution schema with enough precision to build a loader against; building either from memory would risk fabricating spec content. The registry and validation mechanism this obligation also asks for is fully built and tested -- only the officially-sourced data and its distribution-format loader remain unattempted.'
+  - 'A new pluggable registry (model/codelist.py) now exists: immutable CodeList entries keyed by (list_id, agency_id, version), a CodeListRegistry callers populate at runtime, and validate_code() which is deterministic and makes no network or filesystem access -- proven idempotent across repeated calls. An official code list and a user-/profile-supplied code list register through exactly the same method, with no special-casing, proven by registering both kinds side by side. Both previously-missing pieces now also exist: the pinned raw acquisition cache (.local/format-contracts/acquired/ubl/src-ubl-002.bin) turned out to be the actual official UBL 2.3 distribution ZIP (confirmed by its own "PK" magic bytes and 927 archive entries), containing the genuine OASIS-published genericode code-list files. 11 of them (CurrencyCode=ISO 4217, CountryIdentificationCode=ISO 3166, UnitOfMeasureCode, PaymentMeansCode, LanguageCode, and 6 others; the "-incl-deprecated"/"-incl-deleted" superset variants excluded) are bundled verbatim as package data. A new genericode.py parses the OASIS genericode 1.0 format directly against the real files'' own structure (reading the declared Key/ColumnRef rather than assuming a fixed "code" column name), and official_code_list_registry() returns a ready-populated CodeListRegistry. Verified against real values: USD/EUR/GBP are members of CurrencyCode; US/DE are members of CountryIdentificationCode; KGM/MTR are members of UnitOfMeasureCode. A real wheel was built and the 11 bundled .gc files confirmed to ship inside it byte-identical to source before any dependent code was written.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Known-good and known-bad coded values per first-wave list; offline determinism verified.
@@ -5081,23 +5097,29 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-DE7D98EAE4344EDA
   capability_id: UBL-CODELIST-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/codelist.py::CodeListRegistry
   - src/python/ubl/src/format_factory/ubl/model/codelist.py::validate_code
+  - src/python/ubl/src/format_factory/ubl/model/genericode.py::official_code_list_registry
+  - src/python/ubl/src/format_factory/ubl/model/genericode.py::parse_genericode
   positive_test_selectors:
   - tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_validation_is_scoped_by_agency_and_version_together
   - tests/python/ubl/test_obligation_codelist_registry.py::TestRegistryLookup::test_agency_id_distinguishes_otherwise_identical_list_ids
   - tests/python/ubl/test_obligation_codelist_registry.py::TestRegistryLookup::test_version_distinguishes_otherwise_identical_list_ids
+  - tests/python/ubl/test_obligation_official_code_lists.py::test_currency_code_carries_iso_agency_and_version_metadata
+  - tests/python/ubl/test_obligation_official_code_lists.py::test_every_bundled_list_carries_a_nonempty_value_set
+  - tests/python/ubl/test_obligation_official_code_lists.py::test_unit_of_measure_code_list_contains_common_units
   negative_test_selectors:
   - tests/python/ubl/test_obligation_codelist_registry.py::TestValidateCode::test_code_with_no_list_id_is_unknown_not_invalid
+  - tests/python/ubl/test_obligation_official_code_lists.py::test_official_code_list_registry_returns_a_fresh_registry_each_call
   execution_evidence_ids:
   - UBL-CODELIST-CITATION-AUDIT-SELECTOR-PROOF
   - UBL-CODELIST-REGISTRY-SELECTOR-PROOF
+  - UBL-OFFICIAL-CODE-LISTS-GENERICODE-LOADER-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of the loading/validation mechanism SAL-UBL-OBL-C717DEB32BC6F815 also names: coded properties (Code.list_id/list_agency_id/list_version_id) map directly onto a CodeList''s identity, and validate_code() checks identifiers/agencies/versions/values together -- proven that agency and version each independently distinguish otherwise-identical list_ids, and that a Code with no list_id has nothing to validate against. User-supplied lists are supported identically to any other registered list.'
-  missing_behavior:
-  - 'Same confirmed gap as SAL-UBL-OBL-C717DEB32BC6F815: no official code-list resources or their distribution-format loader are implemented, for the same reason (no verified spec source for either the list content or the genericode schema).'
+  - 'Cross-capability duplicate of the loading/validation mechanism SAL-UBL-OBL-C717DEB32BC6F815 also names: coded properties (Code.list_id/list_agency_id/list_version_id) map directly onto a CodeList''s identity, and validate_code() checks identifiers/agencies/versions/values together -- proven that agency and version each independently distinguish otherwise-identical list_ids, and that a Code with no list_id has nothing to validate against. User-supplied lists are supported identically to any other registered list. Official code-list resources and their distribution-format loader now also exist -- see SAL-UBL-OBL-C717DEB32BC6F815''s own implemented_behavior for the full detail. Each bundled list''s agency_id/version metadata is itself extracted from the genericode file''s own Identification/Agency/Identifier and Identification/Version elements, not hardcoded, proven directly against CurrencyCode''s real ISO agency code and publication date.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Known-good and known-bad coded values per first-wave list; offline determinism verified.

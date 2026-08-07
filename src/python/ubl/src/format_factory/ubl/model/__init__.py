@@ -26,6 +26,7 @@ from .charges import (
     price_of,
 )
 from .codelist import CodeList, CodeListRegistry, CodeListValidation, validate_code
+from .genericode import load_bundled_code_lists, official_code_list_registry, parse_genericode
 from .extension_adapters import (
     ExtensionAdapter,
     ExtensionAdapterRegistry,
@@ -141,6 +142,9 @@ __all__ = [
     "QueryMatch",
     "business_role",
     "external_reference_of",
+    "load_bundled_code_lists",
+    "official_code_list_registry",
+    "parse_genericode",
     "validate_code",
     "Contact",
     "Country",

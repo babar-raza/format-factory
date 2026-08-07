@@ -10,12 +10,13 @@ SAL-UBL-OBL-DE7D98EAE4344EDA):
    validate identifiers/agencies/versions/values, and support user-supplied
    lists."
 
-Scope, quoted from codelist.py's own honesty note: this builds the full
-pluggable registry and offline validation mechanism. It does NOT bundle
-official code-list data (no verified SAL fact enumerates any real list's
-values) -- an "official" list registers through exactly the same
-CodeListRegistry.register() call a user-supplied list uses, so this tests
-that mechanism, not any specific list's actual content.
+Scope: this file tests the pluggable registry and offline validation
+mechanism itself, independent of any specific list's actual content --
+an "official" list registers through exactly the same
+CodeListRegistry.register() call a user-supplied list uses. The actual
+official UBL 2.3 code-list data (bundled from the pinned distribution
+package) and its genericode loader are tested separately in
+test_obligation_official_code_lists.py.
 """
 
 from __future__ import annotations
