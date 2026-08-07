@@ -205,7 +205,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "e0e56be5c18b9c3790219a2e4f6fafed5a814c43f60a1901fde2fae59d8ce8b3",
+    "implementation_evidence": "e21b185bafdc1809791b4a80e21ed3d520aa2ed439c72e24c382b71affbb2885",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1616,20 +1616,25 @@
       "capability_id": "XLIFF-MODEL-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-FILE-GROUP-ID-UNIQUENESS-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-EC188D4F6DD138A0 (identical rule_text): unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-EC188D4F6DD138A0 (identical rule_text): unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven. file-id uniqueness (document-wide) and group-id uniqueness (file-wide, grounded directly in the pinned spec's own identifier-scope text) are now also proven, including correct nesting-depth flattening and correct non-flagging when the same group id is legitimately reused across different files. This obligation was citing stale evidence (claiming group-id detection did not exist and file-id detection was merely untested) that predated Event 208's group-id work in this same session; corrected to match the canonical sibling obligation's current, verified state."
       ],
       "missing_behavior": [
-        "Confirmed gap, not an audit backlog: file-id duplicate detection exists in validator.py but is untested; group-id duplicate detection does not exist in the validator at all; broader \"references must resolve\" (e.g. mrk ref, dataRef) is unimplemented beyond the ec/sc case. Not attempted this slice."
+        "Broader \"references must resolve\" beyond ec/sc pairing and dataRef (now closed by a later tick this session, src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics) is still genuinely unimplemented for mrk's own ref attribute -- confirmed by grep that no code path anywhere in validator.py or model/inline.py reads or resolves it. Not attempted this slice, deliberately scoped separately from the id-uniqueness half this slice closes."
       ],
       "negative_test_selectors": [
         "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
       ],
       "obligation_id": "SAL-XLIFF-OBL-441E7C6F7C341B12",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_files_sharing_an_id_are_flagged_as_duplicate",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_sibling_groups_in_one_file_sharing_an_id_are_flagged_as_duplicate",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_nested_group_sharing_its_parents_id_is_flagged_as_duplicate",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_the_same_group_id_reused_across_different_files_is_not_a_duplicate"
       ],
       "proof_requirements": {
         "negative": [
@@ -1641,7 +1646,9 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_iter_groups"
       ],
       "status": "partial"
     },
@@ -4389,20 +4396,25 @@
       "capability_id": "XLIFF-VALIDATE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-FILE-GROUP-ID-UNIQUENESS-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-EC188D4F6DD138A0 (identical rule_text): unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-EC188D4F6DD138A0 (identical rule_text): unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven. file-id uniqueness (document-wide) and group-id uniqueness (file-wide, grounded directly in the pinned spec's own identifier-scope text) are now also proven, including correct nesting-depth flattening and correct non-flagging when the same group id is legitimately reused across different files. This obligation was citing stale evidence (claiming group-id detection did not exist and file-id detection was merely untested) that predated Event 208's group-id work in this same session; corrected to match the canonical sibling obligation's current, verified state."
       ],
       "missing_behavior": [
-        "Confirmed gap, not an audit backlog: file-id duplicate detection exists in validator.py but is untested; group-id duplicate detection does not exist in the validator at all; broader \"references must resolve\" (e.g. mrk ref, dataRef) is unimplemented beyond the ec/sc case. Not attempted this slice."
+        "Broader \"references must resolve\" beyond ec/sc pairing and dataRef (now closed by a later tick this session, src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics) is still genuinely unimplemented for mrk's own ref attribute -- confirmed by grep that no code path anywhere in validator.py or model/inline.py reads or resolves it. Not attempted this slice, deliberately scoped separately from the id-uniqueness half this slice closes."
       ],
       "negative_test_selectors": [
         "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
       ],
       "obligation_id": "SAL-XLIFF-OBL-DA738080DC614E67",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_files_sharing_an_id_are_flagged_as_duplicate",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_sibling_groups_in_one_file_sharing_an_id_are_flagged_as_duplicate",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_nested_group_sharing_its_parents_id_is_flagged_as_duplicate",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_the_same_group_id_reused_across_different_files_is_not_a_duplicate"
       ],
       "proof_requirements": {
         "negative": [
@@ -4415,7 +4427,9 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_iter_groups"
       ],
       "status": "partial"
     },
@@ -4637,7 +4651,7 @@
         "unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven. file-id uniqueness (document-wide) and group-id uniqueness (a new check, file-wide -- grounded directly in the pinned spec's own identifier-scope text, which scopes group ids to \"the enclosing file element\" rather than the whole document) are now also proven, including correct nesting-depth flattening and correct non-flagging when the same group id is legitimately reused across different files."
       ],
       "missing_behavior": [
-        "Broader \"references must resolve\" (e.g. mrk ref, dataRef) remains genuinely unimplemented beyond the existing ec/sc pairing check -- not attempted this slice, deliberately scoped separately from the id-uniqueness half this slice closes."
+        "Broader \"references must resolve\" beyond ec/sc pairing and dataRef (now closed by a later tick this session, src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics) is still genuinely unimplemented for mrk's own ref attribute -- confirmed by grep that no code path anywhere in validator.py or model/inline.py reads or resolves it. Not attempted this slice, deliberately scoped separately from the id-uniqueness half this slice closes."
       ],
       "negative_test_selectors": [
         "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
@@ -4670,18 +4684,22 @@
       "capability_id": "XLIFF-TEXT-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-ROOT-XML-SPACE-DEFAULT-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-D2BB0F0D8018D601 (identical rule_text): source and target permitting optional xml:lang and xml:space as generic passthrough attributes is proven."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-D2BB0F0D8018D601 (identical rule_text): source and target permitting optional xml:lang and xml:space as generic passthrough attributes is proven. \"The xliff root declares xml:space with default value default\" is now also proven: XliffDocument.xml_space returns the spec-mandated \"default\" when the attribute is absent from the source XML, and the explicit value verbatim when present, grounded directly in the pinned spec's own per-attribute entry. Same underlying, already-implemented capability as SAL-XLIFF-OBL-D2BB0F0D8018D601, which reached implemented status on this exact evidence at an earlier tick this session; this obligation was simply never reconciled against that same evidence, a stale evidence gap now closed."
       ],
-      "missing_behavior": [
-        "Confirmed gap, not an audit backlog: \"the xliff root declares xml:space with default value default\" is untested and not actually modeled -- the reader never synthesizes a default xml:space on the root; if absent from the source XML it is simply absent from the parsed attributes rather than defaulted. Not attempted this slice."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/xliff/test_obligation_root_xml_space_default.py::test_absent_and_explicit_default_are_still_distinguishable_via_raw_attributes"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-XLIFF-OBL-ECC84F12FA1BCBCC",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_target_creation_and_token_aware_edit_preserve_inline_codes_and_xml_attributes"
+        "tests/python/xliff/test_production_namespace.py::test_target_creation_and_token_aware_edit_preserve_inline_codes_and_xml_attributes",
+        "tests/python/xliff/test_obligation_root_xml_space_default.py::test_an_absent_xml_space_attribute_defaults_to_default",
+        "tests/python/xliff/test_obligation_root_xml_space_default.py::test_an_explicit_preserve_is_reported_verbatim",
+        "tests/python/xliff/test_obligation_root_xml_space_default.py::test_an_explicit_default_is_reported_verbatim_too"
       ],
       "proof_requirements": {
         "negative": [
@@ -4691,11 +4709,12 @@
           "Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
+        "src/python/xliff/src/format_factory/xliff/model/document.py::XliffDocument::xml_space"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-MODULE-001",
@@ -4732,20 +4751,25 @@
       "capability_id": "XLIFF-INLINE-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF"
+        "XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF",
+        "XLIFF-FILE-GROUP-ID-UNIQUENESS-PROOF"
       ],
       "implemented_behavior": [
-        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-EC188D4F6DD138A0 (identical rule_text): unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven."
+        "Cross-capability duplicate of XLIFF-PARSE-001's SAL-XLIFF-OBL-EC188D4F6DD138A0 (identical rule_text): unit-id and segment-id uniqueness, plus ec-to-sc reference resolution, are proven. file-id uniqueness (document-wide) and group-id uniqueness (file-wide, grounded directly in the pinned spec's own identifier-scope text) are now also proven, including correct nesting-depth flattening and correct non-flagging when the same group id is legitimately reused across different files. This obligation was citing stale evidence (claiming group-id detection did not exist and file-id detection was merely untested) that predated Event 208's group-id work in this same session; corrected to match the canonical sibling obligation's current, verified state."
       ],
       "missing_behavior": [
-        "Confirmed gap, not an audit backlog: file-id duplicate detection exists in validator.py but is untested; group-id duplicate detection does not exist in the validator at all; broader \"references must resolve\" (e.g. mrk ref, dataRef) is unimplemented beyond the ec/sc case. Not attempted this slice."
+        "Broader \"references must resolve\" beyond ec/sc pairing and dataRef (now closed by a later tick this session, src/python/xliff/src/format_factory/xliff/validation/validator.py::_data_ref_diagnostics) is still genuinely unimplemented for mrk's own ref attribute -- confirmed by grep that no code path anywhere in validator.py or model/inline.py reads or resolves it. Not attempted this slice, deliberately scoped separately from the id-uniqueness half this slice closes."
       ],
       "negative_test_selectors": [
         "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
       ],
       "obligation_id": "SAL-XLIFF-OBL-F20C2CA429BA381B",
       "positive_test_selectors": [
-        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes"
+        "tests/python/xliff/test_production_namespace.py::test_validation_detects_duplicate_ids_and_unpaired_inline_codes",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_files_sharing_an_id_are_flagged_as_duplicate",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_two_sibling_groups_in_one_file_sharing_an_id_are_flagged_as_duplicate",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_a_nested_group_sharing_its_parents_id_is_flagged_as_duplicate",
+        "tests/python/xliff/test_obligation_file_and_group_id_uniqueness.py::test_the_same_group_id_reused_across_different_files_is_not_a_duplicate"
       ],
       "proof_requirements": {
         "negative": [
@@ -4757,7 +4781,9 @@
       },
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
-        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads"
+        "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::validate",
+        "src/python/xliff/src/format_factory/xliff/validation/validator.py::_iter_groups"
       ],
       "status": "partial"
     },
@@ -4989,12 +5015,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 76,
+      "implemented": 77,
       "missing": 12,
-      "partial": 54
+      "partial": 53
     },
     "total": 142,
-    "unresolved": 66
+    "unresolved": 65
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
