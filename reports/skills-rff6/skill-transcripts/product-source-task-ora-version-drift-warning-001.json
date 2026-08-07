@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-version-drift-warning-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-07T06:09:30Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_VERSION_DRIFT_WARNING_001",
+    "task_kind": "small-gap-close-existing-severity-infrastructure",
+    "root_cause": "ORA-VALIDATE-001's obligation requires validate() to 'distinguish errors from interoperability warnings', but every Diagnostic this package ever emitted used Severity.ERROR -- Severity.WARNING, already supported by the shared Diagnostic/Severity type, was never constructed anywhere in lifecycle.py.",
+    "obligation_targeted": "SAL-ORA-OBL-F2672F4CCD923AC2 (ORA-VALIDATE-001)",
+    "acceptance_evidence": "6 new tests prove a genuine, honest interoperability-warning finding: a document whose declared version is older than what its own features require now gets a Severity.WARNING diagnostic from validate(), while ValidationReport.is_valid correctly stays True -- reusing load()'s existing declared_version/detected_version drift-detection machinery, previously exposed as data only, never diagnosed.",
+    "regression_tier": "full ora package suite (tests/python/ora) plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Read lifecycle.py's validate() and load() in full: load() already computes declared_version (document.version, unconstrained by the spec's own grammar) and detected_version (via _detect_version(), inferring the minimum profile actually used) but only returns both as OraImage fields -- never diagnoses their disagreement. validate() never even computes detected_version.",
+    "2. Confirmed via an interactive probe that validate() currently reports zero diagnostics for a document declaring 0.0.1 while using an isolation feature that requires 0.0.4 -- a real, previously undiagnosed drift.",
+    "3. Read the shared Diagnostic/Severity/ValidationReport type (format_factory.core.diagnostics): confirmed ValidationReport.is_valid deliberately excludes Severity.WARNING from invalidating a report -- exactly the distinction this obligation asks for, already built, just never used by ora.",
+    "4. Added _parse_profile_version() (a narrow x.y.z regex parser, since declared_version has no format constraint in the spec's own grammar and can be any string) and _version_drift_diagnostics(), returning a Severity.WARNING Diagnostic only when both versions parse and declared < detected -- an unparseable declared version means 'cannot determine', not 'assume the worst', and must never raise.",
+    "5. Wired the new check into validate() alongside the existing baseline-asset and layer-PNG diagnostics.",
+    "6. Re-ran the interactive probe across 4 cases (drift present, no drift, unparseable declared version, declared ahead of detected) -- all 4 behaved correctly on the first attempt.",
+    "7. Wrote 6 tests: the warning fires with the correct message content, the warning does not flip is_valid, no warning when versions already match, no warning when declared is ahead of detected, an unparseable declared version produces neither a warning nor a crash, and a warning coexists with a genuine ERROR in the same report (aggregation still holds, severities remain distinguishable).",
+    "8. Ran ruff (clean) on lifecycle.py and the new test file. Ran the full ora suite (311 passed, was 305, +6) and the full 6-format regression (3113 passed, was 3107, +6; same 4 pre-existing unrelated safetensors interop failures, 2 skipped) confirming zero cross-format regression.",
+    "9. Ran skills-first governance: resolve -> add-python-api (COMPOSE_EXISTING_SKILLS), manifest create --write (sfx-0982177c8dff4ec4, confirmed as the actually-persisted manifest via ls -t .local/skills-first/manifests/), hand-written receipt YAML, closeout --close -> CLOSE_OK."
+  ],
+  "allowed_files": [
+    "src/python/ora/src/format_factory/ora/lifecycle.py",
+    "tests/python/ora/test_obligation_version_drift_warning.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/src/format_factory/ora/lifecycle.py",
+    "tests/python/ora/test_obligation_version_drift_warning.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_version_drift_warning.py -q -- 6 passed",
+    ".venv/Scripts/python -m ruff check src/python/ora/src/format_factory/ora/lifecycle.py tests/python/ora/test_obligation_version_drift_warning.py -- all checks passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 311 passed, was 305 passed",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 3113 passed, 2 skipped, 4 preexisting unrelated safetensors interop failures, was 3107 passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "none",
+    "controller_event_effect": "none",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 134,
+    "oracle": "SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not cross-checked against a reference OpenRaster implementation.",
+    "obligations_moved_breakdown": "1 obligation (SAL-ORA-OBL-F2672F4CCD923AC2, ORA-VALIDATE-001) promoted partial->implemented: the 'distinguish errors from interoperability warnings' clause is now proven with a genuine finding, reusing existing drift-detection data that was previously computed but never diagnosed. The obligation's other three clauses (per-layer independent validation, stable aggregation, no repair-unless-requested) were already proven by prior evidence and remain unchanged."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

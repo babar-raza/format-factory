@@ -3,6 +3,11 @@ format_id: ora
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: ORA-VERSION-DRIFT-WARNING-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-version-drift-warning-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike ORA-BASELINE-SUITE. Closes SAL-ORA-OBL-F2672F4CCD923AC2 (ORA-VALIDATE-001)''s remaining "distinguish errors from interoperability warnings" clause. Every Diagnostic this package ever emitted used Severity.ERROR; Severity.WARNING, already supported by the shared Diagnostic/Severity type, was never constructed anywhere in lifecycle.py before this slice. load() already computed declared_version and detected_version (via the pre-existing _detect_version helper) but only exposed their disagreement as two separate OraImage fields, never diagnosed it. Added _parse_profile_version() (a narrow x.y.z parser, since the version attribute has no format constraint in the specification''s own grammar) and _version_drift_diagnostics(), wired into validate(): a document whose declared version is older than what its own features require now gets a Severity.WARNING finding, while ValidationReport.is_valid correctly stays true (WARNING is deliberately excluded from invalidating a report by the shared type''s own design). 6 new tests prove: the warning fires with the correct content, it does not flip is_valid, no warning when versions already match, no warning when declared is ahead of detected, an unparseable declared version produces neither a warning nor a crash, and the warning coexists with a genuine ERROR in the same report without either masking the other. ora suite: 305 -> 311 passed. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-F2672F4CCD923AC2 only; it supports no other obligation and promotes no product state.'
 - evidence_id: ORA-COMPOSITE-OP-REGISTRY-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ora-composite-op-registry-001.json
   expected_result: PASS
@@ -3602,23 +3607,28 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-F2672F4CCD923AC2
   capability_id: ORA-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/lifecycle.py::validate
   - src/python/ora/src/format_factory/ora/lifecycle.py::_layer_png_diagnostics
+  - src/python/ora/src/format_factory/ora/lifecycle.py::_version_drift_diagnostics
   positive_test_selectors:
   - tests/python/ora/test_obligation_lifecycle_and_write.py::test_multi_layer_validation_checks_all_sources
   - tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_returns_structured_diagnostics_rather_than_raising
   - tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_reports_a_conforming_document_as_valid
+  - tests/python/ora/test_obligation_version_drift_warning.py::test_a_document_declaring_an_older_version_than_it_uses_gets_a_warning
+  - tests/python/ora/test_obligation_version_drift_warning.py::test_the_warning_does_not_make_the_report_invalid
+  - tests/python/ora/test_obligation_version_drift_warning.py::test_the_warning_coexists_with_a_real_error_and_both_are_reported
   negative_test_selectors:
   - tests/python/ora/test_obligation_lifecycle_and_write.py::test_validate_does_not_raise_on_a_broken_archive
+  - tests/python/ora/test_obligation_version_drift_warning.py::test_an_unparseable_declared_version_produces_no_warning_not_a_crash
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   - ORA-VALIDATE-CITATION-AUDIT-SELECTOR-PROOF
+  - ORA-VERSION-DRIFT-WARNING-PROOF
   implemented_behavior:
-  - 'Each layer is validated independently (a document with one bad and one good layer source reports exactly one diagnostic, naming only the bad one) and diagnostics are aggregated into a stable, deterministic report rather than raised as exceptions. validate() never repairs or normalizes anything -- its signature takes no auto-fix parameter, and it returns a report without mutating its input; the only opt-in recovery this package offers at all is ReadMode.TOLERANT on load(), which is a separate, explicitly-requested code path (proven by test_tolerant_mode_recovers_and_reports_the_recovery), not something validate() itself does unasked.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: this obligation asks to "distinguish errors from interoperability warnings", but every Diagnostic this package emits uses Severity.ERROR -- Severity.WARNING (which the shared Diagnostic/Severity type from format_factory.core already supports) is never constructed anywhere in lifecycle.py. There is currently no finding this package would classify as a non-fatal interoperability warning rather than a hard error; introducing that distinction would require deciding, per diagnostic, which existing ERROR findings are actually softer warnings -- a real design decision not attempted this slice.'
+  - 'Each layer is validated independently (a document with one bad and one good layer source reports exactly one diagnostic, naming only the bad one) and diagnostics are aggregated into a stable, deterministic report rather than raised as exceptions. validate() never repairs or normalizes anything -- its signature takes no auto-fix parameter, and it returns a report without mutating its input; the only opt-in recovery this package offers at all is ReadMode.TOLERANT on load(), which is a separate, explicitly-requested code path (proven by test_tolerant_mode_recovers_and_reports_the_recovery), not something validate() itself does unasked. "Distinguish errors from interoperability warnings" is now also proven: validate() reuses load()''s existing declared_version/detected_version drift-detection machinery (previously exposed as data only, never diagnosed) to emit a Severity.WARNING diagnostic when a document declares an older profile than the features it actually uses require -- a genuine non-fatal interoperability concern, since this reader still parses the document correctly but a stricter reader honoring only the declared version might not. ValidationReport.is_valid deliberately excludes WARNING from invalidating the report, and the warning correctly coexists with a genuine ERROR in the same report when both are present. An unparseable declared version (the version attribute carries no format constraint in the specification''s own grammar) produces no warning rather than raising or guessing.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - One discriminating negative per normative and security obligation plus multi-error aggregation.

@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import io
 import os
+import re
 import zipfile
 from dataclasses import dataclass, field
 from enum import Enum
@@ -119,6 +120,51 @@ def _uses_isolation(stack: OraStack) -> bool:
         if child.opacity < 1.0 or child.composite_op != DEFAULT_COMPOSITE_OP:
             return True
     return False
+
+
+_PROFILE_VERSION_PATTERN = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
+
+
+def _parse_profile_version(value: str) -> tuple[int, int, int] | None:
+    """Parse a well-formed x.y.z profile version, or None if it isn't one.
+
+    `version` is a required attribute with no format constraint in the
+    specification's own grammar -- a document may declare anything. Drift
+    can only be judged between two comparable values, so an unparseable
+    declared version means "cannot determine", not "assume the worst".
+    """
+    match = _PROFILE_VERSION_PATTERN.match(value)
+    if match is None:
+        return None
+    return tuple(int(part) for part in match.groups())  # type: ignore[return-value]
+
+
+def _version_drift_diagnostics(declared_version: str, detected_version: str) -> list[Diagnostic]:
+    """ORA-VALIDATE-001: "distinguish errors from interoperability warnings."
+
+    A document that declares an older profile than the features it actually
+    uses require is not invalid -- this reader still parses it correctly --
+    but a strict reader honoring only the declared version may reject or
+    misinterpret it. That is exactly an interoperability warning, not an
+    error: reported at Severity.WARNING, which ValidationReport.is_valid
+    deliberately does not count against validity.
+    """
+    declared = _parse_profile_version(declared_version)
+    detected = _parse_profile_version(detected_version)
+    if declared is None or detected is None or declared >= detected:
+        return []
+    return [
+        Diagnostic(
+            code="ORA_DECLARED_VERSION_BELOW_DETECTED",
+            message=(
+                f"document declares profile {declared_version} but uses "
+                f"features that require profile {detected_version}; readers "
+                "that enforce the declared version strictly may reject or "
+                "misinterpret it"
+            ),
+            severity=Severity.WARNING,
+        )
+    ]
 
 
 def _collect_layer_sources(node: OraStack | OraLayer | OraText) -> list[str]:
@@ -306,6 +352,9 @@ def validate(source: Source, *, limits: ResourceLimits = DEFAULT_LIMITS) -> Vali
 
     all_diagnostics = _baseline_asset_diagnostics(members)
     all_diagnostics.extend(_layer_png_diagnostics(document, members, limits))
+    all_diagnostics.extend(
+        _version_drift_diagnostics(document.version, _detect_version(document, members))
+    )
     return ValidationReport(diagnostics=tuple(all_diagnostics))
 
 
