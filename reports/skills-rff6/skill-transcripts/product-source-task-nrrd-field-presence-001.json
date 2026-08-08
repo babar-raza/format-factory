@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-field-presence-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-a0de6b542dc4edb2",
+  "mode": "live",
+  "timestamp": "2026-08-08T10:27:30Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_FIELD_PRESENCE_001",
+    "task_kind": "additive-api-plus-genuine-write-time-bugfix",
+    "root_cause": "After closing NRRD-WRITE-001 (Event 329), surveyed nrrd's remaining 12 obligations fresh, applying the same stale-evidence-check discipline. NRRD-LIFECYCLE-001's recovery-mode gap was investigated first and correctly ruled out: authority_fact_ids is empty and neither pinned NRRD spec source file (src-nrrd-001.bin, src-nrrd-002.bin, searched directly for 'recover'/'tolerant'/'lenient'/'malformed'/'permissive') contains any concept of tolerant/recoverable reading -- the reader has zero existing partial-recovery machinery to compose, unlike NRRD-WRITE-001's case. Building this would mean inventing ungrounded semantics, the same failure mode this session's own ORA mask/metadata refusals correctly avoided -- deliberately NOT pursued. NRRD-ENC-001 (exhaustive cross-product matrix requiring independent Teem/pynrrd oracle runs) was also ruled out as genuinely large. NRRD-PRESERVE-001 also has authority_fact_ids: [] but is a mechanical modeling question, not an interpretive spec question -- investigated directly and found a real, well-scoped, buildable gap: several typed accessors (spacings, axis_mins, axis_maxs, centers, labels, units, kinds, thicknesses -- 8 total) collapse 'field never declared' and 'field declared with an empty value' into the same [] return, and encoding's own .get('encoding', 'raw') default cannot be told apart from an explicit 'encoding: raw' write.",
+    "obligation_targeted": "SAL-NRRD-OBL-ADAC45BDF110C59C (NRRD-PRESERVE-001) promoted partial -> implemented.",
+    "acceptance_evidence": "Checked callers before deciding the approach: grep found ~50 usages of the 8 affected list-shaped properties across source and tests, ruling out changing their own return types (list[T] -> list[T] | None) as too high blast-radius, matching this session's own established caution against exactly this kind of breaking signature change (cited precedent: UBL's find()/find_all() obligation, explicitly deferred for identical reasoning). Instead added NrrdDocument.field_present(name: str) -> bool, reusing the exact 'name in self.header' idiom already used internally by version_requirements() and per_axis_field_arities() (confirmed by reading both before writing anything new) -- purely additive, zero existing behavior changed. While writing the round-trip test, discovered the reader's own _parse_header grammar unconditionally refuses an empty header value ('not value.strip()' -> NrrdParseError 'malformed header field') -- meaning the writer, which had no equivalent check, would silently produce a file its own reader could never read back. Fixed with a new _field_line helper in writer.py mirroring that exact refusal."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 329 commit.",
+    "2. Re-listed nrrd's remaining 12 obligations fresh via the ledger. Investigated NRRD-LIFECYCLE-001 (recovery mode) first: read _load/loads/load in reader.py directly, confirmed mode parameter is validated against {'strict','preservation','recovery'} but has zero behavioral effect -- _load always runs identically regardless of mode, and NrrdDocument.recovery_actions always defaults to (). Searched both pinned NRRD spec source files (.local/format-contracts/acquired/nrrd/src-nrrd-00{1,2}.bin, ~1.3M chars combined) for 'recover'/'tolerant'/'lenient'/'malformed'/'permissive' -- zero matches. Combined with authority_fact_ids: [] on this obligation, concluded this is genuinely ungrounded (not stale evidence like the previous two closures) and deliberately did not pursue it.",
+    "3. Investigated NRRD-ENC-001 (exhaustive cross-product matrix): rule_text explicitly requires 'independent oracle runs' (Teem/pynrrd comparisons) across every magic version x type alias x encoding x endian x attached/detached form combination plus hostile fixtures -- confirmed genuinely large, not a smaller-than-framed candidate, deliberately not pursued.",
+    "4. Investigated NRRD-PRESERVE-001: read its own current implemented_behavior/missing_behavior text (already correctly noted the lexical-only distinction), then read all ~26 typed accessor properties in model/document.py directly. Found 8 list-shaped properties (spacings, axis_mins, axis_maxs, centers, labels, units, kinds, thicknesses) each use `self.header.get(name, \"\")` then `if value else []`, collapsing absence and explicit-empty into the same [] return. Found encoding uses `self.header.get('encoding', 'raw')`, silently defaulting -- confirmed 'encoding' is in reader.py's own _REQUIRED_FIELDS (so this default path is unreachable via load()/loads(), only reachable via from_mapping()-constructed documents, a real and legitimate public-API path).",
+    "5. Grepped for existing callers of the 8 affected properties across src/ and tests/ -- ~50 usages -- and decided against changing their own return types (breaking-change risk), instead adding an additive field_present(name) method reusing the codebase's own existing 'name in self.header' idiom (already used in version_requirements()/per_axis_field_arities(), confirmed by reading both first).",
+    "6. Added field_present() to NrrdDocument (model/document.py), positioned next to the number property and before per_axis_field_arities() for locality with the obligation's own existing implemented_behavior. Ran mypy --strict and ruff on document.py alone first -- clean.",
+    "7. Wrote a new test file (test_obligation_field_presence.py) covering: absent vs present-with-value for a scalar field (content), absent vs present-with-empty-value for a per-axis field (spacings), silently-defaulted vs explicitly-written for encoding, and a full write/read round-trip proof.",
+    "8. The round-trip test's first draft used an explicitly-empty 'content: ' field written through real header text -- running it surfaced NrrdParseError 'malformed header field at line 6' from the READER's own grammar, revealing the premise was invalid (the reader itself refuses a syntactically empty value, so this state is only reachable via from_mapping(), not real file text). Corrected the round-trip test to use a legitimately non-empty value instead of removing or weakening the discovery.",
+    "9. Recognized this reader-side refusal implied a genuine, previously-unenforced WRITER-side gap: _header_bytes had no equivalent check, so it would have silently emitted output the SAME library's own reader could not parse back. Fixed writer.py by adding a new _field_line(name, value) helper that raises NrrdWriteError when value.strip() is empty, used in both places _header_bytes previously inlined the f-string construction (the _FIELD_ORDER loop and the sorted-remainder loop) -- so the fix applies uniformly to every header field, not just the specific one that surfaced it.",
+    "10. Added 2 new negative tests proving the writer now refuses both a scalar and a per-axis empty-valued field, and updated the existing 'present scalar field with empty value' test's own docstring to disclose that this state is model-only (from_mapping), not round-trippable through the real file grammar, since the writer now correctly refuses to serialize it.",
+    "11. Ran the new file alone (9/9 pass), mypy --strict and ruff on all 3 changed/new files together (clean), then the full nrrd suite (695 passed, 1 skipped, was 686) to confirm zero regression -- notably, the new writer refusal broke nothing pre-existing, confirming no existing test had been relying on the previously-silent empty-value-emission bug.",
+    "12. Updated the ledger: promoted SAL-NRRD-OBL-ADAC45BDF110C59C to status=implemented (missing_behavior: []), added field_present and _field_line to source_symbols, added all 9 new tests as positive/negative selectors alongside the pre-existing metadata-production test, added a new execution_evidence entry (NRRD-FIELD-PRESENCE-PROOF). De-aliased this obligation's own source_symbols/positive_test_selectors from two shared YAML anchors (&PRES, &TMETA) into an explicit list WITHOUT touching the anchor definitions themselves (they are defined on different, earlier lines this entry does not own), verified via direct read that the anchor definitions and their other consumers are unaffected."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "tests/python/nrrd/test_obligation_field_presence.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "tests/python/nrrd/test_obligation_field_presence.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_field_presence.py -q -- 9 passed (new file)",
+    ".venv/Scripts/python -m mypy --strict tests/python/nrrd/test_obligation_field_presence.py src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py src/python/nrrd/src/format_factory/nrrd/model/document.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check tests/python/nrrd/test_obligation_field_presence.py src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py src/python/nrrd/src/format_factory/nrrd/model/document.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd -q -- 695 passed, 1 skipped (was 686)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation closed (partial -> implemented) -- NRRD-PRESERVE-001, plus a genuine write-time bug fix (silent empty-value emission) found and closed in the same slice",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "format_factory.nrrd's NrrdDocument.field_present(name) method; writer.py's own _field_line() internal refusal (not itself a public API addition)"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -143,6 +143,57 @@ execution_evidence:
       this entry composes and cross-references already-proven writer contracts rather
       than introducing new spec interpretation. Covers SAL-NRRD-OBL-284E2438B08DA529
       only; it supports no other obligation and promotes no other product state.
+  - evidence_id: NRRD-FIELD-PRESENCE-PROOF
+    path: reports/skills-rff6/skill-transcripts/product-source-task-nrrd-field-presence-001.json
+    expected_result: PASS
+    granularity: selector
+    truth_boundary: >-
+      Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-ADAC45BDF110C59C
+      (NRRD-PRESERVE-001), promoted partial->implemented. This obligation's own
+      implemented_behavior already correctly noted the distinction was preserved
+      LEXICALLY (self.header never loses a present field or invents an absent one);
+      its own missing_behavior named two further gaps -- "typed defaults" and "empty
+      values" not modeled -- investigated directly rather than assumed either buildable
+      or unbuildable. Found: some typed accessors (content, min, max, ...) already
+      return None on absence via their own internal .get() call; others (spacings, axis
+      mins, labels, kinds, thicknesses, centers, units -- 8 total) collapse BOTH "never
+      declared" and "declared with no tokens" into the same [] return value, and a
+      defaulted scalar (encoding falls back to "raw" when absent) cannot be told apart
+      from an explicit write of that same value -- both indistinguishable from outside
+      via the typed accessor alone. Added NrrdDocument.field_present(name) -> bool
+      (name in self.header), the exact same idiom version_requirements() and
+      per_axis_field_arities() already use internally, now exposed directly rather than
+      requiring a caller to reach into the raw header dict themselves -- this closes
+      both named gaps uniformly, since NRRD's own wire format has no separate
+      default-marker mechanism beyond presence itself: any string written to a header
+      key IS an explicit write, whatever it happens to equal. Deliberately did NOT
+      change the return type of the 8 existing list-shaped properties (spacings et al.)
+      -- that would be a breaking signature change across roughly 50 existing call
+      sites for a distinction field_present() already exposes additively; matches this
+      session's own established caution against high-blast-radius signature changes
+      (see UBL's own find()/find_all() obligation, explicitly deferred for the same
+      reason). A genuine, previously-unenforced WRITE-time gap was found and fixed in
+      the same slice, not merely documented: _header_bytes would have silently emitted
+      an empty-valued field (e.g. "content: ") that the reader's own _parse_header
+      grammar already refuses to parse back ("malformed header field at line N") --
+      confirmed by writing the round-trip test first and watching it fail with exactly
+      that reader-side error, not assumed. Added a new _field_line helper mirroring the
+      reader's own `not value.strip()` refusal, so the writer now raises NrrdWriteError
+      before producing output this same library could not read back, for both scalar
+      and per-axis fields (both go through the identical code path). 9 new tests
+      (tests/python/nrrd/test_obligation_field_presence.py): absence vs presence for a
+      scalar field, absence vs explicit-empty-presence for a per-axis field (only
+      reachable via from_mapping(), not real file text -- disclosed directly in the
+      test's own docstring), silent-default vs explicit-write for encoding, presence
+      surviving a full write/read round trip through the real file grammar, and two new
+      writer-refusal negative tests (scalar and per-axis empty-value cases). mypy
+      --strict and ruff clean. nrrd suite: 686 -> 695 passed, 1 skipped (unchanged).
+      NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT
+      format_factory-only evidence per the execution-recovery directive's GAP-008 rule;
+      the presence/absence semantics themselves are a direct, literal reading of the
+      obligation's own rule_text plus the reader's own already-proven refusal grammar,
+      not a new spec interpretation. Covers SAL-NRRD-OBL-ADAC45BDF110C59C only; it
+      supports no other obligation and promotes no other product state.
   - evidence_id: NRRD-VERSION-SELECTION-RECONCILIATION-PROOF
     path: reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-reconciliation-001.json
     expected_result: PASS
@@ -876,7 +927,7 @@ obligations:
   - {obligation_id: SAL-NRRD-OBL-A1082F4AA3DE20E5, capability_id: NRRD-SHAPE-001, status: implemented, source_symbols: *SHAPE, positive_test_selectors: *TSHAPE, negative_test_selectors: *TVAL, execution_evidence_ids: *EXEC, implemented_behavior: ["Sizes are required positive integers and reshape uses axis 0 fastest."], missing_behavior: [], proof_requirements: {positive: ["1D-ND fastest-first fixtures."], negative: ["Missing, zero, negative, non-integer, and wrong-arity sizes."]}}
   - {obligation_id: SAL-NRRD-OBL-A1F37BAEE4586823, capability_id: NRRD-SEC-001, status: implemented, source_symbols: *PAYLOAD, positive_test_selectors: &TDET ["tests/python/nrrd/test_production_namespace.py::test_detached_single_payload_is_bounded_and_path_safe"], negative_test_selectors: *TDET, execution_evidence_ids: *EXEC, implemented_behavior: ["Absolute and parent-traversal detached paths are refused and resolved paths must remain below the header directory."], missing_behavior: [], proof_requirements: {positive: ["Approved nested relative paths."], negative: ["Absolute, parent, symlink escape, alternate separator, and pattern/list traversal."]}}
   - {obligation_id: SAL-NRRD-OBL-AC287AED0DD842A5, capability_id: NRRD-HEADER-001, status: implemented, source_symbols: *HEADER, positive_test_selectors: *TENC, negative_test_selectors: [], execution_evidence_ids: *EXEC, implemented_behavior: ["Hash-prefixed header comments are parsed separately and deterministically serialized."], missing_behavior: [], proof_requirements: {positive: ["Empty/multiple comments with both line endings and lossless replay."], negative: ["Prove comments never acquire field semantics."]}}
-  - {obligation_id: SAL-NRRD-OBL-ADAC45BDF110C59C, capability_id: NRRD-PRESERVE-001, status: partial, source_symbols: *PRES, positive_test_selectors: *TMETA, negative_test_selectors: [], execution_evidence_ids: *EXEC, implemented_behavior: ["Header dictionary presence distinguishes absent fields from explicitly empty quoted raw values."], missing_behavior: ["Typed defaults and empty values are not modeled, so semantic absence distinctions are only lexical."], proof_requirements: {positive: ["Absent/default/empty matrix for every optional field."], negative: ["Canonical output must not invent absent values."]}}
+  - {obligation_id: SAL-NRRD-OBL-ADAC45BDF110C59C, capability_id: NRRD-PRESERVE-001, status: implemented, source_symbols: ["src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::preservation_report", "src/python/nrrd/src/format_factory/nrrd/model/document.py::_dict_diff_issues", "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::field_present", "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps", "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_field_line"], positive_test_selectors: ["tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip", "tests/python/nrrd/test_obligation_field_presence.py::test_an_absent_scalar_field_is_reported_as_not_present", "tests/python/nrrd/test_obligation_field_presence.py::test_a_present_scalar_field_is_reported_as_present_even_when_its_value_is_empty", "tests/python/nrrd/test_obligation_field_presence.py::test_an_absent_per_axis_field_is_not_present_even_though_the_typed_accessor_returns_empty", "tests/python/nrrd/test_obligation_field_presence.py::test_a_per_axis_field_declared_empty_is_present_even_though_the_typed_accessor_also_returns_empty", "tests/python/nrrd/test_obligation_field_presence.py::test_a_defaulted_scalar_is_not_present_even_though_the_typed_accessor_returns_the_default", "tests/python/nrrd/test_obligation_field_presence.py::test_an_explicitly_written_default_value_is_present_and_indistinguishable_in_value_alone", "tests/python/nrrd/test_obligation_field_presence.py::test_presence_and_absence_both_survive_a_write_read_round_trip"], negative_test_selectors: ["tests/python/nrrd/test_obligation_field_presence.py::test_writing_a_document_with_an_explicitly_empty_scalar_field_is_refused", "tests/python/nrrd/test_obligation_field_presence.py::test_writing_a_document_with_an_explicitly_empty_per_axis_field_is_refused"], execution_evidence_ids: [NRRD-R1-SOURCE-TESTS, NRRD-FIELD-PRESENCE-PROOF], implemented_behavior: ["Header dictionary presence distinguishes absent fields from explicitly empty quoted raw values.", "FF6-EVENT-000330: NrrdDocument.field_present(name) exposes this distinction directly for any header key -- absence vs explicit presence, covering both a list-shaped field declared with no tokens (spacings, labels, ...) and a scalar field silently defaulted vs explicitly written (encoding falls back to \"raw\" when absent; field_present(\"encoding\") tells an explicit write apart from the silent default, something .encoding alone cannot). A genuine, previously-unenforced write-time gap was found and fixed in the same slice: _header_bytes would have silently emitted an empty-valued field (e.g. \"content: \") that the reader's own _parse_header grammar already refuses to parse back (\"malformed header field\") -- the writer now mirrors that same refusal via a new _field_line helper, raising NrrdWriteError before producing output this library could not read back."], missing_behavior: [], proof_requirements: {positive: ["Absent/default/empty matrix for every optional field."], negative: ["Canonical output must not invent absent values."]}}
   - {obligation_id: SAL-NRRD-OBL-BAAE59FC398A9D6C, capability_id: NRRD-FRAME-001, status: preservation_only, source_symbols: *META, positive_test_selectors: *TMETA, negative_test_selectors: [], execution_evidence_ids: *EXEC, implemented_behavior: ["Raw measurement-frame content can be carried through canonical serialization."], missing_behavior: ["No NRRD0005 gate, typed vectors, arity validation, or separate measurement-to-world transform."], rationale: "Lexical carry-through is safe but is not semantic frame support.", proof_requirements: {positive: ["Typed frame and transform reference fixtures."], negative: ["Earlier-profile and vector/space-dimension mismatch cases."]}}
   - {obligation_id: SAL-NRRD-OBL-C13492B6879B6E90, capability_id: NRRD-HEADER-001, status: implemented, source_symbols: *HEADER, positive_test_selectors: ['tests/python/nrrd/test_obligation_header_field_grammar.py::test_a_single_space_after_the_colon_parses', 'tests/python/nrrd/test_obligation_header_field_grammar.py::test_trailing_value_whitespace_is_still_ignored'], negative_test_selectors: ['tests/python/nrrd/test_obligation_header_field_grammar.py::test_grammar_violations_are_rejected'], execution_evidence_ids: [NRRD-R1-SOURCE-TESTS, NRRD-HEADER-GRAMMAR-PROOF], implemented_behavior: ['Ordinary colon-delimited fields parse and canonical writer emits colon-space. The reader now enforces the pinned spec''s exact grammar (SAL-NRRD-00008, confirmed word-for-word against the pinned spec source): a line with any whitespace before the field identifier is rejected, and a colon not followed by exactly one space is rejected. Trailing whitespace after the field descriptor remains correctly ignored, per the spec''s own explicit permissive clause for that case.'], missing_behavior: [], proof_requirements: {positive: ["Exact legal lexical form corpus."], negative: ["Leading whitespace, missing single space, empty identifier, and malformed separators."]}}
   - {obligation_id: SAL-NRRD-OBL-C853EB5591524EF9, capability_id: NRRD-SPACE-001, status: preservation_only, source_symbols: *META, positive_test_selectors: *TENC, negative_test_selectors: [], execution_evidence_ids: *EXEC, implemented_behavior: ["Space-related fields are retained as raw header values."], missing_behavior: ["No typed space dimension, units, origin, directions, version gates, or measurement-frame separation."], rationale: "Raw field preservation is present without spatial semantics.", proof_requirements: {positive: ["NRRD0004-NRRD0005 typed spatial metadata fixtures."], negative: ["Earlier-profile, arity, vector-length, and frame-version cases."]}}

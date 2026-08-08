@@ -280,6 +280,28 @@ class NrrdDocument:
         obsolete/legacy field."""
         return self.header.get("number")
 
+    def field_present(self, name: str) -> bool:
+        """Whether the raw header key `name` (e.g. "spacings", "content",
+        "space origin") was explicitly present in this document -- distinct
+        from every derived accessor's own empty-default return for an absent
+        field (`spacings` returns `[]` both when the header never declared
+        spacings at all AND when it declared `spacings: ` as literally
+        empty; `content`/`min`/etc. already distinguish absence via `None`
+        vs an explicit string, but that distinction lives only in each
+        property's own internal `.get()` call, not as something a caller
+        can ask about directly for an arbitrary field name).
+
+        NRRD-PRESERVE-001: "preserve the distinction between an absent
+        optional value and an explicitly written default or empty value."
+        `self.header` already carries exactly this distinction -- a key's
+        mere presence is the explicit-write signal, regardless of what
+        string it holds, matching the same `name in self.header` idiom
+        `version_requirements()` and `per_axis_field_arities()` already use
+        internally -- this method exposes it directly rather than requiring
+        a caller to reach into the raw header dict themselves.
+        """
+        return name in self.header
+
     def per_axis_field_arities(self) -> dict[str, int]:
         """The declared length of every per-axis field actually present.
 

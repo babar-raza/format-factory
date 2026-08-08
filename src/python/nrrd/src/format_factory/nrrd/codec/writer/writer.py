@@ -36,6 +36,22 @@ def _coerce_document(value: NrrdDocument | Mapping[str, Any]) -> NrrdDocument:
     return value if isinstance(value, NrrdDocument) else NrrdDocument.from_mapping(value)
 
 
+def _field_line(name: str, value: str) -> str:
+    """One `name: value` header line -- refused, not silently emitted, if
+    `value` is empty or whitespace-only: `_parse_header`'s own reader-side
+    grammar already rejects such a line as malformed
+    (`not value.strip()`), so writing one anyway would produce a file this
+    same writer's own reader could never read back (NRRD-PRESERVE-001)."""
+    if not value.strip():
+        raise NrrdWriteError(
+            f"cannot write header field {name!r} with an empty value -- the "
+            "reader's own grammar requires a non-empty value after the "
+            "colon and space, so writing one would produce output this "
+            "library could not read back"
+        )
+    return f"{name}: {value}"
+
+
 def _header_bytes(
     document: NrrdDocument, profile: str, *, detached_name: str | None = None
 ) -> bytes:
@@ -44,11 +60,11 @@ def _header_bytes(
     emitted: set[str] = set()
     for name in _FIELD_ORDER:
         if name in document.header:
-            lines.append(f"{name}: {document.header[name]}")
+            lines.append(_field_line(name, document.header[name]))
             emitted.add(name)
     for name in sorted(document.header):
         if name not in emitted and name != "data file":
-            lines.append(f"{name}: {document.header[name]}")
+            lines.append(_field_line(name, document.header[name]))
     if detached_name is not None:
         # The "data file: LIST" form must be the last field specification
         # in the header (NRRD-HEADER-001) -- a single detached name has no

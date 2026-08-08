@@ -66,6 +66,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact test files and per-selector outcomes for the endian obligations, and is backed by bidirectional evidence from Teem 1.12.0, a genuinely independent C reference implementation that shares no code with format_factory. Covers TC-FF6-NRRD-GOLDEN-SLICE-001 (raw scalar payload guards) and TC-FF6-NRRD-ASCII-ENDIAN-001 (endian/encoding scoping) only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-FIELD-PRESENCE-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-field-presence-001.json",
+      "sha256": "e0d43cc4dbaed0a38705d722b5c26cdcfdb4a94a50b4519aca841a1d54a6d638",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-ADAC45BDF110C59C (NRRD-PRESERVE-001), promoted partial->implemented. This obligation's own implemented_behavior already correctly noted the distinction was preserved LEXICALLY (self.header never loses a present field or invents an absent one); its own missing_behavior named two further gaps -- \"typed defaults\" and \"empty values\" not modeled -- investigated directly rather than assumed either buildable or unbuildable. Found: some typed accessors (content, min, max, ...) already return None on absence via their own internal .get() call; others (spacings, axis mins, labels, kinds, thicknesses, centers, units -- 8 total) collapse BOTH \"never declared\" and \"declared with no tokens\" into the same [] return value, and a defaulted scalar (encoding falls back to \"raw\" when absent) cannot be told apart from an explicit write of that same value -- both indistinguishable from outside via the typed accessor alone. Added NrrdDocument.field_present(name) -> bool (name in self.header), the exact same idiom version_requirements() and per_axis_field_arities() already use internally, now exposed directly rather than requiring a caller to reach into the raw header dict themselves -- this closes both named gaps uniformly, since NRRD's own wire format has no separate default-marker mechanism beyond presence itself: any string written to a header key IS an explicit write, whatever it happens to equal. Deliberately did NOT change the return type of the 8 existing list-shaped properties (spacings et al.) -- that would be a breaking signature change across roughly 50 existing call sites for a distinction field_present() already exposes additively; matches this session's own established caution against high-blast-radius signature changes (see UBL's own find()/find_all() obligation, explicitly deferred for the same reason). A genuine, previously-unenforced WRITE-time gap was found and fixed in the same slice, not merely documented: _header_bytes would have silently emitted an empty-valued field (e.g. \"content: \") that the reader's own _parse_header grammar already refuses to parse back (\"malformed header field at line N\") -- confirmed by writing the round-trip test first and watching it fail with exactly that reader-side error, not assumed. Added a new _field_line helper mirroring the reader's own `not value.strip()` refusal, so the writer now raises NrrdWriteError before producing output this same library could not read back, for both scalar and per-axis fields (both go through the identical code path). 9 new tests (tests/python/nrrd/test_obligation_field_presence.py): absence vs presence for a scalar field, absence vs explicit-empty-presence for a per-axis field (only reachable via from_mapping(), not real file text -- disclosed directly in the test's own docstring), silent-default vs explicit-write for encoding, presence surviving a full write/read round trip through the real file grammar, and two new writer-refusal negative tests (scalar and per-axis empty-value cases). mypy --strict and ruff clean. nrrd suite: 686 -> 695 passed, 1 skipped (unchanged). NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the presence/absence semantics themselves are a direct, literal reading of the obligation's own rule_text plus the reader's own already-proven refusal grammar, not a new spec interpretation. Covers SAL-NRRD-OBL-ADAC45BDF110C59C only; it supports no other obligation and promotes no other product state."
+    },
+    {
       "evidence_id": "NRRD-HEADER-FIELD-NAME-ALIASES-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -221,7 +229,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "0c481ac9e3d5e278acedff9b278530e8db1d6c82847cc5540d97b0e453c610f2",
+    "implementation_evidence": "056cdfbeb650fa2f9ddb9ddb64eb495fdb342f5966998c2526e8ccc9e0931a21",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2013,18 +2021,28 @@
     {
       "capability_id": "NRRD-PRESERVE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-FIELD-PRESENCE-PROOF"
       ],
       "implemented_behavior": [
-        "Header dictionary presence distinguishes absent fields from explicitly empty quoted raw values."
+        "Header dictionary presence distinguishes absent fields from explicitly empty quoted raw values.",
+        "FF6-EVENT-000330: NrrdDocument.field_present(name) exposes this distinction directly for any header key -- absence vs explicit presence, covering both a list-shaped field declared with no tokens (spacings, labels, ...) and a scalar field silently defaulted vs explicitly written (encoding falls back to \"raw\" when absent; field_present(\"encoding\") tells an explicit write apart from the silent default, something .encoding alone cannot). A genuine, previously-unenforced write-time gap was found and fixed in the same slice: _header_bytes would have silently emitted an empty-valued field (e.g. \"content: \") that the reader's own _parse_header grammar already refuses to parse back (\"malformed header field\") -- the writer now mirrors that same refusal via a new _field_line helper, raising NrrdWriteError before producing output this library could not read back."
       ],
-      "missing_behavior": [
-        "Typed defaults and empty values are not modeled, so semantic absence distinctions are only lexical."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_field_presence.py::test_writing_a_document_with_an_explicitly_empty_scalar_field_is_refused",
+        "tests/python/nrrd/test_obligation_field_presence.py::test_writing_a_document_with_an_explicitly_empty_per_axis_field_is_refused"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-ADAC45BDF110C59C",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip",
+        "tests/python/nrrd/test_obligation_field_presence.py::test_an_absent_scalar_field_is_reported_as_not_present",
+        "tests/python/nrrd/test_obligation_field_presence.py::test_a_present_scalar_field_is_reported_as_present_even_when_its_value_is_empty",
+        "tests/python/nrrd/test_obligation_field_presence.py::test_an_absent_per_axis_field_is_not_present_even_though_the_typed_accessor_returns_empty",
+        "tests/python/nrrd/test_obligation_field_presence.py::test_a_per_axis_field_declared_empty_is_present_even_though_the_typed_accessor_also_returns_empty",
+        "tests/python/nrrd/test_obligation_field_presence.py::test_a_defaulted_scalar_is_not_present_even_though_the_typed_accessor_returns_the_default",
+        "tests/python/nrrd/test_obligation_field_presence.py::test_an_explicitly_written_default_value_is_present_and_indistinguishable_in_value_alone",
+        "tests/python/nrrd/test_obligation_field_presence.py::test_presence_and_absence_both_survive_a_write_read_round_trip"
       ],
       "proof_requirements": {
         "negative": [
@@ -2034,13 +2052,15 @@
           "Absent/default/empty matrix for every optional field."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::preservation_report",
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::_dict_diff_issues",
-        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps"
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::field_present",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_field_line"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-FRAME-001",
@@ -2741,6 +2761,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-path-version-gate-001.json": "0ddb74585effd11d8f31db536d8242dbcf347f14dba381a36faffab0b40a3add",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-writer-001.json": "459aee29fa15ac2f6d632f1d4d863923866957e8086da79dd6dde1ab6374d01f",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-dtype-scale-conversion-001.json": "c672397a7b44a6c658d2993ee85f163bd9e168fb8f117b910209f074a3e12b04",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-field-presence-001.json": "e0d43cc4dbaed0a38705d722b5c26cdcfdb4a94a50b4519aca841a1d54a6d638",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-field-name-aliases-001.json": "83d73c735f92aadc0240da321facedf152658ac2fd3144ee4a38aecddea9e547",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-field-ordering-001.json": "69bf3bede20abc9f6cbe94440cd555ce406139e19f65bfad48d30002edcd5a21",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-grammar-001.json": "34ff1e271e63f2ceb26c72ebe47b1f44e9be6b2ddde57a06068be324b1383229",
@@ -2764,9 +2785,9 @@
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "738ef7feab3714ba69a4a56547714145e161ac8b22156bf7e868a18bc13ae847",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "f40b683110082f666fefd99b096ca4c9e9b78f87d0020541477d7a62587f980a",
     "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "087a7f01e945d5d5491bed1116a15f4ef9b4c38a866d7eca4b5666965b209f44",
-    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "cdea46f99c30af1034e473fa524afc952bbaf3e24e140b3c65635b436283300a",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "1c05f5d17614799de2cea369352a67b24a5285fb3d08761e63c787560bfa8fea",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "10984d5ca2c0bc8bf872e94923e41c343dea92c2d98411c429eaa3e79fb624ef",
-    "src/python/nrrd/src/format_factory/nrrd/model/document.py": "a8ebd146ae738a3fb60ec7f6680a1470d9e677cff85a2b50610307717b9e09f3",
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py": "253f3162618ce5d3cde824ae91c293458f028b179f7a1867c06bb906d120a8b8",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
     "src/python/nrrd/src/format_factory/nrrd/space.py": "85d5640445d14d653eab2ff6131b4b867be171c16f96fdb943f14e451965afe5",
     "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "82b06e8160941efd42e95c9d698e81a3c2697dbe1edceaa47efa4154b4476ded",
@@ -2783,6 +2804,7 @@
     "tests/python/nrrd/test_obligation_detached_writer.py": "f947213e761a9424118e4d6dbf7bf00193b72ec6f773b25d23492c143b711297",
     "tests/python/nrrd/test_obligation_dtype_conversion.py": "52a58a8e66d2bb715894ec3c09197b16145ed1aa23a9f95aa2a1a7aedf355377",
     "tests/python/nrrd/test_obligation_encoding_conversion.py": "5d51c4b0b8628ff250327cd326d41415bc545e3a7d12c9dd9556e124e7b5a7c8",
+    "tests/python/nrrd/test_obligation_field_presence.py": "1c1d956087bdf9f6f2e25e5620861bc3e139c7854255fc79904b91ef83a37261",
     "tests/python/nrrd/test_obligation_header_field_grammar.py": "e70dc004b9be05c2828ba1b1fa99de76484c1190d1abf0ac59d1bd320e89fdee",
     "tests/python/nrrd/test_obligation_header_field_name_aliases.py": "15499477f5c13e5777318e559e55628905055b5f903d430f448c4fd67a7cb9b8",
     "tests/python/nrrd/test_obligation_header_field_ordering.py": "9e9c736263f2942b6e523c26f69b5e95e1dc5fb5a2f18a26ba6146868b7c8636",
@@ -2808,12 +2830,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 53,
-      "partial": 9,
+      "implemented": 54,
+      "partial": 8,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 12
+    "unresolved": 11
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
