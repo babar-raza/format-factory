@@ -71,8 +71,32 @@ class TestLegalMonetaryTotalParsing:
         assert mt["tax_inclusive_amount"] == "121.00"
         assert mt["payable_amount"] == "121.00"
 
-    def test_minimal_invoice_has_no_monetary_total(self):
-        model = load_ubl(VALID_DIR / "minimal-invoice.xml")
+    def test_an_invoice_lacking_the_element_has_no_monetary_total(self):
+        # minimal-invoice.xml itself used to (incorrectly) omit
+        # cac:LegalMonetaryTotal -- a real UBL-schema-mandatory element the
+        # sample's own provenance record always claimed it included. Fixed
+        # to genuinely be schema-valid; this test now uses its own inline
+        # fixture to keep covering the model's own "no element present ->
+        # no dict key" behavior independent of that corpus fixture's shape.
+        xml = (
+            '<?xml version="1.0" encoding="utf-8"?>'
+            '<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" '
+            'xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" '
+            'xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">'
+            "<cbc:ID>INV-001</cbc:ID><cbc:IssueDate>2026-07-14</cbc:IssueDate>"
+            "<cbc:DocumentCurrencyCode>USD</cbc:DocumentCurrencyCode>"
+            '<cac:AccountingSupplierParty><cac:Party><cac:PartyName><cbc:Name>Acme Corp</cbc:Name>'
+            "</cac:PartyName></cac:Party></cac:AccountingSupplierParty>"
+            '<cac:AccountingCustomerParty><cac:Party><cac:PartyName><cbc:Name>Buyer Inc</cbc:Name>'
+            "</cac:PartyName></cac:Party></cac:AccountingCustomerParty>"
+            '<cac:InvoiceLine><cbc:ID>1</cbc:ID><cbc:InvoicedQuantity unitCode="EA">10</cbc:InvoicedQuantity>'
+            '<cbc:LineExtensionAmount currencyID="USD">100.00</cbc:LineExtensionAmount>'
+            "<cac:Item><cbc:Name>Widget</cbc:Name></cac:Item></cac:InvoiceLine></Invoice>"
+        )
+        with tempfile.TemporaryDirectory() as td:
+            source = Path(td) / "no-monetary-total.xml"
+            source.write_text(xml, encoding="utf-8")
+            model = load_ubl(source)
         assert "monetary_total" not in model
 
     def test_monetary_total_roundtrip(self):

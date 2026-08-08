@@ -29,7 +29,7 @@ authority:
 corpus_refs:
 - corpus_id: ubl-minimal-invoice
   sample_ref: samples/by-format/ubl/valid/minimal-invoice.xml
-  sha256: sha256:e1b8cf3a9e1dc82cbc40d039561cf46e563633123c2fbc660b3557edd915728b
+  sha256: sha256:122b69cf701ebf9376a14dc9f6aa2d468a2d8de5956e943cba6e8ef0489f25c2
   license: project-owned-synthetic
   authority_class: GENERATED_FROM_NEUTRAL_MODEL
   description: Minimal UBL Invoice with one line item
@@ -73,7 +73,7 @@ valid_cases:
   authority_refs:
   - UBL-SPEC -- Invoice namespace and mandatory fields
   sample_ref: samples/by-format/ubl/valid/minimal-invoice.xml
-  input_hash: sha256:e1b8cf3a9e1dc82cbc40d039561cf46e563633123c2fbc660b3557edd915728b
+  input_hash: sha256:122b69cf701ebf9376a14dc9f6aa2d468a2d8de5956e943cba6e8ef0489f25c2
   expected_parse_result: SUCCESS
   expected_model_properties:
   - property: document_type
@@ -106,7 +106,7 @@ valid_cases:
   authority_refs:
   - shared/qname-registry/ubl.yaml -- ubl:invoice entry
   sample_ref: samples/by-format/ubl/valid/minimal-invoice.xml
-  input_hash: sha256:e1b8cf3a9e1dc82cbc40d039561cf46e563633123c2fbc660b3557edd915728b
+  input_hash: sha256:122b69cf701ebf9376a14dc9f6aa2d468a2d8de5956e943cba6e8ef0489f25c2
   expected_parse_result: SUCCESS
   expected_model_properties:
   - property: spec_qname

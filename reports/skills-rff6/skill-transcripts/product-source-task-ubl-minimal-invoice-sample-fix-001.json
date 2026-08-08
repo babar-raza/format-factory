@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-minimal-invoice-sample-fix-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T03:04:33Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_MINIMAL_INVOICE_SAMPLE_FIX_001",
+    "task_kind": "real-corpus-defect-fix",
+    "root_cause": "FF6-EVENT-000296's own unified-validation work independently found samples/by-format/ubl/valid/minimal-invoice.xml fails real XSD schema validation. Investigating further (rather than accepting Event 296's own initial 'ordering issue' framing) found the actual defect: the file is missing cac:LegalMonetaryTotal entirely, a UBL-schema-mandatory element -- not an ordering problem reorder_for_schema_order() could ever fix (reordering cannot invent a missing element). Both samples/by-format/ubl/_provenance.yaml's own input_content field and _corpus-manifest.yaml's own description ALREADY claimed this file included LegalMonetaryTotal, confirming the file itself had drifted from its own documented intent, not the other way around.",
+    "obligation_targeted": "None directly -- corpus-fixture correctness fix. Indirectly strengthens the evidence base for every obligation/test that cites this sample as 'valid' (it now actually is, per real XSD conformance, not just this package's own narrower chassis check).",
+    "acceptance_evidence": "schema_validate() on the corrected file returns is_valid=True (was False). All 5 oracle cases pinning this file by sha256/input_hash re-verified PASS with the updated hash. Full ubl suite (1033 passed) and 6-format regression (3666 passed, 0 failed) both green after the fix, including one deliberately rewritten test that had accidentally codified the bug as expected model behavior.",
+    "regression_tier": "full ubl package suite plus 6-format regression plus a dedicated ubl oracle re-run"
+  },
+  "execution_steps": [
+    "1. Verified re-dumping the existing (broken) sample via the package's own write path (load() then dumps(), which includes FF6-EVENT-000286's reorder_for_schema_order()) did NOT fix the schema violation -- confirming this is a missing-element defect, not an ordering defect reorder_for_schema_order() could address (it only reorders already-present fields; it cannot invent absent required ones).",
+    "2. Read the raw sample file directly: confirmed cac:LegalMonetaryTotal is entirely absent between AccountingCustomerParty and InvoiceLine, where the real UBL Invoice-2 schema requires it.",
+    "3. Cross-checked samples/by-format/ubl/_provenance.yaml and _corpus-manifest.yaml: both already described this file as including LegalMonetaryTotal -- confirming the file's own content had drifted from its own documentation at some point, not that the documentation needs correcting to match a deliberately-minimal file.",
+    "4. Added <cac:LegalMonetaryTotal><cbc:PayableAmount currencyID=\"USD\">100.00</cbc:PayableAmount></cac:LegalMonetaryTotal> immediately before <cac:InvoiceLine> (matching the existing InvoiceLine's own 100.00 LineExtensionAmount), preserving the file's exact prior byte style (no added whitespace/newlines, single-line XML, no trailing newline) via direct byte-level find-and-replace rather than a text editor that might reformat.",
+    "5. Verified independently: schema_validate() on the raw corrected bytes now returns is_valid=True with zero diagnostics; load()+validate() via format_factory.ubl also both succeed cleanly.",
+    "6. Computed the new file's sha256 and updated all 3 pinned references in oracle/formats/ubl/oracle-package.yaml (one corpus_refs entry, two valid_cases input_hash fields for ubl-valid-001 and ubl-valid-003) -- grepped the repo afterward to confirm zero remaining references to the old hash anywhere.",
+    "7. First oracle re-run used the wrong Python interpreter (system python, no format_factory installed) and failed all 4 cases referencing this file with ModuleNotFoundError -- an environment artifact unrelated to the fix, confirmed by re-running with .venv/Scripts/python, which passed 5/5.",
+    "8. Ran the full ubl suite: found exactly one test, tests/python/ubl/test_ubl_feature_completeness.py::test_minimal_invoice_has_no_monetary_total (a legacy shadow-package test, not format_factory.ubl), had accidentally codified the bug as its own expected behavior ('assert monetary_total not in model' against this now-fixed file). Rewrote it to use its own dedicated inline XML fixture (the file's OLD content, preserving the original 'element absent -> no dict key' test intent) rather than depending on the now-corrected corpus sample's shape.",
+    "9. Re-ran the full ubl suite (1033 passed) and the 6-format regression (3666 passed, 0 failed) to confirm the fix and the test rewrite are both clean."
+  ],
+  "allowed_files": [
+    "samples/by-format/ubl/valid/minimal-invoice.xml",
+    "oracle/formats/ubl/oracle-package.yaml",
+    "tests/python/ubl/test_ubl_feature_completeness.py"
+  ],
+  "actual_files_changed": [
+    "samples/by-format/ubl/valid/minimal-invoice.xml",
+    "oracle/formats/ubl/oracle-package.yaml",
+    "tests/python/ubl/test_ubl_feature_completeness.py"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python -m tools.oracle.execute_oracle --format ubl -- 5/5 PASS (was 4 FAIL under the wrong interpreter, an unrelated environment artifact; confirmed the correct interpreter passes cleanly)",
+    ".venv/Scripts/pytest tests/python/ubl -q -- 1033 passed",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_ubl_feature_completeness.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3666 passed, 4 skipped, 0 failed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations promoted -- corpus/fixture correctness fix strengthening the sample's own already-documented, previously-unmet claim",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "old_sha256": "e1b8cf3a9e1dc82cbc40d039561cf46e563633123c2fbc660b3557edd915728b",
+    "new_sha256": "122b69cf701ebf9376a14dc9f6aa2d468a2d8de5956e943cba6e8ef0489f25c2",
+    "schema_validation_before": false,
+    "schema_validation_after": true
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
