@@ -77,12 +77,53 @@ samples:
     provenance_status: confirmed
     expected_error: true
 
-# Note: samples/by-format/ora/invalid/ now has 3 fixture files covering
-# ORA_LAYER_SOURCE_MISSING, ORA_THUMBNAIL_MISSING, and
-# ORA_LAYER_SOURCE_INVALID_PNG (tests/python/ora/test_obligation_invalid_corpus_diagnostics.py).
+  - sample_id: invalid/thumbnail-unreadable.ora
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib zipfile, derived from valid/minimal.ora with Thumbnails/thumbnail.png content replaced by non-PNG bytes"
+    generation_date: "2026-08-08"
+    input_content: "valid/minimal.ora with its thumbnail member's bytes replaced by a deliberately non-PNG payload -- exercises ORA_THUMBNAIL_UNREADABLE. Building this fixture surfaced a real bug: _baseline_asset_diagnostics' except clause did not catch the OraValidationError read_png_metadata raises here, crashing validate() instead of reporting -- fixed in the same commit."
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+    expected_error: true
+
+  - sample_id: invalid/thumbnail-non-conforming.ora
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib zipfile + struct/zlib PNG construction, derived from valid/minimal.ora with Thumbnails/thumbnail.png replaced by a valid but 300x300 PNG"
+    generation_date: "2026-08-08"
+    input_content: "valid/minimal.ora with a structurally valid PNG thumbnail exceeding the mandatory 256x256 maximum edge -- exercises ORA_THUMBNAIL_NON_CONFORMING."
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+    expected_error: true
+
+  - sample_id: invalid/mergedimage-unreadable.ora
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib zipfile, derived from valid/minimal.ora with mergedimage.png content replaced by non-PNG bytes"
+    generation_date: "2026-08-08"
+    input_content: "valid/minimal.ora with its merged-image member's bytes replaced by a deliberately non-PNG payload -- exercises ORA_MERGED_IMAGE_UNREADABLE. Same underlying bug as invalid/thumbnail-unreadable.ora's own note, in the sibling merged-image branch of the same function -- fixed in the same commit."
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+    expected_error: true
+
+  - sample_id: invalid/mergedimage-non-conforming.ora
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib zipfile + struct/zlib PNG construction, derived from valid/minimal.ora with mergedimage.png replaced by a valid but 4-bit-depth PNG"
+    generation_date: "2026-08-08"
+    input_content: "valid/minimal.ora with a structurally valid merged-image PNG declaring 4 bits per channel (only 8 or 16 are conforming) -- exercises ORA_MERGED_IMAGE_NON_CONFORMING."
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+    expected_error: true
+
+# Note: samples/by-format/ora/invalid/ now has 7 fixture files covering
+# ORA_LAYER_SOURCE_MISSING, ORA_THUMBNAIL_MISSING, ORA_LAYER_SOURCE_INVALID_PNG,
+# ORA_THUMBNAIL_UNREADABLE, ORA_THUMBNAIL_NON_CONFORMING,
+# ORA_MERGED_IMAGE_UNREADABLE, and ORA_MERGED_IMAGE_NON_CONFORMING
+# (tests/python/ora/test_obligation_invalid_corpus_diagnostics.py). Building
+# the last 4 surfaced and fixed a real exception-hierarchy bug in
+# lifecycle.py (see that test file's own module docstring for detail).
 # ORA_MERGED_IMAGE_MISSING already has in-memory (not file-based) coverage in
-# test_obligation_lifecycle_and_write.py. ORA_THUMBNAIL_UNREADABLE,
-# ORA_THUMBNAIL_NON_CONFORMING, ORA_MERGED_IMAGE_UNREADABLE, and
-# ORA_MERGED_IMAGE_NON_CONFORMING remain untested by any file-based or
-# in-memory fixture as of this entry -- a real, still-open corpus gap, not
-# claimed closed here.
+# test_obligation_lifecycle_and_write.py. All 9 real diagnostic codes this
+# module's own validation functions can produce now have test coverage.

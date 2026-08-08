@@ -42,7 +42,7 @@ from .codec.assets import MERGED_IMAGE_MEMBER, THUMBNAIL_MEMBER
 from .codec.container import MIMETYPE_MEMBER, OPENRASTER_MEDIA_TYPE, STACK_MEMBER, OraContainer
 from .codec.png_metadata import read_png_metadata
 from .codec.stack_xml import parse_stack
-from .errors import OraError, OraValidationError
+from .errors import OraError, OraLimitError, OraValidationError
 from .model.document import DEFAULT_RESOLUTION_PPI, OraDocument
 from .model.stack import DEFAULT_COMPOSITE_OP, OraLayer, OraStack, OraText
 
@@ -224,7 +224,7 @@ def _baseline_asset_diagnostics(members: dict[str, bytes]) -> list[Diagnostic]:
     else:
         try:
             metadata = read_png_metadata(thumbnail)
-        except OraError as exc:
+        except (OraError, OraValidationError) as exc:
             found.append(
                 Diagnostic(
                     code="ORA_THUMBNAIL_UNREADABLE",
@@ -259,7 +259,7 @@ def _baseline_asset_diagnostics(members: dict[str, bytes]) -> list[Diagnostic]:
     else:
         try:
             metadata = read_png_metadata(merged)
-        except OraError as exc:
+        except (OraError, OraValidationError) as exc:
             found.append(
                 Diagnostic(
                     code="ORA_MERGED_IMAGE_UNREADABLE",
@@ -333,13 +333,22 @@ def validate(source: Source, *, limits: ResourceLimits = DEFAULT_LIMITS) -> Vali
 
     A validator that raises on the worst input is not a validator: the caller
     asked for a report, and "this is not a ZIP" is a finding like any other.
+
+    ``OraError``, ``OraValidationError``, and ``OraLimitError`` are three
+    siblings (each descends directly from a different `format_factory.core`
+    base -- `FormatParseError`, `FormatValidationError`, `ResourceLimitError`
+    respectively), not a single hierarchy, so all three must be named
+    explicitly here. Catching only `OraError` -- the mistake this replaced --
+    let a malformed stack.xml (`parse_stack` raises `OraValidationError`) or
+    an oversized/hostile payload (raises `OraLimitError`) crash this
+    "never raises" validator instead of being reported.
     """
     try:
         payload = _read_source(source)
         container = OraContainer.from_bytes(payload, limits=limits)
         members = {name: container.read(name) for name in container.names}
         document = parse_stack(members[STACK_MEMBER], limits=limits)
-    except OraError as exc:
+    except (OraError, OraValidationError, OraLimitError) as exc:
         return ValidationReport(
             diagnostics=(
                 Diagnostic(

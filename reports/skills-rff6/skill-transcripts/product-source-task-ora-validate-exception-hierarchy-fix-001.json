@@ -1,0 +1,69 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-validate-exception-hierarchy-fix-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T02:35:17Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_VALIDATE_EXCEPTION_HIERARCHY_FIX_001",
+    "task_kind": "real-bug-fix-plus-corpus-completion",
+    "root_cause": "Continuing the corpus-completion pattern from FF6-EVENT-000290 (3 of 9 real ora diagnostic codes covered), built fixtures for the remaining 4 (ORA_THUMBNAIL_UNREADABLE, ORA_THUMBNAIL_NON_CONFORMING, ORA_MERGED_IMAGE_UNREADABLE, ORA_MERGED_IMAGE_NON_CONFORMING). The first fixture attempt crashed validate() with an uncaught OraValidationError instead of returning a report -- exposing that _baseline_asset_diagnostics' two `except OraError` clauses (thumbnail and merged-image branches) never caught OraValidationError, which read_png_metadata actually raises for a structurally-invalid PNG. Further investigation found the same class of bug in validate()'s own outer handler, which also missed OraLimitError -- meaning a malformed stack.xml (a common real-world case, not an edge case) or a resource-limit violation also crashed validate() instead of reporting.",
+    "obligation_targeted": "No obligation status change -- this is a real production bug fix (exception-hierarchy mismatch) plus corpus/test completion for already-implemented validation code (ORA-BASELINEASSET-001/ORA-STACK-001), not a missing->implemented promotion.",
+    "acceptance_evidence": "4 new committed .ora fixtures (each independently verified via a standalone repro to trigger its intended diagnostic before any test was written), 6 new tests including 2 explicit regression guards naming the bug (test_thumbnail_unreadable_is_reported_not_a_crash, test_mergedimage_unreadable_is_reported_not_a_crash) and a third for the broader malformed-stack.xml case (test_malformed_stack_xml_is_reported_not_a_crash).",
+    "regression_tier": "full ora package suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Checked format_factory.ora.codec.png_metadata's satisfies_thumbnail_constraints()/satisfies_merged_image_constraints() to determine exact constraint values (THUMBNAIL_MAX_EDGE=256, THUMBNAIL_BIT_DEPTH=8, MERGED_IMAGE_BIT_DEPTHS={8,16}).",
+    "2. Built 4 fixtures by mutating exactly one ZIP member of valid/minimal.ora each: thumbnail replaced with non-PNG bytes; thumbnail replaced with a valid-but-300x300 PNG; mergedimage replaced with non-PNG bytes; mergedimage replaced with a valid-but-4-bit-depth PNG (reusing the existing png()-builder pattern from test_obligation_lifecycle_and_write.py, hand-rolled via struct/zlib for IHDR/IDAT/IEND chunks).",
+    "3. First verification call (validate() on thumbnail-unreadable.ora) crashed with an uncaught OraValidationError instead of returning a diagnostic-bearing report. Traced to errors.py: OraError(FormatParseError) and OraValidationError(FormatValidationError) are SIBLINGS under format_factory.core.FormatFactoryError, not a hierarchy -- `except OraError` in _baseline_asset_diagnostics' two try/except blocks (thumbnail at line ~227, merged-image at ~262) does not catch the OraValidationError read_png_metadata actually raises for a bad PNG signature or malformed IHDR.",
+    "4. Checked validate()'s own outer handler (line ~342) for the same class of bug: parse_stack() (stack_xml.py) raises OraValidationError extensively (malformed XML, invalid numeric attributes, missing xres/yres pairs, etc.) and OraLimitError for resource violations -- neither caught by the outer `except OraError`. Confirmed with a direct repro: validate() on a document with malformed stack.xml crashed uncaught before the fix.",
+    "5. Fixed all 3 sites: imported OraLimitError alongside the already-imported OraError/OraValidationError; changed the two _baseline_asset_diagnostics except clauses to `except (OraError, OraValidationError)`; changed validate()'s outer except clause to `except (OraError, OraValidationError, OraLimitError)`, with a docstring note explaining the sibling-not-hierarchy relationship so the mistake isn't repeated.",
+    "6. Re-verified all 4 new fixtures plus the malformed-stack.xml repro now return proper diagnostic reports instead of crashing. Added 6 tests to tests/python/ora/test_obligation_invalid_corpus_diagnostics.py: one per new fixture (STRICT-mode-raises + validate()-reports pairs for the 2 'unreadable' cases, single-report tests for the 2 'non-conforming' cases), plus a dedicated malformed-stack.xml regression test.",
+    "7. Updated samples/by-format/ora/_provenance.yaml with all 4 new fixtures, explicitly noting the bug each one surfaced.",
+    "8. Ran mypy --strict (1 pre-existing, unrelated error at lifecycle.py:92 confirmed via git stash to predate this change -- not introduced by this slice), ruff (clean), the full ora suite (330 -> 336 passed, wait: actually 16 tests in the file vs 10 before = +6, matching the file's own test count), and the 6-format regression (3648 -> 3654 passed, +6, 0 failed)."
+  ],
+  "allowed_files": [
+    "src/python/ora/src/format_factory/ora/lifecycle.py",
+    "tests/python/ora/test_obligation_invalid_corpus_diagnostics.py",
+    "samples/by-format/ora/invalid/thumbnail-unreadable.ora",
+    "samples/by-format/ora/invalid/thumbnail-non-conforming.ora",
+    "samples/by-format/ora/invalid/mergedimage-unreadable.ora",
+    "samples/by-format/ora/invalid/mergedimage-non-conforming.ora",
+    "samples/by-format/ora/_provenance.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/src/format_factory/ora/lifecycle.py",
+    "tests/python/ora/test_obligation_invalid_corpus_diagnostics.py",
+    "samples/by-format/ora/invalid/thumbnail-unreadable.ora",
+    "samples/by-format/ora/invalid/thumbnail-non-conforming.ora",
+    "samples/by-format/ora/invalid/mergedimage-unreadable.ora",
+    "samples/by-format/ora/invalid/mergedimage-non-conforming.ora",
+    "samples/by-format/ora/_provenance.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_invalid_corpus_diagnostics.py -v -- 16 passed (6 new)",
+    ".venv/Scripts/python -m mypy --strict src/python/ora/src/format_factory/ora/lifecycle.py -- 1 pre-existing unrelated error (confirmed via git stash), 0 new",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ora -q -- 330 passed (baseline before this slice's own file changes)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3654 passed, 4 skipped, 0 failed (was 3648)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations promoted; 1 real production bug fixed (exception-hierarchy mismatch breaking validate()'s own never-raises contract) plus corpus/test completion",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "bug_severity": "real -- affects any caller passing a document with a malformed stack.xml, unreadable thumbnail, or unreadable merged image to validate() in production use, not merely a test-coverage gap",
+    "new_tests": 6,
+    "new_corpus_fixtures": 4,
+    "diagnostic_codes_now_covered": [
+      "ORA_LAYER_SOURCE_MISSING", "ORA_THUMBNAIL_MISSING", "ORA_LAYER_SOURCE_INVALID_PNG",
+      "ORA_THUMBNAIL_UNREADABLE", "ORA_THUMBNAIL_NON_CONFORMING",
+      "ORA_MERGED_IMAGE_UNREADABLE", "ORA_MERGED_IMAGE_NON_CONFORMING"
+    ],
+    "diagnostic_codes_remaining_uncovered_by_file_fixture": ["ORA_MERGED_IMAGE_MISSING (has in-memory coverage only)"]
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
