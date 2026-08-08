@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-stream-budgets-cancellation-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-1181cc9bb0c80a36",
+  "mode": "live",
+  "timestamp": "2026-08-08T11:45:30Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_STREAM_BUDGETS_CANCELLATION_001",
+    "task_kind": "stale-cross-obligation-evidence-plus-honest-narrowing",
+    "root_cause": "Event 332's own exact_next_action suggested investigating ORA-STREAM-001 using the same clause-decomposition technique that narrowed ORA-COMPOSITE-001 one tick earlier. SAL-ORA-OBL-F8A3777A56AA6121's own ledger entry: status=missing, source_symbols=[], zero evidence. Decomposed its rule_text ('stream archive and XML inspection in bounded memory, expose lazy asset access, and fail before exceeding configured compressed, expanded, raster, nesting, or render budgets') into 6 named requirements and investigated each against the actual source tree rather than assuming any were unbuilt.",
+    "obligation_targeted": "SAL-ORA-OBL-F8A3777A56AA6121 (ORA-STREAM-001) narrowed missing -> partial (NOT closed -- the render budget remains genuinely blocked).",
+    "acceptance_evidence": "Grepped ora's source for ResourceLimits/max_entries/lazy/max_nesting and found extensive, already-tested machinery across 4 modules (container.py, assets.py, png_metadata.py, stack_xml.py) built for other obligations this session but never cross-mapped here. Read each module directly: OraContainer.from_bytes checks entry count/declared size/compression ratio from the ZIP central directory alone before decompressing anything; read_png_metadata parses only a PNG's IHDR chunk, proven available even when pixel data is corrupt; stack_xml.py's _Walker enforces a configured nesting-depth ceiling. Cross-referenced 8 existing, already-passing tests from 4 sibling test files. The two remaining pieces ('lazy-read instrumentation', 'cancellation') got fresh, dedicated tests: a zipfile.ZipFile.read spy proving resolving one layer never reads a sibling's own archive member, and a contrast between the eager resolve_all_assets() (all-or-nothing) and the granular iter_layers()/resolve_asset() combination (lets a caller stop early) to ground 'cancellation' honestly in this library's own fully-synchronous architecture (confirmed via a targeted grep that no interrupt-mid-flight primitive exists anywhere in ora or its sibling formats). The 'render' budget was investigated and confirmed genuinely absent -- no rendering engine anywhere in the package, the same scope already correctly deferred for ORA-RENDER-001 and ORA-COMPOSITE-001's own pixel-semantics clause (narrowed the same way one tick earlier)."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 332 commit.",
+    "2. Read SAL-ORA-OBL-F8A3777A56AA6121's own current ledger entry and register rule_text/required_tests/authority_fact_ids. Decomposed the rule_text into 6 distinct clauses: bounded-memory archive/XML inspection, lazy asset access, compressed budget, expanded budget, raster budget, nesting budget, render budget (7 counting the top-level 'stream...in bounded memory' framing separately from the 5 named budget types).",
+    "3. Grepped ora's source tree for ResourceLimits/max_entries/lazy/max_nesting_depth and found codec/assets.py (already existed, docstring references a DIFFERENT obligation, ORA-ASSET-001) with resolve_asset()/resolve_all_assets()/iter_layers() -- read it directly and confirmed it resolves one layer's raster metadata at a time, on demand, described without decoding.",
+    "4. Read codec/container.py in full: OraContainer.from_bytes's own _check_limits() checks member count, declared uncompressed byte total, and compression ratio ALL from the ZIP central directory (ZipInfo metadata) before decompressing a single byte -- the module's own docstring literally states 'Members are read on demand; nothing is decompressed during validation.'",
+    "5. Read codec/png_metadata.py in full: read_png_metadata parses only the 25-byte IHDR chunk (signature + length + type + IHDR payload) and never inflates IDAT pixel data; declared_byte_size is computed via checked_product (overflow-safe) and checked against limits.max_decompressed_bytes before any decode is attempted.",
+    "6. Grepped stack_xml.py and confirmed max_nesting_depth is already enforced in _Walker.child(), with existing dedicated tests in test_obligation_stack_and_document.py and test_obligation_security_baseline.py (test_deeply_nested_stacks_are_refused_by_a_bounded_recursion_walk).",
+    "7. Grepped all 5 relevant existing test files (test_obligation_container_and_mimetype.py, test_obligation_raster_assets.py, test_obligation_stack_and_document.py, test_obligation_security_baseline.py) for test names directly relevant to bounded-memory/lazy-access/budget enforcement -- found 8 directly applicable, already-passing tests covering 5 of the obligation's own 6 named requirements comprehensively, including test_metadata_is_available_even_when_the_pixel_data_is_unreadable (an EXPLICIT lazy-metadata-without-decode proof already existing) and test_total_declared_size_over_the_limit_is_refused_before_reading (an EXPLICIT before-reading fail-fast proof already existing).",
+    "8. Grepped for 'cancel'/'Cancellation'/'CancelledError' across ora and the nrrd/ubl sibling formats -- zero genuine I/O-cancellation matches (only unrelated UBL business-document type names). Confirmed this library has no async/threading/interrupt machinery anywhere, so 'cancellation' in the traditional sense does not apply architecturally -- reasoned that the honest, defensible interpretation is the API's own shape (granular vs eager) determining whether a caller CAN stop early without cost.",
+    "9. Wrote a new, dedicated test file (test_obligation_stream_budgets_and_cancellation.py, 2 tests): a zipfile.ZipFile.read spy (via unittest.mock.patch.object) proving resolving one layer's asset via resolve_asset() never triggers a read() call for a sibling layer's own archive member name; and a contrast test building a 2-layer archive where the second layer has no backing member, showing resolve_all_assets() raises OraValidationError with zero results while the granular iter_layers()+resolve_asset() loop yields the first layer's result and lets the caller break before reaching the unresolvable one.",
+    "10. Ran the new file alone (2/2 pass), ruff (clean), and the full ora suite (361 passed, was 359 -- purely additive, zero regression).",
+    "11. mypy --strict on the standalone new test file failed identically to the same pre-existing quirk already confirmed and disclosed one tick earlier for ORA-COMPOSITE-001's own new test file (format_factory.ora not resolvable for standalone test-file mypy invocations, an editable-install resolution issue, not a regression) -- re-confirmed mypy --strict against the full ora source package is unaffected (no production source touched this slice anyway).",
+    "12. Updated the ledger: promoted SAL-ORA-OBL-F8A3777A56AA6121 from missing to PARTIAL (not implemented -- the render budget genuinely remains unbuilt), populated source_symbols (5 already-existing production symbols, correctly using class/def-resolvable names per the reconciler's own AST-based resolution -- learned from an earlier reconciler ERROR this same tick that module-level constants like COMPOSITE_OP_REGISTRY are NOT resolvable, only class/def), populated positive_test_selectors (8 cross-referenced existing tests + 2 new ones) and negative_test_selectors (2 cross-referenced existing refusal tests), added a new execution_evidence entry (ORA-STREAM-BUDGETS-CANCELLATION-PROOF) with a truth_boundary explicitly stating this is a NARROWING and that ora's own unresolved-obligation count is unchanged by this entry alone."
+  ],
+  "allowed_files": [
+    "tests/python/ora/test_obligation_stream_budgets_and_cancellation.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ora/test_obligation_stream_budgets_and_cancellation.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_stream_budgets_and_cancellation.py -q -- 2 passed (new file)",
+    ".venv/Scripts/python -m ruff check tests/python/ora/test_obligation_stream_budgets_and_cancellation.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ora -q -- 361 passed (was 359, purely additive)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation narrowed (missing -> partial, NOT closed) -- ORA-STREAM-001's SAL-ORA-OBL-F8A3777A56AA6121, 5 of 6 named requirements proven, 1 honestly left blocked",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 134,
+    "new_public_api": "none -- no new production source code; only test coverage and evidence-mapping correction for already-existing capability"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

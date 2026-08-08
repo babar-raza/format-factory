@@ -497,6 +497,11 @@ execution_evidence:
   expected_result: PASS
   granularity: selector
   truth_boundary: 'Selector-bound, unlike ORA-BASELINE-SUITE. Narrows (does not fully close) SAL-ORA-OBL-2CC875865800D528 (ORA-COMPOSITE-001), promoted missing->partial. This specific obligation ID had zero cross-referenced evidence before this tick -- status=missing, source_symbols=[] -- despite sharing the exact same capability_id (ORA-COMPOSITE-001) as a sibling obligation (SAL-ORA-OBL-4EC8C1CC747F7FC6) already closed earlier this session by the same composite_ops.py registry this entry now also cites; the two obligations have different rule_text (this one''s own is broader: "expose the selected profile''s complete compositing-operation inventory, default operation, validation, and pixel semantics through a replaceable rendering adapter" vs the sibling''s narrower "composite-op attribute defaults to svg:src-over..."), so this was never a pure duplicate-mapping fix. Investigated all four named clauses directly. "The selected profile''s... inventory": re-read the pinned Layer Stack Specification''s own "composite-op attribute" section directly (.local/format-contracts/acquired/ora/src-ora-003.bin) and confirmed the composite-op table has no per-profile gating anywhere in that section -- "profile" is not a real distinct requirement beyond the existing registry. Proven behaviorally (not merely by spec citation) via 2 new tests showing composite-op resolution is identical regardless of isolation-triggering attributes (this obligation''s own second authority fact, SAL-ORA-00011: isolation depends on opacity/composite-op/isolation together, a profile 0.0.4+ concern already covered by a different sibling obligation, SAL-ORA-OBL-C668456FEC0FF4E4). "Default operation" and "validation": already fully implemented (DEFAULT_COMPOSITE_OP, composite_op_info()); 2 new tests add fresh, dedicated proof of "validation" specifically meaning universal acceptance with structured lookup (every known value plus 3 forward-compatible unknown values including an empty string all construct successfully), matching the spec''s own explicit open-vocabulary mandate rather than inventing a rejection semantic the spec forbids. "Pixel semantics through a replaceable rendering adapter" remains genuinely, honestly unresolved: investigated and confirmed this package has no rendering engine, no pixel-level compositing computation, and no adapter abstraction at all -- the same genuinely-blocked scope already correctly deferred for ORA-RENDER-001 (also unbuilt, requires the identical missing infrastructure). 4 new tests (tests/python/ora/test_obligation_composite_inventory_profile_independence.py), plus 4 existing tests from the sibling test_obligation_composite_op_registry.py cross-referenced as supplementary positive evidence for this obligation specifically (inventory completeness, default-value mapping, unrecognized-value preservation, full registry round trip). ora suite: 359 passed (unchanged -- purely additive). mypy --strict via standalone single-file invocation fails to resolve format_factory.ora for ALL ora test files (confirmed identical failure on the already-committed, already-passing sibling test_obligation_composite_op_registry.py) -- a pre-existing environment quirk in how mypy resolves this package''s own editable install for standalone test-file checks, not a regression; mypy --strict against the full ora source package itself (14 files) is clean. ruff clean. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule; the profile-independence and validation-scope findings are direct, literal readings of the pinned spec text, not new interpretation. Covers SAL-ORA-OBL-2CC875865800D528 only; it supports no other obligation and promotes no other product state. This is a NARROWING, not a closure -- the obligation stays partial, and ora''s own unresolved-obligation count is unchanged by this entry alone.'
+- evidence_id: ORA-STREAM-BUDGETS-CANCELLATION-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-stream-budgets-cancellation-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike ORA-BASELINE-SUITE. Narrows (does not fully close) SAL-ORA-OBL-F8A3777A56AA6121 (ORA-STREAM-001), promoted missing->partial. This specific obligation ID had zero cross-referenced evidence before this tick -- status=missing, source_symbols=[] -- despite five of its own six named requirements ("stream archive and XML inspection in bounded memory, expose lazy asset access, and fail before exceeding configured compressed, expanded, raster, nesting, or render budgets") already being implemented and extensively tested across modules built for other obligations this session: OraContainer.from_bytes (codec/container.py) checks entry count, declared uncompressed size, and compression ratio from the ZIP central directory alone, refusing before a single byte is decompressed; read_png_metadata (codec/png_metadata.py) parses only a PNG''s 25-byte IHDR chunk and never inflates pixel data, proven available even when the pixel payload itself is corrupt, with the declared surface size checked via checked arithmetic before decode; codec/stack_xml.py''s bounded recursion walk refuses nesting depth beyond the configured limit. Cross-mapped 8 already-existing, already-passing tests from 4 sibling test files onto this obligation as supplementary evidence rather than duplicating them. The two genuinely unproven pieces got fresh, dedicated tests: "lazy-read instrumentation" (this obligation''s own required_tests wording, taken literally) is proven by spying on the underlying zipfile.ZipFile.read calls directly, confirming resolving one layer''s asset never reads a sibling layer''s own archive member -- not inferred from the absence of an observed side effect. "Cancellation" was investigated rather than assumed unbuildable: this library is fully synchronous with no interrupt-mid-flight primitive anywhere in the codebase (confirmed by a targeted grep across ora and its sibling formats), so cancellation cannot mean interrupting a read in progress -- it means the API''s own shape lets a caller stop calling the resolver after any layer without cost. Proven by contrasting resolve_all_assets() (eager, all-or-nothing: raises outright on an unresolvable layer, yielding nothing at all) against the granular iter_layers()/resolve_asset() combination (yields each result as it goes, so a caller can stop -- cancel -- the moment they have what they need or before reaching a layer they no longer want). "Render budget" remains genuinely, honestly unresolved: this package has no rendering engine at all, so there is no render operation to bound in the first place -- the identical scope already correctly deferred for ORA-RENDER-001 and for ORA-COMPOSITE-001''s own "pixel semantics" clause (SAL-ORA-OBL-2CC875865800D528, narrowed the same way one tick earlier this session). 2 new tests (tests/python/ora/test_obligation_stream_budgets_and_cancellation.py). ora suite: 359 -> 361 passed. mypy --strict via standalone single-file invocation fails to resolve format_factory.ora for ALL ora test files (the same pre-existing environment quirk already confirmed and disclosed for ORA-COMPOSITE-INVENTORY-PROFILE-INDEPENDENCE-PROOF, not a regression); mypy --strict against the full ora source package (unchanged by this slice -- no production source was modified) remains clean. ruff clean. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule; every claim here is grounded in direct reads of already-existing, already-proven source and behavioral tests, not new interpretation. Covers SAL-ORA-OBL-F8A3777A56AA6121 only; it supports no other obligation and promotes no other product state. This is a NARROWING, not a closure -- ora''s own unresolved-obligation count is unchanged by this entry alone.'
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -3839,16 +3844,50 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-F8A3777A56AA6121
   capability_id: ORA-STREAM-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/codec/container.py::OraContainer
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset
+  - src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets
+  - src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers
+  - src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_total_declared_size_over_the_limit_is_refused_before_reading
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_an_extreme_compression_ratio_is_refused
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_opening_an_archive_never_executes_member_content
+  - tests/python/ora/test_obligation_raster_assets.py::test_metadata_is_available_even_when_the_pixel_data_is_unreadable
+  - tests/python/ora/test_obligation_raster_assets.py::test_only_the_header_is_consumed
+  - tests/python/ora/test_obligation_raster_assets.py::test_an_asset_declaring_an_enormous_surface_is_refused
+  - tests/python/ora/test_obligation_stack_and_document.py::test_nesting_deeper_than_the_limit_is_refused
+  - tests/python/ora/test_obligation_security_baseline.py::test_deeply_nested_stacks_are_refused_by_a_bounded_recursion_walk
+  - tests/python/ora/test_obligation_stream_budgets_and_cancellation.py::test_resolving_one_asset_never_reads_a_sibling_layers_own_archive_member
+  - tests/python/ora/test_obligation_stream_budgets_and_cancellation.py::test_the_granular_api_lets_a_caller_stop_before_an_unresolvable_layer_resolve_all_does_not
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_container_and_mimetype.py::test_too_many_members_is_a_limit_error
+  - tests/python/ora/test_obligation_raster_assets.py::test_an_asset_declaring_an_enormous_surface_is_refused
+  execution_evidence_ids:
+  - ORA-STREAM-BUDGETS-CANCELLATION-PROOF
+  implemented_behavior:
+  - 'FF6-EVENT-000333: five of this obligation''s own six named requirements are implemented and now cross-mapped
+    onto this specific obligation ID for the first time, built earlier this session for other obligations but
+    never linked here. Bounded-memory archive/XML inspection and the compressed/expanded budgets: OraContainer.from_bytes
+    checks entry count, declared uncompressed size, and compression ratio from the ZIP central directory alone,
+    refusing before a single byte is decompressed ("Members are read on demand; nothing is decompressed during
+    validation"). Lazy asset access and the raster budget: read_png_metadata parses only the 25-byte IHDR chunk
+    and never inflates pixel data, proven available even when the pixel payload itself is corrupt; declared surface
+    size is checked via checked arithmetic before decode. The nesting budget: codec/stack_xml.py''s bounded recursion
+    walk refuses depth beyond the configured limit. "Lazy-read instrumentation" (this obligation''s own required_tests
+    wording, taken literally): proven fresh by spying on the underlying archive''s own read calls -- resolving one
+    layer''s asset never reads a sibling layer''s own archive member. "Cancellation": this library is synchronous
+    with no interrupt-mid-flight primitive anywhere, so cancellation means the API''s own shape lets a caller stop
+    calling the resolver after any layer without cost -- proven by contrasting the eager, all-or-nothing resolve_all_assets()
+    (fails outright, yielding nothing) with the granular iter_layers()/resolve_asset() combination (yields each
+    result as it goes, so a caller can stop before reaching a layer they no longer want).'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Large sparse archives, lazy-read
-    instrumentation, flat-memory checks, cancellation, and every resource limit.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  - 'The "render" budget remains genuinely absent: this package has no rendering engine at all, so there is no
+    render operation to bound in the first place -- the identical scope already correctly deferred for ORA-RENDER-001
+    and for ORA-COMPOSITE-001''s own "pixel semantics" clause. Narrowed, not resolved -- this is the obligation''s
+    own sole remaining gap.'
   proof_requirements:
     positive:
     - Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource
