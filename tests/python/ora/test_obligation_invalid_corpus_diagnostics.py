@@ -14,13 +14,17 @@ Building the thumbnail/merged-image fixtures below surfaced a real,
 previously-undiscovered bug: ``_baseline_asset_diagnostics``'s two
 ``except OraError`` clauses did not catch ``OraValidationError`` --
 ``read_png_metadata`` raises the latter for a structurally-invalid PNG, and
-``OraError``/``OraValidationError`` are SIBLINGS (each descends directly
+``OraError``/``OraValidationError`` were SIBLINGS (each descended directly
 from a different `format_factory.core` base), not a hierarchy. The same gap
 existed in `validate()`'s own outer handler, which also missed
 ``OraLimitError`` -- so a malformed ``stack.xml`` or an oversized/hostile
 payload crashed `validate()` entirely instead of returning a report,
-breaking its own explicitly documented "never raises" contract. Fixed by
-naming all three sibling exception types explicitly at each site.
+breaking its own explicitly documented "never raises" contract. Fixed two
+ways together: the 3 affected call sites now name all three exception types
+explicitly, AND `errors.py` itself now makes `OraValidationError`/
+`OraLimitError` proper `OraError` subclasses (matching every other FF6
+format's own error hierarchy), so a bare ``except OraError`` elsewhere in
+this package can no longer make the identical mistake silently.
 """
 
 from __future__ import annotations
@@ -31,7 +35,7 @@ from pathlib import Path
 
 import pytest
 
-from format_factory.ora import OraValidationError, ReadMode, load, validate
+from format_factory.ora import OraError, OraLimitError, OraValidationError, ReadMode, load, validate
 
 SAMPLES = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "ora" / "invalid"
 
@@ -162,6 +166,15 @@ def test_malformed_stack_xml_is_reported_not_a_crash() -> None:
     assert report.is_valid is False
     assert report.diagnostics[0].code == "ORA_UNREADABLE"
     assert "not well-formed XML" in report.diagnostics[0].message
+
+
+def test_ora_validation_and_limit_errors_are_also_ora_errors() -> None:
+    # Structural regression guard for the root cause, not just its 3 known
+    # symptoms: a bare `except OraError` anywhere in this package (present
+    # or future) must catch OraValidationError and OraLimitError too, since
+    # that is what let this bug happen in the first place.
+    assert issubclass(OraValidationError, OraError)
+    assert issubclass(OraLimitError, OraError)
 
 
 def test_all_invalid_fixtures_remain_readable_zip_archives() -> None:

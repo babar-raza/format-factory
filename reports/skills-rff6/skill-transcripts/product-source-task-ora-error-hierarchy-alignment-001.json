@@ -1,0 +1,50 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-error-hierarchy-alignment-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T02:41:08Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_ERROR_HIERARCHY_ALIGNMENT_001",
+    "task_kind": "root-cause-architecture-fix",
+    "root_cause": "FF6-EVENT-000294 fixed 3 call sites where `except OraError` missed OraValidationError/OraLimitError. This event audited every other FF6 format's own error hierarchy (nrrd, xliff, ubl, safetensors, ipynb) and found all 5 use multiple inheritance so every format-specific exception subclass IS ALSO the format's own base error class -- ora was the sole outlier, with OraValidationError(FormatValidationError) and OraLimitError(ResourceLimitError) declared as siblings of OraError rather than subclasses. This was the actual root cause, not merely 3 missed except clauses.",
+    "obligation_targeted": "None -- architecture correctness improvement preventing recurrence of FF6-EVENT-000294's own bug class, not an obligation closure.",
+    "acceptance_evidence": "Verified MRO resolves cleanly with no conflicts; a new structural regression test (test_ora_validation_and_limit_errors_are_also_ora_errors) asserts the subclass relationship directly so a future edit reverting it fails immediately, independent of any specific call-site symptom.",
+    "regression_tier": "full ora suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Audited every other FF6 format's own errors.py: nrrd/xliff/ubl all declare Parse/Write/Validation error subclasses via multiple inheritance, e.g. `class NrrdParseError(FormatParseError, NrrdError)` -- BOTH a cross-format FormatParseError AND the format's own NrrdError. safetensors's own validate() catches all exceptions broadly (no risk). ipynb's own hierarchy is single-inheritance but internally consistent (every subclass inherits IpynbError directly). Only ora's errors.py declared OraValidationError/OraLimitError as siblings of OraError, not subclasses -- the actual root cause of FF6-EVENT-000294's bug.",
+    "2. Grepped every `except.*Ora.*Error` site across ora's own src/ tree (5 total) to confirm no other latent instances of the bug existed beyond the 3 already fixed -- confirmed clean.",
+    "3. Changed errors.py: `OraValidationError(FormatValidationError, OraError)` and `OraLimitError(ResourceLimitError, OraError)`, matching the established cross-format multiple-inheritance pattern. Updated both classes' own docstrings and the module docstring to explain why, referencing the bug this prevents recurring.",
+    "4. Verified the MRO resolves without conflict (Python's C3 linearization) via direct inspection: OraValidationError.__mro__ = [OraValidationError, FormatValidationError, OraError, FormatParseError, FormatFactoryError, Exception, BaseException, object]; OraLimitError.__mro__ analogous.",
+    "5. Verified validate() still behaves correctly end-to-end for both a non-ZIP source and the thumbnail-unreadable fixture from the immediately preceding commit.",
+    "6. Added a dedicated structural regression test asserting `issubclass(OraValidationError, OraError)` and `issubclass(OraLimitError, OraError)` directly -- a root-cause guard, not just a symptom guard, since the 3 call-site fixes already have their own symptom-level regression tests from the prior commit.",
+    "7. Ran mypy --strict (clean), ruff (clean), the full ora suite (336 -> 337 passed, +1), and the 6-format regression (3654 -> 3655 passed, +1, 0 failed)."
+  ],
+  "allowed_files": [
+    "src/python/ora/src/format_factory/ora/errors.py",
+    "tests/python/ora/test_obligation_invalid_corpus_diagnostics.py"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/src/format_factory/ora/errors.py",
+    "tests/python/ora/test_obligation_invalid_corpus_diagnostics.py"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora -q -- 337 passed (was 336, +1 new structural test)",
+    ".venv/Scripts/python -m mypy --strict src/python/ora/src/format_factory/ora/errors.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3655 passed, 4 skipped, 0 failed (was 3654)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations promoted -- architecture correctness improvement (defense-in-depth root-cause fix following a real bug fix in the immediately preceding commit)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "cross_format_audit_result": "nrrd, xliff, ubl already use the correct multiple-inheritance pattern; safetensors and ipynb are safe by different means (broad catch-all / single-hierarchy consistency respectively); ora was the sole outlier, now aligned",
+    "new_tests": 1
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
