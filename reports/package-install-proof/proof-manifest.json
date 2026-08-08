@@ -567,29 +567,33 @@
       "wheel_sha256": "b8bca247887f8f0452890d764d7b94ed4c215a721597270b9af12fcfade25c90"
     },
     "ubl": {
-      "build_mode": "legacy_staging",
+      "build_mode": "native_pyproject",
       "deep_import": {
-        "failed": 2,
-        "failing_modules": {
-          "ubl._build_backend": "ModuleNotFoundError: No module named 'setuptools'",
-          "ubl.ubl_to_csv": "ModuleNotFoundError: No module named 'ff_csv'"
-        },
-        "total": 18
+        "failed": 0,
+        "failing_modules": {},
+        "total": 37
       },
       "import_result": "PASS",
       "install_result": "PASS",
-      "local_dependencies": [],
-      "module_import": "ubl",
+      "local_dependencies": [
+        {
+          "install_result": "PASS",
+          "package_name": "format-factory-core",
+          "wheel_file": "format_factory_core-0.1.0.dev0-py3-none-any.whl",
+          "wheel_sha256": "f15a9f3dfe6097befc6694a9c55d3ad9a706b34130f44f21bc789611c3760bc7"
+        }
+      ],
+      "module_import": "format_factory.ubl",
       "package_name": "format-factory-ubl",
-      "proof_id": "PACKAGE-PROOF-A1F09EDEB35C47E1DCBA9F2B6A23696B2EBCB50D83CBBB436A457C1FE64289DA",
-      "proof_input_digest": "b7015bc537501892a03bab20258cc11b2f5f6fbb5b735f5c6b7988583806a3b2",
+      "proof_id": "PACKAGE-PROOF-EBB3818850D8DFED60332CCA4738B064F60C40C1D87D7D9343561E1EA5AB913F",
+      "proof_input_digest": "de643dd513a9a0817dd71b36e456f01ef37281edd6b3588cf0461cc1450cccb3",
       "smoke_result": "PASS",
-      "smoke_test": "ubl.ubl_codec.load_ubl on samples/by-format/ubl/valid/minimal-order.xml",
-      "source_digest": "4f7c1863379758fa669fc37e223163df63c287d0f724a1a3626c41ae4f6589f0",
+      "smoke_test": "format_factory.ubl.load on samples/by-format/ubl/valid/minimal-order.xml",
+      "source_digest": "c04ea8ca0287f46082e15bf7af9d61bf9f87c5a1371eb2be25515ad9ea01c26c",
       "verdict": "PASS",
-      "version": "0.1.0.dev0",
-      "wheel_file": "format_factory_ubl-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "9f0aeab8bf8f834ed5a098aebba186f061b9559c493b959061fda4679e4e444c"
+      "version": "0.2.0.dev0",
+      "wheel_file": "format_factory_ubl-0.2.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "d6911895d3114985be393b57274c3b02ab596739c1e531bc4770dbee6c173666"
     },
     "xcf": {
       "build_mode": "legacy_staging",

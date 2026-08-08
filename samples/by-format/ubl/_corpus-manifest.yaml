@@ -14,6 +14,7 @@ valid_samples:
     category: minimal-valid
     description: "Minimal UBL 2.1 Invoice with required fields (ID, IssueDate, AccountingSupplierParty, AccountingCustomerParty, LegalMonetaryTotal). Tests baseline UBL invoice parsing."
     structural_test: PASS
+    sha256: 122b69cf701ebf9376a14dc9f6aa2d468a2d8de5956e943cba6e8ef0489f25c2
 
   - filename: valid/multi-line-invoice.xml
     source: project-owned-synthetic
@@ -23,6 +24,7 @@ valid_samples:
     category: multi-line
     description: "UBL Invoice with multiple InvoiceLine elements containing item descriptions and pricing. Tests line item iteration and amount extraction."
     structural_test: PASS
+    sha256: 661ce10da7edafca4176b85a6310d94aa13e359a4d456a388fa44857fb4bc0fa
 
   - filename: valid/minimal-order.xml
     source: project-owned-synthetic
@@ -32,6 +34,7 @@ valid_samples:
     category: alternate-document-type
     description: "Minimal UBL 2.1 Order document with required fields. Tests document type discrimination between Invoice and Order root elements."
     structural_test: PASS
+    sha256: f653ae39dbf4894605ddbd6f8e9b583f668a591352dccaed31832053c3229a1c
 
   - filename: valid/invoice-full-depth.xml
     source: project-owned-synthetic
@@ -41,6 +44,7 @@ valid_samples:
     category: full-party-and-totals-depth
     description: "UBL Invoice with full party depth (postal address, VAT/tax scheme, legal entity, contact, Peppol endpoint id) on both parties, plus cac:TaxTotal/TaxSubtotal and cac:LegalMonetaryTotal. Tests FACT-UBL-101/102/103 parse+write round-trip."
     structural_test: PASS
+    sha256: 626fd5cd34ff2d5a326a171b301f48e7be231196f42d83dc584c90c45db70077
 
   - filename: valid/minimal-creditnote.xml
     source: project-owned-synthetic
@@ -50,6 +54,7 @@ valid_samples:
     category: alternate-document-type
     description: "Minimal UBL 2.3 CreditNote document. Tests document type discrimination for the CreditNote-2 namespace (FACT-UBL-105)."
     structural_test: PASS
+    sha256: 81b9577ccdde6fe8903258f4eacda1e286ccca4c016346368e74a128fa47f399
 
   - filename: valid/creditnote-with-totals.xml
     source: project-owned-synthetic
@@ -59,6 +64,7 @@ valid_samples:
     category: alternate-document-type-with-totals
     description: "UBL 2.3 CreditNote with cac:TaxTotal/TaxSubtotal and cac:LegalMonetaryTotal. Tests tax/monetary total depth on the CreditNote document type."
     structural_test: PASS
+    sha256: 428b4f5507a1d398b12b38c77e81d18502a3d5812a1c3e16c28ebed030e542ed
 
 invalid_samples:
   - filename: invalid/missing-mandatory.xml
@@ -67,16 +73,30 @@ invalid_samples:
     license: Apache-2.0
     copyright: "format-factory project"
     category: invalid-missing-mandatory-element
-    description: "UBL Invoice missing mandatory AccountingSupplierParty element. Tests required element validation."
+    description: "UBL Invoice missing mandatory AccountingSupplierParty (and ID, AccountingCustomerParty, LegalMonetaryTotal) elements. Intended to test required-element validation."
     expected_error: true
     error_type: MissingMandatoryElement
+    sha256: 5e7af27b318238d0dffc332cd619556df0f09bac615c9e9cb077a307d623d6bb
+    verified_this_tick: >-
+      format_factory.ubl.load() parses this file successfully (it is well-formed XML with a
+      recognized Invoice root), and validate() currently reports is_valid=True -- this sample
+      does NOT actually trigger a validation error today, contradicting this entry's own prior
+      error_detection_rate claim below. validate()'s own docstring says so directly: "This
+      chassis validation is deliberately not an XSD-conformance claim. Full schema and
+      cardinality validation remains a mandatory open obligation" -- root-level mandatory-child
+      presence (as opposed to the cardinality checks already built for specific already-present
+      aggregate components like TaxTotal/InvoiceLine) is one of the still-open parts of that
+      obligation (UBL-VALIDATE-001). Left as a genuine sample fixture and an honest, disclosed
+      gap rather than silently deleted or force-fixed -- fixing it would mean building the
+      broader mandatory-cardinality validation feature UBL-VALIDATE-001 itself still needs,
+      out of scope for a corpus-gate evidence tick.
 
 summary:
   valid_count: 6
   invalid_count: 1
   total_count: 7
   structural_pass_rate: "6/6"
-  error_detection_rate: "1/1"
+  error_detection_rate: "0/1 (corrected this tick -- see invalid_samples[0].verified_this_tick; the prior '1/1' claim was never actually verified against validate(), only asserted)"
   categories_covered:
     - minimal-valid
     - multi-line

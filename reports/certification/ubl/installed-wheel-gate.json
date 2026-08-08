@@ -1,0 +1,22 @@
+{
+  "format_id": "ubl",
+  "gate": "installed-wheel",
+  "tool": "tools/run_package_install_proof.py --format ubl",
+  "canonical_manifest": "reports/package-install-proof/proof-manifest.json",
+  "status": "PASS",
+  "verdict": "PASS",
+  "proof_id": "PACKAGE-PROOF-1855BCBBFB2A9F91B68DE66B0994068364CB64410E5DAB0C09D179B45E16F172",
+  "checks": {
+    "build_mode": "native_pyproject",
+    "install_result": "PASS -- installed from a freshly built wheel into an isolated ephemeral venv, not the dev checkout",
+    "local_dependency": "format-factory-core wheel installed first, PASS",
+    "import_result": "PASS",
+    "deep_import": "PASS -- 37/37 submodules import cleanly, 0 failing",
+    "smoke_result": "PASS -- format_factory.ubl.load on samples/by-format/ubl/valid/minimal-order.xml",
+    "pytest_in_proof_venv": "2 passed, 1 skipped"
+  },
+  "major_bug_found_and_fixed_this_tick": "packaging/python/package-matrix.yaml's own 'ubl' entry had NEVER been migrated to the shipped format_factory.ubl namespace, unlike every one of its 5 sibling FF6 formats (ipynb/nrrd/safetensors/xliff/ora, all already build_mode=native_pyproject, module_import=format_factory.{fmt}). It still declared module_import=ubl (bare legacy namespace), smoke_module=ubl.ubl_codec, and no build_mode (silently defaulting to legacy_staging). This meant EVERY run_package_install_proof.py invocation for ubl this entire session -- including every 6-format co-install proof already committed at Events 322/324/325/326 -- was actually building, installing, and deep-importing ubl's OWN DEPRECATED LEGACY SHIM, not the real, currently-developed format_factory.ubl package this session has spent substantial effort on (official-sample-roundtrip work at Event 320, the security sweep this same tick, etc). The 2 'pre-existing, unrelated' deep_import failures cited in every prior compatibility-gate.json this session as 'ubl._build_backend needs setuptools' / 'ubl.ubl_to_csv needs ff_csv' were REAL failures, but of the wrong, legacy target -- not evidence about the shipped package at all. Fixed the matrix entry to match the exact native_pyproject shape every sibling format already uses. Result: 37/37 deep imports now PASS (0 failing, not 16/18) -- the shipped format_factory.ubl package has NO import problems at all, once actually tested.",
+  "wheel_digest_cross_check": "wheel_sha256 86a247c82ac902456d0f61200c7ebb23148aea0a1886c14a16af6313e5636f71 now matches EXACTLY the digest already recorded by this format's own reproducible-build.json and independent-repository-extraction-gate.json (both .venv-pinned, from Event 324). This RETRACTS a conclusion from this session's own earlier independent-repository-extraction gate work: the wheel-digest mismatch previously attributed to 'a build-environment interpreter-pinning inconsistency (system python vs .venv python)' was actually THIS packaging-matrix staleness -- build-local-packages.py was staging the legacy shim under legacy_staging mode entirely, not merely using a different interpreter to build the same real package. Once the matrix entry points at the real native_pyproject source, all three tools agree on an identical digest regardless of which python resolves them. The interpreter-pinning theory is now known to be a red herring, not a separate, still-open finding.",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the installed-wheel invariant only, not a certification claim for the format as a whole.",
+  "commit": "pending"
+}

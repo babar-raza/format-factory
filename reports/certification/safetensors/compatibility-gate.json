@@ -46,5 +46,6 @@
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the compatibility invariant only, not a certification claim for the format as a whole.",
   "generated_by": "claude",
   "visibility": "generated",
-  "recorded_at": "2026-08-08"
+  "recorded_at": "2026-08-08",
+  "retraction_ubl_findings_FF6_EVENT_000327": "RETRACTED at FF6-EVENT-000327: the ubl._build_backend/ubl.ubl_to_csv findings cited above were real, but of the WRONG target -- packaging/python/package-matrix.yaml's own ubl entry had never been migrated to the shipped format_factory.ubl namespace, so this run (like every earlier one) was actually testing ubl's deprecated legacy shim. Fixed at FF6-EVENT-000327; re-ran this exact co-install proof and got 0 failures across all 6 formats, not 2. See reports/certification/ff6-six-format-co-install-gate.json for the full story and ubl's own installed-wheel-gate.json for the root-cause fix."
 }

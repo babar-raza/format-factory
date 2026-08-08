@@ -1,5 +1,5 @@
 {
-  "invocation_id": "PACKAGE-PROOF-A1F09EDEB35C47E1DCBA9F2B6A23696B2EBCB50D83CBBB436A457C1FE64289DA-ubl",
+  "invocation_id": "PACKAGE-PROOF-EBB3818850D8DFED60332CCA4738B064F60C40C1D87D7D9343561E1EA5AB913F-ubl",
   "skill_id": "package-install-proof",
   "skill_version": "3.0",
   "mode": "live",
@@ -19,30 +19,37 @@
   ],
   "tests_run": [
     "wheel-origin import assertion",
-    "ubl.ubl_codec.load_ubl on samples/by-format/ubl/valid/minimal-order.xml",
+    "format_factory.ubl.load on samples/by-format/ubl/valid/minimal-order.xml",
     "deep installed-submodule import scan"
   ],
   "ledger_entry_id": null,
   "result": "PASS",
-  "timestamp": "2026-08-08T09:19:11+00:00",
+  "timestamp": "2026-08-08T09:44:11+00:00",
   "format_id": "ubl",
   "package_name": "format-factory-ubl",
-  "package_version": "0.1.0.dev0",
-  "wheel_path": "format_factory_ubl-0.1.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "9f0aeab8bf8f834ed5a098aebba186f061b9559c493b959061fda4679e4e444c",
-  "proof_id": "PACKAGE-PROOF-A1F09EDEB35C47E1DCBA9F2B6A23696B2EBCB50D83CBBB436A457C1FE64289DA",
-  "source_digest": "4f7c1863379758fa669fc37e223163df63c287d0f724a1a3626c41ae4f6589f0",
-  "proof_input_digest": "b7015bc537501892a03bab20258cc11b2f5f6fbb5b735f5c6b7988583806a3b2",
-  "local_dependencies": [],
+  "package_version": "0.2.0.dev0",
+  "wheel_path": "format_factory_ubl-0.2.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "d6911895d3114985be393b57274c3b02ab596739c1e531bc4770dbee6c173666",
+  "proof_id": "PACKAGE-PROOF-EBB3818850D8DFED60332CCA4738B064F60C40C1D87D7D9343561E1EA5AB913F",
+  "source_digest": "c04ea8ca0287f46082e15bf7af9d61bf9f87c5a1371eb2be25515ad9ea01c26c",
+  "proof_input_digest": "de643dd513a9a0817dd71b36e456f01ef37281edd6b3588cf0461cc1450cccb3",
+  "local_dependencies": [
+    {
+      "package_name": "format-factory-core",
+      "wheel_file": "format_factory_core-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "f15a9f3dfe6097befc6694a9c55d3ad9a706b34130f44f21bc789611c3760bc7",
+      "install_result": "PASS"
+    }
+  ],
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
-  "import_statement": "import ubl",
+  "import_statement": "import format_factory.ubl",
   "smoke_result": "PASS",
-  "smoke_test": "ubl.ubl_codec.load_ubl on samples/by-format/ubl/valid/minimal-order.xml",
+  "smoke_test": "format_factory.ubl.load on samples/by-format/ubl/valid/minimal-order.xml",
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
-  "generated_at": "2026-08-08T09:19:11+00:00",
+  "generated_at": "2026-08-08T09:44:11+00:00",
   "worker_agent": "codex"
 }

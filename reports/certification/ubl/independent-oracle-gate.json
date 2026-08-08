@@ -1,0 +1,18 @@
+{
+  "format_id": "ubl",
+  "gate": "independent-oracle",
+  "tool": "tools/oracle/execute_oracle.py --format ubl",
+  "oracle_package": "oracle/formats/ubl/oracle-package.yaml",
+  "run_summary": "oracle/formats/ubl/reports/oracle-run-summary.json",
+  "total_cases": 5,
+  "results": {"PASS": 5, "FAIL": 0, "BLOCKED": 0, "INCONCLUSIVE": 0},
+  "pass_rate": "5/5",
+  "verdict": "ALL_PASS",
+  "status": "PASS",
+  "format_depth_score": "D1",
+  "depth_histogram": {"D1": 4, "D0": 1},
+  "coverage_gaps": [],
+  "re_run_this_tick": "ubl already had a real, pre-existing oracle package (unlike ora, which had none) -- ran fresh rather than trusting any stale summary, since this session made substantial changes to ubl's own source (official-sample-roundtrip work at Event 320, among others). Re-confirmed 5/5 PASS at D1 depth with no regression. Uses format_factory.ubl's own enriched-generic registration (tools/oracle/enriched_generic.py's own ENRICHED_LOADERS entry, already correctly pointing at format_factory.ubl -- this oracle package was never affected by the separate packaging-matrix staleness this tick's own installed-wheel-gate found and fixed, since the oracle executor resolves its own module path independently of package-matrix.yaml).",
+  "note": "D1 = model properties compared against expected values (4 cases); D0 = load did not crash, no property comparison (1 case, the invalid-input refusal). D2 (schema validation) does not apply -- ubl's own XSD schema conformance is proven separately by validate()/schema_validate()'s own dedicated obligation tests, not through this oracle harness. Oracle package schema-validation carries a separate, non-blocking WARNING (oracle-package.schema.json's 'family' enum does not include 'business', the correct family for this format -- the same class of pre-existing, portfolio-wide schema staleness already noted for every other FF6 format's own oracle gate this session; advisory metadata validation only, unrelated to this oracle's own PASS/FAIL verdict). This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the independent-oracle invariant only, not a certification claim for the format as a whole.",
+  "commit": "pending"
+}

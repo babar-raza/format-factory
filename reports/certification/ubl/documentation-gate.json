@@ -1,0 +1,23 @@
+{
+  "format_id": "ubl",
+  "gate": "documentation",
+  "status": "PASS",
+  "verdict": "PASS",
+  "docs_present": ["README.md", "CHANGELOG.md", "MIGRATION.md", "SECURITY.md"],
+  "readme_line_count": 136,
+  "readme_sections": [
+    "Installation", "Quick start", "Current chassis", "Official code lists",
+    "Document indexing and business-role queries", "Digital signatures (opt-in)",
+    "Official OASIS sample corpus", "Compatibility", "Public API", "License"
+  ],
+  "checks_performed_this_tick": {
+    "readme_expanded_not_replaced": "The prior README (58 lines, 6 sections) was already reasonably accurate and honestly scoped, unlike ora's/nrrd's own stale READMEs -- kept its existing Installation/Quick start/Current chassis/Compatibility/License sections verbatim. Added 4 new sections (code lists, document indexing, digital signatures, the official OASIS corpus from Event 320) and substantially expanded the Public API section, which previously listed only 12 of this package's own 142 exported symbols and omitted entire subsystems (code-list validation, digital signatures, document indexing/business-role queries, party/address/line-item model helpers) with no mention at all.",
+    "symbol_existence": "PASS -- every symbol referenced by a `from format_factory.ubl import ...` statement in the README's own code blocks (10 distinct names) exists via hasattr, AND every backtick-quoted name in the expanded Public API prose section (43 distinct names) also exists -- both checked directly, not assumed.",
+    "example_execution": "PASS -- the README's own 'Quick start' example (load/validate/dump) was executed verbatim against a real corpus sample (samples/by-format/ubl/valid/minimal-invoice.xml) end-to-end. The code-list, document-indexing, and signature examples were spot-verified via direct API calls (official_code_list_registry()/DocumentIndex.by_business_role()/SignatureBackendRegistry+verify_signature()) rather than full README-verbatim execution, matching the scope already established for xliff/ora/nrrd's own documentation gates."
+  },
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the documentation invariant only, not a certification claim for the format as a whole.",
+  "regression": {
+    "ubl_suite": "1178 passed (unchanged by the README expansion)"
+  },
+  "commit": "pending"
+}

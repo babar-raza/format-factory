@@ -1,0 +1,21 @@
+{
+  "format_id": "ubl",
+  "gate": "compatibility",
+  "status": "PASS",
+  "verdict": "PASS",
+  "checks_performed_this_tick": {
+    "co_install_with_other_ff6_formats": "PASS -- built and installed format-factory-{nrrd,ora,xliff,ipynb,safetensors,ubl} together into ONE shared ephemeral venv via tools/run_package_install_proof.py --format nrrd --format ora --format xliff --format ipynb --format safetensors --format ubl. RESULT: 6/6 PASS. ubl's own deep_import was 0 failed of 37 submodules -- the first time this session ubl's own REAL shipped package (format_factory.ubl) has ever been co-install-tested, since packaging/python/package-matrix.yaml's own ubl entry was stuck on the deprecated legacy shim until this tick's own installed-wheel-gate work fixed it (see that gate file for the full root-cause story). Every OTHER format in the run also showed 0 failures once ubl's own entry was corrected -- the previously-cited 'ubl._build_backend/ubl.ubl_to_csv, 2 pre-existing unrelated findings' were real failures of the wrong, legacy target and are retracted across every sibling format's own compatibility-gate.json this same tick. No namespace or third-party collision occurred between any of the 6 co-installed formats.",
+    "declared_python_version_range": "classifiers declare 3.11-3.14 (pyproject.toml)",
+    "no_version_gated_syntax_above_the_floor": "PASS -- AST-scanned the full source tree for PEP 695 type-alias statements (Python 3.12+ only): 0 found",
+    "direct_first_party_evidence_3_13": "PASS -- this entire session's continuous test execution ran on Python 3.13.2 with zero version-related failures",
+    "ci_matrix_evidence_3_10_through_3_12": "the repository's own .github/workflows/ci.yml test-full job runs the complete pytest suite (which includes this package) across a real matrix of Python 3.10, 3.11, 3.12 on every push to main -- cited as existing third-party evidence, not re-run here",
+    "windows_evidence": "PASS -- this entire session ran on Windows with zero platform-related failures across thousands of test invocations",
+    "linux_evidence": "the CI matrix job above runs on ubuntu-latest -- cited as existing evidence, not independently reproduced here"
+  },
+  "honest_gaps": [
+    "Python 3.14 is declared in classifiers but genuinely unverified anywhere found in this repository -- neither in CI (matrix stops at 3.12) nor locally (only 3.13 is installed on this machine).",
+    "macOS is not covered by CI (ubuntu-latest only) and was not tested this session (Windows only). No macOS-specific code path exists in this package (pure Python XML processing, no platform-conditional logic found), which reduces but does not eliminate this risk."
+  ],
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the compatibility invariant only, not a certification claim for the format as a whole. This is the 6th and LAST format this session to reach a full 10/10 gate set (after ipynb, safetensors, xliff, ora, nrrd) -- all six FF6 formats now have complete completion-invariant gate coverage for the first time this mission.",
+  "commit": "pending"
+}

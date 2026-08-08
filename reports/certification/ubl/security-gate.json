@@ -1,0 +1,21 @@
+{
+  "format_id": "ubl",
+  "gate": "security",
+  "tool": "AST static import/call sweep + existing UBL-SEC-001 test suite",
+  "target": "src/python/ubl/src/format_factory/ubl",
+  "status": "PASS",
+  "verdict": "PASS",
+  "checks": {
+    "fully_forbidden_modules_never_imported": "PASS -- already proven by the pre-existing tests/python/ubl/test_obligation_security_baseline.py::test_no_source_file_imports_networking_execution_or_plugin_modules, which blocks a broad set (socket, urllib, http, ftplib, smtplib, subprocess, importlib, pkgutil, ctypes) -- importlib being fully forbidden already rules out importlib.import_module.",
+    "no_eval_exec_compile_call_anywhere_in_source": "PASS -- NEW this tick (the existing sweep is import-based and cannot see builtin calls)",
+    "no_dunder_import_call_anywhere": "PASS -- NEW this tick, same reasoning as eval/exec/compile"
+  },
+  "prior_art": "UBL-SEC-001's own obligation (prevent path traversal and unapproved absolute-path access when resolving any detached/referenced resource) already has a substantial, pre-existing dedicated test file: tests/python/ubl/test_obligation_security_baseline.py, plus a second dedicated file tests/python/ubl/test_obligation_namespace_shadowing_security.py. This gate adds the one narrow gap neither already provides: bare eval/exec/compile/__import__ builtin calls, which import-based AST scanning does not detect -- the identical, now third-times-applied fix already made for nrrd's own equivalent gap this session.",
+  "new_tests": "tests/python/ubl/test_obligation_security_eval_exec_sweep.py (2 tests, all new -- a separate file from both pre-existing security test files, not a modification of either)",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the security invariant only, not a certification claim for the format as a whole.",
+  "regression": {
+    "ubl_suite": "1178 passed (was 1176, +2)",
+    "six_format_suite": "3940 passed, 4 skipped, 0 failed"
+  },
+  "commit": "pending"
+}
