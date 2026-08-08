@@ -249,6 +249,35 @@ an immutable report. Copy IDs are deterministic, replacement preserves the
 selected ID, and bulk removal refuses an empty query. Dry-run and applied
 reports are equivalent while dry-run leaves the document untouched.
 
+## Version-control cleanup
+
+Deterministic, previewable cleanup for committing notebooks without
+execution-dependent noise (outputs, execution counts, and selected
+metadata keys):
+
+```python
+from format_factory.ipynb import CleanupPolicy, cleanup
+
+policy = CleanupPolicy(
+    output_types=frozenset({"stream", "execute_result", "error", "display_data"}),
+    notebook_metadata_keys=frozenset({"widgets"}),
+    cell_metadata_keys=frozenset({"execution"}),
+)
+preview = cleanup(document, policy=policy, dry_run=True)
+if preview.changed:
+    cleanup(document, policy=policy)  # apply for real; mutates document in place
+```
+
+`output_types=None` (the default) removes no outputs at all; passing the
+set of output types to strip is explicit, matching every other selective
+operation in this package. `reset_execution_counts` (default `True`)
+clears `execution_count`. Unknown metadata is never removed unless its
+exact key is named in `notebook_metadata_keys`/`cell_metadata_keys` --
+cleanup only ever removes what the policy explicitly selects. `dry_run`
+and applied runs return the identical `ChangeReport` shape; only a
+non-dry-run call mutates `document` in place, the same in-place-commit
+behavior `edit_cells()`'s own applied runs use.
+
 ## Typed metadata snapshots
 
 Read-only adapters expose common metadata without handing callers live nested

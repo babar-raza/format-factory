@@ -1,0 +1,53 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-cleanup-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-31294380924d0287",
+  "mode": "live",
+  "timestamp": "2026-08-08T16:41:54Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_CLEANUP_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-continuing-a-third-pass-on-a-format",
+    "root_cause": "After investigating ora's 7 and ubl's 6 remaining unresolved obligations fresh (per the standing instruction not to assume stale state) and confirming, via direct reading of each one's own current missing_behavior text, that all 7 ora obligations require the same genuinely large, deliberately-unbuilt rendering-engine/pixel-compositing capability (or are genuinely ungrounded in the spec, correctly left unbuilt) and ubl's 6 each require either a large multi-session undertaking (a 78-call-site namespace audit, full header-position insertion knowledge, auto code-list discovery, version-migration transforms) or carry genuine ambiguity risking invented scope (a reference-consistency check with no clearly grounding spec fact), pivoted within the same tick to the proven-productive documentation direction: ipynb's own remaining ~99 __all__ candidates from Event 341's own survey. cleanup()/CleanupPolicy stood out immediately: a real, complete, commonly-needed capability (deterministic, previewable version-control cleanup) with zero prior documentation.",
+    "obligation_targeted": "No specific obligation-register status change (ipynb remains at 0/68 unresolved, unaffected by this tick) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage of a high-value, commonly-needed capability.",
+    "acceptance_evidence": "Read model/cleanup.py in full (161 lines): CleanupPolicy (cell_ids/output_types/notebook_metadata_keys/cell_metadata_keys/reset_execution_counts selection), Change/ChangeReport (immutable, deterministic mutation records), and cleanup() itself (dry_run vs applied, identical report shape either way, unknown metadata never removed unless explicitly named). Verified against real corpus data (samples/by-format/ipynb/valid/with-outputs.ipynb, a genuine notebook with real outputs and a real execution_count=5): dry_run=True correctly previewed 3 changes without mutating the document (execution_count confirmed still 5 immediately after the dry-run call); the identical policy applied for real then correctly cleared outputs and reset execution_count to None, confirmed via the document's own post-call state."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 360 commit; 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Per the standing instruction to re-verify rather than assume stale state, ran the contract reconciler fresh for ora (7/134 unchanged) and ubl (6/194 unchanged), then read each format's own current unresolved obligation list directly from the freshly-regenerated reconciliation JSON.",
+    "3. Investigated all 7 ora obligations' own current missing_behavior text: 5 explicitly cite the same genuinely-unbuilt rendering-engine/pixel-compositing capability (ORA-RENDER-001/ORA-COMPOSITE-001, already correctly deferred all session), 1 (mask model) was already investigated and confirmed genuinely ungrounded in the spec (the word 'mask' appears zero times across all three pinned OpenRaster spec sources), and the 7th (A979A77370914BCA) was confirmed via its own capability_id to also be ORA-RENDER-001-scoped despite less explicit missing_behavior wording. None tractable for a single tick.",
+    "4. Investigated all 6 ubl obligations' own current missing_behavior text: one explicitly states 'a cross-cutting change with real blast radius, still out of scope for a single tick' (find()/find_all() namespace audit, ~78 call sites); one needs 'full header-position knowledge' not yet built (first-occurrence component insertion); one is 'a genuinely separate, scoped undertaking' (auto code-list discovery across dozens of element types); one needs 'deep spec knowledge of what changed between each UBL schema revision' (version-migration transforms, explicitly 'not attempted this slice'); one is a data-acquisition gap needing new, not-yet-identified official sample sources (corpus coverage). The sixth (broken/inconsistent line-reference detection, UBL-REF-001) looked more promising by its own missing_behavior wording ('the primitive exists, the check itself does not') -- investigated the pinned SAL facts cited by its own authority_reference_ids (SAL-UBL-00109 through SAL-UBL-00112) directly and found none of them concretely define what constitutes an internal 'broken reference' for UBL's typically cross-document *Reference elements; building a check here without a clearer spec grounding risked inventing the very scope this session has repeatedly, correctly refused to invent for the mask-model obligation. Deliberately did not force an implementation.",
+    "5. Pivoted to ipynb's own documentation direction (proven 20/20 productive before this tick) rather than force a speculative obligation fix. Reviewed Event 358's own named remaining candidate list for ipynb and investigated cleanup()/CleanupPolicy first, given the promising name.",
+    "6. Read model/cleanup.py in full: confirmed it is a complete, real, standalone capability -- selective output clearing by type, execution-count reset, and explicit-key-only metadata stripping, with a dry-run/applied symmetric report shape. Grepped __all__ and confirmed all 4 relevant symbols (cleanup, CleanupPolicy, ChangeReport, Change) are directly importable from the top-level format_factory.ipynb module, and confirmed via inspect.getmodule() that the top-level Change is genuinely cleanup.py's own class, not shadowed by an unrelated same-named class elsewhere in the package.",
+    "7. Verified the exact example before writing it, against real corpus data: loaded samples/by-format/ipynb/valid/with-outputs.ipynb (2 real code cells, one with a real execution_count=5 and a real output), built a CleanupPolicy selecting all 4 real output types plus 'widgets'/'execution' metadata keys, ran cleanup(dry_run=True) -- confirmed 3 previewed changes and confirmed the document's own execution_count was still 5 immediately afterward (dry_run genuinely does not mutate) -- then ran cleanup() for real with the identical policy and confirmed execution_count became None and outputs were cleared, matching the preview exactly.",
+    "8. Added a new 'Version-control cleanup' README section directly after 'Stable-ID cell collection editing' (both are mutation-style operations), with a runnable example and a prose paragraph explaining the explicit-selection-only removal contract, the dry-run/applied report-shape symmetry, and the in-place mutation behavior on a real, non-dry-run call -- the same behavioral detail already discovered and documented for edit_cells()/CellEditor.replace() at Event 356, explicitly cross-referenced rather than re-discovered as if new.",
+    "9. Regenerated reports/certification/ipynb/documentation-gate.json to reflect the addition -- updated readme_line_count (299 -> 328), readme_sections (added 'Version-control cleanup'), symbol_existence count (21 distinct names/11 code blocks now, +CleanupPolicy/cleanup), a new example_execution entry documenting the dry-run-vs-applied real-corpus verification, and extended the incidental_finding with both this tick's own ora/ubl investigation conclusion (confirmed, not assumed, that neither format has a tractable single-tick obligation slice remaining right now) and the cleanup() documentation closure.",
+    "10. Did not modify any production source code -- cleanup()/CleanupPolicy already existed, fully correct and already tested by the existing test suite; this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration. Did not re-run the ipynb test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/README.md",
+    "reports/certification/ipynb/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/README.md",
+    "reports/certification/ipynb/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: cleanup()/CleanupPolicy against real corpus sample samples/by-format/ipynb/valid/with-outputs.ipynb -- confirmed dry_run=True previews without mutating (execution_count unchanged immediately after) and a real applied call correctly clears outputs and resets execution_count, matching the previewed change count and shape exactly",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap for an already-implemented, already-exported, high-value capability (cleanup/CleanupPolicy) -- no obligation status change (ipynb remains at 0/68 unresolved, unaffected), but a real developer-discoverability improvement to an already-PASS-ing documentation gate. Also confirms, via fresh direct investigation rather than assumption, that ora's 7 and ubl's 6 remaining unresolved obligations have no tractable single-tick slice remaining at this time.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 68,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
