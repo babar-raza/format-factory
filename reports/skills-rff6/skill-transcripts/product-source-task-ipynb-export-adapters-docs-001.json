@@ -1,0 +1,50 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-export-adapters-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-c0e3f8435d07d614",
+  "mode": "live",
+  "timestamp": "2026-08-08T16:49:20Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_EXPORT_ADAPTERS_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-continuing-a-third-pass-on-a-format",
+    "root_cause": "Event 361's own exact_next_action named continuing ipynb's own third documentation pass as the more likely-productive direction, given cleanup()'s own successful closure and the ora/ubl obligation investigation's own confirmed exhaustion. Investigated roundtrip() and ipynb_installed_workflow() first (both small utility functions, not particularly substantial) and the Export adapters (ExportAdapter/MarkdownExporter/PythonScriptExporter) second -- the latter confirmed real, substantial, and obligation-linked (IPYNB-EXPORT-001): a pluggable notebook-to-Markdown/Python-script export capability with ancillary-resource (attachment/output-image) extraction and filename-safety validation, entirely undocumented.",
+    "obligation_targeted": "No specific obligation-register status change (ipynb remains at 0/68 unresolved, unaffected by this tick) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage of a substantial, pluggable capability.",
+    "acceptance_evidence": "Read adapters/export.py in full (158 lines): AncillaryResource/ExportResult (dataclasses), ExportAdapter (a runtime_checkable Protocol with one export(document) -> ExportResult method, so a caller can implement their own adapter without this package's cooperation), _is_safe_resource_filename (rejecting separators/'..'/absolute components before an attachment key or generated filename becomes an AncillaryResource.filename a caller might later join onto a directory), _collect_resources (walking cell attachments and image/* outputs, base64-decoding, and safety-checking each), and the two built-in adapters (MarkdownExporter, PythonScriptExporter). Verified against real corpus data (samples/by-format/ipynb/valid/code-and-markdown.ipynb, the same sample used for the opt-in-execution and three-way-merge examples earlier this session, known to contain a real embedded image output): MarkdownExporter produced real fenced-code-block content and correctly extracted exactly 1 real ancillary resource (output_8_0.png, image/png, 9216 bytes, matching the notebook's own real base64-embedded PNG output); PythonScriptExporter produced the code-verbatim/markdown-as-comments output for the identical document."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 361 commit (4ec73a5f7); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Reviewed Event 361's own named remaining ipynb candidates (roundtrip, Export adapters, ipynb_* analytics functions, RecoveryAction, alternate entry points). Read codec/writer/writer.py's roundtrip() (a 4-line load-preservation/dump-declared/reload utility) and ipynb_installed_workflow() (a small installed-package smoke-test/analytics helper) first -- both real but genuinely small, lower-value candidates compared to the Export adapters.",
+    "3. Read adapters/export.py in full: confirmed IPYNB-EXPORT-001 obligation linkage directly in the module's own docstring, and confirmed ExportAdapter is a real, runtime_checkable Protocol (not merely an internal implementation detail) -- meaning a caller genuinely can plug in their own exporter for a different target format, a real extensibility point worth documenting explicitly.",
+    "4. Verified the exact example before writing it, against real corpus data: loaded samples/by-format/ipynb/valid/code-and-markdown.ipynb (already known this session, from the opt-in-execution and three-way-merge work, to contain real cell outputs including a real embedded image). Ran MarkdownExporter().export(document) -- confirmed real Markdown content (the notebook's own real markdown/code cell text) and exactly 1 real extracted AncillaryResource (output_8_0.png, image/png, 9216 bytes -- a genuine base64-decoded PNG from the notebook's own real output data, not a synthetic fixture). Ran PythonScriptExporter().export(document) on the identical document -- confirmed code cells verbatim and markdown cells rendered as '# '-prefixed comments.",
+    "5. Added a new 'Export adapters' README section directly after 'Version-control cleanup' (both are notebook-transformation-style operations), with a runnable example and a prose paragraph explaining the shared ExportAdapter protocol (grounded directly in the source's own Protocol definition, not invented) and the ancillary-resource filename-safety validation (grounded directly in _is_safe_resource_filename's own docstring reasoning about untrusted document content).",
+    "6. Regenerated reports/certification/ipynb/documentation-gate.json to reflect the addition -- updated readme_line_count (328 -> 355), readme_sections (added 'Export adapters'), symbol_existence count (23 distinct names/12 code blocks now, +MarkdownExporter/PythonScriptExporter), a new example_execution entry documenting the real-PNG-extraction verification, and extended the incidental_finding to note this closes the Export adapters candidate while ~95 remaining symbols (RecoveryAction, roundtrip, ipynb_* analytics, alternate entry points, various get_*/cell_from_dict/output_from_dict helpers) stay lower priority for a future tick.",
+    "7. Did not modify any production source code -- the Export adapters already existed, fully correct and already tested by the existing test suite; this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration. Did not re-run the ipynb test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/README.md",
+    "reports/certification/ipynb/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/README.md",
+    "reports/certification/ipynb/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: MarkdownExporter/PythonScriptExporter against real corpus sample samples/by-format/ipynb/valid/code-and-markdown.ipynb -- confirmed real content generation for both formats and exact extraction of 1 real, genuine ancillary PNG resource",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap for an already-implemented, already-exported, obligation-linked, substantial capability (Export adapters, IPYNB-EXPORT-001) -- no obligation status change (ipynb remains at 0/68 unresolved, unaffected), but a real developer-discoverability improvement to an already-PASS-ing documentation gate.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 68,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

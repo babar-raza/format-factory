@@ -278,6 +278,33 @@ and applied runs return the identical `ChangeReport` shape; only a
 non-dry-run call mutates `document` in place, the same in-place-commit
 behavior `edit_cells()`'s own applied runs use.
 
+## Export adapters
+
+Built-in adapters render a notebook to another format, returning both the
+main output and any ancillary resources (attachments, output images)
+collected along the way:
+
+```python
+from format_factory.ipynb import MarkdownExporter, PythonScriptExporter
+
+markdown = MarkdownExporter().export(document)
+print(markdown.content)          # fenced code blocks, markdown cells verbatim
+for resource in markdown.resources:
+    print(resource.filename, resource.mime_type, len(resource.data))
+
+script = PythonScriptExporter().export(document)
+print(script.content)            # code cells verbatim, markdown as # comments
+```
+
+Both implement the same `ExportAdapter` protocol (a single `export(document)
+-> ExportResult` method), so a caller can write their own adapter for a
+different target format without this package's own cooperation.
+Ancillary-resource filenames are validated before being handed back --
+an attachment key or generated name is untrusted document content, not a
+trusted path, and is rejected rather than used as-is if it contains a
+separator, an absolute component, or a `..` segment a caller might later
+join onto a directory.
+
 ## Typed metadata snapshots
 
 Read-only adapters expose common metadata without handing callers live nested
