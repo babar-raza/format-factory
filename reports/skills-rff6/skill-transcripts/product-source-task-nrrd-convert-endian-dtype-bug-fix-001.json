@@ -1,0 +1,54 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-convert-endian-dtype-bug-fix-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-25f46e3f5aab6b3b",
+  "mode": "live",
+  "timestamp": "2026-08-08T17:18:27Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_CONVERT_ENDIAN_DTYPE_BUG_FIX_001",
+    "task_kind": "close-a-documentation-completeness-gap-and-fix-a-discovered-real-bug-in-published-documentation",
+    "root_cause": "Event 365's own exact_next_action named nrrd's convert_endian as the most promising remaining candidate for one final documentation-direction attempt. Read convert.py's own convert_endian() (a real, standalone third conversion axis: raw-payload byte-swapping, distinct from convert_dtype's value conversion and convert_encoding's serialization change) and RoundingPolicy (a real, actively-used, mandatory parameter for convert_dtype() whenever a float source or scaled value could be non-integral) in full. While verifying the EXISTING, already-published 'Encoding and dtype conversion' example before adding these two, direct execution revealed the pre-existing example was genuinely broken: it used 'float64' as a source_type, which is not a valid NRRD type name at all (confirmed directly against codec/payload.py's own _DTYPE_ALIASES dict -- the real 64-bit float name is 'double'), and even after correcting the type name, the example was still missing the mandatory RoundingPolicy a float-to-integer convert_dtype() call requires.",
+    "obligation_targeted": "No specific obligation-register status change (nrrd remains at 9/65 unresolved, unaffected by this tick) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4). More significantly, this tick discovered and fixed an ACTIVE INACCURACY in already-published documentation that this gate's own PASS verdict had never caught, since the affected example had never been executed end-to-end before now (per the gate's own prior honest_gap disclosure).",
+    "acceptance_evidence": "Ran the exact pre-existing published example verbatim (convert_dtype(values, source_type='float64', target_type='uint8', overflow=OverflowPolicy.CLIP)) and confirmed it raises NrrdParseError('unsupported NRRD scalar type: 'float64'') immediately -- a real user copying this example would hit an error on the first call. Corrected the type name to 'double' and re-ran; confirmed a SECOND, independent failure ('target requires an explicit RoundingPolicy; there is no default'), grounded directly in convert_dtype's own source logic (float source + integer target = mandatory rounding policy, no default, by design). Rewrote the example with both fixes and verified it end-to-end: convert_dtype([1.5, 2.5, 300.0], source_type='double', target_type='uint8', overflow=OverflowPolicy.CLIP, rounding=RoundingPolicy.ROUND_HALF_UP) correctly returns [2, 3, 255]. Also verified convert_endian(b'\\x01\\x02\\x03\\x04', type_name='uint16') against real bytes, correctly byte-swapping to hex '02010403'."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 365 commit (e4601ec5f); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Read convert.py's convert_endian() (lines 316-332) in full: confirmed it is a real, standalone, third conversion axis (raw-payload byte-swapping via struct pack/unpack with an explicit little-to-big-endian swap), with a documented, deliberate no-op for single-byte types rather than a silent skip.",
+    "3. Read convert.py's RoundingPolicy (lines 80-88) and its actual usage inside convert_dtype (lines 114-148) in full: confirmed RoundingPolicy is not a cosmetic, unused type but a genuinely mandatory parameter -- convert_dtype() itself raises NrrdWriteError if the target is an integer type, the source could plausibly be non-integral (a float source, or any source under a scale factor), and no rounding policy was supplied.",
+    "4. Before writing the new convert_endian/RoundingPolicy documentation, ran the EXISTING published 'Encoding and dtype conversion' example verbatim as a sanity check (matching this session's own established discipline of verifying neighboring examples before adding to a section) -- discovered it fails immediately: convert_dtype(values, source_type='float64', ...) raises NrrdParseError('unsupported NRRD scalar type: 'float64''), since 'float64' was never a valid NRRD type name (confirmed directly against codec/payload.py's own _DTYPE_ALIASES dict, which defines 'float' for 4-byte and 'double' for 8-byte, with no numpy-style 'float32'/'float64' aliases for either).",
+    "5. Corrected the type name to 'double' and re-ran -- found a SECOND, independent failure: 'target requires an explicit RoundingPolicy; there is no default', confirming the original example was also missing a mandatory parameter for this exact source/target combination (float source, integer target).",
+    "6. Verified the fully corrected example end-to-end: convert_dtype([1.5, 2.5, 300.0], source_type='double', target_type='uint8', overflow=OverflowPolicy.CLIP, rounding=RoundingPolicy.ROUND_HALF_UP) -- confirmed it correctly returns [2, 3, 255] (1.5 and 2.5 round-half-up to 2 and 3; 300.0 clips to uint8's own max, 255), with the returned ConversionReport correctly recording both the rounded and clipped indices.",
+    "7. Verified convert_endian separately against real bytes: convert_endian(bytes([0x01,0x02,0x03,0x04]), type_name='uint16') correctly returns hex '02010403' (byte-swapping each 2-byte uint16 element).",
+    "8. Rewrote the entire 'Encoding and dtype conversion' README section's code block: kept convert_encoding unchanged (already correct), fixed convert_dtype's own source_type/rounding to match the verified real behavior, and added convert_endian as a third example line. Extended the section's own prose paragraph to explain the RoundingPolicy requirement (grounded directly in the source's own reasoning: truncation and round-half-up disagree on exactly 0.5, so there is no safe default) and convert_endian's own independent role.",
+    "9. Regenerated reports/certification/nrrd/documentation-gate.json to reflect both the addition and the bug fix -- updated readme_line_count (187 -> 221), symbol_existence count (23 distinct names now, +convert_endian/RoundingPolicy), added a new prominent 'real_bug_found_and_fixed_in_prior_published_example' check entry documenting the full defect and fix, and updated honest_gap to note the dtype-conversion example is now fully verified end-to-end for the first time, closing a real, previously-undetected gap in this gate's own prior verification coverage.",
+    "10. Did not modify any production source code -- convert_endian/RoundingPolicy/convert_dtype already existed, fully correct and already tested by the existing test suite; the bug was in the README's own prose example, not in the implementation. This slice is purely a documentation-completeness fix plus a documentation-accuracy bug fix, plus its own supporting gate-evidence regeneration. Did not re-run the nrrd test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/README.md",
+    "reports/certification/nrrd/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/README.md",
+    "reports/certification/nrrd/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: reproduced the pre-existing broken example's exact failure (invalid type name, then missing RoundingPolicy) before fixing it, then verified the corrected convert_dtype call end-to-end against real literal values, confirming exact output including the ConversionReport's own rounded/clipped index tracking",
+    "Direct interactive verification: convert_endian against real bytes, confirming correct byte-swap output",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap (convert_endian/RoundingPolicy, previously undocumented) AND fixed a real, previously-undetected accuracy bug in already-published documentation (an invalid type name plus a missing required parameter that would make the published example fail immediately for any real user) -- no obligation status change (nrrd remains at 9/65 unresolved, unaffected), but a materially more valuable fix than a typical documentation-completeness addition, since it corrects an active defect rather than only filling a gap.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

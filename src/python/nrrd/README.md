@@ -52,21 +52,37 @@ which attachment form it started or ends in.
 ## Encoding and dtype conversion
 
 ```python
-from format_factory.nrrd import convert_dtype, convert_encoding, OverflowPolicy
+from format_factory.nrrd import convert_dtype, convert_encoding, convert_endian, OverflowPolicy, RoundingPolicy
 
 # Re-encode the payload (raw/gzip/bzip2/hex/ascii) -- lossless, no policy needed
 gzip_document, encoding_report = convert_encoding(document, "gzip")
 
-# Convert sample values between numeric types -- overflow policy is mandatory
+# Convert sample values between numeric types -- overflow policy is mandatory;
+# a rounding policy is also required whenever the result could be non-integral
+# (a float source, or any source under an explicit scale factor)
 new_values, dtype_report = convert_dtype(
-    values, source_type="float64", target_type="uint8", overflow=OverflowPolicy.CLIP
+    values,
+    source_type="double",
+    target_type="uint8",
+    overflow=OverflowPolicy.CLIP,
+    rounding=RoundingPolicy.ROUND_HALF_UP,
 )
+
+# Byte-swap an already-decoded raw payload's own elements (single-byte
+# types are an explicit, documented no-op, not a silently ignored request)
+swapped = convert_endian(payload_bytes, type_name="uint16")
 ```
 
 `convert_encoding()` only changes how the payload is serialized (its
 decoded array values are unchanged); `convert_dtype()` changes the
 values themselves and requires an explicit `OverflowPolicy` (clip, wrap,
-or refuse) since narrowing a numeric type can lose information.
+or refuse) since narrowing a numeric type can lose information, plus an
+explicit `RoundingPolicy` (truncate or round-half-up) whenever a value
+could plausibly be non-integral -- there is no default, since truncation
+and round-half-up disagree on exactly 0.5 and this package never
+silently picks a business outcome. `convert_endian()` is the third,
+independent conversion axis: it swaps a raw payload's own multi-byte
+element order without touching dtype or encoding.
 
 ## Header-only inspection
 
