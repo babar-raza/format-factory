@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-extension-adapters-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-e8d8fbee479af7eb",
+  "mode": "live",
+  "timestamp": "2026-08-08T16:06:15Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_EXTENSION_ADAPTERS_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-continuing-a-third-pass-on-a-format",
+    "root_cause": "Event 357's own exact_next_action offered continuing the third pass with ubl's extension-decoding subsystem as the most substantial-sounding remaining candidate, or treating diminishing returns as a stopping signal. Investigated the extension-decoding subsystem directly: ExtensionAdapterRegistry/decode_extension is a real, obligation-linked (UBL-EXT-001) pluggable typed-decode layer, explicitly mirroring the already-documented CodeListRegistry and SignatureBackendRegistry patterns exactly (in-memory runtime-populated registry, opt-in, never raises on an unknown key) -- a genuine third instance of a pattern the README already documents twice, completing the trio rather than a cosmetic or marginal find.",
+    "obligation_targeted": "No specific obligation-register status change (ubl remains at 6/194 unresolved, unaffected by this tick) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage.",
+    "acceptance_evidence": "Read model/extension_adapters.py in full (96 lines): confirmed ExtensionAdapterRegistry is a runtime-populated, QName-keyed registry with no built-in adapters (this package has no verified spec data for any specific vendor/customization extension), and decode_extension() never raises and never alters the node itself -- a QName with no registered adapter is reported via a tri-state result (adapter_known=False) rather than an error, making it always safe to call on every extension node in a document. Verified against a REAL foreign-namespace extension node from samples/by-format/ubl/official/ImportCustomsDeclaration.xml (a genuine Finnish customs authority extension, urn http://tulli.fi/schema/external/itu/dme/v1 FunctionCode, real text '9'): registered a decoder for that exact QName, confirmed decode_extension() returns adapter_known=True/decoded=9, then called again on a different, unregistered node and confirmed adapter_known=False/decoded=None without raising."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 357 commit (d9e90587); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Reviewed Event 357's own named remaining candidates for ubl's third pass: the extension-decoding subsystem, profile-based validation, and create_empty/detect_document_type/document_type_coverage. Chose the extension-decoding subsystem first as the most substantial-sounding by name and its own explicit obligation link (UBL-EXT-001).",
+    "3. Read model/extension_adapters.py in full: ExtensionAdapter (a Callable[[XmlNode], object] type alias), ExtensionDecodeResult (qname/adapter_known/decoded/node), ExtensionAdapterRegistry (register/get/__len__/__contains__), and decode_extension() itself. Confirmed via the module's own docstring that this explicitly mirrors codelist.py's already-proven pluggable-registry pattern (already documented in the README's own 'Official code lists' section) and the signature-backend pattern (already documented in 'Digital signatures') -- a genuine third instance of a repeated architectural pattern, not a one-off.",
+    "4. Searched for real official OASIS corpus samples containing genuine foreign-namespace extension content (not synthetic) by grepping for UBLExtensions/ExtensionContent across samples/by-format/ubl/official/*.xml -- found ImportCustomsDeclaration.xml and TransitCustomsDeclaration.xml. Loaded ImportCustomsDeclaration.xml, navigated UBLExtensions -> UBLExtension -> ExtensionContent, and found a real foreign-namespace child element: a Finnish customs authority QName (http://tulli.fi/schema/external/itu/dme/v1}FunctionCode) with real text content '9'.",
+    "5. Verified the exact example before writing it: created an ExtensionAdapterRegistry, registered a decoder for the real FunctionCode QName (parsing its text to an int), called decode_extension() on that real node -- confirmed adapter_known=True and decoded=9. Called decode_extension() again on the parent ExtensionContent node (a different, unregistered QName) and confirmed adapter_known=False/decoded=None with no exception raised -- both tri-state outcomes of the documented contract confirmed against real, non-synthetic official-corpus data.",
+    "6. Added a new 'Extension content adapters (opt-in)' README section directly after 'Digital signatures (opt-in)' (the two sections share both the opt-in framing and the identical pluggable-registry pattern, a natural adjacency), with a runnable example and a prose paragraph explaining the pattern's relationship to the already-documented CodeListRegistry/SignatureBackendRegistry, the deliberate absence of built-in adapters, and the never-raises/always-safe contract -- grounded directly in the module's own docstring, not invented.",
+    "7. Regenerated reports/certification/ubl/documentation-gate.json to reflect the addition -- updated readme_line_count (213 -> 239), readme_sections (added 'Extension content adapters (opt-in)'), symbol_existence count (21 distinct names now, +ExtensionAdapterRegistry/decode_extension), a new example_execution entry documenting the real-corpus verification of both tri-state outcomes, and extended the incidental_finding to note this closes the extension-decoding candidate, completing the trio of documented pluggable-registry patterns, while profile-based validation and create_empty/detect_document_type/document_type_coverage remain for a future tick.",
+    "8. Did not modify any production source code -- ExtensionAdapterRegistry/decode_extension already existed, fully correct and already tested by the existing test suite; this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration. Did not re-run the ubl test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/ubl/README.md",
+    "reports/certification/ubl/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/README.md",
+    "reports/certification/ubl/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: ExtensionAdapterRegistry/decode_extension against a real foreign-namespace extension node from samples/by-format/ubl/official/ImportCustomsDeclaration.xml -- confirmed both the known-adapter (decoded value correct) and unknown-adapter (safe, non-raising tri-state) outcomes",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap for an already-implemented, already-exported, obligation-linked capability (ExtensionAdapterRegistry/decode_extension, UBL-EXT-001) -- no obligation status change (ubl remains at 6/194 unresolved, unaffected), but a real developer-discoverability improvement completing the third of three documented pluggable-registry patterns in this package.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 194,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -169,6 +169,32 @@ verification logic itself is supplied by the caller's own backend --
 this package tracks signature presence and passively preserves signed
 content, it does not ship a cryptographic implementation.
 
+## Extension content adapters (opt-in)
+
+Every foreign-namespace extension payload already round-trips generically
+as `XmlNode`, lossless, with no adapter required. `ExtensionAdapterRegistry`
+adds an opt-in, pluggable typed-decode layer on top, the same
+runtime-populated-registry pattern `CodeListRegistry`/`SignatureBackendRegistry`
+already use, keyed by QName instead of a list ID or a signature backend:
+
+```python
+from format_factory.ubl import ExtensionAdapterRegistry, decode_extension
+
+registry = ExtensionAdapterRegistry()
+registry.register(extension_node.qname, my_decoder)
+result = decode_extension(registry, extension_node)
+if result.adapter_known:
+    print(result.decoded)
+```
+
+There is no built-in adapter for any namespace -- vendor and customization
+extensions (digital signatures, PEPPOL, national customs authorities, and
+similar) all differ, and this package has no verified spec data describing
+any one of them. `decode_extension()` never raises and never alters
+`result.node`: a QName with no registered adapter is reported as
+`adapter_known=False` rather than an error, so calling it on every
+extension node in a document is always safe, decoded or not.
+
 ## Official OASIS sample corpus
 
 ```python
