@@ -95,6 +95,7 @@ class ConversionReport:
     target_type: str
     overflow_policy: OverflowPolicy
     rounding_policy: RoundingPolicy | None
+    scale: float | None = None
     clipped_indices: tuple[int, ...] = field(default_factory=tuple)
     rounded_indices: tuple[int, ...] = field(default_factory=tuple)
 
@@ -119,23 +120,32 @@ def convert_dtype(
     target_type: str,
     overflow: OverflowPolicy,
     rounding: RoundingPolicy | None = None,
+    scale: float | None = None,
 ) -> tuple[list[float | int], ConversionReport]:
     """Convert `values` from `source_type` to `target_type`.
 
-    `rounding` is required when `target_type` is an integer type and any
-    source value could plausibly be non-integral (source is a float type);
-    omitting it in that case is refused rather than defaulted.
+    `scale`, when given, multiplies every value before overflow/rounding
+    are applied -- the common medical-imaging case of remapping a
+    normalized float range (e.g. [0.0, 1.0]) onto an integer type's own
+    representable range (e.g. `scale=255` for uint8). `rounding` is
+    required when `target_type` is an integer type and any source value
+    could plausibly be non-integral -- either because `source_type`
+    itself is a float type, or because `scale` is given (a non-integer
+    scale factor can introduce fractional values even from an integer
+    source); omitting it in that case is refused rather than defaulted.
     """
     source_format, _ = dtype_info(source_type)
     target_format, _ = dtype_info(target_type)
 
     target_is_integer = target_format not in _FLOAT_FORMATS
     source_is_float = source_format in _FLOAT_FORMATS
+    may_be_non_integral = source_is_float or scale is not None
 
-    if target_is_integer and source_is_float and rounding is None:
+    if target_is_integer and may_be_non_integral and rounding is None:
         raise NrrdWriteError(
-            "converting a float source to an integer target requires an "
-            "explicit RoundingPolicy; there is no default"
+            "converting a possibly non-integral value (a float source, or "
+            "any source under an explicit scale factor) to an integer "
+            "target requires an explicit RoundingPolicy; there is no default"
         )
 
     converted: list[float | int] = []
@@ -144,8 +154,10 @@ def convert_dtype(
 
     for index, value in enumerate(values):
         working = value
+        if scale is not None:
+            working = working * scale
         if target_is_integer:
-            if source_is_float:
+            if may_be_non_integral:
                 assert rounding is not None  # enforced by the check above
                 rounded_value = _round_to_int(float(working), rounding)
                 if rounded_value != working:
@@ -170,6 +182,7 @@ def convert_dtype(
         target_type=target_type,
         overflow_policy=overflow,
         rounding_policy=rounding,
+        scale=scale,
         clipped_indices=tuple(clipped),
         rounded_indices=tuple(rounded),
     )

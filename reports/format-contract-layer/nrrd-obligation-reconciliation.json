@@ -7,7 +7,7 @@
       "granularity": "selector",
       "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-attachment-conversion-001.json",
       "sha256": "b5ce2947e6b853a1bd21cde3bb41e33f8a8daaab04c0b49c2d45cf49edd65ae4",
-      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Narrows (does not fully close) SAL-NRRD-OBL-E2B0331E7D4F6AD8 (NRRD-CONVERT-001). The obligation's own compound rule_text names four conversion kinds -- dtype, encoding, attached/detached form, and endian -- with explicit overflow/clipping/scaling/rounding policies. This entry closes the \"attached/detached form\" quarter, the third of four. convert.py's own prior module docstring called it \"a genuinely separate, larger piece of work\" needing real file-splitting/joining logic; investigated and found that logic already existed at dump()/dump_multifile()/dump_multifile_printf() (codec/writer/writer.py, built for NRRD-MULTIFILE-001 at FF6-EVENT-000303/000304 earlier this session). Confirmed by direct inspection that NrrdDocument (model) carries no attached/detached state field of its own -- the wire form is determined entirely by which writer function a caller invokes and how many destinations they supply -- so converting between forms needs zero document mutation. Added convert_to_attached()/convert_to_detached_list()/convert_to_detached_printf(), each composing the matching existing writer and returning a new AttachmentConversionReport (target_form, file_count, is_lossless -- always True by the same reasoning already proven for EncodingConversionReport, since no value-level transformation occurs). Verified end-to-end with a standalone repro before any test was written: attached-to-detached-list, attached-to-detached-printf (including a negative step and an explicit subdim token), and detached-to-attached (starting from a document actually loaded from a real detached source via load(), not just a freshly-built in-memory one) all round-trip correctly through the existing, unmodified reader. 8 new tests (tests/python/nrrd/test_obligation_attachment_conversion.py) additionally prove: a document loaded from one detached form converts cleanly to a DIFFERENT detached form with no source-form state leaking; the composed writers' own pre-existing refusal paths (uneven split, invalid printf pattern) still fire correctly through the new wrapper functions rather than being silently swallowed. nrrd suite: 665 passed, 1 skipped (test file is new, no existing test count changed). mypy --strict and ruff clean. Combined 6-format run: 3772 -> 3780 passed, +8, 0 failed, 4 skipped. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the conversion's own correctness is grounded directly in the already-proven writer and reader contracts this composes, not a new spec interpretation. Covers SAL-NRRD-OBL-E2B0331E7D4F6AD8 only; the obligation's own remaining \"scaling\" policy for dtype conversion is NOT claimed resolved by this entry and the obligation stays partial, narrowed rather than closed."
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Narrows (does not fully close) SAL-NRRD-OBL-E2B0331E7D4F6AD8 (NRRD-CONVERT-001). The obligation's own compound rule_text names four conversion kinds -- dtype, encoding, attached/detached form, and endian -- with explicit overflow/clipping/scaling/rounding policies. This entry closes the \"attached/detached form\" quarter, the third of four. convert.py's own prior module docstring called it \"a genuinely separate, larger piece of work\" needing real file-splitting/joining logic; investigated and found that logic already existed at dump()/dump_multifile()/dump_multifile_printf() (codec/writer/writer.py, built for NRRD-MULTIFILE-001 at FF6-EVENT-000303/000304 earlier this session). Confirmed by direct inspection that NrrdDocument (model) carries no attached/detached state field of its own -- the wire form is determined entirely by which writer function a caller invokes and how many destinations they supply -- so converting between forms needs zero document mutation. Added convert_to_attached()/convert_to_detached_list()/convert_to_detached_printf(), each composing the matching existing writer and returning a new AttachmentConversionReport (target_form, file_count, is_lossless -- always True by the same reasoning already proven for EncodingConversionReport, since no value-level transformation occurs). Verified end-to-end with a standalone repro before any test was written: attached-to-detached-list, attached-to-detached-printf (including a negative step and an explicit subdim token), and detached-to-attached (starting from a document actually loaded from a real detached source via load(), not just a freshly-built in-memory one) all round-trip correctly through the existing, unmodified reader. 8 new tests (tests/python/nrrd/test_obligation_attachment_conversion.py) additionally prove: a document loaded from one detached form converts cleanly to a DIFFERENT detached form with no source-form state leaking; the composed writers' own pre-existing refusal paths (uneven split, invalid printf pattern) still fire correctly through the new wrapper functions rather than being silently swallowed. nrrd suite: 665 passed, 1 skipped (test file is new, no existing test count changed). mypy --strict and ruff clean. Combined 6-format run: 3772 -> 3780 passed, +8, 0 failed, 4 skipped. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the conversion's own correctness is grounded directly in the already-proven writer and reader contracts this composes, not a new spec interpretation. Covers SAL-NRRD-OBL-E2B0331E7D4F6AD8 only, and only its \"attached/detached form\" quarter at the time this entry was written; the obligation's own remaining \"scaling\" policy for dtype conversion was NOT claimed resolved by this entry -- it was closed separately by NRRD-DTYPE-SCALE-CONVERSION-PROOF at FF6-EVENT-000328, which promoted the obligation to implemented in full."
     },
     {
       "evidence_id": "NRRD-AXIS-ARITY-SELECTOR-PROOF",
@@ -48,6 +48,14 @@
       "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-writer-001.json",
       "sha256": "459aee29fa15ac2f6d632f1d4d863923866957e8086da79dd6dde1ab6374d01f",
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-9FFEE6E206F405F4 (NRRD-PAYLOAD-001) only. writer.py only ever emitted attached payloads before this slice, confirmed by reading dumps()/dump() directly. A new dump_detached() function writes the header (with a 'data file:' field naming the payload relative to the header's own directory) and the encoded payload to two separate destinations, reusing the same profile-selection and payload-encoding logic dumps() already uses (extracted into _select_profile/_encode_payload via a pure refactor, verified against the unchanged nrrd suite before any new code was added). Confinement is enforced at write time -- a payload destination outside the header's own directory is refused immediately, matching this reader's own read-time confinement rules (NRRD-SEC-001), so a document this package writes always round-trips through it. 5 new tests prove the header field, byte-exact round-trip, subdirectory support, write-time confinement refusal, and header-field preservation. Scoped to the single-file detached form only; multi-file LIST/printf sequence write support remains a genuinely separate, larger feature. nrrd suite: 512 -> 517 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-9FFEE6E206F405F4 only; it supports no other obligation and promotes no product state."
+    },
+    {
+      "evidence_id": "NRRD-DTYPE-SCALE-CONVERSION-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-dtype-scale-conversion-001.json",
+      "sha256": "c672397a7b44a6c658d2993ee85f163bd9e168fb8f117b910209f074a3e12b04",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-E2B0331E7D4F6AD8 (NRRD-CONVERT-001), promoted partial->implemented -- the fourth and last quarter of the obligation's own compound rule_text (dtype/encoding/attached-detached/ endian conversion, each with explicit overflow/clipping/scaling/rounding policies), following NRRD-DTYPE-SCALE-CONVERSION-PROOF's own three predecessor entries (NRRD-R1-SOURCE-TESTS for dtype/endian, the encoding-conversion proof at FF6-EVENT-000300, and NRRD-ATTACHMENT-CONVERSION-PROOF for attached/detached form at FF6-EVENT-000316, which explicitly and honestly left \"the obligation's own remaining 'scaling' policy for dtype conversion... NOT claimed resolved\"). Added an optional `scale: float | None = None` parameter to convert_dtype(), applied to every value before overflow/rounding, matching the common medical-imaging case of remapping a normalized float range (e.g. [0.0, 1.0]) onto an integer type's own representable range (e.g. scale=255 for uint8) -- the exact worked example this package's own module docstring and POL-SCR-CONVERT-01's own rule_text already named (\"overflow/clipping/scaling/rounding policies\") before this slice built it. A non-integer scale factor can introduce fractional values even from an integer source (10 * 0.5 = 5.0), so the existing \"float source requires explicit RoundingPolicy\" guard was widened to a `may_be_non_integral = source_is_float or scale is not None` precondition, covering that case too -- confirmed by a dedicated negative test (an integer source scaled by 0.5 into an integer target without rounding is refused, the same as a float source would be). `scale` defaults to None (its absence is byte-for-byte identical to convert_dtype()'s own pre-existing behavior, confirmed by a dedicated regression test), so this is a purely additive, backward-compatible change -- no existing caller's behavior changes. ConversionReport gained a `scale: float | None = None` field so a conversion's own applied scale factor is always visible, matching this module's own \"never silent\" ethos for every other policy field it already carries. 5 new tests (tests/python/nrrd/test_obligation_dtype_conversion.py): a normalized [0,1]->[0,255] remap (with an honestly-reasoned is_lossless=False assertion, since 0.5*255=127.5 is genuinely fractional and gets rounded, not an exact match), an out-of-range-after-scaling clip case, the integer-source-non-integer-scale refusal, a working integer-source-scaled-and-rounded case, and the no-scale-given-is-unchanged regression proof. Verified zero regressions against the entire pre-existing 675-test nrrd suite before writing a single new test. nrrd suite: 675 -> 680 passed, 1 skipped (unchanged). mypy --strict and ruff clean. Combined 6-format run: pending final tick regeneration. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the scaling semantics themselves are a direct, literal reading of the obligation's own named policy set, not a new spec interpretation. Covers SAL-NRRD-OBL-E2B0331E7D4F6AD8 only; it supports no other obligation and promotes no other product state."
     },
     {
       "evidence_id": "NRRD-ENDIAN-SELECTOR-PROOF",
@@ -205,7 +213,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "c7158a628e3655117c7a2178a1e0daf055f1027680258e7a022b676dfeb8cf2f",
+    "implementation_evidence": "3f2daee1c6696f237e0814ccf23a4f5e08485ac7d4383f2ae2d8aa18686685af",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2310,19 +2318,20 @@
       "capability_id": "NRRD-CONVERT-001",
       "execution_evidence_ids": [
         "NRRD-R1-SOURCE-TESTS",
-        "NRRD-ATTACHMENT-CONVERSION-PROOF"
+        "NRRD-ATTACHMENT-CONVERSION-PROOF",
+        "NRRD-DTYPE-SCALE-CONVERSION-PROOF"
       ],
       "implemented_behavior": [
         "Dtype conversion (including float-to-narrower-integer, the obligation's own worked example) runs under an explicit OverflowPolicy (CLIP/RAISE) and, when the source is a float type, an explicit RoundingPolicy (TRUNCATE/ROUND_HALF_UP) -- neither has a default. A ConversionReport records which indices were clipped or rounded, so semantics never change silently. Endian conversion byte-swaps multibyte elements and is a documented no-op for single-byte types.",
         "FF6-EVENT-000300: encoding conversion (raw<->gzip/bzip2/ascii/hex) is now also implemented via convert_encoding(). Investigated and found the underlying capability already existed: codec/writer/writer.py's own _encode_payload() always recomputes payload bytes fresh from a document's own decoded array via encode_binary()+encode_encoding() on every dumps() call -- it never reads the old .payload bytes at all. Encoding conversion is therefore a lossless, policy-free header-metadata change (document.payload itself does not need to change either, since it always holds the decoded form regardless of which encoding the source file used), unlike dtype conversion which genuinely needs explicit overflow/rounding policies for real value transformations. Proven by round-tripping every supported encoding pair and confirming decoded values are byte-for-byte identical afterward. 9 new tests (test_obligation_encoding_conversion.py).",
-        "FF6-EVENT-000316: attached/detached form conversion is now also implemented via convert_to_attached()/convert_to_detached_list()/convert_to_detached_printf(). This module's own prior missing_behavior called it 'a genuinely separate, larger piece of work' needing real file-splitting/joining logic -- investigated and found that logic already existed: dump()/dump_multifile()/dump_multifile_printf() (codec/writer/writer.py, built for NRRD-MULTIFILE-001 earlier this session) already perform it. NrrdDocument itself carries no attached/detached state of its own (confirmed by direct inspection: the model has no such field, and the wire form is determined entirely by which writer function a caller invokes), so 'conversion' needs no document mutation at all -- these three functions compose the existing writers and return an AttachmentConversionReport, making the capability a discoverable, single-purpose API rather than something a caller must infer from separately reading four writer functions' own signatures. Verified end-to-end with a standalone repro before any test was written: attached-to-detached-list, attached-to-detached-printf (including a negative step and an explicit subdim), and detached-to-attached (starting from a document actually loaded from a detached source, not just a freshly-built one) all round-trip correctly through the existing, unmodified reader. 8 new tests (test_obligation_attachment_conversion.py) additionally prove a document loaded from one detached form converts cleanly to a different detached form (no source-form state leaks), and that the composed writers' own refusal paths (uneven split, invalid printf pattern) still fire correctly through the new wrapper functions. nrrd suite: 665 passed, 1 skipped (unchanged count; test file is new, no existing test modified). mypy --strict and ruff clean. Combined 6-format run: 3772 -> 3780 passed, +8, 0 failed, 4 skipped."
+        "FF6-EVENT-000316: attached/detached form conversion is now also implemented via convert_to_attached()/convert_to_detached_list()/convert_to_detached_printf(). This module's own prior missing_behavior called it 'a genuinely separate, larger piece of work' needing real file-splitting/joining logic -- investigated and found that logic already existed: dump()/dump_multifile()/dump_multifile_printf() (codec/writer/writer.py, built for NRRD-MULTIFILE-001 earlier this session) already perform it. NrrdDocument itself carries no attached/detached state of its own (confirmed by direct inspection: the model has no such field, and the wire form is determined entirely by which writer function a caller invokes), so 'conversion' needs no document mutation at all -- these three functions compose the existing writers and return an AttachmentConversionReport, making the capability a discoverable, single-purpose API rather than something a caller must infer from separately reading four writer functions' own signatures. Verified end-to-end with a standalone repro before any test was written: attached-to-detached-list, attached-to-detached-printf (including a negative step and an explicit subdim), and detached-to-attached (starting from a document actually loaded from a detached source, not just a freshly-built one) all round-trip correctly through the existing, unmodified reader. 8 new tests (test_obligation_attachment_conversion.py) additionally prove a document loaded from one detached form converts cleanly to a different detached form (no source-form state leaks), and that the composed writers' own refusal paths (uneven split, invalid printf pattern) still fire correctly through the new wrapper functions. nrrd suite: 665 passed, 1 skipped (unchanged count; test file is new, no existing test modified). mypy --strict and ruff clean. Combined 6-format run: 3772 -> 3780 passed, +8, 0 failed, 4 skipped.",
+        "FF6-EVENT-000328: dtype conversion now also accepts an optional scale: float | None = None parameter, applied before overflow/rounding -- the fourth and last named policy (scaling) in the obligation's own compound rule_text, closing this obligation in full. Widened the existing 'float source requires explicit RoundingPolicy' guard to may_be_non_integral = source_is_float or scale is not None, since a non-integer scale factor can introduce fractional values even from an integer source. scale defaults to None with byte-for-byte identical behavior to before, so this is purely additive. ConversionReport gained a matching scale field so the applied factor is never silent. 5 new tests. nrrd suite: 675 -> 680 passed, 1 skipped."
       ],
-      "missing_behavior": [
-        "Scaling (as opposed to clipping/rounding) is not implemented for dtype conversion: no explicit scale-factor parameter exists yet."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/nrrd/test_obligation_dtype_conversion.py::test_overflow_policy_raise_refuses_out_of_range_conversion",
         "tests/python/nrrd/test_obligation_dtype_conversion.py::test_float_to_integer_conversion_requires_an_explicit_rounding_policy",
+        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_a_non_integer_scale_on_an_integer_source_requires_an_explicit_rounding_policy",
         "tests/python/nrrd/test_obligation_dtype_conversion.py::test_endian_conversion_rejects_a_payload_not_a_multiple_of_element_size",
         "tests/python/nrrd/test_obligation_encoding_conversion.py::test_convert_encoding_refuses_an_unsupported_encoding_name",
         "tests/python/nrrd/test_obligation_encoding_conversion.py::test_convert_encoding_does_not_mutate_the_source_document",
@@ -2336,6 +2345,10 @@
         "tests/python/nrrd/test_obligation_dtype_conversion.py::test_truncate_and_round_half_up_disagree_and_both_are_honored",
         "tests/python/nrrd/test_obligation_dtype_conversion.py::test_endian_conversion_byte_swaps_multibyte_elements",
         "tests/python/nrrd/test_obligation_dtype_conversion.py::test_endian_conversion_round_trips",
+        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_scale_remaps_a_normalized_float_range_onto_an_integer_target",
+        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_scale_out_of_range_after_multiplication_is_clipped_and_reported",
+        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_an_integer_source_scaled_and_rounded_to_an_integer_target_succeeds",
+        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_no_scale_given_defaults_to_no_scaling_unchanged_from_before",
         "tests/python/nrrd/test_obligation_encoding_conversion.py::test_converting_to_every_supported_encoding_round_trips_the_same_values",
         "tests/python/nrrd/test_obligation_encoding_conversion.py::test_converting_to_the_same_encoding_is_a_no_op_round_trip",
         "tests/python/nrrd/test_obligation_attachment_conversion.py::TestConvertToDetachedList::test_round_trips_through_the_existing_reader",
@@ -2353,7 +2366,7 @@
           "Dtype, encoding, attachment, and endian conversion matrices with reports."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/convert.py::convert_dtype",
         "src/python/nrrd/src/format_factory/nrrd/convert.py::convert_endian",
@@ -2367,7 +2380,7 @@
         "src/python/nrrd/src/format_factory/nrrd/convert.py::EncodingConversionReport",
         "src/python/nrrd/src/format_factory/nrrd/convert.py::AttachmentConversionReport"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-ARRAY-001",
@@ -2705,6 +2718,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-codec-availability-001.json": "cafed57baf428e3e88e044b2ca36579e3ea13c111c54bac9741d48e3d8efbc80",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-path-version-gate-001.json": "0ddb74585effd11d8f31db536d8242dbcf347f14dba381a36faffab0b40a3add",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-writer-001.json": "459aee29fa15ac2f6d632f1d4d863923866957e8086da79dd6dde1ab6374d01f",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-dtype-scale-conversion-001.json": "c672397a7b44a6c658d2993ee85f163bd9e168fb8f117b910209f074a3e12b04",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-field-name-aliases-001.json": "83d73c735f92aadc0240da321facedf152658ac2fd3144ee4a38aecddea9e547",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-field-ordering-001.json": "69bf3bede20abc9f6cbe94440cd555ce406139e19f65bfad48d30002edcd5a21",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-grammar-001.json": "34ff1e271e63f2ceb26c72ebe47b1f44e9be6b2ddde57a06068be324b1383229",
@@ -2728,7 +2742,7 @@
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "f40b683110082f666fefd99b096ca4c9e9b78f87d0020541477d7a62587f980a",
     "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "087a7f01e945d5d5491bed1116a15f4ef9b4c38a866d7eca4b5666965b209f44",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "cdea46f99c30af1034e473fa524afc952bbaf3e24e140b3c65635b436283300a",
-    "src/python/nrrd/src/format_factory/nrrd/convert.py": "54987319bce1ac287eb94dd8bd979406157b2c50f1a602b7e1e613b062c78d61",
+    "src/python/nrrd/src/format_factory/nrrd/convert.py": "10984d5ca2c0bc8bf872e94923e41c343dea92c2d98411c429eaa3e79fb624ef",
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "a8ebd146ae738a3fb60ec7f6680a1470d9e677cff85a2b50610307717b9e09f3",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
     "src/python/nrrd/src/format_factory/nrrd/space.py": "85d5640445d14d653eab2ff6131b4b867be171c16f96fdb943f14e451965afe5",
@@ -2744,7 +2758,7 @@
     "tests/python/nrrd/test_obligation_detached_forms_production.py": "1c24e345e862549d369590f85795eaeb6e32ea427d6bf5200563f0afbec173d2",
     "tests/python/nrrd/test_obligation_detached_path_version_gate.py": "abb3da066d8d0872f0dae9003d39fbcb45d8262f011dc19625b28130c87b4f5a",
     "tests/python/nrrd/test_obligation_detached_writer.py": "f947213e761a9424118e4d6dbf7bf00193b72ec6f773b25d23492c143b711297",
-    "tests/python/nrrd/test_obligation_dtype_conversion.py": "303205eec17e82662e3e484870fac7e985c0ed400f36bc62f887c75b686d6425",
+    "tests/python/nrrd/test_obligation_dtype_conversion.py": "52a58a8e66d2bb715894ec3c09197b16145ed1aa23a9f95aa2a1a7aedf355377",
     "tests/python/nrrd/test_obligation_encoding_conversion.py": "5d51c4b0b8628ff250327cd326d41415bc545e3a7d12c9dd9556e124e7b5a7c8",
     "tests/python/nrrd/test_obligation_header_field_grammar.py": "e70dc004b9be05c2828ba1b1fa99de76484c1190d1abf0ac59d1bd320e89fdee",
     "tests/python/nrrd/test_obligation_header_field_name_aliases.py": "15499477f5c13e5777318e559e55628905055b5f903d430f448c4fd67a7cb9b8",
@@ -2770,12 +2784,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 51,
-      "partial": 11,
+      "implemented": 52,
+      "partial": 10,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 14
+    "unresolved": 13
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

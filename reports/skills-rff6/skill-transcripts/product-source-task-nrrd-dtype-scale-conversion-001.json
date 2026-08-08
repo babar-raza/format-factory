@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-dtype-scale-conversion-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-4df73656a8913aae",
+  "mode": "live",
+  "timestamp": "2026-08-08T09:57:11Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_DTYPE_SCALE_CONVERSION_001",
+    "task_kind": "found-precisely-scoped-final-quarter-of-a-compound-obligation",
+    "root_cause": "Event 327's own exact_next_action named per-format obligation closure as the mission's own next dominant activity now that all six formats are gate-complete. Surveyed nrrd's own 14 remaining obligations directly rather than assuming scope from prior framing. NRRD-CONVERT-001 (SAL-NRRD-OBL-E2B0331E7D4F6AD8) stood out: its own missing_behavior was a single, precisely-scoped sentence ('Scaling (as opposed to clipping/rounding) is not implemented for dtype conversion: no explicit scale-factor parameter exists yet'), and a prior evidence entry (NRRD-ATTACHMENT-CONVERSION-PROOF, Event 316) had already explicitly flagged this as the ONE remaining quarter of a four-part compound obligation, having already closed the other three (dtype/endian at baseline, encoding at Event 300, attached/detached form at Event 316 itself).",
+    "obligation_targeted": "SAL-NRRD-OBL-E2B0331E7D4F6AD8 (NRRD-CONVERT-001) promoted partial -> implemented, closing the obligation's own last named policy.",
+    "acceptance_evidence": "Read convert_dtype()'s own current implementation directly: it already has a well-established, no-default-allowed policy pattern (OverflowPolicy, RoundingPolicy) that a scale parameter slots into naturally. Added scale: float | None = None, applied to every value before overflow/rounding are evaluated. Widened the existing float-source-requires-rounding guard to also require rounding when scale is given to an integer target (a non-integer scale factor can introduce fractional values even from an integer source, e.g. 10 * 0.5 = 5.0 exactly but 10 * 0.3 = 3.0000000000000004 in float arithmetic -- the guard is conservative and static, not per-value, matching the same philosophy the existing source_is_float check already uses). scale defaults to None with byte-for-byte identical behavior to before (a dedicated regression test proves this), so the change is purely additive.",
+    "regression_tier": "nrrd suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Listed all 14 of nrrd's own remaining non-implemented obligations directly from shared/format-contracts/implementation-evidence/nrrd.yaml rather than trusting any prior summary. Read each one's own missing_behavior text: NRRD-PAYLOAD-001 (a deliberate security refusal, not a gap), NRRD-WRITE-001 ('no detached partition writer or complete conditional/optional absence policy' -- ambiguous scope, possibly overlapping with already-closed attachment-conversion work, needs deeper investigation), NRRD-ENC-001 (a large exhaustive-matrix/oracle undertaking), NRRD-SPACE-001 partial (needs real DICOM-derived test data this repo does not have), NRRD-HEADER-001 (already investigated twice, genuinely ambiguous per its own prior note), NRRD-SHAPE-001 (a first-class axis-order model, likely sizeable), NRRD-PRESERVE-001 (typed-defaults modeling, uncertain size), NRRD-CONVERT-001 (a single, precisely-named missing policy), NRRD-ARRAY-001 x2 (a full numpy-like array/slicing/view API, clearly large).",
+    "2. NRRD-CONVERT-001 stood out as the most precisely scoped: its own missing_behavior was one sentence naming exactly one thing (a scale-factor parameter), and a prior evidence entry from earlier this session (NRRD-ATTACHMENT-CONVERSION-PROOF, Event 316) had already explicitly and honestly flagged scaling as the deliberately-not-attempted final quarter of this same four-part obligation.",
+    "3. Read convert_dtype()'s own current signature and body directly (src/python/nrrd/src/format_factory/nrrd/convert.py) -- confirmed the existing OverflowPolicy/RoundingPolicy pattern (explicit, no defaults, a ConversionReport recording what happened) was a natural, small extension point for a scale parameter, not a separate conversion pathway.",
+    "4. Added scale: float | None = None to convert_dtype()'s own signature, applied via `working = working * scale` immediately after establishing `working = value`, before any rounding/clipping logic. Added a matching scale: float | None = None field to ConversionReport.",
+    "5. Widened the existing validation guard: `target_is_integer and source_is_float and rounding is None: raise` became `target_is_integer and may_be_non_integral and rounding is None: raise`, where `may_be_non_integral = source_is_float or scale is not None` -- a non-integer scale factor can introduce fractional values even from an integer source, so the same explicit-rounding requirement a float source already has now also applies when scaling is used.",
+    "6. Ran mypy --strict and ruff on the changed file -- clean, zero issues, zero ignores needed.",
+    "7. Ran the pre-existing 13-test test_obligation_dtype_conversion.py file BEFORE writing any new test, to confirm zero regression from the signature change (all default parameters, purely additive) -- 13/13 passed unchanged.",
+    "8. Added 5 new tests: a normalized [0,1]->[0,255] uint8 remap (with an honestly-reasoned is_lossless=False assertion, since 0.5*255=127.5 is genuinely fractional and gets rounded, not silently treated as exact), an out-of-range-after-scaling clip case, the integer-source-non-integer-scale rounding-required refusal, a working integer-source-scaled-and-rounded success case, and a dedicated no-scale-given-is-byte-for-byte-unchanged regression proof. One initial test assertion was wrong on first write (expected is_lossless=True for a case that actually required rounding) -- caught by running the test, not assumed correct; fixed the assertion, not the code, since the code's own behavior (correctly reporting a genuinely fractional intermediate value as rounded) was right.",
+    "9. Ran the full nrrd suite (680 passed, 1 skipped, was 675) and the 6-format regression to confirm zero collateral impact.",
+    "10. Updated the ledger: promoted SAL-NRRD-OBL-E2B0331E7D4F6AD8 to status=implemented (missing_behavior: []), added the 4 new positive test selectors and 1 new negative test selector, added a new execution_evidence entry (NRRD-DTYPE-SCALE-CONVERSION-PROOF), and corrected NRRD-ATTACHMENT-CONVERSION-PROOF's own prior truth_boundary text (which had explicitly said scaling was NOT resolved by that entry) to point at this new entry as the one that closed it, rather than leaving a now-stale claim standing."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/convert.py",
+    "tests/python/nrrd/test_obligation_dtype_conversion.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/convert.py",
+    "tests/python/nrrd/test_obligation_dtype_conversion.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_dtype_conversion.py -q -- 18 passed (13 pre-existing unchanged, 5 new)",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/convert.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/convert.py tests/python/nrrd/test_obligation_dtype_conversion.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd -q -- 680 passed, 1 skipped (was 675)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation closed (partial -> implemented) -- NRRD-CONVERT-001's own last remaining named policy",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "format_factory.nrrd.convert_dtype's own new scale parameter; ConversionReport.scale field"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

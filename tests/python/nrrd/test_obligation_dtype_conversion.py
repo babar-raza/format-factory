@@ -95,6 +95,88 @@ def test_unsigned_target_clips_negative_values_to_zero() -> None:
     assert report.clipped_indices == (0,)
 
 
+# ── Scaling remaps a source range onto the target type's own range ─────────
+
+
+def test_scale_remaps_a_normalized_float_range_onto_an_integer_target() -> None:
+    """The common medical-imaging case: [0.0, 1.0] normalized float data
+    remapped onto uint8's own [0, 255] range via scale=255."""
+    converted, report = convert_dtype(
+        [0.0, 0.5, 1.0],
+        source_type="float",
+        target_type="uint8",
+        overflow=OverflowPolicy.CLIP,
+        rounding=RoundingPolicy.ROUND_HALF_UP,
+        scale=255.0,
+    )
+
+    assert converted == [0, 128, 255]
+    assert report.scale == 255.0
+    # 0.5 * 255 = 127.5, a genuinely fractional intermediate value that
+    # ROUND_HALF_UP rounds to 128 -- correctly reported as rounded, not
+    # lossless, since the exact scaled value was not itself an integer.
+    assert report.rounded_indices == (1,)
+    assert report.is_lossless is False
+
+
+def test_scale_out_of_range_after_multiplication_is_clipped_and_reported() -> None:
+    converted, report = convert_dtype(
+        [0.0, 2.0],
+        source_type="float",
+        target_type="uint8",
+        overflow=OverflowPolicy.CLIP,
+        rounding=RoundingPolicy.TRUNCATE,
+        scale=255.0,
+    )
+
+    assert converted == [0, 255]
+    assert report.clipped_indices == (1,)
+
+
+def test_a_non_integer_scale_on_an_integer_source_requires_an_explicit_rounding_policy() -> None:
+    """An integer source is not itself fractional, but scaling by a
+    non-integer factor can introduce fractional values -- the same
+    explicit-rounding requirement a float source already has."""
+    with pytest.raises(NrrdWriteError, match="RoundingPolicy"):
+        convert_dtype(
+            [10],
+            source_type="int16",
+            target_type="int8",
+            overflow=OverflowPolicy.CLIP,
+            scale=0.5,
+        )
+
+
+def test_an_integer_source_scaled_and_rounded_to_an_integer_target_succeeds() -> None:
+    converted, report = convert_dtype(
+        [10, 20],
+        source_type="int16",
+        target_type="int8",
+        overflow=OverflowPolicy.CLIP,
+        rounding=RoundingPolicy.TRUNCATE,
+        scale=0.5,
+    )
+
+    assert converted == [5, 10]
+    assert report.scale == 0.5
+
+
+def test_no_scale_given_defaults_to_no_scaling_unchanged_from_before() -> None:
+    """Omitting scale entirely (the default) is byte-for-byte the same
+    behavior this function already had before scale existed -- backward
+    compatible, not a new mandatory policy."""
+    converted, report = convert_dtype(
+        [1.0, 2.0, 3.0],
+        source_type="float",
+        target_type="int8",
+        overflow=OverflowPolicy.CLIP,
+        rounding=RoundingPolicy.TRUNCATE,
+    )
+
+    assert converted == [1, 2, 3]
+    assert report.scale is None
+
+
 # ── Rounding is explicit, not defaulted ─────────────────────────────────────
 
 
