@@ -136,13 +136,24 @@ invalid_cases:
   malformed_boundary: Root element lacks UBL namespace URI
   authority_refs:
   - UBL-SPEC -- UBL namespace is mandatory for document identification
-  sample_ref: samples/by-format/ubl/invalid/missing-mandatory.xml
-  input_hash: sha256:5e7af27b318238d0dffc332cd619556df0f09bac615c9e9cb077a307d623d6bb
+  sample_ref: samples/by-format/ubl/invalid/missing-namespace.xml
+  input_hash: sha256:f02659af5dfe8c2c4463d8aea41250f87cdd63ed9b61ac171bc49c664ba1c86f
   expected_failure_stage: PARSE
   expected_error_type: UblParseError
   partial_recovery_allowed: false
   security_relevance: false
-  notes: File is valid XML with UBL namespace but missing mandatory business fields.
+  notes: >-
+    FF6-EVENT-000282: this case's own sample previously (samples/by-format/
+    ubl/invalid/missing-mandatory.xml) had a fully valid UBL namespace and
+    only lacked mandatory business fields -- contradicting this case's own
+    purpose/defect_class/expected_failure_stage, unchanged since the
+    2026-07-14 onboarding commit (GAP-026). Rather than repurpose that
+    file (it is also used by legacy shadow-package tests expecting its
+    exact current content), a new, minimal, genuinely-namespace-less
+    sample was added so this case actually tests what it always claimed
+    to: load() correctly raises UblParseError('root namespace mismatch')
+    for a root element with no UBL namespace URI, verified interactively
+    before this case was repointed.
 canonicalization:
   method: ubl-document-model
   description: >

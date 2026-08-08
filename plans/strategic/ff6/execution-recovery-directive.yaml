@@ -1042,11 +1042,33 @@ structural_gaps_20260804:
       confirmed by running both implementations against the identical
       file, both fail identically.
     severity: LOW
-    status: OPEN
-    owner: unassigned — next UBL taskcard that legitimately owns
-      oracle/formats/ubl/oracle-package.yaml or samples/by-format/ubl/invalid/
-    remediation: >
-      Either replace the sample with a document that actually lacks the
+    status: FIXED
+    owner: claude (2026-08-08, FF6-EVENT-000282)
+    resolution: >
+      Chose the first remediation option (a genuinely namespace-less
+      sample), not the second: the original missing-mandatory.xml is also
+      the fixture for three legacy shadow-package tests
+      (test_ubl_codec.py::test_probe_ubl_returns_true_..., test_ubl_analytics.py's
+      line-count/supplier-name/document-type-summary tests) that
+      specifically exercise ITS CURRENT content (valid namespace, missing
+      business fields) — repurposing it would have broken 117 passing
+      tests to fix one oracle case. Instead added a new, minimal sample
+      (samples/by-format/ubl/invalid/missing-namespace.xml, no UBL
+      namespace declaration on the root element at all) and repointed
+      ubl-invalid-001's sample_ref/input_hash at it, leaving the case's
+      own purpose/defect_class/malformed_boundary/expected_failure_stage/
+      expected_error_type completely untouched — they were correct all
+      along; only the sample contradicted them. Verified interactively
+      before repointing: format_factory.ubl.load() raises UblParseError
+      ("root namespace mismatch for Invoice: expected ...Invoice-2, got
+      ''") for the new sample. Oracle re-run: ubl 5/5 PASS (was 4/5) — all
+      five oracle-bound FF6 formats (nrrd, ipynb, safetensors, xliff, ubl)
+      are now fully green for the first time this mission. All 117
+      legacy shadow tests re-verified passing unchanged; original sample
+      file untouched, confirmed via unchanged git diff.
+    remediation_superseded: >
+      Original remediation text (superseded, kept for history): "Either
+      replace the sample with a document that actually lacks the
       UBL namespace (matching the case's own stated purpose and
       expected_failure_stage: PARSE), or rewrite the case's purpose/
       defect_class/malformed_boundary/expected_error_type to match what

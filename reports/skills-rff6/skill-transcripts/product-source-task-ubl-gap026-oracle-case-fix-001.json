@@ -1,0 +1,53 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-gap026-oracle-case-fix-001",
+  "skill_id": "add-installed-package-example",
+  "mode": "live",
+  "timestamp": "2026-08-08T01:50:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_GAP026_ORACLE_CASE_FIX_001",
+    "task_kind": "oracle-case-fixture-repair",
+    "root_cause": "ubl-invalid-001's own case metadata (purpose/defect_class/malformed_boundary/expected_failure_stage/expected_error_type) has claimed 'XML without UBL namespace must raise UblParseError' since the original 2026-07-14 onboarding commit, but its sample_ref (missing-mandatory.xml) has always had a fully valid UBL namespace and only lacks mandatory business fields -- a mismatch discovered as a side effect of FF6-EVENT-000275's fix and recorded as GAP-026, left unresolved pending a decision between two remediation options.",
+    "obligation_targeted": "No SAL obligation directly promoted -- this closes GAP-026 and completes the independent-oracle certification gate for the 5th and final oracle-bound FF6 format.",
+    "acceptance_evidence": "oracle/formats/ubl/reports/oracle-run-summary.json: ubl-invalid-001 now PASS (was FAIL), ubl 5/5 overall (was 4/5). All 117 legacy shadow-package tests referencing the original sample file re-verified passing unchanged.",
+    "regression_tier": "full 6-format regression suite plus the specific legacy shadow test files that reference the original sample"
+  },
+  "execution_steps": [
+    "1. Chose between GAP-026's two documented remediation options by checking which was less invasive. Grepped for every reference to the original sample file (missing-mandatory.xml) across the live tree: found it is also the fixture for 3 legacy shadow-package test files (test_ubl_codec.py, test_ubl_analytics.py, test_ubl_analytics_coverage.py -- 117 tests total) that specifically assert properties consistent with ITS CURRENT content (valid namespace, missing business fields: probe_ubl returns True, line count is 0, supplier name is None). Repurposing that file's content (remediation option 2, matching the case to the sample) would have broken those 117 passing tests to fix one oracle case.",
+    "2. Chose remediation option 1 instead: verified interactively that format_factory.ubl.load() already correctly raises UblParseError('root namespace mismatch...') for a genuinely namespace-less document -- no product code change needed, only a correctly-matching sample.",
+    "3. Added a new, minimal sample (samples/by-format/ubl/invalid/missing-namespace.xml: an Invoice root element with no default xmlns declaration at all) rather than editing the original file, so the original's own shadow-test contract stays completely intact.",
+    "4. Repointed ubl-invalid-001's sample_ref and input_hash at the new file. Left purpose/defect_class/malformed_boundary/expected_failure_stage/expected_error_type completely untouched -- they were correct all along, only the sample contradicted them.",
+    "5. Ran the oracle for ubl: 5/5 PASS (was 4/5) -- the spec_qname case (fixed at FF6-EVENT-000281) and this case (fixed here) were ubl's only two gaps; both are now resolved. All five oracle-bound FF6 formats are fully green for the first time this mission.",
+    "6. Ran the 3 legacy shadow test files referencing the untouched original sample: 117 passed, confirming zero collateral impact.",
+    "7. Ran the full 6-format regression suite: 3621 passed, 4 skipped, 0 failed -- the third consecutive zero-failure result this session. Re-ran the 4 non-FF6 oracle formats (csv/fods/zst/mtlx) to confirm zero regression there too.",
+    "8. Updated GAP-026 in plans/strategic/ff6/execution-recovery-directive.yaml from OPEN to FIXED with the full resolution recorded, preserving the original remediation text for history rather than deleting it."
+  ],
+  "allowed_files": [
+    "samples/by-format/ubl/invalid/missing-namespace.xml",
+    "oracle/formats/ubl/oracle-package.yaml",
+    "plans/strategic/ff6/execution-recovery-directive.yaml"
+  ],
+  "actual_files_changed": [
+    "samples/by-format/ubl/invalid/missing-namespace.xml",
+    "oracle/formats/ubl/oracle-package.yaml",
+    "plans/strategic/ff6/execution-recovery-directive.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python -m tools.oracle.execute_oracle --format ubl --all -- 5/5 PASS (was 4/5)",
+    ".venv/Scripts/pytest tests/python/ubl/test_ubl_codec.py tests/python/ubl/test_ubl_analytics.py tests/python/ubl/test_ubl_analytics_coverage.py -q -- 117 passed (unchanged)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3621 passed, 4 skipped, 0 failed",
+    ".venv/Scripts/python -m tools.oracle.execute_oracle --format {csv,fods,zst,mtlx} --all -- unchanged (5/5, 9/10, 10/10, 4/5)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations promoted -- this is an independent-oracle certification-gate fix and GAP-026 closure",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "gate_advanced": "independent-oracle: ubl now fully green (5/5) -- all 5 oracle-bound FF6 formats (nrrd, ipynb, safetensors, xliff, ubl) are now fully green for the first time this mission",
+    "gap_closed": "GAP-026 (plans/strategic/ff6/execution-recovery-directive.yaml) status OPEN -> FIXED"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
