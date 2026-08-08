@@ -13,3 +13,19 @@ generated_by: codex
   91 UBL 2.3 document roots.
 - Preserve the existing top-level `ubl` source only as migration input; it is
   intentionally excluded from the production wheel.
+- Add an official UBL 2.3 code list registry and deterministic offline code
+  validation (`official_code_list_registry`, `validate_code`,
+  `CodeListRegistry`, `parse_genericode`).
+- Add document indexing and business-role queries (`DocumentIndex`,
+  `business_role`) that work identically across all 91 supported document
+  roots.
+- Add opt-in digital signature presence tracking (`SignatureBackendRegistry`,
+  `sign_document`, `verify_signature`) with passive preservation of signed
+  content; this package tracks signature presence, it does not ship a
+  cryptographic implementation.
+- Vendor the official OASIS UBL 2.3 sample corpus (55 real example instance
+  documents) with a round-trip manifest.
+- Add CRUD editing for lines and other repeating core business components
+  (`add_line`, `remove_line`, `move_line`, `renumber_lines`, `replace_party`,
+  `update_component`, `add_component`, `remove_component`) with
+  schema-order-preserving inserts and validation-preserving refusal.

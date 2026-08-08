@@ -1,0 +1,52 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-changelog-catchup-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-09d8cd1444953c86",
+  "mode": "live",
+  "timestamp": "2026-08-08T14:44:45Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_CHANGELOG_CATCHUP_001",
+    "task_kind": "close-a-changelog-content-staleness-gap-found-via-a-fresh-cross-format-survey",
+    "root_cause": "Event 345's own exact_next_action offered three directions after completing the six-format __all__-vs-README survey: a second, lower-priority documentation pass; returning to the 23 already-exhausted unresolved obligations; or a fresh CHANGELOG.md/SECURITY.md completeness survey not yet attempted this session. Chose the CHANGELOG angle. Read all six formats' own CHANGELOG.md files directly and found every single one is minimal (7-15 lines) and covers only the initial namespace/chassis-generation milestone. Ran `git log --oneline --all -- <path>/CHANGELOG.md` for ubl and nrrd and confirmed each has had EXACTLY ONE commit ever (the initial chassis commit) despite substantial, real capability work landing in both packages afterward -- a systemic, cross-format documentation gap distinct from the README survey (Events 340-345), which never touched CHANGELOG.md content.",
+    "obligation_targeted": "No specific obligation-register status change (ubl remains at 6/194 unresolved, unaffected by this tick) -- this closes a gap adjacent to but distinct from product-goal.yaml invariant #4 (documentation): the documentation-gate.json's own prior checks verified CHANGELOG.md's EXISTENCE (docs_present) but never its content's currency against the real shipped API, a scope boundary this tick both discloses and partially closes for ubl.",
+    "acceptance_evidence": "Confirmed ubl's pyproject.toml still declares version 0.2.0.dev0, matching the CHANGELOG's own latest (and only) '## 0.2.0.dev0' heading exactly -- meaning this is still the same in-development, unreleased version, so new work belongs as additional bullets under the SAME heading, not a new version section (verified this reasoning against the same pattern holding for all 6 formats' own pyproject.toml versions before committing to it). Verified every symbol cited in the 5 new bullets (official_code_list_registry, validate_code, CodeListRegistry, parse_genericode, DocumentIndex, business_role, SignatureBackendRegistry, sign_document, verify_signature, add_line, remove_line, move_line, renumber_lines, replace_party, update_component, add_component, remove_component -- 17 total) exists on the current module via hasattr, and verified the '55 real example instance documents' corpus-size claim directly via a real directory listing (55 .xml files under samples/by-format/ubl/official/) rather than trusting the README's own pre-existing prose claim uncritically."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 345 commit (c485f0b9); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Read all six formats' own CHANGELOG.md files directly (nrrd, ora, xliff, ubl, ipynb, safetensors) -- all are short (7-15 lines) and each covers only the initial namespace/chassis-generation milestone, with no mention of any feature work landed afterward.",
+    "3. Ran `git log --oneline --all -- src/python/ubl/CHANGELOG.md` and the equivalent for nrrd -- both show exactly one commit ever (5dae3239 for ubl, 8bd674c1 for nrrd), confirming this is a real, systemic, never-updated-since-generation pattern across the whole product line, not specific to one format.",
+    "4. Confirmed ubl's own pyproject.toml still declares `version = \"0.2.0.dev0\"`, identical to the CHANGELOG's own latest heading -- checked the same pattern (declared package version matches the changelog's own latest section heading) across all six formats' pyproject.toml files before committing to the append-not-new-heading approach, since a mismatched version would have meant a new heading was needed instead.",
+    "5. Compiled the list of real, shipped, previously undocumented-in-changelog ubl capabilities from this session's own already-verified README work (code lists, document indexing, digital signatures, the official OASIS corpus -- all pre-existing capabilities this session's earlier README work at a prior tick already confirmed real and working -- plus the 8-function CRUD editing capability this same session's immediately preceding tick, Event 345, just verified end-to-end against real corpus data).",
+    "6. Verified every symbol named in the drafted bullets exists on the current format_factory.ubl module via hasattr (17 distinct symbols), and re-verified the '55 real example instance documents' corpus-size claim via a fresh, direct directory listing (ls samples/by-format/ubl/official/*.xml | wc -l = 55) rather than trusting the README's own pre-existing prose uncritically.",
+    "7. Appended 5 new bullets to the existing '## 0.2.0.dev0' section of src/python/ubl/CHANGELOG.md (not a new heading, since the package version has not changed), each grounded in directly-verified fact: code lists, document indexing, digital signatures, the official corpus, and CRUD editing.",
+    "8. Regenerated reports/certification/ubl/documentation-gate.json to add a new 'changelog_content_accuracy' check dimension (distinct from the existing readme-focused checks) documenting both the gap found (one commit ever, foundational-only content) and the fix applied, and extended the incidental_finding to disclose that this same gap remains open for the other 5 formats (nrrd, ora, xliff, ipynb, safetensors) -- named explicitly so a future tick can close them without re-discovering the pattern.",
+    "9. Did not modify any production source code, README.md, or any other file -- this slice is purely a CHANGELOG.md content-accuracy fix plus its own supporting gate-evidence regeneration. Did not re-run the ubl test suite since no production/test source changed; regression figures already on file (1216 passed) remain accurate."
+  ],
+  "allowed_files": [
+    "src/python/ubl/CHANGELOG.md",
+    "reports/certification/ubl/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/CHANGELOG.md",
+    "reports/certification/ubl/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct verification: hasattr checks for all 17 symbols cited in the new CHANGELOG bullets against the current format_factory.ubl module; a fresh directory listing confirming the 55-document official corpus count",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a changelog-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine CHANGELOG.md content-staleness gap for ubl -- no obligation status change (ubl remains at 6/194 unresolved, unaffected), but a real developer-facing accuracy improvement: a user checking 'what has this package added' would previously see only the initial foundational milestone despite five substantial capability areas having shipped since.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 194,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API in a changelog entry; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
