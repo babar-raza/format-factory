@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-ubl-validate-raw-source-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T02:24:19Z",
+  "inputs": {
+    "format_id": "xliff,ubl",
+    "task_id": "TC_FF6_XLIFF_UBL_VALIDATE_RAW_SOURCE_001",
+    "task_kind": "cross-format-capability-generalization",
+    "root_cause": "FF6-EVENT-000291 built and proved a pattern for nrrd: validate() accepting a raw source (bytes/path/stream) directly, catching load-time errors and returning a FATAL Diagnostic instead of an uncaught exception. FF6-EVENT-000292's own audit found safetensors/ipynb already had this; xliff and ubl did not -- both validate() functions accepted only an already-loaded document, with zero try/except. Not tied to a specific unresolved obligation for either format, but a real, tested robustness/API-consistency improvement.",
+    "obligation_targeted": "None directly -- general capability generalization across xliff and ubl's own validate() API surface, matching the now-consistent contract nrrd/safetensors/ipynb all share.",
+    "acceptance_evidence": "8 new tests (4 per format) proving: malformed bytes report a FATAL diagnostic not a raise; a nonexistent path reports a FATAL diagnostic not a raise; a valid source produces an identical report whether given as a path, raw bytes, or a preloaded document.",
+    "regression_tier": "full xliff and ubl suites plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Confirmed all four other formats' own validate() dispatch behavior directly (not assumed): safetensors already accepts SafeTensorsDocument | bytes | bytearray | memoryview | str and catches all exceptions; ipynb already accepts IpynbDocument | Mapping | Source and catches ResourceLimitError/IpynbError/OSError/TypeError/ValueError. Both already correct, no gap.",
+    "2. Confirmed xliff's validate(value: XliffDocument, ...) and ubl's validate(value: UblDocument, ...) both accept only an already-loaded document with zero raw-source path and zero try/except -- the identical structural gap nrrd had before FF6-EVENT-000291.",
+    "3. Checked both packages' own load()/errors.py: XliffError/UblError are each the shared base exception class for their own parse/validation errors, and load() is exported from each package's own codec/__init__.py with no import-cycle risk into the validation module.",
+    "4. Extended both validate() functions identically: value: XxxDocument -> value: XxxDocument | BinarySource; when not already a Document, call load(value, limits=limits) and catch (XliffError / UblError), returning a FATAL '{fmt}.source.unreadable' Diagnostic instead of propagating.",
+    "5. Verified with standalone repros before writing tests: malformed bytes, a nonexistent path, and (critically) that a VALID source produces byte-identical diagnostics whether passed as a path, raw bytes, or an already-loaded document -- confirming the new dispatch path doesn't silently diverge from the existing one.",
+    "6. Added tests/python/xliff/test_xliff_validate_raw_source.py and tests/python/ubl/test_ubl_validate_raw_source.py (4 tests each, same shape, not tied to any existing obligation-named test file since neither obligation set names this specific gap).",
+    "7. Ran mypy --strict (clean, both files), ruff (clean, both files), the two full package suites (xliff 543 unchanged since dispatch doesn't affect existing document-value callers; ubl 1018 unchanged), and the 6-format regression (3640 -> 3648 passed, +8 exactly matching new tests, 0 failed)."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_xliff_validate_raw_source.py",
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_ubl_validate_raw_source.py"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+    "tests/python/xliff/test_xliff_validate_raw_source.py",
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_ubl_validate_raw_source.py"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_xliff_validate_raw_source.py tests/python/ubl/test_ubl_validate_raw_source.py -v -- 8 passed (all new)",
+    ".venv/Scripts/python -m mypy --strict <both validator.py files> -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <both validator.py files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/xliff -q -- 543 passed (unchanged)",
+    ".venv/Scripts/pytest tests/python/ubl -q -- 1018 passed (unchanged)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3648 passed, 4 skipped, 0 failed (was 3640)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations promoted (general API capability generalization, not tied to a specific SAL obligation for either format)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "new_tests": 8,
+    "formats_now_consistent": ["nrrd", "xliff", "ubl", "safetensors", "ipynb"],
+    "formats_remaining_with_gap": []
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -6,9 +6,10 @@ import re
 import xml.etree.ElementTree as ET
 from collections import Counter
 
-from format_factory.core import Diagnostic, ResourceLimits, ValidationReport
+from format_factory.core import BinarySource, Diagnostic, ResourceLimits, Severity, ValidationReport
 
-from ..codec import SUPPORTED_VERSIONS, XLIFF_NAMESPACE
+from ..codec import SUPPORTED_VERSIONS, XLIFF_NAMESPACE, load
+from ..errors import XliffError
 from ..model import (
     ExtensionNode,
     Group,
@@ -957,14 +958,28 @@ def _document_has_target_content(value: XliffDocument) -> bool:
 
 
 def validate(
-    value: XliffDocument,
+    value: XliffDocument | BinarySource,
     *,
     profile: str | None = None,
     limits: ResourceLimits | None = None,
 ) -> ValidationReport:
-    """Validate core model invariants without resolving external references."""
+    """Validate core model invariants without resolving external references.
 
-    del limits
+    `value` may also be a raw source (bytes, path, or stream): it is loaded
+    internally, and a load-time failure is reported as a FATAL
+    ``xliff.source.unreadable`` Diagnostic instead of propagating as an
+    uncaught exception -- the same non-raising contract every other check in
+    this function already honors.
+    """
+
+    if not isinstance(value, XliffDocument):
+        try:
+            value = load(value, limits=limits)
+        except XliffError as exc:
+            return ValidationReport(
+                [Diagnostic("xliff.source.unreadable", str(exc), severity=Severity.FATAL)]
+            )
+
     diagnostics: list[Diagnostic] = []
     selected = profile or value.version
     if selected not in SUPPORTED_VERSIONS:

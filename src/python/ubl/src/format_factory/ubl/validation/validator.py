@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
-from format_factory.core import Diagnostic, ResourceLimits, Severity, ValidationReport
+from format_factory.core import BinarySource, Diagnostic, ResourceLimits, Severity, ValidationReport
 
 from .._generated import ROOT_NAMESPACES, ROOT_NAME_SET
+from ..codec import load
+from ..errors import UblError
 from ..model import UblDocument, XmlNode
 
 _CBC_NAMESPACE = (
@@ -150,7 +152,7 @@ def _local(qname: str) -> str:
 
 
 def validate(
-    value: UblDocument,
+    value: UblDocument | BinarySource,
     *,
     profile: str | None = None,
     limits: ResourceLimits | None = None,
@@ -159,9 +161,21 @@ def validate(
 
     This chassis validation is deliberately not an XSD-conformance claim.
     Full schema and cardinality validation remains a mandatory open obligation.
+
+    `value` may also be a raw source (bytes, path, or stream): it is loaded
+    internally, and a load-time failure is reported as a FATAL
+    ``ubl.source.unreadable`` Diagnostic instead of propagating as an
+    uncaught exception.
     """
 
-    del limits
+    if not isinstance(value, UblDocument):
+        try:
+            value = load(value, limits=limits)
+        except UblError as exc:
+            return ValidationReport(
+                [Diagnostic("ubl.source.unreadable", str(exc), severity=Severity.FATAL)]
+            )
+
     diagnostics: list[Diagnostic] = []
     selected = profile or "UBL-2.3"
     if selected != "UBL-2.3":
