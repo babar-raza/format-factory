@@ -34,6 +34,14 @@
       "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact positive and negative test selectors proving mergedimage.png is mandatory (strict mode rejects its absence) and must carry 8 or 16 bits per channel (other depths rejected), and Thumbnails/thumbnail.png is mandatory, non-interlaced, 8-bit, and at most 256x256 (each violation individually rejected: too wide, too tall, wrong bit depth, interlaced), all validated through a code path (_baseline_asset_diagnostics) entirely separate from layer-source resolution, so a baseline asset is never confused with an editable layer src. Does NOT cover \"generate[ing]\" or \"replac[ing]\" these assets -- this package has no image-generation capability, read/validate only. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-0CF770969FA42DB5 and SAL-ORA-OBL-48761EB31C2C2F7D fully, and SAL-ORA-OBL-52746ABC41B3E790 partially (the read/validate/no-confusion half only); it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "ORA-COMPOSITE-INVENTORY-PROFILE-INDEPENDENCE-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-composite-inventory-profile-independence-001.json",
+      "sha256": "73ea58542388741c2f6a1f94849d329d1f31670093800b5de9b596a7edc24849",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE. Narrows (does not fully close) SAL-ORA-OBL-2CC875865800D528 (ORA-COMPOSITE-001), promoted missing->partial. This specific obligation ID had zero cross-referenced evidence before this tick -- status=missing, source_symbols=[] -- despite sharing the exact same capability_id (ORA-COMPOSITE-001) as a sibling obligation (SAL-ORA-OBL-4EC8C1CC747F7FC6) already closed earlier this session by the same composite_ops.py registry this entry now also cites; the two obligations have different rule_text (this one's own is broader: \"expose the selected profile's complete compositing-operation inventory, default operation, validation, and pixel semantics through a replaceable rendering adapter\" vs the sibling's narrower \"composite-op attribute defaults to svg:src-over...\"), so this was never a pure duplicate-mapping fix. Investigated all four named clauses directly. \"The selected profile's... inventory\": re-read the pinned Layer Stack Specification's own \"composite-op attribute\" section directly (.local/format-contracts/acquired/ora/src-ora-003.bin) and confirmed the composite-op table has no per-profile gating anywhere in that section -- \"profile\" is not a real distinct requirement beyond the existing registry. Proven behaviorally (not merely by spec citation) via 2 new tests showing composite-op resolution is identical regardless of isolation-triggering attributes (this obligation's own second authority fact, SAL-ORA-00011: isolation depends on opacity/composite-op/isolation together, a profile 0.0.4+ concern already covered by a different sibling obligation, SAL-ORA-OBL-C668456FEC0FF4E4). \"Default operation\" and \"validation\": already fully implemented (DEFAULT_COMPOSITE_OP, composite_op_info()); 2 new tests add fresh, dedicated proof of \"validation\" specifically meaning universal acceptance with structured lookup (every known value plus 3 forward-compatible unknown values including an empty string all construct successfully), matching the spec's own explicit open-vocabulary mandate rather than inventing a rejection semantic the spec forbids. \"Pixel semantics through a replaceable rendering adapter\" remains genuinely, honestly unresolved: investigated and confirmed this package has no rendering engine, no pixel-level compositing computation, and no adapter abstraction at all -- the same genuinely-blocked scope already correctly deferred for ORA-RENDER-001 (also unbuilt, requires the identical missing infrastructure). 4 new tests (tests/python/ora/test_obligation_composite_inventory_profile_independence.py), plus 4 existing tests from the sibling test_obligation_composite_op_registry.py cross-referenced as supplementary positive evidence for this obligation specifically (inventory completeness, default-value mapping, unrecognized-value preservation, full registry round trip). ora suite: 359 passed (unchanged -- purely additive). mypy --strict via standalone single-file invocation fails to resolve format_factory.ora for ALL ora test files (confirmed identical failure on the already-committed, already-passing sibling test_obligation_composite_op_registry.py) -- a pre-existing environment quirk in how mypy resolves this package's own editable install for standalone test-file checks, not a regression; mypy --strict against the full ora source package itself (14 files) is clean. ruff clean. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the profile-independence and validation-scope findings are direct, literal readings of the pinned spec text, not new interpretation. Covers SAL-ORA-OBL-2CC875865800D528 only; it supports no other obligation and promotes no other product state. This is a NARROWING, not a closure -- the obligation stays partial, and ora's own unresolved-obligation count is unchanged by this entry alone."
+    },
+    {
       "evidence_id": "ORA-COMPOSITE-OP-REGISTRY-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -213,7 +221,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "c38a9b3f0ba9ed38a191e4758d2a7d4f3d8ea90582bb6a1f0f332fcf930d942b",
+    "implementation_evidence": "13807c893f017e5f14fc37f3c59d2ffbc92376fb694a9a573ac626a44072fd48",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1237,15 +1245,27 @@
     },
     {
       "capability_id": "ORA-COMPOSITE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
+      "execution_evidence_ids": [
+        "ORA-COMPOSITE-INVENTORY-PROFILE-INDEPENDENCE-PROOF"
+      ],
+      "implemented_behavior": [
+        "FF6-EVENT-000332: three of this obligation's own four named clauses are implemented and now cross-mapped onto this specific obligation ID for the first time. \"The selected profile's... inventory\": investigated directly against the pinned Layer Stack Specification and confirmed the composite-op table is profile-independent (no per-version gating anywhere in that section); proven behaviorally by showing isolation-triggering attributes (this obligation's own second authority fact, SAL-ORA-00011) do not change composite-op resolution. \"Default operation\": DEFAULT_COMPOSITE_OP (svg:src-over). \"Validation\": composite_op_info() accepts every known value with a structured lookup and returns None (not a rejection) for an unrecognized but well-formed value, matching the spec's own explicit open-vocabulary mandate."
+      ],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Golden pixel vectors, alpha edge cases, unsupported-operation preservation, and adapter differential tests.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+        "\"Pixel semantics through a replaceable rendering adapter\" remains genuinely absent: this package has no rendering engine, no pixel-level compositing computation, and no adapter abstraction of any kind. Building it needs the same rendering-engine work already correctly deferred for ORA-RENDER-001 (also unbuilt). Narrowed, not resolved -- the three other clauses this obligation names are now proven; this is the obligation's own sole remaining gap."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-2CC875865800D528",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_composite_op_registry.py::test_the_registry_covers_every_value_in_the_pinned_spec_table",
+        "tests/python/ora/test_obligation_composite_op_registry.py::test_the_default_value_maps_to_normal_blending_and_source_over",
+        "tests/python/ora/test_obligation_composite_op_registry.py::test_an_unrecognized_composite_op_on_a_layer_is_preserved_not_rejected",
+        "tests/python/ora/test_obligation_composite_op_registry.py::test_every_registry_value_round_trips_through_a_layer_construction",
+        "tests/python/ora/test_obligation_composite_inventory_profile_independence.py::test_composite_op_resolution_is_identical_regardless_of_isolation_triggering_attributes",
+        "tests/python/ora/test_obligation_composite_inventory_profile_independence.py::test_every_registry_value_resolves_the_same_way_on_a_root_and_non_root_stack",
+        "tests/python/ora/test_obligation_composite_inventory_profile_independence.py::test_validation_accepts_every_value_the_spec_defines_plus_forward_compatible_unknowns",
+        "tests/python/ora/test_obligation_composite_inventory_profile_independence.py::test_the_default_composite_op_constant_matches_the_registrys_own_default_entry"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1254,9 +1274,12 @@
           "Golden pixel vectors, alpha edge cases, unsupported-operation preservation, and adapter differential tests."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/model/composite_ops.py::composite_op_info",
+        "src/python/ora/src/format_factory/ora/model/stack.py::OraNode"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "ORA-MASK-001",
@@ -4831,6 +4854,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-asset-citation-audit-001.json": "3758939b774568de093e6cc9239fcd24131fd2c5d8db9497f570d33a617f70dd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-attribute-count-limit-001.json": "c81abe148b11eed7c492955a236e187280bef7ccbe7c26333e77a217185048bd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-baselineasset-001.json": "e9fd4c00c4aabd1861f785b719efb3715dbad33c5cb8d09292091eda4ebe7f32",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-composite-inventory-profile-independence-001.json": "73ea58542388741c2f6a1f94849d329d1f31670093800b5de9b596a7edc24849",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-composite-op-registry-001.json": "0c54f586eb44d407a506e7eefa43e0a060a0615ea06a5aff28efbd061b5c5c8b",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-composite-op-rejection-scope-correction-001.json": "b522f91f4c2bb8b8cad84115e4112fe21b1ec22d47cf661dbd90d6460f16a569",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-container-citation-audit-001.json": "a8da421c2df540a82a0ebcca93b5642299a8ad71ee0100a9b64ac808e58b1d63",
@@ -4857,19 +4881,20 @@
     "src/python/ora/src/format_factory/ora/codec/container.py": "129e2f98264ad518d28f40bddb23c11bfca5fac11f4ea471ea01e2cb5571fa87",
     "src/python/ora/src/format_factory/ora/codec/png_metadata.py": "6b247625e57be37e010808f50a08ce76e5efd240c5459d2a7ad506eee74ac2ad",
     "src/python/ora/src/format_factory/ora/codec/stack_xml.py": "b01ed986b9fb086533e1892c7827b7c3d28a1afd307057c8bb0f16e7643193a7",
-    "src/python/ora/src/format_factory/ora/lifecycle.py": "d2fb8409a685023636c41b20de7987667981b5f159f4606ac012a70bf9432ad2",
+    "src/python/ora/src/format_factory/ora/lifecycle.py": "dde59a3417d3aba90e1bc3a149f3921a26fd45badf5f3b40db62379d8e339130",
     "src/python/ora/src/format_factory/ora/model/composite_ops.py": "e6d442735fa783c396176cb4636504c563a52ee7594e90734301fd72486dc4d6",
     "src/python/ora/src/format_factory/ora/model/document.py": "e77dcfb27563a7c6ea4aa002a4582cc4f1a2cce981f3b3a7f3575a819e99d5ef",
     "src/python/ora/src/format_factory/ora/model/stack.py": "f50eb16a8e891fbed9f22a12a8c522eb4e254656b4aa78e1b7b98c121b0c6591",
     "src/python/ora/src/format_factory/ora/preservation.py": "2805b9b1d028af36a45eea1b12f97236b04540053685625adc633deb64f3b003",
     "src/python/ora/src/format_factory/ora/transaction.py": "2b43957b457688f862646be56045ff6c7a49478ade3901a5153140cbba4c3b85",
+    "tests/python/ora/test_obligation_composite_inventory_profile_independence.py": "260faa7b7621bc9011e05668220e33c0d54f584a38845118845b87f2c0f24e9e",
     "tests/python/ora/test_obligation_composite_op_registry.py": "107536a6213188ff05a31cd499b338fb159951000dae32d30d192916064fb2d2",
     "tests/python/ora/test_obligation_container_and_mimetype.py": "b99bd7c244b2fcb3ba43c017d91bdea2c651227526799b608c15337059e3b2e2",
     "tests/python/ora/test_obligation_document_model_construction.py": "478139c90d4beeda8b8c4759b42bee88f29cc769fbbd1f1e9d70adf436224987",
     "tests/python/ora/test_obligation_explicit_attribute_preservation.py": "cb67648fe068cab965ad46599693b4872788bf5f718c140c2f687ea3a413f76a",
     "tests/python/ora/test_obligation_isolation_semantics.py": "1d41a5f6f432a48cc8cb46967ed1287f186bea87f302de1c7b89cf42bdbf9b6f",
     "tests/python/ora/test_obligation_layer_and_group_editing.py": "508cabfb53c92fa7c4f8d2922aec0756ba76315ccac8ac3fd584a51f56dca9e3",
-    "tests/python/ora/test_obligation_lifecycle_and_write.py": "a88a6412380498415ca414a4d4704a422e0429abda80c705e8ad89c2a7bc77a7",
+    "tests/python/ora/test_obligation_lifecycle_and_write.py": "eb2daa715fe31361b74f731db53a77909130ef99cf51515a3e5fef79b4015f1a",
     "tests/python/ora/test_obligation_preservation_baseline.py": "c0086dc6953839002dbce61cd826e280d17d8f673ffd5ed7f3651c5d9d72bf7a",
     "tests/python/ora/test_obligation_raster_assets.py": "9688c9e5e46223bc81ced1b49e9369fab113abcf6d52803011cb1e0eaa2d230b",
     "tests/python/ora/test_obligation_resolution_profile_detection.py": "606e3e87b8f4e80dae82c894df8e22ef492048b8cae15b9355b42363d89fe550",
@@ -4882,8 +4907,8 @@
   "summary": {
     "by_status": {
       "implemented": 127,
-      "missing": 4,
-      "partial": 3
+      "missing": 3,
+      "partial": 4
     },
     "total": 134,
     "unresolved": 7

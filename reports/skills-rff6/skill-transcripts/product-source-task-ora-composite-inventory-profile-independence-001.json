@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-composite-inventory-profile-independence-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-2b2e45ef070fb3b8",
+  "mode": "live",
+  "timestamp": "2026-08-08T11:11:15Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_COMPOSITE_INVENTORY_PROFILE_INDEPENDENCE_001",
+    "task_kind": "stale-cross-obligation-evidence-plus-honest-narrowing",
+    "root_cause": "Event 331's own exact_next_action suggested pivoting to ora's 7 or ubl's 6 remaining obligations, re-surveying with the two lenses that closed 4 nrrd obligations this session -- stale cross-obligation evidence, and an implicit capability inside a larger-sounding obligation -- specifically naming ORA-COMPOSITE-001's own 'default operation'/'validation' clauses as worth checking separately from its blocked 'pixel semantics' clause. Read SAL-ORA-OBL-2CC875865800D528's own ledger entry: status=missing, source_symbols=[], positive_test_selectors=[] -- zero evidence at all. Grepped ora's own source for composite-op handling and found model/composite_ops.py already existed (a 20-entry registry transcribed directly from the pinned Layer Stack Specification, with DEFAULT_COMPOSITE_OP and composite_op_info()), built earlier this session for a DIFFERENT set of 6 obligation IDs sharing the same capability_id (ORA-COMPOSITE-001 among them, but a DIFFERENT obligation_id -- SAL-ORA-OBL-4EC8C1CC747F7FC6 -- which was closed by that earlier work) -- confirming ORA-COMPOSITE-001 has THREE distinct obligation IDs total (2CC875865800D528 still missing, 4EC8C1CC747F7FC6 and C668456FEC0FF4E4 both already implemented), each with different rule_text, so this was not a pure duplicate-mapping fix but required verifying whether the already-built registry genuinely satisfied THIS specific obligation's own broader rule_text.",
+    "obligation_targeted": "SAL-ORA-OBL-2CC875865800D528 (ORA-COMPOSITE-001) narrowed missing -> partial (NOT closed to implemented -- one of its four named clauses remains genuinely blocked).",
+    "acceptance_evidence": "Read this obligation's own rule_text as four distinct clauses: (1) 'the selected profile's... inventory', (2) 'default operation', (3) 'validation', (4) 'pixel semantics through a replaceable rendering adapter'. Directly re-read the pinned Layer Stack Specification's own 'composite-op attribute' section (.local/format-contracts/acquired/ora/src-ora-003.bin) in full and confirmed no per-profile gating language exists anywhere in that section -- the table is a single flat list. Clauses 2 and 3 were already fully covered by the existing registry. Clause 4 (pixel semantics) was investigated and confirmed genuinely absent -- no rendering engine, no pixel computation, no adapter abstraction anywhere in the package, the identical genuinely-blocked scope already correctly deferred for the still-unbuilt ORA-RENDER-001. Result: 3 of 4 clauses proven with fresh tests plus cross-referenced existing tests; the 4th honestly left as this obligation's own sole remaining gap, status set to partial (not implemented)."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 331 commit.",
+    "2. Confirmed nrrd's remaining 10 obligations were all already investigated and correctly ruled out (large/blocked/ungrounded) per Event 331's own truth_boundary before pivoting away from nrrd.",
+    "3. Listed ora's 7 remaining obligations fresh from the ledger with their own missing_behavior text. SAL-ORA-OBL-2CC875865800D528 (ORA-COMPOSITE-001) stood out per Event 331's own explicit hint: its rule_text names 4 distinct clauses, only one of which (pixel semantics) obviously requires the missing rendering engine.",
+    "4. Grepped ora's source tree for 'composite.op'/'composite_op'/'blend' and found model/composite_ops.py already existed with a complete registry, DEFAULT_COMPOSITE_OP, and composite_op_info(). Read its own module docstring, which lists 6 capability IDs (including ORA-COMPOSITE-001) it was originally built to serve.",
+    "5. Grepped the ledger for existing citations of this module and found it was already cross-mapped onto a DIFFERENT set of 6 obligation IDs (via a prior tick's own evidence entry, ORA-COMPOSITE-OP-REGISTRY-PROOF) -- confirmed by directly querying the register that ORA-COMPOSITE-001 (the capability_id) has 3 distinct obligation_ids, only one of which (2CC875865800D528, this task's own target) remained unmapped.",
+    "6. Read both authority facts backing this specific obligation (SAL-ORA-00011: isolation semantics: SAL-ORA-00015: composite-op default/blend-function/Porter-Duff mapping, the same fact already backing the closed sibling). SAL-ORA-00011 concerns isolation, not composite-op vocabulary itself -- confirmed these are orthogonal concerns via direct spec reading.",
+    "7. Re-read the pinned spec's own 'composite-op attribute' section directly and in full (not from memory) -- confirmed zero mention of per-profile/per-version gating for which composite-op values are valid. This directly settled clause 1 ('the selected profile's... inventory') as not a real distinct requirement beyond the existing registry.",
+    "8. Wrote a new, dedicated test file (test_obligation_composite_inventory_profile_independence.py, 4 tests) proving: composite-op resolution is identical regardless of isolation-triggering attributes (connecting this obligation's own SAL-ORA-00011 fact directly to composite-op resolution, showing they don't interact), every registry value resolves identically regardless of root/non-root structural position, 'validation' means universal acceptance (every known value plus 3 forward-compatible unknown values, including an empty string, all construct successfully without raising), and the default constant matches the registry's own default entry.",
+    "9. Ran the new file alone (4/4 pass) and the full ora suite (359 passed, unchanged -- purely additive, no existing behavior touched).",
+    "10. Attempted mypy --strict on the new test file standalone -- failed with 'Cannot find implementation or library stub for module named format_factory.ora'. Investigated rather than ignoring: ran the identical command against the ALREADY-COMMITTED, already-passing sibling file test_obligation_composite_op_registry.py and got the IDENTICAL failure, confirming this is a pre-existing environment quirk in how mypy resolves ora's own editable install for standalone test-file invocations (ora is one of the .pth-based editable installs per this session's own memory notes, unlike nrrd's own install mechanism), not a regression introduced by this change. Confirmed mypy --strict against the full ora SOURCE package (14 files) is clean, and ruff passes cleanly on the new test file.",
+    "11. Updated the ledger: promoted SAL-ORA-OBL-2CC875865800D528 from missing to PARTIAL (not implemented -- the 4th clause genuinely remains unbuilt), populated source_symbols/positive_test_selectors (4 cross-referenced existing tests plus the 4 new ones), added a new execution_evidence entry (ORA-COMPOSITE-INVENTORY-PROFILE-INDEPENDENCE-PROOF) with a truth_boundary explicitly stating this is a NARROWING, not a closure, and that the obligation's own unresolved status is unchanged (still counts toward ora's 7/134 unresolved tally) -- honest about the numeric outcome, not just the qualitative one."
+  ],
+  "allowed_files": [
+    "tests/python/ora/test_obligation_composite_inventory_profile_independence.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ora/test_obligation_composite_inventory_profile_independence.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_composite_inventory_profile_independence.py -q -- 4 passed (new file)",
+    ".venv/Scripts/python -m mypy --strict src/python/ora/src/format_factory/ora/ -- Success: no issues found in 14 source files (standalone single-test-file mypy invocation fails identically on this AND the already-committed sibling test file -- pre-existing environment quirk, not a regression)",
+    ".venv/Scripts/python -m ruff check tests/python/ora/test_obligation_composite_inventory_profile_independence.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ora -q -- 359 passed (unchanged, purely additive)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation narrowed (missing -> partial, NOT closed) -- ORA-COMPOSITE-001's SAL-ORA-OBL-2CC875865800D528, 3 of 4 named clauses proven, 1 honestly left blocked",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 134,
+    "new_public_api": "none -- no new production source code; only test coverage and evidence-mapping correction for already-existing capability"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

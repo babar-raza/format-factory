@@ -492,6 +492,11 @@ execution_evidence:
     reconciliation citing tests already built and passing for a sibling
     obligation. Covers SAL-ORA-OBL-96D74D42B49F8C8B only; it supports
     no other obligation and promotes no other product state.
+- evidence_id: ORA-COMPOSITE-INVENTORY-PROFILE-INDEPENDENCE-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-composite-inventory-profile-independence-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike ORA-BASELINE-SUITE. Narrows (does not fully close) SAL-ORA-OBL-2CC875865800D528 (ORA-COMPOSITE-001), promoted missing->partial. This specific obligation ID had zero cross-referenced evidence before this tick -- status=missing, source_symbols=[] -- despite sharing the exact same capability_id (ORA-COMPOSITE-001) as a sibling obligation (SAL-ORA-OBL-4EC8C1CC747F7FC6) already closed earlier this session by the same composite_ops.py registry this entry now also cites; the two obligations have different rule_text (this one''s own is broader: "expose the selected profile''s complete compositing-operation inventory, default operation, validation, and pixel semantics through a replaceable rendering adapter" vs the sibling''s narrower "composite-op attribute defaults to svg:src-over..."), so this was never a pure duplicate-mapping fix. Investigated all four named clauses directly. "The selected profile''s... inventory": re-read the pinned Layer Stack Specification''s own "composite-op attribute" section directly (.local/format-contracts/acquired/ora/src-ora-003.bin) and confirmed the composite-op table has no per-profile gating anywhere in that section -- "profile" is not a real distinct requirement beyond the existing registry. Proven behaviorally (not merely by spec citation) via 2 new tests showing composite-op resolution is identical regardless of isolation-triggering attributes (this obligation''s own second authority fact, SAL-ORA-00011: isolation depends on opacity/composite-op/isolation together, a profile 0.0.4+ concern already covered by a different sibling obligation, SAL-ORA-OBL-C668456FEC0FF4E4). "Default operation" and "validation": already fully implemented (DEFAULT_COMPOSITE_OP, composite_op_info()); 2 new tests add fresh, dedicated proof of "validation" specifically meaning universal acceptance with structured lookup (every known value plus 3 forward-compatible unknown values including an empty string all construct successfully), matching the spec''s own explicit open-vocabulary mandate rather than inventing a rejection semantic the spec forbids. "Pixel semantics through a replaceable rendering adapter" remains genuinely, honestly unresolved: investigated and confirmed this package has no rendering engine, no pixel-level compositing computation, and no adapter abstraction at all -- the same genuinely-blocked scope already correctly deferred for ORA-RENDER-001 (also unbuilt, requires the identical missing infrastructure). 4 new tests (tests/python/ora/test_obligation_composite_inventory_profile_independence.py), plus 4 existing tests from the sibling test_obligation_composite_op_registry.py cross-referenced as supplementary positive evidence for this obligation specifically (inventory completeness, default-value mapping, unrecognized-value preservation, full registry round trip). ora suite: 359 passed (unchanged -- purely additive). mypy --strict via standalone single-file invocation fails to resolve format_factory.ora for ALL ora test files (confirmed identical failure on the already-committed, already-passing sibling test_obligation_composite_op_registry.py) -- a pre-existing environment quirk in how mypy resolves this package''s own editable install for standalone test-file checks, not a regression; mypy --strict against the full ora source package itself (14 files) is clean. ruff clean. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule; the profile-independence and validation-scope findings are direct, literal readings of the pinned spec text, not new interpretation. Covers SAL-ORA-OBL-2CC875865800D528 only; it supports no other obligation and promotes no other product state. This is a NARROWING, not a closure -- the obligation stays partial, and ora''s own unresolved-obligation count is unchanged by this entry alone.'
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -1258,16 +1263,37 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-2CC875865800D528
   capability_id: ORA-COMPOSITE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/composite_ops.py::composite_op_info
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_the_registry_covers_every_value_in_the_pinned_spec_table
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_the_default_value_maps_to_normal_blending_and_source_over
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_an_unrecognized_composite_op_on_a_layer_is_preserved_not_rejected
+  - tests/python/ora/test_obligation_composite_op_registry.py::test_every_registry_value_round_trips_through_a_layer_construction
+  - tests/python/ora/test_obligation_composite_inventory_profile_independence.py::test_composite_op_resolution_is_identical_regardless_of_isolation_triggering_attributes
+  - tests/python/ora/test_obligation_composite_inventory_profile_independence.py::test_every_registry_value_resolves_the_same_way_on_a_root_and_non_root_stack
+  - tests/python/ora/test_obligation_composite_inventory_profile_independence.py::test_validation_accepts_every_value_the_spec_defines_plus_forward_compatible_unknowns
+  - tests/python/ora/test_obligation_composite_inventory_profile_independence.py::test_the_default_composite_op_constant_matches_the_registrys_own_default_entry
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - ORA-COMPOSITE-INVENTORY-PROFILE-INDEPENDENCE-PROOF
+  implemented_behavior:
+  - 'FF6-EVENT-000332: three of this obligation''s own four named clauses are implemented and now cross-mapped
+    onto this specific obligation ID for the first time. "The selected profile''s... inventory": investigated
+    directly against the pinned Layer Stack Specification and confirmed the composite-op table is profile-independent
+    (no per-version gating anywhere in that section); proven behaviorally by showing isolation-triggering
+    attributes (this obligation''s own second authority fact, SAL-ORA-00011) do not change composite-op
+    resolution. "Default operation": DEFAULT_COMPOSITE_OP (svg:src-over). "Validation": composite_op_info()
+    accepts every known value with a structured lookup and returns None (not a rejection) for an unrecognized
+    but well-formed value, matching the spec''s own explicit open-vocabulary mandate.'
   missing_behavior:
-  - 'Not yet audited against this obligation''s declared proof requirements: Golden pixel vectors, alpha
-    edge cases, unsupported-operation preservation, and adapter differential tests.'
-  - NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability.
+  - '"Pixel semantics through a replaceable rendering adapter" remains genuinely absent: this package has
+    no rendering engine, no pixel-level compositing computation, and no adapter abstraction of any kind.
+    Building it needs the same rendering-engine work already correctly deferred for ORA-RENDER-001 (also
+    unbuilt). Narrowed, not resolved -- the three other clauses this obligation names are now proven; this
+    is the obligation''s own sole remaining gap.'
   proof_requirements:
     positive:
     - Golden pixel vectors, alpha edge cases, unsupported-operation preservation, and adapter differential
