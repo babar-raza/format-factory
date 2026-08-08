@@ -1,0 +1,54 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-migration-validate-notebook-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-3ea6f1c0e34fc3eb",
+  "mode": "live",
+  "timestamp": "2026-08-08T16:56:43Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_MIGRATION_VALIDATE_NOTEBOOK_001",
+    "task_kind": "close-a-small-migration-documentation-gap-after-confirming-a-candidate-cluster-is-not-a-readme-gap",
+    "root_cause": "Event 362's own exact_next_action asked to verify whether load_ipynb/write_ipynb/probe_ipynb/validate_notebook are genuinely distinct capabilities or merely aliases of load/dump/probe/validate, since that ambiguity had been left unresolved by name alone. Read all 4 definitions directly and confirmed each is a real, deliberate legacy/alpha-compatibility facade (load_ipynb's own source comment names it explicitly; write_ipynb calls a _legacy_normalized() helper; probe_ipynb is a one-line bool-wrapper; validate_notebook raises one joined-message exception instead of returning a structured report) -- correctly excluded from the README's own 'supported namespace' framing, which already states the alpha namespace is unsupported and points readers to MIGRATION.md. Checked MIGRATION.md itself and found load_ipynb/write_ipynb/probe_ipynb already correctly listed in its own symbol-mapping table, but validate_notebook was genuinely absent -- a real, small, precisely-scoped gap.",
+    "obligation_targeted": "No specific obligation-register status change (ipynb remains at 0/68 unresolved, unaffected by this tick) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage. This is also a concluding investigation: it resolves the ambiguity Event 362 explicitly asked about, confirming no further README-level gap exists among these 4 specific symbols.",
+    "acceptance_evidence": "Read reader.py's load_ipynb/probe_ipynb, writer.py's write_ipynb, and validator.py's validate_notebook/validate_notebook_schema in full. Confirmed via hasattr that all 4 (plus validate_notebook_schema) are genuinely exported from the top-level format_factory.ipynb module. Verified validate_notebook's exact exception-raising behavior against a real invalid notebook with multiple distinct schema errors (an unrecognized cell_type, a missing cell id, and non-object cell metadata all in one document) -- confirmed the raised IpynbValidationError's own message joins all of them with '; ', not merely the first one, correcting an initial draft's own less precise 'raises on the first error' wording before publishing."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 362 commit (4eacf39aa); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Read reader.py's load_ipynb (lines 424-436): its own inline comment explicitly names it an 'Alpha compatibility facade' that retains legacy cell-ID-synthesis behavior the production load()/loads() deliberately never perform -- a real, deliberate behavioral difference from load(), not a trivial alias, but one that exists specifically FOR alpha-era backward compatibility, not as a new capability worth README promotion.",
+    "3. Read reader.py's probe_ipynb (line 455-456): confirmed it is literally `return bool(probe(source, limits=limits))` -- a one-line boolean-coercion wrapper around the already-documented probe(), genuinely trivial.",
+    "4. Read writer.py's write_ipynb (lines 189-206): confirmed it calls a `_legacy_normalized(model)` helper before serializing -- another explicit legacy-compatibility code path, distinct from the production dump()'s own normalization.",
+    "5. Read validator.py's validate_notebook_schema (returns a list of every error message from validate(model).errors) and validate_notebook (joins all of those messages with '; ' and raises one IpynbValidationError if any exist, otherwise returns None) -- confirmed this is a simpler, older exception-raising calling convention layered directly on top of the already-documented validate(), not a structurally different validation capability.",
+    "6. Checked src/python/ipynb/README.md's own existing 'Public namespace' section, which already states 'The supported namespace is format_factory.ipynb. The earlier top-level ipynb alpha namespace is not included in built distributions. See MIGRATION.md for symbol mappings.' -- confirming the README's own stated intent is to steer readers toward the typed load/dump/probe/validate APIs, not toward these facades; documenting the facades in the main README would work against that stated intent, not fill a real gap.",
+    "7. Read src/python/ipynb/MIGRATION.md in full (12 lines): confirmed load_ipynb, write_ipynb, and probe_ipynb are already correctly listed in its own alpha-to-production symbol-mapping table, each correctly pointing to the typed alternative. validate_notebook was the one symbol from this cluster genuinely missing from that table -- a real, small, precisely-scoped gap, not a cosmetic one, since a reader migrating from the alpha `ipynb.validate_notebook` call site would have no mapping entry to consult.",
+    "8. Verified the exact claim before writing it: built a real invalid notebook document with 3 distinct, real schema violations in one document (an unrecognized cell_type, a missing/invalid cell id, and non-object cell metadata) and called validate_notebook() on it directly -- confirmed the raised exception's own message contains all 3 real diagnostic messages joined by '; ', not just the first one. Caught and corrected an initial draft's own imprecise 'raises on the first error' phrasing before publishing, replacing it with the verified 'raises one exception joining every error message' description.",
+    "9. Added one new row to MIGRATION.md's existing table (`ipynb.validate_notebook` -> `format_factory.ipynb.validate_notebook` (raises one exception joining every error message) or typed `validate` (returns a full structured report)), matching the table's own existing style exactly.",
+    "10. Regenerated reports/certification/ipynb/documentation-gate.json's own incidental_finding to record this investigation's full conclusion: all 4 candidate symbols confirmed as legacy/alpha-compatibility facades correctly excluded from the README itself, with the one genuine small gap (validate_notebook missing from MIGRATION.md) now closed -- explicitly concluding the alias-vs-distinct question Event 362 raised, so a future tick does not re-investigate the same 4 symbols.",
+    "11. Did not modify any production source code -- load_ipynb/write_ipynb/probe_ipynb/validate_notebook already existed, fully correct and already tested by the existing test suite; this slice is purely a small, precise documentation-completeness fix plus its own supporting gate-evidence regeneration. Did not re-run the ipynb test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/MIGRATION.md",
+    "reports/certification/ipynb/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/MIGRATION.md",
+    "reports/certification/ipynb/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: validate_notebook against a real, hand-built invalid notebook document with 3 distinct real schema violations -- confirmed the raised exception's message joins all 3, correcting an initially imprecise claim before publishing",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine, small documentation-completeness gap for an already-implemented, already-exported legacy-compatibility function (validate_notebook) missing from its own natural home (MIGRATION.md's symbol-mapping table) -- no obligation status change (ipynb remains at 0/68 unresolved, unaffected). Also concludes a real investigation: confirms load_ipynb/write_ipynb/probe_ipynb/validate_notebook are correctly NOT README-documented capabilities, closing an open question from the prior tick.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 68,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
