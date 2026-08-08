@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-component-update-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-3c66ea9095dd75e8",
+  "mode": "live",
+  "timestamp": "2026-08-08T12:56:20Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_COMPONENT_UPDATE_001",
+    "task_kind": "generalize-a-just-shipped-insight-to-a-broader-set-of-component-types",
+    "root_cause": "The 'true picture' status report given to the user this session named UBL-EDIT-001's own remaining sub-scope (PaymentMeans/TaxTotal update, not yet attempted) as the clearest remaining lead among nrrd/ora/ubl's exhausted-or-blocked pools. Investigated whether cac:PaymentMeans/cac:TaxTotal/cac:AllowanceCharge follow the same easy-Update pattern replace_party() proved for cac:Party the prior tick.",
+    "obligation_targeted": "SAL-UBL-OBL-237188D47391391E (UBL-EDIT-001) narrowed further -- stays partial (Create for any component remains genuinely unbuilt), real new product code shipped.",
+    "acceptance_evidence": "Read the pinned UBL 2.3 Invoice maindoc XSD directly and confirmed cac:PaymentMeans/cac:TaxTotal/cac:AllowanceCharge are all maxOccurs='unbounded' direct root children -- a genuinely different cardinality shape from Party's own always-exactly-one wrappers, but the SAME core insight still applies: an already-present occurrence, however many same-name siblings exist, is already at its own schema-correct position, so UPDATE (as opposed to Create) needs no position-aware insertion logic regardless of whether the component is single- or multi-occurrence. Generalized replace_party() into a broader update_component(document, *, component_name, index, new_component) taking an explicit 0-based index among same-name siblings, refusing an out-of-range index (the still-unbuilt Create case) rather than silently accepting or fabricating an insertion."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 335 commit.",
+    "2. Re-read components.py's own current implementation (replace_party) and module docstring in full before designing anything new, to confirm the exact pattern being generalized.",
+    "3. Read the pinned UBL 2.3 Invoice maindoc XSD directly (src/python/ubl/src/format_factory/ubl/validation/schemas/maindoc/UBL-Invoice-2.3.xsd) rather than assuming cardinality from memory -- grepped for PaymentMeans/TaxTotal/AllowanceCharge and confirmed all three declare maxOccurs='unbounded', minOccurs='0', directly inside the root Invoice element's own top-level sequence (same indentation/context as the already-handled AccountingSupplierParty).",
+    "4. Recognized the key generalization: Party's own single-occurrence property made 'find the one existing wrapper' trivial, but for a REPEATING component, Update (replacing an ALREADY-PRESENT occurrence by its own existing index) is STILL simple -- it's Create (adding an ADDITIONAL occurrence) that needs the arbitrary-position insertion logic replace_party's own docstring correctly identified as out of scope. This is a different axis than single-vs-multi-occurrence: it's about update-vs-create regardless of cardinality.",
+    "5. Designed update_component(document, *, component_name, index, new_component) -> UblDocument: finds all root children matching component_name by local name, refuses if index is out of range for the count found (covering both the 'zero exist' and 'index too high' Create-adjacent cases, plus a negative index), refuses a type-mismatched replacement, otherwise replaces the index-th match via with_children() and reruns the identical _refuse_if_worse validation-regression check replace_party already established.",
+    "6. Added the new function to the SAME components.py file (not a new module) since it is the same broader 'component update' capability the file already exists to hold, per its own module docstring's stated scope; updated the module docstring to describe both functions' relationship.",
+    "7. Ran mypy --strict and ruff on the changed source file before writing any test -- clean on the first pass. Wired the export through the top-level __init__.py (import + __all__ entry) matching the identical pattern already used for replace_party.",
+    "8. Ran the full ubl suite (1185 passed, unchanged from before this slice) to confirm zero regression from the additive change alone.",
+    "9. Wrote a new, dedicated test file (test_obligation_component_update.py, 8 tests) using PaymentMeans as the concrete worked example (the format's own well-known repeating header component): replacing the only occurrence, replacing only the targeted index among 3 siblings (explicitly proving the OTHER two are untouched, not just that SOME replacement happened), non-mutation of the original document, every other root child (Party wrappers, LegalMonetaryTotal, the InvoiceLine) left structurally untouched, and 4 refusal cases (type mismatch against TaxTotal, index 0 when zero PaymentMeans exist, index beyond the existing count, and a negative index).",
+    "10. All 8 tests passed on the first run. Ran mypy --strict and ruff on the new test file (clean), the full ubl suite again (1193 passed, was 1185), and the combined 6-format regression (4004 passed, 4 skipped, 0 failed, was 3996) since production source (a shared-within-ubl __init__.py plus the components.py module) was touched.",
+    "11. Updated the ledger: kept SAL-UBL-OBL-237188D47391391E at status=partial (Create for any core business component genuinely remains unbuilt), added update_component to source_symbols, added all 8 new tests split into positive/negative selectors alongside the 8 pre-existing line-CRUD and party-replacement ones, added a new execution_evidence entry (UBL-COMPONENT-UPDATE-PROOF), and rewrote missing_behavior to reflect that Update is now closed for Party/PaymentMeans/TaxTotal/AllowanceCharge/'etc' (the function is genuinely general, not type-specific) while Create remains the obligation's own single unified remaining gap across every component type."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/components.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_component_update.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/components.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_component_update.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_component_update.py -q -- 8 passed (new file)",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/components.py src/python/ubl/src/format_factory/ubl/__init__.py tests/python/ubl/test_obligation_component_update.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/components.py src/python/ubl/src/format_factory/ubl/__init__.py tests/python/ubl/test_obligation_component_update.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ubl -q -- 1193 passed (was 1185)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q -- 4004 passed, 4 skipped, 0 failed (6-format regression, was 3996)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation narrowed further (stays partial -- Create remains unbuilt) with REAL new product capability added: update_component() is a genuinely new, general public API, not evidence remapping",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "format_factory.ubl's update_component(document, *, component_name, index, new_component) -> UblDocument"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

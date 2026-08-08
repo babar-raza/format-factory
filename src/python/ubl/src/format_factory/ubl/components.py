@@ -26,13 +26,18 @@ Creating a brand-new supplier/customer party wrapper a document did not
 already have remains out of scope, for the identical reason lines.py's own
 "lines only" narrowing gives: that is the arbitrary-position insertion
 problem this obligation's own missing_behavior still correctly calls
-unbuilt. cac:PaymentMeans, cac:TaxTotal, cac:AllowanceCharge and the
-schema's other core business components are not attempted here either --
-each would need its own investigation into whether it is single-occurrence
-and root-level the way Party's own wrappers are (some, like
-AllowanceCharge, can repeat, which changes the problem shape); Party was
-chosen because it is one of this obligation's own three cited authority
-facts (SAL-UBL-00123) and the simplest case to verify first.
+unbuilt.
+
+``update_component`` generalizes the same insight to any OTHER repeating
+root-level component -- cac:PaymentMeans, cac:TaxTotal,
+cac:AllowanceCharge, and so on. These are `maxOccurs="unbounded"` in the
+pinned UBL 2.3 schema (confirmed by direct XSD read), unlike Party's own
+always-exactly-one wrappers, but the same core fact still holds: an
+ALREADY-PRESENT occurrence, however many siblings of the same name it
+has, is already at its own schema-correct position, so replacing it needs
+no position-aware insertion logic either. Creating an ADDITIONAL
+occurrence beyond what a document already has remains out of scope for
+the identical reason.
 """
 
 from __future__ import annotations
@@ -131,4 +136,60 @@ def replace_party(document: UblDocument, *, role: str, new_party: XmlNode) -> Ub
     return edited
 
 
-__all__ = ["replace_party"]
+def update_component(
+    document: UblDocument, *, component_name: str, index: int, new_component: XmlNode
+) -> UblDocument:
+    """Replace the `index`-th (0-based, counted among the document root's
+    own same-local-name children) occurrence of a core business component
+    -- cac:PaymentMeans, cac:TaxTotal, cac:AllowanceCharge, or any other
+    root-level element named `component_name` -- with `new_component`.
+
+    Generalizes `replace_party`'s own insight to any repeating root-level
+    component, not just the two single-occurrence party wrappers
+    (cac:PaymentMeans/cac:TaxTotal/cac:AllowanceCharge are all
+    `maxOccurs="unbounded"` in the pinned UBL 2.3 schema, unlike Party's
+    own always-exactly-one wrappers -- confirmed by direct XSD read before
+    writing this, not assumed). An already-present occurrence is already
+    at its own schema-correct position regardless of how many siblings of
+    the same name exist, so replacing it needs no position-aware
+    insertion logic at all -- only the same `with_children()` immutable
+    -replace primitive `lines.py` and `replace_party` both already
+    compose, indexed among same-name siblings instead of assumed unique.
+
+    Raises `UblValidationError` if `new_component`'s own local name does
+    not match `component_name`, if `index` is out of range for the
+    document's own existing occurrences (creating an ADDITIONAL
+    occurrence -- more of `component_name` than the document already has
+    -- is the still-unbuilt arbitrary-position insertion problem), or if
+    the edit would introduce a validation failure the source document did
+    not already have.
+    """
+    if local_name(new_component.qname) != component_name:
+        raise UblValidationError(
+            f"new_component must be a cac:{component_name} element, got "
+            f"{new_component.qname!r}"
+        )
+
+    matches = [
+        position
+        for position, child in enumerate(document.root.children)
+        if local_name(child.qname) == component_name
+    ]
+    if not 0 <= index < len(matches):
+        raise UblValidationError(
+            f"index {index} is out of range for {len(matches)} existing "
+            f"{component_name} element(s) in this document -- creating an "
+            "additional occurrence is not supported"
+        )
+    target_index = matches[index]
+    new_root_children = (
+        document.root.children[:target_index]
+        + (new_component,)
+        + document.root.children[target_index + 1 :]
+    )
+    edited = document.with_root(document.root.with_children(new_root_children))
+    _refuse_if_worse(document, edited)
+    return edited
+
+
+__all__ = ["replace_party", "update_component"]
