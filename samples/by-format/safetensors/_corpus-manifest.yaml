@@ -14,6 +14,7 @@ valid_samples:
     category: minimal-valid
     description: "Single tensor with header metadata and raw tensor data. Tests baseline safetensors structure parsing."
     structural_test: PASS
+    sha256: "1d1aedf1750cb302748c0936da751211b0a7d9e0d5d75603fdad404ec0704af0"
 
   - filename: valid/multi-tensor.safetensors
     source: project-owned-synthetic
@@ -23,6 +24,7 @@ valid_samples:
     category: multi-tensor
     description: "Multiple named tensors in a single file. Tests multi-entry header parsing and data offset calculation."
     structural_test: PASS
+    sha256: "b9981b2b6bd8b88ee3b69006790b77684989be05a5842b28a13fefcb94b3ad2e"
 
   - filename: valid/with-metadata.safetensors
     source: project-owned-synthetic
@@ -32,6 +34,7 @@ valid_samples:
     category: metadata
     description: "Safetensors file with __metadata__ key containing arbitrary string key-value pairs. Tests metadata extraction."
     structural_test: PASS
+    sha256: "ce5e822b170976858d0d3a938b3d302b5129ce2c34f39f91c7ec614c12ef9855"
 
 invalid_samples:
   - filename: invalid/bad-header-length.safetensors
@@ -42,7 +45,8 @@ invalid_samples:
     category: invalid-header-length
     description: "File with header length field exceeding actual file size. Tests header length validation."
     expected_error: true
-    error_type: InvalidHeaderLength
+    error_type: SafeTensorsParseError
+    sha256: "4bcb676683218b408679b4fe0a297daec5edd441e054336005eff625f508144e"
 
 summary:
   valid_count: 3
