@@ -97,6 +97,28 @@ path-normalized or fuzzily matched) and read its PNG metadata without
 decoding pixel data. `resolve_all_assets` fails on the first unresolvable
 reference rather than returning a partial list.
 
+## Baseline asset replacement
+
+```python
+from format_factory.ora import replace_baseline_asset
+
+replaced = replace_baseline_asset(image, thumbnail=new_thumbnail_png_bytes)
+dump(replaced, "updated.ora")
+```
+
+A caller who has already produced a new thumbnail and/or merged-image PNG
+by some other means (their own renderer, a different tool) can swap it in
+via `thumbnail=`/`merged_image=` (bytes, either or both -- at least one is
+required). The replacement is validated against the exact same constraints
+load-time parsing enforces: the thumbnail must be a non-interlaced PNG with
+8 bits per channel and at most 256x256; the merged image must carry 8 or 16
+bits per channel. A non-conforming replacement is refused with
+`OraValidationError` rather than silently accepted. `image` itself is never
+mutated -- `replace_baseline_asset()` returns a new `OraImage`. This
+package has no image-generation capability of its own (no
+flattening/downscaling renderer exists), so only the *replace* half of
+ORA-BASELINEASSET-001 is built; *generate* remains genuinely unbuilt.
+
 ## Preservation modes
 
 ```python
