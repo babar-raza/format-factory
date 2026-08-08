@@ -26,6 +26,7 @@ from .codec import (
 )
 from .codec.payload import available_encodings, decode_binary, encode_binary
 from .convert import (
+    AttachmentConversionReport,
     ConversionReport,
     EncodingConversionReport,
     OverflowPolicy,
@@ -33,6 +34,9 @@ from .convert import (
     convert_dtype,
     convert_encoding,
     convert_endian,
+    convert_to_attached,
+    convert_to_detached_list,
+    convert_to_detached_printf,
 )
 from .errors import NrrdError, NrrdParseError, NrrdWriteError
 from .space import (
@@ -53,6 +57,7 @@ from .security import NRRD_DEFAULT_LIMITS
 from .validation import validate
 
 __all__ = [
+    "AttachmentConversionReport",
     "ConversionReport", "DOMAIN_KINDS", "EncodingConversionReport",
     "NRRD_DEFAULT_LIMITS", "NrrdDocument",
     "NrrdError", "NrrdHeader", "NrrdLazyPayload", "NrrdParseError",
@@ -61,7 +66,8 @@ __all__ = [
     "SpaceTransform",
     "available_encodings",
     "axis_sizes", "build_space_transform", "convert_dtype", "convert_encoding",
-    "convert_endian",
+    "convert_endian", "convert_to_attached", "convert_to_detached_list",
+    "convert_to_detached_printf",
     "decode_nrrd_data", "dump", "dump_detached", "dump_multifile", "dump_multifile_printf",
     "dumps", "element_count",
     "encode_nrrd_data",

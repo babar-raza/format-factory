@@ -1,0 +1,63 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-attachment-conversion-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-3ee0e0eedf26461d",
+  "mode": "live",
+  "timestamp": "2026-08-08T06:13:18Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_ATTACHMENT_CONVERSION_001",
+    "task_kind": "found-smaller-than-framed-composes-existing-writer-primitives",
+    "root_cause": "Pivoted back to nrrd's own remaining 14 unresolved obligations after 8 consecutive ticks of ipynb/safetensors certification-gate depth (Events 308-315). Surveyed the fresh reconciliation report: NRRD-LIFECYCLE-001's own recovery-mode gap was confirmed genuinely large (30+ raise sites, many security-sensitive path-traversal/resource-limit checks, matching the same 'needs a full raise-site security audit' assessment made earlier this session). NRRD-CONVERT-001's own missing_behavior for 'attached/detached form conversion' was investigated instead: its own module docstring called it 'a genuinely separate, larger piece of work' needing real file-splitting/joining logic -- but that logic was already built earlier this session (dump_multifile()/dump_multifile_printf(), FF6-EVENT-000303/000304, for a DIFFERENT obligation, NRRD-MULTIFILE-001) and never connected back to this one.",
+    "obligation_targeted": "SAL-NRRD-OBL-E2B0331E7D4F6AD8 (NRRD-CONVERT-001) narrowed (not closed) -- the attached/detached-form quarter of its own 4-part compound rule_text (dtype/encoding/attached-detached-form/endian) is now resolved; scaling (a dtype-conversion policy) remains genuinely unbuilt and is honestly left in missing_behavior.",
+    "acceptance_evidence": "Confirmed by direct inspection that NrrdDocument (model/document.py) has no attached/detached state field of its own -- the wire form is determined entirely by which writer function a caller invokes. Added convert_to_attached()/convert_to_detached_list()/convert_to_detached_printf() (convert.py), each composing the matching existing writer (dump/dump_multifile/dump_multifile_printf) and returning a new AttachmentConversionReport. Verified end-to-end with a standalone repro before any test was written: all 3 directions round-trip correctly through the existing, unmodified reader, including starting from a document actually loaded from a real detached source (not just synthesized in memory).",
+    "regression_tier": "full nrrd package suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Regenerated a fresh nrrd obligation reconciliation report and reviewed all 14 unresolved obligations' own missing_behavior text.",
+    "2. Investigated NRRD-LIFECYCLE-001's own tolerant/recovery-mode gap first (mode='recovery' already exists as a validated value and NrrdDocument already has a recovery_actions: tuple[str, ...] = () field wired into from_mapping/to_dict, but the reader never populates it) -- found 30+ raise sites in reader.py, many involving security-sensitive path-traversal and resource-limit checks (detached-file path confinement, LIST/printf file-count ceilings, version gates). This matches and confirms an earlier-session assessment that this obligation genuinely needs a full raise-site security audit, not a quick composition win -- correctly declined to force it this tick.",
+    "3. Investigated NRRD-CONVERT-001's own remaining 'attached/detached form conversion' gap instead. Read convert.py's own module docstring directly: it explicitly called this 'a genuinely separate, larger piece of work' needing real file-splitting/joining logic.",
+    "4. Recognized this framing likely predates FF6-EVENT-000303/000304 (dump_multifile()/dump_multifile_printf(), built for a different obligation, NRRD-MULTIFILE-001, roughly 12 events after NRRD-CONVERT-001's own missing_behavior was presumably last written around FF6-EVENT-000300). Verified directly: grepped model/document.py for any attached/detached tracking field -- found none. This means the SAME NrrdDocument object can be written via dump() (attached) or dump_multifile()/dump_multifile_printf() (detached) interchangeably, with zero document-level state distinguishing the two.",
+    "5. Verified end-to-end with a standalone repro before writing any code: loaded an attached document, called dump_multifile() on it directly (no conversion function existed yet), reloaded, confirmed the array matched; then loaded that detached document and called dump() on it directly, reloaded, confirmed the array matched again -- proving the composition works with zero new low-level logic before committing to build the wrapper API.",
+    "6. Added AttachmentConversionReport (target_form, file_count, is_lossless -- always True, same reasoning already proven for EncodingConversionReport) and 3 functions: convert_to_attached() composing dump(), convert_to_detached_list() composing dump_multifile(), convert_to_detached_printf() composing dump_multifile_printf() -- each accepting the exact same parameters as the writer it composes, so no new validation logic was written; refusals are entirely inherited from the composed writer.",
+    "7. Added the new imports (codec.writer's dump/dump_multifile/dump_multifile_printf, format_factory.core's BinaryDestination/ResourceLimits) to convert.py -- confirmed no circular import risk (codec/writer never imports convert.py).",
+    "8. Exported the 4 new names (AttachmentConversionReport + 3 functions) from both convert.py's own __all__ and the top-level nrrd/__init__.py's import block and __all__.",
+    "9. Re-ran the standalone repro through the new named functions (not raw writer calls) for all 3 directions, plus 2 additional scenarios: attached-to-detached-printf with a negative step and an explicit subdim; detached-to-attached starting from a document actually loaded via load() from a real detached source on disk (not a freshly-built in-memory document), confirming no source-form state leaks anywhere.",
+    "10. Added 8 tests (test_obligation_attachment_conversion.py): round trips for all 3 conversion directions, negative-step/subdim coverage for the printf form, a document converting between two DIFFERENT detached forms in sequence, and 2 refusal-path smoke tests (uneven split, invalid printf pattern) confirming the composed writers' own existing refusals still fire through the new wrapper functions.",
+    "11. Ran mypy --strict (clean), ruff (clean), the full nrrd suite (665 passed, 1 skipped -- unchanged count, new test file only), and the 6-format regression (3772 -> 3780 passed, +8, 0 failed, 4 skipped).",
+    "12. Narrowed the target obligation (not closed): its own remaining missing_behavior item, dtype-conversion scaling, is a genuinely separate, unrelated gap (a numeric scale-factor parameter for convert_dtype(), not attachment-related) and is left honestly unaddressed."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/convert.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_attachment_conversion.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/convert.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_attachment_conversion.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_attachment_conversion.py -v -- 8 passed (all new)",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/convert.py src/python/nrrd/src/format_factory/nrrd/__init__.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd -q -- 665 passed, 1 skipped (unchanged)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3780 passed, 4 skipped, 0 failed (was 3772)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation narrowed (not closed -- scaling still missing)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 65,
+    "new_public_api": "format_factory.nrrd.convert_to_attached / convert_to_detached_list / convert_to_detached_printf"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

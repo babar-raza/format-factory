@@ -24,11 +24,18 @@ change either: it always holds the decoded (post-decompression) form
 regardless of which encoding the file used, so it already represents the
 new encoding's own source data as-is.
 
-Attached/detached form conversion is NOT implemented here: converting a
-single-file document with an attached payload into a multi-file detached
-form (or the reverse) needs real file-splitting/joining logic, a
-genuinely separate, larger piece of work this module's docstring names
-honestly as absent rather than stubbing it to look covered.
+Attached/detached form conversion is implemented via convert_to_attached()/
+convert_to_detached_list()/convert_to_detached_printf(): investigated and
+found the file-splitting/joining logic this module's own prior docstring
+called "a genuinely separate, larger piece of work" already existed --
+dump()/dump_multifile()/dump_multifile_printf() (codec/writer/writer.py)
+already perform it. NrrdDocument itself carries no attached/detached state
+of its own (the wire form is determined entirely by which writer function
+a caller invokes and how many destinations they give it), so converting
+between forms needs no document mutation at all, only a different writer
+call -- these three functions exist to make that fact a discoverable,
+report-producing, single-purpose API rather than something a caller must
+infer from separately reading four writer functions' own signatures.
 """
 
 from __future__ import annotations
@@ -37,8 +44,13 @@ import math
 import struct
 from dataclasses import dataclass, field, replace
 from enum import Enum
+from os import PathLike
+from typing import Any, Mapping
+
+from format_factory.core import BinaryDestination, ResourceLimits
 
 from .codec.payload import SUPPORTED_ENCODINGS, dtype_info
+from .codec.writer import dump, dump_multifile, dump_multifile_printf
 from .errors import NrrdWriteError
 from .model import NrrdDocument
 
@@ -205,6 +217,89 @@ def convert_encoding(document: NrrdDocument, target_encoding: str) -> tuple[Nrrd
     return converted, report
 
 
+@dataclass(frozen=True, slots=True)
+class AttachmentConversionReport:
+    """What actually happened during an attached/detached form conversion."""
+
+    target_form: str
+    file_count: int
+
+    @property
+    def is_lossless(self) -> bool:
+        # Always true: the writer functions this composes recompute the
+        # full encoded payload fresh from the document's own decoded array
+        # on every call (the identical reasoning already proven for
+        # convert_encoding()'s own is_lossless property) -- no value-level
+        # transformation occurs, only how many files the same bytes land in.
+        return True
+
+
+def convert_to_attached(
+    document: NrrdDocument | Mapping[str, Any],
+    destination: BinaryDestination,
+    *,
+    profile: str | None = None,
+    limits: ResourceLimits | None = None,
+) -> AttachmentConversionReport:
+    """Write `document` as a single attached file, regardless of whether it
+    was originally loaded from an attached or a detached (LIST/printf)
+    source. NrrdDocument carries no attached/detached state of its own, so
+    no document mutation is needed -- this composes the existing dump()."""
+
+    dump(document, destination, profile=profile, limits=limits)
+    return AttachmentConversionReport(target_form="attached", file_count=1)
+
+
+def convert_to_detached_list(
+    document: NrrdDocument | Mapping[str, Any],
+    header_destination: str | PathLike[str],
+    payload_destinations: list[str | PathLike[str]],
+    *,
+    profile: str | None = None,
+    limits: ResourceLimits | None = None,
+) -> AttachmentConversionReport:
+    """Write `document` as a multi-file detached LIST form across
+    `payload_destinations`, regardless of its original source form.
+    Composes the existing dump_multifile()."""
+
+    dump_multifile(
+        document, header_destination, payload_destinations, profile=profile, limits=limits
+    )
+    return AttachmentConversionReport(
+        target_form="detached_list", file_count=len(payload_destinations)
+    )
+
+
+def convert_to_detached_printf(
+    document: NrrdDocument | Mapping[str, Any],
+    header_destination: str | PathLike[str],
+    pattern: str,
+    *,
+    start: int = 0,
+    step: int = 1,
+    file_count: int,
+    subdim: int | None = None,
+    profile: str | None = None,
+    limits: ResourceLimits | None = None,
+) -> AttachmentConversionReport:
+    """Write `document` as a multi-file detached printf numbered-sequence
+    form, regardless of its original source form. Composes the existing
+    dump_multifile_printf()."""
+
+    dump_multifile_printf(
+        document,
+        header_destination,
+        pattern,
+        start=start,
+        step=step,
+        file_count=file_count,
+        subdim=subdim,
+        profile=profile,
+        limits=limits,
+    )
+    return AttachmentConversionReport(target_form="detached_printf", file_count=file_count)
+
+
 def convert_endian(payload: bytes, *, type_name: str) -> bytes:
     """Byte-swap `payload`'s elements in place (returned as new bytes).
 
@@ -225,6 +320,7 @@ def convert_endian(payload: bytes, *, type_name: str) -> bytes:
 
 
 __all__ = [
+    "AttachmentConversionReport",
     "ConversionReport",
     "EncodingConversionReport",
     "OverflowPolicy",
@@ -232,4 +328,7 @@ __all__ = [
     "convert_dtype",
     "convert_encoding",
     "convert_endian",
+    "convert_to_attached",
+    "convert_to_detached_list",
+    "convert_to_detached_printf",
 ]
