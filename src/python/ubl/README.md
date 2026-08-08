@@ -121,6 +121,35 @@ document's only mandatory party wrapper is not refused today -- a
 disclosed limitation of the validator this function composes, not of the
 CRUD operation itself.
 
+## Cross-field arithmetic reconciliation
+
+`validate()`/`schema_validate()` check structure and cardinality; they
+cannot check arithmetic the XSD has no way to express -- that invoice
+lines actually sum to the declared total, for example. `reconcile_invoice`
+does, as a report-only pass that never mutates the document and never
+raises:
+
+```python
+from decimal import Decimal
+from format_factory.ubl import reconcile_invoice
+
+report = reconcile_invoice(document.root, tolerance=Decimal("0.01"))
+if not report.is_valid:
+    for diagnostic in report.diagnostics:
+        print(diagnostic.code, diagnostic.message)
+```
+
+Checks that invoice-line `LineExtensionAmount`s sum to
+`cac:LegalMonetaryTotal`'s own declared line extension, that each
+`cac:TaxTotal`'s subtotals sum to its own declared amount, and allowance/
+charge totals -- each flagged only when present and inconsistent; an
+absent aggregate is not an error. `tolerance` is an explicit
+rounding-tolerance policy (a delta within it is not reported); the
+default of zero preserves exact-match behavior for a caller who does not
+opt in. A currency mismatch between lines and their total is reported
+separately, since summing mismatched currencies without an exchange rate
+the document does not carry would silently produce a meaningless number.
+
 ## Digital signatures (opt-in)
 
 ```python

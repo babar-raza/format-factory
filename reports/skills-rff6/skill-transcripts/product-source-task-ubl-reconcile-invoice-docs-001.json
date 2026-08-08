@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-reconcile-invoice-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-4afc465d4a82818f",
+  "mode": "live",
+  "timestamp": "2026-08-08T15:58:59Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_RECONCILE_INVOICE_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-a-third-pass-attempting-a-format-for-the-first-time",
+    "root_cause": "Event 356's own exact_next_action offered continuing the second pass (already 4/4 productive) or attempting a third pass on formats not yet tried at all (ubl, safetensors). Chose ubl given its own large 146-symbol surface and the strong hit rate of prior passes. Extracted ubl's full __all__ list and scanned for names suggesting real, substantial, undocumented capabilities rather than supporting types -- reconcile_invoice stood out immediately by name, confirmed on inspection to be a genuine cross-field arithmetic reconciliation function (invoice-line-sum vs LegalMonetaryTotal, tax-subtotal-sum vs TaxTotal, allowance/charge totals) checking exactly the class of constraint an XSD structurally cannot express, entirely undocumented.",
+    "obligation_targeted": "No specific obligation-register status change (ubl remains at 6/194 unresolved, unaffected by this tick) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage of a substantial capability.",
+    "acceptance_evidence": "Read model/aggregates.py's reconcile_invoice() in full: confirmed it sums InvoiceLine LineExtensionAmounts and compares against LegalMonetaryTotal's own declared value, sums TaxTotal subtotals against the declared tax amount, and checks allowance/charge totals -- report-only, never mutates, never raises, with an explicit tolerance parameter and separate currency-mismatch diagnostics. Verified against the real official OASIS Invoice.xml corpus sample exactly as documented (tolerance=Decimal('0.01')): report.is_valid=True with 0 diagnostics for the genuinely correct real invoice. Then, using the already-documented update_component() to construct a genuinely corrupted LegalMonetaryTotal on a copy of the same real document (not a synthetic hand-built one), confirmed reconcile_invoice correctly reports UBL_LINE_EXTENSION_TOTAL_MISMATCH naming both the wrong declared value and the correct real line-sum."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 356 commit (cbb284d9); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Extracted ubl's full __all__ export list again (146 symbols, unchanged) and read it sorted, scanning names for candidates that looked like real, substantial, independent capabilities rather than supporting types or aliases -- reconcile_invoice, the ExtensionAdapter/decode_extension cluster, and the ProfileValidator/validate_profile cluster all stood out.",
+    "3. Read model/aggregates.py's reconcile_invoice() in full (lines 211-341): confirmed via direct source reading, not name-guessing, that it performs three real cross-field checks -- invoice-line LineExtensionAmount sum vs cac:LegalMonetaryTotal's own declared value, cac:TaxTotal subtotal sum vs its own declared amount, and allowance/charge totals (delegated to a private helper) -- each guarded by a currency-match check first (summing mismatched currencies without an exchange rate would silently produce a meaningless number), and each governed by an explicit, caller-supplied tolerance. Confirmed it is report-only: never mutates the document, never raises, only returns findings.",
+    "4. Verified the exact example before writing it: loaded the real official OASIS corpus document samples/by-format/ubl/official/Invoice.xml, called reconcile_invoice(document.root, tolerance=Decimal('0.01')) exactly as drafted for the README -- confirmed report.is_valid=True with zero diagnostics, since this is a genuinely correct real invoice.",
+    "5. To prove the check actually fires (not merely passes on already-correct input), constructed a genuinely corrupted scenario using the already-documented, already-verified update_component() CRUD function (Event 345) rather than hand-building a synthetic document from scratch: replaced the real LegalMonetaryTotal's own LineExtensionAmount text with a wrong value on a copy of the real invoice, then called reconcile_invoice() on the result -- confirmed it correctly reported UBL_LINE_EXTENSION_TOTAL_MISMATCH naming both the wrong declared value (999999) and the correct real line-sum (1436.50), demonstrating composability between this session's own two ubl documentation additions (CRUD editing and reconciliation).",
+    "6. Added a new, dedicated 'Cross-field arithmetic reconciliation' README section directly after 'Editing core business components' (reconciliation is a natural follow-on to editing -- a caller who edits a document's lines or totals may want to re-check arithmetic consistency), with a runnable example (including the from decimal import Decimal a real caller would need, matching the existing README's own convention of showing stdlib imports for the pathlib example) and a prose paragraph explaining exactly what is checked, the tolerance policy, and the currency-mismatch handling -- all grounded directly in the source, not invented.",
+    "7. Regenerated reports/certification/ubl/documentation-gate.json to reflect the addition -- updated readme_line_count (184 -> 213), readme_sections (added 'Cross-field arithmetic reconciliation'), symbol_existence count (19 distinct names now, +reconcile_invoice), a new example_execution entry documenting both the clean-pass and the deliberately-corrupted verification scenarios, and extended the incidental_finding to note this is a third pass attempting ubl for the first time, with the extension-decoding subsystem, profile-based validation, and create_empty/detect_document_type/document_type_coverage remaining as candidates for a future tick.",
+    "8. Did not modify any production source code -- reconcile_invoice already existed, fully correct and already tested by the existing test suite; this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration. Did not re-run the ubl test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/ubl/README.md",
+    "reports/certification/ubl/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/README.md",
+    "reports/certification/ubl/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: reconcile_invoice against the real official OASIS corpus document samples/by-format/ubl/official/Invoice.xml (clean pass, 0 diagnostics) and against a deliberately corrupted copy constructed via the already-documented update_component() (correctly reports UBL_LINE_EXTENSION_TOTAL_MISMATCH with accurate values)",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap for an already-implemented, already-exported, substantial capability (reconcile_invoice) -- no obligation status change (ubl remains at 6/194 unresolved, unaffected), but a real developer-discoverability improvement to an already-PASS-ing documentation gate.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 194,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
