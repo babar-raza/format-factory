@@ -1,0 +1,62 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-axis-order-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-0d1cad71e00484b9",
+  "mode": "live",
+  "timestamp": "2026-08-08T10:36:20Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_AXIS_ORDER_001",
+    "task_kind": "extract-implicit-mapping-into-explicit-inspectable-api-plus-symmetric-inverse",
+    "root_cause": "After closing NRRD-PRESERVE-001 (Event 330), surveyed nrrd's remaining 11 obligations, following Event 330's own exact_next_action suggestion to look for a narrower sub-slice inside a nominally-large-sounding obligation (the way field_present() was found inside PRESERVE-001's own broader 'typed defaults' framing). NRRD-LIFECYCLE-001/NRRD-ENC-001 remained correctly ruled out from the prior tick (ungrounded / requires independent oracle runs). NRRD-SHAPE-001's own missing_behavior had already been precisely narrowed by an earlier tick to one named thing: 'a first-class axis-order model/conversion report is absent' (per-axis arity validation already closed under a sibling obligation). Investigated to_array()/reshape_nrrd_array directly and found the axis-order mapping (fastest-first strides) already existed but only implicitly, inside reshape_nrrd_array's own private recursive closure -- not inspectable on its own, and reshape_nrrd_array had no explicit inverse to convert a host-order nested list back to NRRD's own flat order.",
+    "obligation_targeted": "SAL-NRRD-OBL-94D8938DE18A6562 (NRRD-SHAPE-001) promoted partial -> implemented.",
+    "acceptance_evidence": "Extracted the existing stride computation reshape_nrrd_array already performed into a shared _axis_strides() helper, then built axis_order_report(sizes) -> AxisOrderReport as a pure, side-effect-free inspection of that same mapping, callable independent of performing an actual conversion. Wrote flatten_nrrd_array(nested, sizes) as reshape_nrrd_array's mathematical inverse, verified by parametrized round-trip tests (reshape then flatten recovers the original flat list) across 1D/2D/3D shapes plus the obligation's own worked 2x3 example. Added NrrdDocument.with_array(nested) pairing the existing to_array() with the new flatten, via dataclasses.replace() (non-mutating, proven by a dedicated test). All new symbols exported through both model/__init__.py and the top-level nrrd/__init__.py so they are genuinely part of the shipped public API, not internal-only."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 330 commit.",
+    "2. Re-read NRRD-SHAPE-001's own current ledger entry: missing_behavior already precisely said 'a first-class axis-order model/conversion report is absent (per-axis arity validation is now complete -- see SAL-NRRD-OBL-428BE326FCBC9A6E)' -- a single, well-scoped remaining item, not the sprawling scope an earlier session summary had assumed for this obligation.",
+    "3. Read to_array()/reshape_nrrd_array in model/document.py directly: reshape_nrrd_array computes fastest-first strides inline inside its own body and uses them via a private recursive `build` closure -- the mapping was never surfaced as its own value, and there was no function to go the other direction (host-order nested list back to flat).",
+    "4. Read the existing test_obligation_shape_production.py fixture directly to ground the exact axis convention empirically before building anything: sizes=[2,3], flat=[1..6] -> to_array() == [[1,2],[3,4],[5,6]] (axis 0, size 2, is innermost/fastest; axis 1, size 3, is outermost/slowest) -- reused this exact fixture as one of the new round-trip test cases rather than inventing a fresh, unverified example.",
+    "5. Extracted _axis_strides(sizes) as a shared helper (both reshape_nrrd_array and the new axis_order_report/flatten_nrrd_array now call it, avoiding two independently-maintained copies of the same arithmetic). Added AxisOrderReport (frozen dataclass: sizes, strides, nesting_order) and axis_order_report(sizes) -> AxisOrderReport.",
+    "6. Added flatten_nrrd_array(nested, sizes) -> list as the explicit inverse, mirroring reshape_nrrd_array's own degenerate-case handling (not sizes, or len(sizes)==1, both return the value unchanged/as a flat list, matching reshape's own identical special-casing) and raising ValueError with a specific axis/expected-vs-actual message when a nested list's shape does not match sizes at any level.",
+    "7. Added NrrdDocument.with_array(nested) using dataclasses.replace() -- required adding `replace` to the file's own dataclasses import (checked for a naming collision first via grep, found none).",
+    "8. Ran mypy --strict and ruff on document.py/model/__init__.py/nrrd/__init__.py together before writing any test -- clean on the first pass. Ran the full nrrd suite (695 passed, 1 skipped, unchanged from before this slice) to confirm zero regression from the additive changes alone.",
+    "9. Wrote a new test file (test_obligation_axis_order.py, 14 tests): axis_order_report for 1D/2D/3D shapes including a direct cross-check against the obligation's own already-proven [[1,2],[3,4],[5,6]] fixture; flatten as the exact inverse of reshape across 4 parametrized shapes; 2 negative refusal tests. The first draft of the 'wrong inner length' negative test used a fixture ([[1,2,3],[4,5,6]]) whose OUTER length was itself wrong (2 instead of the expected 3), so it tripped the outer-length check instead of the intended inner one -- caught by running the test and reading the actual raised message before assuming the assertion was correct, then corrected the fixture to have the right outer count (3) with a deliberately wrong inner count on the last group. 3 with_array tests: replaces the array from a nested list, round-trips through to_array(), and does not mutate the original document (proven by asserting the original's own .array is unchanged after calling with_array on it).",
+    "10. Ran the new file alone (14/14 pass), mypy --strict and ruff on the test file (clean), then the full nrrd suite again (709 passed, 1 skipped, was 695) to confirm the new tests introduced zero regression.",
+    "11. Updated the ledger: promoted SAL-NRRD-OBL-94D8938DE18A6562 to status=implemented (missing_behavior: []), added the 3 new source symbols plus AxisOrderReport, added all 14 new tests split into positive/negative selectors, added a new execution_evidence entry (NRRD-AXIS-ORDER-PROOF). This obligation's own source_symbols was a shared YAML anchor (&SHAPE) with one other, sibling obligation (SAL-NRRD-OBL-A1082F4AA3DE20E5, already implemented) -- de-aliased this entry into its own explicit list and moved the &SHAPE anchor DEFINITION to the sibling's own line with byte-identical original content, verified by re-parsing and comparing both obligations' resolved source_symbols before and after."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "src/python/nrrd/src/format_factory/nrrd/model/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_axis_order.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "src/python/nrrd/src/format_factory/nrrd/model/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_axis_order.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_axis_order.py -q -- 14 passed (new file)",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/model/document.py src/python/nrrd/src/format_factory/nrrd/model/__init__.py src/python/nrrd/src/format_factory/nrrd/__init__.py tests/python/nrrd/test_obligation_axis_order.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/model/document.py src/python/nrrd/src/format_factory/nrrd/model/__init__.py src/python/nrrd/src/format_factory/nrrd/__init__.py tests/python/nrrd/test_obligation_axis_order.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd -q -- 709 passed, 1 skipped (was 695)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation closed (partial -> implemented) -- NRRD-SHAPE-001, new public API surface added",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "format_factory.nrrd's AxisOrderReport, axis_order_report(), flatten_nrrd_array(), NrrdDocument.with_array()"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

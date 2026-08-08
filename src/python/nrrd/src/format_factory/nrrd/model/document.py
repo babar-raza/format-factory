@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any, ClassVar, Mapping
 
 
@@ -501,15 +501,68 @@ class NrrdDocument:
     def to_array(self) -> Any:
         return reshape_nrrd_array(self.array, self.sizes)
 
+    def with_array(self, nested: Any) -> "NrrdDocument":
+        """Return a copy of this document with `array` replaced by the
+        flat, NRRD-fastest-first form of `nested` -- the explicit inverse
+        of `to_array()` (NRRD-SHAPE-001: "convert to host order only via
+        explicit operations"), so a caller who reshapes or edits a
+        `to_array()` result in host-order form can write it back without
+        reimplementing NRRD's own axis order by hand.
+        """
+        return replace(self, array=flatten_nrrd_array(nested, self.sizes))
+
+
+@dataclass(frozen=True, slots=True)
+class AxisOrderReport:
+    """Explicit record of the axis-order mapping a shape conversion used.
+
+    NRRD-SHAPE-001: "represent the format's axis order explicitly and
+    convert to host order only via explicit operations." NRRD's own axis
+    0 is the fastest-varying axis (SAL-NRRD-00011); Python's nested-list
+    convention nests the SLOWEST-varying axis outermost -- the two
+    conventions are reversed from each other, and this report makes that
+    mapping visible rather than leaving it implicit inside a recursive
+    reshape helper's own closure.
+    """
+
+    sizes: tuple[int, ...]
+    strides: tuple[int, ...]
+    #: `nesting_order[0]` is the NRRD axis index at the OUTERMOST nesting
+    #: level of the host-order array `reshape_nrrd_array`/`flatten_nrrd_array`
+    #: produce or consume; `nesting_order[-1]` is the innermost (always axis
+    #: 0, NRRD's own fastest-varying axis, when at least one axis exists).
+    nesting_order: tuple[int, ...]
+
+
+def _axis_strides(sizes: list[int]) -> list[int]:
+    """Fastest-first strides (SAL-NRRD-00011): axis 0 varies fastest, so
+    its stride is 1 and each subsequent axis's own stride is the product
+    of every faster axis's own size."""
+    strides = [1] * len(sizes)
+    for axis in range(1, len(sizes)):
+        strides[axis] = strides[axis - 1] * sizes[axis - 1]
+    return strides
+
+
+def axis_order_report(sizes: list[int]) -> AxisOrderReport:
+    """The explicit axis-order mapping `reshape_nrrd_array`/
+    `flatten_nrrd_array` use for `sizes` -- callable on its own, without
+    performing a conversion, so a caller can inspect the mapping (e.g. to
+    know which NRRD axis a given nesting depth in a `to_array()` result
+    corresponds to) independent of any specific array's own values."""
+    strides = _axis_strides(sizes)
+    nesting_order = tuple(reversed(range(len(sizes))))
+    return AxisOrderReport(
+        sizes=tuple(sizes), strides=tuple(strides), nesting_order=nesting_order
+    )
+
 
 def reshape_nrrd_array(flat: list[Any], sizes: list[int]) -> Any:
     """Reshape flat values using NRRD's fastest-first axis convention."""
 
     if not sizes or len(sizes) == 1:
         return list(flat)
-    strides = [1] * len(sizes)
-    for axis in range(1, len(sizes)):
-        strides[axis] = strides[axis - 1] * sizes[axis - 1]
+    strides = _axis_strides(sizes)
 
     def build(axis: int, base: int) -> Any:
         if axis < 0:
@@ -520,3 +573,38 @@ def reshape_nrrd_array(flat: list[Any], sizes: list[int]) -> Any:
         ]
 
     return build(len(sizes) - 1, 0)
+
+
+def flatten_nrrd_array(nested: Any, sizes: list[int]) -> list[Any]:
+    """The explicit inverse of `reshape_nrrd_array`: a host-order nested
+    list back to NRRD's own flat, fastest-first element order.
+
+    NRRD-SHAPE-001's own "convert to host order only via explicit
+    operations" clause implies the reverse direction is equally an
+    explicit operation, not something a caller must reimplement by hand
+    to round-trip a `to_array()` result back into a flat payload.
+    """
+
+    if not sizes or len(sizes) == 1:
+        return list(nested)
+
+    strides = _axis_strides(sizes)
+    total = 1
+    for size in sizes:
+        total *= size
+    flat: list[Any] = [None] * total
+
+    def walk(axis: int, base: int, value: Any) -> None:
+        if axis < 0:
+            flat[base] = value
+            return
+        if len(value) != sizes[axis]:
+            raise ValueError(
+                f"axis {axis} has {len(value)} entries, expected {sizes[axis]} "
+                f"(sizes={sizes!r})"
+            )
+        for index, item in enumerate(value):
+            walk(axis - 1, base + index * strides[axis], item)
+
+    walk(len(sizes) - 1, 0, nested)
+    return flat

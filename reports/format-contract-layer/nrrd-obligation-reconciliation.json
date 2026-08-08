@@ -18,6 +18,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact positive and negative test selectors for every baseline and later-version per-axis metadata field (spacings, axis mins, axis maxs, centers, labels, units, kinds, thicknesses), plus the quote-delimited label/unit tokenizer's embedded-quote escaping, unterminated-quote rejection, and no-other-escaping behavior (2 tests added 2026-08-06 when this evidence was extended to cover 2 more obligations whose stale missing_behavior claimed arity/quoting was unenforced when it already was). Unlike NRRD-ENDIAN-SELECTOR-PROOF, this is NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-428BE326FCBC9A6E, SAL-NRRD-OBL-41CA935399A5A312, and SAL-NRRD-OBL-D8AFDA0097117585 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-AXIS-ORDER-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-order-001.json",
+      "sha256": "fa5437773b0590779d16cd411054faa8b6b271acaa3a33c7ee8c777631eae17e",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-94D8938DE18A6562 (NRRD-SHAPE-001), promoted partial->implemented. This obligation's own missing_behavior text (updated at a prior tick) already correctly narrowed the remaining scope to one thing: \"a first-class axis-order model/conversion report is absent,\" per-axis arity validation having already been closed under the sibling obligation SAL-NRRD-OBL-428BE326FCBC9A6E. Investigated to_array()/reshape_nrrd_array directly: the axis-order mapping (fastest-first strides) was already correctly computed, but only implicitly, inside a recursive closure private to reshape_nrrd_array -- not inspectable on its own, and with no explicit inverse operation to convert a host-order nested list back to NRRD's own flat order. Added three things: axis_order_report(sizes) -> AxisOrderReport (strides, nesting_order), computed via a new shared _axis_strides() helper (extracted from reshape_nrrd_array's own prior inline computation so both share one implementation, not two independently-maintained copies); flatten_nrrd_array(nested, sizes) -> list, the explicit inverse of reshape_nrrd_array, refusing (ValueError) a nested list whose shape does not match sizes at any axis rather than guessing or silently truncating; and NrrdDocument.with_array(nested) -> NrrdDocument, a document-level convenience pairing the existing to_array() with this new explicit reverse via dataclasses.replace() (non-mutating, confirmed by a dedicated test). All three are exported through model/__init__.py and the top-level nrrd/__init__.py (AxisOrderReport, axis_order_report, flatten_nrrd_array joining the existing reshape_nrrd_array in both __all__ lists). 14 new tests (tests/python/nrrd/test_obligation_axis_order.py): axis_order_report for 1D/2D/3D shapes (including the obligation's own worked 2x3 example, cross-checked against to_array()'s already-proven [[1,2],[3,4],[5,6]] output), flatten as the exact inverse of reshape across 4 parametrized shapes plus the obligation's own worked example, two negative tests (wrong outer length, wrong inner length -- the second one's first draft used a fixture that tripped the OUTER check instead of the intended inner one, caught by running the test and reading the actual error message before assuming the test was right), and 3 with_array tests (replaces the array, round-trips through to_array, does not mutate the original). mypy --strict and ruff clean. nrrd suite: 695 -> 709 passed, 1 skipped (unchanged). NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the axis-order semantics themselves are a direct, literal application of reshape_nrrd_array's own already-proven fastest-first convention (SAL-NRRD-00011), not a new spec interpretation -- flatten is its mathematical inverse, not a new policy choice. Covers SAL-NRRD-OBL-94D8938DE18A6562 only; it supports no other obligation and promotes no other product state."
+    },
+    {
       "evidence_id": "NRRD-BASIC-METADATA-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -229,7 +237,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "056cdfbeb650fa2f9ddb9ddb64eb495fdb342f5966998c2526e8ccc9e0931a21",
+    "implementation_evidence": "e4359e787f20a92f0c2256ae8cac1291067a9e75eddf765e94a7118623177ef4",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1730,23 +1738,34 @@
     {
       "capability_id": "NRRD-SHAPE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-AXIS-ORDER-PROOF"
       ],
       "implemented_behavior": [
-        "Dimension/sizes, checked sample count, fastest-first reshape, and explicit to_array conversion exist."
+        "Dimension/sizes, checked sample count, fastest-first reshape, and explicit to_array conversion exist.",
+        "FF6-EVENT-000331: axis_order_report(sizes) exposes the explicit strides/nesting-order mapping reshape_nrrd_array already used internally, inspectable without performing a conversion. flatten_nrrd_array(nested, sizes) is the explicit inverse of reshape_nrrd_array (a host-order nested list back to NRRD's own flat, fastest-first order), and NrrdDocument.with_array(nested) pairs it with the existing to_array() at the document level. Together these satisfy \"represent the format's axis order explicitly and convert to host order only via explicit operations\" in both directions, not just the forward one to_array() already provided."
       ],
-      "missing_behavior": [
-        "A first-class axis-order model/conversion report is absent (per-axis arity validation is now complete -- see SAL-NRRD-OBL-428BE326FCBC9A6E)."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch",
         "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_gzip_data_as_a_fatal_diagnostic_not_a_raise",
         "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_bzip2_data_as_a_fatal_diagnostic_not_a_raise",
-        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_still_accepts_a_clean_gzip_source_with_no_diagnostics"
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_still_accepts_a_clean_gzip_source_with_no_diagnostics",
+        "tests/python/nrrd/test_obligation_axis_order.py::test_flatten_rejects_a_nested_list_with_the_wrong_outer_length",
+        "tests/python/nrrd/test_obligation_axis_order.py::test_flatten_rejects_a_nested_list_with_the_wrong_inner_length"
       ],
       "obligation_id": "SAL-NRRD-OBL-94D8938DE18A6562",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_obligation_shape_production.py::test_big_endian_axis_zero_fastest_and_detached_payload"
+        "tests/python/nrrd/test_obligation_shape_production.py::test_big_endian_axis_zero_fastest_and_detached_payload",
+        "tests/python/nrrd/test_obligation_axis_order.py::test_axis_order_report_for_a_two_dimensional_shape",
+        "tests/python/nrrd/test_obligation_axis_order.py::test_axis_order_report_for_a_three_dimensional_shape",
+        "tests/python/nrrd/test_obligation_axis_order.py::test_axis_order_report_for_a_one_dimensional_shape",
+        "tests/python/nrrd/test_obligation_axis_order.py::test_axis_order_report_does_not_require_an_actual_array",
+        "tests/python/nrrd/test_obligation_axis_order.py::test_flatten_is_the_exact_inverse_of_reshape",
+        "tests/python/nrrd/test_obligation_axis_order.py::test_flatten_matches_the_obligations_own_worked_example",
+        "tests/python/nrrd/test_obligation_axis_order.py::test_with_array_replaces_the_flat_array_from_a_host_order_nested_list",
+        "tests/python/nrrd/test_obligation_axis_order.py::test_with_array_round_trips_through_to_array",
+        "tests/python/nrrd/test_obligation_axis_order.py::test_with_array_does_not_mutate_the_original_document"
       ],
       "proof_requirements": {
         "negative": [
@@ -1756,14 +1775,18 @@
           "Axis-order and all per-axis metadata across dimensions."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_sizes",
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::checked_element_count",
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::reshape_nrrd_array",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::flatten_nrrd_array",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::axis_order_report",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::AxisOrderReport",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::with_array",
         "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-LIFECYCLE-001",
@@ -2756,6 +2779,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-attachment-conversion-001.json": "b5ce2947e6b853a1bd21cde3bb41e33f8a8daaab04c0b49c2d45cf49edd65ae4",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-order-001.json": "fa5437773b0590779d16cd411054faa8b6b271acaa3a33c7ee8c777631eae17e",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-basic-metadata-001.json": "bfe3aadc50d89c4688ec73d62c94e027f164c1ba97f713bb8176035f3c57f3f0",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-codec-availability-001.json": "cafed57baf428e3e88e044b2ca36579e3ea13c111c54bac9741d48e3d8efbc80",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-path-version-gate-001.json": "0ddb74585effd11d8f31db536d8242dbcf347f14dba381a36faffab0b40a3add",
@@ -2787,7 +2811,7 @@
     "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "087a7f01e945d5d5491bed1116a15f4ef9b4c38a866d7eca4b5666965b209f44",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "1c05f5d17614799de2cea369352a67b24a5285fb3d08761e63c787560bfa8fea",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "10984d5ca2c0bc8bf872e94923e41c343dea92c2d98411c429eaa3e79fb624ef",
-    "src/python/nrrd/src/format_factory/nrrd/model/document.py": "253f3162618ce5d3cde824ae91c293458f028b179f7a1867c06bb906d120a8b8",
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py": "bb13b031c3e3c41e9c5b775047278c68e6c62b036be71c9e73c0205ac1d3be39",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
     "src/python/nrrd/src/format_factory/nrrd/space.py": "85d5640445d14d653eab2ff6131b4b867be171c16f96fdb943f14e451965afe5",
     "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "82b06e8160941efd42e95c9d698e81a3c2697dbe1edceaa47efa4154b4476ded",
@@ -2795,6 +2819,7 @@
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
     "tests/python/nrrd/test_obligation_attachment_conversion.py": "9735c86c534b2bec55338882d3c6049571a7184b3a25d24e450f9146f29b3a55",
     "tests/python/nrrd/test_obligation_axis_field_arity.py": "3528ed42454f8e5f9c3640f3b005ee3f7f3a0972081d0a2b81ce9d3dcd6751e0",
+    "tests/python/nrrd/test_obligation_axis_order.py": "926a045509b2395f326340b792bd739bbe85c4da8a02c958bc390d70650d5207",
     "tests/python/nrrd/test_obligation_basic_metadata.py": "a47038126f8bafc580743b85fc7dfff4678a9bebda3afdea28a6590025087660",
     "tests/python/nrrd/test_obligation_codec_availability.py": "d113afa7bc99f2f76e96cb0a4a65617ca765529582653cba30748064f5466b11",
     "tests/python/nrrd/test_obligation_compressed_trailing_data.py": "b8067a1fc23db9fef4865412ae3cad932331a362433706ba320de0f388e00620",
@@ -2830,12 +2855,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 54,
-      "partial": 8,
+      "implemented": 55,
+      "partial": 7,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 11
+    "unresolved": 10
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

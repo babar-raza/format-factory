@@ -48,9 +48,12 @@ from .space import (
 )
 from .model import (
     DOMAIN_KINDS,
+    AxisOrderReport,
     NrrdDocument,
     PreservationIssue,
     PreservationReport,
+    axis_order_report,
+    flatten_nrrd_array,
     reshape_nrrd_array,
 )
 from .security import NRRD_DEFAULT_LIMITS
@@ -58,6 +61,7 @@ from .validation import validate
 
 __all__ = [
     "AttachmentConversionReport",
+    "AxisOrderReport",
     "ConversionReport", "DOMAIN_KINDS", "EncodingConversionReport",
     "NRRD_DEFAULT_LIMITS", "NrrdDocument",
     "NrrdError", "NrrdHeader", "NrrdLazyPayload", "NrrdParseError",
@@ -65,12 +69,14 @@ __all__ = [
     "PreservationIssue", "PreservationReport", "RoundingPolicy",
     "SpaceTransform",
     "available_encodings",
+    "axis_order_report",
     "axis_sizes", "build_space_transform", "convert_dtype", "convert_encoding",
     "convert_endian", "convert_to_attached", "convert_to_detached_list",
     "convert_to_detached_printf",
     "decode_nrrd_data", "dump", "dump_detached", "dump_multifile", "dump_multifile_printf",
     "dumps", "element_count",
     "encode_nrrd_data",
+    "flatten_nrrd_array",
     "get_array", "get_dimension", "get_encoding", "is_compressed", "load",
     "load_nrrd", "loads", "named_space_dimension", "nrrd_installed_workflow",
     "open_lazy_payload",
