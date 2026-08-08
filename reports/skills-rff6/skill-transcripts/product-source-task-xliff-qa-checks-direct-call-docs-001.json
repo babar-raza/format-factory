@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-qa-checks-direct-call-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-67e17f86f7ca9a56",
+  "mode": "live",
+  "timestamp": "2026-08-08T17:10:19Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_QA_CHECKS_DIRECT_CALL_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-picking-up-a-remaining-lower-priority-candidate",
+    "root_cause": "Event 364's own exact_next_action named xliff's 6 individual check_* QA functions as the most promising remaining lower-priority candidate across all six formats, following the same 'real capability, not merely an alias' heuristic that worked for nrrd's with_array and xliff's own canonicalize/check_drift. Read qa.py's own module docstring directly: it explicitly states 'pluggable means a caller can run one check without paying for the others, not merely that several checks exist' -- confirming the individual functions are a deliberate, real, distinct capability, not merely an internal implementation detail behind run_qa_checks' own string-based dispatch.",
+    "obligation_targeted": "No specific obligation-register status change (xliff remains at 0/142 unresolved, unaffected by this tick) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage of the module's own stated pluggable design intent.",
+    "acceptance_evidence": "Read run_qa_checks' own implementation directly: it looks up each requested check name in the QA_CHECKS dict, calls the underlying function, and wraps all results in one ValidationReport -- confirming a direct call to e.g. check_length_violations(document) returns the identical diagnostic content as run_qa_checks(document, checks=['length_violations']).diagnostics, differing only in wrapper type (a plain list[Diagnostic] vs a ValidationReport). Verified this equivalence directly against real corpus data (samples/by-format/xliff/valid/multi-unit.xliff): both calls returned an empty list/report (the sample is genuinely clean for this check), and the two results compared equal."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 364 commit (5891cc5df); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Reviewed Event 364's own named remaining candidates across all six formats and picked xliff's individual check_* QA functions as the one most likely to be productive, per the same heuristic that worked for nrrd's with_array (Event 353) and xliff's own canonicalize/check_drift (Event 354): a real capability distinct from, not merely an alias of, something already documented.",
+    "3. Read qa.py's own module docstring in full: XLIFF-QA-001's own rule_text is quoted directly ('Missing/unchanged targets, code mismatches, whitespace/punctuation drift, length violations, and inconsistent translations are pluggable QA checks kept separate from conformance errors'), and the docstring itself explicitly clarifies what 'pluggable' means: 'a caller can run one check without paying for the others, not merely that several checks exist' -- direct, deliberate confirmation that the individual functions are meant to be a real, standalone-usable capability, not an internal detail.",
+    "4. Read run_qa_checks' own implementation (QA_CHECKS dict lookup, per-check function call, results wrapped in one ValidationReport) to determine the exact, precise relationship between a direct call and the dispatched call before writing anything -- confirmed the only difference is the wrapper type, not the diagnostic content.",
+    "5. Verified this equivalence directly against real corpus data before writing the README addition: called check_length_violations(document) and run_qa_checks(document, checks=['length_violations']) against the same real, loaded samples/by-format/xliff/valid/multi-unit.xliff document -- confirmed identical diagnostic content (both empty, since the sample is genuinely clean for this check) and confirmed the wrapper-type difference (list vs ValidationReport) directly via type() rather than assumed from the source text.",
+    "6. Added a short paragraph plus one code example directly to the EXISTING 'Segment QA checks' README section (not a new section, since this is a minor extension of an already-fully-documented capability, distinct from the larger, dedicated-section treatment merge_notebooks/cleanup/Export-adapters/reconcile_invoice each received), grounded directly in the module's own docstring and verified relationship, not invented.",
+    "7. Regenerated reports/certification/xliff/documentation-gate.json to reflect the addition -- updated readme_line_count (225 -> 241), symbol_existence count (23 distinct names/13 code blocks now, +check_length_violations), a new example_execution entry documenting the direct-vs-dispatched equivalence verification, and extended the incidental_finding to note this closes the 6-function QA-checks candidate as a group while load_xliff/write_xliff/probe_xliff, xliff_installed_workflow, the exception hierarchy, and bundled schema-path accessors remain for a future tick.",
+    "8. Did not modify any production source code -- the individual check_* functions already existed, fully correct and already tested by the existing test suite; this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration. Did not re-run the xliff test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/xliff/README.md",
+    "reports/certification/xliff/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/README.md",
+    "reports/certification/xliff/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: check_length_violations() vs run_qa_checks(checks=['length_violations']) against real corpus sample samples/by-format/xliff/valid/multi-unit.xliff -- confirmed identical diagnostic content, different wrapper type",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap for the 6 individual check_* QA functions, deferred at Event 342 as lower priority -- no obligation status change (xliff remains at 0/142 unresolved, unaffected), but a real developer-discoverability improvement matching the module's own explicitly-stated pluggable design intent.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 142,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

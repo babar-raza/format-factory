@@ -53,6 +53,22 @@ ancestor wins) against the 4 standard profiles the XLIFF 2.1 Size and
 Length Restriction module defines (`xliff:codepoints`, `xliff:utf8`,
 `xliff:utf16`, `xliff:utf32`).
 
+"Pluggable" means each check is also directly importable and callable on
+its own, not only selectable by name through `run_qa_checks`:
+
+```python
+from format_factory.xliff import check_length_violations
+
+diagnostics = check_length_violations(document)  # a plain list[Diagnostic]
+```
+
+A direct call returns the bare `list[Diagnostic]` the check itself
+produces; `run_qa_checks` wraps that same list in a `ValidationReport`
+alongside whichever other checks were selected. Both report identical
+diagnostics for a given check -- calling directly only skips the
+name-to-function lookup and the report wrapper, useful for a caller who
+wants to compose checks into their own aggregation.
+
 ## Effective xml:space / xml:lang resolution
 
 `xml:space` and `xml:lang` inherit down the document tree per the XLIFF 2.1
