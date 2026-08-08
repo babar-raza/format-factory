@@ -74,6 +74,14 @@
       "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE. Narrows (does not fully close) SAL-ORA-OBL-EC8D65524EB96820 (ORA-EDIT-001). apply_transaction was already fully generic before this slice -- any OraImage -> OraImage callable built from dataclasses.replace() is a valid step -- so replace/move/remove were not a missing feature, only untested through the existing machinery. Verified interactively before writing any test: a replace step swapping one layer for a newly-constructed one, a move step relocating a layer from the root into a nested group (OraStack nesting is the group mechanism), a remove step deleting a layer, a remove step deleting an entire group along with its children, and a rollback proof combining a replace and a group-remove that both revert together on a later failure -- all 5 confirmed working on the first attempt via the model's existing dataclasses.replace()-based mutation, then formalized as 5 new pytest tests. Metadata targets remain untested (no metadata concept exists in the model); reference maintenance and stale-view invalidation remain untested (no reference type or rendering engine exists) -- both correctly left as open gaps per GAP-008, not force-closed. ora suite: 289 -> 294 passed. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-EC8D65524EB96820 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "ORA-EXPLICIT-ATTRIBUTE-PRESERVATION-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-explicit-attribute-preservation-001.json",
+      "sha256": "316f6f82b627992ddf9a0379fac49f8bd63eebf395ed1111a27be13b30eeb786",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE. Closes SAL-ORA-OBL-9C467C6DD59DFEE7 (ORA-PRESERVE-001), promoted missing->implemented. A prior tick's own missing_behavior framed the fix as needing \"nullable defaults threaded through OraNode/OraStack/OraLayer and every consumer of them (is_isolated_group included) -- real, larger-scoped work not yet attempted,\" which would change every existing field's own type (float -> float | None) and force every consumer to handle a new None case. Investigated and found a smaller, additive alternative: a PARALLEL explicit_attributes: frozenset[str] field on OraNode (plus a was_explicit(name) query method) records which of x/y/opacity/visibility/composite-op/isolation the source XML actually wrote, without changing any existing field's own type or default value at all -- proven directly by the entire pre-existing 337-test ora suite passing completely unchanged after the field was added. Populated once at the single choke point every default-having attribute already passes through (_common() in codec/stack_xml.py), extended with an extra_tracked parameter for stack()'s own isolation-specific attribute, so tracking can never drift from what the existing opacity/visibility/composite_op parsing itself already considers \"present\". Confirmed the writer side needs no corresponding change: ora's own round-trip story is byte-level LOSSLESS (original archive bytes preserved verbatim), not model-reconstruction-based -- grepped the whole package for a stack.xml serializer and found none, confirming this obligation is purely a model-level query capability, matching its own prior note that \"the archive-level round trip is unaffected... container-level preservation, not this obligation's model-level distinction.\" Verified end-to-end with a standalone repro before any test was written: a layer with opacity=\"0.5\" explicit and a sibling with opacity omitted (defaulting to the SAME 1.0 an explicitly-written \"opacity=1.0\" layer would also produce) are correctly distinguished by was_explicit() despite identical resulting values -- the whole point of the obligation. 12 new tests (test_obligation_explicit_attribute_preservation.py) prove: every tracked attribute independently recorded; a partially-written set records only what was written; a node built directly in memory has an empty set; isolation does not leak between a stack and its own child layers; nested stacks track their own attributes independently. ora suite: 337 -> 349 passed (+12). mypy --strict and ruff clean. Combined 6-format run: 3780 -> 3792 passed, +12, 0 failed, 4 skipped -- zero regression beyond the 12 intentional new tests. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the obligation's own rule_text (\"preserve the distinction between an absent optional value and an explicitly written default\") is the direct authority, and the tracked-attribute set is grounded in the same normative default-value rules OraNode's own pre-existing __post_init__/docstring already cite. Covers SAL-ORA-OBL-9C467C6DD59DFEE7 only; it supports no other obligation."
+    },
+    {
       "evidence_id": "ORA-GROUP-UNKNOWN-EXTENSION-PRESERVATION-RECONCILIATION-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -197,7 +205,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "f146712ceaf9275e9ddd9283d67f593608a8ac3405c9f1244db5ce79d0e42117",
+    "implementation_evidence": "e1cb827988832d141d43a585ef75d33a31917a53a2687acf8229fa2c08b98ded",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -3497,14 +3505,30 @@
     },
     {
       "capability_id": "ORA-PRESERVE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "model/stack.py's OraNode applies attribute defaults (opacity, visibility, composite-op, isolation) at construction time by deliberate design -- its own docstring states this is correct for compositing but means the in-memory model cannot currently answer \"was this value written explicitly, or just defaulted?\" Fixing this would need nullable defaults threaded through OraNode/OraStack/OraLayer and every consumer of them (is_isolated_group included) -- real, larger-scoped work not yet attempted. The archive-level round trip is unaffected: LOSSLESS mode keeps the original bytes verbatim regardless of what the model captures, but that is container-level preservation, not this obligation's model-level distinction."
+      "execution_evidence_ids": [
+        "ORA-EXPLICIT-ATTRIBUTE-PRESERVATION-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "FF6-EVENT-000317: OraNode now has an explicit_attributes: frozenset[str] field plus a was_explicit(name) query method, closing \"was this value written explicitly, or just defaulted?\" A prior tick's own missing_behavior framed the fix as needing \"nullable defaults threaded through OraNode/OraStack/OraLayer and every consumer of them (is_isolated_group included) -- real, larger-scoped work,\" which would have changed every existing field's own type (float -> float | None) and forced every consumer to handle the new None case. Investigated and found a smaller, additive alternative: explicit_attributes is a PARALLEL field recording presence without changing x/y/opacity/visibility/composite_op/isolation's own type or default value at all, so no existing consumer (is_isolated_group, is_visible, composite_op_details, any external caller) is affected -- proven directly by the entire pre-existing 337-test ora suite passing completely unchanged. Populated once at the single choke point every default-having attribute already passes through (_common() in codec/stack_xml.py, extended with an extra_tracked parameter for stack()'s own isolation-specific attribute), so it can never drift from what the existing opacity/visibility/composite_op parsing itself already considers \"present\". Confirmed the writer side needs no corresponding change: ora's own round-trip story is byte-level LOSSLESS (original archive bytes preserved verbatim in LOSSLESS mode), not model-reconstruction-based -- grepped the whole package for a stack.xml serializer and found none, confirming this obligation's own prior note (\"the archive-level round trip is unaffected... container-level preservation, not this obligation's model-level distinction\") was correct: this is purely a model-level query capability. Verified end-to-end with a standalone repro before any test was written: a layer with opacity=\"0.5\" explicit and a sibling with opacity omitted (defaulting to the SAME 1.0 as an explicitly-written \"opacity=1.0\" layer would) are correctly distinguished by was_explicit() despite identical resulting values -- the whole point of the obligation. 12 new tests (test_obligation_explicit_attribute_preservation.py) additionally prove: every tracked attribute (x, y, opacity, visibility, composite-op, isolation) is independently recorded; a partially-written set records only what was written; a node built directly in memory (bypassing the parser) has an empty set; isolation does not leak between a stack and its own child layers; nested stacks each track their own attributes independently. ora suite: 337 -> 349 passed (+12). mypy --strict and ruff clean. Combined 6-format run: 3780 -> 3792 passed, +12, 0 failed, 4 skipped."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestLayerAttributes::test_no_attributes_written_means_none_are_explicit",
+        "tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestStackIsolationAttribute::test_an_omitted_isolation_is_not_recorded_even_though_it_defaults_to_auto",
+        "tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestStackIsolationAttribute::test_isolation_does_not_leak_into_a_sibling_layers_own_tracking",
+        "tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestConstructedDirectlyInMemory::test_a_node_built_directly_has_no_explicit_attributes",
+        "tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestConstructedDirectlyInMemory::test_a_layer_built_directly_has_no_explicit_attributes"
+      ],
       "obligation_id": "SAL-ORA-OBL-9C467C6DD59DFEE7",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestLayerAttributes::test_an_explicitly_written_opacity_is_recorded_as_explicit",
+        "tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestLayerAttributes::test_an_omitted_opacity_is_not_recorded_as_explicit_even_though_the_default_matches",
+        "tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestLayerAttributes::test_every_tracked_attribute_is_independently_recorded",
+        "tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestLayerAttributes::test_a_partially_written_set_records_only_what_was_written",
+        "tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestStackIsolationAttribute::test_an_explicitly_written_isolation_is_recorded",
+        "tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestTextNode::test_text_nodes_track_explicitness_the_same_way_as_layers",
+        "tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestNestedStacksTrackIndependently::test_a_nested_group_and_its_parent_track_their_own_attributes_separately"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -3513,9 +3537,13 @@
           "Each preservation baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ora/src/format_factory/ora/model/stack.py::OraNode",
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_explicit_attributes",
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::_common"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-EDIT-001",
@@ -4798,6 +4826,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-container-citation-audit-001.json": "a8da421c2df540a82a0ebcca93b5642299a8ad71ee0100a9b64ac808e58b1d63",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-document-model-construction-001.json": "e722f98266ec914ed9f2aca1d75695070ed123949b66335d7d572ba4e7c05171",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-edit-ops-001.json": "a7ba7c5e2dfa1fca5c6bb1193895f22f55af7df543f92f3fba30c623600eda77",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-explicit-attribute-preservation-001.json": "316f6f82b627992ddf9a0379fac49f8bd63eebf395ed1111a27be13b30eeb786",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-group-unknown-extension-reconciliation-001.json": "b454badcf59436c6a27497704273265072017d97cfa638c0f28aef25d2db44c7",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-layer-group-citation-audit-001.json": "5947a5b1537dec0f8af2e84da905a1678ddaa1d995e739f890be90806f215ae1",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-lifecycle-citation-audit-001.json": "0da740721908a1871474ec18c8790f54228235cba7bb60c2c7c0292b31018096",
@@ -4816,16 +4845,17 @@
     "src/python/ora/src/format_factory/ora/codec/assets.py": "daa355728ed65a92d69c3178f91af4075501bde0549fb0ce9755a944206b9091",
     "src/python/ora/src/format_factory/ora/codec/container.py": "129e2f98264ad518d28f40bddb23c11bfca5fac11f4ea471ea01e2cb5571fa87",
     "src/python/ora/src/format_factory/ora/codec/png_metadata.py": "6b247625e57be37e010808f50a08ce76e5efd240c5459d2a7ad506eee74ac2ad",
-    "src/python/ora/src/format_factory/ora/codec/stack_xml.py": "2bad8a19200f98876641433894bbd77338a2bfcd1036c3b139858d20acc05388",
-    "src/python/ora/src/format_factory/ora/lifecycle.py": "71e32aea2d52d324492766e96aba677796e6c3480721d7ffeee5fa029b305f2c",
+    "src/python/ora/src/format_factory/ora/codec/stack_xml.py": "b01ed986b9fb086533e1892c7827b7c3d28a1afd307057c8bb0f16e7643193a7",
+    "src/python/ora/src/format_factory/ora/lifecycle.py": "d2fb8409a685023636c41b20de7987667981b5f159f4606ac012a70bf9432ad2",
     "src/python/ora/src/format_factory/ora/model/composite_ops.py": "e6d442735fa783c396176cb4636504c563a52ee7594e90734301fd72486dc4d6",
     "src/python/ora/src/format_factory/ora/model/document.py": "e77dcfb27563a7c6ea4aa002a4582cc4f1a2cce981f3b3a7f3575a819e99d5ef",
-    "src/python/ora/src/format_factory/ora/model/stack.py": "9bfa6a9781e8292d56c6a68e167d081cdb8f4ba51f54f92fd3f50ff7ede12e6c",
+    "src/python/ora/src/format_factory/ora/model/stack.py": "f50eb16a8e891fbed9f22a12a8c522eb4e254656b4aa78e1b7b98c121b0c6591",
     "src/python/ora/src/format_factory/ora/preservation.py": "2805b9b1d028af36a45eea1b12f97236b04540053685625adc633deb64f3b003",
     "src/python/ora/src/format_factory/ora/transaction.py": "2b43957b457688f862646be56045ff6c7a49478ade3901a5153140cbba4c3b85",
     "tests/python/ora/test_obligation_composite_op_registry.py": "107536a6213188ff05a31cd499b338fb159951000dae32d30d192916064fb2d2",
     "tests/python/ora/test_obligation_container_and_mimetype.py": "b99bd7c244b2fcb3ba43c017d91bdea2c651227526799b608c15337059e3b2e2",
     "tests/python/ora/test_obligation_document_model_construction.py": "478139c90d4beeda8b8c4759b42bee88f29cc769fbbd1f1e9d70adf436224987",
+    "tests/python/ora/test_obligation_explicit_attribute_preservation.py": "cb67648fe068cab965ad46599693b4872788bf5f718c140c2f687ea3a413f76a",
     "tests/python/ora/test_obligation_isolation_semantics.py": "1d41a5f6f432a48cc8cb46967ed1287f186bea87f302de1c7b89cf42bdbf9b6f",
     "tests/python/ora/test_obligation_layer_and_group_editing.py": "508cabfb53c92fa7c4f8d2922aec0756ba76315ccac8ac3fd584a51f56dca9e3",
     "tests/python/ora/test_obligation_lifecycle_and_write.py": "a88a6412380498415ca414a4d4704a422e0429abda80c705e8ad89c2a7bc77a7",
@@ -4840,12 +4870,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 126,
-      "missing": 5,
+      "implemented": 127,
+      "missing": 4,
       "partial": 3
     },
     "total": 134,
-    "unresolved": 8
+    "unresolved": 7
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

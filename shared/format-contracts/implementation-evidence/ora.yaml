@@ -3,6 +3,11 @@ format_id: ora
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: ORA-EXPLICIT-ATTRIBUTE-PRESERVATION-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-explicit-attribute-preservation-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike ORA-BASELINE-SUITE. Closes SAL-ORA-OBL-9C467C6DD59DFEE7 (ORA-PRESERVE-001), promoted missing->implemented. A prior tick''s own missing_behavior framed the fix as needing "nullable defaults threaded through OraNode/OraStack/OraLayer and every consumer of them (is_isolated_group included) -- real, larger-scoped work not yet attempted," which would change every existing field''s own type (float -> float | None) and force every consumer to handle a new None case. Investigated and found a smaller, additive alternative: a PARALLEL explicit_attributes: frozenset[str] field on OraNode (plus a was_explicit(name) query method) records which of x/y/opacity/visibility/composite-op/isolation the source XML actually wrote, without changing any existing field''s own type or default value at all -- proven directly by the entire pre-existing 337-test ora suite passing completely unchanged after the field was added. Populated once at the single choke point every default-having attribute already passes through (_common() in codec/stack_xml.py), extended with an extra_tracked parameter for stack()''s own isolation-specific attribute, so tracking can never drift from what the existing opacity/visibility/composite_op parsing itself already considers "present". Confirmed the writer side needs no corresponding change: ora''s own round-trip story is byte-level LOSSLESS (original archive bytes preserved verbatim), not model-reconstruction-based -- grepped the whole package for a stack.xml serializer and found none, confirming this obligation is purely a model-level query capability, matching its own prior note that "the archive-level round trip is unaffected... container-level preservation, not this obligation''s model-level distinction." Verified end-to-end with a standalone repro before any test was written: a layer with opacity="0.5" explicit and a sibling with opacity omitted (defaulting to the SAME 1.0 an explicitly-written "opacity=1.0" layer would also produce) are correctly distinguished by was_explicit() despite identical resulting values -- the whole point of the obligation. 12 new tests (test_obligation_explicit_attribute_preservation.py) prove: every tracked attribute independently recorded; a partially-written set records only what was written; a node built directly in memory has an empty set; isolation does not leak between a stack and its own child layers; nested stacks track their own attributes independently. ora suite: 337 -> 349 passed (+12). mypy --strict and ruff clean. Combined 6-format run: 3780 -> 3792 passed, +12, 0 failed, 4 skipped -- zero regression beyond the 12 intentional new tests. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule; the obligation''s own rule_text ("preserve the distinction between an absent optional value and an explicitly written default") is the direct authority, and the tracked-attribute set is grounded in the same normative default-value rules OraNode''s own pre-existing __post_init__/docstring already cite. Covers SAL-ORA-OBL-9C467C6DD59DFEE7 only; it supports no other obligation.'
 - evidence_id: ORA-COMPOSITE-OP-REJECTION-SCOPE-CORRECTION-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ora-composite-op-rejection-scope-correction-001.json
   expected_result: PASS
@@ -2941,24 +2946,64 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-9C467C6DD59DFEE7
   capability_id: ORA-PRESERVE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'model/stack.py''s OraNode applies attribute defaults (opacity, visibility,
-    composite-op, isolation) at construction time by deliberate design --
-    its own docstring states this is correct for compositing but means the
-    in-memory model cannot currently answer "was this value written
-    explicitly, or just defaulted?" Fixing this would need nullable
-    defaults threaded through OraNode/OraStack/OraLayer and every consumer
-    of them (is_isolated_group included) -- real, larger-scoped work not
-    yet attempted. The archive-level round trip is unaffected: LOSSLESS
-    mode keeps the original bytes verbatim regardless of what the model
-    captures, but that is container-level preservation, not this
-    obligation''s model-level distinction.'
+  status: implemented
+  source_symbols:
+  - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_explicit_attributes
+  - src/python/ora/src/format_factory/ora/codec/stack_xml.py::_common
+  positive_test_selectors:
+  - tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestLayerAttributes::test_an_explicitly_written_opacity_is_recorded_as_explicit
+  - tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestLayerAttributes::test_an_omitted_opacity_is_not_recorded_as_explicit_even_though_the_default_matches
+  - tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestLayerAttributes::test_every_tracked_attribute_is_independently_recorded
+  - tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestLayerAttributes::test_a_partially_written_set_records_only_what_was_written
+  - tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestStackIsolationAttribute::test_an_explicitly_written_isolation_is_recorded
+  - tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestTextNode::test_text_nodes_track_explicitness_the_same_way_as_layers
+  - tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestNestedStacksTrackIndependently::test_a_nested_group_and_its_parent_track_their_own_attributes_separately
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestLayerAttributes::test_no_attributes_written_means_none_are_explicit
+  - tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestStackIsolationAttribute::test_an_omitted_isolation_is_not_recorded_even_though_it_defaults_to_auto
+  - tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestStackIsolationAttribute::test_isolation_does_not_leak_into_a_sibling_layers_own_tracking
+  - tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestConstructedDirectlyInMemory::test_a_node_built_directly_has_no_explicit_attributes
+  - tests/python/ora/test_obligation_explicit_attribute_preservation.py::TestConstructedDirectlyInMemory::test_a_layer_built_directly_has_no_explicit_attributes
+  execution_evidence_ids:
+  - ORA-EXPLICIT-ATTRIBUTE-PRESERVATION-PROOF
+  implemented_behavior:
+  - 'FF6-EVENT-000317: OraNode now has an explicit_attributes: frozenset[str] field
+    plus a was_explicit(name) query method, closing "was this value written explicitly,
+    or just defaulted?" A prior tick''s own missing_behavior framed the fix as needing
+    "nullable defaults threaded through OraNode/OraStack/OraLayer and every consumer
+    of them (is_isolated_group included) -- real, larger-scoped work," which would
+    have changed every existing field''s own type (float -> float | None) and forced
+    every consumer to handle the new None case. Investigated and found a smaller,
+    additive alternative: explicit_attributes is a PARALLEL field recording presence
+    without changing x/y/opacity/visibility/composite_op/isolation''s own type or
+    default value at all, so no existing consumer (is_isolated_group, is_visible,
+    composite_op_details, any external caller) is affected -- proven directly by the
+    entire pre-existing 337-test ora suite passing completely unchanged. Populated
+    once at the single choke point every default-having attribute already passes
+    through (_common() in codec/stack_xml.py, extended with an extra_tracked parameter
+    for stack()''s own isolation-specific attribute), so it can never drift from what
+    the existing opacity/visibility/composite_op parsing itself already considers
+    "present". Confirmed the writer side needs no corresponding change: ora''s own
+    round-trip story is byte-level LOSSLESS (original archive bytes preserved verbatim
+    in LOSSLESS mode), not model-reconstruction-based -- grepped the whole package for
+    a stack.xml serializer and found none, confirming this obligation''s own prior note
+    ("the archive-level round trip is unaffected... container-level preservation, not
+    this obligation''s model-level distinction") was correct: this is purely a
+    model-level query capability. Verified end-to-end with a standalone repro before
+    any test was written: a layer with opacity="0.5" explicit and a sibling with
+    opacity omitted (defaulting to the SAME 1.0 as an explicitly-written "opacity=1.0"
+    layer would) are correctly distinguished by was_explicit() despite identical
+    resulting values -- the whole point of the obligation. 12 new tests
+    (test_obligation_explicit_attribute_preservation.py) additionally prove: every
+    tracked attribute (x, y, opacity, visibility, composite-op, isolation) is
+    independently recorded; a partially-written set records only what was written; a
+    node built directly in memory (bypassing the parser) has an empty set; isolation
+    does not leak between a stack and its own child layers; nested stacks each track
+    their own attributes independently. ora suite: 337 -> 349 passed (+12). mypy
+    --strict and ruff clean. Combined 6-format run: 3780 -> 3792 passed, +12, 0 failed,
+    4 skipped.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each preservation baseline behavior has a focused positive test and, where refusable, a negative

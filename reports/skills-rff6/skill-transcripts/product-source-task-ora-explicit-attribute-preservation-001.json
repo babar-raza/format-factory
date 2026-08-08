@@ -1,0 +1,63 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-explicit-attribute-preservation-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-652e7caf83f160a8",
+  "mode": "live",
+  "timestamp": "2026-08-08T06:23:36Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_EXPLICIT_ATTRIBUTE_PRESERVATION_001",
+    "task_kind": "found-smaller-than-framed-additive-parallel-field-not-invasive-type-change",
+    "root_cause": "Continuing the fresh systematic pass over the 4 remaining formats' own unresolved obligations after Event 316's nrrd win. Surveyed ora's own 8 remaining obligations: ORA-MASK-001 was already correctly resolved as genuinely unbuildable (a prior tick found 'mask' appears zero times across all 3 pinned OpenRaster spec sources). ORA-PRESERVE-001's own missing_behavior framed 'was this value written explicitly, or just defaulted' as needing 'nullable defaults threaded through OraNode/OraStack/OraLayer and every consumer of them -- real, larger-scoped work.' Investigated the actual model/stack.py and codec/stack_xml.py directly rather than trusting that framing.",
+    "obligation_targeted": "SAL-ORA-OBL-9C467C6DD59DFEE7 (ORA-PRESERVE-001) promoted missing -> implemented.",
+    "acceptance_evidence": "Added a PARALLEL explicit_attributes: frozenset[str] field to OraNode (not a type change to any existing field) plus a was_explicit(name) query method. Populated once at the single existing choke point (_common() in stack_xml.py, already called for every layer/text/stack construction) that already computes every default-having attribute's value. Verified end-to-end with a standalone repro before any test was written, and confirmed zero impact on every existing consumer by running the full pre-existing 337-test ora suite unchanged.",
+    "regression_tier": "full ora package suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Read model/stack.py's OraNode class directly: x/y/opacity/visibility/composite_op are plain dataclass fields with Python-level defaults (0, 0, 1.0, 'visible', 'svg:src-over'); OraStack adds isolation ('auto'). No field distinguishes 'value came from the XML' vs 'value came from the dataclass default'.",
+    "2. Read the prior tick's own missing_behavior text proposing nullable defaults (float -> float | None) threaded through every field and every consumer -- assessed this as more invasive than necessary before accepting it: changing a field's own type ripples into every read site (is_isolated_group's own opacity < 1.0 comparison, is_visible's own visibility == 'visible' comparison, composite_op_details' own lookup, and any external caller), each needing new None-handling.",
+    "3. Designed a smaller alternative: add explicit_attributes: frozenset[str] = frozenset() as a NEW, PARALLEL field -- x/y/opacity/visibility/composite_op/isolation keep their exact existing types and defaults, so is_isolated_group/is_visible/composite_op_details and every external caller are completely unaffected. Added was_explicit(name: str) -> bool as the query method the obligation's own rule_text asks for.",
+    "4. Located the single choke point every default-having attribute already passes through: _common() (codec/stack_xml.py), called identically for OraLayer/OraText/OraStack construction. Added _explicit_attributes(element, extra_tracked=()) computing which of a fixed XML-name-to-field-name mapping (_TRACKED_ATTRIBUTES) the element's own .attrib actually contains -- reusing the exact same 'is this key present' check the existing opacity/visibility/composite_op parsing implicitly relies on, so tracking can never independently drift from what those already consider 'present'.",
+    "5. Handled OraStack's own isolation attribute specially (it is set outside _common(), directly in the stack() method) by adding an extra_tracked parameter to both _common() and _explicit_attributes(), passing ('isolation',) only from stack(), rather than duplicating the presence-check logic.",
+    "6. Hit and fixed 2 mypy --strict errors from an initial dict-mutation approach (frozenset(common['explicit_attributes']) on a dict typed dict[str, object] has no statically-known iterable type) by restructuring to pass extra_tracked as a parameter instead of post-hoc mutating the returned dict -- cleaner and correctly typed with zero ignores needed.",
+    "7. Verified directly with a standalone repro before writing any test: parsed a stack with one layer writing opacity='0.5' explicitly and a sibling omitting opacity entirely (defaulting to 1.0) -- was_explicit('opacity') correctly returns True/False respectively, and a stack-level isolation='isolate' attribute is correctly recorded on the stack but NOT on its own child layer.",
+    "8. Checked whether the writer side needed corresponding changes: grepped the whole ora package for any stack.xml serializer/writer module and found none -- confirmed ora's own round-trip story is byte-level LOSSLESS (original archive bytes preserved verbatim in LOSSLESS mode via lifecycle.py), not model-reconstruction-based, matching this obligation's own prior note that the archive-level round trip is unaffected and this is purely a model-level query capability.",
+    "9. Ran the full pre-existing ora suite (337 tests) BEFORE writing any new test, to confirm the new field caused zero equality/hashing/behavior regressions anywhere in the existing suite (frozen dataclasses generate __eq__ over all fields, so a naive reviewer might worry two previously-equal nodes could now compare unequal) -- 337/337 passed unchanged.",
+    "10. Added 12 tests (test_obligation_explicit_attribute_preservation.py): explicit vs omitted opacity distinguished despite identical resulting values (the core obligation proof); every tracked attribute independently recorded; a partially-written set records only what was written; no-attributes-written means an empty set; stack isolation tracked separately from child layers'; text nodes track identically to layers; a node built directly in memory (bypassing the parser) has an empty set; nested stacks track their own attributes independently.",
+    "11. Ran mypy --strict (clean), ruff (clean), the full ora suite (337 -> 349 passed), and the 6-format regression (3780 -> 3792 passed, +12, 0 failed, 4 skipped).",
+    "12. Promoted the target obligation to implemented: the obligation's own rule_text (preserve absent-vs-explicit-default distinction) is now genuinely satisfied and tested."
+  ],
+  "allowed_files": [
+    "src/python/ora/src/format_factory/ora/model/stack.py",
+    "src/python/ora/src/format_factory/ora/codec/stack_xml.py",
+    "tests/python/ora/test_obligation_explicit_attribute_preservation.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/src/format_factory/ora/model/stack.py",
+    "src/python/ora/src/format_factory/ora/codec/stack_xml.py",
+    "tests/python/ora/test_obligation_explicit_attribute_preservation.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_explicit_attribute_preservation.py -v -- 12 passed (all new)",
+    ".venv/Scripts/python -m mypy --strict src/python/ora/src/format_factory/ora/model/stack.py src/python/ora/src/format_factory/ora/codec/stack_xml.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ora -q -- 349 passed (was 337)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3792 passed, 4 skipped, 0 failed (was 3780)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation closed (missing -> implemented)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 134,
+    "new_public_api": "format_factory.ora.OraNode.explicit_attributes / was_explicit()"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

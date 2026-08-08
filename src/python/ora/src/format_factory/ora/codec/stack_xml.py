@@ -116,7 +116,33 @@ def _visibility(raw: str | None) -> str:
     return raw
 
 
-def _common(element: ElementTree.Element) -> dict[str, object]:
+#: XML attribute name -> OraNode field name, for every default-having
+#: attribute ORA-PRESERVE-001's explicit_attributes tracks. "composite-op"
+#: is the XML spelling; the dataclass field is "composite_op".
+_TRACKED_ATTRIBUTES = {
+    "x": "x",
+    "y": "y",
+    "opacity": "opacity",
+    "visibility": "visibility",
+    "composite-op": "composite_op",
+}
+
+
+def _explicit_attributes(
+    element: ElementTree.Element, *, extra_tracked: tuple[str, ...] = ()
+) -> frozenset[str]:
+    """Which of _TRACKED_ATTRIBUTES' own XML names (plus any stack-specific
+    `extra_tracked` names, e.g. "isolation") this element's attrib actually
+    contains -- computed once, at the same point every other default-having
+    value is read, so it can never drift from what _common()/isolation
+    parsing itself considers "present"."""
+    tracked = tuple(_TRACKED_ATTRIBUTES) + extra_tracked
+    return frozenset(xml_name for xml_name in tracked if xml_name in element.attrib)
+
+
+def _common(
+    element: ElementTree.Element, *, extra_tracked: tuple[str, ...] = ()
+) -> dict[str, object]:
     return {
         "name": element.get("name"),
         "x": _signed_integer(element.get("x", "0"), label=f"<{element.tag}> x"),
@@ -124,6 +150,7 @@ def _common(element: ElementTree.Element) -> dict[str, object]:
         "opacity": _opacity(element.get("opacity")),
         "visibility": _visibility(element.get("visibility")),
         "composite_op": element.get("composite-op", DEFAULT_COMPOSITE_OP),
+        "explicit_attributes": _explicit_attributes(element, extra_tracked=extra_tracked),
     }
 
 
@@ -189,7 +216,7 @@ class _Walker:
         return OraStack(
             children=children,
             isolation=element.get("isolation", "auto"),
-            **_common(element),  # type: ignore[arg-type]
+            **_common(element, extra_tracked=("isolation",)),  # type: ignore[arg-type]
         )
 
 

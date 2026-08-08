@@ -7,7 +7,12 @@ order exactly and never sorts.
 
 Attribute defaults come from the contract's normative rules and are applied at
 construction, so a caller never has to distinguish "absent" from "explicitly
-default" to composite correctly.
+default" to composite correctly. ORA-PRESERVE-001 separately requires that
+distinction to remain discoverable for callers who DO care about it (round-trip
+fidelity tooling, diffing, re-serialization decisions): `OraNode.explicit_attributes`
+records which of x/y/opacity/visibility/composite-op/isolation the source XML
+actually wrote, alongside (not instead of) the always-defaulted value every
+existing compositing consumer already reads unaffected.
 
 ORA-LAYER-001 / ORA-GROUP-001: "reject invalid values without altering the
 document" applies to construction, not only to XML parsing -- editing via
@@ -83,6 +88,13 @@ class OraNode:
     opacity: float = 1.0
     visibility: str = DEFAULT_VISIBILITY
     composite_op: str = DEFAULT_COMPOSITE_OP
+    #: ORA-PRESERVE-001: which of this node's own default-having attributes
+    #: (x, y, opacity, visibility, composite-op, and -- on OraStack --
+    #: isolation) the source XML actually wrote, versus a value this
+    #: dataclass supplied because the attribute was absent. Populated once
+    #: by the parser (codec/stack_xml.py); empty for a node built directly
+    #: in memory, since nothing was parsed for it to record.
+    explicit_attributes: frozenset[str] = frozenset()
 
     @property
     def is_visible(self) -> bool:
@@ -95,6 +107,12 @@ class OraNode:
         current table -- composite-op is a deliberately open vocabulary,
         so an unrecognized value is preserved content, not an error."""
         return _composite_op_info(self.composite_op)
+
+    def was_explicit(self, attribute: str) -> bool:
+        """Whether `attribute` (by its XML name, e.g. "composite-op") was
+        actually present in the source XML, as opposed to this dataclass
+        having supplied its own default because the attribute was absent."""
+        return attribute in self.explicit_attributes
 
     def __post_init__(self) -> None:
         validate_opacity(self.opacity)
