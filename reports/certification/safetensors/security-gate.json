@@ -1,0 +1,21 @@
+{
+  "format_id": "safetensors",
+  "gate": "security",
+  "tool": "AST static import/call sweep",
+  "target": "src/python/safetensors/src/format_factory/safetensors",
+  "status": "PASS",
+  "verdict": "PASS",
+  "checks": {
+    "fully_forbidden_modules_never_imported": "PASS (socket, urllib, http, ftplib, smtplib, subprocess, pkgutil, ctypes -- 0 occurrences)",
+    "no_eval_exec_compile_call_anywhere": "PASS",
+    "dynamic_import_confined_to_two_fixed_literal_optional_dependency_sites": "PASS (adapters/numpy.py::importlib.import_module(\"numpy\"), adapters/torch.py::importlib.import_module(\"torch\") -- both call sites verified to pass only a fixed string literal, never a caller-supplied or otherwise dynamic value, so there is no path for an attacker-controlled module name to reach either call)"
+  },
+  "prior_art": "safetensors' own obligation register has no dedicated SEC-001 capability at all -- this is the first security-baseline sweep for this format.",
+  "new_tests": "tests/python/safetensors/test_obligation_security_baseline.py (4 tests, all new)",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the security invariant only, not a certification claim for the format as a whole.",
+  "regression": {
+    "safetensors_suite": "411 passed, 3 skipped (+4 new)",
+    "six_format_suite": "3767 passed, 4 skipped, 0 failed"
+  },
+  "commit": "pending"
+}

@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-safetensors-security-gate-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-d7fd57951f37f7f9",
+  "mode": "live",
+  "timestamp": "2026-08-08T05:13:40Z",
+  "inputs": {
+    "format_id": "ipynb+safetensors",
+    "task_id": "TC_FF6_IPYNB_SAFETENSORS_SECURITY_GATE_001",
+    "task_kind": "certification-gate-frontier-second-concrete-step",
+    "root_cause": "Event 308's own exact_next_action named 'security' as the next well-scoped completion invariant to advance for ipynb and safetensors, reusing the AST-scan pattern already proven for nrrd/xliff/ubl's own SEC-001 obligations. Checked ipynb's own obligation register first: IPYNB-SEC-001 already has 5 obligations, all status=implemented, but their own source_symbols cover only resource-limit enforcement and the load/validate/diff/save-never-executes runtime audit-hook boundary -- none is a whole-package static import sweep, so this work is a genuine complementary addition, not a duplicate. safetensors' own obligation register has no SEC capability at all.",
+    "obligation_targeted": "product-goal.yaml's own 'security' completion invariant for ipynb and safetensors -- NOT a certification claim for either format as a whole.",
+    "acceptance_evidence": "Ran a raw AST import/call scan across both packages first, before writing any test, to discover every forbidden-module-adjacent site: ipynb has 4 (subprocess in adapters/execute.py -- the deliberate opt-in adapter; urllib.parse in 2 files -- pure string encoding; importlib.resources in 1 file -- static bundled-data reading). safetensors has 2 (importlib.import_module(\"numpy\")/(\"torch\") in adapters/numpy.py and adapters/torch.py -- fixed-literal optional-dependency lazy loading, the same pattern already verified for xliff's own xmlschema extra this session). Individually investigated and confirmed every site is legitimate before writing any assertion around it -- none is silently allow-listed.",
+    "regression_tier": "full ipynb suite, full safetensors suite, full 6-format regression, ruff"
+  },
+  "execution_steps": [
+    "1. Ran a standalone AST scan (socket/urllib/http/ftplib/smtplib/subprocess/importlib/pkgutil/ctypes, the same forbidden-module set nrrd/xliff/ubl already use) across ipynb's full source tree: found subprocess (adapters/execute.py), urllib (model/attachments.py, validation/rules.py), importlib (validation/schema.py). Zero hits for socket/http/ftplib/smtplib/pkgutil/ctypes.",
+    "2. Investigated each ipynb hit individually before writing any assertion: subprocess is confined to adapters/execute.py (IPYNB-EXEC-001's own required opt-in, isolated execution adapter, already audit-hook-tested); both urllib hits are `from urllib.parse import quote, unquote` (pure string encoding, no network I/O -- urllib.request/urllib.error never imported); the importlib hit is `from importlib import resources` (static bundled-schema-file reading, not dynamic module loading -- confirmed no importlib.import_module or __import__ call exists anywhere in ipynb).",
+    "3. Ran the same scan across safetensors' full source tree: found importlib.import_module in adapters/numpy.py and adapters/torch.py only. Zero hits for every other forbidden module including subprocess/urllib/socket.",
+    "4. Investigated both safetensors hits: each calls importlib.import_module with a fixed string literal (\"numpy\", \"torch\") -- confirmed by reading the exact call sites -- the standard idiomatic lazy-optional-dependency pattern (the base package works with neither installed; array/tensor interop lazily imports only when a caller actually requests it), not an attacker-influenced dynamic import.",
+    "5. Added tests/python/ipynb/test_obligation_security_baseline.py (5 tests): fully-forbidden modules never imported; subprocess confined to adapters/execute.py; urllib confined to the parse submodule (urllib.request/error never imported, checked both `from urllib import request` and `import urllib.request` import forms); no dynamic importlib.import_module/__import__ call anywhere; no eval/exec/compile call anywhere (a static complement to the existing runtime audit-hook proof in test_obligation_core_path_no_execution.py).",
+    "6. Added tests/python/safetensors/test_obligation_security_baseline.py (4 tests, safetensors' first security test file of any kind): fully-forbidden modules never imported; no eval/exec/compile call anywhere; dynamic import confined to exactly the 2 known sites, each verified to pass only its own expected fixed string literal (an import_module call with any other argument, or from any other file, fails the check); a staleness guard confirming both allow-listed files still exist (so the check cannot pass vacuously after a rename).",
+    "7. Ran ruff (clean) and the full ipynb suite (725 passed, was 720, +5) and safetensors suite (411 passed, 3 skipped, +4) before the 6-format regression.",
+    "8. Ran the full 6-format regression: 3767 passed (was 3758), +9, 0 failed, 4 skipped.",
+    "9. Wrote reports/certification/ipynb/security-gate.json and reports/certification/safetensors/security-gate.json recording each package's own genuine, verified security-gate result and the specific checks performed -- explicitly NOT a certification verdict for the format as a whole, only the one named invariant."
+  ],
+  "allowed_files": [
+    "tests/python/ipynb/test_obligation_security_baseline.py",
+    "tests/python/safetensors/test_obligation_security_baseline.py",
+    "reports/certification/ipynb/security-gate.json",
+    "reports/certification/safetensors/security-gate.json"
+  ],
+  "actual_files_changed": [
+    "tests/python/ipynb/test_obligation_security_baseline.py",
+    "tests/python/safetensors/test_obligation_security_baseline.py",
+    "reports/certification/ipynb/security-gate.json",
+    "reports/certification/safetensors/security-gate.json"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ipynb/test_obligation_security_baseline.py -v -- 5 passed (all new)",
+    ".venv/Scripts/pytest tests/python/safetensors/test_obligation_security_baseline.py -v -- 4 passed (all new)",
+    ".venv/Scripts/python -m ruff check <changed test files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb -q -- 725 passed (was 720)",
+    ".venv/Scripts/pytest tests/python/safetensors -q -- 411 passed, 3 skipped (was 407 passed, 3 skipped)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3767 passed, 4 skipped, 0 failed (was 3758)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations closed (this is a certification-gate invariant, not an obligation)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": "ipynb=68, safetensors=86",
+    "new_public_api": null
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

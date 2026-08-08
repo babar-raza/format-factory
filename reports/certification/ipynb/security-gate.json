@@ -1,0 +1,23 @@
+{
+  "format_id": "ipynb",
+  "gate": "security",
+  "tool": "AST static import/call sweep + existing runtime audit-hook suite",
+  "target": "src/python/ipynb/src/format_factory/ipynb",
+  "status": "PASS",
+  "verdict": "PASS",
+  "checks": {
+    "fully_forbidden_modules_never_imported": "PASS (socket, http, ftplib, smtplib, pkgutil, ctypes -- 0 occurrences)",
+    "subprocess_confined_to_execution_adapter": "PASS (adapters/execute.py only, the obligation-required opt-in adapter)",
+    "urllib_confined_to_non_network_parse_submodule": "PASS (urllib.parse only in model/attachments.py and validation/rules.py; urllib.request/urllib.error never imported)",
+    "no_dynamic_import_call_anywhere": "PASS (no importlib.import_module or __import__ call; validation/schema.py's importlib.resources usage is static data-file reading, not dynamic loading)",
+    "no_eval_exec_compile_call_anywhere_in_source": "PASS (static complement to the existing runtime audit-hook proof)"
+  },
+  "prior_art": "IPYNB-SEC-001's own 5 obligations (all already status=implemented per the obligation reconciler) cover resource-limit enforcement and the load/validate/diff/save-never-executes boundary via test_obligation_core_path_no_execution.py's CPython audit-hook proof. This gate adds the complementary whole-package static sweep neither already provides.",
+  "new_tests": "tests/python/ipynb/test_obligation_security_baseline.py (5 tests, all new)",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the security invariant only, not a certification claim for the format as a whole.",
+  "regression": {
+    "ipynb_suite": "725 passed (was 720, +5)",
+    "six_format_suite": "3767 passed, 4 skipped, 0 failed"
+  },
+  "commit": "pending"
+}
