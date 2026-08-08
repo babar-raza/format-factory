@@ -12,21 +12,35 @@ mandatory explicit policies -- there is deliberately no default overflow or
 rounding policy, so a caller cannot silently get behavior they did not ask
 for.
 
-Encoding conversion (raw <-> gzip/bzip2/ascii/hex) and attached/detached form
-conversion are NOT implemented here. Both are real, separate pieces of work
-this module's docstring names honestly as absent rather than stubbing them
-to look covered.
+Encoding conversion (raw <-> gzip/bzip2/ascii/hex) is implemented via
+`convert_encoding()`: the writer already recomputes payload bytes fresh
+from a document's own decoded `array` and dtype/endian on every `dumps()`
+call (`_encode_payload` in codec/writer/writer.py calls `encode_binary()`
+then `encode_encoding()`, never reading the old `.payload` bytes at all),
+so switching encodings needs no value-level policy the way dtype
+conversion does -- it is a lossless header-metadata change, not a
+data-transformation one. `document.payload` itself does not need to
+change either: it always holds the decoded (post-decompression) form
+regardless of which encoding the file used, so it already represents the
+new encoding's own source data as-is.
+
+Attached/detached form conversion is NOT implemented here: converting a
+single-file document with an attached payload into a multi-file detached
+form (or the reverse) needs real file-splitting/joining logic, a
+genuinely separate, larger piece of work this module's docstring names
+honestly as absent rather than stubbing it to look covered.
 """
 
 from __future__ import annotations
 
 import math
 import struct
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from enum import Enum
 
-from .codec.payload import dtype_info
+from .codec.payload import SUPPORTED_ENCODINGS, dtype_info
 from .errors import NrrdWriteError
+from .model import NrrdDocument
 
 #: Inclusive (min, max) for every integer struct format character NRRD uses.
 _INTEGER_RANGES: dict[str, tuple[int, int]] = {
@@ -150,6 +164,47 @@ def convert_dtype(
     return converted, report
 
 
+@dataclass(frozen=True, slots=True)
+class EncodingConversionReport:
+    """What actually happened during an encoding conversion -- never silent."""
+
+    source_encoding: str
+    target_encoding: str
+
+    @property
+    def is_lossless(self) -> bool:
+        # Every supported encoding round-trips the same decoded values
+        # exactly (proven by codec/reader + codec/writer's own existing
+        # obligations) -- encoding conversion never touches a value, only
+        # how it is packed, so this is always true. Kept as an explicit
+        # property, matching ConversionReport's own shape, rather than a
+        # bare True a reader would have to take on faith.
+        return True
+
+
+def convert_encoding(document: NrrdDocument, target_encoding: str) -> tuple[NrrdDocument, EncodingConversionReport]:
+    """Return a copy of `document` set to write as `target_encoding`.
+
+    The returned document's own `array`/decoded values are unchanged --
+    encoding conversion is lossless by construction, so there is no
+    overflow/clipping/rounding policy to choose the way `convert_dtype()`
+    needs one. Serializing the returned document (via `dumps()`/`dump()`)
+    is what actually produces payload bytes in the new encoding; this
+    function only prepares the document, matching `convert_dtype()`'s own
+    return-converted-values-plus-report shape.
+    """
+
+    normalized = target_encoding.lower()
+    if normalized not in SUPPORTED_ENCODINGS:
+        raise NrrdWriteError(f"unsupported NRRD encoding: {target_encoding!r}")
+    report = EncodingConversionReport(
+        source_encoding=document.encoding,
+        target_encoding=normalized,
+    )
+    converted = replace(document, header={**document.header, "encoding": normalized})
+    return converted, report
+
+
 def convert_endian(payload: bytes, *, type_name: str) -> bytes:
     """Byte-swap `payload`'s elements in place (returned as new bytes).
 
@@ -171,8 +226,10 @@ def convert_endian(payload: bytes, *, type_name: str) -> bytes:
 
 __all__ = [
     "ConversionReport",
+    "EncodingConversionReport",
     "OverflowPolicy",
     "RoundingPolicy",
     "convert_dtype",
+    "convert_encoding",
     "convert_endian",
 ]

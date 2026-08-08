@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-encoding-conversion-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T03:40:36Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_ENCODING_CONVERSION_001",
+    "task_kind": "fifth-large-item-this-session-found-smaller-than-framed",
+    "root_cause": "Per FF6-EVENT-000299's own exact_next_action, applied a fresh systematic pass over nrrd's remaining 18 obligations (which had not individually received this session's own 'check for hidden reuse' discipline as thoroughly as ora/xliff/ubl had). NRRD-CONVERT-001's own missing_behavior named encoding conversion as unbuilt; convert.py's own module docstring confirmed this explicitly. Checked whether the writer's own existing dumps() path already had everything needed: codec/writer/writer.py's _encode_payload() recomputes payload bytes fresh from a document's own decoded array via encode_binary()+encode_encoding() on every call, never reading the document's old .payload bytes at all -- meaning it already re-encodes correctly for whatever encoding the header currently declares, regardless of what encoding the file was originally read with.",
+    "obligation_targeted": "SAL-NRRD-OBL-E2B0331E7D4F6AD8 (NRRD-CONVERT-001) narrowed, not closed -- encoding conversion clause resolved; attached/detached form conversion remains a genuinely separate, larger gap.",
+    "acceptance_evidence": "convert_encoding() (convert.py) verified round-tripping every supported encoding (raw/gzip/bzip2/ascii/hex) with byte-for-byte identical decoded values afterward, before any test was written. 9 new tests cover all 5 encodings, case-insensitivity, refusal of an unsupported name, non-mutation of the source document, and a same-encoding no-op.",
+    "regression_tier": "full nrrd package suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Confirmed document.payload always holds the DECODED (post-decompression) form regardless of the file's original encoding (established earlier this session at FF6-EVENT-000291's own investigation) -- meaning payload itself represents the new encoding's own source data as-is and does not need to change when converting.",
+    "2. Traced writer.py's own _encode_payload(): binary = encode_binary(value.nrrd_type, value.sizes, value.array, ...) is computed FRESH from value.array (never from value.payload), then encode_encoding(binary, value.array, value.encoding, ...) applies whatever encoding value.header currently declares. This confirmed the writer is already fully self-sufficient for any encoding, given the right header value.",
+    "3. Verified directly with a standalone repro before writing any code: dataclasses.replace(document, header={**document.header, 'encoding': 'gzip'}) followed by dumps() and a reload correctly round-tripped the same decoded values. Repeated for ascii, hex, bzip2, raw -- all passed.",
+    "4. Implemented convert_encoding(document, target_encoding) -> tuple[NrrdDocument, EncodingConversionReport] in convert.py: validates target_encoding against SUPPORTED_ENCODINGS (raising NrrdWriteError with a clear message otherwise, matching writer.py's own validation message), returns a new document via dataclasses.replace() with only the header's encoding field changed, plus a report recording source/target encoding. Added EncodingConversionReport as a distinct dataclass from ConversionReport (dtype-shaped fields like overflow_policy/clipped_indices do not apply to a lossless encoding change), with is_lossless always True (documented why, not left as an unexplained bare constant).",
+    "5. Wrote 9 tests (test_obligation_encoding_conversion.py): every supported encoding round-trips correctly (parametrized); case-insensitive target name; refuses an unsupported encoding name; does not mutate the source document (dataclasses.replace() returns a new object); converting to the same encoding is a correct no-op.",
+    "6. Ran mypy --strict (clean), ruff (clean), the full nrrd suite (631 passed, was 622), and the 6-format regression (3685 -> 3694 passed, +9, 0 failed).",
+    "7. Narrowed (not closed) SAL-NRRD-OBL-E2B0331E7D4F6AD8: encoding conversion is now cited as resolved in implemented_behavior; missing_behavior updated to name only attached/detached form conversion (a genuinely separate, larger file-splitting/joining feature) and dtype scaling as the remaining gaps, honestly distinguishing them from the now-resolved encoding-conversion clause."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/convert.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_encoding_conversion.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/convert.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_encoding_conversion.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_encoding_conversion.py -v -- 9 passed (all new)",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/convert.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd -q -- 631 passed, 1 skipped (was 622)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3694 passed, 4 skipped, 0 failed (was 3685)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation narrowed (not closed)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 65,
+    "new_public_api": ["format_factory.nrrd.convert_encoding", "format_factory.nrrd.EncodingConversionReport"]
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

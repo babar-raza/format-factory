@@ -25,9 +25,11 @@ from .codec import (
 from .codec.payload import available_encodings, decode_binary, encode_binary
 from .convert import (
     ConversionReport,
+    EncodingConversionReport,
     OverflowPolicy,
     RoundingPolicy,
     convert_dtype,
+    convert_encoding,
     convert_endian,
 )
 from .errors import NrrdError, NrrdParseError, NrrdWriteError
@@ -49,13 +51,15 @@ from .security import NRRD_DEFAULT_LIMITS
 from .validation import validate
 
 __all__ = [
-    "ConversionReport", "DOMAIN_KINDS", "NRRD_DEFAULT_LIMITS", "NrrdDocument",
+    "ConversionReport", "DOMAIN_KINDS", "EncodingConversionReport",
+    "NRRD_DEFAULT_LIMITS", "NrrdDocument",
     "NrrdError", "NrrdHeader", "NrrdLazyPayload", "NrrdParseError",
     "NrrdWriteError", "OverflowPolicy", "PayloadAccess", "PayloadAccessMode",
     "PreservationIssue", "PreservationReport", "RoundingPolicy",
     "SpaceTransform",
     "available_encodings",
-    "axis_sizes", "build_space_transform", "convert_dtype", "convert_endian",
+    "axis_sizes", "build_space_transform", "convert_dtype", "convert_encoding",
+    "convert_endian",
     "decode_nrrd_data", "dump", "dump_detached", "dumps", "element_count",
     "encode_nrrd_data",
     "get_array", "get_dimension", "get_encoding", "is_compressed", "load",
