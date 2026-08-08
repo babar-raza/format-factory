@@ -21,6 +21,7 @@ commercial_product_ready: false
 
 samples:
   - sample_id: valid/minimal.ora
+    sha256: "a8fa5a0ce7840a8b1e6a199a84d2beafe354db697c374bff478334718dbe0543"
     source_type: project-owned-synthetic
     generation_tool: "format_factory.ora write path (commit 356a0008)"
     generation_date: "2026-08-05"
@@ -30,6 +31,7 @@ samples:
     provenance_status: confirmed
 
   - sample_id: valid/multi-layer.ora
+    sha256: "7eefb650ca0f883119e1554de88c5e2a770c3e12c0cdbf2e28f2a40f8ea36822"
     source_type: project-owned-synthetic
     generation_tool: "format_factory.ora write path (commit 356a0008)"
     generation_date: "2026-08-05"
@@ -39,6 +41,7 @@ samples:
     provenance_status: confirmed
 
   - sample_id: valid/with-groups.ora
+    sha256: "c2b8c86df094ee1c4753d42826287f88992942354cb4de7b9ca4e7b42838c513"
     source_type: project-owned-synthetic
     generation_tool: "format_factory.ora write path (commit 356a0008)"
     generation_date: "2026-08-05"
@@ -48,6 +51,7 @@ samples:
     provenance_status: confirmed
 
   - sample_id: invalid/missing-layer-source.ora
+    sha256: "590e7e81e97d54d7deac676fd25db0653be12f68e3951e11485819efb214be0e"
     source_type: project-owned-synthetic
     generation_tool: "Python 3.13 stdlib zipfile, derived from valid/minimal.ora with data/layer.png removed"
     generation_date: "2026-08-08"
@@ -58,6 +62,7 @@ samples:
     expected_error: true
 
   - sample_id: invalid/missing-thumbnail.ora
+    sha256: "0140c7d1503155405097b36498d8e9c6214f7c062a9ac33af93e7a0f1c9380bf"
     source_type: project-owned-synthetic
     generation_tool: "Python 3.13 stdlib zipfile, derived from valid/minimal.ora with Thumbnails/thumbnail.png removed"
     generation_date: "2026-08-08"
@@ -68,6 +73,7 @@ samples:
     expected_error: true
 
   - sample_id: invalid/corrupt-layer-source.ora
+    sha256: "e1e9f90d9a793c5b099d98188f3c9de50d399ec63f161da6eaf448bab9f16d3c"
     source_type: project-owned-synthetic
     generation_tool: "Python 3.13 stdlib zipfile, derived from valid/minimal.ora with data/layer.png content replaced by non-PNG bytes"
     generation_date: "2026-08-08"
@@ -78,6 +84,7 @@ samples:
     expected_error: true
 
   - sample_id: invalid/thumbnail-unreadable.ora
+    sha256: "e1acd70c093060bac18e6bc50a1599d6c1d184260bf7e8ec534371086319bad2"
     source_type: project-owned-synthetic
     generation_tool: "Python 3.13 stdlib zipfile, derived from valid/minimal.ora with Thumbnails/thumbnail.png content replaced by non-PNG bytes"
     generation_date: "2026-08-08"
@@ -88,6 +95,7 @@ samples:
     expected_error: true
 
   - sample_id: invalid/thumbnail-non-conforming.ora
+    sha256: "10c5f670f5c92cb10eb3f96010a608c508877038690398554376e8fac7a4fdc5"
     source_type: project-owned-synthetic
     generation_tool: "Python 3.13 stdlib zipfile + struct/zlib PNG construction, derived from valid/minimal.ora with Thumbnails/thumbnail.png replaced by a valid but 300x300 PNG"
     generation_date: "2026-08-08"
@@ -98,6 +106,7 @@ samples:
     expected_error: true
 
   - sample_id: invalid/mergedimage-unreadable.ora
+    sha256: "018bf0627a670cc365cf37739b17605d3da022439abb218df05154077d38695a"
     source_type: project-owned-synthetic
     generation_tool: "Python 3.13 stdlib zipfile, derived from valid/minimal.ora with mergedimage.png content replaced by non-PNG bytes"
     generation_date: "2026-08-08"
@@ -108,6 +117,7 @@ samples:
     expected_error: true
 
   - sample_id: invalid/mergedimage-non-conforming.ora
+    sha256: "1b33acd79ddae617cfa3bb115f48ae116ce5beb9277596eda40c179106fa0498"
     source_type: project-owned-synthetic
     generation_tool: "Python 3.13 stdlib zipfile + struct/zlib PNG construction, derived from valid/minimal.ora with mergedimage.png replaced by a valid but 4-bit-depth PNG"
     generation_date: "2026-08-08"
