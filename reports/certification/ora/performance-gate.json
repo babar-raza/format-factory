@@ -7,14 +7,15 @@
   "baseline_file": "reports/certification/ora/performance-baseline.json",
   "results": {
     "sample": "samples/by-format/ora/valid/with-groups.ora",
-    "parse_median_ms": 1.02,
-    "parse_min_ms": 1.02,
-    "write_median_ms": 0.26,
-    "write_min_ms": 0.26,
+    "parse_median_ms": 0.49,
+    "parse_min_ms": 0.46,
+    "write_median_ms": 0.11,
+    "write_min_ms": 0.1,
     "memory_peak_kb": 78.8,
     "runs": 5
   },
   "genuinely_new_this_tick": "No performance benchmark existed for ora anywhere in the repository before this tick. Added benchmark_ora() following the exact same measurement pattern already established for xliff/safetensors (time.perf_counter over 5 runs for parse/write, tracemalloc for peak memory) and registered it in the tool's own main() loop. Re-ran the full tool since main() always reruns every registered benchmark; only the genuinely new ora-specific output (this file, plus performance-baseline.json) is committed -- the other formats' own baseline files were regenerated as a side effect with pure timing noise (no structural change) and were reverted rather than committed, matching the exact precedent already established when this same thing happened during xliff's own performance-gate work.",
+  "re_run_this_tick": "FF6-EVENT-000439: independently re-ran, continuing the ora leg of the nrrd/ora/ubl gate sweep. ora's own baseline was already refreshed as a side effect of Event 410's shared tool invocation, left uncommitted at the time since ora was outside that tick's own ipynb-focused scope; now within this sweep's own scope. New numbers (parse=0.49ms/write=0.11ms vs prior 1.02ms/0.26ms) differ but stay within ordinary sub-millisecond timing noise for a sample this small; memory peak unchanged at 78.8KB. No SLA exists to violate in either direction.",
   "note_on_thresholds": "No pre-existing pass/fail performance threshold exists for any format in this tool -- it records baselines, it does not gate on them. This gate's own PASS verdict reflects 'a real, reproducible baseline now exists and the operations complete in reasonable time for a document this size', not a numeric SLA.",
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the performance invariant only, not a certification claim for the format as a whole.",
   "commit": "pending"
