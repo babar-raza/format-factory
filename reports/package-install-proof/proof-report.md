@@ -15,7 +15,7 @@ Canonical machine-readable source: `proof-manifest.json`. Orchestrator:
 | 6 | fods | format-factory-fods | 0.1.0.dev0 | PASS | PASS | **PASS** | 47/49 |
 | 7 | fodt | format-factory-fodt | 0.1.0.dev0 | PASS | PASS | **PASS** | 51/52 |
 | 8 | gnumeric | format-factory-gnumeric | 0.1.0.dev0 | PASS | PASS | **PASS** | 28/29 |
-| 9 | ipynb | format-factory-ipynb | 0.2.0.dev0 | PASS | PASS | **PASS** | 28/28 |
+| 9 | ipynb | format-factory-ipynb | 0.2.0.dev0 | PASS | PASS | **PASS** | 31/31 |
 | 10 | mtlx | format-factory-mtlx | 0.1.0.dev0 | PASS | PASS | **PASS** | 21/22 |
 | 11 | ndjson | format-factory-ndjson | 0.1.0.dev0 | PASS | PASS | **PASS** | 30/31 |
 | 12 | nrrd | format-factory-nrrd | 0.2.0.dev0 | PASS | PASS | **PASS** | 16/16 |

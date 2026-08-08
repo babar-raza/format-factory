@@ -1,0 +1,21 @@
+{
+  "format_id": "safetensors",
+  "gate": "installed-wheel",
+  "tool": "tools/run_package_install_proof.py --format safetensors",
+  "canonical_manifest": "reports/package-install-proof/proof-manifest.json",
+  "status": "PASS",
+  "verdict": "PASS",
+  "proof_id": "PACKAGE-PROOF-A7A4953F7642FDD169CA7875E686EA5C4A8E2920776C899E841E8A7AF83A189A",
+  "checks": {
+    "build_mode": "native_pyproject",
+    "install_result": "PASS -- installed from a freshly built wheel into an isolated ephemeral venv, not the dev checkout",
+    "local_dependency": "format-factory-core wheel installed first, PASS",
+    "import_result": "PASS",
+    "deep_import": "PASS -- 21/21 submodules import cleanly, 0 failing",
+    "smoke_result": "PASS -- format_factory.safetensors.load on samples/by-format/safetensors/valid/single-tensor.safetensors",
+    "pytest_in_proof_venv": "2 passed, 1 skipped"
+  },
+  "re_run_this_tick": "Re-ran fresh rather than trusting the cached manifest, since this session modified safetensors' own source (writer max_output_bytes fix and security tests at Event 311) after the manifest's prior proof_id/source_digest were recorded -- VR-003 discipline (verify a claim against current HEAD before trusting it). The fresh run produced a new proof_id and source_digest bound to the current commit, confirming the wheel still installs and imports cleanly after those changes.",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the installed-wheel invariant only, not a certification claim for the format as a whole.",
+  "commit": "pending"
+}

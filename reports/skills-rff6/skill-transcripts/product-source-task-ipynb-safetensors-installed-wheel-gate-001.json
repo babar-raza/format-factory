@@ -1,0 +1,60 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-safetensors-installed-wheel-gate-001",
+  "skill_id": "package-install-proof",
+  "manifest_id": "sfx-688b9c1fc9f5581a",
+  "mode": "live",
+  "timestamp": "2026-08-08T05:37:35Z",
+  "inputs": {
+    "format_id": "ipynb+safetensors",
+    "task_id": "TC_FF6_IPYNB_SAFETENSORS_INSTALLED_WHEEL_GATE_001",
+    "task_kind": "certification-gate-frontier-fifth-concrete-step",
+    "root_cause": "Event 311's own exact_next_action named 'installed-wheel' as the next invariant, noting reports/package-install-proof/proof-manifest.json (a canonical manifest already covering 26 formats) should be checked before assuming new work is needed. Read the manifest directly: both ipynb and safetensors already show verdict=PASS. Applied VR-003 discipline before trusting the cached claim: this session already modified both formats' own source after that proof was last recorded (ipynb's typing fix at Event 308, safetensors' writer max_output_bytes fix at Event 311), so the cached proof_id/source_digest could be stale relative to current HEAD.",
+    "obligation_targeted": "product-goal.yaml's own 'installed-wheel' completion invariant for ipynb and safetensors -- NOT a certification claim for either format as a whole.",
+    "acceptance_evidence": "Re-ran tools/run_package_install_proof.py --format {ipynb,safetensors} fresh rather than trusting the cached manifest. Both produced a new proof_id and source_digest bound to the current commit: wheel built, installed into an isolated ephemeral venv (not the dev checkout), all submodules deep-imported cleanly (31/31 for ipynb, 21/21 for safetensors), a real smoke test ran against a real sample file, and 2 passed/1 skipped pytest ran inside the proof venv itself for each.",
+    "regression_tier": "full 6-format regression (unaffected, no source or test files touched)"
+  },
+  "execution_steps": [
+    "1. Read reports/package-install-proof/proof-manifest.json directly: confirmed both ipynb and safetensors already show verdict=PASS from a prior run.",
+    "2. Applied VR-003 (never trust a cached claim without HEAD verification): this session already changed both formats' own source since that proof was last recorded, so the cached proof_id/source_digest binding could be stale.",
+    "3. Ran `.venv/Scripts/python tools/run_package_install_proof.py --format ipynb`: built a fresh wheel, created/reused an isolated ephemeral proof venv, installed format-factory-core then format-factory-ipynb from the freshly built wheels (not editable/dev-mode), ran 31 deep-imports (0 failing), ran the smoke test (format_factory.ipynb.load_ipynb against samples/by-format/ipynb/valid/minimal.ipynb), and ran pytest inside the proof venv itself (2 passed, 1 skipped). RESULT: 1/1 PASS.",
+    "4. Ran the identical flow for safetensors: 21 deep-imports (0 failing), smoke test against samples/by-format/safetensors/valid/single-tensor.safetensors, pytest in the proof venv (2 passed, 1 skipped). RESULT: 1/1 PASS.",
+    "5. Confirmed the manifest diff was scoped to exactly the 2 formats re-run (10 changed fields: proof_id, proof_input_digest, source_digest, deep_import.total per format), no other of the 26 tracked formats touched.",
+    "6. Ran the full 6-format regression as a final sanity check (3772 passed, 4 skipped, 0 failed, unchanged) even though no src/ or test files were touched this slice.",
+    "7. Wrote reports/certification/ipynb/installed-wheel-gate.json and reports/certification/safetensors/installed-wheel-gate.json recording the fresh, current-HEAD-bound verdict and explicitly noting why a re-run (not the cached value) was used."
+  ],
+  "allowed_files": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-ipynb.json",
+    "reports/package-install-proof/transcripts/package-install-proof-safetensors.json",
+    "reports/certification/ipynb/installed-wheel-gate.json",
+    "reports/certification/safetensors/installed-wheel-gate.json"
+  ],
+  "actual_files_changed": [
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-ipynb.json",
+    "reports/package-install-proof/transcripts/package-install-proof-safetensors.json",
+    "reports/certification/ipynb/installed-wheel-gate.json",
+    "reports/certification/safetensors/installed-wheel-gate.json"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python tools/run_package_install_proof.py --format ipynb -- RESULT: 1/1 PASS",
+    ".venv/Scripts/python tools/run_package_install_proof.py --format safetensors -- RESULT: 1/1 PASS",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3772 passed, 4 skipped, 0 failed (unchanged)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations closed (this is a certification-gate invariant, not an obligation)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": "ipynb=68, safetensors=86",
+    "new_public_api": null
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

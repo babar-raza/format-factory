@@ -1,0 +1,21 @@
+{
+  "format_id": "ipynb",
+  "gate": "installed-wheel",
+  "tool": "tools/run_package_install_proof.py --format ipynb",
+  "canonical_manifest": "reports/package-install-proof/proof-manifest.json",
+  "status": "PASS",
+  "verdict": "PASS",
+  "proof_id": "PACKAGE-PROOF-C3173BCBF86DACC16887B733FF75E63D428764F9E5DE7728DBF2EEF9E9EAB70D",
+  "checks": {
+    "build_mode": "native_pyproject",
+    "install_result": "PASS -- installed from a freshly built wheel into an isolated ephemeral venv, not the dev checkout",
+    "local_dependency": "format-factory-core wheel installed first, PASS",
+    "import_result": "PASS",
+    "deep_import": "PASS -- 31/31 submodules import cleanly, 0 failing",
+    "smoke_result": "PASS -- format_factory.ipynb.load_ipynb on samples/by-format/ipynb/valid/minimal.ipynb",
+    "pytest_in_proof_venv": "2 passed, 1 skipped"
+  },
+  "re_run_this_tick": "Re-ran fresh rather than trusting the cached manifest, since this session modified ipynb's own source (typing fix at Event 308, security tests at Event 309) after the manifest's prior proof_id/source_digest were recorded -- VR-003 discipline (verify a claim against current HEAD before trusting it). The fresh run produced a new proof_id and source_digest bound to the current commit, confirming the wheel still installs and imports cleanly after those changes.",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the installed-wheel invariant only, not a certification claim for the format as a whole.",
+  "commit": "pending"
+}
