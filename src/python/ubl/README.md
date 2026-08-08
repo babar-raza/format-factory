@@ -195,6 +195,36 @@ any one of them. `decode_extension()` never raises and never alters
 `adapter_known=False` rather than an error, so calling it on every
 extension node in a document is always safe, decoded or not.
 
+## Profile-specific validation
+
+`validate()` checks the stable structural chassis only, deliberately
+independent of any customization profile's own business rules (EN 16931,
+PEPPOL BIS, and similar rulesets are numerous, versioned, and not
+something this package bundles). `ProfileValidatorRegistry` gives a
+caller a place to register one, keyed by `cbc:CustomizationID` --
+`ProfileID` identifies the business process a document participates in,
+not which ruleset applies to it, so it is deliberately not the key:
+
+```python
+from format_factory.ubl import ProfileValidatorRegistry, validate_profile
+
+registry = ProfileValidatorRegistry().register(customization_id, my_validator)
+report = validate_profile(document, registry)
+if report is None:
+    print("no profile-specific ruleset ran for this document's customization ID")
+elif not report.is_valid:
+    print(report.diagnostics)
+```
+
+`register()` returns a *new* registry rather than mutating the caller's
+own -- a registry already shared or cached cannot be changed out from
+under its holder by an unrelated registration elsewhere. `validate_profile`
+returns `None`, never an empty or passing report, when the document
+declares no customization ID or nothing is registered for the one it
+declares: `None` is not evidence of conformance, it means no
+profile-specific ruleset ran at all, and a caller must not read it as
+"passed."
+
 ## Official OASIS sample corpus
 
 ```python

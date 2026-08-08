@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-profile-validation-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-ceacada6857211e0",
+  "mode": "live",
+  "timestamp": "2026-08-08T16:13:03Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_PROFILE_VALIDATION_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-continuing-a-third-pass-on-a-format",
+    "root_cause": "Event 358's own exact_next_action asked for a firm decision: attempt exactly one more candidate (ubl's profile-based validation, the most promising remaining by name) as a final documentation-direction attempt, or treat diminishing returns as the stopping signal. Investigated profile-based validation directly: ProfileValidatorRegistry/validate_profile is real, obligation-linked (UBL-PROFILE-001), and is a fourth, genuinely DISTINCT instance of the pluggable-registry pattern (immutable -- register() returns a new registry rather than mutating, unlike the other three already-documented registries) with a careful, safety-motivated None-means-not-installed-never-passed contract directly matching the obligation's own 'never claim profile conformance without the installed ruleset passing' wording -- not a marginal or cosmetic find.",
+    "obligation_targeted": "No specific obligation-register status change (ubl remains at 6/194 unresolved, unaffected by this tick) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage.",
+    "acceptance_evidence": "Read validation/profiles.py in full: ProfileValidator (a Callable[[UblDocument], ValidationReport] type alias), ProfileValidatorRegistry (frozen dataclass, register() returns a NEW registry, installed_for() looks up by CustomizationID not ProfileID -- deliberately, since CustomizationID is what selects the ruleset in real deployments like EN 16931/PEPPOL BIS), and validate_profile() itself (returns None, never an empty/passing report, when no customization ID is declared or nothing is registered for it). Verified against a real corpus document's own real, non-trivial customization_id (samples/by-format/ubl/official/DespatchAdvice.xml, 'urn:oasis:names:specification:ubl:xpath:DespatchAdvice-2.0:sbs-1.0-draft'): validate_profile against an empty registry correctly returned None; after registering a validator for that exact real ID, validate_profile correctly ran it and returned its report; and directly confirmed the ORIGINAL empty registry stayed at len()=0 after register() returned a new one -- immutability verified by execution, not assumed from the docstring."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 358 commit (4ed6ec55); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Reviewed Event 358's own named remaining candidates for ubl's third pass: profile-based validation and create_empty/detect_document_type/document_type_coverage. Chose profile-based validation as the one final attempt this tick, per Event 358's own instruction to make a firm decision after this candidate.",
+    "3. Read validation/profiles.py in full (95 lines): the module's own docstring cites UBL-PROFILE-001 (SAL-UBL-OBL-7D0855CD163E1EFD) directly and explains the CustomizationID-vs-ProfileID distinction (CustomizationID selects the ruleset in real deployments like EN 16931/PEPPOL BIS; ProfileID identifies the business process, not the ruleset) -- a real, considered design decision, not an arbitrary key choice. Noted ProfileValidatorRegistry is a frozen dataclass whose own register() method returns a NEW registry rather than mutating -- distinct from the other three already-documented registries (CodeListRegistry, SignatureBackendRegistry, ExtensionAdapterRegistry), which mutate/accumulate in place.",
+    "4. Found a real official OASIS corpus document declaring a non-trivial CustomizationID by grepping for the literal string across samples/by-format/ubl/official/*.xml -- confirmed samples/by-format/ubl/official/DespatchAdvice.xml's own document.customization_id is 'urn:oasis:names:specification:ubl:xpath:DespatchAdvice-2.0:sbs-1.0-draft', a real, specific value, not a placeholder.",
+    "5. Verified the exact example before writing it, against this real document and ID: called validate_profile(document, ProfileValidatorRegistry()) (an empty registry) -- confirmed it returns None, matching the documented 'no profile-specific ruleset ran, do not read as passed' contract. Registered a validator (returning a diagnostic-bearing ValidationReport) for the document's exact real customization ID via ProfileValidatorRegistry().register(...), re-ran validate_profile -- confirmed it correctly ran the registered validator and returned its report. Directly checked len() of the ORIGINAL empty registry after calling .register() on it and confirmed it remained 0 (unaffected), proving the immutability claim by execution rather than trusting the docstring's own prose.",
+    "6. Added a new 'Profile-specific validation' README section directly after 'Extension content adapters (opt-in)' (grouping the fourth pluggable-registry pattern with the other three), with a runnable example and a prose paragraph explaining the CustomizationID-vs-ProfileID key choice, the immutable register() contract, and the None-is-not-conformance safety property -- all grounded directly in the source's own docstrings, not invented.",
+    "7. Regenerated reports/certification/ubl/documentation-gate.json to reflect the addition -- updated readme_line_count (239 -> 269), readme_sections (added 'Profile-specific validation'), symbol_existence count (23 distinct names now, +ProfileValidatorRegistry/validate_profile), a new example_execution entry documenting the real-document verification including the directly-confirmed immutability check, and extended the incidental_finding to note this closes profile-based validation, leaving only create_empty/detect_document_type/document_type_coverage as a remaining, unexplored candidate.",
+    "8. Did not modify any production source code -- ProfileValidatorRegistry/validate_profile already existed, fully correct and already tested by the existing test suite; this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration. Did not re-run the ubl test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/ubl/README.md",
+    "reports/certification/ubl/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/README.md",
+    "reports/certification/ubl/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: ProfileValidatorRegistry/validate_profile against a real corpus document's own real customization_id (samples/by-format/ubl/official/DespatchAdvice.xml) -- confirmed both the None-when-not-installed outcome and the runs-when-installed outcome, plus direct confirmation of the registry's own immutability by inspecting len() before and after register()",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap for an already-implemented, already-exported, obligation-linked capability (ProfileValidatorRegistry/validate_profile, UBL-PROFILE-001) -- no obligation status change (ubl remains at 6/194 unresolved, unaffected), but a real developer-discoverability improvement, completing the fourth of four documented pluggable-registry-style patterns in this package.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 194,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
