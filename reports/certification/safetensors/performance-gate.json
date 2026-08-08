@@ -7,14 +7,15 @@
   "baseline_file": "reports/certification/safetensors/performance-baseline.json",
   "results": {
     "sample": "samples/by-format/safetensors/valid/multi-tensor.safetensors",
-    "parse_median_ms": 0.38,
-    "parse_min_ms": 0.35,
+    "parse_median_ms": 0.34,
+    "parse_min_ms": 0.32,
     "write_median_ms": 0.02,
     "write_min_ms": 0.02,
     "memory_peak_kb": 8.9,
     "runs": 5
   },
   "genuinely_new_this_tick": "No performance benchmark existed for safetensors anywhere in the repository before this tick. Added benchmark_safetensors() following the exact same measurement pattern already proven for fods/csv/ipynb (time.perf_counter over 5 runs for parse/write, tracemalloc for peak memory) and registered it in the tool's own main() loop -- a genuine, additive extension.",
+  "re_run_this_tick": "FF6-EVENT-000412: independently re-ran the benchmark tool again (same shared invocation already used to refresh ipynb and xliff's own gates at Events 410-411) rather than trusting the cached baseline. New numbers (parse=0.34ms vs prior 0.38ms; write=0.02ms and memory=8.9KB both unchanged) are within ordinary sub-millisecond timing noise -- not a regression. This completes the performance gate type, and with it every gate/format pair in this rotation's own scope, across all 3 gate-complete formats.",
   "note_on_thresholds": "No pre-existing pass/fail performance threshold exists for any format in this tool -- it records baselines, it does not gate on them, matching the identical honest framing used for ipynb's own performance-gate.json. Sub-millisecond parse/write times and a small memory footprint are expected and unsurprising for this small (multi-tensor, few KB) sample and this format's own simple length-prefix-plus-JSON-header-plus-raw-bytes structure -- no decompression or complex tree-walking is involved, unlike ipynb's JSON document model.",
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the performance invariant only, not a certification claim for the format as a whole.",
   "commit": "pending"
