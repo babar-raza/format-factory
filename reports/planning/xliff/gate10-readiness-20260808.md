@@ -26,7 +26,7 @@ and does not write to `plans/strategic/ff6/controller-state.yaml`'s `promotion` 
 
 | # | Criterion | Status | Evidence |
 |---|---|---|---|
-| 1 | Production-quality Python source exists for the delivery-plan tiers | **MET, with a known scope gap** | `src/python/xliff/src/format_factory/xliff/` — 25 source files, ~4,049 LOC. 135/142 obligations `implemented` per `shared/format-contracts/implementation-evidence/xliff.yaml` (7 unresolved, reconciler-confirmed as of this session). |
+| 1 | Production-quality Python source exists for the delivery-plan tiers | **MET, with a known scope gap** | `src/python/xliff/src/format_factory/xliff/` — 25 source files, ~4,049 LOC. 136/142 obligations `implemented` per `shared/format-contracts/implementation-evidence/xliff.yaml` (6 unresolved, reconciler-confirmed fresh at FF6-EVENT-000293 — was 7 at this packet's original writing; FF6-EVENT-000292 closed a missed-duplicate XLIFF-VALIDATE-001 obligation in the meantime). |
 | 2 | Unit/integration tests exist for implemented features | **MET** | `tests/python/xliff/` — 49 test files, 543 tests passing (this session's own regression run). |
 | 3 | Release manifest generated, listing artifacts with visibility/license/provenance | **NOT MET — mechanical gap, not a content gap** | Same repo-wide gap documented for ipynb: `tools/validation/generate_manifest.py --release-type oss` requires file-level `visibility: public` YAML frontmatter that no FF6 format's files carry yet. Not xliff-specific. |
 | 4 | Human review of the release manifest: no `commercial`/`blocked`/unreviewed `generated` artifacts | **BLOCKED ON #3** | Cannot be performed until a manifest listing xliff's own artifacts exists. |
@@ -35,29 +35,35 @@ and does not write to `plans/strategic/ff6/controller-state.yaml`'s `promotion` 
 | 7 | `registry/format-registry.yaml` updated with `gate_10_status: passed` | **NOT DONE — requires human review per criterion 4** | Not set by this document. |
 
 **Verdict: 3 of 7 criteria cleanly met (2, 5, 6). Criterion 1 is met for the implemented
-majority but carries a real, quantified content gap (7/142 obligations unresolved) that
+majority but carries a real, quantified content gap (6/142 obligations unresolved) that
 ipynb/safetensors did not have at their own Gate 10 assessment time — see §2 for what
-those 7 are. Criteria 3–4 share the same mechanical, repo-wide frontmatter gap as every
+those 6 are. Criteria 3–4 share the same mechanical, repo-wide frontmatter gap as every
 other FF6 format. Criterion 7 is the human gate itself.**
 
 ---
 
-## 2. The 7 remaining unresolved obligations (honest accounting, not deferred to prose elsewhere)
+## 2. The 6 remaining unresolved obligations (honest accounting, not deferred to prose elsewhere)
 
-Per FF6-EVENT-000287's own fresh re-read (the most recent full pass over xliff's
-obligation set) and re-confirmed unchanged by FF6-EVENT-000288:
+**Correction (FF6-EVENT-000294):** re-verified fresh against
+`reports/format-contract-layer/xliff-obligation-reconciliation.json` rather than trusting
+this packet's own original table. The count dropped from 7 to 6 (FF6-EVENT-000292 closed
+a missed-duplicate XLIFF-VALIDATE-001 obligation after this packet was first written), and
+the original table's "Schematron execution (not just bundling)" row described that
+now-closed obligation's own stale missing_behavior text, not a separate still-open item —
+removed rather than carried forward inaccurately.
 
-| Obligation area | Nature of the gap |
-|---|---|
-| Tolerant recovery mode | Would require a genuine read-path architecture change (hard-fail → tolerant-plus-diagnostic), not a wiring fix. |
-| `trgLang` reverse-direction handling | Confirmed absent from the real OASIS XLIFF 2.1 spec text itself — not an implementation gap but a spec-silence case where the current behavior may already be correct; not re-classified as `implemented` without a spec citation proving the reverse-direction claim exists, so it stays honestly `missing`. |
-| Schematron execution (not just bundling) | The Schematron/NVDL *artifacts* are bundled and inventoried (FF6-EVENT-000277), but *executing* ISO Schematron rules requires an XSLT2-capable toolchain. This session confirmed no such toolchain is available in this environment — a real external dependency gap, not a code gap. |
-| Whole-tree `xml:space`/`xml:lang` inheritance walker | Needs parent-back-reference tree walking not currently modeled — a real, scoped architecture item. |
-| `sizeRestriction` VALUE-format profile resolution | Needs whole-tree profile resolution beyond the current per-element check — a real, scoped architecture item. |
+| Obligation | Capability | Nature of the gap |
+|---|---|---|
+| `SAL-XLIFF-OBL-0C477B7B6441FE75` | `XLIFF-LIFECYCLE-001` | A genuine tolerant/recovery read mode does not exist: `mode="preservation"` is accepted but has no distinct effect versus strict (no `recovery_actions` field, no actual recovery logic). Would require a genuine read-path architecture change, not a wiring fix. |
+| `SAL-XLIFF-OBL-2602F9167F95464B`, `SAL-XLIFF-OBL-C96F6CB613A6F95D` | `XLIFF-TEXT-001`, `XLIFF-PARSE-001` (2 obligations, same underlying gap) | The Schematron F1 pattern only asserts one direction (target elements present ⇒ trgLang required), not the reverse, even though the obligation's own rule_text uses "if and only if" phrasing. Implements exactly what the formal Schematron checks; does not invent the unasserted reverse direction. |
+| `SAL-XLIFF-OBL-7764F24576A4DC32` | `XLIFF-QA-001` | Length (`sizeRestriction`) violations are not implemented — needs actual numeric restriction values from the Size and Length Restriction module, which `XLIFF-MODULE-001` deliberately keeps `PRESERVATION_ONLY` (round-trips but does not parse attribute values yet). |
+| `SAL-XLIFF-OBL-7DA078717EA60881`, `SAL-XLIFF-OBL-867500AA0AC3D2C1` | `XLIFF-MODEL-001` (2 obligations, same underlying gap) | `xml:space`/`xml:lang` inheritance *rules* are proven as reusable primitives (`effective_xml_space()`, `effective_xml_lang()`), but neither is a whole-tree walker — the model has no parent back-references at all, a real, scoped architecture item. |
 
 None of these are mechanical reconciliation gaps; each was independently re-verified this
-session (FF6-EVENT-000287, FF6-EVENT-000288) as requiring genuine new implementation work,
-not stale evidence.
+session (FF6-EVENT-000287, 288, 292) as requiring genuine new implementation work, not
+stale evidence. A fresh word-for-word duplicate-rule_text sweep against every already-
+implemented xliff obligation (FF6-EVENT-000292) found no further missed duplicates among
+these 6.
 
 ---
 
@@ -65,11 +71,11 @@ not stale evidence.
 
 1. Same repo-wide frontmatter step as every other format's Gate 10 packet (§3 of the
    ipynb document) — deferred to the same human-reviewed batch, not done unilaterally here.
-2. The 5 items in §2 remain open product work, independent of Gate 10 mechanics — closing
-   them would raise criterion 1 from "met with a known gap" to "cleanly met," but Gate 10's
-   own text does not require 100% obligation closure, only "production-quality source...
-   for the delivery-plan tiers." Whether 135/142 clears that bar is a human judgment call,
-   not this document's to make.
+2. The 4 items in §2 (covering 6 obligations) remain open product work, independent of
+   Gate 10 mechanics — closing them would raise criterion 1 from "met with a known gap" to
+   "cleanly met," but Gate 10's own text does not require 100% obligation closure, only
+   "production-quality source... for the delivery-plan tiers." Whether 136/142 clears that
+   bar is a human judgment call, not this document's to make.
 
 ## 4. Explicit non-claims
 
@@ -77,5 +83,5 @@ not stale evidence.
   "Gate 10 passed."
 - This document does not modify `registry/format-registry.yaml`, any `visibility` field,
   or `plans/strategic/ff6/controller-state.yaml`'s `promotion` field.
-- The 7 unresolved obligations in §2 are not hidden or minimized — they are the single
+- The 6 unresolved obligations in §2 are not hidden or minimized — they are the single
   biggest open question this document surfaces for human review.

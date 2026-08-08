@@ -25,8 +25,8 @@ rather than presenting a uniform picture across formats.**
 
 | # | Criterion | Status | Evidence |
 |---|---|---|---|
-| 1 | Production-quality Python source exists for the delivery-plan tiers | **PARTIAL — genuine open work remains** | `src/python/nrrd/src/format_factory/nrrd/` — 21 source files. **19 of 65 obligations remain unresolved** per `shared/format-contracts/implementation-evidence/nrrd.yaml` (freshly reconciler-confirmed this event), not merely unaudited: a typed dtype/stride/slicing array API (NRRD-ARRAY-001, 2 obligations), the NRRD0005 measurement-frame transform (NRRD-SPACE-001/FRAME-001, deliberately kept separate from the already-built NRRD0004 index-to-world transform), a detached multi-file partition writer (NRRD-MULTIFILE-001/WRITE-001), a tolerant recovery-read mode (NRRD-LIFECYCLE-001), and encoding/form conversion (NRRD-CONVERT-001) are all genuinely unbuilt, each independently investigated and confirmed out-of-scope-for-a-single-tick this session, not merely deferred without investigation. |
-| 2 | Unit/integration tests exist for implemented features | **MET for what exists** | `tests/python/nrrd/` — 37 test files, 616 tests passing. Coverage is real for the 46 implemented obligations; the 19 unresolved obligations above correctly have no test claiming to cover them. |
+| 1 | Production-quality Python source exists for the delivery-plan tiers | **PARTIAL — genuine open work remains** | `src/python/nrrd/src/format_factory/nrrd/` — 21 source files. **18 of 65 obligations remain unresolved** per `shared/format-contracts/implementation-evidence/nrrd.yaml` (freshly reconciler-confirmed at FF6-EVENT-000293 — was 19 at this packet's original writing; FF6-EVENT-000291 closed `validate()`'s own raw-source trailing-payload-reporting gap in the meantime), not merely unaudited: a typed dtype/stride/slicing array API (NRRD-ARRAY-001, 2 obligations), the NRRD0005 measurement-frame transform (NRRD-SPACE-001/FRAME-001, deliberately kept separate from the already-built NRRD0004 index-to-world transform), a detached multi-file partition writer (NRRD-MULTIFILE-001/WRITE-001), a tolerant recovery-read mode (NRRD-LIFECYCLE-001), and encoding/form conversion (NRRD-CONVERT-001) remain genuinely unbuilt, each independently investigated and confirmed out-of-scope-for-a-single-tick this session, not merely deferred without investigation. |
+| 2 | Unit/integration tests exist for implemented features | **MET for what exists** | `tests/python/nrrd/` — 622 tests passing (fresh count). Coverage is real for the 47 implemented obligations; the 18 unresolved obligations above correctly have no test claiming to cover them. |
 | 3 | Release manifest generated, listing artifacts with visibility/license/provenance | **NOT MET — same mechanical gap as ipynb/safetensors** | Same tooling gap (`tools/validation/generate_manifest.py` needs file-level frontmatter nrrd's files don't have yet). Not the blocking gap for this format regardless — see criterion 1. |
 | 4 | Human review of the release manifest | **BLOCKED ON #3 (and, substantively, on #1)** | |
 | 5 | OSS solution built in isolation — zero commercial namespace references | **MET** | `tools/validation/check_boundary.py --src-only`: 0 of 59 repo-wide violations involve nrrd. No `src/net/nrrd/` exists. |
@@ -34,7 +34,7 @@ rather than presenting a uniform picture across formats.**
 | 7 | `registry/format-registry.yaml` updated with `gate_10_status: passed` | **NOT DONE** | Not set by this document. |
 
 **Verdict: 2 of 7 criteria cleanly met (5, 6), 1 partially met with real, substantial,
-already-scoped remaining work (criterion 1 — 19/65 obligations, mostly large-architecture
+already-scoped remaining work (criterion 1 — 18/65 obligations, mostly large-architecture
 items). Unlike ipynb/safetensors, nrrd is honestly NOT close to Gate 10 readiness yet on
 its own merits, independent of the mechanical manifest gap.**
 
@@ -69,7 +69,7 @@ Two independent tracks, not to be conflated:
 1. **Gate 10 mechanical gap** (shared with ipynb/safetensors): release-manifest
    frontmatter, deferred to the human review step per those documents' own §3.
 2. **nrrd's own remaining obligation work** (criterion 1, nrrd-specific, substantial):
-   the 19 unresolved obligations named above are real product-source gaps, not a
+   the 18 unresolved obligations named above are real product-source gaps, not a
    documentation or process gap. Closing them is ordinary FF6 product-source work,
    already tracked via this session's own controller events, and does not require any
    human gate decision to continue.
