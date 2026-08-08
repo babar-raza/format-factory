@@ -1,0 +1,21 @@
+{
+  "format_id": "xliff",
+  "gate": "installed-wheel",
+  "tool": "tools/run_package_install_proof.py --format xliff",
+  "canonical_manifest": "reports/package-install-proof/proof-manifest.json",
+  "status": "PASS",
+  "verdict": "PASS",
+  "proof_id": "PACKAGE-PROOF-9F3552BCDD6E85211C10469CC4FF907FC6952897973B5FFE65F159EAC6ECFF96",
+  "checks": {
+    "build_mode": "native_pyproject",
+    "install_result": "PASS -- installed from a freshly built wheel into an isolated ephemeral venv, not the dev checkout",
+    "local_dependency": "format-factory-core wheel installed first, PASS",
+    "import_result": "PASS",
+    "deep_import": "PASS -- 24/24 submodules import cleanly, 0 failing",
+    "smoke_result": "PASS -- format_factory.xliff.load on samples/by-format/xliff/valid/minimal.xliff",
+    "pytest_in_proof_venv": "2 passed, 1 skipped"
+  },
+  "re_run_this_tick": "Ran fresh (source_digest bound to current HEAD, commit e4d8bb2c and earlier) rather than trusting any stale manifest entry, since this session modified xliff's own source (length-violations QA check, Event 319) after any prior recorded proof_id/source_digest.",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the installed-wheel invariant only, not a certification claim for the format as a whole.",
+  "commit": "pending"
+}

@@ -14,6 +14,7 @@ valid_samples:
     category: minimal-valid
     description: "Minimal valid XLIFF 1.2 file with a single file element containing one trans-unit. Tests baseline XLIFF structure parsing."
     structural_test: PASS
+    sha256: b5062c38d35cb1d6cc2bda5e38939b93bc08fa570d601007e426277bd6ce077e
 
   - filename: valid/multi-unit.xliff
     source: project-owned-synthetic
@@ -23,6 +24,7 @@ valid_samples:
     category: multi-unit
     description: "XLIFF file with multiple trans-unit elements across body. Tests multi-unit iteration and source/target extraction."
     structural_test: PASS
+    sha256: d1a2587937f369283644d3330e32c1b10ac32dd86b0026e7ae79db9910e25b3a
 
   - filename: valid/with-inline-codes.xliff
     source: project-owned-synthetic
@@ -32,6 +34,7 @@ valid_samples:
     category: inline-codes
     description: "XLIFF file with inline elements (bpt/ept, ph, x) inside trans-unit source/target. Tests inline code preservation."
     structural_test: PASS
+    sha256: 886017fcca75c81c08a610428551b573f91c5138591a7110769b35cee0cb4762
 
 invalid_samples:
   - filename: invalid/missing-namespace.xliff
@@ -43,6 +46,7 @@ invalid_samples:
     description: "XML file with xliff root element but missing the required XLIFF namespace declaration. Tests namespace validation."
     expected_error: true
     error_type: MissingNamespace
+    sha256: 4fcb1c38a83632cfac5b6a8d8ae94039c752e763433dbd7560f429cef74ace5c
 
 summary:
   valid_count: 3

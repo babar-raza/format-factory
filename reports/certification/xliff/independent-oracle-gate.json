@@ -1,0 +1,17 @@
+{
+  "format_id": "xliff",
+  "gate": "independent-oracle",
+  "tool": "tools/oracle/execute_oracle.py --format xliff",
+  "oracle_package": "oracle/formats/xliff/oracle-package.yaml",
+  "run_summary": "oracle/formats/xliff/reports/oracle-run-summary.json",
+  "total_cases": 4,
+  "results": {"PASS": 4, "FAIL": 0, "BLOCKED": 0, "INCONCLUSIVE": 0},
+  "pass_rate": "4/4",
+  "verdict": "ALL_PASS",
+  "status": "PASS",
+  "format_depth_score": "D1",
+  "depth_histogram": {"D1": 3, "D0": 1},
+  "coverage_gaps": [],
+  "note": "D1 = model properties compared against expected values (3 cases); D0 = load did not crash, no property comparison (1 case, the invalid-input refusal case). D2 (schema validation via lxml/RelaxNG) does not apply -- XLIFF's own schema conformance is proven separately by validate()/schema_validate()'s own dedicated obligation tests, not through this oracle harness. Oracle package schema-validation carries a separate, non-blocking WARNING (oracle-package.schema.json's 'family' enum does not include 'localization', the correct family for this format -- the same class of pre-existing, portfolio-wide schema staleness already noted for ipynb's own oracle gate; advisory metadata validation only, unrelated to this oracle's own PASS/FAIL verdict). This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the independent-oracle invariant only, not a certification claim for the format as a whole.",
+  "commit": "pending"
+}

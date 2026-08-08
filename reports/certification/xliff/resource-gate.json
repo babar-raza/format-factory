@@ -1,0 +1,33 @@
+{
+  "format_id": "xliff",
+  "gate": "resource",
+  "status": "PASS",
+  "verdict": "PASS",
+  "enforced_dimensions": {
+    "max_input_bytes": "codec/reader/reader.py -- enforced on both path.stat().st_size (before reading) and len(data) (for bytes/stream sources)",
+    "max_output_bytes": "codec/writer/writer.py -- enforced on the final encoded byte length",
+    "max_xml_nodes": "codec/reader/reader.py -- enforced incrementally during element parsing, not only after full materialization",
+    "max_nesting_depth": "codec/reader/reader.py -- enforced incrementally during element parsing",
+    "max_entries": "codec/reader/reader.py -- enforced per-element on attribute_count (an attribute flood on a single element is rejected even if total node/depth limits are not exceeded)",
+    "max_decompressed_bytes": "codec/reader/reader.py -- enforced on cumulative decoded text_bytes across the document"
+  },
+  "not_applicable_dimensions": {
+    "max_header_bytes": "no fixed-size binary header in this format (well-formed XML text)",
+    "max_compression_ratio": "no compression in XLIFF's own XML serialization",
+    "max_tensor_count": "not a tensor format"
+  },
+  "evidence": {
+    "test_files": [
+      "tests/python/xliff/test_obligation_security_limits.py",
+      "tests/python/xliff/test_obligation_resource_resolution_security.py"
+    ],
+    "tests_run": 14,
+    "tests_passed": 14,
+    "key_proof": "test_an_attribute_flood_on_one_element_is_rejected and test_a_text_flood_exceeding_the_decoded_byte_limit_is_rejected both prove max_entries/max_decompressed_bytes enforcement happens incrementally during parsing, not after the full document is already materialized; test_a_wide_shallow_document_is_bounded_by_node_count_not_depth proves max_xml_nodes and max_nesting_depth are independent dimensions, not one masking the other; test_default_limits_apply_without_caller_opt_in proves XLIFF_DEFAULT_LIMITS is the enforced floor even when a caller passes no explicit limits."
+  },
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file consolidates already-existing, already-passing resource-limit evidence into a dedicated gate record; not a certification claim for the format as a whole.",
+  "regression": {
+    "xliff_suite": "591 passed (unchanged, pure evidence consolidation)"
+  },
+  "commit": "pending"
+}

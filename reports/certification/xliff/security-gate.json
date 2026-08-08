@@ -1,0 +1,22 @@
+{
+  "format_id": "xliff",
+  "gate": "security",
+  "tool": "AST static import/call sweep + existing resource-limit test suite",
+  "target": "src/python/xliff/src/format_factory/xliff",
+  "status": "PASS",
+  "verdict": "PASS",
+  "checks": {
+    "fully_forbidden_modules_never_imported": "PASS (socket, http, ftplib, smtplib, pkgutil, ctypes, subprocess -- 0 occurrences)",
+    "urllib_never_imported": "PASS (0 occurrences of any urllib submodule anywhere in the package -- unlike ipynb/nrrd, this package has no legitimate urllib.parse usage either)",
+    "no_dynamic_import_call_anywhere": "PASS (no importlib.import_module or __import__ call anywhere)",
+    "no_eval_exec_compile_call_anywhere_in_source": "PASS"
+  },
+  "prior_art": "XLIFF-SEC-001's own obligations (resource-limit enforcement via security.py's XLIFF_DEFAULT_LIMITS) already covered by test_obligation_security_limits.py and test_obligation_resource_resolution_security.py. This gate adds the complementary whole-package static sweep neither already provides. Unlike ipynb (which carves an exception for its own execute() adapter's subprocess import), a direct AST sweep confirmed xliff has zero legitimate use case anywhere for subprocess, networking modules, or dynamic imports -- no allow-list exceptions needed.",
+  "new_tests": "tests/python/xliff/test_obligation_security_baseline.py (4 tests, all new)",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the security invariant only, not a certification claim for the format as a whole.",
+  "regression": {
+    "xliff_suite": "591 passed (was 587, +4)",
+    "six_format_suite": "3930 passed, 4 skipped, 0 failed"
+  },
+  "commit": "pending"
+}

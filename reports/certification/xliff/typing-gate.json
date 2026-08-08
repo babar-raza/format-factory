@@ -1,0 +1,16 @@
+{
+  "format_id": "xliff",
+  "gate": "typing",
+  "tool": "mypy --strict",
+  "target": "src/python/xliff/src/format_factory/xliff",
+  "source_files_checked": 25,
+  "errors_found": 0,
+  "status": "PASS",
+  "verdict": "PASS",
+  "note": "Zero errors across all 25 source files under mypy --strict. This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the typing invariant only, not a certification claim for the format as a whole. Follows the exact same gate pattern already established for ipynb and safetensors (Events 308-315).",
+  "regression": {
+    "xliff_suite": "587 passed, 0 failed (unchanged by this check)",
+    "six_format_suite": "3926 passed, 4 skipped, 0 failed"
+  },
+  "commit": "pending"
+}

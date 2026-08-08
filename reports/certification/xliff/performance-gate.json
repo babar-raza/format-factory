@@ -1,0 +1,21 @@
+{
+  "format_id": "xliff",
+  "gate": "performance",
+  "status": "PASS",
+  "verdict": "PASS",
+  "tool": "tools/certification/performance_benchmark.py",
+  "baseline_file": "reports/certification/xliff/performance-baseline.json",
+  "results": {
+    "sample": "samples/by-format/xliff/valid/multi-unit.xliff",
+    "parse_median_ms": 0.36,
+    "parse_min_ms": 0.36,
+    "write_median_ms": 0.06,
+    "write_min_ms": 0.06,
+    "memory_peak_kb": 15.0,
+    "runs": 5
+  },
+  "genuinely_new_this_tick": "No performance benchmark existed for xliff anywhere in the repository before this tick. Added benchmark_xliff() following the exact same measurement pattern already established for ipynb/safetensors (time.perf_counter over 5 runs for parse/write, tracemalloc for peak memory) and registered it in the tool's own main() loop. Re-ran the full tool (fods/csv/zst/ipynb/safetensors/xliff) since main() always reruns every registered benchmark; only the genuinely new xliff-specific output (this file, plus performance-baseline.json) is committed -- the other 5 formats' own baseline files were regenerated as a side effect with pure timing noise (no structural change) and were reverted rather than committed, to keep this slice's diff scoped to xliff.",
+  "note_on_thresholds": "No pre-existing pass/fail performance threshold exists for any format in this tool -- it records baselines, it does not gate on them, consistent with ipynb/safetensors's own performance-gate.json. This gate's own PASS verdict reflects 'a real, reproducible baseline now exists and the operations complete in reasonable time for a document this size', not a numeric SLA (none is declared anywhere in product-goal.yaml or XLIFF's own obligation register).",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the performance invariant only, not a certification claim for the format as a whole.",
+  "commit": "pending"
+}
