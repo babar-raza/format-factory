@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-official-sample-roundtrip-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-bf8b56b3251e15e1",
+  "mode": "live",
+  "timestamp": "2026-08-08T07:05:33Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_OFFICIAL_SAMPLE_ROUNDTRIP_001",
+    "task_kind": "found-smaller-than-framed-corpus-already-vendored-in-pinned-spec-package",
+    "root_cause": "Event 319's own exact_next_action flagged ubl's own 3 unexamined-this-session obligations (UBL-EDIT-001/UBL-UPGRADE-001/UBL-WRITE-001) as live candidates. UBL-WRITE-001's own missing_behavior claimed round-trip proof needed 'an official UBL sample corpus, which is not vendored in this repository.' Investigated the pinned OASIS UBL 2.3 release package (already used to vendor this product's own XSD schemas) directly rather than trusting that framing.",
+    "obligation_targeted": "SAL-UBL-OBL-F9D5251F2302AE3A (UBL-WRITE-001), narrowed (not closed): missing_behavior corrected from 'no corpus vendored, not attempted' to a precise, honest 55/91-types-have-evidence accounting.",
+    "acceptance_evidence": "The pinned OASIS UBL 2.3 release package (.local/format-contracts/acquired/ubl/src-ubl-002.bin, a 927-entry ZIP) contains xml/UBL-*-Example*.xml -- 76 real OASIS-authored example instance documents. Cross-referenced against ROOT_NAMES (91 supported types): 55 distinct document types have an official example available. Vendored the highest-version, no-suffix-preferred file per type into samples/by-format/ubl/official/, with a manifest recording each sample's actual declared cbc:UBLVersionID read from content (not filename -- caught one file labeled '2.3' in its own filename that actually declares '2.1' internally, an OASIS packaging quirk). All 55 parse under loads(). 10 have no declared version conflict with this writer's own pre-existing stable-2.3-profile gate (9 omit UBLVersionID entirely, 1 -- Manifest -- explicitly declares 2.3) and round-trip in full; the other 45 declare an older version and are correctly, deliberately refused by dumps(), proven as parse-succeeds-but-dumps-refuses rather than round-trip.",
+    "regression_tier": "full ubl package suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Read the 3 live-candidate obligations' full entries (UBL-EDIT-001, UBL-UPGRADE-001, UBL-WRITE-001) directly from shared/format-contracts/implementation-evidence/ubl.yaml. UBL-EDIT-001's gap (general schema-order-aware CRUD for arbitrary component types beyond lines) and UBL-UPGRADE-001's gap (version-migration transform infrastructure needing deep inter-version schema-diff research) both confirmed genuinely large on re-reading. UBL-WRITE-001's gap ('no official UBL sample corpus is vendored') looked more promising to re-check given this session's own established pattern of finding framing errors.",
+    "2. Inspected the pinned OASIS UBL 2.3 acquisition artifact (.local/format-contracts/acquired/ubl/src-ubl-002.bin) directly with zipfile -- confirmed it is the full OASIS release ZIP (927 entries), and that this product already vendors this exact package's own XSD schemas into src/python/ubl/src/format_factory/ubl/validation/schemas/ (bundled with the installed wheel). Searched its own entries for 'example'/'sample'/'instance' and found xml/UBL-*-Example*.xml -- 76 real official instance documents, previously unexamined by this obligation's own missing_behavior text.",
+    "3. Parsed each example filename to extract (doctype, version, suffix), grouped into 56 distinct doctype prefixes (55 matching a real ROOT_NAMES entry plus 4 unmatched signature/envelope variants and one oddly-named file, both excluded from this slice). For each of the 55, selected the highest-version, no-suffix-preferred variant deterministically.",
+    "4. Spiked loads()/dumps() against a sample of the chosen files before committing to vendoring all 55 -- discovered dumps() has a pre-existing, deliberate 'stable profile requires UBLVersionID 2.3' gate (writer.py's own validate(profile='UBL-2.3') call) that refuses to serialize any document declaring an older version. This is correct, intentional behavior (the same guarantee UBL-UPGRADE-001 already proves: never silently relabel an older document as the target version), not a bug to work around.",
+    "5. Ran the full selection+spike programmatically across all 55 chosen files: 0 parse failures (every real OASIS example, regardless of declared version, parses under this package's own strict-mode loads()). 10 had no version conflict with the stable-2.3 gate (9 omit cbc:UBLVersionID entirely -- it is schema-optional -- and 1, Manifest, explicitly declares 2.3) and dumps() succeeded; the other 45 declare 2.0/2.1/2.2 and dumps() correctly refused each with a ubl.version-shaped UblWriteError. One file (CommonTransportationReport) is labeled '2.3' in its own OASIS-assigned filename but actually declares '2.1' internally -- documented as an honest OASIS packaging quirk rather than silently trusted from the filename.",
+    "6. For the 10 round-trip-capable samples, ran a literal C14N comparison first (xml.etree.ElementTree.canonicalize) and found 2 of 10 flagged as 'different' -- investigated and found both differences were purely an auto-generated namespace prefix (e.g. original 'ncts:' vs regenerated 'ns4:') for an unmodeled extension namespace this writer does not have a registered prefix for. C14N intentionally preserves original prefixes verbatim per its own spec, so a literal byte compare wrongly flags prefix relabeling as a content difference. Built a namespace-URI-based structural comparator (_semantic_xml_equal, comparing Clark-notation tag/attrib/text/children recursively) instead -- confirmed both cases are genuinely semantically identical once prefix spelling is normalized away, which is the correct reading of 'canonicalized XML comparison' for this proof.",
+    "7. Vendored all 55 chosen files verbatim (unmodified OASIS bytes) into samples/by-format/ubl/official/<RootName>.xml, plus a manifest (_official-corpus-manifest.yaml) recording per-file: root_name, filename, oasis_source_path, declared_ubl_version (read from content, not filename), roundtrip_capable, and refusal_reason where applicable. Attribution and license note mirror the existing _corpus-manifest.yaml house style, citing the same OASIS package this product already vendors its XSD schemas from.",
+    "8. Wrote tests/python/ubl/test_obligation_official_sample_roundtrip.py: a manifest-driven parametrized suite with 3 test classes -- TestOfficialSampleParsing (all 55 parse to the correct root_name), TestOfficialSampleRoundtrip (the 10 round-trip-capable samples reproduce semantically-identical XML via the structural comparator, plus a second-round-trip byte-determinism check), TestOlderVersionSamplesAreLoadOnlyNeverSilentlyRelabeled (the 45 older-version samples parse but dumps() raises UblWriteError matching 'UBLVersionID'). 120 tests total (55 + 10 + 10 + 45).",
+    "9. Ran mypy --strict on the new test file (fixed 4 'Missing type arguments for generic type dict' errors by annotating entry: dict[str, object], and 4 'Unsupported operand types for /' errors by wrapping entry['filename'] in str() before the Path / operator), then ruff check (clean).",
+    "10. Ran the new test file alone (120/120 passed), the full ubl suite (1176 passed, was 1056), and the full 6-format regression (3926 passed, 4 skipped, 0 failed, was 3806).",
+    "11. Updated the target obligation's missing_behavior to a precise, honest accounting (55/91 supported types have some official-sample evidence; 10/91 have full round-trip proof; 36/91 have no official example in the pinned package at all) rather than the prior blanket 'no corpus vendored, not attempted' claim. Status stays partial, not implemented -- deliberately not force-closed, since 'every supported maindoc type' (91) is definitively not met."
+  ],
+  "allowed_files": [
+    "samples/by-format/ubl/official",
+    "tests/python/ubl/test_obligation_official_sample_roundtrip.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "samples/by-format/ubl/official/_official-corpus-manifest.yaml",
+    "samples/by-format/ubl/official/*.xml (55 vendored OASIS example documents)",
+    "tests/python/ubl/test_obligation_official_sample_roundtrip.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_official_sample_roundtrip.py -q -- 120 passed (all new)",
+    ".venv/Scripts/python -m mypy --strict tests/python/ubl/test_obligation_official_sample_roundtrip.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_official_sample_roundtrip.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ubl -q -- 1176 passed (was 1056)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3926 passed, 4 skipped, 0 failed (was 3806)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation narrowed (partial -> partial, corrected missing_behavior with 55/91-type official-sample evidence coverage), not closed",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "samples/by-format/ubl/official/ (real OASIS UBL 2.3 sample corpus, 55 documents)"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

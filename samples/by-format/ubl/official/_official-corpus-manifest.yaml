@@ -1,0 +1,401 @@
+format_id: ubl
+corpus_version: '1.0'
+acquisition_sprint: FF6-EVENT-000320-UBL-OFFICIAL-SAMPLE-ROUNDTRIP
+source: OASIS Universal Business Language (UBL) 2.3 official Committee Specification
+  package
+source_note: Vendored from the same pinned OASIS UBL 2.3 release package this product
+  already vendors its XSD schemas from (src/python/ubl/src/format_factory/ubl/validation/schemas/),
+  under the same OASIS specification terms. These are real OASIS-authored example
+  instance documents, not project-generated synthetic fixtures (contrast samples/by-format/ubl/_corpus-manifest.yaml,
+  which is entirely project-owned-synthetic).
+license: OASIS specification content (same terms as the vendored XSD schemas)
+total_count: 55
+roundtrip_capable_count: 10
+load_only_count: 45
+total_supported_document_types: 91
+coverage_note: '55 of this package own 91 supported UBL 2.3 root types have an official
+  OASIS example available in the pinned release package; the remaining 36 have no
+  official example in that package at all (a separate, unaddressed data-acquisition
+  gap, not attempted this slice). Of the 55: 10 round-trip in full (load real bytes
+  -> dumps() -> semantic-XML-equal to the original) either because the official example
+  omits cbc:UBLVersionID entirely or (Manifest only) explicitly declares 2.3. The
+  other 45 declare an older UBLVersionID (2.0/2.1/2.2) and are correctly, deliberately
+  refused by dumps()/validate()''s own stable-2.3-profile gate -- proven as a load-only
+  + correct-refusal case, not a round trip, since silently relabeling an older official
+  document as 2.3 output would misrepresent it.'
+samples:
+- root_name: BusinessCard
+  filename: official/BusinessCard.xml
+  oasis_source_path: xml/UBL-BusinessCard-2.2-Example.xml
+  declared_ubl_version: '2.2'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.2'''
+- root_name: CommonTransportationReport
+  filename: official/CommonTransportationReport.xml
+  oasis_source_path: xml/UBL-CommonTransportationReport-2.3-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: CreditNote
+  filename: official/CreditNote.xml
+  oasis_source_path: xml/UBL-CreditNote-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: DebitNote
+  filename: official/DebitNote.xml
+  oasis_source_path: xml/UBL-DebitNote-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: DespatchAdvice
+  filename: official/DespatchAdvice.xml
+  oasis_source_path: xml/UBL-DespatchAdvice-2.0-Example.xml
+  declared_ubl_version: '2.0'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.0'''
+- root_name: DigitalAgreement
+  filename: official/DigitalAgreement.xml
+  oasis_source_path: xml/UBL-DigitalAgreement-2.2-Example.xml
+  declared_ubl_version: '2.2'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.2'''
+- root_name: DigitalCapability
+  filename: official/DigitalCapability.xml
+  oasis_source_path: xml/UBL-DigitalCapability-2.2-Example.xml
+  declared_ubl_version: '2.2'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.2'''
+- root_name: ExceptionCriteria
+  filename: official/ExceptionCriteria.xml
+  oasis_source_path: xml/UBL-ExceptionCriteria-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: ExceptionNotification
+  filename: official/ExceptionNotification.xml
+  oasis_source_path: xml/UBL-ExceptionNotification-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: ExportCustomsDeclaration
+  filename: official/ExportCustomsDeclaration.xml
+  oasis_source_path: xml/UBL-ExportCustomsDeclaration-2.3-Example.xml
+  declared_ubl_version: null
+  roundtrip_capable: true
+  refusal_reason: null
+- root_name: ExpressionOfInterestRequest
+  filename: official/ExpressionOfInterestRequest.xml
+  oasis_source_path: xml/UBL-ExpressionOfInterestRequest-2.2-Example.xml
+  declared_ubl_version: '2.2'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.2'''
+- root_name: Forecast
+  filename: official/Forecast.xml
+  oasis_source_path: xml/UBL-Forecast-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: ForecastRevision
+  filename: official/ForecastRevision.xml
+  oasis_source_path: xml/UBL-ForecastRevision-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: ForwardingInstructions
+  filename: official/ForwardingInstructions.xml
+  oasis_source_path: xml/UBL-ForwardingInstructions-2.0-Example-International.xml
+  declared_ubl_version: '2.0'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.0'''
+- root_name: FreightInvoice
+  filename: official/FreightInvoice.xml
+  oasis_source_path: xml/UBL-FreightInvoice-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: FulfilmentCancellation
+  filename: official/FulfilmentCancellation.xml
+  oasis_source_path: xml/UBL-FulfilmentCancellation-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: GoodsCertificate
+  filename: official/GoodsCertificate.xml
+  oasis_source_path: xml/UBL-GoodsCertificate-2.3-Example.xml
+  declared_ubl_version: null
+  roundtrip_capable: true
+  refusal_reason: null
+- root_name: GoodsItemItinerary
+  filename: official/GoodsItemItinerary.xml
+  oasis_source_path: xml/UBL-GoodsItemItinerary-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: GoodsItemPassport
+  filename: official/GoodsItemPassport.xml
+  oasis_source_path: xml/UBL-GoodsItemPassport-2.3-Example-Issued.xml
+  declared_ubl_version: null
+  roundtrip_capable: true
+  refusal_reason: null
+- root_name: ImportCustomsDeclaration
+  filename: official/ImportCustomsDeclaration.xml
+  oasis_source_path: xml/UBL-ImportCustomsDeclaration-2.3-Example.xml
+  declared_ubl_version: null
+  roundtrip_capable: true
+  refusal_reason: null
+- root_name: InstructionForReturns
+  filename: official/InstructionForReturns.xml
+  oasis_source_path: xml/UBL-InstructionForReturns-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: InventoryReport
+  filename: official/InventoryReport.xml
+  oasis_source_path: xml/UBL-InventoryReport-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: Invoice
+  filename: official/Invoice.xml
+  oasis_source_path: xml/UBL-Invoice-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: Manifest
+  filename: official/Manifest.xml
+  oasis_source_path: xml/UBL-Manifest-2.3-Example-Shipment.xml
+  declared_ubl_version: '2.3'
+  roundtrip_capable: true
+  refusal_reason: null
+- root_name: Order
+  filename: official/Order.xml
+  oasis_source_path: xml/UBL-Order-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: OrderCancellation
+  filename: official/OrderCancellation.xml
+  oasis_source_path: xml/UBL-OrderCancellation-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: OrderChange
+  filename: official/OrderChange.xml
+  oasis_source_path: xml/UBL-OrderChange-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: OrderResponse
+  filename: official/OrderResponse.xml
+  oasis_source_path: xml/UBL-OrderResponse-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: OrderResponseSimple
+  filename: official/OrderResponseSimple.xml
+  oasis_source_path: xml/UBL-OrderResponseSimple-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: PriorInformationNotice
+  filename: official/PriorInformationNotice.xml
+  oasis_source_path: xml/UBL-PriorInformationNotice-2.2-Example-External.xml
+  declared_ubl_version: null
+  roundtrip_capable: true
+  refusal_reason: null
+- root_name: ProductActivity
+  filename: official/ProductActivity.xml
+  oasis_source_path: xml/UBL-ProductActivity-2.1-Example-1.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: ProofOfReexportation
+  filename: official/ProofOfReexportation.xml
+  oasis_source_path: xml/UBL-ProofOfReexportation-2.3-Example.xml
+  declared_ubl_version: null
+  roundtrip_capable: true
+  refusal_reason: null
+- root_name: ProofOfReexportationReminder
+  filename: official/ProofOfReexportationReminder.xml
+  oasis_source_path: xml/UBL-ProofOfReexportationReminder-2.3-Example.xml
+  declared_ubl_version: null
+  roundtrip_capable: true
+  refusal_reason: null
+- root_name: ProofOfReexportationRequest
+  filename: official/ProofOfReexportationRequest.xml
+  oasis_source_path: xml/UBL-ProofOfReexportationRequest-2.3-Example.xml
+  declared_ubl_version: null
+  roundtrip_capable: true
+  refusal_reason: null
+- root_name: Quotation
+  filename: official/Quotation.xml
+  oasis_source_path: xml/UBL-Quotation-2.1-Example.xml
+  declared_ubl_version: '2.0'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.0'''
+- root_name: ReceiptAdvice
+  filename: official/ReceiptAdvice.xml
+  oasis_source_path: xml/UBL-ReceiptAdvice-2.0-Example.xml
+  declared_ubl_version: '2.0'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.0'''
+- root_name: Reminder
+  filename: official/Reminder.xml
+  oasis_source_path: xml/UBL-Reminder-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: RemittanceAdvice
+  filename: official/RemittanceAdvice.xml
+  oasis_source_path: xml/UBL-RemittanceAdvice-2.0-Example.xml
+  declared_ubl_version: '2.0'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.0'''
+- root_name: RequestForQuotation
+  filename: official/RequestForQuotation.xml
+  oasis_source_path: xml/UBL-RequestForQuotation-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: RetailEvent
+  filename: official/RetailEvent.xml
+  oasis_source_path: xml/UBL-RetailEvent-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: SelfBilledCreditNote
+  filename: official/SelfBilledCreditNote.xml
+  oasis_source_path: xml/UBL-SelfBilledCreditNote-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: Statement
+  filename: official/Statement.xml
+  oasis_source_path: xml/UBL-Statement-2.0-Example.xml
+  declared_ubl_version: '2.0'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.0'''
+- root_name: StockAvailabilityReport
+  filename: official/StockAvailabilityReport.xml
+  oasis_source_path: xml/UBL-StockAvailabilityReport-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: TradeItemLocationProfile
+  filename: official/TradeItemLocationProfile.xml
+  oasis_source_path: xml/UBL-TradeItemLocationProfile-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: TransitCustomsDeclaration
+  filename: official/TransitCustomsDeclaration.xml
+  oasis_source_path: xml/UBL-TransitCustomsDeclaration-2.3-Example.xml
+  declared_ubl_version: null
+  roundtrip_capable: true
+  refusal_reason: null
+- root_name: TransportExecutionPlan
+  filename: official/TransportExecutionPlan.xml
+  oasis_source_path: xml/UBL-TransportExecutionPlan-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: TransportExecutionPlanRequest
+  filename: official/TransportExecutionPlanRequest.xml
+  oasis_source_path: xml/UBL-TransportExecutionPlanRequest-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: TransportProgressStatus
+  filename: official/TransportProgressStatus.xml
+  oasis_source_path: xml/UBL-TransportProgressStatus-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: TransportProgressStatusRequest
+  filename: official/TransportProgressStatusRequest.xml
+  oasis_source_path: xml/UBL-TransportProgressStatusRequest-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: TransportServiceDescription
+  filename: official/TransportServiceDescription.xml
+  oasis_source_path: xml/UBL-TransportServiceDescription-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: TransportServiceDescriptionRequest
+  filename: official/TransportServiceDescriptionRequest.xml
+  oasis_source_path: xml/UBL-TransportServiceDescriptionRequest-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: TransportationStatus
+  filename: official/TransportationStatus.xml
+  oasis_source_path: xml/UBL-TransportationStatus-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: TransportationStatusRequest
+  filename: official/TransportationStatusRequest.xml
+  oasis_source_path: xml/UBL-TransportationStatusRequest-2.1-Example.xml
+  declared_ubl_version: '2.1'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.1'''
+- root_name: Waybill
+  filename: official/Waybill.xml
+  oasis_source_path: xml/UBL-Waybill-2.0-Example-International.xml
+  declared_ubl_version: '2.0'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.0'''
+- root_name: WeightStatement
+  filename: official/WeightStatement.xml
+  oasis_source_path: xml/UBL-WeightStatement-2.2-Example.xml
+  declared_ubl_version: '2.2'
+  roundtrip_capable: false
+  refusal_reason: 'cannot serialize invalid UBL document: stable profile requires
+    UBLVersionID 2.3, got ''2.2'''

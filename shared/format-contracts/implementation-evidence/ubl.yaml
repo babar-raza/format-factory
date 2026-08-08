@@ -550,6 +550,31 @@ execution_evidence:
     reordering, and validation success where the original document
     failed. Covers SAL-UBL-OBL-4BD9BBC9F974C175 only; it supports no
     other obligation and promotes no other product state.
+- evidence_id: UBL-OFFICIAL-SAMPLE-ROUNDTRIP-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-official-sample-roundtrip-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact test
+    selectors proving official-OASIS-sample interop for UBL-WRITE-001's
+    own first clause. Vendors 55 real OASIS UBL 2.3 release-package
+    example instance documents (samples/by-format/ubl/official/, manifest
+    at _official-corpus-manifest.yaml) -- the same OASIS package this
+    product already vendors its XSD schemas from, under the same terms.
+    All 55 parse under loads(); 10 round-trip in full (load real bytes ->
+    dumps() -> namespace-URI-based semantic-XML-equal to the original,
+    plus a second-round-trip determinism byte-compare); the other 45
+    declare a pre-2.3 UBLVersionID and are proven as parse-succeeds-but-
+    dumps-correctly-refuses, not round-trip, since this writer's own
+    pre-existing stable-2.3-profile gate deliberately does not silently
+    relabel an older document. NOT backed by an independent reference UBL
+    implementation -- SELF-CONSISTENT format_factory-only evidence per
+    the execution-recovery directive's GAP-008 rule, though the source
+    documents themselves are independently OASIS-authored, not
+    project-generated. Covers SAL-UBL-OBL-F9D5251F2302AE3A only (narrows,
+    does not close -- 36 of 91 supported types have no official example
+    in the pinned package at all); it supports no other obligation and
+    promotes no other product state.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -5773,13 +5798,19 @@ obligations:
   positive_test_selectors:
   - tests/python/ubl/test_obligation_writer_schema_order_reordering.py::test_reordering_is_idempotent
   - tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_reorders_a_document_with_checked_components_in_the_wrong_order
-  negative_test_selectors: []
+  - tests/python/ubl/test_obligation_official_sample_roundtrip.py::TestOfficialSampleParsing::test_every_official_sample_parses_to_its_own_declared_root
+  - tests/python/ubl/test_obligation_official_sample_roundtrip.py::TestOfficialSampleRoundtrip::test_a_roundtrip_capable_sample_reproduces_semantically_identical_xml
+  - tests/python/ubl/test_obligation_official_sample_roundtrip.py::TestOfficialSampleRoundtrip::test_a_roundtrip_capable_sample_is_stable_under_a_second_round_trip
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_official_sample_roundtrip.py::TestOlderVersionSamplesAreLoadOnlyNeverSilentlyRelabeled::test_an_older_declared_version_sample_parses_but_dumps_refuses_it
   execution_evidence_ids:
   - UBL-WRITER-SCHEMA-ORDER-REORDERING-PROOF
+  - UBL-OFFICIAL-SAMPLE-ROUNDTRIP-PROOF
   implemented_behavior:
   - 'FF6-EVENT-000288: this obligation''s own second clause ("prove schema-valid element order for documents assembled property-by-property in arbitrary order") is resolved by SAL-UBL-OBL-4BD9BBC9F974C175''s own fix at FF6-EVENT-000286, cited directly rather than re-proven -- reorder_for_schema_order() plus test_dumps_reorders_a_document_with_checked_components_in_the_wrong_order (out-of-order assignment yields schema-valid output) and test_reordering_is_idempotent (dumps(once) == dumps(twice), a determinism byte-compare) together satisfy this obligation''s own proof_requirements.positive first line exactly.'
+  - 'FF6-EVENT-000320: the first clause''s own "no official UBL sample corpus is vendored" framing was investigated and found false -- the pinned OASIS UBL 2.3 release package (the identical package this product already vendors its XSD schemas from) also contains 76 real OASIS-authored example instance documents under its own xml/ directory. samples/by-format/ubl/official/ now vendors 55 of them (one per supported document root with an official example available, highest-version/no-suffix variant preferred), with a manifest (_official-corpus-manifest.yaml) recording each sample''s actual declared cbc:UBLVersionID (read from content, not filename -- one file labeled "2.3" in its own filename turned out to declare "2.1" internally, an OASIS packaging quirk documented rather than silently trusted). All 55 parse successfully under loads() regardless of declared version. Of those, 10 round-trip in full (load real OASIS bytes -> dumps() -> semantic-XML-equal to the original, verified via a namespace-URI-based structural comparator rather than a literal C14N byte compare, since C14N legitimately preserves the original document''s own namespace prefixes and this writer regenerates an unmodeled extension namespace under an auto-generated prefix -- a cosmetic difference, not a content difference) plus a determinism proof (two round trips byte-identical). The other 45 declare an older UBLVersionID (2.0/2.1/2.2) and are correctly, deliberately refused by dumps()''s own pre-existing stable-2.3-profile gate -- proven as parse-succeeds-but-dumps-refuses, the same "never silently relabel an older document as the target version" guarantee UBL-UPGRADE-001 already establishes, now exercised against real OASIS documents instead of synthetic fixtures.'
   missing_behavior:
-  - 'The first clause remains genuinely unbuilt: "round-trip every official sample of each supported maindoc type comparing canonicalized XML plus typed semantics" needs an official UBL sample corpus, which is not vendored in this repository (same category as SAL-UBL-OBL-1549D8ECF079779C''s own spec-package-inventory gap, but this is a genuinely different concern -- REAL OFFICIAL SAMPLE DOCUMENTS to round-trip against, not the schema files themselves, which are already bundled). Acquiring and vendoring such a corpus is a data-acquisition task, not a code change, and is not attempted this slice.'
+  - 'Still short of "every supported maindoc type": 55 of this package''s own 91 supported UBL 2.3 root types have an official OASIS example available in the pinned release package at all; the remaining 36 have no official example in that package (a separate, unaddressed data-acquisition gap -- would need a different, not-yet-identified official source, since the currently-pinned OASIS package genuinely does not contain examples for those 36 types). Of the 55 available, only 10 round-trip in the literal load-dump-compare sense; the other 45 are official-sample interop proof (real-world parse fidelity) plus correct-refusal proof, not round-trip proof, since they declare a pre-2.3 version this writer deliberately does not silently relabel. Status stays partial, not implemented -- this is a real, substantial narrowing (55/91 types now have some form of official-sample evidence, up from 0), not a close.'
   proof_requirements:
     positive:
     - Out-of-order property assignment still yields schema-valid output; determinism byte-compare.
