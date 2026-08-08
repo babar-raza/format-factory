@@ -1,0 +1,53 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-trglang-directionality-rescoping-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-3113c77c5ba03556",
+  "mode": "live",
+  "timestamp": "2026-08-08T04:59:31Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_TRGLANG_DIRECTIONALITY_RESCOPING_001",
+    "task_kind": "rule_text-vs-missing_behavior-rescoping",
+    "root_cause": "Event 305's own exact_next_action flagged 2 xliff obligations (SAL-XLIFF-OBL-2602F9167F95464B, SAL-XLIFF-OBL-C96F6CB613A6F95D) whose missing_behavior claimed their own rule_text used 'if and only if' phrasing requiring an un-invented reverse-direction trgLang check. Re-read both obligations' own rule_text field directly this tick: 'The version and srcLang attributes are required on the xliff root. The trgLang attribute is optional in the XSD but required by the core Schematron when target elements are present.' This is one-directional -- no 'iff' phrasing anywhere in the rule_text itself. Cross-checked the vendored xliff_core_2.1.sch's own pattern F1: its <sch:title> (descriptive, non-normative) does say 'if and only if', but its machine-checked <sch:assert> is scoped inside a rule context requiring a target element to already exist, with no separate reverse-direction rule anywhere in the pattern.",
+    "obligation_targeted": "SAL-XLIFF-OBL-2602F9167F95464B (XLIFF-TEXT-001) and SAL-XLIFF-OBL-C96F6CB613A6F95D (XLIFF-PARSE-001), both promoted partial -> implemented.",
+    "acceptance_evidence": "The already-shipped xliff.trgLang.required diagnostic (validator.py::_document_has_target_content) already implements exactly, and only, the one direction both the obligation's own rule_text and the schematron's own machine-checked assert actually require. 1 new test closes the one remaining untested corner (trgLang declared with no target content anywhere still validates cleanly).",
+    "regression_tier": "full xliff package suite, ruff"
+  },
+  "execution_steps": [
+    "1. Re-read both obligations' own rule_text field directly from plans/strategic/ff6/obligations/xliff.yaml (the primary source, not the implementation-evidence file's own paraphrase): confirmed word-for-word identical, one-directional text with no 'if and only if' phrasing.",
+    "2. Re-read the vendored xliff_core_2.1.sch's own pattern F1 directly (validation/schemas/xliff_core_2.1.sch, lines 179-189): confirmed the <sch:title> element (human-readable, descriptive, non-normative per Schematron's own semantics) says 'if and only if', but the actual <sch:rule context=\"xlf:target[parent::xlf:segment | parent::xlf:ignorable]\"><sch:assert test=\"/xlf:xliff/@trgLang\"> only fires when a target element already exists in that context -- there is no second <sch:rule> anywhere in pattern F1 asserting the reverse (trgLang present implies a target element must exist).",
+    "3. Confirmed the existing implementation (validator.py::_document_has_target_content, already shipped and tested before this tick per test_obligation_root_language_attribute_requirements.py) implements exactly this one direction, matching both authorities precisely.",
+    "4. Identified the one genuinely untested corner: a document declaring trgLang with NO target content anywhere. Verified directly before writing the test: validate() correctly reports no xliff.trgLang.required diagnostic for this case (the reverse direction is not enforced, matching both authorities).",
+    "5. Added test_trglang_set_with_no_target_element_anywhere_also_validates_cleanly to test_obligation_root_language_attribute_requirements.py, with a docstring explaining the title-vs-assert distinction for future readers.",
+    "6. Ran the full xliff suite (572 -> 573 passed) and ruff (clean) before touching the ledger.",
+    "7. Updated the implementation-evidence YAML for both obligations: promoted status partial -> implemented, cleared missing_behavior (both empty lists), added the new test to positive_test_selectors, and wrote a new FF6-EVENT-000307-dated implemented_behavior entry for each quoting the exact rule_text and the schema file's own line numbers.",
+    "8. Registered a new execution_evidence entry (XLIFF-TRGLANG-DIRECTIONALITY-RESCOPING-PROOF) documenting the full rescoping finding, referenced by both obligations' own execution_evidence_ids."
+  ],
+  "allowed_files": [
+    "tests/python/xliff/test_obligation_root_language_attribute_requirements.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/xliff/test_obligation_root_language_attribute_requirements.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_root_language_attribute_requirements.py -v -- 9 passed (1 new)",
+    ".venv/Scripts/python -m ruff check tests/python/xliff/test_obligation_root_language_attribute_requirements.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/xliff -q -- 573 passed (was 572)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations closed (partial -> implemented)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 142,
+    "new_public_api": null
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

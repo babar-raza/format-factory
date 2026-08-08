@@ -3,6 +3,11 @@ format_id: xliff
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: XLIFF-TRGLANG-DIRECTIONALITY-RESCOPING-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-trglang-directionality-rescoping-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-2602F9167F95464B (XLIFF-TEXT-001) and SAL-XLIFF-OBL-C96F6CB613A6F95D (XLIFF-PARSE-001), both sharing identical verbatim rule_text, both promoted partial->implemented. Both obligations'' own missing_behavior claimed "this obligation''s own rule_text uses if and only if phrasing" requiring an un-invented reverse-direction check (trgLang present but no target elements => invalid). Re-read each obligation''s own rule_text field directly, word for word: "The version and srcLang attributes are required on the xliff root. The trgLang attribute is optional in the XSD but required by the core Schematron when target elements are present." This is ONE-DIRECTIONAL -- it does not itself contain "if and only if" phrasing anywhere. That phrasing exists only in the vendored xliff_core_2.1.sch''s own descriptive, non-normative <sch:title> element for pattern F1 ("The trgLang attribute is required if and only if..."), confirmed by direct inspection of the schema file (validation/schemas/xliff_core_2.1.sch, lines 179-189): the pattern''s own machine-checked <sch:assert test="/xlf:xliff/@trgLang"> is scoped inside <sch:rule context="xlf:target[parent::xlf:segment | parent::xlf:ignorable]"> -- i.e. it only fires when a target element already exists -- and there is no separate rule anywhere in the pattern asserting the reverse direction (trgLang present implies a target element is required). The previously-recorded missing_behavior conflated the schematron title''s human-readable "iff" summary with the obligation''s own binding rule_text, which never used that language at all -- a genuine misclassification found by re-reading the primary source directly rather than trusting a prior tick''s own paraphrase, the same "rule_text vs missing_behavior" discipline already applied successfully to a different xliff obligation earlier this session. The existing xliff.trgLang.required diagnostic (validator.py::_document_has_target_content, already implemented and tested before this tick) already implements exactly, and only, the one direction both authorities actually require. 1 new test (test_trglang_set_with_no_target_element_anywhere_also_validates_cleanly, in test_obligation_root_language_attribute_requirements.py) closes the one remaining untested corner: trgLang declared with no target content anywhere still validates cleanly, confirming this package does not silently invent the unasserted reverse rule either -- proven, not merely assumed by omission. xliff suite: 572 -> 573 passed (+1). ruff clean. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule; both the obligation''s own rule_text and the vendored schema''s own machine-checked assert (as opposed to its descriptive title) are the direct, already-acquired authorities for this finding, no new spec interpretation was needed. Covers SAL-XLIFF-OBL-2602F9167F95464B and SAL-XLIFF-OBL-C96F6CB613A6F95D only; it supports no other obligation.'
 - evidence_id: XLIFF-TOLERANT-RECOVERY-MODE-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-tolerant-recovery-mode-001.json
   expected_result: PASS
@@ -1355,7 +1360,7 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-2602F9167F95464B
   capability_id: XLIFF-TEXT-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_parse
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
@@ -1364,6 +1369,7 @@ obligations:
   - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_document_with_version_and_srclang_present_parses_cleanly
   - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_target_element_with_trglang_set_validates_cleanly
   - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_no_target_element_anywhere_and_no_trglang_validates_cleanly
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_trglang_set_with_no_target_element_anywhere_also_validates_cleanly
   negative_test_selectors:
   - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_document_with_version_omitted_from_the_xml_is_refused_at_parse_time
   - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_document_with_srclang_omitted_from_the_xml_is_refused_at_parse_time
@@ -1373,10 +1379,11 @@ obligations:
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-ROOT-LANGUAGE-ATTRIBUTE-REQUIREMENTS-PROOF
+  - XLIFF-TRGLANG-DIRECTIONALITY-RESCOPING-PROOF
   implemented_behavior:
   - 'version and srcLang omission from the xliff root were already correctly refused at parse time (reader.py raises XliffParseError for both) -- this slice adds the first dedicated tests proving both refusals directly, closing the test-coverage half of this obligation. The trgLang half was genuinely unbuilt and is now implemented from scratch: validate() calls the new _document_has_target_content(), which walks every file/unit/segment in the document checking segment.target is not None (true iff the reader found a real <target> element, even an empty one), and raises xliff.trgLang.required when target content exists anywhere but value.target_language is unset -- grounded directly in the pinned XLIFF 2.1 schematron''s own F1 pattern (schemas/xliff_core_2.1.sch inside the pinned release ZIP): "The trgLang attribute is required if and only if the XLIFF Document contains target elements that are children of segment or ignorable".'
-  missing_behavior:
-  - 'The schematron''s F1 pattern itself only asserts one direction (target elements present => trgLang required); it does not also assert the reverse (trgLang present but no target elements => invalid), even though this obligation''s own rule_text uses "if and only if" phrasing. This slice implements exactly what the formal schematron checks and does not invent the unasserted reverse direction, which stays honestly undocumented as a possible future question rather than silently implemented without spec grounding.'
+  - 'FF6-EVENT-000307: re-read this obligation''s own rule_text field directly, word for word: "The version and srcLang attributes are required on the xliff root. The trgLang attribute is optional in the XSD but required by the core Schematron when target elements are present." This is ONE-DIRECTIONAL ("required... when target elements are present") -- it does not itself contain "if and only if" phrasing at all; that phrasing exists only in xliff_core_2.1.sch''s own descriptive <sch:title> element ("The trgLang attribute is required if and only if..."), confirmed by direct inspection of the vendored schema file (validation/schemas/xliff_core_2.1.sch, pattern F1, lines 179-189): the pattern''s own machine-checked <sch:assert test="/xlf:xliff/@trgLang"> fires only within <sch:rule context="xlf:target[...]"> -- i.e. only when a target element exists -- and there is no separate rule anywhere in the pattern asserting the reverse (trgLang present implies target required). The previously-recorded missing_behavior conflated the title''s descriptive "iff" language with the obligation''s own binding rule_text, which does not use it. Since the obligation''s own rule_text is fully satisfied by the existing one-directional implementation, and the reverse direction was never actually required by either authority, this obligation is genuinely complete, not merely narrowed. The new test_trglang_set_with_no_target_element_anywhere_also_validates_cleanly closes the one remaining untested corner (trgLang set with no target content anywhere still validates cleanly), confirming this package does not silently invent the unasserted reverse rule either.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Target-from-source creation under each code-copy policy; whitespace/language preservation fixtures.
@@ -3753,7 +3760,7 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-C96F6CB613A6F95D
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::_parse
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::validate
@@ -3762,6 +3769,7 @@ obligations:
   - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_document_with_version_and_srclang_present_parses_cleanly
   - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_target_element_with_trglang_set_validates_cleanly
   - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_no_target_element_anywhere_and_no_trglang_validates_cleanly
+  - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_trglang_set_with_no_target_element_anywhere_also_validates_cleanly
   negative_test_selectors:
   - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_document_with_version_omitted_from_the_xml_is_refused_at_parse_time
   - tests/python/xliff/test_obligation_root_language_attribute_requirements.py::test_a_document_with_srclang_omitted_from_the_xml_is_refused_at_parse_time
@@ -3771,10 +3779,11 @@ obligations:
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-ROOT-LANGUAGE-ATTRIBUTE-REQUIREMENTS-PROOF
+  - XLIFF-TRGLANG-DIRECTIONALITY-RESCOPING-PROOF
   implemented_behavior:
   - 'version and srcLang omission from the xliff root were already correctly refused at parse time (reader.py raises XliffParseError for both) -- this slice adds the first dedicated tests proving both refusals directly, closing the test-coverage half of this obligation. The trgLang half was genuinely unbuilt and is now implemented from scratch: validate() calls the new _document_has_target_content(), which walks every file/unit/segment in the document checking segment.target is not None (true iff the reader found a real <target> element, even an empty one), and raises xliff.trgLang.required when target content exists anywhere but value.target_language is unset -- grounded directly in the pinned XLIFF 2.1 schematron''s own F1 pattern (schemas/xliff_core_2.1.sch inside the pinned release ZIP): "The trgLang attribute is required if and only if the XLIFF Document contains target elements that are children of segment or ignorable".'
-  missing_behavior:
-  - 'The schematron''s F1 pattern itself only asserts one direction (target elements present => trgLang required); it does not also assert the reverse (trgLang present but no target elements => invalid), even though this obligation''s own rule_text uses "if and only if" phrasing. This slice implements exactly what the formal schematron checks and does not invent the unasserted reverse direction, which stays honestly undocumented as a possible future question rather than silently implemented without spec grounding.'
+  - 'FF6-EVENT-000307: identical rescoping to this obligation''s own XLIFF-TEXT-001 sibling (SAL-XLIFF-OBL-2602F9167F95464B, sharing the same verbatim rule_text). Re-read this obligation''s own rule_text field directly: "The version and srcLang attributes are required on the xliff root. The trgLang attribute is optional in the XSD but required by the core Schematron when target elements are present." -- one-directional, no "if and only if" phrasing; that phrasing exists only in xliff_core_2.1.sch''s own descriptive, non-normative <sch:title>, not in its machine-checked <sch:assert> test (confirmed by direct inspection of pattern F1, lines 179-189: the assert fires only inside a rule scoped to target elements, with no separate reverse-direction rule anywhere in the pattern). The obligation''s own rule_text is fully satisfied by the existing one-directional implementation. The new test_trglang_set_with_no_target_element_anywhere_also_validates_cleanly closes the one remaining untested corner.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.

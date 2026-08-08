@@ -119,6 +119,20 @@ def test_no_target_element_anywhere_and_no_trglang_validates_cleanly() -> None:
     assert "xliff.trgLang.required" not in codes
 
 
+def test_trglang_set_with_no_target_element_anywhere_also_validates_cleanly() -> None:
+    """The reverse direction the schematron's own F1 <sch:assert> test does
+    NOT check (only its descriptive, non-normative <sch:title> uses "if and
+    only if" language): declaring trgLang without any target content is not
+    a violation either. Confirms this package does not silently invent the
+    unasserted reverse rule -- trgLang is optional in the XSD in both
+    directions, not a paired on/off switch."""
+    document = _document(target=None, trg_lang="fr")
+
+    codes = {item.code for item in validate(document).diagnostics}
+
+    assert "xliff.trgLang.required" not in codes
+
+
 def test_an_empty_target_element_still_counts_as_present_and_requires_trglang() -> None:
     """An empty <target/> is still a real target element structurally --
     segment.target is [] (not None) only when the reader found one -- so
