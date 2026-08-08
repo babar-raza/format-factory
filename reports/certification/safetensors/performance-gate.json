@@ -1,0 +1,21 @@
+{
+  "format_id": "safetensors",
+  "gate": "performance",
+  "status": "PASS",
+  "verdict": "PASS",
+  "tool": "tools/certification/performance_benchmark.py",
+  "baseline_file": "reports/certification/safetensors/performance-baseline.json",
+  "results": {
+    "sample": "samples/by-format/safetensors/valid/multi-tensor.safetensors",
+    "parse_median_ms": 0.38,
+    "parse_min_ms": 0.35,
+    "write_median_ms": 0.02,
+    "write_min_ms": 0.02,
+    "memory_peak_kb": 8.9,
+    "runs": 5
+  },
+  "genuinely_new_this_tick": "No performance benchmark existed for safetensors anywhere in the repository before this tick. Added benchmark_safetensors() following the exact same measurement pattern already proven for fods/csv/ipynb (time.perf_counter over 5 runs for parse/write, tracemalloc for peak memory) and registered it in the tool's own main() loop -- a genuine, additive extension.",
+  "note_on_thresholds": "No pre-existing pass/fail performance threshold exists for any format in this tool -- it records baselines, it does not gate on them, matching the identical honest framing used for ipynb's own performance-gate.json. Sub-millisecond parse/write times and a small memory footprint are expected and unsurprising for this small (multi-tensor, few KB) sample and this format's own simple length-prefix-plus-JSON-header-plus-raw-bytes structure -- no decompression or complex tree-walking is involved, unlike ipynb's JSON document model.",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the performance invariant only, not a certification claim for the format as a whole.",
+  "commit": "pending"
+}

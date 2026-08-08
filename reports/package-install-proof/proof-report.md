@@ -18,7 +18,7 @@ Canonical machine-readable source: `proof-manifest.json`. Orchestrator:
 | 9 | ipynb | format-factory-ipynb | 0.2.0.dev0 | PASS | PASS | **PASS** | 31/31 |
 | 10 | mtlx | format-factory-mtlx | 0.1.0.dev0 | PASS | PASS | **PASS** | 21/22 |
 | 11 | ndjson | format-factory-ndjson | 0.1.0.dev0 | PASS | PASS | **PASS** | 30/31 |
-| 12 | nrrd | format-factory-nrrd | 0.2.0.dev0 | PASS | PASS | **PASS** | 16/16 |
+| 12 | nrrd | format-factory-nrrd | 0.2.0.dev0 | PASS | PASS | **PASS** | 20/20 |
 | 13 | ods | format-factory-ods | 0.1.0.dev0 | PASS | PASS | **PASS** | 34/35 |
 | 14 | odt | format-factory-odt | 0.1.0.dev0 | PASS | PASS | **PASS** | 31/32 |
 | 15 | pbm | format-factory-pbm | 0.1.0.dev0 | PASS | PASS | **PASS** | 18/18 |
@@ -31,7 +31,7 @@ Canonical machine-readable source: `proof-manifest.json`. Orchestrator:
 | 22 | tsv | format-factory-tsv | 0.1.0.dev0 | PASS | PASS | **PASS** | 31/32 |
 | 23 | ubl | format-factory-ubl | 0.1.0.dev0 | PASS | PASS | **PASS** | 16/18 |
 | 24 | xcf | format-factory-xcf | 0.1.0.dev0 | PASS | PASS | **PASS** | 19/19 |
-| 25 | xliff | format-factory-xliff | 0.2.0.dev0 | PASS | PASS | **PASS** | 18/18 |
+| 25 | xliff | format-factory-xliff | 0.2.0.dev0 | PASS | PASS | **PASS** | 24/24 |
 | 26 | zst | format-factory-zst | 0.1.0.dev0 | PASS | PASS | **PASS** | 18/18 |
 
 **26/26 PASS**

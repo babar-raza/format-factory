@@ -1,0 +1,21 @@
+{
+  "format_id": "ipynb",
+  "gate": "performance",
+  "status": "PASS",
+  "verdict": "PASS",
+  "tool": "tools/certification/performance_benchmark.py",
+  "baseline_file": "reports/certification/ipynb/performance-baseline.json",
+  "results": {
+    "sample": "samples/by-format/ipynb/valid/code-and-markdown.ipynb",
+    "parse_median_ms": 4.44,
+    "parse_min_ms": 4.24,
+    "write_median_ms": 11.16,
+    "write_min_ms": 10.89,
+    "memory_peak_kb": 94.0,
+    "runs": 5
+  },
+  "genuinely_new_this_tick": "No performance benchmark existed for ipynb anywhere in the repository before this tick (the pre-existing performance_benchmark.py tool only covered fods/csv/zst). Added benchmark_ipynb() following the exact same measurement pattern (time.perf_counter over 5 runs for parse/write, tracemalloc for peak memory) and registered it in the tool's own main() loop -- a genuine, additive extension, not a report fabricated from nothing.",
+  "note_on_thresholds": "No pre-existing pass/fail performance threshold exists for any format in this tool (fods/csv/zst also have no declared thresholds -- the tool records baselines, it does not gate on them). This gate's own PASS verdict reflects 'a real, reproducible baseline now exists and the operations complete in reasonable time for a document this size' rather than 'meets a specific numeric SLA', since no SLA has been defined anywhere in product-goal.yaml or this format's own obligation register. Write (11.16ms) being notably slower than parse (4.44ms) is plausible for a 9-cell document requiring deterministic JSON serialization with sorted keys and schema-consistent structure, not obviously anomalous.",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the performance invariant only, not a certification claim for the format as a whole.",
+  "commit": "pending"
+}

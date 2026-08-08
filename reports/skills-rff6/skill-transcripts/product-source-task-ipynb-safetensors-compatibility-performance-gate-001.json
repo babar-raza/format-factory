@@ -1,0 +1,73 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-safetensors-compatibility-performance-gate-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-031fd61c6c4153c7",
+  "mode": "live",
+  "timestamp": "2026-08-08T05:58:36Z",
+  "inputs": {
+    "format_id": "ipynb+safetensors",
+    "task_id": "TC_FF6_IPYNB_SAFETENSORS_COMPATIBILITY_PERFORMANCE_GATE_001",
+    "task_kind": "certification-gate-frontier-ninth-and-tenth-final-steps",
+    "root_cause": "Event 314's own exact_next_action named 'compatibility' and 'performance' as the 2 remaining invariants, noting compatibility's precise scope needed sizing (Python-version support already documented, cross-platform, or co-installability) and that performance likely needed genuinely new benchmark infrastructure (no perf-gate.json or benchmark harness found anywhere this session).",
+    "obligation_targeted": "product-goal.yaml's own 'compatibility' and 'performance' completion invariants for ipynb and safetensors -- the LAST 2 of 10 -- NOT a certification claim for either format as a whole.",
+    "acceptance_evidence": "compatibility: ran tools/run_package_install_proof.py targeting 5 FF6 formats together (nrrd, xliff, ipynb, safetensors, ubl -- ora excluded, not in packaging/python/package-matrix.yaml at all) into ONE shared ephemeral venv: 5/5 PASS, the only 2 deep-import failures anywhere belonged to ubl and were both unrelated to collision (missing setuptools for a build-only module; missing the separate ff_csv package for a cross-format export module not included in this scoped run) -- directly satisfies product-goal.yaml's own explicit completion_invariants text about co-installation without collision. Also verified no Python 3.12+-only syntax exists (0 PEP 695 type aliases found via AST scan) and structurally confirmed safetensors' own README claim about not shipping a top-level `safetensors` module by reading its pyproject.toml packaging config directly. performance: extended tools/certification/performance_benchmark.py (previously covering only fods/csv/zst) with benchmark_ipynb()/benchmark_safetensors() following its own exact existing pattern, ran it, got real numbers (ipynb: 4.44ms parse/11.16ms write/94KB peak; safetensors: 0.38ms parse/0.02ms write/8.9KB peak), and registered both in the tool's own main() loop.",
+    "regression_tier": "full 6-format regression, ruff on the changed tool file"
+  },
+  "self_correction_this_tick": "Wrote reports/certification/safetensors/compatibility-gate.json without first checking git status/log for that specific path (it appeared alongside 9 other newly-created cert-gate files this session, all of which were genuinely new). git status afterward showed it as Modified, not new -- a PRE-EXISTING file (commit 7c5af8c6, 'fix(safetensors): verify compatibility gate in isolated env, skip (not fail) interop tests without it', authored by a concurrent worker earlier the same day) contained real, empirical evidence -- an actual round-trip test against the real Hugging Face safetensors==0.8.0 package in an isolated venv, 4/4 target tests PASSED plus a 275-test broader suite check -- that had been silently overwritten. Recovered the original content via `git show HEAD:<path>` and rewrote the file to preserve 100% of the original evidence as the primary content, with this tick's own findings appended as a clearly-separated 'additional_checks_this_tick' section rather than replacing anything. Cross-checked every OTHER cert-gate file created this session (typing/security/resource/oracle/installed-wheel/corpus/documentation-gate.json x2 formats) via `git log --follow` and confirmed each has exactly 1 commit (this session's own) with no prior history -- this was an isolated incident, not a pattern, and no other pre-existing evidence was lost.",
+  "execution_steps": [
+    "1. Checked ipynb/safetensors pyproject.toml for declared Python-version metadata: requires-python='>=3.11' (open floor) and classifiers declaring 3.11 through 3.14 for BOTH formats identically -- a repo-wide convention, not a per-format anomaly.",
+    "2. Checked .github/workflows/ci.yml's own real test matrix: a 'test-full' job runs the complete pytest suite (which includes these packages) across Python 3.10, 3.11, 3.12 on ubuntu-latest on every push to main -- genuine, existing third-party evidence, cited rather than re-run (only 3.13 is installed locally).",
+    "3. Confirmed via AST scan across both packages' full source trees that no PEP 695 type-alias statement (Python 3.12+ only syntax) exists anywhere, meaning nothing accidentally breaks the declared 3.11 floor.",
+    "4. Noted this entire session's own continuous test execution (every regression run all session, thousands of invocations) ran on Python 3.13.2 on Windows with zero version- or platform-related failures -- genuine direct first-party evidence for 3.13/Windows specifically, distinct from and complementary to the CI matrix's own 3.10-3.12/Linux coverage.",
+    "5. Ran tools/run_package_install_proof.py --format nrrd --format xliff --format ipynb --format safetensors --format ubl (ora omitted -- confirmed absent from packaging/python/package-matrix.yaml entirely, a separate pre-existing gap, not something to force into this run): built 5 wheels, installed all 5 into ONE shared ephemeral venv sequentially. RESULT: 5/5 PASS. Investigated the only 2 deep-import failures (both under ubl): ubl._build_backend needs setuptools (a build-time-only tool, not installed in the runtime proof venv by design) and ubl.ubl_to_csv needs the separate ff_csv package (not part of this scoped 5-format run) -- both confirmed unrelated to any namespace or third-party collision between the 5 co-installed formats.",
+    "6. Read safetensors' own pyproject.toml [tool.setuptools.packages.find] directly: include=['format_factory.safetensors*'] only, confirming structurally (not just by prose claim) that no top-level `safetensors` module is ever shipped, which is what makes co-installation with the real Hugging Face safetensors package collision-free by construction.",
+    "7. Searched the whole repo for any pre-existing performance-benchmark infrastructure: found tools/certification/performance_benchmark.py, hardcoded for exactly 3 formats (fods, csv, zst), each with its own benchmark_{fmt}() function measuring parse/write time (time.perf_counter, 5 runs, median+min) and peak memory (tracemalloc).",
+    "8. Added benchmark_ipynb() and benchmark_safetensors() following the EXACT same pattern/field names as the existing functions (no deviation in measurement methodology), using real corpus samples (code-and-markdown.ipynb; multi-tensor.safetensors) already used elsewhere this session.",
+    "9. Registered both new functions in main()'s own iteration list; the existing generic print-summary branch already handles the shared field names correctly with no further changes needed.",
+    "10. Ran the updated tool: benchmark_ipynb and benchmark_safetensors both ran successfully (csv's own pre-existing, unrelated failure -- a stale sys.path issue for csv_parser -- was left untouched, out of scope for this ipynb/safetensors-focused tick).",
+    "11. Ran ruff on the changed tool file (clean) and the full 6-format regression (3772 passed, 4 skipped, 0 failed, unchanged from before this tick -- no product source or test files were touched).",
+    "12. Wrote reports/certification/{ipynb,safetensors}/compatibility-gate.json and performance-gate.json, each honestly disclosing genuine remaining gaps (Python 3.14 unverified anywhere; macOS untested; no formal performance SLA exists to gate against) rather than overclaiming completeness."
+  ],
+  "allowed_files": [
+    "tools/certification/performance_benchmark.py",
+    "reports/certification/ipynb/performance-baseline.json",
+    "reports/certification/safetensors/performance-baseline.json",
+    "reports/certification/ipynb/compatibility-gate.json",
+    "reports/certification/safetensors/compatibility-gate.json",
+    "reports/certification/ipynb/performance-gate.json",
+    "reports/certification/safetensors/performance-gate.json",
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md"
+  ],
+  "actual_files_changed": [
+    "tools/certification/performance_benchmark.py",
+    "reports/certification/ipynb/performance-baseline.json",
+    "reports/certification/safetensors/performance-baseline.json",
+    "reports/certification/ipynb/compatibility-gate.json",
+    "reports/certification/safetensors/compatibility-gate.json",
+    "reports/certification/ipynb/performance-gate.json",
+    "reports/certification/safetensors/performance-gate.json",
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python tools/run_package_install_proof.py --format nrrd --format xliff --format ipynb --format safetensors --format ubl -- RESULT: 5/5 PASS",
+    ".venv/Scripts/python tools/certification/performance_benchmark.py -- benchmark_ipynb and benchmark_safetensors both OK, real baselines written",
+    ".venv/Scripts/python -m ruff check tools/certification/performance_benchmark.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3772 passed, 4 skipped, 0 failed (unchanged)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations closed (these are certification-gate invariants, not obligations)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": "ipynb=68, safetensors=86",
+    "new_public_api": null
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

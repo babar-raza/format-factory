@@ -2,6 +2,8 @@
   "gate": "compatibility",
   "format_id": "safetensors",
   "product_id": "format-factory-safetensors",
+  "status": "PASS",
+  "verdict": "PASS",
   "reference_implementation": {
     "distribution": "safetensors",
     "version": "0.8.0",
@@ -24,8 +26,24 @@
     "target_tests_result": "4/4 PASSED",
     "broader_suite_check": "Full tests/python/safetensors suite run in the same isolated environment, excluding the 7 legacy shadow-package-only test files (test_safetensors_compat.py and siblings, which import the deprecated bare 'safetensors.*' shim and are out of scope for this shipped-namespace verification): 275 passed, 1 skipped, 0 failed -- confirms co-installing the real reference package alongside format_factory.safetensors causes no collateral breakage for any shipped-namespace test."
   },
-  "verdict": "PASS",
   "verdict_scope": "Verifies format_factory.safetensors round-trips losslessly through the official Hugging Face reference implementation in both directions (factory writer read by official parser; official writer read by factory parser) and that both distributions co-install and resolve to their own distinct, correct site-packages locations without collision. Does not verify performance parity, torch/numpy adapter interop beyond what test_obligation_bidirectional_interop.py already exercises, or any FF6 format other than safetensors.",
+  "additional_checks_this_tick": {
+    "note": "The section above (reference_implementation through verdict_scope) is prior, pre-existing evidence from earlier the same day (recorded_at 2026-08-08) -- an empirical, real co-install-and-round-trip test against the ACTUAL Hugging Face safetensors==0.8.0 package in an isolated venv, the strongest evidence for this gate. This section adds complementary checks performed in this later tick, extending rather than replacing that evidence.",
+    "co_install_with_other_ff6_formats": "PASS -- built and installed format-factory-{nrrd,xliff,ipynb,safetensors,ubl} together into ONE shared ephemeral venv via tools/run_package_install_proof.py --format nrrd --format xliff --format ipynb --format safetensors --format ubl. RESULT: 5/5 PASS. safetensors' own deep_import was 0 failed of 21 submodules; no collision anywhere in the run involved safetensors. (ora excluded -- not present in packaging/python/package-matrix.yaml at all, a separate, pre-existing finding.)",
+    "no_top_level_safetensors_module_shadowing": "PASS -- confirmed directly from pyproject.toml's own [tool.setuptools.packages.find] configuration: include=['format_factory.safetensors*'] only. No top-level `safetensors` package is defined or shipped anywhere -- the structural reason the real empirical co-install test above (target_tests_result: 4/4 PASSED) succeeds.",
+    "declared_python_version_range": "classifiers declare 3.11-3.14 (pyproject.toml)",
+    "no_version_gated_syntax_above_the_floor": "PASS -- AST-scanned the full source tree for PEP 695 type-alias statements (Python 3.12+ only): 0 found",
+    "direct_first_party_evidence_3_13": "PASS -- this entire session's continuous test execution ran on Python 3.13.2 with zero version-related failures",
+    "ci_matrix_evidence_3_10_through_3_12": "the repository's own .github/workflows/ci.yml test-full job runs the complete pytest suite across Python 3.10, 3.11, 3.12 on every push to main -- cited as existing third-party evidence, not re-run here",
+    "windows_evidence": "PASS -- this entire session ran on Windows with zero platform-related failures",
+    "linux_evidence": "the CI matrix job above runs on ubuntu-latest -- cited as existing evidence, not independently reproduced here",
+    "optional_numpy_torch_import_isolation": "PASS -- already independently verified at the documentation-gate tick (Event 314): importing the base package or adapters module does not import numpy/torch; to_torch correctly raises ModuleNotFoundError rather than crashing the whole package when torch is absent"
+  },
+  "honest_gaps": [
+    "Python 3.14 is declared in classifiers but genuinely unverified anywhere found in this repository -- neither in CI nor locally (only 3.13 is installed on this machine).",
+    "macOS is not covered by CI (ubuntu-latest only) and was not tested this session (Windows only). No macOS-specific code path exists in this package (pure Python, no platform-conditional logic found), which reduces but does not eliminate this risk."
+  ],
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the compatibility invariant only, not a certification claim for the format as a whole.",
   "generated_by": "claude",
   "visibility": "generated",
   "recorded_at": "2026-08-08"
