@@ -7,15 +7,16 @@
   "baseline_file": "reports/certification/ipynb/performance-baseline.json",
   "results": {
     "sample": "samples/by-format/ipynb/valid/code-and-markdown.ipynb",
-    "parse_median_ms": 4.44,
-    "parse_min_ms": 4.24,
-    "write_median_ms": 11.16,
-    "write_min_ms": 10.89,
-    "memory_peak_kb": 94.0,
+    "parse_median_ms": 4.19,
+    "parse_min_ms": 3.98,
+    "write_median_ms": 11.49,
+    "write_min_ms": 10.68,
+    "memory_peak_kb": 97.1,
     "runs": 5
   },
   "genuinely_new_this_tick": "No performance benchmark existed for ipynb anywhere in the repository before this tick (the pre-existing performance_benchmark.py tool only covered fods/csv/zst). Added benchmark_ipynb() following the exact same measurement pattern (time.perf_counter over 5 runs for parse/write, tracemalloc for peak memory) and registered it in the tool's own main() loop -- a genuine, additive extension, not a report fabricated from nothing.",
-  "note_on_thresholds": "No pre-existing pass/fail performance threshold exists for any format in this tool (fods/csv/zst also have no declared thresholds -- the tool records baselines, it does not gate on them). This gate's own PASS verdict reflects 'a real, reproducible baseline now exists and the operations complete in reasonable time for a document this size' rather than 'meets a specific numeric SLA', since no SLA has been defined anywhere in product-goal.yaml or this format's own obligation register. Write (11.16ms) being notably slower than parse (4.44ms) is plausible for a 9-cell document requiring deterministic JSON serialization with sorted keys and schema-consistent structure, not obviously anomalous.",
+  "note_on_thresholds": "No pre-existing pass/fail performance threshold exists for any format in this tool (fods/csv/zst also have no declared thresholds -- the tool records baselines, it does not gate on them). This gate's own PASS verdict reflects 'a real, reproducible baseline now exists and the operations complete in reasonable time for a document this size' rather than 'meets a specific numeric SLA', since no SLA has been defined anywhere in product-goal.yaml or this format's own obligation register. Write being notably slower than parse is plausible for a 9-cell document requiring deterministic JSON serialization with sorted keys and schema-consistent structure, not obviously anomalous.",
+  "re_run_this_tick": "FF6-EVENT-000410: independently re-ran tools/certification/performance_benchmark.py fresh rather than trusting the cached baseline (previously parse=4.44ms/write=11.16ms/mem=94.0KB). Fresh numbers (parse=4.19ms/write=11.49ms/mem=97.1KB) differ by single-digit percentages, consistent with ordinary timing-benchmark run-to-run variance on a shared machine, not a regression -- the same relative pattern holds (write notably slower than parse, memory in the same ~90-100KB range). No SLA exists to violate either way.",
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the performance invariant only, not a certification claim for the format as a whole.",
   "commit": "pending"
 }
