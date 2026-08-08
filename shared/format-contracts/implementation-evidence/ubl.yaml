@@ -5695,14 +5695,19 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-F9D5251F2302AE3A
   capability_id: UBL-WRITE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::reorder_for_schema_order
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_writer_schema_order_reordering.py::test_reordering_is_idempotent
+  - tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_reorders_a_document_with_checked_components_in_the_wrong_order
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  execution_evidence_ids:
+  - UBL-WRITER-SCHEMA-ORDER-REORDERING-PROOF
+  implemented_behavior:
+  - 'FF6-EVENT-000288: this obligation''s own second clause ("prove schema-valid element order for documents assembled property-by-property in arbitrary order") is resolved by SAL-UBL-OBL-4BD9BBC9F974C175''s own fix at FF6-EVENT-000286, cited directly rather than re-proven -- reorder_for_schema_order() plus test_dumps_reorders_a_document_with_checked_components_in_the_wrong_order (out-of-order assignment yields schema-valid output) and test_reordering_is_idempotent (dumps(once) == dumps(twice), a determinism byte-compare) together satisfy this obligation''s own proof_requirements.positive first line exactly.'
   missing_behavior:
-  - 'SPEC-PACKAGE-FACT-adjacent and feature-dependent double gap: no official UBL sample corpus is vendored in this repository to round-trip against (same category as SAL-UBL-OBL-1549D8ECF079779C''s spec-package absence), and the schema-valid-element-order-on-write feature this obligation also requires does not exist (same gap as SAL-UBL-OBL-4BD9BBC9F974C175 in this cluster). Neither half is buildable without first resolving the other; left honestly missing rather than force-promoted.'
+  - 'The first clause remains genuinely unbuilt: "round-trip every official sample of each supported maindoc type comparing canonicalized XML plus typed semantics" needs an official UBL sample corpus, which is not vendored in this repository (same category as SAL-UBL-OBL-1549D8ECF079779C''s own spec-package-inventory gap, but this is a genuinely different concern -- REAL OFFICIAL SAMPLE DOCUMENTS to round-trip against, not the schema files themselves, which are already bundled). Acquiring and vendoring such a corpus is a data-acquisition task, not a code change, and is not attempted this slice.'
   proof_requirements:
     positive:
     - Out-of-order property assignment still yields schema-valid output; determinism byte-compare.

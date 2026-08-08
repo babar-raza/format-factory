@@ -1,0 +1,43 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-write-corpus-narrow-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T02:35:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_WRITE_CORPUS_NARROW_001",
+    "task_kind": "evidence-reconciliation-narrow-not-close",
+    "root_cause": "SAL-UBL-OBL-F9D5251F2302AE3A's own missing_behavior explicitly named SAL-UBL-OBL-4BD9BBC9F974C175 as one of its two blocking halves ('the schema-valid-element-order-on-write feature this obligation also requires does not exist, same gap as SAL-UBL-OBL-4BD9BBC9F974C175'). That sibling obligation was closed at FF6-EVENT-000286 (this same session), leaving this obligation's own status stale.",
+    "obligation_targeted": "1 obligation narrowed missing->partial: SAL-UBL-OBL-F9D5251F2302AE3A (UBL-WRITE-001). Not fully closed -- its own rule_text bundles a second, genuinely separate clause (official-sample round trips) that remains unbuilt.",
+    "acceptance_evidence": "Cited FF6-EVENT-000286's own reorder_for_schema_order() evidence directly rather than re-proving it.",
+    "regression_tier": "full ubl package suite"
+  },
+  "execution_steps": [
+    "1. Continuing the fresh re-read of ubl's remaining unresolved obligations, checked for cross-references TO the just-fixed SAL-UBL-OBL-4BD9BBC9F974C175, not just obligations that might independently duplicate it.",
+    "2. Found SAL-UBL-OBL-F9D5251F2302AE3A's own missing_behavior explicitly named it as half its own blocker. Read its rule_text precisely: two distinct clauses (official-sample round trips; schema-valid element order for out-of-order property assignment). Confirmed the second clause is exactly what FF6-EVENT-000286 built and tested.",
+    "3. Narrowed rather than closed: the first clause (official-sample round trips) needs a real official UBL sample corpus, which is not vendored -- a data-acquisition task, not a code change, genuinely out of scope for this slice.",
+    "4. Updated the ledger, ran the reconciler (unresolved count unchanged as expected for a narrow, not a close) and the full ubl suite (1018 passed, unchanged -- zero new test/source code, pure evidence reconciliation)."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl -q -- 1018 passed (unchanged)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation narrowed missing->partial (not fully closed)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

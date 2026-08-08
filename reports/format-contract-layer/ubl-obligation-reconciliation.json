@@ -365,7 +365,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "598db0fa8fdc94b08cce068d39db4e9176bf4a099654f2f53981dc7466ab121f",
+    "implementation_evidence": "c66e223e7277a0d38520a5e6f7aa56664da2e18b4c8e3f617b4ed853242f592e",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -7342,14 +7342,21 @@
     },
     {
       "capability_id": "UBL-WRITE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
+      "execution_evidence_ids": [
+        "UBL-WRITER-SCHEMA-ORDER-REORDERING-PROOF"
+      ],
+      "implemented_behavior": [
+        "FF6-EVENT-000288: this obligation's own second clause (\"prove schema-valid element order for documents assembled property-by-property in arbitrary order\") is resolved by SAL-UBL-OBL-4BD9BBC9F974C175's own fix at FF6-EVENT-000286, cited directly rather than re-proven -- reorder_for_schema_order() plus test_dumps_reorders_a_document_with_checked_components_in_the_wrong_order (out-of-order assignment yields schema-valid output) and test_reordering_is_idempotent (dumps(once) == dumps(twice), a determinism byte-compare) together satisfy this obligation's own proof_requirements.positive first line exactly."
+      ],
       "missing_behavior": [
-        "SPEC-PACKAGE-FACT-adjacent and feature-dependent double gap: no official UBL sample corpus is vendored in this repository to round-trip against (same category as SAL-UBL-OBL-1549D8ECF079779C's spec-package absence), and the schema-valid-element-order-on-write feature this obligation also requires does not exist (same gap as SAL-UBL-OBL-4BD9BBC9F974C175 in this cluster). Neither half is buildable without first resolving the other; left honestly missing rather than force-promoted."
+        "The first clause remains genuinely unbuilt: \"round-trip every official sample of each supported maindoc type comparing canonicalized XML plus typed semantics\" needs an official UBL sample corpus, which is not vendored in this repository (same category as SAL-UBL-OBL-1549D8ECF079779C's own spec-package-inventory gap, but this is a genuinely different concern -- REAL OFFICIAL SAMPLE DOCUMENTS to round-trip against, not the schema files themselves, which are already bundled). Acquiring and vendoring such a corpus is a data-acquisition task, not a code change, and is not attempted this slice."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-F9D5251F2302AE3A",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_writer_schema_order_reordering.py::test_reordering_is_idempotent",
+        "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_reorders_a_document_with_checked_components_in_the_wrong_order"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -7359,9 +7366,11 @@
           "Official-sample round trips per supported document type with canonical XML comparison."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/validation/validator.py::reorder_for_schema_order"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "UBL-PARSE-001",
@@ -7548,8 +7557,8 @@
   "summary": {
     "by_status": {
       "implemented": 186,
-      "missing": 3,
-      "partial": 5
+      "missing": 2,
+      "partial": 6
     },
     "total": 194,
     "unresolved": 8
