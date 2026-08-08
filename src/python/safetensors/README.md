@@ -41,6 +41,27 @@ retains the mapping owner, so callers can release all regions and retry
 `close()` without leaking the mapping. Closed documents reject further region
 access with `SAFETENSORS_DOCUMENT_CLOSED`.
 
+For callers who want the whole document decoded up front rather than lazily
+mapped, `load`/`loads` (read) and `dump`/`dumps` (write) work with a fully
+materialized `SafeTensorsDocument`:
+
+```python
+from format_factory.safetensors import dump, load
+
+document = load("model.safetensors")
+print(list(document.tensors))
+print(bytes(document.tensor_bytes("model.weight"))[:16])
+
+dump(document, "copy.safetensors")
+```
+
+`loads`/`dumps` are the bytes-in/bytes-out counterparts of `load`/`dump`.
+`dump`/`dumps` re-validate the document and re-derive tensor offsets
+deterministically (sorted by descending dtype width, then name) rather than
+trusting whatever offsets the document happened to carry, so editing
+`document.tensors` between load and dump produces a correctly laid-out file
+rather than a corrupt one.
+
 The package does not install a top-level `safetensors` module and can be
 co-installed with Hugging Face's official implementation.
 

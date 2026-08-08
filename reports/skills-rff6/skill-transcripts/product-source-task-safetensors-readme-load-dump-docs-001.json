@@ -1,0 +1,52 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-safetensors-readme-load-dump-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-ac999f342c0adefd",
+  "mode": "live",
+  "timestamp": "2026-08-08T13:55:30Z",
+  "inputs": {
+    "format_id": "safetensors",
+    "task_id": "TC_FF6_SAFETENSORS_README_LOAD_DUMP_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-found-via-a-fresh-capability-survey",
+    "root_cause": "Event 339's own exact_next_action pivoted to surveying ipynb/xliff/safetensors (all at 0/N unresolved obligations) against Event 327's own still-open narrative invariant 'every declared developer capability meets the same production standard as the parser and writer', since this invariant had never been directly investigated against any of the three 0-unresolved formats this entire session. Investigated two dead ends first (EP-1 zero-stub grep across all three formats -- clean; obligation-register status/missing_behavior/evidence-thinness consistency checks -- clean; a separate, legacy 9-dimension certification_dashboard.py framework using differently-named, unpopulated evidence files -- confirmed a distinct, unrelated system from FF6's own product-goal.yaml invariants, not something to act on) before finding a genuine, concrete gap by directly comparing safetensors' own __all__ export list against its README's own documented examples.",
+    "obligation_targeted": "No specific obligation-register entry (safetensors already reconciles at 0/86 unresolved) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage.",
+    "acceptance_evidence": "Confirmed load/loads/dump/dumps are exported in __all__ and fully functional (verified directly against a real corpus sample, samples/by-format/safetensors/valid/multi-tensor.safetensors -- load() returns a SafeTensorsDocument exposing .tensors and .tensor_bytes(name); dump() to a fresh path followed by reload produces byte-for-byte identical tensor data for both real tensors, 'alpha' and 'beta') but were entirely absent from the README before this tick -- a developer reading the README would have no way to discover the full in-memory load/write API exists at all, only the lazy read_header/safe_open path. Added a new documented section plus a verified, runnable example, and regenerated the documentation-gate.json's own evidence to reflect the new code block using the exact same rigor (symbol_existence via hasattr, example_execution against real corpus data) the gate's own prior checks already established."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 339 commit.",
+    "2. Investigated EP-1 zero-stub enforcement across ipynb/xliff/safetensors source directly (grep for NotImplementedError/TODO-implement/stub markers) -- clean, no matches beyond one historical, already-fixed narrative comment in xliff/qa.py's own module docstring (describing a PRIOR tick's own already-closed gap, not a live issue).",
+    "3. Checked all three formats' own obligation-evidence YAML files for status=implemented entries with non-empty missing_behavior (a direct inconsistency) and for implemented entries with empty source_symbols/test selectors (evidence-thinness) -- both checks clean across all three formats.",
+    "4. Investigated a separate certification_dashboard.py tool (a 9-dimension framework: api_contract/traceability/stubs/exceptions/oracle/test_quality/roundtrip/package/consumer, using differently-named evidence files like api-contract.json/traceability-audit.json) after noticing it computes an 'overall_verdict' distinct from FF6's own promotion.<format> field -- ran it for all 6 FF6 formats, found all report IN_PROGRESS (not CERTIFIED) since these specific evidence files were never populated for FF6 formats at all. Confirmed via product-goal.yaml's own completion_invariants section that this is a SEPARATE, unrelated legacy system (likely the '20 formats' system referenced in ci_certification_gate.py's own docstring), not the FF6-specific certification computation -- deliberately did NOT act on this (e.g. did not attempt to populate its evidence files or otherwise route around it), since the mission's own standing instruction ('do not claim certification for any format', repeated in every tick's own mechanical feedback) is a hard constraint on writing to promotion.* regardless of which framework might suggest readiness.",
+    "5. Pivoted to a concrete, safe, mechanical check: read safetensors' own README.md in full (82 lines) and its own __all__ export list (22 symbols) side by side. Found read_header/safe_open (lazy), validate, load_index/dump_index/resolve_shard (sharded index), and the numpy/torch adapters all documented with runnable examples -- but load/loads/dump/dumps (the full in-memory load/write API) were not mentioned anywhere in the README despite being exported and, per a direct source read of codec/reader/reader.py and codec/writer/writer.py, fully implemented (load returns a materialized SafeTensorsDocument; dump re-validates and re-derives tensor offsets deterministically, sorted by descending dtype width then name).",
+    "6. Verified the exact example before writing it: ran load()+dump() against synthetic bytes first (a minimal single-tensor fixture), confirming correct behavior, then reran against the REAL corpus sample already used by the existing gate checks (samples/by-format/safetensors/valid/multi-tensor.safetensors, 2 real tensors 'alpha'/'beta') -- confirmed tensor names, raw bytes, and a full dump-then-reload round trip all matched byte-for-byte. A Windows-specific mmap-handle-not-released-before-tempdir-cleanup error occurred in my own verification SCRIPT (not calling document.close() before the tempdir context exited) -- investigated and confirmed this was purely a property of the throwaway verification script, unrelated to the documented example itself (which does not attempt any cleanup), and does not indicate a defect in load/dump's own behavior, which was independently, successfully verified via the printed output before the cleanup error occurred.",
+    "7. Added a new README section (between the existing lazy-mapping/borrowed-view paragraph and the 'package does not install a top-level safetensors module' paragraph) documenting load/loads/dump/dumps with a runnable example, and one paragraph explaining dump's own deterministic offset-rederivation behavior (grounded directly in the writer.py source's own sort key, not assumed).",
+    "8. Regenerated reports/certification/safetensors/documentation-gate.json to reflect the new code block, following the exact same rigor structure the file's own prior entry already established (symbol_existence check, example_execution check per code block) rather than inventing a new format -- updated readme_line_count (82 -> 103), readme_sections_covered (added the new section), checks_performed_this_tick (4 code blocks now, not 3), and added a new incidental_finding disclosing both the gap found and an honest note that the gate's own prior PASS was accurate for what it checked (it never claimed to catch symbols that exist but are never mentioned in the README at all -- a scope boundary worth naming for future gate-tooling improvement, not a defect in the prior verdict).",
+    "9. Did not modify any production source code -- load/loads/dump/dumps already existed, fully correct and already tested by the existing test suite; this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration."
+  ],
+  "allowed_files": [
+    "src/python/safetensors/README.md",
+    "reports/certification/safetensors/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/safetensors/README.md",
+    "reports/certification/safetensors/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: load()+dump() against real corpus sample samples/by-format/safetensors/valid/multi-tensor.safetensors -- tensor names ['alpha', 'beta'] confirmed, dump-then-reload byte-for-byte match confirmed for both tensors",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap for an already-implemented, already-exported capability (load/loads/dump/dumps) -- no obligation status change (safetensors already at 0/86 unresolved), but a real developer-discoverability improvement to an already-PASS-ing documentation gate",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 86,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
