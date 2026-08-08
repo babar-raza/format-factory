@@ -1,0 +1,21 @@
+{
+  "format_id": "ipynb",
+  "gate": "documentation",
+  "status": "PASS",
+  "verdict": "PASS",
+  "docs_present": ["README.md", "CHANGELOG.md", "MIGRATION.md", "SECURITY.md", "THIRD_PARTY_NOTICES.md"],
+  "readme_line_count": 246,
+  "readme_sections": [
+    "Installation", "Common lifecycle", "Validation profiles", "Explicit version conversion",
+    "Active-content handling", "Content-addressed trust", "Attachment management",
+    "Structure-aware diff and guarded patches", "Stable-ID cell collection editing",
+    "Typed metadata snapshots", "Public namespace", "Security boundary", "Current scope", "License"
+  ],
+  "checks_performed_this_tick": {
+    "symbol_existence": "PASS -- every symbol referenced by a `from format_factory.ipynb import ...` statement in the README (17 distinct names across 8 code blocks) actually exists on the current module, checked via hasattr, not merely assumed from the source text",
+    "example_execution": "PASS -- the README's own 'Common lifecycle' example (probe/load/validate/add_cell/dump) was executed verbatim against a real corpus sample (samples/by-format/ipynb/valid/minimal.ipynb) end-to-end: probed true, loaded, validated clean, a cell was added, and the result was written to a real temp file (288 bytes) -- not merely a syntax check"
+  },
+  "honest_gap": "Not every one of the README's 10 code examples was executed end-to-end this tick (several reference illustrative, non-corpus variables like `base`/`target`/`application_secret` that a real doc reader would supply themselves) -- symbol-existence was verified for all of them, but only the fully self-contained 'Common lifecycle' example was run against real data. A future tick could extend this to a dedicated doctest-style CI check running every README example against fixtures.",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the documentation invariant only, not a certification claim for the format as a whole.",
+  "commit": "pending"
+}

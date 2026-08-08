@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-safetensors-documentation-gate-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-f9d3506192ba5b7d",
+  "mode": "live",
+  "timestamp": "2026-08-08T05:47:31Z",
+  "inputs": {
+    "format_id": "ipynb+safetensors",
+    "task_id": "TC_FF6_IPYNB_SAFETENSORS_DOCUMENTATION_GATE_001",
+    "task_kind": "certification-gate-frontier-eighth-step",
+    "root_cause": "Event 313's own exact_next_action named 'documentation' as the next candidate, noting it needed a direct audit of what exists rather than an assumption. Found substantial existing documentation for both formats (ipynb: README/CHANGELOG/MIGRATION/SECURITY/THIRD_PARTY_NOTICES; safetensors: README/CHANGELOG/SECURITY) -- ipynb's README alone is 246 lines with 10 working code examples covering the full API breadth.",
+    "obligation_targeted": "product-goal.yaml's own 'documentation' completion invariant for ipynb and safetensors -- NOT a certification claim for either format as a whole.",
+    "acceptance_evidence": "Did not trust the documentation's own prose claims at face value. Extracted every `from format_factory.X import ...` statement from both READMEs and verified each of the 23 total referenced symbols actually exists on the current module via hasattr (0 drifted/missing). Then executed the fully self-contained examples end-to-end against real corpus samples: ipynb's 'Common lifecycle' example (probe/load/validate/add_cell/dump) and all 3 of safetensors' examples (header+safe_open+tensor_region, load_index+resolve_shard, to_numpy/to_torch adapters) all ran correctly and matched their own documented behavior exactly.",
+    "regression_tier": "none (evidence-only slice, no source or test files touched; verification performed via standalone interactive Python, not committed as new test files)"
+  },
+  "execution_steps": [
+    "1. Inventoried existing documentation files for both formats: ipynb has README.md (246 lines), CHANGELOG.md, MIGRATION.md, SECURITY.md, THIRD_PARTY_NOTICES.md; safetensors has README.md (82 lines), CHANGELOG.md, SECURITY.md.",
+    "2. Read both READMEs in full: found genuinely comprehensive, detailed coverage (ipynb: 14 sections covering lifecycle, validation, version conversion, sanitization, trust/signing, attachments, diff/patch, cell editing, metadata adapters; safetensors: header parsing, lazy mmap, validation codes, borrowed-view lifecycle, index sharding, optional framework adapters), not stub placeholders.",
+    "3. Extracted every `from format_factory.X import ...` statement from both READMEs programmatically and verified each of the 23 total distinct referenced symbols (17 for ipynb, 6 for safetensors including the adapters submodule) actually exists on the current live module via hasattr -- 0 missing/drifted.",
+    "4. Executed ipynb's own 'Common lifecycle' README example verbatim (adjusting only the literal file path to a real corpus sample) against samples/by-format/ipynb/valid/minimal.ipynb: probe returned true, load succeeded, validate reported clean, add_cell succeeded, dump wrote a real 288-byte file -- the full documented flow worked end-to-end.",
+    "5. Executed safetensors' first README example (read_header + safe_open + tensor_region + release) against samples/by-format/safetensors/valid/multi-tensor.safetensors: correctly reported access.mode and full_decode_required=False exactly as documented.",
+    "6. Executed safetensors' second README example (load_index + resolve_shard) against a real temporary index file: resolved the shard path correctly.",
+    "7. Executed safetensors' third README example (to_numpy/to_torch adapters): to_numpy(copy=False) returned a read-only borrowed view (WRITEABLE=False) and to_numpy(copy=True) returned a writable independent array, both exactly as documented; to_torch correctly raised ModuleNotFoundError since torch is not installed in this environment, proving the adapter's own lazy-import boundary rather than a hard dependency, matching the README's own 'importing does not import NumPy or PyTorch' claim.",
+    "8. Incidental finding during step 7: an initial test mistake (not releasing a borrowed to_numpy() view before the safe_open context exited) correctly triggered the documented SafeTensorsError ('cannot close the SafeTensors payload while borrowed views are active') -- confirmed this is the README's own documented safety guarantee firing exactly as described, not a defect; re-ran correctly releasing the view before context exit, which then closed cleanly.",
+    "9. Wrote reports/certification/{ipynb,safetensors}/documentation-gate.json recording the independently-verified result, including an honest note that not every one of the READMEs' code examples was executed end-to-end (several reference illustrative variables a caller would supply themselves), only the fully self-contained ones -- symbol existence was checked for all of them regardless."
+  ],
+  "allowed_files": [
+    "reports/certification/ipynb/documentation-gate.json",
+    "reports/certification/safetensors/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "reports/certification/ipynb/documentation-gate.json",
+    "reports/certification/safetensors/documentation-gate.json"
+  ],
+  "tests_run": [
+    "standalone Python: symbol-existence check for 23 README-referenced symbols across both packages -- 0 missing",
+    "standalone Python: ipynb 'Common lifecycle' example executed against a real sample -- OK",
+    "standalone Python: safetensors read_header/safe_open/tensor_region example executed against a real sample -- OK",
+    "standalone Python: safetensors load_index/resolve_shard example executed against a real temp index -- OK",
+    "standalone Python: safetensors to_numpy/to_torch adapters example executed against a real sample -- OK, including confirming the documented borrowed-view-must-release safety rule fires correctly"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations closed (this is a certification-gate invariant, not an obligation)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": "ipynb=68, safetensors=86",
+    "new_public_api": null
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

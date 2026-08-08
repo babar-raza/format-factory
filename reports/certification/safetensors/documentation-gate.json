@@ -1,0 +1,21 @@
+{
+  "format_id": "safetensors",
+  "gate": "documentation",
+  "status": "PASS",
+  "verdict": "PASS",
+  "docs_present": ["README.md", "CHANGELOG.md", "SECURITY.md"],
+  "readme_line_count": 82,
+  "readme_sections_covered": [
+    "header parsing and lazy mmap access", "reader refusal behavior enumerated",
+    "validate() diagnostic codes", "borrowed-view lifecycle and close() safety",
+    "co-installability with the official safetensors package", "sharded index lifecycle",
+    "optional numpy/torch adapters"
+  ],
+  "checks_performed_this_tick": {
+    "symbol_existence": "PASS -- every symbol referenced by a `from format_factory.safetensors[.adapters] import ...` statement in the README (6 distinct names across 3 code blocks) actually exists on the current module, checked via hasattr, not merely assumed from the source text",
+    "example_execution": "PASS, all 3 README code blocks executed end-to-end against real corpus samples: (1) read_header + safe_open + tensor_region + release, against samples/by-format/safetensors/valid/multi-tensor.safetensors -- correctly reports mode and full_decode_required=False as documented; (2) load_index + resolve_shard, against a real temp index file -- resolves the shard path correctly; (3) to_numpy (borrowed and copy=True) + to_torch, against the same real sample -- borrowed view is read-only (WRITEABLE=False) as documented, copy view is writable, to_torch correctly raises ModuleNotFoundError since torch is not installed in this environment (proving the adapter's own lazy-import boundary, not a hard dependency)"
+  },
+  "incidental_finding": "While executing the adapters example, an initial test mistake (not releasing a borrowed to_numpy() view before the safe_open context exited) correctly triggered the documented SafeTensorsError 'cannot close the SafeTensors payload while borrowed views are active' -- this is the README's own documented safety guarantee firing exactly as described, not a defect. Confirms the borrowed-view discipline the docs describe is genuinely enforced, not just asserted in prose.",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the documentation invariant only, not a certification claim for the format as a whole.",
+  "commit": "pending"
+}
