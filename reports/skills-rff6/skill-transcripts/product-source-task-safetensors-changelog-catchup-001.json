@@ -1,0 +1,52 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-safetensors-changelog-catchup-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-dcebce3e987fa334",
+  "mode": "live",
+  "timestamp": "2026-08-08T15:09:26Z",
+  "inputs": {
+    "format_id": "safetensors",
+    "task_id": "TC_FF6_SAFETENSORS_CHANGELOG_CATCHUP_001",
+    "task_kind": "close-a-changelog-content-staleness-gap-found-via-a-cross-format-survey",
+    "root_cause": "Event 349's own exact_next_action named safetensors as the smaller of the two remaining formats (safetensors, ipynb) needing the CHANGELOG catch-up already applied to ubl/nrrd/ora/xliff. safetensors' CHANGELOG.md's existing single generic bullet ('strict structural validation, sub-byte dtype support, deterministic writing, lazy memory mapping, and optional NumPy/PyTorch adapters') gestured at some capability but named no concrete symbols and omitted the full in-memory load/dump API (this session's own Event 340 documentation-completeness finding), the sharded index lifecycle, and validate()'s own diagnostic codes entirely.",
+    "obligation_targeted": "No specific obligation-register status change (safetensors remains at 0/86 unresolved, unaffected by this tick) -- this closes the same changelog-content-accuracy gap dimension opened at Event 346, adjacent to but distinct from product-goal.yaml invariant #4.",
+    "acceptance_evidence": "Confirmed safetensors' pyproject.toml still declares version 0.2.0.dev0, matching the CHANGELOG's own latest heading exactly, so new bullets belong under the same heading. Compiled the real capability list directly from this session's own already-fully-verified README work at Event 340 (lazy header/region reading, the full in-memory load/dump API, the sharded index lifecycle, optional framework adapters). Re-extracted the module's own __all__ list directly rather than trusting a first-draft symbol list from memory -- this caught and corrected an initial mistake: `resolve_shard` is NOT a top-level function (it is a method on `SafeTensorsShardIndex`, called as `index.resolve_shard(...)`), so citing it as a bare hasattr-checkable module symbol would have been inaccurate. Verified all 12 correct top-level symbols cited in the 4 new bullets via hasattr before writing."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 349 commit (22ac779c); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Read src/python/safetensors/CHANGELOG.md (8 lines, one section, three bullets, the third being a broad summary sentence) -- less starkly bare than the other five formats' own changelogs, but still missing concrete symbol names and entire capability areas.",
+    "3. Confirmed safetensors' own pyproject.toml still declares `version = \"0.2.0.dev0\"`, identical to the CHANGELOG's own latest heading -- appending to the existing section, not creating a new heading, following the same reasoning already verified and applied for the four prior formats.",
+    "4. Compiled the list of real, shipped, previously undocumented-in-changelog safetensors capabilities directly from this session's own README work at Event 340 (lazy header/region reading via read_header/safe_open, the full in-memory load/loads/dump/dumps API added to documentation at that same event, the sharded index lifecycle, optional numpy/torch adapters).",
+    "5. Attempted an initial hasattr check that included `resolve_shard` as a bare module-level name -- it returned False. Investigated directly rather than silently dropping it: re-extracted safetensors' full __all__ list (22 symbols) via the same script-based technique used throughout this session's own survey, and confirmed `resolve_shard` is a method on the `SafeTensorsShardIndex` class returned by `load_index()`, not an importable top-level function -- corrected the drafted bullet to describe it accurately as `SafeTensorsShardIndex.resolve_shard` rather than a standalone name.",
+    "6. Verified all 12 correct top-level symbols (read_header, safe_open, validate, load, loads, dump, dumps, load_index, dump_index, loads_index, dumps_index, SafeTensorsShardIndex) named in the 4 drafted bullets exist on the current format_factory.safetensors module via hasattr before writing anything.",
+    "7. Appended 4 new bullets to the existing '## 0.2.0.dev0' section of src/python/safetensors/CHANGELOG.md.",
+    "8. Regenerated reports/certification/safetensors/documentation-gate.json to add a 'changelog_content_accuracy' check dimension (matching the structure introduced for ubl/nrrd/ora/xliff at Events 346-349) documenting the gap found, the resolve_shard correction, and the fix applied, and extended the incidental_finding to note this closes the safetensors instance of the cross-format staleness pattern, leaving only ipynb open.",
+    "9. Did not modify any production source code, README.md, or any other file -- this slice is purely a CHANGELOG.md content-accuracy fix plus its own supporting gate-evidence regeneration. Did not re-run the safetensors test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/safetensors/CHANGELOG.md",
+    "reports/certification/safetensors/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/safetensors/CHANGELOG.md",
+    "reports/certification/safetensors/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct verification: hasattr checks for 12 symbols cited in the new CHANGELOG bullets against the current format_factory.safetensors module (after correcting one initially-wrong symbol reference, resolve_shard, discovered via a failing hasattr check)",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a changelog-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine CHANGELOG.md content-staleness gap for safetensors -- no obligation status change (safetensors remains at 0/86 unresolved, unaffected), but a real developer-facing accuracy improvement matching the same fix already applied to ubl, nrrd, ora, and xliff.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 86,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API in a changelog entry; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
