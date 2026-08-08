@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-changelog-catchup-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-cdf3c740d79f0027",
+  "mode": "live",
+  "timestamp": "2026-08-08T15:15:03Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_CHANGELOG_CATCHUP_001",
+    "task_kind": "close-a-changelog-content-staleness-gap-found-via-a-cross-format-survey-completing-the-sweep",
+    "root_cause": "Event 350's own exact_next_action named ipynb as the last of the six formats needing the CHANGELOG catch-up already applied to ubl/nrrd/ora/xliff/safetensors (Events 346-350). ipynb's CHANGELOG.md had 3 generic bullets covering only namespace/module-split/migration-alias milestones, with no mention of schema validation, version conversion, active-content sanitization, content-addressed trust, attachment management, structure-aware diff/patches, stable-ID cell editing, typed metadata snapshots, or the opt-in execution adapter (this session's own Event 341 finding).",
+    "obligation_targeted": "No specific obligation-register status change (ipynb remains at 0/68 unresolved, unaffected by this tick) -- this closes the same changelog-content-accuracy gap dimension opened at Event 346, adjacent to but distinct from product-goal.yaml invariant #4. Closing this format completes the cross-format CHANGELOG sweep.",
+    "acceptance_evidence": "Confirmed ipynb's pyproject.toml still declares version 0.2.0.dev0, matching the CHANGELOG's own latest heading exactly, so new bullets belong under the same heading. Compiled the real capability list directly from this session's own already-fully-verified README work (the earlier full rewrite covering 10 sections beyond Installation, plus Event 341's own execute_notebook documentation addition). Verified all 19 symbols cited in the 9 new bullets exist on the current module via hasattr before writing."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 350 commit (ed6f69bd); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Read src/python/ipynb/CHANGELOG.md (9 lines, one section, three bullets) -- the same one-entry-ever staleness pattern already confirmed for the other five formats.",
+    "3. Confirmed ipynb's own pyproject.toml still declares `version = \"0.2.0.dev0\"`, identical to the CHANGELOG's own latest heading -- appending to the existing section, not creating a new heading, following the same reasoning already verified and applied for the five prior formats.",
+    "4. Compiled the list of real, shipped, previously undocumented-in-changelog ipynb capabilities directly from this session's own README work, which had already fully investigated and verified every one of ipynb's README sections: validation profiles (digest-checked official nbformat schema validation with semantic checks), explicit version conversion (downgrade/plan_downgrade/upgrade), active-content handling (sanitize/SanitizationMode/SanitizationPolicy), content-addressed trust (HmacNotebookNotary), attachment management (manage_attachments), structure-aware diff and guarded patches (diff_notebooks/DiffPolicy), stable-ID cell collection editing (edit_cells/CellQuery), typed metadata snapshots (cell_metadata/notebook_metadata), and the opt-in notebook execution adapter (execute_notebook, this session's own Event 341 addition).",
+    "5. Verified all 19 distinct symbols named in the 9 drafted bullets exist on the current format_factory.ipynb module via hasattr before writing anything.",
+    "6. Appended 9 new bullets to the existing '## 0.2.0.dev0' section of src/python/ipynb/CHANGELOG.md.",
+    "7. Regenerated reports/certification/ipynb/documentation-gate.json to add a 'changelog_content_accuracy' check dimension (matching the structure introduced for the five prior formats at Events 346-350) documenting the gap found and the fix applied, and extended the incidental_finding to note this completes the CHANGELOG catch-up across all six FF6 formats.",
+    "8. Did not modify any production source code, README.md, or any other file -- this slice is purely a CHANGELOG.md content-accuracy fix plus its own supporting gate-evidence regeneration. Did not re-run the ipynb test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/CHANGELOG.md",
+    "reports/certification/ipynb/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/CHANGELOG.md",
+    "reports/certification/ipynb/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct verification: hasattr checks for all 19 symbols cited in the new CHANGELOG bullets against the current format_factory.ipynb module",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a changelog-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine CHANGELOG.md content-staleness gap for ipynb -- no obligation status change (ipynb remains at 0/68 unresolved, unaffected), but a real developer-facing accuracy improvement matching the same fix already applied to ubl, nrrd, ora, xliff, and safetensors. Completes the six-format CHANGELOG catch-up sweep.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 68,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API in a changelog entry; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
