@@ -25,7 +25,7 @@ import io
 import os
 import re
 import zipfile
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from enum import Enum
 from pathlib import Path
 from typing import IO, Union
@@ -280,6 +280,56 @@ def _baseline_asset_diagnostics(members: dict[str, bytes]) -> list[Diagnostic]:
                 )
 
     return found
+
+
+def replace_baseline_asset(
+    image: OraImage,
+    *,
+    thumbnail: bytes | None = None,
+    merged_image: bytes | None = None,
+) -> OraImage:
+    """Return a copy of `image` with its thumbnail and/or merged-image
+    member replaced by caller-supplied bytes, each validated against the
+    exact same constraints `_baseline_asset_diagnostics` enforces on load.
+
+    ORA-BASELINEASSET-001: "read, validate, generate, and replace required
+    thumbnail and flattened-view assets." This package has no image
+    -generation capability (no flattening/downscaling renderer exists) --
+    "generate" remains genuinely unbuilt. "Replace" is the separable part:
+    a caller who has already produced a new baseline asset by some other
+    means (their own renderer, a different tool) can swap it in and have
+    it validated the same way a freshly loaded document's own assets are,
+    refused rather than silently accepted if it does not conform.
+    """
+    if thumbnail is None and merged_image is None:
+        raise OraValidationError(
+            "replace_baseline_asset requires at least one of thumbnail or "
+            "merged_image"
+        )
+
+    members = dict(image.members)
+
+    if thumbnail is not None:
+        metadata = read_png_metadata(thumbnail)
+        if not metadata.satisfies_thumbnail_constraints():
+            raise OraValidationError(
+                f"replacement {THUMBNAIL_MEMBER} must be a non-interlaced PNG "
+                f"with 8 bits per channel and at most 256x256, but is "
+                f"{metadata.width}x{metadata.height} at {metadata.bit_depth}-bit"
+                + (" interlaced" if metadata.interlaced else "")
+            )
+        members[THUMBNAIL_MEMBER] = thumbnail
+
+    if merged_image is not None:
+        metadata = read_png_metadata(merged_image)
+        if not metadata.satisfies_merged_image_constraints():
+            raise OraValidationError(
+                f"replacement {MERGED_IMAGE_MEMBER} must carry 8 or 16 bits "
+                f"per channel, but declares {metadata.bit_depth}"
+            )
+        members[MERGED_IMAGE_MEMBER] = merged_image
+
+    return replace(image, members=members)
 
 
 def load(

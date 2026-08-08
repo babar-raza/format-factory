@@ -41,6 +41,7 @@ from .lifecycle import (
     dumps,
     load,
     loads,
+    replace_baseline_asset,
     validate,
 )
 from .preservation import LossItem, LossReport, check_preservation
@@ -82,6 +83,7 @@ __all__ = [
     "loads",
     "parse_stack",
     "read_png_metadata",
+    "replace_baseline_asset",
     "resolve_all_assets",
     "resolve_asset",
     "validate",

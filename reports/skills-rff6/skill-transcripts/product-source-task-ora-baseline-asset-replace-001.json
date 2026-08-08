@@ -1,0 +1,60 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-baseline-asset-replace-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-a74c48eff9585292",
+  "mode": "live",
+  "timestamp": "2026-08-08T12:01:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_BASELINE_ASSET_REPLACE_001",
+    "task_kind": "separate-a-compound-obligation-clause-and-build-the-separable-half",
+    "root_cause": "Event 333's own exact_next_action suggested decomposing ORA-BASELINEASSET-001's own rule_text for a separable non-rendering piece, the same technique that successfully narrowed ORA-COMPOSITE-001 and ORA-STREAM-001 the two prior ticks. Read SAL-ORA-OBL-52746ABC41B3E790's own ledger entry: rule_text 'Read, validate, generate, and replace required thumbnail and flattened-view assets without confusing them with editable layer sources', with missing_behavior bundling '\"Generate\" and \"replace\" are not implemented' together as if they were one requirement.",
+    "obligation_targeted": "SAL-ORA-OBL-52746ABC41B3E790 (ORA-BASELINEASSET-001) narrowed -- stays partial (generate remains genuinely unbuilt), but this tick delivered real new product code, not just evidence remapping.",
+    "acceptance_evidence": "Investigated whether 'generate' and 'replace' are genuinely the same requirement or separable. Concluded separable: 'generate' means producing a NEW thumbnail/merged-image FROM the layer stack (pixel compositing + downscaling, requiring a rendering engine this package does not have), while 'replace' means accepting an ALREADY-PRODUCED new asset from a caller and swapping it into the archive after validating it -- a mechanical operation with no rendering dependency. Confirmed the underlying write mechanism already existed (OraImage.members is a general dict every dumps() call serializes, not limited to stack.xml), so only a validated, ergonomic, dedicated function was missing. Added replace_baseline_asset() reusing the exact same PNG-metadata-based constraint checks (satisfies_thumbnail_constraints/satisfies_merged_image_constraints) already proven for the read path, closing the loop between read-time and write-time validation with a single source of truth."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 333 commit.",
+    "2. Read SAL-ORA-OBL-52746ABC41B3E790's own current ledger entry (capability_id ORA-BASELINEASSET-001, not the informally-referenced 'ORA-GENERATE-001' from an earlier planning note) and its own register rule_text/required_tests/authority_fact_ids.",
+    "3. Read lifecycle.py's own _baseline_asset_diagnostics() in full: validates thumbnail/merged-image presence and conformance (dimensions, bit depth, interlacing) via read_png_metadata + RasterMetadata.satisfies_thumbnail_constraints()/satisfies_merged_image_constraints(), producing Diagnostics rather than raising -- confirmed this is the exact check set 'validate' already satisfies.",
+    "4. Investigated whether ora has ANY archive-member-writing capability at all before assuming 'replace' needs new writer infrastructure from scratch -- read dumps()/dump() in full and found OraImage.members is a general dict[str, bytes] of every archive member, and dumps() already serializes every key present in it (not limited to stack.xml regeneration). Confirmed the underlying mechanism (mutate members dict, then dumps()) already worked mechanically -- only a validated, dedicated, ergonomic public function was missing, distinct from generating new pixel content.",
+    "5. Added replace_baseline_asset(image, *, thumbnail=None, merged_image=None) -> OraImage to lifecycle.py, positioned right after _baseline_asset_diagnostics for locality. Reuses read_png_metadata and the exact same satisfies_thumbnail_constraints()/satisfies_merged_image_constraints() calls the read path already uses, raising OraValidationError with the same framing as the read-time diagnostics rather than inventing new error text. Returns a new OraImage via dataclasses.replace (added replace to the existing dataclasses import after checking for naming collisions -- found none, only str.replace() method calls elsewhere in the file).",
+    "6. Exported replace_baseline_asset through both lifecycle.py's own module scope and the top-level ora/__init__.py (import + __all__ entry), matching how dump/dumps/load/loads are already exported.",
+    "7. Ran mypy --strict and ruff on both changed source files before writing any test -- clean on the first pass. Ran the full ora suite (361 passed, unchanged from before this slice) to confirm zero regression from the additive change alone.",
+    "8. Wrote a new, dedicated test file (test_obligation_baseline_asset_replacement.py, 9 tests) reusing the archive()/png() fixture pattern already established in test_obligation_lifecycle_and_write.py (redefined locally per this codebase's own per-file-helper convention): swapping the thumbnail alone, the merged image alone, both together in one call, non-mutation of the original OraImage (proven directly, not assumed, by checking the original's own members dict is unchanged after a replace call), 3 refusal cases (oversized thumbnail, interlaced thumbnail, wrong-bit-depth merged image) each matching the exact error text the function raises, a require-at-least-one-argument refusal, and a full write/read round trip (replace, dumps(), loads(), confirm the new bytes survive byte-identical).",
+    "9. Ran the new file alone (9/9 pass on first attempt), ruff (clean), the full ora suite (370 passed, was 361), and the combined 6-format regression (3989 passed, 4 skipped, 0 failed, was 3980-ish before -- confirmed zero cross-format impact) since production source (lifecycle.py, a shared-within-ora module) was touched.",
+    "10. Updated the ledger: kept SAL-ORA-OBL-52746ABC41B3E790 at status=partial (NOT promoted to implemented -- 'generate' genuinely remains unbuilt), added replace_baseline_asset to source_symbols, added all 9 new tests split into positive/negative selectors alongside the 4 pre-existing ones, added a new execution_evidence entry (ORA-BASELINEASSET-REPLACE-PROOF), and rewrote missing_behavior to name ONLY 'generate' as the remaining gap (previously it bundled generate and replace together as if inseparable)."
+  ],
+  "allowed_files": [
+    "src/python/ora/src/format_factory/ora/lifecycle.py",
+    "src/python/ora/src/format_factory/ora/__init__.py",
+    "tests/python/ora/test_obligation_baseline_asset_replacement.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/src/format_factory/ora/lifecycle.py",
+    "src/python/ora/src/format_factory/ora/__init__.py",
+    "tests/python/ora/test_obligation_baseline_asset_replacement.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_baseline_asset_replacement.py -q -- 9 passed (new file)",
+    ".venv/Scripts/python -m mypy --strict src/python/ora/src/format_factory/ora/lifecycle.py src/python/ora/src/format_factory/ora/__init__.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check src/python/ora/src/format_factory/ora/lifecycle.py src/python/ora/src/format_factory/ora/__init__.py tests/python/ora/test_obligation_baseline_asset_replacement.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ora -q -- 370 passed (was 361)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q -- 3989 passed, 4 skipped, 0 failed (6-format regression)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation narrowed (stays partial -- generate remains unbuilt) but with REAL new product capability added: replace_baseline_asset() is a genuinely new public API, not evidence remapping",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 134,
+    "new_public_api": "format_factory.ora's replace_baseline_asset(image, *, thumbnail=None, merged_image=None) -> OraImage"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -26,6 +26,14 @@
       "truth_boundary": "86 tests pass against the four mapped capabilities, written RED before the source existed. Updated 2026-08-05: ORA-SEC-001 adds 17 tests against already-existing source (no new production code this slice). ORA suite is now 189 passed with no failures. The remaining 15 capabilities have no source and no suite; their obligations stay `missing` rather than borrowing this result. No ORA obligation is `implemented`; ORA-SEC-001's obligations move to `partial` on this evidence, not higher.\n2026-08-06: ORA-ISOLATION-001 adds 15 tests against already-existing source (no new production code this slice either). ORA suite is now 204 passed with no failures. The remaining 9 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-ISOLATION-001's obligations move to `partial` only.\n2026-08-06 (later): ORA-PRESERVE-001 adds a new module (preservation.py, check_preservation()) plus 9 tests -- genuinely new production code this time, not only tests against existing behavior. ORA suite is now 213 passed with no failures. The remaining 8 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-PRESERVE-001's obligations move to `partial` only.\n2026-08-06 (later still): ORA-LAYER-001/ORA-GROUP-001 add __post_init__ validation (validate_opacity/validate_visibility/validate_src) to every node type in model/stack.py, and codec/stack_xml.py now delegates to those same functions instead of keeping its own copies. All 213 pre-existing tests still pass unchanged (parser behavior and error types are identical). 38 new tests. ORA suite is now 251 passed with no failures. The remaining 6 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-LAYER-001/ORA-GROUP-001's obligations move to `partial` only.\n2026-08-06 (later still): ORA-EDIT-001 adds a new module (transaction.py, apply_transaction()) plus 10 tests, covering only its \"transaction rollback\" required-proof area (three others -- reference repair, stale-view invalidation, independent application reopen -- remain unattempted, see the dated note above for why). ORA suite is now 261 passed with no failures. The remaining 5 capabilities have no source and no suite; their obligations stay `missing`. No ORA obligation is `implemented`; ORA-EDIT-001's obligations move to `partial` only.\n2026-08-06 (later still): first ORA `implemented` promotions -- pure evidence-citation correction, zero new production code or tests. codec/container.py's OraContainer._check_mimetype/ALLOWED_COMPRESSION and model/stack.py's validate_src already fully and exactly implement four ORA-MIMETYPE-001 obligations (mimetype sentinel position/compression/exact-bytes, ZIP-member compression-method restriction, and archive-root-relative src referencing), each with existing on-point positive and negative tests in tests/python/ora/test_obligation_container_and_mimetype.py and test_obligation_stack_and_document.py -- but every one was citing the same three generic placeholder selectors (test_a_well_formed_archive_opens/test_missing_mimetype_is_rejected/test_mimetype_must_be_the_first_member) with no negative selectors at all, left over from this file's original codex-authored ledger-map mapping. Corrected each obligation's citation to its own precise, differentiated selector set. ORA suite unchanged at 261 passed (0 new tests, 0 source changes) -- proves this was a citation fix, not product work. Four ORA-MIMETYPE-001 obligations move from `partial` to `implemented`.\n2026-08-06 (later still): ORA-DOCUMENT-001 closes. model/document.py's OraDocument had no __post_init__ at all -- every w/h/version/xres/yres domain invariant was enforced only by codec/stack_xml.py's parser, so direct model construction (bypassing XML) could build an invalid document with no refusal. Added OraDocument.__post_init__ (positive width/height/xres/yres, non-empty version), matching model/stack.py's OraNode precedent exactly, plus tests/python/ora/test_obligation_document_model_construction.py (14 new tests) proving the same invariants hold for direct construction and for dataclasses.replace()-based editing, not only parsing. ORA suite: 261 -> 275 passed, ruff and mypy clean. Three ORA-DOCUMENT-001 obligations move from `partial` to `implemented`."
     },
     {
+      "evidence_id": "ORA-BASELINEASSET-REPLACE-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-baseline-asset-replace-001.json",
+      "sha256": "5a00a4319e64be88dd6e35a7af94889018685ecbe71d286807d9ef703f1f8576",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE. Narrows (does not fully close) SAL-ORA-OBL-52746ABC41B3E790 (ORA-BASELINEASSET-001), which stays partial -- \"generate\" remains genuinely unbuilt. This obligation's own compound rule_text names 4 actions (\"read, validate, generate, and replace\") plus one negative constraint (\"without confusing them with editable layer sources\"); \"read\", \"validate\", and the no-confusion constraint were already implemented and proven, leaving \"generate\" and \"replace\" bundled together in this obligation's own prior missing_behavior text as if they were one requirement. Investigated directly and found they are two distinct requirements: \"generate\" needs actual pixel-compositing/downscaling computation this package has no rendering engine for at all (the same genuinely blocked scope as ORA-RENDER-001 and ORA-COMPOSITE-001's own \"pixel semantics\" clause), but \"replace\" does not -- it only needs to accept a caller-supplied new asset (produced by some other means, outside this library) and validate it the same way a freshly loaded document's own assets are validated on load. Confirmed the underlying mechanism already existed: OraImage.members is a general dict of every archive member, and dumps() already writes whatever it contains -- so \"replacing\" a member was already mechanically possible by mutating the dict directly, just with no validated, dedicated, ergonomic API for it. Added replace_baseline_asset(image, *, thumbnail=None, merged_image=None) -> OraImage (lifecycle.py): reuses read_png_metadata and the exact same satisfies_thumbnail_constraints()/satisfies_merged_image_constraints() checks _baseline_asset_diagnostics already applies on load, refusing a non-conforming replacement (oversized/interlaced thumbnail, wrong merged-image bit depth) with the same error framing rather than silently accepting it or leaving a caller to reimplement the checks themselves. Returns a new OraImage via dataclasses.replace (non-mutating, proven by a dedicated test showing the original document's own members are unchanged after a replace call). Exported through both lifecycle.py and the top-level ora __init__.py. 9 new tests (tests/python/ora/test_obligation_baseline_asset_replacement.py): swapping the thumbnail alone, the merged image alone, both together, non-mutation of the original, 3 refusal cases (oversized thumbnail, interlaced thumbnail, wrong-bit-depth merged image), the require-at-least-one-argument refusal, and a full write/read round trip proving the replaced member survives dumps()/loads() byte-identical. mypy --strict and ruff clean on both changed source files. ora suite: 361 -> 370 passed. Combined 6-format regression: 3989 passed, 4 skipped, 0 failed. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the validation semantics are a direct reuse of already-proven, already-spec-grounded constraint checks, not new interpretation. Covers SAL-ORA-OBL-52746ABC41B3E790 only; it supports no other obligation and promotes no other product state. This is a NARROWING (real new product capability added, not pure evidence remapping), not a closure -- ora's own unresolved-obligation count is unchanged by this entry alone since \"generate\" keeps the obligation at partial, not implemented."
+    },
+    {
       "evidence_id": "ORA-BASELINEASSET-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -229,7 +237,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "bc5193d3848ceb8d7cc1cba8c57346f6b8b6874d9d8ea1b23e4e714f85d63a11",
+    "implementation_evidence": "6625458713d0e702a61d774c692193d6119608c3d4379bf6d86548b072832a39",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2110,22 +2118,33 @@
       "capability_id": "ORA-BASELINEASSET-001",
       "execution_evidence_ids": [
         "ORA-BASELINE-SUITE",
-        "ORA-BASELINEASSET-SELECTOR-PROOF"
+        "ORA-BASELINEASSET-SELECTOR-PROOF",
+        "ORA-BASELINEASSET-REPLACE-PROOF"
       ],
       "implemented_behavior": [
-        "Thumbnail and merged-image assets are read and validated via _baseline_asset_diagnostics, a code path entirely separate from _layer_png_diagnostics/iter_layers (which resolves editable layer src references) -- the two asset classes are never conflated because they are checked by different functions against different member-name constants (THUMBNAIL_MEMBER/MERGED_IMAGE_MEMBER vs. per-layer src paths)."
+        "Thumbnail and merged-image assets are read and validated via _baseline_asset_diagnostics, a code path entirely separate from _layer_png_diagnostics/iter_layers (which resolves editable layer src references) -- the two asset classes are never conflated because they are checked by different functions against different member-name constants (THUMBNAIL_MEMBER/MERGED_IMAGE_MEMBER vs. per-layer src paths).",
+        "FF6-EVENT-000334: replace_baseline_asset() closes the \"replace\" half of this obligation's own compound \"generate, and replace\" clause -- investigated and found these are two distinct requirements, not one: \"generate\" needs actual pixel-compositing/downscaling computation this package has no rendering engine for at all, but \"replace\" only needs to accept a caller-supplied new asset (produced by some other means) and validate it the same way a freshly loaded document's own assets are validated. Reuses read_png_metadata and the exact same satisfies_thumbnail_constraints()/satisfies_merged_image_constraints() checks _baseline_asset_diagnostics already applies on load, refusing a non-conforming replacement (oversized/interlaced thumbnail, wrong merged-image bit depth) rather than silently accepting it. Returns a new OraImage via dataclasses.replace (non-mutating, proven directly). 9 new tests, including a full write/read round trip proving the replaced member survives dumps()/loads() unchanged."
       ],
       "missing_behavior": [
-        "\"Generate\" and \"replace\" are not implemented -- this package has no image-generation capability (no flattening/thumbnailing renderer); it can only read and validate baseline assets a caller supplies, not produce or refresh a stale one."
+        "\"Generate\" remains genuinely unbuilt: this package has no image-generation capability (no flattening/thumbnailing renderer), so it cannot produce a new baseline asset from the layer stack itself -- only accept and validate one a caller already produced. The same scope already correctly deferred for ORA-RENDER-001 and for ORA-COMPOSITE-001's own \"pixel semantics\" clause."
       ],
       "negative_test_selectors": [
         "tests/python/ora/test_obligation_lifecycle_and_write.py::test_strict_mode_rejects_a_document_missing_its_thumbnail",
-        "tests/python/ora/test_obligation_raster_assets.py::test_non_conforming_thumbnails_are_rejected"
+        "tests/python/ora/test_obligation_raster_assets.py::test_non_conforming_thumbnails_are_rejected",
+        "tests/python/ora/test_obligation_baseline_asset_replacement.py::test_replace_baseline_asset_refuses_an_oversized_thumbnail",
+        "tests/python/ora/test_obligation_baseline_asset_replacement.py::test_replace_baseline_asset_refuses_an_interlaced_thumbnail",
+        "tests/python/ora/test_obligation_baseline_asset_replacement.py::test_replace_baseline_asset_refuses_a_wrong_bit_depth_merged_image",
+        "tests/python/ora/test_obligation_baseline_asset_replacement.py::test_replace_baseline_asset_requires_at_least_one_replacement"
       ],
       "obligation_id": "SAL-ORA-OBL-52746ABC41B3E790",
       "positive_test_selectors": [
         "tests/python/ora/test_obligation_raster_assets.py::test_a_conforming_thumbnail_is_accepted",
-        "tests/python/ora/test_obligation_raster_assets.py::test_merged_image_accepts_only_8_or_16_bits"
+        "tests/python/ora/test_obligation_raster_assets.py::test_merged_image_accepts_only_8_or_16_bits",
+        "tests/python/ora/test_obligation_baseline_asset_replacement.py::test_replace_baseline_asset_swaps_the_thumbnail_member",
+        "tests/python/ora/test_obligation_baseline_asset_replacement.py::test_replace_baseline_asset_swaps_the_merged_image_member",
+        "tests/python/ora/test_obligation_baseline_asset_replacement.py::test_replace_baseline_asset_can_replace_both_in_one_call",
+        "tests/python/ora/test_obligation_baseline_asset_replacement.py::test_replace_baseline_asset_does_not_mutate_the_original_image",
+        "tests/python/ora/test_obligation_baseline_asset_replacement.py::test_the_replaced_thumbnail_round_trips_through_dumps_and_reload"
       ],
       "proof_requirements": {
         "negative": [
@@ -2139,7 +2158,8 @@
       "source_symbols": [
         "src/python/ora/src/format_factory/ora/lifecycle.py::load",
         "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata",
-        "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers"
+        "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers",
+        "src/python/ora/src/format_factory/ora/lifecycle.py::replace_baseline_asset"
       ],
       "status": "partial"
     },
@@ -4884,6 +4904,7 @@
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json": "ff1e276701cd182ef6dbf39d21d7fbeb7d841bc5d12209ab938ae304e341abdc",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-asset-citation-audit-001.json": "3758939b774568de093e6cc9239fcd24131fd2c5d8db9497f570d33a617f70dd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-attribute-count-limit-001.json": "c81abe148b11eed7c492955a236e187280bef7ccbe7c26333e77a217185048bd",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-baseline-asset-replace-001.json": "5a00a4319e64be88dd6e35a7af94889018685ecbe71d286807d9ef703f1f8576",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-baselineasset-001.json": "e9fd4c00c4aabd1861f785b719efb3715dbad33c5cb8d09292091eda4ebe7f32",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-composite-inventory-profile-independence-001.json": "73ea58542388741c2f6a1f94849d329d1f31670093800b5de9b596a7edc24849",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-composite-op-registry-001.json": "0c54f586eb44d407a506e7eefa43e0a060a0615ea06a5aff28efbd061b5c5c8b",
@@ -4913,12 +4934,13 @@
     "src/python/ora/src/format_factory/ora/codec/container.py": "129e2f98264ad518d28f40bddb23c11bfca5fac11f4ea471ea01e2cb5571fa87",
     "src/python/ora/src/format_factory/ora/codec/png_metadata.py": "6b247625e57be37e010808f50a08ce76e5efd240c5459d2a7ad506eee74ac2ad",
     "src/python/ora/src/format_factory/ora/codec/stack_xml.py": "b01ed986b9fb086533e1892c7827b7c3d28a1afd307057c8bb0f16e7643193a7",
-    "src/python/ora/src/format_factory/ora/lifecycle.py": "dde59a3417d3aba90e1bc3a149f3921a26fd45badf5f3b40db62379d8e339130",
+    "src/python/ora/src/format_factory/ora/lifecycle.py": "6fe46df4a4895838f0028bd6cc93d57e8c665d71d5c0d23d1fd663c809f18589",
     "src/python/ora/src/format_factory/ora/model/composite_ops.py": "e6d442735fa783c396176cb4636504c563a52ee7594e90734301fd72486dc4d6",
     "src/python/ora/src/format_factory/ora/model/document.py": "e77dcfb27563a7c6ea4aa002a4582cc4f1a2cce981f3b3a7f3575a819e99d5ef",
     "src/python/ora/src/format_factory/ora/model/stack.py": "f50eb16a8e891fbed9f22a12a8c522eb4e254656b4aa78e1b7b98c121b0c6591",
     "src/python/ora/src/format_factory/ora/preservation.py": "2805b9b1d028af36a45eea1b12f97236b04540053685625adc633deb64f3b003",
     "src/python/ora/src/format_factory/ora/transaction.py": "2b43957b457688f862646be56045ff6c7a49478ade3901a5153140cbba4c3b85",
+    "tests/python/ora/test_obligation_baseline_asset_replacement.py": "dba387ba88c11b31bf2aefd1b7418549dd2a223d489bf35b7368d294f91729b3",
     "tests/python/ora/test_obligation_composite_inventory_profile_independence.py": "260faa7b7621bc9011e05668220e33c0d54f584a38845118845b87f2c0f24e9e",
     "tests/python/ora/test_obligation_composite_op_registry.py": "107536a6213188ff05a31cd499b338fb159951000dae32d30d192916064fb2d2",
     "tests/python/ora/test_obligation_container_and_mimetype.py": "b99bd7c244b2fcb3ba43c017d91bdea2c651227526799b608c15337059e3b2e2",
