@@ -1,0 +1,52 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-with-array-axis-order-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-a3c3aa24bfd60a25",
+  "mode": "live",
+  "timestamp": "2026-08-08T15:29:30Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_WITH_ARRAY_AXIS_ORDER_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-a-second-lower-priority-pass-on-previously-named-candidates",
+    "root_cause": "Event 352's own exact_next_action offered a second, lower-priority documentation pass on each format's own previously-named remaining __all__-vs-README candidates, after three full sweeps (README diff, CHANGELOG catch-up, SECURITY.md accuracy) completed 13/13 productive findings. nrrd's own candidate list from Event 343 named reshape_nrrd_array, axis_order_report/AxisOrderReport, and flatten_nrrd_array (all added this same session at Events 328-331) among others. Investigated these directly rather than the whole list at once: found NrrdDocument.to_array() (which get_array() already calls and documents) composes reshape_nrrd_array() internally, but with_array() -- the real, tested, symmetric WRITE-side counterpart that flattens a caller's edited host-order array back via flatten_nrrd_array() -- was never mentioned anywhere in the README's 'Preservation and array access' section, which only showed read-only access.",
+    "obligation_targeted": "No specific obligation-register status change (nrrd remains at 10/65 unresolved, unaffected by this tick) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage of a real read/write symmetry.",
+    "acceptance_evidence": "Read NrrdDocument.to_array()/with_array() and axis_order_report()/AxisOrderReport in full: confirmed to_array() (already documented via get_array()) composes reshape_nrrd_array() internally, and with_array() is its exact, real, tested inverse, composing flatten_nrrd_array() internally -- a genuine write capability, not merely a supporting type. Verified directly against real corpus data (samples/by-format/nrrd/valid/2d-float32.nrrd): get_array() returned [[1.0,2.0],[3.0,4.0],[5.0,6.0]]; document.with_array() on a doubled version of that array, dumped to a real temp file and reloaded, produced the exact doubled values byte-for-byte round-tripped through disk. Caught and corrected a real mistake during verification: an initial draft used document.header['sizes'] (the raw unparsed string '2 3') for axis_order_report()'s own sizes argument instead of the parsed document.sizes property ([2, 3]) -- direct execution surfaced the type mismatch before anything was published."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 352 commit (e9535447); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Reviewed Event 343's own named list of nrrd's remaining undocumented __all__ candidates (convert_endian, RoundingPolicy, axis_order_report/AxisOrderReport, flatten_nrrd_array, reshape_nrrd_array, dump_detached, decode_nrrd_data/encode_nrrd_data, load_nrrd/probe_nrrd/write_nrrd) and investigated the axis-order/shape-conversion cluster first, since flatten_nrrd_array/reshape_nrrd_array/axis_order_report were all added together this same session (Events 328-331) and looked most likely to form one cohesive, closeable capability rather than isolated cosmetic gaps.",
+    "3. Read model/document.py's NrrdDocument.to_array() (line 501) and confirmed it is exactly what get_array() (already documented in the README) calls -- reshape_nrrd_array(self.array, self.sizes) -- so the README's existing read-side example was already accurate and complete. Read with_array() (line 504) immediately after and confirmed it is the real, symmetric, tested WRITE-side counterpart: flatten_nrrd_array(nested, self.sizes), returning a new NrrdDocument with the payload replaced -- genuinely undocumented despite being a real capability that completes an already-partially-documented pair, not a supporting type.",
+    "4. Read axis_order_report()/AxisOrderReport in full (lines 515-557): confirmed it returns the exact same sizes/strides/nesting_order mapping to_array()/with_array() use internally, callable independently of any array's own values -- useful for a caller who wants to know which NRRD axis a given nesting depth corresponds to without performing a conversion. Judged this a natural, small addition to the same section rather than its own separate slice, since it directly explains the mapping the new with_array() example already uses.",
+    "5. Verified the exact example before writing it: loaded samples/by-format/nrrd/valid/2d-float32.nrrd, called get_array() (matches existing README claim), built a doubled host-order array, called document.with_array() on it, dumped the result to a real temp file, reloaded it, and confirmed the reloaded array matched the doubled values exactly -- a genuine disk round trip, not merely an in-memory check. Called axis_order_report(edited.sizes) and got strides=(1,2)/nesting_order=(1,0).",
+    "6. Caught a real mistake mid-verification: a first draft of the README example used `document.header['sizes']` as axis_order_report()'s own argument -- direct execution showed this is the RAW, unparsed header string ('2 3'), not the parsed list axis_order_report() expects, which would have silently produced wrong output (iterating over a 3-character string as a 'sizes' list) rather than raising. Corrected to the parsed `document.sizes` property before publishing, and disclosed the near-miss directly in the documentation-gate.json's own evidence rather than silently fixing it.",
+    "7. Extended the existing 'Preservation and array access' README section (rather than creating a new one, since this is a natural completion of that section's own existing get_array()/preservation_report() content) with the get_array()/with_array() read/write pair and the axis_order_report() explanation, grounded directly in the source's own real behavior.",
+    "8. Regenerated reports/certification/nrrd/documentation-gate.json to reflect the addition -- updated readme_line_count (164 -> 187), symbol_existence count (21 distinct names/9 code blocks now, +axis_order_report), a new example_execution entry documenting the full verification including the caught mistake, and extended the incidental_finding to note this is a second, lower-priority pass closing with_array/axis_order_report while convert_endian/RoundingPolicy/dump_detached/decode_nrrd_data/encode_nrrd_data/alternate-entry-points remain for a future tick.",
+    "9. Did not modify any production source code -- with_array/axis_order_report already existed, fully correct and already tested by the existing test suite; this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration. Did not re-run the nrrd test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/README.md",
+    "reports/certification/nrrd/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/README.md",
+    "reports/certification/nrrd/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: get_array/with_array against real corpus sample samples/by-format/nrrd/valid/2d-float32.nrrd, including a real dump()-then-reload disk round trip confirming the modified array persisted correctly; axis_order_report against the document's own parsed .sizes property",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap for an already-implemented, already-exported, real read/write-symmetric capability (with_array completing get_array; axis_order_report explaining the shared mapping) -- no obligation status change (nrrd remains at 10/65 unresolved, unaffected), but a real developer-discoverability improvement to an already-PASS-ing documentation gate.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

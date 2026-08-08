@@ -132,6 +132,29 @@ in exact-preservation mode before a caller commits to that choice --
 mirroring the LOSSLESS/CANONICAL disclosure pattern used across the
 other FF6 formats.
 
+`get_array()`'s decoded array is host-order nested (Python's own outermost
+-to-innermost convention), the reverse of NRRD's own fastest-first axis
+order. `with_array()` is the explicit write-side counterpart: it accepts a
+host-order nested array (for example, a modified `get_array()` result) and
+returns a copy of `document` with the payload flattened back to NRRD's own
+order, ready to `dump()`:
+
+```python
+from format_factory.nrrd import axis_order_report, dump, get_array
+
+array = get_array(document)
+edited = document.with_array([[value * 2 for value in row] for row in array])
+dump(edited, "scaled.nrrd")
+
+report = axis_order_report(edited.sizes)
+print(report.strides, report.nesting_order)
+```
+
+`axis_order_report()` returns the same axis-order mapping `get_array()`/
+`with_array()` use, callable independently of any array's own values --
+useful for a caller who wants to know which NRRD axis a given nesting
+depth corresponds to without performing a conversion.
+
 ## Security and resource limits
 
 ```python
