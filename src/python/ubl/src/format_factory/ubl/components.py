@@ -35,9 +35,19 @@ pinned UBL 2.3 schema (confirmed by direct XSD read), unlike Party's own
 always-exactly-one wrappers, but the same core fact still holds: an
 ALREADY-PRESENT occurrence, however many siblings of the same name it
 has, is already at its own schema-correct position, so replacing it needs
-no position-aware insertion logic either. Creating an ADDITIONAL
-occurrence beyond what a document already has remains out of scope for
-the identical reason.
+no position-aware insertion logic either.
+
+``add_component`` closes a further, genuinely separable slice of Create
+itself: inserting an ADDITIONAL occurrence of a component the document
+ALREADY HAS AT LEAST ONE OF. Every element declared with `maxOccurs > 1`
+inside one `xsd:sequence` must appear as one contiguous run at that
+element's own declared position (the same fact `lines.py`'s own "lines
+are always the trailing group" reasoning is a special case of) -- so
+inserting immediately after the last existing same-name sibling is always
+schema-position-correct, for any repeating component, not only lines.
+Inserting the FIRST occurrence of a component type a document does not
+already have at all remains out of scope -- that genuinely needs full
+header-position knowledge this module does not attempt to build.
 """
 
 from __future__ import annotations
@@ -48,7 +58,7 @@ from .errors import UblValidationError
 from .model import UblDocument, XmlNode
 from .model.query import DocumentIndex
 from .model.typed import local_name
-from .validation.validator import validate
+from .validation.validator import reorder_for_schema_order, validate
 
 _PARTY_ROLE_WRAPPERS = ("AccountingSupplierParty", "AccountingCustomerParty")
 
@@ -192,4 +202,67 @@ def update_component(
     return edited
 
 
-__all__ = ["replace_party", "update_component"]
+def add_component(document: UblDocument, *, component_name: str, new_component: XmlNode) -> UblDocument:
+    """Insert an ADDITIONAL occurrence of `component_name` immediately
+    after the LAST existing occurrence of the same name among the
+    document root's own children.
+
+    Grounded in the same XSD sequence-model fact `lines.py`'s own "lines
+    are always the trailing repeating group" reasoning is a special case
+    of: every element declared with `maxOccurs > 1` inside one
+    `xsd:sequence` must appear as ONE contiguous run at that element's own
+    declared position -- confirmed directly (not assumed) for
+    cac:PaymentMeans/cac:TaxTotal/cac:AllowanceCharge via the pinned UBL
+    2.3 Invoice maindoc XSD, each declared by a single `<xsd:element
+    ref="cac:X" maxOccurs="unbounded">` line, never split across two
+    non-adjacent positions. Inserting immediately after the last existing
+    same-name sibling is therefore ALWAYS schema-position-correct for any
+    repeating component that already has at least one occurrence,
+    regardless of whether that component happens to be lines-only trailing
+    or (like PaymentMeans) appears somewhere in the middle of the header.
+
+    Runs `reorder_for_schema_order()` afterward, same as `add_line`, so
+    `new_component`'s own internal field order is corrected regardless of
+    how the caller constructed it, for any component already covered by
+    `_ORDER_CHECKED_COMPONENTS` (PaymentMeans, TaxTotal, and AllowanceCharge
+    all are).
+
+    Raises `UblValidationError` if `new_component`'s own local name does
+    not match `component_name`, if the document has NO existing occurrence
+    of `component_name` at all (inserting the FIRST occurrence of a type a
+    document does not already have needs full header-position knowledge
+    this function does not have -- the still-unbuilt, genuinely harder
+    half of the arbitrary-position insertion problem), or if the edit
+    would introduce a validation failure the source document did not
+    already have.
+    """
+    if local_name(new_component.qname) != component_name:
+        raise UblValidationError(
+            f"new_component must be a cac:{component_name} element, got "
+            f"{new_component.qname!r}"
+        )
+
+    matches = [
+        position
+        for position, child in enumerate(document.root.children)
+        if local_name(child.qname) == component_name
+    ]
+    if not matches:
+        raise UblValidationError(
+            f"document has no existing {component_name} element -- inserting "
+            "the first occurrence of a component type a document does not "
+            "already have is not supported"
+        )
+    insert_at = matches[-1] + 1
+    new_root_children = (
+        document.root.children[:insert_at]
+        + (new_component,)
+        + document.root.children[insert_at:]
+    )
+    edited = document.with_root(document.root.with_children(new_root_children))
+    edited = reorder_for_schema_order(edited)
+    _refuse_if_worse(document, edited)
+    return edited
+
+
+__all__ = ["add_component", "replace_party", "update_component"]

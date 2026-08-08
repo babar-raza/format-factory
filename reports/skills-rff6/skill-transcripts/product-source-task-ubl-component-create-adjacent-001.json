@@ -1,0 +1,60 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-component-create-adjacent-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-b9bcb5abe0f47d69",
+  "mode": "live",
+  "timestamp": "2026-08-08T13:08:15Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_COMPONENT_CREATE_ADJACENT_001",
+    "task_kind": "decompose-create-into-a-separable-adjacent-insertion-sub-case",
+    "root_cause": "Event 336's own exact_next_action named UBL-EDIT-001's remaining Create gap as the clearest single lead across nrrd/ora/ubl's combined 23 obligations, suggesting a narrow slice (e.g. inserting adjacent to a known-position sibling rather than solving full position-awareness) might be tractable before assuming the whole thing needs the large _ORDER_CHECKED_COMPONENTS extension.",
+    "obligation_targeted": "SAL-UBL-OBL-237188D47391391E (UBL-EDIT-001) narrowed further -- stays partial (inserting the FIRST occurrence of a not-yet-present type remains genuinely unbuilt), real new product code shipped.",
+    "acceptance_evidence": "Read the pinned UBL 2.3 Invoice maindoc XSD directly and confirmed cac:PaymentMeans/cac:TaxTotal/cac:AllowanceCharge are each declared by a SINGLE maxOccurs='unbounded' element reference, never split across two non-adjacent sequence positions. This is a general XSD content-model guarantee (a repeating element's own instances must appear as one contiguous run at its own declared position), not something specific to lines -- meaning 'insert immediately after the last existing same-name sibling' is always schema-position-correct for ANY repeating component that already has at least one occurrence, generalizing the exact fact lines.py's own 'trailing group' reasoning was a special case of. Also confirmed PaymentMeans/TaxTotal/AllowanceCharge are all already in _ORDER_CHECKED_COMPONENTS, so reorder_for_schema_order() (already used by add_line) also fixes a caller-built new component's own internal field order for free."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 336 commit.",
+    "2. Read _order_diagnostics/_ORDER_CHECKED_COMPONENTS in validation/validator.py directly to confirm PaymentMeans/TaxTotal/AllowanceCharge are already covered by reorder_for_schema_order() -- found all three present (as _PAYMENT_MEANS_QNAME, _TAX_TOTAL_QNAME, _ALLOWANCE_CHARGE_QNAME) with their own declared internal field orders.",
+    "3. Re-read the pinned UBL 2.3 Invoice maindoc XSD (already partially read the prior tick) specifically checking whether PaymentMeans/TaxTotal/AllowanceCharge each appear as ONE single xsd:element declaration (contiguous) or could theoretically be split -- confirmed single declarations for each, matching standard XSD sequence-model semantics where a maxOccurs>1 element's own instances are inherently contiguous (the content model has no mechanism to interleave non-adjacent instances of the same declared element).",
+    "4. Recognized this generalizes lines.py's own 'lines are always the trailing group' insight: the REAL underlying fact isn't about being the trailing group specifically, it's that ANY repeating element's own instances form one contiguous run wherever that run happens to sit in the sequence -- so inserting adjacent to an EXISTING instance of the SAME type is always safe, regardless of where in the header that type's own run happens to be.",
+    "5. Designed add_component(document, *, component_name, new_component) -> UblDocument: finds the position of the LAST existing root child matching component_name, inserts immediately after it, then runs reorder_for_schema_order() (matching add_line's own exact pattern), then _refuse_if_worse. Refuses a type-mismatched new_component or a document with ZERO existing occurrences (the genuinely harder Create case -- inserting the first-ever instance of a type needs to know where it belongs relative to every OTHER header field, which this function correctly does not attempt).",
+    "6. Added the function to the SAME components.py file (continuing to hold this module as the general 'update and create-adjacent for core business components' capability its own docstring already frames it as). Ran mypy --strict and ruff before writing any test -- clean on the first pass.",
+    "7. Wired the export through the top-level __init__.py, ran the full ubl suite (1193 passed, unchanged) to confirm zero regression from the additive change alone.",
+    "8. Wrote a new, dedicated test file (test_obligation_component_create_adjacent.py, 8 tests) using PaymentMeans as the concrete worked example, matching test_obligation_component_update.py's own established fixture pattern: appending after the only existing occurrence, appending after the last of several, the result staying genuinely schema-valid (checked directly via validate().is_valid, not merely inferred from the absence of a diagnostic regression), non-mutation of the original, every other root child untouched, a dedicated test proving the new component's own internal fields get reordered (PaymentDueDate/PaymentMeansCode constructed out of order, confirmed corrected to PaymentMeansCode/PaymentDueDate after add_component), and 2 refusal cases (type mismatch, zero existing occurrences).",
+    "9. All 8 tests passed on the first run. Ran mypy --strict and ruff on the new test file (clean), the full ubl suite again (1201 passed, was 1193), and the combined 6-format regression (4012 passed, 4 skipped, 0 failed, was 4004) since production source (components.py, __init__.py) was touched.",
+    "10. Updated the ledger: kept SAL-UBL-OBL-237188D47391391E at status=partial, added add_component to source_symbols, added all 8 new tests split into positive/negative selectors, added a new execution_evidence entry (UBL-COMPONENT-CREATE-ADJACENT-PROOF), and rewrote missing_behavior to precisely name the ONE remaining gap (inserting the first occurrence of a not-yet-present type) while honestly also noting that Delete for non-line components (PaymentMeans/TaxTotal/AllowanceCharge/Party) has not been attempted yet either, even though it would compose the same already-proven primitive -- an honest scope note for the next tick, not overclaiming completeness this tick did not achieve. Deliberately did NOT bundle a remove_component() addition into this same tick/commit, to keep this slice focused and reviewable, matching the session's own established one-capability-per-commit cadence."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/components.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_component_create_adjacent.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/components.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_component_create_adjacent.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_component_create_adjacent.py -q -- 8 passed (new file)",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/components.py src/python/ubl/src/format_factory/ubl/__init__.py tests/python/ubl/test_obligation_component_create_adjacent.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/components.py src/python/ubl/src/format_factory/ubl/__init__.py tests/python/ubl/test_obligation_component_create_adjacent.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ubl -q -- 1201 passed (was 1193)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q -- 4012 passed, 4 skipped, 0 failed (6-format regression, was 4004)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation narrowed further (stays partial) with REAL new product capability added: add_component() is a genuinely new, general public API grounded in XSD sequence-model semantics, not evidence remapping",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "format_factory.ubl's add_component(document, *, component_name, new_component) -> UblDocument"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
