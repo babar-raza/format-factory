@@ -72,6 +72,7 @@ from .modules import (
 )
 from .qa import (
     QA_CHECKS,
+    check_length_violations,
     check_missing_targets,
     check_placeholder_mismatch,
     check_source_language_compatibility,
@@ -138,6 +139,7 @@ __all__ = [
     "average_source_length",
     "canonicalize",
     "check_drift",
+    "check_length_violations",
     "check_missing_targets",
     "check_placeholder_mismatch",
     "check_preservation",

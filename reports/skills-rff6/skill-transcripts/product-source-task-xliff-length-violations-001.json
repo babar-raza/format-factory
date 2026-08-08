@@ -1,0 +1,66 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-length-violations-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-25ee1f536c71b035",
+  "mode": "live",
+  "timestamp": "2026-08-08T06:48:20Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_LENGTH_VIOLATIONS_001",
+    "task_kind": "found-smaller-than-framed-existing-cascade-pattern-directly-reusable",
+    "root_cause": "Event 318's own exact_next_action flagged xliff's own last remaining obligation (XLIFF-QA-001's length-restriction gap) as worth a fresh 'was this actually smaller than framed' check. The obligation's own missing_behavior claimed length checking needed 'the same whole-tree, parent-aware resolution this package has deliberately not built for xml:space/xml:lang inheritance.' Investigated qa.py's own module docstring and model/ package directly rather than trusting that framing.",
+    "obligation_targeted": "SAL-XLIFF-OBL-7764F24576A4DC32 (XLIFF-QA-001) promoted partial -> implemented.",
+    "acceptance_evidence": "Found effective_xml_space()/effective_xml_lang()/effective_attributes_by_unit() already implement the exact top-down, nearest-ancestor-wins composition pattern the obligation's own missing_behavior claimed was 'deliberately not built.' Researched the pinned XLIFF 2.1 spec's Size and Length Restriction (SLR) module (Section 5.7) directly: slr:profiles is a file-level, zero-or-one, non-inherited element; slr:sizeRestriction/slr:storageRestriction cascade file -> group -> unit with no default. Implemented check_length_violations() reusing the proven cascade shape, plus all 4 fully-specified standard profiles (xliff:codepoints/utf8/utf16/utf32) per spec Section 5.7.6.",
+    "regression_tier": "full xliff package suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Read qa.py's own module docstring and check_length_violations' absence directly, and re-read the XLIFF-MODULE-001 obligation's own PRESERVATION_ONLY note for the SLR module (raw slr:profiles/slr:sizeRestriction/slr:storageRestriction XML round-trips verbatim via ExtensionNode, but nothing parses the attribute values into usable numbers).",
+    "2. Extracted the pinned XLIFF 2.1 spec source (.local/format-contracts/acquired/xliff/...) Section 5.7 (Size and Length Restriction module) directly: 'Used in: file' for slr:profiles (generalProfile/storageProfile attributes, each independently optional, absent or empty meaning no restriction applies); 'Used in: file, group, unit, mrk, sm, pc, sc' for sizeRestriction/storageRestriction themselves, with no stated default at any level (an 'undefined' cascade, i.e. nearest declaring ancestor wins) -- structurally identical in shape to xml:space/xml:lang's own file -> group -> unit inheritance.",
+    "3. Confirmed effective_xml_space()/effective_xml_lang() in model/ already implement exactly this shape (a recursive top-down walk threading the nearest-declared value down to each unit), and effective_attributes_by_unit() already composes both into a per-unit lookup table -- the obligation's own missing_behavior text describing this as unbuilt was factually wrong for the general pattern, even though no prior code applied it to sizeRestriction/storageRestriction specifically.",
+    "4. Read spec Section 5.7.6 ('Standard profiles') directly for the 4 fully-specified profile definitions: xliff:codepoints counts Unicode code points; xliff:utf8/utf16/utf32 count encoded bytes under that encoding, explicitly excluding any byte order mark. Confirmed value grammar '[minsize,]maxsize' with '*' meaning unbounded and an omitted minimum implying 0.",
+    "5. Implemented _parse_size_restriction() (grammar parser, returns None on anything unparseable rather than raising -- QA checks are advisory diagnostics, never conformance errors), _file_profiles() (reads the single slr:profiles ExtensionNode child of a file, if any, via a scoped ET.fromstring parse of its preserved raw XML), _effective_restrictions_by_unit() (the new file -> group -> unit cascade walk, directly modeled on effective_xml_space()'s own recursive structure), and _length_diagnostic() (shared under/over comparison producing xliff.qa.length.{size,storage}.{under,over} diagnostic codes).",
+    "6. Implemented check_length_violations(document) iterating every file's units/segments, skipping a file entirely when neither profile resolves to a recognized standard profile (unrecognized/custom profile URIs are silently not checked, matching this package's existing 'advisory, not a crash' posture for other QA checks), independently checking size (generalProfile) and storage (storageProfile) restrictions per segment target.",
+    "7. Registered check_length_violations in QA_CHECKS under the key 'length_violations' and exported it through qa.py's own __all__ and the top-level xliff/__init__.py's import block and __all__ list, following the exact existing pattern for the other 5 named checks.",
+    "8. Updated qa.py's own module docstring to remove the stale claim that length violations were deliberately not implemented, replacing it with a citation of the corrected finding and the spec section grounding the 4 standard profiles.",
+    "9. Fixed the one stale existing test this change touched: test_all_named_checks_are_registered in test_obligation_qa_checks.py asserted the exact literal QA_CHECKS key set -- added 'length_violations' to the expected set (a legitimate update to an existing test, not a regression).",
+    "10. Wrote a new test file, test_obligation_length_violations.py (14 tests): TestCodepointsProfile (over/within-bounds/under-minimum/unbounded-maximum), TestStorageProfiles (utf8 byte-count vs codepoints-profile count on the same 2-codepoint non-ASCII text, both restrictions checked independently), TestInheritance (unit inherits from enclosing group, unit-level overrides group-level, file-level applies with no group/unit override), TestNoRestrictionOrNoProfileMeansNoViolationsChecked (no slr:profiles element at all, an unrecognized custom profile URI, no restriction declared anywhere, an unparseable restriction value -- all four correctly produce zero diagnostics rather than a crash or a false positive).",
+    "11. Ran mypy --strict on qa.py and __init__.py (clean, no issues), ruff check on all 4 changed/new files (all checks passed).",
+    "12. Ran the new test file alone (14/14 passed), the full xliff suite (587 passed, was 573), and the full 6-format regression (3806 passed, 4 skipped, 0 failed, was 3792).",
+    "13. Promoted the target obligation to implemented: all 6 of XLIFF-QA-001's own named QA categories are now genuinely implemented, tested, and exported as pluggable, independently selectable checks separate from validate()'s conformance report."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/qa.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_obligation_qa_checks.py",
+    "tests/python/xliff/test_obligation_length_violations.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/qa.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_obligation_qa_checks.py",
+    "tests/python/xliff/test_obligation_length_violations.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_length_violations.py -q -- 14 passed (all new)",
+    ".venv/Scripts/python -m mypy --strict src/python/xliff/src/format_factory/xliff/qa.py src/python/xliff/src/format_factory/xliff/__init__.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/xliff -q -- 587 passed (was 573)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3806 passed, 4 skipped, 0 failed (was 3792)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation closed (partial -> implemented) -- xliff's own last remaining unresolved obligation",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 142,
+    "new_public_api": "format_factory.xliff.check_length_violations"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

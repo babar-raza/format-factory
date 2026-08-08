@@ -154,6 +154,14 @@
       "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE. Closes SAL-XLIFF-OBL-725053FB0A47E78D (XLIFF-MODULE-001) and SAL-XLIFF-OBL-E3F1C46FFD77CD5B (XLIFF-PARSE-001), identical rule_text: \"The ITS module uses the W3C ITS namespace ... and the XLIFF 2.1 mapping adds urn:oasis:names:tc:xliff:itsm:2.1 attributes for domains and language.\" The domains half was already proven by test_its_mapping_attributes_round_trip_on_a_unit; the \"language\" half had never been separately tested, and both obligations' own missing_behavior text explicitly declined to assume it behaves identically to domains without verifying. Read the pinned itsm.xsd schema directly (.local/format-contracts/acquired/xliff/src-xlf-002.bin, schemas/itsm.xsd) rather than transcribing the rule_text's own English prose literally: the actual declared XML attribute is itsm:lang (xs:attribute name=\"lang\" type=\"xs:language\"), not \"itsm:language\" -- a real transcription risk caught before writing any test, the same discipline applied repeatedly this session for schema-derived names. Probed directly and confirmed itsm:lang already round-trips correctly through this package's generic attribute-preservation mechanism, the same one already proven for itsm:domains -- zero source code changes needed. 1 new test (test_its_mapping_lang_attribute_round_trips_on_a_unit) proves it, mirroring the existing domains test's exact structure. xliff suite: 454 -> 455 passed. NOT backed by an independent reference XLIFF implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the attribute name grounded directly in the pinned schema. Covers SAL-XLIFF-OBL-725053FB0A47E78D and SAL-XLIFF-OBL-E3F1C46FFD77CD5B only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "XLIFF-LENGTH-VIOLATIONS-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-length-violations-001.json",
+      "sha256": "4e39b8b22b62f7cc2f8ff01c9200de4dc2dbe3c0e67396fc0bae62643c9bdc02",
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors for check_length_violations(), the sixth and last named XLIFF-QA-001 category. Proves the 4 fully-specified standard profiles (xliff:codepoints, xliff:utf8, xliff:utf16, xliff:utf32) from the pinned XLIFF 2.1 spec Section 5.7.6, the file -> group -> unit nearest-ancestor-wins restriction cascade, and that no <slr:profiles> element, an unrecognized profile URI, or an unparseable restriction value each result in nothing being checked rather than a crash or a false positive. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-7764F24576A4DC32's sixth category only (the obligation's other five categories remain covered by XLIFF-QA-SELECTOR-PROOF); it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "XLIFF-LIFECYCLE-IO-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -255,7 +263,7 @@
       "granularity": "selector",
       "path": "reports/skills-rff6/skill-transcripts/product-source-task-xliff-qa-checks-001.json",
       "sha256": "00a6d7c1b4d2fc48359f0484a08d0d639ee8fe136b11904870bd1acdda0e4d5c",
-      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors for target-language compatibility (exact/more-specific/reverse-specific/incompatible BCP-47 relations, version-gated between XLIFF 2.0 and 2.1) and for five of the six named pluggable QA check categories (missing/unchanged targets, placeholder mismatches, whitespace/punctuation drift, translation consistency), each proven separate from validate()'s conformance report. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-5B4DF04385350948 (fully) and SAL-XLIFF-OBL-7764F24576A4DC32 (partially -- length violations are not implemented) only; it supports no other obligation and promotes no product state."
+      "truth_boundary": "Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive and negative test selectors for target-language compatibility (exact/more-specific/reverse-specific/incompatible BCP-47 relations, version-gated between XLIFF 2.0 and 2.1) and for five of the six named pluggable QA check categories (missing/unchanged targets, placeholder mismatches, whitespace/punctuation drift, translation consistency), each proven separate from validate()'s conformance report. NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-5B4DF04385350948 (fully) and, as of FF6-EVENT-000319, SAL-XLIFF-OBL-7764F24576A4DC32's first five named QA categories (the sixth, length violations, is now covered separately by XLIFF-LENGTH-VIOLATIONS-PROOF) only; it supports no other obligation and promotes no product state."
     },
     {
       "evidence_id": "XLIFF-QA-SOURCE-LANGUAGE-COMPATIBILITY-PROOF",
@@ -413,7 +421,7 @@
   "format_id": "xliff",
   "input_digests": {
     "compiled_contract": "72b4fc502116a6df682bbb606e42fe2350d698d07b681a52604f6febe268fca4",
-    "implementation_evidence": "976529ec5bd07f8d3e0ea889391489c93a955bc1aee9fc3c0b25919a14a51258",
+    "implementation_evidence": "8212c5cb6d41b27cab8e56fe2c9a3cbc8d1e064db9cf4f6a15f32c512351c42a",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "6a66a15d1dba9f0b205634bae4437965fe0ac12a92a95a7c902ca289d1a9474b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -3250,18 +3258,22 @@
       "capability_id": "XLIFF-QA-001",
       "execution_evidence_ids": [
         "XLIFF-BASELINE-SUITE",
-        "XLIFF-QA-SELECTOR-PROOF"
+        "XLIFF-QA-SELECTOR-PROOF",
+        "XLIFF-LENGTH-VIOLATIONS-PROOF"
       ],
       "implemented_behavior": [
-        "run_qa_checks() provides five of the six named categories as independently pluggable, independently selectable checks (missing/unchanged targets, placeholder mismatches, whitespace/punctuation drift, translation consistency), always reported separately from validate()'s conformance ValidationReport via its own report and its own non-conformance severity scale."
+        "run_qa_checks() provides five of the six named categories as independently pluggable, independently selectable checks (missing/unchanged targets, placeholder mismatches, whitespace/punctuation drift, translation consistency), always reported separately from validate()'s conformance ValidationReport via its own report and its own non-conformance severity scale.",
+        "FF6-EVENT-000319: check_length_violations() closes the sixth and last named category. The prior missing_behavior claimed this needed \"the same whole-tree, parent-aware resolution this package has deliberately not built for xml:space/xml:lang inheritance\" -- re-investigated and found false: the identical top-down, nearest-ancestor-wins composition pattern already proven by effective_xml_space()/effective_xml_lang()/effective_attributes_by_unit() (built for XLIFF-MODEL-001) applies directly to slr:sizeRestriction/slr:storageRestriction's own identical cascade shape (file -> group -> unit, nearest declaring ancestor wins, no default at any level). Profile selection is read once per file from <slr:profiles generalProfile=\"...\" storageProfile=\"...\"/> (a module-extension child of file, zero-or-one occurrences, not itself inherited). Per the pinned XLIFF 2.1 spec Section 5.7.6 (\"Standard profiles\"), the 4 fully-specified standard profiles are implemented exactly as defined: xliff:codepoints counts Unicode code points (len(text)); xliff:utf8/utf16/utf32 count encoded bytes without a byte order mark (len(text.encode(\"utf-8\")), len(text.encode(\"utf-16-be\")), len(text.encode(\"utf-32-be\"))). A value of \"[minsize,]maxsize\" is parsed per spec, with \"*\" meaning unbounded and an absent minimum implying 0. Unrecognized/custom profile URIs and unparseable restriction values are silently not checked rather than raising -- consistent with this package's QA checks being advisory diagnostics, not conformance errors."
       ],
-      "missing_behavior": [
-        "Length violations are not implemented. Checking them meaningfully needs actual numeric restriction values from the Size and Length Restriction module (slr:profiles' sizeRestriction/storageRestriction), which XLIFF-MODULE-001 deliberately keeps PRESERVATION_ONLY (the raw XML round-trips, but nothing parses its attributes into usable values yet) -- see qa.py's own module docstring. A stub that always passed would be worse than this honest gap."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/xliff/test_obligation_qa_checks.py::test_present_target_is_not_flagged_as_missing",
         "tests/python/xliff/test_obligation_qa_checks.py::test_genuinely_translated_target_is_not_flagged",
-        "tests/python/xliff/test_obligation_qa_checks.py::test_preserved_placeholder_is_not_flagged"
+        "tests/python/xliff/test_obligation_qa_checks.py::test_preserved_placeholder_is_not_flagged",
+        "tests/python/xliff/test_obligation_length_violations.py::TestNoRestrictionOrNoProfileMeansNoViolationsChecked::test_no_slr_profiles_element_at_all_checks_nothing",
+        "tests/python/xliff/test_obligation_length_violations.py::TestNoRestrictionOrNoProfileMeansNoViolationsChecked::test_a_declared_but_unrecognized_profile_is_silently_skipped",
+        "tests/python/xliff/test_obligation_length_violations.py::TestNoRestrictionOrNoProfileMeansNoViolationsChecked::test_a_unit_with_no_restriction_declared_anywhere_is_not_checked",
+        "tests/python/xliff/test_obligation_length_violations.py::TestNoRestrictionOrNoProfileMeansNoViolationsChecked::test_an_unparseable_restriction_value_is_treated_as_absent_not_a_crash"
       ],
       "obligation_id": "SAL-XLIFF-OBL-7764F24576A4DC32",
       "positive_test_selectors": [
@@ -3273,7 +3285,17 @@
         "tests/python/xliff/test_obligation_qa_checks.py::test_unchanged_target_is_flagged",
         "tests/python/xliff/test_obligation_qa_checks.py::test_dropped_placeholder_is_flagged",
         "tests/python/xliff/test_obligation_qa_checks.py::test_terminal_punctuation_drift_is_flagged",
-        "tests/python/xliff/test_obligation_qa_checks.py::test_inconsistent_translation_of_the_same_source_is_flagged"
+        "tests/python/xliff/test_obligation_qa_checks.py::test_inconsistent_translation_of_the_same_source_is_flagged",
+        "tests/python/xliff/test_obligation_length_violations.py::TestCodepointsProfile::test_a_target_exceeding_the_maximum_is_flagged",
+        "tests/python/xliff/test_obligation_length_violations.py::TestCodepointsProfile::test_a_target_within_bounds_is_not_flagged",
+        "tests/python/xliff/test_obligation_length_violations.py::TestCodepointsProfile::test_a_target_below_the_minimum_is_flagged",
+        "tests/python/xliff/test_obligation_length_violations.py::TestCodepointsProfile::test_an_unbounded_maximum_never_flags",
+        "tests/python/xliff/test_obligation_length_violations.py::TestStorageProfiles::test_utf8_counts_encoded_bytes_not_codepoints",
+        "tests/python/xliff/test_obligation_length_violations.py::TestStorageProfiles::test_the_same_text_is_within_bounds_under_the_codepoints_profile",
+        "tests/python/xliff/test_obligation_length_violations.py::TestStorageProfiles::test_general_and_storage_restrictions_are_both_checked_independently",
+        "tests/python/xliff/test_obligation_length_violations.py::TestInheritance::test_a_unit_without_its_own_restriction_inherits_from_its_enclosing_group",
+        "tests/python/xliff/test_obligation_length_violations.py::TestInheritance::test_a_unit_level_restriction_overrides_its_enclosing_group",
+        "tests/python/xliff/test_obligation_length_violations.py::TestInheritance::test_a_file_level_restriction_applies_when_no_group_or_unit_overrides_it"
       ],
       "proof_requirements": {
         "negative": [
@@ -3283,16 +3305,17 @@
           "QA fixtures per check; separation from conformance results asserted."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/xliff/src/format_factory/xliff/qa.py::check_missing_targets",
         "src/python/xliff/src/format_factory/xliff/qa.py::check_unchanged_targets",
         "src/python/xliff/src/format_factory/xliff/qa.py::check_placeholder_mismatch",
         "src/python/xliff/src/format_factory/xliff/qa.py::check_whitespace_punctuation_drift",
         "src/python/xliff/src/format_factory/xliff/qa.py::check_translation_consistency",
+        "src/python/xliff/src/format_factory/xliff/qa.py::check_length_violations",
         "src/python/xliff/src/format_factory/xliff/qa.py::run_qa_checks"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "XLIFF-LIFECYCLE-001",
@@ -5718,6 +5741,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-isolated-pairing-attrs-001.json": "bab9d700b6907f730117050549aa3f075ac7a33b9f6c25c0306f4264cfc0f146",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-isolated-start-code-validation-001.json": "ae7462acea8d11cf3bbdd5c673987d2b4b82ae52b6c9e6ff4258312ce663b4b8",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-its-mapping-lang-attribute-001.json": "549e394b828680165f121af639d24b2463cdad5789e3458336a946440a7c413e",
+    "reports/skills-rff6/skill-transcripts/product-source-task-xliff-length-violations-001.json": "4e39b8b22b62f7cc2f8ff01c9200de4dc2dbe3c0e67396fc0bae62643c9bdc02",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-lifecycle-io-001.json": "02856c6f0ad09cf7b0352b9b777331dc5f6e2096e5f6576dbfe39f997669372d",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-matches-module-structure-001.json": "68a6888f0e01130bd7481513ff0a8f391d4ab8b97d32c1967beb9e078e61c449",
     "reports/skills-rff6/skill-transcripts/product-source-task-xliff-merge-audit-001.json": "ad52bf9234b0abdb222fca9ca32f9fca835f0d73f2cab7e0709aca7a81e9c29a",
@@ -5760,7 +5784,7 @@
     "src/python/xliff/src/format_factory/xliff/model/segmentation.py": "c2c3f1f35573fa11fc4f6ae67bf0a9d4395824dc2589dd05d73d88d83b00576b",
     "src/python/xliff/src/format_factory/xliff/model/text_editing.py": "408d1e5f8ffb5c51f548faac3e45125924bf395844171eb0fe292b0b3a20b5c3",
     "src/python/xliff/src/format_factory/xliff/modules.py": "ec0f6e5b2439d064c8c9347704d234064a11aa7f7ebd58f0740dfafbb62fabbd",
-    "src/python/xliff/src/format_factory/xliff/qa.py": "61c2a8f74d09f844e36bfc1d967a587b5e5e62cf6087577e1031347b3ee8fa2f",
+    "src/python/xliff/src/format_factory/xliff/qa.py": "0a57b65bed6a698bb74c014744e7d67c6778454df664560518372edd26b7f9dd",
     "src/python/xliff/src/format_factory/xliff/security/limits.py": "8cec6ffd2ccd8fe17fa6d76ab19b2deeda3578d558925d862b15494b3b06665a",
     "src/python/xliff/src/format_factory/xliff/state_transitions.py": "6b12476e31076a788cef37fb476e1b5eda7365e6eb640bbb7bedcebabb9d49ea",
     "src/python/xliff/src/format_factory/xliff/validation/schema_validator.py": "647d2a20bf39c3fc4a79c6e04822d4703874e1285148106c5af21179f6d8861b",
@@ -5777,6 +5801,7 @@
     "tests/python/xliff/test_obligation_inline_required_id.py": "a499d28a49fc003b29ebaeb93dcb4619ee5767d344cc19a05fe432a6a4420eac",
     "tests/python/xliff/test_obligation_isolated_pairing_attribute_matching.py": "325fa2bd6193acdffb070a843633132e89f9f0a763c156714012baff1a95c4dd",
     "tests/python/xliff/test_obligation_isolated_start_code_validation.py": "8b23d2f938ce7c6ce72a43dd04bb9420756b0dbb647ab9eedbb4d92903360f6c",
+    "tests/python/xliff/test_obligation_length_violations.py": "d6b081951635137a726baca921f46774b38b837cb37ae336fbb012db46ec0f28",
     "tests/python/xliff/test_obligation_lifecycle_io.py": "5d9973d4c931cea5f36247ac8f22b05ff57b335ab3dccf2d6c878da7b529c62b",
     "tests/python/xliff/test_obligation_matches_module_structure.py": "6345a67d1044a532a59af264474a855e60057f988d77f83a67a84aad5740a26b",
     "tests/python/xliff/test_obligation_merge_adapter.py": "8ab808796f526b4497037ff207d9924382fe6833689529377210a80e60d95e88",
@@ -5788,7 +5813,7 @@
     "tests/python/xliff/test_obligation_original_data_element_modeling.py": "8a60b73c57ee7e28669bce273c650cd8a62c43a6d3c91ec7c7982ba46d2539c7",
     "tests/python/xliff/test_obligation_paired_code_integrity.py": "d9da9bd02837f6da941067d1507e3431b3f5e9318af57759d72aecb7e04112f4",
     "tests/python/xliff/test_obligation_preservation_mode.py": "f30f484eed1a8585828f01fb325a79f22eb0138633afbc872629a67841f140fe",
-    "tests/python/xliff/test_obligation_qa_checks.py": "28fac4e3d1c95d6a35e3e766ac34d895e7e00bf5ecf30347e9a9124dbaee9143",
+    "tests/python/xliff/test_obligation_qa_checks.py": "1215bb4cfad8d9a1716e6e4a97bea155f1f99fb5d6cb1929c76f51bbdf284679",
     "tests/python/xliff/test_obligation_resource_data_module_reference_href.py": "52a35ed1a67fcf3fa2f9cddd2fd2732b327aa8115a0b73288692d0858dc4071c",
     "tests/python/xliff/test_obligation_resource_resolution_security.py": "7bd8371c0a04ee1ecf6574d863d76e4ed6c8d449fbfd12d492ad45cfcc9d7720",
     "tests/python/xliff/test_obligation_root_language_attribute_requirements.py": "683a75121ded7a7794576ee5b86c0ef71e8e2ccefa5229a7269ed1ebf80ac0b5",
@@ -5810,11 +5835,10 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 141,
-      "partial": 1
+      "implemented": 142
     },
     "total": 142,
-    "unresolved": 1
+    "unresolved": 0
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

@@ -324,9 +324,29 @@ execution_evidence:
     by an independent reference implementation -- SELF-CONSISTENT
     format_factory-only evidence per the execution-recovery directive's
     GAP-008 rule, not VERIFIED. Covers SAL-XLIFF-OBL-5B4DF04385350948 (fully)
-    and SAL-XLIFF-OBL-7764F24576A4DC32 (partially -- length violations are
-    not implemented) only; it supports no other obligation and promotes no
-    product state.
+    and, as of FF6-EVENT-000319, SAL-XLIFF-OBL-7764F24576A4DC32's first five
+    named QA categories (the sixth, length violations, is now covered
+    separately by XLIFF-LENGTH-VIOLATIONS-PROOF) only; it supports no other
+    obligation and promotes no product state.
+- evidence_id: XLIFF-LENGTH-VIOLATIONS-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-length-violations-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact positive
+    and negative test selectors for check_length_violations(), the sixth and
+    last named XLIFF-QA-001 category. Proves the 4 fully-specified standard
+    profiles (xliff:codepoints, xliff:utf8, xliff:utf16, xliff:utf32) from
+    the pinned XLIFF 2.1 spec Section 5.7.6, the file -> group -> unit
+    nearest-ancestor-wins restriction cascade, and that no <slr:profiles>
+    element, an unrecognized profile URI, or an unparseable restriction
+    value each result in nothing being checked rather than a crash or a
+    false positive. NOT backed by an independent reference implementation --
+    SELF-CONSISTENT format_factory-only evidence per the execution-recovery
+    directive's GAP-008 rule, not VERIFIED. Covers
+    SAL-XLIFF-OBL-7764F24576A4DC32's sixth category only (the obligation's
+    other five categories remain covered by XLIFF-QA-SELECTOR-PROOF); it
+    supports no other obligation and promotes no product state.
 - evidence_id: XLIFF-LIFECYCLE-IO-SELECTOR-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-lifecycle-io-001.json
   expected_result: PASS
@@ -2683,13 +2703,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-7764F24576A4DC32
   capability_id: XLIFF-QA-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/qa.py::check_missing_targets
   - src/python/xliff/src/format_factory/xliff/qa.py::check_unchanged_targets
   - src/python/xliff/src/format_factory/xliff/qa.py::check_placeholder_mismatch
   - src/python/xliff/src/format_factory/xliff/qa.py::check_whitespace_punctuation_drift
   - src/python/xliff/src/format_factory/xliff/qa.py::check_translation_consistency
+  - src/python/xliff/src/format_factory/xliff/qa.py::check_length_violations
   - src/python/xliff/src/format_factory/xliff/qa.py::run_qa_checks
   positive_test_selectors:
   - tests/python/xliff/test_obligation_qa_checks.py::test_qa_report_is_separate_from_conformance_report
@@ -2701,24 +2722,50 @@ obligations:
   - tests/python/xliff/test_obligation_qa_checks.py::test_dropped_placeholder_is_flagged
   - tests/python/xliff/test_obligation_qa_checks.py::test_terminal_punctuation_drift_is_flagged
   - tests/python/xliff/test_obligation_qa_checks.py::test_inconsistent_translation_of_the_same_source_is_flagged
+  - tests/python/xliff/test_obligation_length_violations.py::TestCodepointsProfile::test_a_target_exceeding_the_maximum_is_flagged
+  - tests/python/xliff/test_obligation_length_violations.py::TestCodepointsProfile::test_a_target_within_bounds_is_not_flagged
+  - tests/python/xliff/test_obligation_length_violations.py::TestCodepointsProfile::test_a_target_below_the_minimum_is_flagged
+  - tests/python/xliff/test_obligation_length_violations.py::TestCodepointsProfile::test_an_unbounded_maximum_never_flags
+  - tests/python/xliff/test_obligation_length_violations.py::TestStorageProfiles::test_utf8_counts_encoded_bytes_not_codepoints
+  - tests/python/xliff/test_obligation_length_violations.py::TestStorageProfiles::test_the_same_text_is_within_bounds_under_the_codepoints_profile
+  - tests/python/xliff/test_obligation_length_violations.py::TestStorageProfiles::test_general_and_storage_restrictions_are_both_checked_independently
+  - tests/python/xliff/test_obligation_length_violations.py::TestInheritance::test_a_unit_without_its_own_restriction_inherits_from_its_enclosing_group
+  - tests/python/xliff/test_obligation_length_violations.py::TestInheritance::test_a_unit_level_restriction_overrides_its_enclosing_group
+  - tests/python/xliff/test_obligation_length_violations.py::TestInheritance::test_a_file_level_restriction_applies_when_no_group_or_unit_overrides_it
   negative_test_selectors:
   - tests/python/xliff/test_obligation_qa_checks.py::test_present_target_is_not_flagged_as_missing
   - tests/python/xliff/test_obligation_qa_checks.py::test_genuinely_translated_target_is_not_flagged
   - tests/python/xliff/test_obligation_qa_checks.py::test_preserved_placeholder_is_not_flagged
+  - tests/python/xliff/test_obligation_length_violations.py::TestNoRestrictionOrNoProfileMeansNoViolationsChecked::test_no_slr_profiles_element_at_all_checks_nothing
+  - tests/python/xliff/test_obligation_length_violations.py::TestNoRestrictionOrNoProfileMeansNoViolationsChecked::test_a_declared_but_unrecognized_profile_is_silently_skipped
+  - tests/python/xliff/test_obligation_length_violations.py::TestNoRestrictionOrNoProfileMeansNoViolationsChecked::test_a_unit_with_no_restriction_declared_anywhere_is_not_checked
+  - tests/python/xliff/test_obligation_length_violations.py::TestNoRestrictionOrNoProfileMeansNoViolationsChecked::test_an_unparseable_restriction_value_is_treated_as_absent_not_a_crash
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-QA-SELECTOR-PROOF
+  - XLIFF-LENGTH-VIOLATIONS-PROOF
   implemented_behavior:
   - 'run_qa_checks() provides five of the six named categories as independently pluggable, independently
     selectable checks (missing/unchanged targets, placeholder mismatches, whitespace/punctuation drift,
     translation consistency), always reported separately from validate()''s conformance ValidationReport
     via its own report and its own non-conformance severity scale.'
-  missing_behavior:
-  - 'Length violations are not implemented. Checking them meaningfully needs actual numeric restriction
-    values from the Size and Length Restriction module (slr:profiles'' sizeRestriction/storageRestriction),
-    which XLIFF-MODULE-001 deliberately keeps PRESERVATION_ONLY (the raw XML round-trips, but nothing
-    parses its attributes into usable values yet) -- see qa.py''s own module docstring. A stub that
-    always passed would be worse than this honest gap.'
+  - 'FF6-EVENT-000319: check_length_violations() closes the sixth and last named category. The prior
+    missing_behavior claimed this needed "the same whole-tree, parent-aware resolution this package has
+    deliberately not built for xml:space/xml:lang inheritance" -- re-investigated and found false: the
+    identical top-down, nearest-ancestor-wins composition pattern already proven by
+    effective_xml_space()/effective_xml_lang()/effective_attributes_by_unit() (built for XLIFF-MODEL-001)
+    applies directly to slr:sizeRestriction/slr:storageRestriction''s own identical cascade shape
+    (file -> group -> unit, nearest declaring ancestor wins, no default at any level). Profile selection
+    is read once per file from <slr:profiles generalProfile="..." storageProfile="..."/> (a module-extension
+    child of file, zero-or-one occurrences, not itself inherited). Per the pinned XLIFF 2.1 spec Section
+    5.7.6 ("Standard profiles"), the 4 fully-specified standard profiles are implemented exactly as
+    defined: xliff:codepoints counts Unicode code points (len(text)); xliff:utf8/utf16/utf32 count encoded
+    bytes without a byte order mark (len(text.encode("utf-8")), len(text.encode("utf-16-be")),
+    len(text.encode("utf-32-be"))). A value of "[minsize,]maxsize" is parsed per spec, with "*" meaning
+    unbounded and an absent minimum implying 0. Unrecognized/custom profile URIs and unparseable
+    restriction values are silently not checked rather than raising -- consistent with this package''s
+    QA checks being advisory diagnostics, not conformance errors.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - QA fixtures per check; separation from conformance results asserted.

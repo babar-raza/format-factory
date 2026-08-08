@@ -112,6 +112,7 @@ def test_all_named_checks_are_registered() -> None:
         "source_language_compatibility",
         "target_language_compatibility",
         "translation_consistency",
+        "length_violations",
     }
 
 
