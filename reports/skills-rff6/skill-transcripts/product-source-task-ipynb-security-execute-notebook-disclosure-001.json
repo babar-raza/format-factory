@@ -1,0 +1,50 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-security-execute-notebook-disclosure-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-8e2ef55f7d5b44a9",
+  "mode": "live",
+  "timestamp": "2026-08-08T15:21:54Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_SECURITY_EXECUTE_NOTEBOOK_DISCLOSURE_001",
+    "task_kind": "close-a-security-documentation-accuracy-gap-found-via-a-fresh-cross-format-survey",
+    "root_cause": "Event 351's own exact_next_action offered three directions after completing both the README __all__-diff sweep (Events 340-345) and the CHANGELOG catch-up sweep (Events 346-351): a second lower-priority documentation pass, returning to the 23 already-exhausted unresolved obligations, or a fresh SECURITY.md/MIGRATION.md accuracy survey not yet attempted this session. Chose the SECURITY.md angle. Read all six formats' own SECURITY.md files directly. Five make only evergreen claims about untrusted-input handling and resource limits that remain accurate regardless of feature growth. ipynb's own SECURITY.md, by contrast, stated 'Loading, probing, validating, and writing never execute notebook code' without ever mentioning that a separate, real, opt-in execute_notebook() adapter exists -- the exact same capability whose README omission this session already closed at Event 341.",
+    "obligation_targeted": "No specific obligation-register status change (ipynb remains at 0/68 unresolved, unaffected by this tick) -- this closes a security-documentation-accuracy gap adjacent to but distinct from product-goal.yaml invariant #4 (documentation) and invariant #4's own security dimension.",
+    "acceptance_evidence": "Re-read adapters/execute.py's own docstring and implementation (already fully investigated at Event 341) to restate its isolation properties precisely in the new SECURITY.md paragraph: one isolated OS subprocess per run, a caller-configurable wall-clock timeout, and explicit refusal (via IpynbExecutionError) of a notebook declaring a non-Python kernel rather than silent Python execution. Confirmed the existing SECURITY.md sentence ('never execute notebook code') remains literally true for the core load/probe/validate/diff/save path -- this is not a false claim, it is an incomplete one that could mislead a reader relying on SECURITY.md alone into believing the package has no code-execution capability at all."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 351 commit (4452d718); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Read all six formats' own SECURITY.md files directly (nrrd 7 lines, ora 11 lines, xliff 9 lines, ubl 14 lines, ipynb 22 lines, safetensors 7 lines) and cross-checked each specific technical claim against this session's own already-verified README/source knowledge for that format: nrrd's 'detached payloads confined to header directory', ora's ZIP-member-directory validation before decompression, xliff's DTD/entity rejection and no-external-fetch claim (its schema_validate()/full_schema_validate() only use LOCALLY BUNDLED OASIS schema files, not a network fetch, so no contradiction), ubl's 'does not execute signatures' claim (consistent with sign_document()/verify_signature() delegating all cryptographic logic to a caller-supplied backend), and safetensors' 'never imports tensor frameworks' claim (consistent with the adapters module's own lazy-import boundary already verified at Event 340) -- all five confirmed accurate, no gap found.",
+    "3. ipynb's SECURITY.md stood out: it states code is never executed by the core lifecycle functions (true), but does not mention that execute_notebook() -- a real, exported, already-documented-in-the-README (since Event 341) opt-in adapter -- exists at all. Checked whether this was a false claim or an incomplete one: re-read the exact sentence ('Loading, probing, validating, and writing never execute notebook code') -- this names the specific 4 functions, is scoped correctly, and is proven true by a separate CPython audit-hook test per the adapter module's own docstring. Not a false claim, but a security-relevant omission: a reader relying on SECURITY.md alone (rather than the full README) would have no way to learn any code-execution path exists.",
+    "4. Added a new paragraph to ipynb's SECURITY.md directly beneath the existing sentence, naming execute_notebook() explicitly, restating its isolation properties precisely (one isolated OS subprocess, caller-configurable timeout, explicit non-Python-kernel refusal) grounded directly in the source already read at Event 341 -- not invented -- and closing with an honest framing of the trust implication (a caller who never invokes it is unaffected; a caller who does invoke it is knowingly running untrusted code, the same as running any other untrusted script) rather than either overstating the risk or understating it.",
+    "5. Also checked MIGRATION.md presence across all six formats while already surveying this document category: ora and safetensors both lack the file. ora's absence was already disclosed at Event 344's own honest_gap; safetensors' absence is newly confirmed here. Neither is treated as a defect, following the same reasoning already established for ora -- both are still pre-1.0 packages with no documented import-path migration event yet.",
+    "6. Regenerated reports/certification/ipynb/documentation-gate.json to add a 'security_policy_accuracy' check dimension documenting the full six-format SECURITY.md review (five found accurate, one gap found and closed) and the MIGRATION.md presence check, and extended the incidental_finding accordingly.",
+    "7. Did not modify any production source code, README.md, or CHANGELOG.md -- this slice is purely a SECURITY.md content-accuracy fix plus its own supporting gate-evidence regeneration. Did not re-run the ipynb test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/SECURITY.md",
+    "reports/certification/ipynb/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/SECURITY.md",
+    "reports/certification/ipynb/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct source re-verification: adapters/execute.py's own isolation properties (subprocess isolation, timeout, non-Python-kernel refusal) cross-checked against the new SECURITY.md paragraph's claims before writing",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a security-policy-documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine security-documentation-accuracy gap for ipynb -- no obligation status change (ipynb remains at 0/68 unresolved, unaffected), but a real security-relevant disclosure improvement: a reader relying on SECURITY.md alone can now discover that an opt-in code-execution capability exists and understand its isolation properties, rather than being left with the (technically true but incomplete) impression that the package never executes code under any circumstances.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 68,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented, already-README-documented API in a security-policy document; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
