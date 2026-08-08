@@ -89,9 +89,14 @@ def test_lossless_mode_replays_unchanged_source_and_reports_mutation() -> None:
 
     document.header["vendor field"] = "changed"
     report = preservation_report(document)
+    # Per-construct, not a single coarse flag (FF6-EVENT-000302): names the
+    # exact field and its old/new values.
     assert [issue.code for issue in report.issues] == [
-        "nrrd.lossless.document_modified"
+        "nrrd.lossless.header_field_changed"
     ]
+    assert "vendor field" in report.issues[0].message
+    assert "retained" in report.issues[0].message
+    assert "changed" in report.issues[0].message
     with pytest.raises(NrrdWriteError, match="lossless output unavailable"):
         dumps(document, mode="lossless")
 

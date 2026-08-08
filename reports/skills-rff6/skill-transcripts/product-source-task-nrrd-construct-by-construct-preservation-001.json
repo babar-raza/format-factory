@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-construct-by-construct-preservation-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T03:59:25Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_CONSTRUCT_BY_CONSTRUCT_PRESERVATION_001",
+    "task_kind": "eighth-item-this-session-found-smaller-than-framed",
+    "root_cause": "Continued the fresh systematic pass over nrrd's remaining obligations. SAL-NRRD-OBL-0D0DBFB306769459's (NRRD-PRESERVE-001) own missing_behavior said 'the loss report is not a complete construct-by-construct preservation analysis.' Checked preservation_report()'s own existing implementation: it already had everything needed to build a per-construct diff -- the NrrdDocument model already captures a full _original_header/_original_comments/_original_key_value_pairs/_original_array snapshot at load time, and PreservationIssue/PreservationReport were already the right shape to hold multiple, specific issues -- the method just collapsed any difference into one coarse 'document_modified' flag instead of comparing dict keys individually.",
+    "obligation_targeted": "SAL-NRRD-OBL-0D0DBFB306769459 (NRRD-PRESERVE-001) promoted partial->implemented in full.",
+    "acceptance_evidence": "preservation_report() now reports one PreservationIssue per header field or key/value pair added, removed, or changed, via a new _dict_diff_issues() helper. Comments and the decoded array remain single coarse issues by design (ordered-list and unbounded-size concerns respectively, explained in the method's own docstring). 9 new tests plus 1 existing test updated for the new, more precise behavior.",
+    "regression_tier": "full nrrd package suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Read preservation_report()'s own existing implementation: 4 coarse boolean-shaped checks (source_bytes unavailable, detached payload, no snapshot, OR any-of-header/comments/kv/array changed collapsed into one 'document_modified' issue).",
+    "2. Confirmed reader.py's own _load() already captures all 4 _original_* snapshots (_original_header, _original_comments, _original_key_value_pairs, _original_array) atomically at load time -- the raw material for a per-construct diff already existed, just wasn't being compared field-by-field.",
+    "3. Wrote _dict_diff_issues(code_prefix, label, original, current) -- a small, generic dict-diff helper comparing two dict[str,str] key-by-key, emitting one PreservationIssue per added/removed/changed key with the exact key name and old/new values in the message. Applied it to both header fields and key/value pairs (two separate calls, two separate code-prefix namespaces so a caller can distinguish which construct kind changed).",
+    "4. Verified directly with a standalone repro before writing any test: changing an existing header field reports header_field_changed with both old and new values; adding a new field reports header_field_added; removing one reports header_field_removed; a same-value no-op write correctly reports nothing; a key/value pair change is reported separately from header fields with its own code prefix.",
+    "5. Found one existing test (test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation) asserted the OLD coarse single-issue behavior verbatim -- updated it to assert the new, more precise header_field_changed code and check both old/new values appear in the message, rather than weakening or deleting the assertion.",
+    "6. Wrote 9 new tests (test_obligation_construct_by_construct_preservation.py): no false positive on an unmodified or no-op-rewritten document; additions/removals/changes each correctly classified for both header fields and key/value pairs; multiple simultaneous changes each produce their own distinct issue; comments and array changes remain single coarse issues by design (not silently dropped from coverage -- explicitly tested as still-coarse, matching the method's own documented scope decision).",
+    "7. Ran mypy --strict (clean -- added explicit asserts for the 2 Optional _original_* fields not already narrowed by the existing _original_header None-check, since the four snapshots are captured together atomically but are 4 separate typed attributes mypy cannot correlate automatically), ruff (clean), the full nrrd suite (633 -> 642 passed, 1 skipped), and the 6-format regression (3696 -> 3705 passed, +9, 0 failed).",
+    "8. Promoted SAL-NRRD-OBL-0D0DBFB306769459 partial->implemented -- this was the obligation's own only named gap. Preserved the existing &TLOSS/&PRES YAML anchors this obligation's source_symbols/positive_test_selectors participate in (shared with 3-4 other obligations elsewhere in the same file) by expanding only this obligation's own negative_test_selectors into an explicit list rather than modifying the shared anchor definitions themselves, which would have silently altered unrelated obligations' own cited evidence."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "tests/python/nrrd/test_production_namespace.py",
+    "tests/python/nrrd/test_obligation_construct_by_construct_preservation.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "tests/python/nrrd/test_production_namespace.py",
+    "tests/python/nrrd/test_obligation_construct_by_construct_preservation.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_construct_by_construct_preservation.py -v -- 9 passed (all new)",
+    ".venv/Scripts/pytest tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation -v -- passed (updated)",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/model/document.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd -q -- 642 passed, 1 skipped (was 633)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3705 passed, 4 skipped, 0 failed (was 3696)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation promoted partial->implemented",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 65
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

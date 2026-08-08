@@ -68,6 +68,39 @@ class PreservationReport:
         return not self.issues
 
 
+def _dict_diff_issues(
+    code_prefix: str, label: str, original: dict[str, str], current: dict[str, str]
+) -> list[PreservationIssue]:
+    """One `PreservationIssue` per key added, removed, or changed between
+    `original` and `current` -- a per-construct diff, not a single "this
+    dict changed" flag."""
+
+    issues: list[PreservationIssue] = []
+    for key in sorted(set(original) | set(current)):
+        old_value = original.get(key)
+        new_value = current.get(key)
+        if old_value == new_value:
+            continue
+        if old_value is None:
+            issues.append(
+                PreservationIssue(f"{code_prefix}_added", f"{label} {key!r} was added: {new_value!r}")
+            )
+        elif new_value is None:
+            issues.append(
+                PreservationIssue(
+                    f"{code_prefix}_removed", f"{label} {key!r} was removed (was {old_value!r})"
+                )
+            )
+        else:
+            issues.append(
+                PreservationIssue(
+                    f"{code_prefix}_changed",
+                    f"{label} {key!r} changed from {old_value!r} to {new_value!r}",
+                )
+            )
+    return issues
+
+
 @dataclass(slots=True)
 class NrrdDocument:
     """A decoded NRRD document with preserved headers and comments."""
@@ -303,7 +336,20 @@ class NrrdDocument:
         return max((version for version, _ in self.version_requirements()), default=1)
 
     def preservation_report(self) -> PreservationReport:
-        """Report whether the original byte representation can be replayed safely.
+        """Report every construct that prevents an exact-preserving write.
+
+        SAL-NRRD-OBL-0D0DBFB306769459 (NRRD-PRESERVE-001): "Report every
+        construct that cannot be preserved before saving, through a loss
+        report API, rather than failing silently." One issue per changed,
+        added, or removed header field and key/value pair -- not a single
+        coarse "something changed" flag -- so a caller can see exactly
+        which constructs would be lost, not merely that some unspecified
+        loss would occur. Comments and the decoded array are reported
+        coarsely (as a single issue each when different): comments are an
+        ordered list where per-index diffing is not obviously more useful
+        than "the list changed", and the array can be arbitrarily large,
+        where an issue per differing element would make the report itself
+        an unbounded-size liability rather than a useful summary.
 
         Canonical output preserves represented NRRD semantics. Exact preservation
         is available only for an attached source document whose semantic state has
@@ -326,16 +372,36 @@ class NrrdDocument:
                 "nrrd.lossless.snapshot_unavailable",
                 "the document was not loaded from a preservable source",
             ))
-        elif (
-            self.header != self._original_header
-            or self.comments != self._original_comments
-            or self.key_value_pairs != self._original_key_value_pairs
-            or self.array != self._original_array
-        ):
-            issues.append(PreservationIssue(
-                "nrrd.lossless.document_modified",
-                "header, metadata, comments, or array values changed after load",
-            ))
+        else:
+            # All 4 `_original_*` snapshots are set together, atomically, by
+            # the reader (codec/reader/reader.py) -- `_original_header` being
+            # non-None (checked above) guarantees the other three are too.
+            assert self._original_comments is not None
+            assert self._original_key_value_pairs is not None
+            issues.extend(
+                _dict_diff_issues(
+                    "nrrd.lossless.header_field", "header field", self._original_header, self.header
+                )
+            )
+            issues.extend(
+                _dict_diff_issues(
+                    "nrrd.lossless.key_value",
+                    "key/value pair",
+                    self._original_key_value_pairs,
+                    self.key_value_pairs,
+                )
+            )
+            if self.comments != self._original_comments:
+                issues.append(PreservationIssue(
+                    "nrrd.lossless.comments_changed",
+                    f"comments changed from {len(self._original_comments)} to "
+                    f"{len(self.comments)} entries",
+                ))
+            if self.array != self._original_array:
+                issues.append(PreservationIssue(
+                    "nrrd.lossless.array_changed",
+                    "decoded array values changed after load",
+                ))
         return PreservationReport(tuple(issues))
 
     @classmethod
