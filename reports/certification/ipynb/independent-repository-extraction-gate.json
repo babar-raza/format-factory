@@ -2,24 +2,24 @@
   "format_id": "ipynb",
   "gate": "independent-repository-extraction",
   "source_dir": "src/python/ipynb",
-  "isolated_location": "C:\\Users\\prora\\AppData\\Local\\Temp\\ff6-independent-repo-ipynb-pliflwwo\\ipynb",
+  "isolated_location": "C:\\Users\\prora\\AppData\\Local\\Temp\\ff6-independent-repo-ipynb-kigw_gja\\ipynb",
   "source_file_count": 65,
   "source_preserved_byte_identical": true,
   "build_epoch": "315532800",
   "isolated_build": {
     "ok": true,
-    "seconds": 17.7,
+    "seconds": 12.0,
     "artifacts": {
-      "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "daa1093d325230c32f35fd96aa2a2088f2a1eab6c71a65ec32daaf86ac7db67b",
-      "format_factory_ipynb-0.2.0.dev0.tar.gz": "892818dfd491a2bf01126e2b3162e2d7a229f9a2887477c718c1ced91b5f9499"
+      "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "761e1c4eefd32b60393b9c2fc6fd7acde91b0f4846136930e6641189538bc47e",
+      "format_factory_ipynb-0.2.0.dev0.tar.gz": "58377db588c2ef954edbe9f5e14897b6e6f6084cc644bde15932c99ea9b5ad8a"
     }
   },
   "in_place_build": {
     "ok": true,
-    "seconds": 15.3,
+    "seconds": 12.3,
     "artifacts": {
-      "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "daa1093d325230c32f35fd96aa2a2088f2a1eab6c71a65ec32daaf86ac7db67b",
-      "format_factory_ipynb-0.2.0.dev0.tar.gz": "892818dfd491a2bf01126e2b3162e2d7a229f9a2887477c718c1ced91b5f9499"
+      "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl": "761e1c4eefd32b60393b9c2fc6fd7acde91b0f4846136930e6641189538bc47e",
+      "format_factory_ipynb-0.2.0.dev0.tar.gz": "58377db588c2ef954edbe9f5e14897b6e6f6084cc644bde15932c99ea9b5ad8a"
     }
   },
   "package_digests_preserved": true,
@@ -29,6 +29,7 @@
   "invariant_source": "plans/strategic/ff6/product-goal.yaml completion_invariants",
   "tool": "tools/certification/independent_repository_extraction_gate.py --format ipynb",
   "method": "Copied src/python/ipynb/ verbatim (65 files, excluding build/.pytest_cache/etc.) into a fresh OS-temp directory with no ancestor relationship to this repository, confirmed byte-identical against the original, built a wheel+sdist from that isolated copy with its own cwd (never this repository root), built a second wheel+sdist from the in-place source at the same pinned SOURCE_DATE_EPOCH, and compared artifact digests.",
-  "note": "Clean on the first run -- no build/-cache contamination found (unlike xliff, which needed a fix to the shared build tooling first). This is one of product-goal.yaml's own completion invariants, separate from the 10-item gate list (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build). Not a certification claim -- the other outstanding program-wide invariant (all-six-co-install, already separately satisfied at FF6-EVENT-000322) and this format's own remaining obligation/gate work are tracked independently.",
+  "note": "Clean on the first run -- no build/-cache contamination found (unlike xliff, which needed a fix to the shared build tooling first). This is one of product-goal.yaml's own completion invariants, separate from the 10-item gate list (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build). Not a certification claim -- the other outstanding program-wide invariant (all-six-co-install, already separately satisfied) and this format's own remaining obligation/gate work are tracked independently.",
+  "re_run_this_tick": "FF6-EVENT-000414: independently re-ran this gate fresh rather than trusting the cached snapshot (this gate had not been touched anywhere in the extended certification gate-freshening rotation, Events 379-412, which focused on the 10-item gate list and did not include this separate 11th invariant). Verdict unchanged: EXTRACTS_INDEPENDENTLY. The fresh wheel_sha256 (761e1c4e...) is byte-for-byte IDENTICAL to the wheel independently built by BOTH the reproducible-build gate (Event 379) and the installed-wheel gate (Event 382) -- a THIRD independent tool now cross-confirming the same current-source build. Restored this file's own pre-existing narrative fields (invariant_text/tool/method/note), which the tool's own CLI output does not include and would otherwise have been silently dropped by letting the tool overwrite the file directly -- caught and corrected within this same tick.",
   "commit": "pending"
 }
