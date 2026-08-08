@@ -4,7 +4,14 @@ from __future__ import annotations
 
 from typing import Any, Mapping
 
-from format_factory.core import Diagnostic, ResourceLimits, ValidationReport
+from format_factory.core import (
+    BinarySource,
+    Diagnostic,
+    ResourceLimitError,
+    ResourceLimits,
+    Severity,
+    ValidationReport,
+)
 
 from ..codec.kinds import KIND_REQUIRED_SIZE, KIND_UNKNOWN_MARKERS, canonical_kind
 from ..codec.payload import (
@@ -14,27 +21,53 @@ from ..codec.payload import (
     is_block_type,
     parse_block_size,
 )
-from ..errors import NrrdParseError
+from ..codec.reader import load
+from ..errors import NrrdError, NrrdParseError
 from ..model import NrrdDocument
 from ..security import effective_limits
 from ..space import build_space_transform
 
 
 def validate(
-    value: NrrdDocument | Mapping[str, Any],
+    value: NrrdDocument | Mapping[str, Any] | BinarySource,
     *,
     profile: str | None = None,
     limits: ResourceLimits | None = None,
 ) -> ValidationReport:
-    """Return stable diagnostics instead of hiding violations."""
+    """Return stable diagnostics instead of hiding violations.
+
+    SAL-NRRD-OBL-2085AD256AFE6E96 (NRRD-VALIDATE-001): a raw source (bytes,
+    path, or stream) is accepted directly, not only an already-loaded
+    ``NrrdDocument``/mapping. Read-time rejections -- including decode_encoding's
+    trailing-payload policy, a security_expectation check (POL-SCR-VALIDATE-01:
+    "hostile headers must fail cheaply") that must keep rejecting hostile input,
+    not tolerate it -- are still rejections; this only changes how the rejection
+    is communicated (a FATAL diagnostic returned here, not an uncaught exception
+    at the load() call site), the same non-raising contract every other check in
+    this function already honors.
+    """
 
     diagnostics: list[Diagnostic] = []
-    try:
-        document = (
-            value if isinstance(value, NrrdDocument) else NrrdDocument.from_mapping(value)
-        )
-    except (TypeError, ValueError) as exc:
-        return ValidationReport([Diagnostic("nrrd.model.invalid", str(exc))])
+    if isinstance(value, NrrdDocument):
+        document = value
+    elif isinstance(value, Mapping):
+        try:
+            document = NrrdDocument.from_mapping(value)
+        except (TypeError, ValueError) as exc:
+            return ValidationReport([Diagnostic("nrrd.model.invalid", str(exc))])
+    else:
+        try:
+            document = load(value, limits=effective_limits(limits))
+        except (NrrdError, ResourceLimitError) as exc:
+            return ValidationReport(
+                [
+                    Diagnostic(
+                        "nrrd.source.unreadable",
+                        str(exc),
+                        severity=Severity.FATAL,
+                    )
+                ]
+            )
     valid_profiles = {f"NRRD000{item}" for item in range(1, 6)}
     if profile is not None and profile not in valid_profiles:
         diagnostics.append(

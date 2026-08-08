@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-validate-trailing-payload-reporting-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T02:06:36Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_VALIDATE_TRAILING_PAYLOAD_REPORTING_001",
+    "task_kind": "obligation-closure-real-source-change",
+    "root_cause": "SAL-NRRD-OBL-2085AD256AFE6E96's own missing_behavior named a precise, structural gap: decode_encoding()'s trailing-payload rejection happens as a hard exception at load() time, before validate() -- which only ever accepted an already-loaded NrrdDocument/mapping -- could run on the offending source at all. Two prior ticks (FF6-EVENT-000288, and a fresh re-investigation this tick) confirmed this needs new plumbing, unlike the UBL-WRITE-001 case that reused an existing dict.",
+    "obligation_targeted": "1 obligation promoted partial->implemented: SAL-NRRD-OBL-2085AD256AFE6E96 (NRRD-VALIDATE-001).",
+    "acceptance_evidence": "3 new tests directly exercising the new validate()-accepts-raw-source path for trailing gzip data, trailing bzip2 data, and a clean-source regression guard; independently verified via a standalone repro before any test was written.",
+    "regression_tier": "full nrrd suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Re-investigated the deferred nrrd trailing-payload item first: confirmed decode_encoding() has no existing diagnostics-collection mechanism reaching validate() (NrrdDocument.recovery_actions exists on the model but is never populated by any caller -- genuinely dead infrastructure for a different, separately-tracked obligation, NRRD-LIFECYCLE-001's own 'recovery mode', not reusable here without conflating scope).",
+    "2. Read the obligation's own authority text (RF-NRRD-00003, kind: security_expectation, 'hostile headers must fail cheaply') to confirm the fix must NOT weaken the actual rejection -- only change how it is reported. Ruled out making decode_encoding tolerant of trailing compressed-stream garbage (would silently accept potentially hidden/appended data, the opposite of this session's own hidden-data-hunting discipline).",
+    "3. Found NRRD's validate() could not even accept raw bytes/paths: `validate(b'garbage')` raised an uncaught AttributeError, confirming validate() was strictly post-load. Compared directly against format_factory.ora.lifecycle.validate()'s own proven pattern (re-parse from raw source internally, catch format errors, wrap as a FATAL Diagnostic) -- a pattern this same session had just implemented and tested for ora moments earlier in this tick.",
+    "4. Extended validate()'s accepted type to NrrdDocument | Mapping | BinarySource; added an else-branch that calls load() internally and catches (NrrdError, ResourceLimitError), returning ValidationReport([Diagnostic('nrrd.source.unreadable', str(exc), severity=Severity.FATAL)]) instead of propagating.",
+    "5. Verified with a standalone repro: a raw NRRD source with trailing gzip garbage now returns a FATAL diagnostic via validate() (is_valid=False) instead of raising; a nonexistent path, a clean valid source (str path, Path, and raw bytes) all behave correctly.",
+    "6. Added 3 tests to the existing tests/python/nrrd/test_obligation_compressed_trailing_data.py (natural home, already covers this obligation's sibling load()-raises behavior): trailing-gzip diagnostic, trailing-bzip2 diagnostic, clean-source-still-succeeds regression guard.",
+    "7. Ran mypy --strict (clean), ruff (clean), the full nrrd suite (619 -> 622 passed, +3), and the 6-format regression (3637 -> 3640 passed, 0 failed).",
+    "8. Promoted SAL-NRRD-OBL-2085AD256AFE6E96 partial->implemented in the ledger, citing the new tests and appending an FF6-EVENT-000291-dated addendum to implemented_behavior rather than rewriting prior history; cleared missing_behavior. Reconciler confirmed 19/65 -> 18/65 unresolved."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+    "tests/python/nrrd/test_obligation_compressed_trailing_data.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+    "tests/python/nrrd/test_obligation_compressed_trailing_data.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_compressed_trailing_data.py -v -- 8 passed (3 new)",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/validation/validator.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd -q -- 622 passed, 1 skipped (was 619)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3640 passed, 4 skipped, 0 failed (was 3637)",
+    "python -m tools.format_contract.contract_reconciler --format-id nrrd -- 18/65 unresolved (was 19)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation promoted partial->implemented",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 65,
+    "security_posture": "unchanged -- the underlying rejection of hostile trailing payload is unweakened; only the reporting mechanism (FATAL Diagnostic vs uncaught exception) changed"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
