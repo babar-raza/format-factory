@@ -777,6 +777,74 @@ execution_evidence:
     honest limitation disclosure), not a closure -- ubl's own
     unresolved-obligation count is unchanged by this entry alone since
     the obligation stays partial, not implemented.
+- evidence_id: UBL-MANDATORY-FIELD-CARDINALITY-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-mandatory-field-cardinality-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE. Grows (does not change
+    the already-implemented status of) SAL-UBL-OBL-03AF3A7D3A76F362 and
+    its cross-capability duplicates (the "full schema and cardinality
+    validation" cluster, UBL-MODEL-001/DOCTYPES-001/PARSE-001/
+    VALIDATE-001/REF-001). Found during the immediately preceding tick's
+    own remove_component() work: validate() (the always-available,
+    dependency-free structural check lines.py/components.py's own CRUD
+    functions call internally via _refuse_if_worse) does not check for
+    the presence of mandatory top-level elements at all, discovered by a
+    failing test assertion, not assumed. Investigated whether this is a
+    genuine gap or already covered elsewhere: confirmed a SEPARATE, more
+    complete validator (schema_validate(), full real XSD validation via
+    the optional xmlschema dependency) already exists and would catch
+    this class of violation when installed -- but confirmed directly
+    that lines.py/components.py's own CRUD safety net calls validate(),
+    never schema_validate(), so the gap was real and practically
+    consequential regardless of the heavier validator's existence.
+    Extended _cardinality_diagnostics() (validator.py) with a new,
+    parallel _missing_mandatory_field_violations() function and
+    _MANDATORY_FIELD_CHECKED_COMPONENTS registry, mirroring the exact
+    same qname-keyed dispatch pattern _CARDINALITY_CHECKED_COMPONENTS
+    already uses for the opposite (too-many) direction. Scoped to
+    cac:InvoiceLine and cac:CreditNoteLine specifically -- the two
+    components CRUD operations most directly construct and mutate.
+    Verified each field's own cardinality directly against the pinned
+    OASIS UBL 2.3 CommonAggregateComponents schema rather than assumed
+    symmetric between the two sibling types: InvoiceLineType declares
+    ID/LineExtensionAmount/Item as minOccurs="1" and InvoicedQuantity as
+    minOccurs="0"; CreditNoteLineType, despite modeling the identically
+    -named LineExtensionAmount/Item/CreditedQuantity fields, declares
+    ONLY ID as minOccurs="1" there -- confirmed genuinely different, not
+    guessed. Running the full suite before writing new tests surfaced
+    one pre-existing test (test_an_invoice_line_with_a_single_id_
+    validates_cleanly) using a deliberately minimal ID-only fixture
+    written before this check existed, to isolate the too-many-IDs case
+    from other concerns -- corrected the fixture to also carry
+    LineExtensionAmount and Item (keeping ID singular) rather than
+    weakening the new, correct check, preserving the test's own original
+    intent. 7 new tests (5 in
+    tests/python/ubl/test_obligation_aggregates_cardinality_validation.py,
+    2 in tests/python/ubl/test_obligation_lines_cardinality_validation.py):
+    each mandatory field's own absence independently flagged, all three
+    of InvoiceLine's own missing fields reported together in one pass
+    (not just the first), and InvoicedQuantity/CreditedQuantity/
+    LineExtensionAmount (optional on CreditNoteLine) each correctly NOT
+    flagged. mypy --strict and ruff clean. ubl suite: 1209 -> 1216
+    passed (1 pre-existing test fixture corrected, 7 new). Combined
+    6-format regression: 4020 -> 4027 passed, 4 skipped, 0 failed. NOT
+    backed by an independent reference UBL implementation for this
+    specific check, but every field's own cardinality is read directly
+    from the pinned OASIS schema, the same strength of grounding as
+    every other entry in this cluster. Wired only into
+    SAL-UBL-OBL-03AF3A7D3A76F362's own execution_evidence_ids this tick
+    -- unlike earlier ticks in this same cluster, this entry was
+    deliberately NOT propagated to the other 4 cross-capability
+    duplicate obligation blocks (UBL-DOCTYPES-001/PARSE-001/
+    VALIDATE-001/REF-001), to avoid claiming coverage this tick did not
+    actually wire into each of their own YAML entries; a future tick may
+    propagate it the same way earlier cluster events did. Does not
+    promote any obligation's own status (already implemented) -- this is
+    a genuine capability growth within an already-honestly-scoped
+    obligation, not a status change, and does
+    not affect ubl's own unresolved-obligation count.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -835,6 +903,7 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate
   - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
   - src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::_missing_mandatory_field_violations
   positive_test_selectors:
   - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_a_single_postal_address_validates_cleanly
   - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_multiple_party_tax_schemes_are_not_a_violation_they_are_repeatable
@@ -856,6 +925,8 @@ obligations:
   - tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_repeated_allowance_charge_reason_is_not_flagged_as_a_duplicate
   - tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_an_item_with_a_single_name_validates_cleanly
   - tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_well_formed_price_validates_cleanly
+  - tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_an_invoice_line_missing_its_optional_invoiced_quantity_is_not_a_violation
+  - tests/python/ubl/test_obligation_lines_cardinality_validation.py::test_a_credit_note_line_missing_its_optional_line_extension_amount_is_not_a_violation
   negative_test_selectors:
   - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation
   - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_contacts_is_a_cardinality_violation
@@ -887,6 +958,11 @@ obligations:
   - tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_an_item_with_two_names_is_a_cardinality_violation
   - tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_duplicate_price_amount_is_a_cardinality_violation
   - tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_duplicate_base_quantity_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_an_invoice_line_missing_its_id_is_a_missing_mandatory_field_violation
+  - tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_an_invoice_line_missing_its_line_extension_amount_is_a_missing_mandatory_field_violation
+  - tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_an_invoice_line_missing_its_item_is_a_missing_mandatory_field_violation
+  - tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_an_invoice_line_missing_all_three_mandatory_fields_reports_all_three
+  - tests/python/ubl/test_obligation_lines_cardinality_validation.py::test_a_credit_note_line_missing_its_id_is_a_missing_mandatory_field_violation
   execution_evidence_ids:
   - UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF
   - UBL-BASELINE-SUITE
@@ -897,8 +973,10 @@ obligations:
   - UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF
   - UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF
   - UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF
+  - UBL-MANDATORY-FIELD-CARDINALITY-PROOF
   implemented_behavior:
   - 'A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema''s own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, or cac:Price -- the sixteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 16 complexTypes out of the full UBL 2.3 schema''s ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package''s own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model''s current reach, honestly documented as such rather than silently assumed equivalent to the cluster''s other, already-wired components.'
+  - 'FF6-EVENT-000339: extended the missing-mandatory-field direction (previously only the too-many/exceeded direction existed) for cac:InvoiceLine and cac:CreditNoteLine specifically -- the two components lines.py/components.py''s own CRUD operations directly construct and mutate, and therefore the two whose own safety net (validate(), called by every CRUD function''s own _refuse_if_worse) most needed strengthening. Confirmed directly, not assumed symmetric: InvoiceLineType declares ID/LineExtensionAmount/Item as minOccurs=1 (mandatory) and InvoicedQuantity as minOccurs=0 (optional); CreditNoteLineType, despite modeling the identically-named LineExtensionAmount/Item/CreditedQuantity fields, declares ONLY ID as minOccurs=1 -- the other three are minOccurs=0 there, genuinely different from InvoiceLine. A separate, full-XSD validator (schema_validate(), gated behind the optional xmlschema dependency) already independently catches this class of violation when installed; this extension specifically strengthens validate() itself, the always-available, dependency-free check lines.py/components.py actually call internally, which schema_validate() is not wired into. 7 new tests (5 in test_obligation_aggregates_cardinality_validation.py, 2 in test_obligation_lines_cardinality_validation.py) prove each mandatory field''s own absence is flagged, that all three of InvoiceLine''s missing fields are reported together (not just the first), and that InvoicedQuantity/CreditedQuantity/LineExtensionAmount (optional on CreditNoteLine) are each correctly NOT flagged. One pre-existing test (test_an_invoice_line_with_a_single_id_validates_cleanly) used a deliberately minimal fixture (ID only) written before this check existed to isolate the too-many-IDs case from other concerns; its own fixture was corrected to also include LineExtensionAmount and Item (keeping ID singular) rather than weakening the new, correct check -- caught by running the full suite before committing, not assumed passing.'
   missing_behavior: []
   proof_requirements:
     positive:

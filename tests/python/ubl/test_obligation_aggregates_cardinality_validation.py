@@ -55,7 +55,17 @@ def _invoice_with(body: str) -> bytes:
 
 
 def test_an_invoice_line_with_a_single_id_validates_cleanly() -> None:
-    body = "<cac:InvoiceLine><cbc:ID>L1</cbc:ID></cac:InvoiceLine>"
+    """A single ID is not a cardinality-exceeded violation. The fixture
+    also carries LineExtensionAmount and Item -- both minOccurs="1" in
+    the real InvoiceLineType (FF6-EVENT-000339's own mandatory-field
+    check) -- so this stays a genuinely clean InvoiceLine, isolating the
+    single-ID case from the separate missing-mandatory-field concern."""
+    body = (
+        "<cac:InvoiceLine><cbc:ID>L1</cbc:ID>"
+        "<cbc:LineExtensionAmount>10</cbc:LineExtensionAmount>"
+        "<cac:Item><cbc:Name>Widget</cbc:Name></cac:Item>"
+        "</cac:InvoiceLine>"
+    )
 
     report = validate(loads(_invoice_with(body)))
 
@@ -83,6 +93,80 @@ def test_an_invoice_line_with_two_line_extension_amounts_is_a_cardinality_violat
 
     assert report.is_valid is False
     assert any(item.code == "ubl.cardinality.exceeded" for item in report.diagnostics)
+
+
+# ── cac:InvoiceLine: ID/LineExtensionAmount/Item are each minOccurs=1 in
+#    InvoiceLineType (FF6-EVENT-000339) ─────────────────────────────────────
+
+
+def test_an_invoice_line_missing_its_id_is_a_missing_mandatory_field_violation() -> None:
+    body = (
+        "<cac:InvoiceLine>"
+        "<cbc:LineExtensionAmount>10</cbc:LineExtensionAmount>"
+        "<cac:Item><cbc:Name>Widget</cbc:Name></cac:Item>"
+        "</cac:InvoiceLine>"
+    )
+
+    report = validate(loads(_invoice_with(body)))
+
+    assert report.is_valid is False
+    assert any(
+        item.code == "ubl.cardinality.missing" and "'ID'" in item.message
+        for item in report.diagnostics
+    )
+
+
+def test_an_invoice_line_missing_its_line_extension_amount_is_a_missing_mandatory_field_violation() -> None:
+    body = "<cac:InvoiceLine><cbc:ID>L1</cbc:ID><cac:Item><cbc:Name>Widget</cbc:Name></cac:Item></cac:InvoiceLine>"
+
+    report = validate(loads(_invoice_with(body)))
+
+    assert report.is_valid is False
+    assert any(
+        item.code == "ubl.cardinality.missing" and "'LineExtensionAmount'" in item.message
+        for item in report.diagnostics
+    )
+
+
+def test_an_invoice_line_missing_its_item_is_a_missing_mandatory_field_violation() -> None:
+    body = "<cac:InvoiceLine><cbc:ID>L1</cbc:ID><cbc:LineExtensionAmount>10</cbc:LineExtensionAmount></cac:InvoiceLine>"
+
+    report = validate(loads(_invoice_with(body)))
+
+    assert report.is_valid is False
+    assert any(
+        item.code == "ubl.cardinality.missing" and "'Item'" in item.message
+        for item in report.diagnostics
+    )
+
+
+def test_an_invoice_line_missing_all_three_mandatory_fields_reports_all_three() -> None:
+    body = "<cac:InvoiceLine></cac:InvoiceLine>"
+
+    report = validate(loads(_invoice_with(body)))
+
+    missing_codes = {
+        item.message for item in report.diagnostics if item.code == "ubl.cardinality.missing"
+    }
+    assert any("'ID'" in message for message in missing_codes)
+    assert any("'LineExtensionAmount'" in message for message in missing_codes)
+    assert any("'Item'" in message for message in missing_codes)
+
+
+def test_an_invoice_line_missing_its_optional_invoiced_quantity_is_not_a_violation() -> None:
+    """InvoicedQuantity is minOccurs="0" in the real InvoiceLineType --
+    confirmed directly, not assumed -- so an InvoiceLine that never
+    declares it is still genuinely valid for this check."""
+    body = (
+        "<cac:InvoiceLine><cbc:ID>L1</cbc:ID>"
+        "<cbc:LineExtensionAmount>10</cbc:LineExtensionAmount>"
+        "<cac:Item><cbc:Name>Widget</cbc:Name></cac:Item>"
+        "</cac:InvoiceLine>"
+    )
+
+    report = validate(loads(_invoice_with(body)))
+
+    assert report.is_valid is True
 
 
 # ── cac:TaxSubtotal: TaxableAmount/TaxAmount/TaxCategory are each

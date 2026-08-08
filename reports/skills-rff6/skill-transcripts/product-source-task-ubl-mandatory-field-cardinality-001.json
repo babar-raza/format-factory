@@ -1,0 +1,63 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-mandatory-field-cardinality-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-2a00e8ed9b6b121d",
+  "mode": "live",
+  "timestamp": "2026-08-08T13:41:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_MANDATORY_FIELD_CARDINALITY_001",
+    "task_kind": "close-a-real-honestly-disclosed-gap-found-in-the-prior-tick",
+    "root_cause": "The immediately preceding tick (remove_component()) found and honestly disclosed that validate() does not check for mandatory top-level element presence at all, deliberately leaving it unfixed as out-of-scope for UBL-EDIT-001's own CRUD obligation. Event 338's own exact_next_action named this concrete, verified gap as the most promising remaining lead, more concrete than a speculative narrative-invariant survey.",
+    "obligation_targeted": "SAL-UBL-OBL-03AF3A7D3A76F362 (UBL-MODEL-001, already status=implemented) grown with real new coverage; no status change since it was already honestly, narrowly scoped and stays exactly as complete as it now, genuinely, is.",
+    "acceptance_evidence": "Investigated whether this was a total capability gap or already covered elsewhere: found a separate schema_validate() function (full XSD validation via the optional xmlschema dependency) that would already catch this class of violation -- but confirmed the dependency is not installed in this environment (SchemaValidationUnavailable raised on a direct probe) and, more importantly, that lines.py/components.py's own CRUD safety net (_refuse_if_worse) calls validate() only, never schema_validate() -- so the gap was real and practically consequential for CRUD operations regardless of the heavier validator's existence. Extended validate()'s own _cardinality_diagnostics() with a parallel missing-mandatory-field check, scoped to InvoiceLine/CreditNoteLine (the two components CRUD directly touches), each field's own minOccurs verified independently against the pinned XSD rather than assumed symmetric between the two sibling types."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 338 commit.",
+    "2. Read validate()'s own top-level docstring directly: 'This chassis validation is deliberately not an XSD-conformance claim. Full schema and cardinality validation remains a mandatory open obligation.' Traced this exact phrase to _cardinality_diagnostics()'s own docstring, which cites the specific obligation ID SAL-UBL-OBL-03AF3A7D3A76F362 as its grounding citation.",
+    "3. Looked up that obligation's own current ledger entry: capability_id=UBL-MODEL-001, status=implemented, with an honest implemented_behavior already stating 'This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 16 complexTypes... not every complexType in the UBL 2.3 schema.' Confirmed this obligation's own prior closure was legitimate and honestly scoped -- not a false completeness claim needing correction, just a real, narrow scope with room left to grow.",
+    "4. Investigated schema_validate() (schema_validator.py) directly, since it's also cited in the same obligation's source_symbols. Probed it against a document missing several mandatory top-level elements -- it raised SchemaValidationUnavailable (the optional xmlschema dependency is not installed in this environment), confirming it is a separate, heavier, not-always-available capability, distinct from the always-available validate() that CRUD operations actually rely on internally.",
+    "5. Surveyed _CARDINALITY_CHECKED_COMPONENTS' own existing 16-entry registry and picked cac:InvoiceLine/cac:CreditNoteLine specifically -- the two components lines.py's own CRUD operations directly construct and mutate, making them the highest-value place to strengthen the safety net first.",
+    "6. Read InvoiceLineType directly from the pinned OASIS UBL 2.3 CommonAggregateComponents-2.3.xsd: confirmed ID/LineExtensionAmount/Item are minOccurs='1' (mandatory), InvoicedQuantity is minOccurs='0' (optional).",
+    "7. Read CreditNoteLineType directly (not assumed symmetric with InvoiceLineType despite modeling the identically-named fields): confirmed ONLY ID is minOccurs='1' there -- CreditedQuantity/LineExtensionAmount/Item are all minOccurs='0', genuinely different from InvoiceLine's own cardinality.",
+    "8. Added _missing_mandatory_field_violations() and a new _MANDATORY_FIELD_CHECKED_COMPONENTS registry to validator.py, mirroring _single_occurrence_violations()/_CARDINALITY_CHECKED_COMPONENTS' own exact dispatch pattern for the opposite direction. Wired both into _cardinality_diagnostics() via the same node-iteration loop, updating its own docstring to describe the new bidirectional coverage.",
+    "9. Ran mypy --strict and ruff on the changed source file -- clean on the first pass. Ran the FULL ubl suite before writing any new test (critical discipline, since this changes validate()'s own OUTPUT for previously-passing inputs, unlike a purely additive new function) -- found exactly 1 pre-existing failure: test_an_invoice_line_with_a_single_id_validates_cleanly, using a deliberately minimal ID-only fixture written before this check existed, to isolate the too-many-IDs case from unrelated concerns.",
+    "10. Investigated the failing test's own intent (read its surrounding section comment and sibling tests) before touching it, confirming it was never meant to assert full InvoiceLine completeness -- only that ONE id does not trigger a cardinality-exceeded false positive. Corrected the fixture to also carry LineExtensionAmount and Item (keeping ID singular), preserving the test's own original intent rather than weakening the new, correct check to accommodate an outdated fixture.",
+    "11. Re-ran the full suite -- all passing. Wrote 7 new dedicated tests (5 for InvoiceLine's own missing-ID/missing-LineExtensionAmount/missing-Item/missing-all-three/optional-InvoicedQuantity-not-flagged cases in test_obligation_aggregates_cardinality_validation.py; 2 for CreditNoteLine's own missing-ID and optional-LineExtensionAmount-not-flagged cases in test_obligation_lines_cardinality_validation.py, explicitly documenting the confirmed asymmetry with InvoiceLine in each test's own docstring).",
+    "12. Ran mypy --strict and ruff on both test files (clean), the full ubl suite (1216 passed, was 1209 including the 1 corrected fixture), and the combined 6-format regression (4027 passed, 4 skipped, 0 failed, was 4020) since production source (validator.py, shared machinery) was touched.",
+    "13. Updated the ledger via precise, line-range-scoped edits (this obligation's own source_symbols/positive_test_selectors/negative_test_selectors/execution_evidence_ids/implemented_behavior are shared verbatim text blocks across 5 cross-capability-duplicate obligation entries in this file, so a naive string-replace Edit would have matched multiple locations ambiguously -- used a Python script targeting only this specific obligation's own line range, verified via git diff --stat showing only the intended line-count deltas with no unintended corruption). Deliberately did NOT propagate this evidence citation to the other 4 duplicate obligation blocks this tick (unlike some earlier cluster-wide events), to avoid claiming coverage not actually wired into each of their own YAML entries -- disclosed this scoping choice explicitly in the evidence's own truth_boundary."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py",
+    "tests/python/ubl/test_obligation_lines_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py",
+    "tests/python/ubl/test_obligation_lines_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_aggregates_cardinality_validation.py tests/python/ubl/test_obligation_lines_cardinality_validation.py -q -- 25 passed (1 pre-existing fixture corrected, 7 new)",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/validation/validator.py tests/python/ubl/test_obligation_aggregates_cardinality_validation.py tests/python/ubl/test_obligation_lines_cardinality_validation.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/validation/validator.py tests/python/ubl/test_obligation_aggregates_cardinality_validation.py tests/python/ubl/test_obligation_lines_cardinality_validation.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ubl -q -- 1216 passed (was 1209)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q -- 4027 passed, 4 skipped, 0 failed (6-format regression, was 4020)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Real capability growth within an already-implemented, honestly-scoped obligation (SAL-UBL-OBL-03AF3A7D3A76F362) -- no status change, but a genuine safety-net improvement for CRUD operations that construct/mutate InvoiceLine/CreditNoteLine",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 194,
+    "new_public_api": "none -- internal validator.py extension only, no new public API surface; validate()'s own existing public behavior gains real new coverage"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

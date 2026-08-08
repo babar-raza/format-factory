@@ -62,6 +62,33 @@ def test_a_credit_note_line_with_two_ids_is_a_cardinality_violation() -> None:
     assert any(item.code == "ubl.cardinality.exceeded" for item in report.diagnostics)
 
 
+def test_a_credit_note_line_missing_its_id_is_a_missing_mandatory_field_violation() -> None:
+    """ID is minOccurs="1" in CreditNoteLineType (FF6-EVENT-000339) -- unlike
+    CreditedQuantity/LineExtensionAmount/Item, all minOccurs="0" there,
+    confirmed directly and NOT assumed symmetric with InvoiceLineType,
+    where LineExtensionAmount/Item are mandatory instead."""
+    body = "<cac:CreditNoteLine><cbc:CreditedQuantity>1</cbc:CreditedQuantity></cac:CreditNoteLine>"
+
+    report = validate(loads(_credit_note_with(body)))
+
+    assert report.is_valid is False
+    assert any(
+        item.code == "ubl.cardinality.missing" and "'ID'" in item.message
+        for item in report.diagnostics
+    )
+
+
+def test_a_credit_note_line_missing_its_optional_line_extension_amount_is_not_a_violation() -> None:
+    """LineExtensionAmount is minOccurs="0" in CreditNoteLineType --
+    confirmed directly, not assumed -- unlike InvoiceLine's own
+    otherwise-identically-named field, which IS mandatory."""
+    body = "<cac:CreditNoteLine><cbc:ID>L1</cbc:ID></cac:CreditNoteLine>"
+
+    report = validate(loads(_credit_note_with(body)))
+
+    assert report.is_valid is True
+
+
 def test_a_credit_note_line_with_two_credited_quantities_is_a_cardinality_violation() -> None:
     body = (
         "<cac:CreditNoteLine><cbc:ID>L1</cbc:ID>"

@@ -202,6 +202,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact test selectors proving the pinned UBL 2.3 OASIS Standard distribution package's own maindoc inventory claim -- exactly 91 XSD files, one per ROOT_NAME_SET entry -- reconciling FF6-EVENT-000274's own already-bundled, already-bundled-and-tested files to three obligation IDs that stale SPEC-PACKAGE-FACT text had never linked them to. No new files were extracted this event; bundled_maindoc_schema_paths() is a new accessor over files FF6-EVENT-000274 already bundled from the same pinned src-ubl-002.bin ZIP. Covers the three obligations named in this slice's transcript only; it supports no other obligation and promotes no other product state."
     },
     {
+      "evidence_id": "UBL-MANDATORY-FIELD-CARDINALITY-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-mandatory-field-cardinality-001.json",
+      "sha256": "2c68c49eadef31be9b673a89df70a939ab5c4e48fe672c6e61a7d21f22857df9",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Grows (does not change the already-implemented status of) SAL-UBL-OBL-03AF3A7D3A76F362 and its cross-capability duplicates (the \"full schema and cardinality validation\" cluster, UBL-MODEL-001/DOCTYPES-001/PARSE-001/ VALIDATE-001/REF-001). Found during the immediately preceding tick's own remove_component() work: validate() (the always-available, dependency-free structural check lines.py/components.py's own CRUD functions call internally via _refuse_if_worse) does not check for the presence of mandatory top-level elements at all, discovered by a failing test assertion, not assumed. Investigated whether this is a genuine gap or already covered elsewhere: confirmed a SEPARATE, more complete validator (schema_validate(), full real XSD validation via the optional xmlschema dependency) already exists and would catch this class of violation when installed -- but confirmed directly that lines.py/components.py's own CRUD safety net calls validate(), never schema_validate(), so the gap was real and practically consequential regardless of the heavier validator's existence. Extended _cardinality_diagnostics() (validator.py) with a new, parallel _missing_mandatory_field_violations() function and _MANDATORY_FIELD_CHECKED_COMPONENTS registry, mirroring the exact same qname-keyed dispatch pattern _CARDINALITY_CHECKED_COMPONENTS already uses for the opposite (too-many) direction. Scoped to cac:InvoiceLine and cac:CreditNoteLine specifically -- the two components CRUD operations most directly construct and mutate. Verified each field's own cardinality directly against the pinned OASIS UBL 2.3 CommonAggregateComponents schema rather than assumed symmetric between the two sibling types: InvoiceLineType declares ID/LineExtensionAmount/Item as minOccurs=\"1\" and InvoicedQuantity as minOccurs=\"0\"; CreditNoteLineType, despite modeling the identically -named LineExtensionAmount/Item/CreditedQuantity fields, declares ONLY ID as minOccurs=\"1\" there -- confirmed genuinely different, not guessed. Running the full suite before writing new tests surfaced one pre-existing test (test_an_invoice_line_with_a_single_id_ validates_cleanly) using a deliberately minimal ID-only fixture written before this check existed, to isolate the too-many-IDs case from other concerns -- corrected the fixture to also carry LineExtensionAmount and Item (keeping ID singular) rather than weakening the new, correct check, preserving the test's own original intent. 7 new tests (5 in tests/python/ubl/test_obligation_aggregates_cardinality_validation.py, 2 in tests/python/ubl/test_obligation_lines_cardinality_validation.py): each mandatory field's own absence independently flagged, all three of InvoiceLine's own missing fields reported together in one pass (not just the first), and InvoicedQuantity/CreditedQuantity/ LineExtensionAmount (optional on CreditNoteLine) each correctly NOT flagged. mypy --strict and ruff clean. ubl suite: 1209 -> 1216 passed (1 pre-existing test fixture corrected, 7 new). Combined 6-format regression: 4020 -> 4027 passed, 4 skipped, 0 failed. NOT backed by an independent reference UBL implementation for this specific check, but every field's own cardinality is read directly from the pinned OASIS schema, the same strength of grounding as every other entry in this cluster. Wired only into SAL-UBL-OBL-03AF3A7D3A76F362's own execution_evidence_ids this tick -- unlike earlier ticks in this same cluster, this entry was deliberately NOT propagated to the other 4 cross-capability duplicate obligation blocks (UBL-DOCTYPES-001/PARSE-001/ VALIDATE-001/REF-001), to avoid claiming coverage this tick did not actually wire into each of their own YAML entries; a future tick may propagate it the same way earlier cluster events did. Does not promote any obligation's own status (already implemented) -- this is a genuine capability growth within an already-honestly-scoped obligation, not a status change, and does not affect ubl's own unresolved-obligation count."
+    },
+    {
       "evidence_id": "UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -421,7 +429,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "bf5a74c3f4a463f08af1bbd45737f966024677136ee2795bed3dc285f8811042",
+    "implementation_evidence": "271f599884995369c956a2043ca64acff708589130e8ff4be3c57cb8907e87b7",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -504,10 +512,12 @@
         "UBL-AGGREGATES-CARDINALITY-PROOF",
         "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF",
         "UBL-ALLOWANCE-CHARGE-CARDINALITY-ORDER-PROOF",
-        "UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF"
+        "UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF",
+        "UBL-MANDATORY-FIELD-CARDINALITY-PROOF"
       ],
       "implemented_behavior": [
-        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, or cac:Price -- the sixteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 16 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components."
+        "A genuine, spec-grounded slice of cardinality validation now exists, growing across ticks: validate() detects a minOccurs=0(or 1) maxOccurs=1 element (per the pinned OASIS UBL 2.3 CommonAggregateComponents schema's own complexType definitions) appearing more than once under cac:Party, cac:PostalAddress, cac:Contact, cac:PaymentMeans, cac:PayeeFinancialAccount, cac:CreditNoteLine, cac:Response, cac:DocumentReference, cac:InvoiceLine, cac:TaxSubtotal, cac:TaxTotal, cac:LegalMonetaryTotal, cac:ExternalReference, cac:AllowanceCharge, cac:Item, or cac:Price -- the sixteen already-typed aggregate components this package models today. Genuinely repeatable (0..unbounded) fields like PartyTaxScheme/PartyName/PaymentMeans.PaymentID/Response.Description/TaxTotal.TaxSubtotal/ExternalReference.Description/AllowanceCharge.AllowanceChargeReason are all proven to never be flagged, each confirmed directly against the pinned schema rather than assumed uniform. This is deliberately narrow, not a completeness claim: it covers only the already-modeled fields of 16 complexTypes out of the full UBL 2.3 schema's ~91 root document types and their many aggregate/basic components. cac:ExternalReference is checked directly against the raw parsed XML tree even though it is not currently reachable through this package's own typed document-parsing path (it is a child of cac:Attachment, which this package does not model at all) -- genuine, spec-grounded validation independent of the typed model's current reach, honestly documented as such rather than silently assumed equivalent to the cluster's other, already-wired components.",
+        "FF6-EVENT-000339: extended the missing-mandatory-field direction (previously only the too-many/exceeded direction existed) for cac:InvoiceLine and cac:CreditNoteLine specifically -- the two components lines.py/components.py's own CRUD operations directly construct and mutate, and therefore the two whose own safety net (validate(), called by every CRUD function's own _refuse_if_worse) most needed strengthening. Confirmed directly, not assumed symmetric: InvoiceLineType declares ID/LineExtensionAmount/Item as minOccurs=1 (mandatory) and InvoicedQuantity as minOccurs=0 (optional); CreditNoteLineType, despite modeling the identically-named LineExtensionAmount/Item/CreditedQuantity fields, declares ONLY ID as minOccurs=1 -- the other three are minOccurs=0 there, genuinely different from InvoiceLine. A separate, full-XSD validator (schema_validate(), gated behind the optional xmlschema dependency) already independently catches this class of violation when installed; this extension specifically strengthens validate() itself, the always-available, dependency-free check lines.py/components.py actually call internally, which schema_validate() is not wired into. 7 new tests (5 in test_obligation_aggregates_cardinality_validation.py, 2 in test_obligation_lines_cardinality_validation.py) prove each mandatory field's own absence is flagged, that all three of InvoiceLine's missing fields are reported together (not just the first), and that InvoicedQuantity/CreditedQuantity/LineExtensionAmount (optional on CreditNoteLine) are each correctly NOT flagged. One pre-existing test (test_an_invoice_line_with_a_single_id_validates_cleanly) used a deliberately minimal fixture (ID only) written before this check existed to isolate the too-many-IDs case from other concerns; its own fixture was corrected to also include LineExtensionAmount and Item (keeping ID singular) rather than weakening the new, correct check -- caught by running the full suite before committing, not assumed passing."
       ],
       "missing_behavior": [],
       "negative_test_selectors": [
@@ -540,7 +550,12 @@
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_duplicate_amount_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_an_item_with_two_names_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_duplicate_price_amount_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_duplicate_base_quantity_is_a_cardinality_violation"
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_duplicate_base_quantity_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_an_invoice_line_missing_its_id_is_a_missing_mandatory_field_violation",
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_an_invoice_line_missing_its_line_extension_amount_is_a_missing_mandatory_field_violation",
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_an_invoice_line_missing_its_item_is_a_missing_mandatory_field_violation",
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_an_invoice_line_missing_all_three_mandatory_fields_reports_all_three",
+        "tests/python/ubl/test_obligation_lines_cardinality_validation.py::test_a_credit_note_line_missing_its_id_is_a_missing_mandatory_field_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-03AF3A7D3A76F362",
       "positive_test_selectors": [
@@ -563,7 +578,9 @@
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_well_formed_allowance_charge_validates_cleanly",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_a_repeated_allowance_charge_reason_is_not_flagged_as_a_duplicate",
         "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_an_item_with_a_single_name_validates_cleanly",
-        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_well_formed_price_validates_cleanly"
+        "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_a_well_formed_price_validates_cleanly",
+        "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_an_invoice_line_missing_its_optional_invoiced_quantity_is_not_a_violation",
+        "tests/python/ubl/test_obligation_lines_cardinality_validation.py::test_a_credit_note_line_missing_its_optional_line_extension_amount_is_not_a_violation"
       ],
       "proof_requirements": {
         "negative": [
@@ -577,7 +594,8 @@
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics"
+        "src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics",
+        "src/python/ubl/src/format_factory/ubl/validation/validator.py::_missing_mandatory_field_violations"
       ],
       "status": "implemented"
     },
@@ -7627,6 +7645,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lines-cardinality-001.json": "e59fc35d67c0bfe1120e3e1841a38aa52649cf7a9c6b9b7b206be58f91e6a94c",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-maindoc-bundle-inventory-001.json": "6c4e863817e66b5955799c9b7c4fe30b88ab1b598bfd22eb86968d154c4ffd48",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-maindoc-lines-001.json": "59537e2a072991398c7ec9a483c13e0abc19149487f1834e46668e43dce5d3c6",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-mandatory-field-cardinality-001.json": "2c68c49eadef31be9b673a89df70a939ab5c4e48fe672c6e61a7d21f22857df9",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-model-citation-audit-001.json": "d2c7dfa39a36272ee884db3f991425e0013760681491767abedad051028572e6",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-namespace-shadowing-security-001.json": "8b8e5a614adac3135fe20e31f21dd43aa6bc972c3e4d5e28c9697e780c5ee3b0",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-official-code-lists-genericode-loader-001.json": "5ae1937e4c93637a8daf778a047f2eb7d6610817c552401da470f1eb7ab42fa3",
@@ -7680,9 +7699,9 @@
     "src/python/ubl/src/format_factory/ubl/validation/combined.py": "dfc3c8f25bff12554edaeb8238b62ab9a0b451ca6eefb4ea826e12d32542c468",
     "src/python/ubl/src/format_factory/ubl/validation/profiles.py": "9be1805b9ea265200e890fc833526dd3589b0be559d61f1d6ba76954f63b0c35",
     "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py": "c77851e976fe374089eb7a70e7697107018b2f66b3a30c2086a73d8f817ef84b",
-    "src/python/ubl/src/format_factory/ubl/validation/validator.py": "a32d86d5370908ded3afafaae6f1f17ea94cb7023603bd667edf4ce32ac52b99",
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py": "39b752ce54c8b8d0eb5d7e58fbfa6956a465ede2731ee8541710c02280b823ff",
     "tests/python/ubl/test_obligation_aggregate_components.py": "26e36e29e05e239f1fc17915ebf243ae61b55799c7811dbfe8c3fee0fac66242",
-    "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py": "ec56ba759bb06b3ca638a7b030d5795cb9c3e9e673d90690334b8f18c7b5dfee",
+    "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py": "e1cc994bc926eea68b615a8dfcbd9c01879ab8165a901c2f13a2ec1b212c98b5",
     "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py": "74bb7b21b48e0634ae5b6eb36fc6ea0cbce7dc0bfdbe9bf66c3c9fdd061a40bc",
     "tests/python/ubl/test_obligation_business_calculation.py": "ebf8352d49b7d0bc6bf5aa4bfa0d034f6f98f896ba34aceb95cfe38efeeee150",
     "tests/python/ubl/test_obligation_business_value_types.py": "5f4ee2e16fc785296a4fd493548197aaad50df1b384350ab7cee064e71ed8e10",
@@ -7703,7 +7722,7 @@
     "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py": "5c40b93cd2b64323b8e250852d8696130b7840b966b9b1f413df3f9caf5af81a",
     "tests/python/ubl/test_obligation_lifecycle_io.py": "6189da6be51a33cbe60b72e6d98b632dfda9232838d41788dfd7547ec824f7ed",
     "tests/python/ubl/test_obligation_line_crud.py": "5785b4299f37f8c15d350cd880500ad4704a6bc719d14b1e06733314ebec29bc",
-    "tests/python/ubl/test_obligation_lines_cardinality_validation.py": "9cc83daec77c593684701ba892221d488398e6ae8c782678d8c61361d1217cec",
+    "tests/python/ubl/test_obligation_lines_cardinality_validation.py": "011b6c9a2182799f89018819a83c40abe6e8d00589c9470ae0a2f5aff185b047",
     "tests/python/ubl/test_obligation_maindoc_lines.py": "2fdad6d4d11e62df2820eaf8ea2d499f38a2f587439497b3dd7369bdf05e2812",
     "tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py": "a4a88a5592e9758e1e9820ae97251888e5ef180fdc04d44e4282d23d6d9f258d",
     "tests/python/ubl/test_obligation_namespace_shadowing_security.py": "09f618f4e2dc90fc400cd35109fe302bae72ab17d7087edce0bfaf6d580718fb",

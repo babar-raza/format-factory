@@ -297,15 +297,54 @@ _CARDINALITY_CHECKED_COMPONENTS: dict[str, tuple[frozenset[str], str]] = {
 }
 
 
+def _missing_mandatory_field_violations(
+    node: XmlNode, mandatory_names: frozenset[str], component_label: str
+) -> list[Diagnostic]:
+    present = {_local(child.qname) for child in node.children}
+    return [
+        Diagnostic(
+            "ubl.cardinality.missing",
+            f"{component_label} is missing {name!r}, which the OASIS UBL 2.3 "
+            "schema declares minOccurs=1 (mandatory)",
+        )
+        for name in sorted(mandatory_names - present)
+    ]
+
+
+#: qname -> (minOccurs=1 local names, human-readable component label).
+#: Each entry's own field set must be read directly from the pinned
+#: schema, never guessed or assumed symmetric with a sibling type -- a
+#: field mandatory on one component can be optional on another that
+#: happens to model the same field name. Confirmed directly, not assumed:
+#: cac:InvoiceLine's own ID/LineExtensionAmount/Item are all minOccurs="1"
+#: in InvoiceLineType, but cac:CreditNoteLine's own otherwise-identically
+#: -named LineExtensionAmount and Item are minOccurs="0" in
+#: CreditNoteLineType -- only ID is mandatory there. Scoped to fields
+#: already covered by _CARDINALITY_CHECKED_COMPONENTS' own field sets for
+#: the same component (this check only adds the missing-entirely
+#: direction for already-modeled fields, not new fields).
+_MANDATORY_FIELD_CHECKED_COMPONENTS: dict[str, tuple[frozenset[str], str]] = {
+    _INVOICE_LINE_QNAME: (
+        frozenset({"ID", "LineExtensionAmount", "Item"}),
+        "cac:InvoiceLine",
+    ),
+    _CREDIT_NOTE_LINE_QNAME: (frozenset({"ID"}), "cac:CreditNoteLine"),
+}
+
+
 def _cardinality_diagnostics(value: UblDocument) -> list[Diagnostic]:
     """SAL-UBL-OBL-03AF3A7D3A76F362 and its cross-capability duplicates:
     "full schema and cardinality validation remains a mandatory open
     obligation." A genuine, spec-grounded, ongoing slice: diagnoses a
     minOccurs=0(or 1) maxOccurs=1 element appearing more than once under
     any of the already-typed aggregate components this package models
-    today (see _CARDINALITY_CHECKED_COMPONENTS). Deliberately narrow:
-    covers only these already-modeled fields, not every complexType in the
-    UBL 2.3 schema, which remains a separate, larger undertaking.
+    today (see _CARDINALITY_CHECKED_COMPONENTS), AND -- as of
+    FF6-EVENT-000339 -- an already-modeled minOccurs=1 element appearing
+    ZERO times under cac:InvoiceLine/cac:CreditNoteLine (see
+    _MANDATORY_FIELD_CHECKED_COMPONENTS). Deliberately narrow in both
+    directions: covers only these already-modeled fields on these
+    already-modeled component types, not every complexType and field in
+    the UBL 2.3 schema, which remains a separate, larger undertaking.
     """
     diagnostics: list[Diagnostic] = []
     for node in value.root.iter():
@@ -313,6 +352,12 @@ def _cardinality_diagnostics(value: UblDocument) -> list[Diagnostic]:
         if checked is not None:
             fields, label = checked
             diagnostics.extend(_single_occurrence_violations(node, fields, label))
+        mandatory_checked = _MANDATORY_FIELD_CHECKED_COMPONENTS.get(node.qname)
+        if mandatory_checked is not None:
+            mandatory_fields, mandatory_label = mandatory_checked
+            diagnostics.extend(
+                _missing_mandatory_field_violations(node, mandatory_fields, mandatory_label)
+            )
     return diagnostics
 
 
