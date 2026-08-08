@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-changelog-catchup-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-52f7f716ec6bc6aa",
+  "mode": "live",
+  "timestamp": "2026-08-08T14:51:08Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_CHANGELOG_CATCHUP_001",
+    "task_kind": "close-a-changelog-content-staleness-gap-found-via-a-cross-format-survey",
+    "root_cause": "Event 346's own exact_next_action named nrrd as the first of five remaining formats (nrrd, ora, xliff, ipynb, safetensors) needing the same CHANGELOG.md catch-up already applied to ubl -- the file has had exactly one commit ever (git log confirms 8bd674c1) covering only the initial namespace/module-split/deterministic-archives chassis milestone, with none of nrrd's substantial capability work (attachment-form conversion, encoding/dtype conversion, header-only inspection, lazy payload access, space transforms, preservation reporting, resource limits) ever mentioned.",
+    "obligation_targeted": "No specific obligation-register status change (nrrd remains at 10/65 unresolved, unaffected by this tick) -- this closes the same changelog-content-accuracy gap dimension opened at Event 346, adjacent to but distinct from product-goal.yaml invariant #4.",
+    "acceptance_evidence": "Confirmed nrrd's pyproject.toml still declares version 0.2.0.dev0, matching the CHANGELOG's own latest (and only) heading exactly, so new bullets belong under the same heading. Compiled the real capability list directly from this session's own already-fully-verified README work (Events 328-331 added the underlying capabilities; Event 343 added read_header documentation; the README's own 8 sections beyond 'Common lifecycle' and 'Security and resource limits' were all already audited this session). Verified all 18 symbols cited in the 6 new bullets exist on the current module via hasattr before writing."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 346 commit (c9b73d51); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Read src/python/nrrd/CHANGELOG.md (8 lines, one section, three generic foundational bullets) and confirmed via `git log --oneline --all -- src/python/nrrd/CHANGELOG.md` (already run at Event 346 as part of the cross-format pattern confirmation) that it has had exactly one commit ever.",
+    "3. Confirmed nrrd's own pyproject.toml still declares `version = \"0.2.0.dev0\"`, identical to the CHANGELOG's own latest heading -- appending to the existing section, not creating a new heading, following the same reasoning already verified and applied for ubl at Event 346.",
+    "4. Compiled the list of real, shipped, previously undocumented-in-changelog nrrd capabilities directly from this session's own README work, which had already fully investigated and verified every one of nrrd's 8 README sections beyond 'Installation'/'Common lifecycle': attachment-form conversion (convert_to_attached/convert_to_detached_list/convert_to_detached_printf/dump_multifile/dump_multifile_printf), encoding/dtype conversion (convert_encoding/convert_dtype/OverflowPolicy), header-only inspection (read_header, this session's own Event 343 addition), lazy payload access (open_lazy_payload/PayloadAccessMode), space transforms (parse_space_directions/parse_space_origin/build_space_transform), preservation/array access (preservation_report/get_array/get_dimension), and resource limits (NRRD_DEFAULT_LIMITS).",
+    "5. Verified all 18 distinct symbols named in the 6 drafted bullets exist on the current format_factory.nrrd module via hasattr before writing anything.",
+    "6. Appended 6 new bullets to the existing '## 0.2.0.dev0' section of src/python/nrrd/CHANGELOG.md.",
+    "7. Regenerated reports/certification/nrrd/documentation-gate.json to add a 'changelog_content_accuracy' check dimension (matching the structure introduced for ubl at Event 346) documenting the gap found and the fix applied, and extended the incidental_finding to note this closes the nrrd instance of the cross-format staleness pattern, leaving ora/xliff/ipynb/safetensors open.",
+    "8. Did not modify any production source code, README.md, or any other file -- this slice is purely a CHANGELOG.md content-accuracy fix plus its own supporting gate-evidence regeneration. Did not re-run the nrrd test suite since no production/test source changed; regression figures already on file (675 passed, 1 skipped) remain accurate."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/CHANGELOG.md",
+    "reports/certification/nrrd/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/CHANGELOG.md",
+    "reports/certification/nrrd/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct verification: hasattr checks for all 18 symbols cited in the new CHANGELOG bullets against the current format_factory.nrrd module",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a changelog-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine CHANGELOG.md content-staleness gap for nrrd -- no obligation status change (nrrd remains at 10/65 unresolved, unaffected), but a real developer-facing accuracy improvement matching the same fix already applied to ubl.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API in a changelog entry; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
