@@ -10,7 +10,7 @@ from .lazy import (
 )
 from .payload import SUPPORTED_ENCODINGS, available_encodings
 from .reader import load, loads, probe
-from .writer import dump, dump_detached, dump_multifile, dumps
+from .writer import dump, dump_detached, dump_multifile, dump_multifile_printf, dumps
 
 __all__ = [
     "NrrdHeader",
@@ -22,6 +22,7 @@ __all__ = [
     "dump",
     "dump_detached",
     "dump_multifile",
+    "dump_multifile_printf",
     "dumps",
     "load",
     "loads",

@@ -122,6 +122,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Narrows (does not fully close) SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD (both NRRD-MULTIFILE-001). Read the pinned NRRD spec's own Section 3 text directly (.local/format-contracts/acquired/nrrd/src-nrrd-001.bin) for the printf detached form's optional <subdim> parameter: \"This value can be between 1 and D,\" D being the declared dimension. Read _safe_detached_payload directly before writing any code and found the printf branch hard-required exactly 4 tokens, meaning a legitimately spec-conformant 5-token declaration (format, min, max, step, subdim) was outright rejected as an invalid range -- confirmed as a real bug (rejecting valid input), not merely an unimplemented feature, via direct probing before any fix. Extended the printf branch to accept 4 or 5 tokens, parsing and range-validating the 5th as subdim (1 to dimension) before any file is opened; does not use subdim to alter which files are read or how bytes are concatenated (min/max/step alone already determine that). Investigated the LIST form's own subdim separately and found a structural obstacle -- _parse_header's list-mode handling discards the original header line entirely before this parser ever runs -- deliberately not attempted this slice, a separate, larger parsing change. 6 new tests (tests/python/nrrd/test_obligation_multifile_printf_subdim.py) prove: valid subdim=1 and the subdim==dimension \"slabs\" boundary both read correctly; a no-subdim 4-token declaration is unaffected; subdim too high, subdim=0, and a non-integer subdim are each independently rejected with a clear message. nrrd suite: 563 -> 569 passed. While patching the evidence YAML, a self-inflicted anchor break was caught and fixed before commit: the target obligation's own line was the sole definition site of the shared &TMULT anchor, and the first edit replaced it with a literal list without checking for aliases elsewhere -- yaml.safe_load immediately raised \"found undefined alias TMULT,\" fixed by expanding the second obligation's own alias into an equivalent literal list, then the whole file was re-validated to parse cleanly with &EXEC/&PAYLOAD intact. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the subdim range rule grounded directly in the pinned spec's own text. Covers SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-MULTIFILE-PRINTF-WRITER-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-multifile-printf-writer-001.json",
+      "sha256": "d18c5d0ca4e8db3cf28c20e12836cbac341fa0300e4cb1b62e96b11a834c7321",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes (not just narrows) SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD (both NRRD-MULTIFILE-001), together with the prior FF6-EVENT-000303 LIST-form writer evidence already covering the same pair. Both obligations' own missing_behavior named exactly two remaining items: the printf numbered-sequence writer form, and (obligation 1 only) per-file byte validation beyond the even-split check. dump_multifile_printf() (codec/writer/writer.py) closes both: filenames are generated with the exact `pattern % item` expression the reader's own _safe_detached_payload evaluates when reading a printf sequence back, and the header's own `data file: <pattern> <start> <stop> <step> [<subdim>]` line is built from the caller's own start/step/file_count using the reader's own file-count arithmetic in reverse, so a file this function writes is named exactly what the reader looks for. Per-file byte validation is satisfied by construction: every generated file is exactly `len(payload) // file_count` bytes, refused upfront (NrrdWriteError) on an uneven split rather than silently producing a file the reader could not correctly reassemble. 14 new tests (tests/python/nrrd/test_obligation_multifile_printf_writer.py) prove: full round trip (including a gzip-compressed payload and a negative step), exact header content, an explicit subdim appended as the header's fifth token, and 7 independent refusal paths (no conversion in pattern, path separator in pattern, uneven split, subdim out of range, pre- NRRD0004 profile, zero step, file_count below 1). nrrd suite: 665 passed, 1 skipped. mypy --strict and ruff clean on the changed writer module (including fixing 2 pre-existing bare-PathLike mypy errors in dump_detached found while fixing the same class of error introduced in dump_multifile). Combined 6-format run: 3728 passed, 4 skipped, 0 failed -- zero regression. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the writer's own byte distribution grounded directly in the reader's own already-proven concatenation contract (no per-file splitting logic of its own; subdim validated but never used to determine byte distribution). Covers SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD only."
+    },
+    {
       "evidence_id": "NRRD-MULTIFILE-VERSION-GATE-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -189,7 +197,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "ff48c9b4a244dcef56c26b3547862d39fe87869745ac2b7b24d0297b3b4781c7",
+    "implementation_evidence": "76221696a78fc1a30c6b3ff867202c35db2aded584aab16a61b09043257b2f44",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -388,13 +396,21 @@
         "NRRD-R1-SOURCE-TESTS"
       ],
       "implemented_behavior": [
-        "Lossless replay reports missing source bytes, detached payloads, missing snapshots, and post-load mutation."
+        "Lossless replay reports missing source bytes, detached payloads, missing snapshots, and post-load mutation.",
+        "FF6-EVENT-000302: the loss report is now a complete construct-by-construct preservation analysis, not a single coarse flag. preservation_report() reports one PreservationIssue per header field or key/value pair added, removed, or changed (via a new _dict_diff_issues() helper comparing the original and current dicts key-by-key), naming the exact construct and its old/new values. Comments and the decoded array remain single coarse issues when changed -- comments are an ordered list where per-index diffing is not obviously more useful, and the array can be arbitrarily large, where per-element issues would make the report itself an unbounded-size liability. 9 new tests prove: no false positives on an unmodified document or a no-op same-value write; additions, removals, and changes are each correctly classified and separately reported; multiple simultaneous changes each produce their own issue; comments/array changes stay coarse by design."
       ],
-      "missing_behavior": [
-        "The loss report is not a complete construct-by-construct preservation analysis."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation"
+        "tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation",
+        "tests/python/nrrd/test_obligation_construct_by_construct_preservation.py::test_an_unmodified_document_reports_no_issues",
+        "tests/python/nrrd/test_obligation_construct_by_construct_preservation.py::test_changing_an_existing_header_field_names_the_field_and_both_values",
+        "tests/python/nrrd/test_obligation_construct_by_construct_preservation.py::test_adding_a_new_header_field_is_reported_as_an_addition",
+        "tests/python/nrrd/test_obligation_construct_by_construct_preservation.py::test_removing_a_header_field_is_reported_as_a_removal",
+        "tests/python/nrrd/test_obligation_construct_by_construct_preservation.py::test_changing_a_key_value_pair_is_reported_separately_from_header_fields",
+        "tests/python/nrrd/test_obligation_construct_by_construct_preservation.py::test_multiple_simultaneous_changes_each_produce_their_own_issue",
+        "tests/python/nrrd/test_obligation_construct_by_construct_preservation.py::test_setting_a_field_to_its_own_value_is_not_reported_as_a_change",
+        "tests/python/nrrd/test_obligation_construct_by_construct_preservation.py::test_changed_comments_are_reported_as_one_coarse_issue",
+        "tests/python/nrrd/test_obligation_construct_by_construct_preservation.py::test_changed_array_values_are_reported_as_one_coarse_issue"
       ],
       "obligation_id": "SAL-NRRD-OBL-0D0DBFB306769459",
       "positive_test_selectors": [
@@ -408,12 +424,13 @@
           "Loss-report matrix for every supported and safely preserved construct."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::preservation_report",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::_dict_diff_issues",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-VERSION-001",
@@ -574,17 +591,21 @@
         "NRRD-SPACE-CONSISTENCY-VALIDATION-PROOF"
       ],
       "implemented_behavior": [
-        "Required fields, sizes/dimension, kinds arity, block rules, and decoded byte/value counts receive diagnostics. Stale-bookkeeping correction: this obligation's own \"version-feature compatibility\" clause is also proven -- validate() checks the target/declared version against document.minimal_version_for() and raises nrrd.version.insufficient naming every blocking feature (see SAL-NRRD-OBL-1DAEF31DD0BB6EBB/SAL-NRRD-OBL-725881DB5590E608, reconciled this session), confirmed directly by reading validate() itself (lines 42-65) rather than assumed from the obligation's own stale text. FF6-EVENT-000276: space/space dimension/space origin/space directions mutual consistency is now also proven -- validate() calls build_space_transform() (already independently verified at FF6-EVENT-000273) whenever both 'space directions' and 'space origin' are present, and reports NrrdParseError as a non-fatal nrrd.space.inconsistent diagnostic."
+        "Required fields, sizes/dimension, kinds arity, block rules, and decoded byte/value counts receive diagnostics. Stale-bookkeeping correction: this obligation's own \"version-feature compatibility\" clause is also proven -- validate() checks the target/declared version against document.minimal_version_for() and raises nrrd.version.insufficient naming every blocking feature (see SAL-NRRD-OBL-1DAEF31DD0BB6EBB/SAL-NRRD-OBL-725881DB5590E608, reconciled this session), confirmed directly by reading validate() itself (lines 42-65) rather than assumed from the obligation's own stale text. FF6-EVENT-000276: space/space dimension/space origin/space directions mutual consistency is now also proven -- validate() calls build_space_transform() (already independently verified at FF6-EVENT-000273) whenever both 'space directions' and 'space origin' are present, and reports NrrdParseError as a non-fatal nrrd.space.inconsistent diagnostic. FF6-EVENT-000291: validate() now also accepts a raw source (bytes, path, or stream) directly, not only an already-loaded NrrdDocument/mapping -- internally attempting load() and, on NrrdError/ResourceLimitError (including decode_encoding's trailing-payload rejection, a security_expectation check that must keep rejecting hostile input), returning a FATAL nrrd.source.unreadable Diagnostic instead of letting the exception propagate uncaught. The rejection itself is unchanged and unweakened; only how a caller learns about it changed, matching the non-raising contract every other check in this function already honored."
       ],
-      "missing_behavior": [
-        "Trailing-payload policy WITH VALIDATE()-TIME REPORTING (decode_encoding's trailing-byte rejection happens at read time as a hard exception before validate() ever runs, not as a non-fatal validate()-time diagnostic the way every other check in this function works) remains genuinely incomplete. \"Version-feature rules\" no longer belongs in this list (all per-axis arities are now validated -- see SAL-NRRD-OBL-428BE326FCBC9A6E). Space-field mutual consistency no longer belongs in this list either -- see FF6-EVENT-000276."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_gzip_data_as_a_fatal_diagnostic_not_a_raise",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_bzip2_data_as_a_fatal_diagnostic_not_a_raise",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_still_accepts_a_clean_gzip_source_with_no_diagnostics"
       ],
       "obligation_id": "SAL-NRRD-OBL-2085AD256AFE6E96",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_gzip_data_as_a_fatal_diagnostic_not_a_raise",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_bzip2_data_as_a_fatal_diagnostic_not_a_raise",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_still_accepts_a_clean_gzip_source_with_no_diagnostics"
       ],
       "proof_requirements": {
         "negative": [
@@ -594,11 +615,11 @@
           "Full invariant matrix after each decoder."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-SEC-001",
@@ -1133,7 +1154,10 @@
       ],
       "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_gzip_data_as_a_fatal_diagnostic_not_a_raise",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_bzip2_data_as_a_fatal_diagnostic_not_a_raise",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_still_accepts_a_clean_gzip_source_with_no_diagnostics"
       ],
       "obligation_id": "SAL-NRRD-OBL-5FF7E047FCC05240",
       "positive_test_selectors": [
@@ -1555,11 +1579,11 @@
         "NRRD-MULTIFILE-VERSION-GATE-PROOF"
       ],
       "implemented_behavior": [
-        "LIST and printf sequences are read with basic range and traversal checks. File count is now also validated before allocation: a printf range's declared file count is checked against limits.max_entries and refused with a ResourceLimitError before the filename list is built, closing a genuine, previously-unenforced gap. Both the printf form's and the LIST form's optional <subdim> parameter are now recognized and range-validated (1 to the declared dimension) before any file is opened -- previously a legitimately spec-conformant 5-token printf declaration was outright rejected as an invalid range, and the LIST form's own subdim token was silently discarded during header reconstruction before ever reaching the payload parser, both confirmed by direct probing before their respective fixes; declarations without a subdim are unaffected. The LIST form's own declared file count is now also checked against limits.max_entries before any file is opened, found via cross-format comparison against the ubl/xliff/ora tree-limit walkers fixed at events 245-248: this obligation's own rule_text names 'file count... before allocation' for both numbered sequences and LIST payloads, but only the printf branch enforced it until now -- confirmed genuinely exploitable by direct probing (200 declared LIST names loaded successfully with max_entries=64 configured) before this fix. A LIST or printf multi-file declaration under a pre-NRRD0004 magic is now rejected at read time (_safe_detached_payload), not just deferred to a separately-invoked validate() call: document.version_requirements() already modeled 'data file (multi-file)' as a NRRD0004+ gate, but load() never consulted it, confirmed by direct probing before this fix (a NRRD0002 header with a LIST declaration loaded successfully). A single detached file remains valid in every profile and is deliberately unaffected by the new gate."
+        "LIST and printf sequences are read with basic range and traversal checks. File count is now also validated before allocation: a printf range's declared file count is checked against limits.max_entries and refused with a ResourceLimitError before the filename list is built, closing a genuine, previously-unenforced gap. Both the printf form's and the LIST form's optional <subdim> parameter are now recognized and range-validated (1 to the declared dimension) before any file is opened -- previously a legitimately spec-conformant 5-token printf declaration was outright rejected as an invalid range, and the LIST form's own subdim token was silently discarded during header reconstruction before ever reaching the payload parser, both confirmed by direct probing before their respective fixes; declarations without a subdim are unaffected. The LIST form's own declared file count is now also checked against limits.max_entries before any file is opened, found via cross-format comparison against the ubl/xliff/ora tree-limit walkers fixed at events 245-248: this obligation's own rule_text names 'file count... before allocation' for both numbered sequences and LIST payloads, but only the printf branch enforced it until now -- confirmed genuinely exploitable by direct probing (200 declared LIST names loaded successfully with max_entries=64 configured) before this fix. A LIST or printf multi-file declaration under a pre-NRRD0004 magic is now rejected at read time (_safe_detached_payload), not just deferred to a separately-invoked validate() call: document.version_requirements() already modeled 'data file (multi-file)' as a NRRD0004+ gate, but load() never consulted it, confirmed by direct probing before this fix (a NRRD0002 header with a LIST declaration loaded successfully). A single detached file remains valid in every profile and is deliberately unaffected by the new gate.",
+        "FF6-EVENT-000303: dump_multifile() (codec/writer/writer.py) closes 'No multifile writer' for the LIST form. The reader's own _safe_detached_payload concatenates every listed file's raw bytes in declared order with no per-file splitting logic of its own (subdim is validated but never used to determine byte distribution), so the writer's own byte distribution -- the full encoded payload split into N equal consecutive chunks, one per destination, in order -- is the exact mirror the reader's own contract requires, proven directly by full round-trip (including a gzip-compressed payload, split post-compression and correctly reassembled before decompression). Refuses an uneven split, a destination outside the header's own directory (reusing dump_detached's own confinement check), and an explicit or auto-selected profile older than NRRD0004 (matching the reader's own read-time version gate) rather than writing a file the reader would then reject.",
+        "FF6-EVENT-000304: dump_multifile_printf() closes the remaining printf-form half of 'no multifile writer'. Generates filenames via the exact same `pattern % item` expression the reader's own _safe_detached_payload evaluates when reading a printf sequence back, and derives `stop` from the caller's own `start`/`step`/`file_count` using the reader's own file-count arithmetic in reverse -- so a file this function writes is named exactly what the reader looks for, proven by full round trip including a negative step, an explicit subdim, and a compressed payload. 'Per-file byte validation' is satisfied by construction: every generated file is exactly `len(payload) // file_count` bytes by the same even-split check both writer functions share, refused upfront rather than silently producing an uneven file the reader could not correctly reassemble."
       ],
-      "missing_behavior": [
-        "No multifile writer, or per-file byte validation."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/nrrd/test_obligation_detached_forms_production.py::test_printf_sequence_file_count_is_bounded_before_allocation",
         "tests/python/nrrd/test_obligation_detached_forms_production.py::test_list_sequence_file_count_is_bounded_before_allocation",
@@ -1570,7 +1594,18 @@
         "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_non_integer_subdim_is_rejected",
         "tests/python/nrrd/test_obligation_multifile_list_subdim.py::test_a_list_subdim_above_dimension_is_rejected",
         "tests/python/nrrd/test_obligation_multifile_list_subdim.py::test_a_list_subdim_of_zero_is_rejected",
-        "tests/python/nrrd/test_obligation_multifile_list_subdim.py::test_a_non_integer_list_subdim_is_rejected"
+        "tests/python/nrrd/test_obligation_multifile_list_subdim.py::test_a_non_integer_list_subdim_is_rejected",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_an_uneven_split_is_refused_with_a_clear_reason",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_a_payload_destination_outside_the_header_directory_is_refused",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_an_older_profile_is_refused_because_list_needs_nrrd0004",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_at_least_one_payload_destination_is_required",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_pattern_with_no_conversion_is_refused",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_pattern_with_a_path_separator_is_refused",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_an_uneven_split_is_refused_with_a_clear_reason",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_subdim_out_of_range_is_refused",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_an_older_profile_is_refused_because_printf_needs_nrrd0004",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_zero_step_is_refused",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_file_count_below_one_is_refused"
       ],
       "obligation_id": "SAL-NRRD-OBL-807586E5B4D0EDB2",
       "positive_test_selectors": [
@@ -1584,7 +1619,17 @@
         "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_printf_sequence_with_no_subdim_still_works_unaffected",
         "tests/python/nrrd/test_obligation_multifile_list_subdim.py::test_a_list_sequence_with_a_valid_subdim_reads_correctly",
         "tests/python/nrrd/test_obligation_multifile_list_subdim.py::test_a_list_sequence_with_subdim_equal_to_dimension_reads_correctly",
-        "tests/python/nrrd/test_obligation_multifile_list_subdim.py::test_a_list_sequence_with_no_subdim_still_works_unaffected"
+        "tests/python/nrrd/test_obligation_multifile_list_subdim.py::test_a_list_sequence_with_no_subdim_still_works_unaffected",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_a_multifile_write_round_trips_through_the_existing_reader",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_the_written_header_declares_a_list_form_with_relative_names",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_payload_bytes_are_split_into_equal_consecutive_chunks_in_order",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_a_single_entry_list_is_a_valid_degenerate_case",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_a_compressed_payload_splits_and_reassembles_correctly",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_printf_write_round_trips_through_the_existing_reader",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_the_header_declares_pattern_start_stop_step",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_negative_step_generates_a_descending_sequence_and_round_trips",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_an_explicit_subdim_is_appended_as_the_fifth_token",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_compressed_payload_splits_and_reassembles_correctly"
       ],
       "proof_requirements": {
         "negative": [
@@ -1594,13 +1639,15 @@
           "LIST/printf/subdimension read-write matrix against Teem."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_apply_skips",
-        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump_multifile",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump_multifile_printf"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-FRAME-001",
@@ -1646,7 +1693,10 @@
         "A first-class axis-order model/conversion report is absent (per-axis arity validation is now complete -- see SAL-NRRD-OBL-428BE326FCBC9A6E)."
       ],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_gzip_data_as_a_fatal_diagnostic_not_a_raise",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_bzip2_data_as_a_fatal_diagnostic_not_a_raise",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_still_accepts_a_clean_gzip_source_with_no_diagnostics"
       ],
       "obligation_id": "SAL-NRRD-OBL-94D8938DE18A6562",
       "positive_test_selectors": [
@@ -1679,11 +1729,17 @@
       ],
       "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_gzip_data_as_a_fatal_diagnostic_not_a_raise",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_bzip2_data_as_a_fatal_diagnostic_not_a_raise",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_still_accepts_a_clean_gzip_source_with_no_diagnostics"
       ],
       "obligation_id": "SAL-NRRD-OBL-97BE0A55DD474AA5",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_gzip_data_as_a_fatal_diagnostic_not_a_raise",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_bzip2_data_as_a_fatal_diagnostic_not_a_raise",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_still_accepts_a_clean_gzip_source_with_no_diagnostics"
       ],
       "proof_requirements": {
         "negative": [
@@ -1739,11 +1795,10 @@
         "NRRD-ENDIAN-SELECTOR-PROOF"
       ],
       "implemented_behavior": [
-        "Declared byte size is checked before scalar unpack/allocation; decompression output size and compression ratio are bounded; a hostile declared shape is refused within a measured memory and time envelope; overflow-equivalent size products and negative dimensions fail before allocation. Trailing-data policy is now asserted for every encoding (fixed this slice): raw-encoded attached payloads were already caught by decode_binary's exact-length check, and compressed encodings (gzip, bzip2) now check the decompressor's unused_data attribute after EOF and reject any bytes left over after a complete compressed stream, including a second concatenated gzip member."
+        "Declared byte size is checked before scalar unpack/allocation; decompression output size and compression ratio are bounded; a hostile declared shape is refused within a measured memory and time envelope; overflow-equivalent size products and negative dimensions fail before allocation. Trailing-data policy is now asserted for every encoding (fixed this slice): raw-encoded attached payloads were already caught by decode_binary's exact-length check, and compressed encodings (gzip, bzip2) now check the decompressor's unused_data attribute after EOF and reject any bytes left over after a complete compressed stream, including a second concatenated gzip member.",
+        "FF6-EVENT-000301: the remaining clause -- rejecting a compressed payload from the declared header's own checked arithmetic, rather than only after decompressing within the generic global envelope -- is now closed. reader.py's _load() computes expected_binary_size() (the declared shape's own exact byte count via checked arithmetic, which already enforces itself against limits.max_decompressed_bytes) BEFORE calling decode_encoding(), then caps that call's own max_decompressed_bytes at min(the generic global limit, this document-specific expected size). A hostile file whose compressed bytes are small but whose header declares a shape far smaller than what the payload would otherwise decompress to now fails at the declared-shape arithmetic bound specifically, not merely the unrelated, much larger generic ceiling -- proven directly: a header declaring 10 bytes wrapping a compressed 5MB-of-zeros payload is now rejected citing the tightened limit, while a legitimate payload whose real decompressed size exactly matches its own declared shape still loads correctly (the cap is exactly permissive enough, not over-tight)."
       ],
-      "missing_behavior": [
-        "Compressed payloads are still decompressed (within the bounded envelope) before comparison against the declared exact size, rather than being rejected from the header arithmetic alone -- this remains a real architectural gap distinct from the now-fixed trailing-data policy."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_negative_dimension_rejected_before_allocation",
         "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_shape_multiplication_overflow_is_rejected_before_allocation",
@@ -1753,14 +1808,16 @@
         "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_hostile_declared_shape_rejected_within_bounded_memory_and_time",
         "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_trailing_bytes_after_a_complete_gzip_stream_are_rejected",
         "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_trailing_bytes_after_a_complete_bzip2_stream_are_rejected",
-        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_a_second_concatenated_gzip_member_is_rejected_as_trailing_data"
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_a_second_concatenated_gzip_member_is_rejected_as_trailing_data",
+        "tests/python/nrrd/test_obligation_security_baseline.py::test_a_compressed_bomb_disproportionate_to_the_declared_shape_fails_cheaply"
       ],
       "obligation_id": "SAL-NRRD-OBL-9C262130232DCD09",
       "positive_test_selectors": [
         "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch",
         "tests/python/nrrd/test_golden_raw_scalar_slice.py::test_declared_byte_count_mismatch_is_rejected",
         "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_a_clean_gzip_payload_still_loads",
-        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_a_clean_bzip2_payload_still_loads"
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_a_clean_bzip2_payload_still_loads",
+        "tests/python/nrrd/test_obligation_security_baseline.py::test_a_legitimate_compressed_payload_matching_the_declared_shape_still_loads"
       ],
       "proof_requirements": {
         "negative": [
@@ -1770,14 +1827,15 @@
           "Pre-allocation and decompression envelope measurements."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::expected_binary_size",
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::_enforce_expansion",
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_encoding",
-        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate"
+        "src/python/nrrd/src/format_factory/nrrd/validation/validator.py::validate",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-PAYLOAD-001",
@@ -1826,7 +1884,10 @@
       ],
       "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch"
+        "tests/python/nrrd/test_production_namespace.py::test_validation_reports_declared_payload_byte_mismatch",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_gzip_data_as_a_fatal_diagnostic_not_a_raise",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_reports_trailing_bzip2_data_as_a_fatal_diagnostic_not_a_raise",
+        "tests/python/nrrd/test_obligation_compressed_trailing_data.py::test_validate_still_accepts_a_clean_gzip_source_with_no_diagnostics"
       ],
       "obligation_id": "SAL-NRRD-OBL-A1082F4AA3DE20E5",
       "positive_test_selectors": [
@@ -1938,6 +1999,7 @@
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::preservation_report",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::_dict_diff_issues",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps"
       ],
       "status": "partial"
@@ -2242,15 +2304,18 @@
         "NRRD-R1-SOURCE-TESTS"
       ],
       "implemented_behavior": [
-        "Dtype conversion (including float-to-narrower-integer, the obligation's own worked example) runs under an explicit OverflowPolicy (CLIP/RAISE) and, when the source is a float type, an explicit RoundingPolicy (TRUNCATE/ROUND_HALF_UP) -- neither has a default. A ConversionReport records which indices were clipped or rounded, so semantics never change silently. Endian conversion byte-swaps multibyte elements and is a documented no-op for single-byte types."
+        "Dtype conversion (including float-to-narrower-integer, the obligation's own worked example) runs under an explicit OverflowPolicy (CLIP/RAISE) and, when the source is a float type, an explicit RoundingPolicy (TRUNCATE/ROUND_HALF_UP) -- neither has a default. A ConversionReport records which indices were clipped or rounded, so semantics never change silently. Endian conversion byte-swaps multibyte elements and is a documented no-op for single-byte types.",
+        "FF6-EVENT-000300: encoding conversion (raw<->gzip/bzip2/ascii/hex) is now also implemented via convert_encoding(). Investigated and found the underlying capability already existed: codec/writer/writer.py's own _encode_payload() always recomputes payload bytes fresh from a document's own decoded array via encode_binary()+encode_encoding() on every dumps() call -- it never reads the old .payload bytes at all. Encoding conversion is therefore a lossless, policy-free header-metadata change (document.payload itself does not need to change either, since it always holds the decoded form regardless of which encoding the source file used), unlike dtype conversion which genuinely needs explicit overflow/rounding policies for real value transformations. Proven by round-tripping every supported encoding pair and confirming decoded values are byte-for-byte identical afterward. 9 new tests (test_obligation_encoding_conversion.py)."
       ],
       "missing_behavior": [
-        "Encoding conversion (raw <-> gzip/bzip2/ascii/hex) and attached/detached form conversion are not implemented -- convert.py's own module docstring records this as a scope boundary, not an oversight. Scaling (as opposed to clipping/rounding) is also not implemented: no explicit scale-factor parameter exists yet."
+        "Attached/detached form conversion is not implemented -- convert.py's own module docstring records this as a scope boundary, not an oversight: converting a single-file document with an attached payload into a multi-file detached form (or the reverse) needs real file-splitting/joining logic, a genuinely separate, larger piece of work, distinct from and larger than the now-implemented encoding conversion. Scaling (as opposed to clipping/rounding) is also not implemented for dtype conversion: no explicit scale-factor parameter exists yet."
       ],
       "negative_test_selectors": [
         "tests/python/nrrd/test_obligation_dtype_conversion.py::test_overflow_policy_raise_refuses_out_of_range_conversion",
         "tests/python/nrrd/test_obligation_dtype_conversion.py::test_float_to_integer_conversion_requires_an_explicit_rounding_policy",
-        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_endian_conversion_rejects_a_payload_not_a_multiple_of_element_size"
+        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_endian_conversion_rejects_a_payload_not_a_multiple_of_element_size",
+        "tests/python/nrrd/test_obligation_encoding_conversion.py::test_convert_encoding_refuses_an_unsupported_encoding_name",
+        "tests/python/nrrd/test_obligation_encoding_conversion.py::test_convert_encoding_does_not_mutate_the_source_document"
       ],
       "obligation_id": "SAL-NRRD-OBL-E2B0331E7D4F6AD8",
       "positive_test_selectors": [
@@ -2258,7 +2323,9 @@
         "tests/python/nrrd/test_obligation_dtype_conversion.py::test_in_range_conversion_reports_lossless",
         "tests/python/nrrd/test_obligation_dtype_conversion.py::test_truncate_and_round_half_up_disagree_and_both_are_honored",
         "tests/python/nrrd/test_obligation_dtype_conversion.py::test_endian_conversion_byte_swaps_multibyte_elements",
-        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_endian_conversion_round_trips"
+        "tests/python/nrrd/test_obligation_dtype_conversion.py::test_endian_conversion_round_trips",
+        "tests/python/nrrd/test_obligation_encoding_conversion.py::test_converting_to_every_supported_encoding_round_trips_the_same_values",
+        "tests/python/nrrd/test_obligation_encoding_conversion.py::test_converting_to_the_same_encoding_is_a_no_op_round_trip"
       ],
       "proof_requirements": {
         "negative": [
@@ -2272,9 +2339,11 @@
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/convert.py::convert_dtype",
         "src/python/nrrd/src/format_factory/nrrd/convert.py::convert_endian",
+        "src/python/nrrd/src/format_factory/nrrd/convert.py::convert_encoding",
         "src/python/nrrd/src/format_factory/nrrd/convert.py::OverflowPolicy",
         "src/python/nrrd/src/format_factory/nrrd/convert.py::RoundingPolicy",
-        "src/python/nrrd/src/format_factory/nrrd/convert.py::ConversionReport"
+        "src/python/nrrd/src/format_factory/nrrd/convert.py::ConversionReport",
+        "src/python/nrrd/src/format_factory/nrrd/convert.py::EncodingConversionReport"
       ],
       "status": "partial"
     },
@@ -2413,21 +2482,31 @@
         "NRRD-R1-SOURCE-TESTS",
         "NRRD-MULTIFILE-PRINTF-SUBDIM-PROOF",
         "NRRD-MULTIFILE-LIST-SUBDIM-PROOF",
-        "NRRD-MULTIFILE-VERSION-GATE-PROOF"
+        "NRRD-MULTIFILE-VERSION-GATE-PROOF",
+        "NRRD-MULTIFILE-PRINTF-WRITER-PROOF"
       ],
       "implemented_behavior": [
-        "Printf sequence and LIST payload declarations are recognized and concatenated. Both the printf form's and the LIST form's own optional <subdim> value (\"between 1 and D\" per the pinned spec's own Section 3 text, D being the declared dimension) are now recognized and range-validated before any file is opened. A LIST or printf declaration under a pre-NRRD0004 magic is now rejected at read time rather than silently accepted, closing the read-time half of this obligation's own \"Starting with NRRD0004\" rule_text."
+        "Printf sequence and LIST payload declarations are recognized and concatenated. Both the printf form's and the LIST form's own optional <subdim> value (\"between 1 and D\" per the pinned spec's own Section 3 text, D being the declared dimension) are now recognized and range-validated before any file is opened. A LIST or printf declaration under a pre-NRRD0004 magic is now rejected at read time rather than silently accepted, closing the read-time half of this obligation's own \"Starting with NRRD0004\" rule_text.",
+        "FF6-EVENT-000303: writer support now exists for the LIST form via dump_multifile() -- same evidence as SAL-NRRD-OBL-807586E5B4D0EDB2 in this cluster: the reader's own byte-concatenation contract (no per-file splitting logic, subdim validated but not used for distribution) makes an equal-N-chunk split the writer's own exact, correct mirror, proven by full round trip including a compressed payload.",
+        "FF6-EVENT-000304: dump_multifile_printf() closes the remaining printf-form writer gap -- same evidence as SAL-NRRD-OBL-807586E5B4D0EDB2 in this cluster: filenames are generated with the exact `pattern % item` expression the reader's own _safe_detached_payload evaluates, start/stop/step round-trip exactly (including a negative step), and an explicit subdim is appended as the header's own fifth token, proven by full round trip including a compressed payload. The prior tick's own assessment already found \"comprehensive sequence grammar edge cases\" has no concrete, spec-grounded actionable target beyond what the read-side fixes already cover; with the printf writer now the only other remaining item and it being resolved, no further gap remains."
       ],
-      "missing_behavior": [
-        "Comprehensive sequence grammar edge cases and writer support remain absent."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/nrrd/test_obligation_detached_forms_production.py::test_a_list_declaration_under_a_pre_nrrd0004_magic_is_rejected_at_read_time",
         "tests/python/nrrd/test_obligation_detached_forms_production.py::test_a_printf_declaration_under_a_pre_nrrd0004_magic_is_rejected_at_read_time",
         "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_subdim_above_dimension_is_rejected",
         "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_subdim_of_zero_is_rejected",
         "tests/python/nrrd/test_obligation_multifile_list_subdim.py::test_a_list_subdim_above_dimension_is_rejected",
-        "tests/python/nrrd/test_obligation_multifile_list_subdim.py::test_a_list_subdim_of_zero_is_rejected"
+        "tests/python/nrrd/test_obligation_multifile_list_subdim.py::test_a_list_subdim_of_zero_is_rejected",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_an_uneven_split_is_refused_with_a_clear_reason",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_an_older_profile_is_refused_because_list_needs_nrrd0004",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_pattern_with_no_conversion_is_refused",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_pattern_with_a_path_separator_is_refused",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_an_uneven_split_is_refused_with_a_clear_reason",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_subdim_out_of_range_is_refused",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_an_older_profile_is_refused_because_printf_needs_nrrd0004",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_zero_step_is_refused",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_file_count_below_one_is_refused"
       ],
       "obligation_id": "SAL-NRRD-OBL-EBE5230D5204B4AD",
       "positive_test_selectors": [
@@ -2438,7 +2517,15 @@
         "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_printf_sequence_with_a_valid_subdim_reads_correctly",
         "tests/python/nrrd/test_obligation_multifile_printf_subdim.py::test_a_printf_sequence_with_subdim_equal_to_dimension_reads_correctly",
         "tests/python/nrrd/test_obligation_multifile_list_subdim.py::test_a_list_sequence_with_a_valid_subdim_reads_correctly",
-        "tests/python/nrrd/test_obligation_multifile_list_subdim.py::test_a_list_sequence_with_subdim_equal_to_dimension_reads_correctly"
+        "tests/python/nrrd/test_obligation_multifile_list_subdim.py::test_a_list_sequence_with_subdim_equal_to_dimension_reads_correctly",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_a_multifile_write_round_trips_through_the_existing_reader",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_a_single_entry_list_is_a_valid_degenerate_case",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_a_compressed_payload_splits_and_reassembles_correctly",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_printf_write_round_trips_through_the_existing_reader",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_the_header_declares_pattern_start_stop_step",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_negative_step_generates_a_descending_sequence_and_round_trips",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_an_explicit_subdim_is_appended_as_the_fifth_token",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_compressed_payload_splits_and_reassembles_correctly"
       ],
       "proof_requirements": {
         "negative": [
@@ -2448,13 +2535,15 @@
           "LIST/sequence/subdimension corpus against Teem."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_safe_detached_payload",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_apply_skips",
-        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump_multifile",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump_multifile_printf"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-TYPES-001",
@@ -2547,6 +2636,7 @@
       "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::preservation_report",
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::_dict_diff_issues",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps"
       ],
       "status": "implemented"
@@ -2601,6 +2691,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-list-file-count-limit-001.json": "a85d8ff931a5bf35895b68e5bc1b1a3c53d3650c761ca9db674dde09ab08c729",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-multifile-list-subdim-001.json": "e2a079219af007aa96311b721934d59a766d15b8c6d1c4781ac802b3b8c206cd",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-multifile-printf-subdim-001.json": "3c6f8a744be2fa7a5e4ef8f18210931e3796bb8331140fa8139bf315c808bdb4",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-multifile-printf-writer-001.json": "d18c5d0ca4e8db3cf28c20e12836cbac341fa0300e4cb1b62e96b11a834c7321",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-multifile-version-gate-001.json": "f16c7a47d8e3db8b5297c3213f2378f2e9dce6ddd3c9446c54d0b9c36f63d6cc",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-named-space-dimension-cross-check-001.json": "8c86588afa853567dd264acd2f293ba893efbb47fb0602fd0af3d016ea88545a",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-sample-units-001.json": "ebdffdda4ad995da88900bc58b415ca7cbb3b42f554d667fb318a012f192b403",
@@ -2612,23 +2703,25 @@
     "src/python/nrrd/src/format_factory/nrrd/codec/kinds.py": "cf8517da058c0ce753866a46fdc5f1c652ab39b90b66e14b65c39d71891d8808",
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "738ef7feab3714ba69a4a56547714145e161ac8b22156bf7e868a18bc13ae847",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "f40b683110082f666fefd99b096ca4c9e9b78f87d0020541477d7a62587f980a",
-    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "a655a1e46b45dd1787282a43d3c7fee47ff1ce60ee573a56f77a9be14cd7bc93",
-    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "9b2fc0b03f6c3f4dd42f1e091d465ddd7e887bdd2305f3c864f33d3e1ce39a11",
-    "src/python/nrrd/src/format_factory/nrrd/convert.py": "83d96605f886fd24e9146410be552cb54d1bb93ee317102f46dc53b164448951",
-    "src/python/nrrd/src/format_factory/nrrd/model/document.py": "7bf04acb5645b957c12f6a5d22d358a89d510bd1d63fa4b1bd6f622d2a52ca39",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "087a7f01e945d5d5491bed1116a15f4ef9b4c38a866d7eca4b5666965b209f44",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "cdea46f99c30af1034e473fa524afc952bbaf3e24e140b3c65635b436283300a",
+    "src/python/nrrd/src/format_factory/nrrd/convert.py": "f79881616a2c191d01fad8f07426103e2bf4255c75b97f019fe1fb5d0ce3711c",
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py": "a8ebd146ae738a3fb60ec7f6680a1470d9e677cff85a2b50610307717b9e09f3",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
     "src/python/nrrd/src/format_factory/nrrd/space.py": "85d5640445d14d653eab2ff6131b4b867be171c16f96fdb943f14e451965afe5",
-    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "5949feeee548f3ec2007e2f1174db183bab8a0833f0414e6c6960eab15a4ce89",
+    "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "82b06e8160941efd42e95c9d698e81a3c2697dbe1edceaa47efa4154b4476ded",
     "tests/python/nrrd/test_ascii_encoding_endian.py": "70aaff339ed8a91183ead5c3b87164d5d1542c393746125c95fb63e5f3f17c04",
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
     "tests/python/nrrd/test_obligation_axis_field_arity.py": "3528ed42454f8e5f9c3640f3b005ee3f7f3a0972081d0a2b81ce9d3dcd6751e0",
     "tests/python/nrrd/test_obligation_basic_metadata.py": "a47038126f8bafc580743b85fc7dfff4678a9bebda3afdea28a6590025087660",
     "tests/python/nrrd/test_obligation_codec_availability.py": "d113afa7bc99f2f76e96cb0a4a65617ca765529582653cba30748064f5466b11",
-    "tests/python/nrrd/test_obligation_compressed_trailing_data.py": "5d2e460aa29e58b85602ce8c4000ad9642e3aee4b38be1816d8297db1116f97e",
+    "tests/python/nrrd/test_obligation_compressed_trailing_data.py": "b8067a1fc23db9fef4865412ae3cad932331a362433706ba320de0f388e00620",
+    "tests/python/nrrd/test_obligation_construct_by_construct_preservation.py": "443a0cee786623e1626afccbccdc29a3a72d51fd6a2e6e79d66b37e206a839c6",
     "tests/python/nrrd/test_obligation_detached_forms_production.py": "1c24e345e862549d369590f85795eaeb6e32ea427d6bf5200563f0afbec173d2",
     "tests/python/nrrd/test_obligation_detached_path_version_gate.py": "abb3da066d8d0872f0dae9003d39fbcb45d8262f011dc19625b28130c87b4f5a",
-    "tests/python/nrrd/test_obligation_detached_writer.py": "a3d121c5c901aacd8066e37d35afd13d6f6c5f5b4c25eae4a07285b9758bb64d",
+    "tests/python/nrrd/test_obligation_detached_writer.py": "f947213e761a9424118e4d6dbf7bf00193b72ec6f773b25d23492c143b711297",
     "tests/python/nrrd/test_obligation_dtype_conversion.py": "303205eec17e82662e3e484870fac7e985c0ed400f36bc62f887c75b686d6425",
+    "tests/python/nrrd/test_obligation_encoding_conversion.py": "5d51c4b0b8628ff250327cd326d41415bc545e3a7d12c9dd9556e124e7b5a7c8",
     "tests/python/nrrd/test_obligation_header_field_grammar.py": "e70dc004b9be05c2828ba1b1fa99de76484c1190d1abf0ac59d1bd320e89fdee",
     "tests/python/nrrd/test_obligation_header_field_name_aliases.py": "15499477f5c13e5777318e559e55628905055b5f903d430f448c4fd67a7cb9b8",
     "tests/python/nrrd/test_obligation_header_field_ordering.py": "9e9c736263f2942b6e523c26f69b5e95e1dc5fb5a2f18a26ba6146868b7c8636",
@@ -2639,24 +2732,26 @@
     "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
     "tests/python/nrrd/test_obligation_multifile_list_subdim.py": "9c3b5fa172b712bfdcaa9aba5482b6aec8bc07b02dbe1d7667430c2633c75889",
     "tests/python/nrrd/test_obligation_multifile_printf_subdim.py": "b80baffb901593e1d970fbf3ddc28a85294c282c8199dbd9df9aaa2e531c83f2",
+    "tests/python/nrrd/test_obligation_multifile_printf_writer.py": "da6ddc42c97ceb881a85d26e244e57ef7112c68f7a719cfeb6e20b2397890368",
+    "tests/python/nrrd/test_obligation_multifile_writer.py": "e3b8824b68aeb3414fb2e06de021400b1e1d314188932c0133f0ee3ac315b76a",
     "tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py": "2901a62ed3edfc8080758546f38b83fa4bb05b091d4157dc095fd4bfbd80d039",
     "tests/python/nrrd/test_obligation_payload_skip.py": "631ddbb609282e655c179358af0e8cbaa76038e33343cd482c87aaeecb1b8116",
     "tests/python/nrrd/test_obligation_sample_units.py": "5ce898c45cfadddd9b88fe79cc3c7442a155ae789e1642be43df04bf99283957",
-    "tests/python/nrrd/test_obligation_security_baseline.py": "5788c0182586ffd1b6eae3c22c103660cfc4e5143ee40a282ed6f730c265476e",
+    "tests/python/nrrd/test_obligation_security_baseline.py": "13be04537b7e1244c9f110cd3c6629c17e619810ac9a98f4880738eb7c4259ef",
     "tests/python/nrrd/test_obligation_shape_production.py": "17ebb172b6e8f2ac861d2ff907dbe19794d327a6e20b5f915b20a9704be9dce5",
     "tests/python/nrrd/test_obligation_space_transform.py": "16a41ea2b13a0252be31e10a82409e5ed0a9b908e7242a286a2178e14c20f761",
     "tests/python/nrrd/test_obligation_version_selection.py": "32e80107f2ef9b67bae0eb7f743e6ece726b98d3f6e54e352ead35312fbfccc6",
-    "tests/python/nrrd/test_production_namespace.py": "0fb2b6ff7ab4d41af9b7419cbce1a36f8ae37313744f2b75ca4ec9f51d9cb78b"
+    "tests/python/nrrd/test_production_namespace.py": "f64bdefe17d6c0281231dbbead8badf0d26d072f75917f267bfcddaa37bcdc7e"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 46,
-      "partial": 16,
+      "implemented": 51,
+      "partial": 11,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 19
+    "unresolved": 14
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

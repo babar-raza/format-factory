@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from os import PathLike
 from pathlib import Path
 from typing import Any, Mapping
@@ -313,3 +314,106 @@ def dump_multifile(
             Path(destination).write_bytes(chunk)
         except OSError as exc:
             raise NrrdWriteError(f"cannot write {destination}: {exc}") from exc
+
+
+#: Same grammar the reader's own _safe_detached_payload (codec/reader/
+#: reader.py) validates a printf pattern's first token against -- reused
+#: verbatim so a pattern this function accepts is guaranteed one the
+#: reader would also accept back.
+_PRINTF_PATTERN = re.compile(r"[^%]*%0?\d*d[^%]*")
+
+
+def dump_multifile_printf(
+    document: NrrdDocument | Mapping[str, Any],
+    header_destination: str | PathLike[str],
+    pattern: str,
+    *,
+    start: int = 0,
+    step: int = 1,
+    file_count: int,
+    subdim: int | None = None,
+    profile: str | None = None,
+    limits: ResourceLimits | None = None,
+) -> None:
+    """Write a multi-file detached NRRD using a printf numbered sequence
+    (`data file: <pattern> <start> <stop> <step> [<subdim>]`) instead of
+    an explicit LIST of paths -- the sibling form `dump_multifile()`
+    (FF6-EVENT-000303) does not cover.
+
+    `stop` is derived from `start`/`step`/`file_count` using the exact
+    same arithmetic the reader's own `_safe_detached_payload` uses in
+    reverse (`file_count = abs(stop - start) // abs(step) + 1`), and
+    filenames are generated with the same `pattern % item` expression the
+    reader itself evaluates when reading a printf sequence back -- so a
+    file this function writes is named exactly what the reader would look
+    for, not merely something "close enough". Byte distribution mirrors
+    `dump_multifile()`: the full encoded payload split into `file_count`
+    equal consecutive chunks, written in generated-name order (the
+    reader's own contract for how printf sequence bytes are concatenated
+    is identical to the LIST form's).
+
+    `pattern` must contain exactly one printf integer conversion (the same
+    grammar the reader's own read-time check enforces) and no path
+    separators -- every generated file is written into the header
+    destination's own directory, matching where the reader will look for
+    a header-relative name.
+    """
+
+    if file_count < 1:
+        raise NrrdWriteError("file_count must be at least 1")
+    if not _PRINTF_PATTERN.fullmatch(pattern):
+        raise NrrdWriteError(
+            f"invalid printf pattern {pattern!r}: must contain exactly one "
+            "%d-family conversion"
+        )
+    if "/" in pattern or "\\" in pattern:
+        raise NrrdWriteError(
+            "printf pattern must not contain a path separator -- every "
+            "generated file is written into the header destination's own directory"
+        )
+    if step == 0:
+        raise NrrdWriteError("step must not be zero")
+
+    active_limits = effective_limits(limits)
+    value = _coerce_document(document)
+    header_path = Path(header_destination)
+    selected = _select_profile(value, profile)
+    if int(selected[-1]) < 4:
+        raise NrrdWriteError(
+            f"multi-file data file declarations require NRRD0004 or newer, "
+            f"selected profile is {selected!r}"
+        )
+    if subdim is not None:
+        dimension = value.dimension
+        if not 1 <= subdim <= dimension:
+            raise NrrdWriteError(
+                f"subdim must be between 1 and {dimension}, got {subdim}"
+            )
+
+    stop = start + step * (file_count - 1)
+    names = [pattern % item for item in range(start, stop + (1 if step > 0 else -1), step)]
+
+    payload = _encode_payload(value, active_limits)
+    if len(payload) % file_count != 0:
+        raise NrrdWriteError(
+            f"encoded payload of {len(payload)} bytes does not split evenly "
+            f"across {file_count} files"
+        )
+    chunk_size = len(payload) // file_count
+
+    header_value = f"{pattern} {start} {stop} {step}"
+    if subdim is not None:
+        header_value += f" {subdim}"
+    header_bytes = _header_bytes(value, selected, detached_name=header_value)
+    active_limits.enforce("max_output_bytes", len(header_bytes) + len(payload))
+    try:
+        header_path.write_bytes(header_bytes)
+    except OSError as exc:
+        raise NrrdWriteError(f"cannot write {header_path}: {exc}") from exc
+    header_parent = header_path.resolve().parent
+    for index, name in enumerate(names):
+        chunk = payload[index * chunk_size : (index + 1) * chunk_size]
+        try:
+            (header_parent / name).write_bytes(chunk)
+        except OSError as exc:
+            raise NrrdWriteError(f"cannot write {header_parent / name}: {exc}") from exc

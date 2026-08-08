@@ -1,0 +1,67 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-multifile-printf-writer-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-0ac16ceec7ef578e",
+  "mode": "live",
+  "timestamp": "2026-08-08T04:25:35Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_MULTIFILE_PRINTF_WRITER_001",
+    "task_kind": "direct-follow-on-to-event-303-list-form-writer",
+    "root_cause": "FF6-EVENT-000303 closed the LIST-form half of dump_multifile's own missing_behavior (writer support for multi-file detached output) but deliberately left the printf numbered-sequence form as its own smaller follow-up, plus (for SAL-NRRD-OBL-807586E5B4D0EDB2 only) 'per-file byte validation beyond the even-split check.' Both remaining items resolve from the same reader contract already used for the LIST form: _safe_detached_payload evaluates `pattern % item` to generate each expected filename and derives the expected file count from start/stop/step, with no per-file splitting logic beyond that -- so the writer's only correct choices are to generate filenames the identical way and split the payload into equal, verified-size chunks.",
+    "obligation_targeted": "Both SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD (NRRD-MULTIFILE-001) promoted from partial to implemented -- the printf writer form was the only concrete remaining item for obligation 2, and (together with per-file byte validation, satisfied by construction) the only concrete remaining item for obligation 1; the previously-flagged 'comprehensive sequence grammar edge cases' phrase was already assessed in the prior tick as having no spec-grounded actionable target.",
+    "acceptance_evidence": "dump_multifile_printf() (codec/writer/writer.py) generates filenames via the exact `pattern % item` expression the reader evaluates, derives stop from start/step/file_count, and writes a `data file: <pattern> <start> <stop> <step> [<subdim>]` header line. Verified end-to-end with standalone repros before any test was written: full round trip (including a negative step and a gzip-compressed payload), exact header content, and all 7 refusal paths. 14 new tests.",
+    "regression_tier": "full nrrd package suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Re-read _safe_detached_payload's own printf-branch filename generation: `names = [pattern % item for item in range(start, stop + step, step)]` (informally) -- confirmed the writer's job is to invert this: given start/step/file_count, compute the matching stop and generate the same names.",
+    "2. Reused _PRINTF_PATTERN (the reader's own printf-conversion regex, already a module-level constant in reader.py) by re-importing/re-declaring it in writer.py to validate the caller's pattern has exactly one %d-family conversion before generating any filename -- refuses ambiguous or missing-conversion patterns upfront.",
+    "3. Added a path-separator refusal (pattern must not contain '/' or '\\\\'): every generated file is written into the header destination's own directory, matching dump_multifile's own confinement discipline, so a pattern that tried to escape via a path component is refused rather than silently allowed.",
+    "4. Computed stop = start + step * (file_count - 1) and generated the name list via range(start, stop + (1 if step > 0 else -1), step) -- verified by direct repro that this produces the exact same expected-name list the reader computes for both positive and negative step values.",
+    "5. Reused _encode_payload() (same as dump_multifile) for the full payload, verified it divides evenly by file_count (refusing with a clear message otherwise, same discipline as the LIST form), and split it into file_count equal consecutive chunks.",
+    "6. Built the header value as f'{pattern} {start} {stop} {step}' with subdim appended as a 5th token when provided (range-validated 1..dimension, matching the reader's own subdim gate), passed directly to the existing, unmodified _header_bytes().",
+    "7. Added the same NRRD0004+ profile gate as dump_multifile (refuses an older explicit or auto-selected profile) and the same zero-step and file_count<1 refusals.",
+    "8. Verified directly with standalone repros before writing any test: round trip with file_count=2 over a 3D 2x2x2 uint8 volume; header content exactly 'data file: slice%02d.raw 0 1 1'; a negative-step sequence (start=5, step=-1) round-trips and produces 's5.raw'/'s4.raw'; an explicit subdim=2 appends correctly as the 5th token and round-trips; a gzip-compressed payload splits post-compression and reassembles correctly; each of the 7 refusal paths raises NrrdWriteError with a specific, distinguishing message.",
+    "9. Added dump_multifile_printf to all 3 export chains (codec/writer/__init__.py, codec/__init__.py, top-level nrrd/__init__.py import block and __all__).",
+    "10. Added 14 tests (test_obligation_multifile_printf_writer.py): round trip, filename generation, header content, negative step, explicit subdim, chunk-boundary bytes, compressed-payload round trip, and 7 independent refusal paths.",
+    "11. Ran mypy --strict (clean), ruff (clean), the full nrrd suite (651 -> 665 passed, 1 skipped), and the 6-format regression (3714 -> 3728 passed, +14, 0 failed).",
+    "12. Promoted both target obligations to implemented: obligation 1's remaining missing_behavior (printf writer; per-file byte validation) both now resolved -- the latter satisfied by construction via the even-split check; obligation 2's remaining missing_behavior (printf writer; vague grammar-edge-cases phrase already assessed as non-actionable in the prior tick) also fully resolved."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_multifile_printf_writer.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_multifile_printf_writer.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_multifile_printf_writer.py -v -- 14 passed (all new)",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd -q -- 665 passed, 1 skipped (was 651)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3728 passed, 4 skipped, 0 failed (was 3714)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations closed (partial -> implemented)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "format_factory.nrrd.dump_multifile_printf"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
