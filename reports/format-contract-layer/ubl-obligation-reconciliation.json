@@ -242,6 +242,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Closes 8 obligations across UBL-MODEL-001/PARSE-001/CALC-001/EDIT-001/REF-001 (5-way Party duplicate + 3-way PostalAddress duplicate). Neither cac:Party nor cac:PostalAddress had any model representation before this slice, confirmed by grepping the model package for \"class Party\"/\"class PostalAddress\" (zero hits). Unblocked the same way event 193 unblocked PaymentMeans.payee_financial_account: reading the pinned OASIS UBL 2.3 release package's own vendored XSD directly (xsd/common/UBL-CommonAggregateComponents-2.3.xsd, extracted from the ZIP) rather than relying on the incomplete SAL fact cache. A new model/party.py module adds 8 dataclasses (Country, PostalAddress, PartyIdentification, PartyName, Contact, TaxScheme, PartyTaxScheme, Party) and matching *_of() projectors, scoped to the leaf-level fields each rule_text names, deliberately leaving deeper nested structures (e.g. PartyTaxScheme's RegistrationAddress) unmodeled and documented as such. 19 new tests prove every projector's positive, absent, and multi-value cases plus a full document round trip. ubl suite: 738 -> 757 passed. Verified against the pinned XSD directly -- higher-confidence than typical SELF-CONSISTENT evidence, though still not cross-checked against an independent reference UBL implementation, per GAP-008. Covers SAL-UBL-OBL-75FA432A5A176927, SAL-UBL-OBL-AE02391EE2696F99, SAL-UBL-OBL-C4BD36751BD0B3AB, SAL-UBL-OBL-C73836B17D8ECDBC, SAL-UBL-OBL-E016695D69C2BC7D, SAL-UBL-OBL-5D2ED9EBC9246EDA, SAL-UBL-OBL-63B4E9D295EF12C0, and SAL-UBL-OBL-CADCC40DD4CD3689 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "UBL-PARTY-REPLACE-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-party-replace-001.json",
+      "sha256": "0283d1e3e8c09de0fdae6202fbc38288c243bc331eb5e62f951b362c8dd41773",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) SAL-UBL-OBL-237188D47391391E (UBL-EDIT-001), which stays partial -- the general arbitrary-position CRUD problem (Create for any core business component, including a brand-new Party wrapper) remains genuinely unbuilt. This obligation's own missing_behavior named \"parties, payment means, tax totals, allowance charges\" as entirely uncovered; investigated Party specifically (one of this obligation's own three cited authority facts, SAL-UBL-00123) and found UPDATE (as opposed to Create) does not need the position-aware insertion logic lines.py's own docstring already identified as the real blocker for arbitrary components: a Party is always nested inside an already-existing, single-occurrence, root-level wrapper (cac:AccountingSupplierParty or cac:AccountingCustomerParty), so an update needs only the same with_children() immutable-replace primitive lines.py already composes, applied one level deeper -- find the wrapper among the root's own children (already at its own correct schema position, since it already exists), replace its own Party child, rebuild. Added replace_party(document, *, role, new_party) -> UblDocument in a new module (components.py, kept separate from lines.py to preserve that module's own single-line- scoped responsibility) reusing the identical before/after diagnostic-comparison refusal pattern lines.py already established (_refuse_if_worse). Refuses an unknown role, a non-Party replacement node, or a document with no existing wrapper of the requested role (creating a brand-new wrapper is the still-unbuilt Create problem, correctly refused rather than silently fabricated). Deliberately did NOT attempt cac:PaymentMeans, cac:TaxTotal, or cac:AllowanceCharge in this slice -- each would need its own investigation into whether it is genuinely single-occurrence and root-level the way Party's own wrappers are (AllowanceCharge, for instance, can repeat, which changes the problem shape and was not verified this tick). 7 new tests (tests/python/ubl/test_obligation_party_replacement.py): swapping the supplier party, swapping the customer party, non-mutation of the original document, every other root child left untouched, and 3 refusal cases (unknown role, non-Party node, missing wrapper). mypy --strict and ruff clean on both new/changed source files. ubl suite: 1178 -> 1185 passed. Combined 6-format regression: 3989 -> 3996 passed, 4 skipped, 0 failed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the edit semantics compose already-proven primitives (with_children(), validate(), DocumentIndex) the same way lines.py's own already-proven approach does, not a new spec interpretation. Covers SAL-UBL-OBL-237188D47391391E only; it supports no other obligation and promotes no other product state. This is a NARROWING (real new product capability added, not pure evidence remapping), not a closure -- ubl's own unresolved-obligation count is unchanged by this entry alone since the obligation stays partial, not implemented."
+    },
+    {
       "evidence_id": "UBL-PAYEE-FINANCIAL-ACCOUNT-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -389,7 +397,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "d6e2ae027b390eae7d312bafb2ff51664d5bd26a2f4c18684ace3f6e355120c5",
+    "implementation_evidence": "ceebd3fd6c54fc2503c10437b1bc6eea7fb7af6542fb02cf9366fc46162d522e",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1477,25 +1485,34 @@
     {
       "capability_id": "UBL-EDIT-001",
       "execution_evidence_ids": [
-        "UBL-LINE-CRUD-PROOF"
+        "UBL-LINE-CRUD-PROOF",
+        "UBL-PARTY-REPLACE-PROOF"
       ],
       "implemented_behavior": [
-        "FF6-EVENT-000298: real CRUD now exists for line-role components (InvoiceLine/CreditNoteLine/OrderLine), composing existing primitives (XmlNode.with_children(), reorder_for_schema_order() from FF6-EVENT-000286, validate(), and a new duplicate-line-id check reused from the referential layer built for validate_all() at FF6-EVENT-000296) into add_line/remove_line/move_line/renumber_lines (lines.py). Every operation refuses (raises UblValidationError) if the result would introduce a validation or referential-integrity failure the source document did not already have -- directly satisfying \"edits cannot produce elements the schema forbids at that position\" for this component category. New lines are inserted after the last existing line, which is schema-position-correct by construction (Line elements are always the trailing repeating group in every UBL maindoc type's own schema sequence), then run through reorder_for_schema_order() so the inserted line's own internal field order is also corrected regardless of how the caller constructed it."
+        "FF6-EVENT-000298: real CRUD now exists for line-role components (InvoiceLine/CreditNoteLine/OrderLine), composing existing primitives (XmlNode.with_children(), reorder_for_schema_order() from FF6-EVENT-000286, validate(), and a new duplicate-line-id check reused from the referential layer built for validate_all() at FF6-EVENT-000296) into add_line/remove_line/move_line/renumber_lines (lines.py). Every operation refuses (raises UblValidationError) if the result would introduce a validation or referential-integrity failure the source document did not already have -- directly satisfying \"edits cannot produce elements the schema forbids at that position\" for this component category. New lines are inserted after the last existing line, which is schema-position-correct by construction (Line elements are always the trailing repeating group in every UBL maindoc type's own schema sequence), then run through reorder_for_schema_order() so the inserted line's own internal field order is also corrected regardless of how the caller constructed it.",
+        "FF6-EVENT-000335: replace_party() (new module components.py) further narrows this obligation's own remaining \"core business components\" gap by closing UPDATE for cac:Party, one of this obligation's own three cited authority facts (SAL-UBL-00123). Investigated directly and found Party does not need the arbitrary-position INSERT support the missing_behavior text names as the real blocker: a Party is always nested inside an already-existing, single-occurrence root-level wrapper (cac:AccountingSupplierParty or cac:AccountingCustomerParty), so replacing it needs only the same with_children() immutable-replace primitive lines.py already composes, applied one level deeper -- no _ORDER_CHECKED_COMPONENTS-style position knowledge required. Refuses an unknown role, a non-Party replacement node, or a missing wrapper (creating a brand-new wrapper remains the still-unbuilt Create/arbitrary-position problem) rather than silently accepting or fabricating one. Reuses the identical before/after diagnostic-comparison refusal pattern lines.py already established. 7 new tests (tests/python/ubl/test_obligation_party_replacement.py)."
       ],
       "missing_behavior": [
-        "\"Core business components\" in the schema is far broader than lines -- parties, payment means, tax totals, allowance charges, and more all qualify, and none of those have a dedicated CRUD API yet. A general schema-order-aware CRUD layer for arbitrary component types remains a separate, larger undertaking: unlike lines (always the trailing group, so append-and-reorder-the-inserted-node is sufficient), inserting an arbitrary component at an arbitrary position inside the header portion of the document would need _ORDER_CHECKED_COMPONENTS-style ordering knowledge extended to cover document root types, which this slice deliberately did not attempt."
+        "\"Core business components\" in the schema is far broader than lines and party (now updatable) -- payment means, tax totals, allowance charges, and more still qualify, and none of those have a dedicated CRUD API yet. Creating a brand-new instance of any core business component (including a Party wrapper a document does not already have) also remains unbuilt for all categories. A general schema-order-aware CRUD layer for arbitrary component types AND arbitrary insertion remains a separate, larger undertaking: unlike lines (always the trailing group) and an already-present Party (already at a known position), inserting a brand-new component at an arbitrary position inside the header portion of the document would need _ORDER_CHECKED_COMPONENTS-style ordering knowledge extended to cover document root types, which this slice deliberately did not attempt."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_line_crud.py::test_add_line_refuses_a_line_id_that_duplicates_an_existing_line",
         "tests/python/ubl/test_obligation_line_crud.py::test_remove_line_raises_for_an_unmatched_id",
-        "tests/python/ubl/test_obligation_line_crud.py::test_move_line_raises_for_an_out_of_range_index"
+        "tests/python/ubl/test_obligation_line_crud.py::test_move_line_raises_for_an_out_of_range_index",
+        "tests/python/ubl/test_obligation_party_replacement.py::test_replace_party_refuses_an_unknown_role",
+        "tests/python/ubl/test_obligation_party_replacement.py::test_replace_party_refuses_a_non_party_replacement_node",
+        "tests/python/ubl/test_obligation_party_replacement.py::test_replace_party_refuses_when_the_wrapper_does_not_exist"
       ],
       "obligation_id": "SAL-UBL-OBL-237188D47391391E",
       "positive_test_selectors": [
         "tests/python/ubl/test_obligation_line_crud.py::test_add_line_appends_after_the_last_existing_line_and_stays_valid",
         "tests/python/ubl/test_obligation_line_crud.py::test_remove_line_deletes_the_matching_line_only",
         "tests/python/ubl/test_obligation_line_crud.py::test_move_line_reorders_among_lines_only",
-        "tests/python/ubl/test_obligation_line_crud.py::test_edits_compose_add_then_move_then_renumber_then_remove"
+        "tests/python/ubl/test_obligation_line_crud.py::test_edits_compose_add_then_move_then_renumber_then_remove",
+        "tests/python/ubl/test_obligation_party_replacement.py::test_replace_party_swaps_the_supplier_party",
+        "tests/python/ubl/test_obligation_party_replacement.py::test_replace_party_swaps_the_customer_party",
+        "tests/python/ubl/test_obligation_party_replacement.py::test_replace_party_does_not_mutate_the_original_document",
+        "tests/python/ubl/test_obligation_party_replacement.py::test_replace_party_leaves_every_other_root_child_untouched"
       ],
       "proof_requirements": {
         "negative": [
@@ -1510,7 +1527,8 @@
         "src/python/ubl/src/format_factory/ubl/lines.py::add_line",
         "src/python/ubl/src/format_factory/ubl/lines.py::remove_line",
         "src/python/ubl/src/format_factory/ubl/lines.py::move_line",
-        "src/python/ubl/src/format_factory/ubl/lines.py::renumber_lines"
+        "src/python/ubl/src/format_factory/ubl/lines.py::renumber_lines",
+        "src/python/ubl/src/format_factory/ubl/components.py::replace_party"
       ],
       "status": "partial"
     },
@@ -7557,6 +7575,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-parse-citation-audit-001.json": "2bb3b3fd3318a9290b0a50d890416906f28500d899bd0efe330e77f39efd12be",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-party-cardinality-validation-001.json": "dfe85e459754a946ee28ef47aea20d0d99b9d39c75dc791ac74be156245d5112",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-party-postal-address-001.json": "d6a1518c42b9db1cd8e7f3608c1c437e0b9c9fc7e03b91cb0280021cff0b2201",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-party-replace-001.json": "0283d1e3e8c09de0fdae6202fbc38288c243bc331eb5e62f951b362c8dd41773",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-payee-financial-account-001.json": "871c30fea014cdad6674a806f06c1f7c38d9ea4ab650d5cda0fa352d8edf6aea",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-payee-financial-account-stale-citation-001.json": "dbb79cbba24aa88c7876421ad9f2b508fa46ef5a735df122a9efa9e45bc80733",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-payment-means-cardinality-001.json": "3bd7f46c23e4f745b9ea296fe55a8177c0155ad94f02d516088d69d0c0f00697",
@@ -7578,6 +7597,7 @@
     "src/python/ubl/src/format_factory/ubl/codec/preservation.py": "dab616ced8f5104f5bee89db229a32d14000f486b061ace0e7a29dd934f5ab99",
     "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "292d7ac639a37ddeab245365eb80f31ef9ceecca10aecabad5cb21468074b6e3",
     "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py": "9509c813d5144fe9a4c942e47eabd0392e23a27a076aa51c229786e1114f2128",
+    "src/python/ubl/src/format_factory/ubl/components.py": "8a51fbb55a0186f1eba18e249de338e63def0a8a571de745f2e44eaa60469aa1",
     "src/python/ubl/src/format_factory/ubl/document_types.py": "29d23f297711c1681905d91a1dd163c3bdac62a7aabb8d3b056c95b89d22aa33",
     "src/python/ubl/src/format_factory/ubl/lines.py": "50ca920c459ff1aea139790df52d1e1ab1790ebc16786f134c9e8994e3517c19",
     "src/python/ubl/src/format_factory/ubl/model/__init__.py": "9e5a182f7ee86e2c4d653ad82ffa5d098a3f48ee495544590018fe6bbf293264",
@@ -7628,6 +7648,7 @@
     "tests/python/ubl/test_obligation_official_sample_roundtrip.py": "b0d9f941981127edfdec5adf0380f7a44fc284328618c74d9c6598a58a3894c8",
     "tests/python/ubl/test_obligation_party_and_postal_address.py": "d35d55402a5d020574bcd2af1f841f59a3e1097929d17eddfcfab0d8bada261b",
     "tests/python/ubl/test_obligation_party_cardinality_validation.py": "7338dd69a0cb0b2907380229b94ec340d8494439240bb59686714076c930762d",
+    "tests/python/ubl/test_obligation_party_replacement.py": "ca1416470c574516ab168013506f96eb775ed1be9d926499f3549330b24306e1",
     "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py": "bbb88bd1ad9b9c226a8e81bffe14f2fe0af838c013e91c31469f3445e5f47504",
     "tests/python/ubl/test_obligation_preservation_mode.py": "0fa525baf6a5836bd2ebd456cad1259f5e3b80c3e1b692864a45471bf6ff0873",
     "tests/python/ubl/test_obligation_profile_identifiers.py": "dd1a6ee497466d8a62d1ab81a91e478328d3ac2a1cec48e90461cadbe7ea8e77",

@@ -1,0 +1,66 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-party-replace-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-a79bb77a75ec6eb2",
+  "mode": "live",
+  "timestamp": "2026-08-08T12:37:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_PARTY_REPLACE_001",
+    "task_kind": "separate-update-from-create-inside-a-compound-crud-obligation",
+    "root_cause": "Event 334's own exact_next_action suggested pivoting to ubl's remaining 6 obligations, with a final careful attempt at UBL-REF-001's broken-reference diagnostic before concluding ubl's pool needs new data/spec acquisition. Re-investigated UBL-REF-001 a third time: read all 16 SAL facts backing it directly, found none define any within-document reference concept beyond duplicate-ID detection (already implemented) and the two things an earlier tick already correctly excluded (cross-document resolution, wrapper-vs-leaf completeness) -- confirmed genuinely exhausted, left untouched rather than force-built. Pivoted to UBL-EDIT-001's own remaining clause (SAL-UBL-OBL-237188D47391391E): 'core business components' CRUD beyond lines. Applied the same clause-decomposition technique that worked for ora's obligations: CRUD is 4 operations (Create/Read/Update/Delete); the missing_behavior's own reasoning specifically named arbitrary-POSITION INSERTION (a Create concern) as the blocker, not Update.",
+    "obligation_targeted": "SAL-UBL-OBL-237188D47391391E (UBL-EDIT-001) narrowed further -- stays partial (Create for arbitrary components remains genuinely unbuilt), but this tick delivered real new product code.",
+    "acceptance_evidence": "Investigated cac:Party specifically (one of this obligation's own three cited authority facts, SAL-UBL-00123) and confirmed it is always nested inside an already-existing, single-occurrence, root-level wrapper (AccountingSupplierParty/AccountingCustomerParty) -- meaning UPDATE needs no position-aware insertion logic at all, since the wrapper already exists at its own correct schema position. Confirmed XmlNode.with_children() (already used by lines.py) is a fully general immutable-replace primitive applicable one level deeper. Built replace_party() in a new module (kept separate from lines.py to preserve its own single-responsibility scope), reusing lines.py's own before/after diagnostic-comparison refusal pattern."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 334 commit.",
+    "2. Re-surveyed ubl's remaining 6 obligations fresh from the ledger.",
+    "3. Did a third, final investigation of UBL-REF-001 (SAL-UBL-OBL-49E8A72A55F540E1): read all 16 SAL facts cited as its own authority_fact_ids in full (SAL-UBL-00001/00002/00109-00132 subset) -- none define a within-document, non-duplicate-ID reference concept. Confirmed the two prior explicit exclusions (cross-document resolution, wrapper-vs-leaf completeness) remain the only concretely-named gaps, and neither is buildable without new spec/data acquisition. Left this obligation's own ledger entry untouched -- no code, no ledger edit -- since a pure text-only correction with no new capability would not meet Rule 3's bar for an accepted slice, and the existing text was already accurate.",
+    "4. Investigated UBL-VALIDATE-001's code-list-discovery gap (SAL-UBL-OBL-788B2748204338B8) briefly: confirmed its own missing_behavior is already a mature, deliberate, well-reasoned prior scope decision ('dozens of distinct UBL code-bearing element types', explicitly documented as a separate undertaking in combined.py's own module docstring) -- not a case of stale evidence or an easily-separable sub-piece, closer in shape to nrrd's own NRRD-ENC-001 exhaustive-matrix obligation. Did not pursue further this tick.",
+    "5. Pivoted to UBL-EDIT-001's own remaining clause. Read lines.py's own module docstring and implementation in full: confirmed its own narrowing rationale (lines are always the trailing repeating group, so append-and-reorder is sufficient; other components would need _ORDER_CHECKED_COMPONENTS-style position knowledge extended to document root types).",
+    "6. Read XmlNode's own definition (model/document.py): confirmed with_children() is a fully general, type-agnostic immutable-replace primitive (dataclasses.replace under the hood), not line-specific in any way.",
+    "7. Investigated cac:Party's own structural position directly: confirmed via the existing test fixture in test_obligation_line_crud.py that Party is always nested one level inside AccountingSupplierParty/AccountingCustomerParty, both single-occurrence, root-level wrapper elements. Confirmed via the SAL facts (SAL-UBL-00123: 'cac:Party is an aggregate component type...') that Party is one of THIS obligation's own three cited authority facts, directly grounding the choice.",
+    "8. Designed replace_party(document, *, role, new_party) -> UblDocument: locate the existing wrapper among root children by exact local_name match, refuse if zero or more-than-one match, locate the Party child within it, replace via with_children() at both levels, rebuild via with_root(), then run the identical _refuse_if_worse before/after diagnostic-comparison check lines.py already established (re-implemented locally in the new module rather than importing lines.py's own private helper, to keep the two modules independently readable and avoid a private cross-module dependency).",
+    "9. Created a NEW module (components.py) rather than extending lines.py, to preserve lines.py's own explicitly single-line-scoped responsibility (its own docstring frames itself narrowly) and match this codebase's own governance discipline against multi-responsibility files.",
+    "10. Checked local_name's own import path (model/typed.py) before using it, confirming it's the same function query.py already uses internally.",
+    "11. Wired replace_party through the top-level ubl/__init__.py (import + __all__ entry), matching the exact pattern add_line/move_line/remove_line/renumber_lines already use.",
+    "12. Ran mypy --strict and ruff on the new module and __init__.py before writing any test -- clean on the first pass (after fixing one ruff F541 unnecessary-f-string lint in the TEST file during step 14, not the source). Ran the full ubl suite (1178 passed, unchanged) to confirm zero regression from the additive change alone.",
+    "13. Wrote a new, dedicated test file (test_obligation_party_replacement.py, 7 tests) reusing the exact invoice-fixture pattern already established in test_obligation_line_crud.py (redefined locally per this codebase's own per-file-helper convention): swapping the supplier party, swapping the customer party, non-mutation of the original document (checked directly, not assumed), every other root child left untouched (structural isolation proof), and 3 refusal cases (unknown role, non-Party replacement node, missing wrapper).",
+    "14. All 7 tests passed on the first run. Ruff flagged one unnecessary f-string prefix in a fixture helper (no interpolation needed in that particular branch) -- fixed directly.",
+    "15. Ran the full ubl suite again (1185 passed, was 1178) and the combined 6-format regression (3996 passed, 4 skipped, 0 failed, was 3989) since production source (a shared-within-ubl __init__.py) was touched.",
+    "16. Updated the ledger: kept SAL-UBL-OBL-237188D47391391E at status=partial (NOT promoted to implemented -- Create for arbitrary components genuinely remains unbuilt), added replace_party to source_symbols, added all 7 new tests split into positive/negative selectors alongside the 4 pre-existing line-CRUD ones, added a new execution_evidence entry (UBL-PARTY-REPLACE-PROOF), and rewrote missing_behavior to reflect that Party update is now closed while explicitly naming Create-for-any-component (including a brand-new Party wrapper) as the obligation's own still-remaining, unified gap."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/components.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_party_replacement.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/components.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_party_replacement.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_party_replacement.py -q -- 7 passed (new file)",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/components.py src/python/ubl/src/format_factory/ubl/__init__.py tests/python/ubl/test_obligation_party_replacement.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/components.py src/python/ubl/src/format_factory/ubl/__init__.py tests/python/ubl/test_obligation_party_replacement.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ubl -q -- 1185 passed (was 1178)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q -- 3996 passed, 4 skipped, 0 failed (6-format regression, was 3989)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation narrowed (stays partial -- Create remains unbuilt) but with REAL new product capability added: replace_party() is a genuinely new public API in a new module, not evidence remapping. UBL-REF-001 was re-investigated a third time and confirmed to have no further buildable scope -- left untouched, no wasted-effort text-only edit made.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "format_factory.ubl's replace_party(document, *, role, new_party) -> UblDocument"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

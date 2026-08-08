@@ -42,6 +42,7 @@ from .errors import (
     UblValidationError,
     UblWriteError,
 )
+from .components import replace_party
 from .lines import add_line, move_line, remove_line, renumber_lines
 from .model import (
     ROOT_CLASSES,
@@ -302,6 +303,7 @@ __all__ = [
     "move_line",
     "remove_line",
     "renumber_lines",
+    "replace_party",
 ]
 
 __version__ = "0.2.0.dev0"

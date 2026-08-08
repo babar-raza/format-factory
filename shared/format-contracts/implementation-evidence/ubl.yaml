@@ -575,6 +575,59 @@ execution_evidence:
     does not close -- 36 of 91 supported types have no official example
     in the pinned package at all); it supports no other obligation and
     promotes no other product state.
+- evidence_id: UBL-PARTY-REPLACE-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-party-replace-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully
+    close) SAL-UBL-OBL-237188D47391391E (UBL-EDIT-001), which stays
+    partial -- the general arbitrary-position CRUD problem (Create for
+    any core business component, including a brand-new Party wrapper)
+    remains genuinely unbuilt. This obligation's own missing_behavior
+    named "parties, payment means, tax totals, allowance charges" as
+    entirely uncovered; investigated Party specifically (one of this
+    obligation's own three cited authority facts, SAL-UBL-00123) and
+    found UPDATE (as opposed to Create) does not need the position-aware
+    insertion logic lines.py's own docstring already identified as the
+    real blocker for arbitrary components: a Party is always nested
+    inside an already-existing, single-occurrence, root-level wrapper
+    (cac:AccountingSupplierParty or cac:AccountingCustomerParty), so an
+    update needs only the same with_children() immutable-replace
+    primitive lines.py already composes, applied one level deeper --
+    find the wrapper among the root's own children (already at its own
+    correct schema position, since it already exists), replace its own
+    Party child, rebuild. Added replace_party(document, *, role,
+    new_party) -> UblDocument in a new module (components.py, kept
+    separate from lines.py to preserve that module's own single-line-
+    scoped responsibility) reusing the identical before/after
+    diagnostic-comparison refusal pattern lines.py already established
+    (_refuse_if_worse). Refuses an unknown role, a non-Party replacement
+    node, or a document with no existing wrapper of the requested role
+    (creating a brand-new wrapper is the still-unbuilt Create problem,
+    correctly refused rather than silently fabricated). Deliberately did
+    NOT attempt cac:PaymentMeans, cac:TaxTotal, or cac:AllowanceCharge in
+    this slice -- each would need its own investigation into whether it
+    is genuinely single-occurrence and root-level the way Party's own
+    wrappers are (AllowanceCharge, for instance, can repeat, which
+    changes the problem shape and was not verified this tick). 7 new
+    tests (tests/python/ubl/test_obligation_party_replacement.py):
+    swapping the supplier party, swapping the customer party,
+    non-mutation of the original document, every other root child left
+    untouched, and 3 refusal cases (unknown role, non-Party node, missing
+    wrapper). mypy --strict and ruff clean on both new/changed source
+    files. ubl suite: 1178 -> 1185 passed. Combined 6-format regression:
+    3989 -> 3996 passed, 4 skipped, 0 failed. NOT backed by an independent
+    reference UBL implementation -- SELF-CONSISTENT format_factory-only
+    evidence per the execution-recovery directive's GAP-008 rule; the
+    edit semantics compose already-proven primitives (with_children(),
+    validate(), DocumentIndex) the same way lines.py's own already-proven
+    approach does, not a new spec interpretation. Covers
+    SAL-UBL-OBL-237188D47391391E only; it supports no other obligation
+    and promotes no other product state. This is a NARROWING (real new
+    product capability added, not pure evidence remapping), not a
+    closure -- ubl's own unresolved-obligation count is unchanged by this
+    entry alone since the obligation stays partial, not implemented.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -1380,21 +1433,31 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/lines.py::remove_line
   - src/python/ubl/src/format_factory/ubl/lines.py::move_line
   - src/python/ubl/src/format_factory/ubl/lines.py::renumber_lines
+  - src/python/ubl/src/format_factory/ubl/components.py::replace_party
   positive_test_selectors:
   - tests/python/ubl/test_obligation_line_crud.py::test_add_line_appends_after_the_last_existing_line_and_stays_valid
   - tests/python/ubl/test_obligation_line_crud.py::test_remove_line_deletes_the_matching_line_only
   - tests/python/ubl/test_obligation_line_crud.py::test_move_line_reorders_among_lines_only
   - tests/python/ubl/test_obligation_line_crud.py::test_edits_compose_add_then_move_then_renumber_then_remove
+  - tests/python/ubl/test_obligation_party_replacement.py::test_replace_party_swaps_the_supplier_party
+  - tests/python/ubl/test_obligation_party_replacement.py::test_replace_party_swaps_the_customer_party
+  - tests/python/ubl/test_obligation_party_replacement.py::test_replace_party_does_not_mutate_the_original_document
+  - tests/python/ubl/test_obligation_party_replacement.py::test_replace_party_leaves_every_other_root_child_untouched
   negative_test_selectors:
   - tests/python/ubl/test_obligation_line_crud.py::test_add_line_refuses_a_line_id_that_duplicates_an_existing_line
   - tests/python/ubl/test_obligation_line_crud.py::test_remove_line_raises_for_an_unmatched_id
   - tests/python/ubl/test_obligation_line_crud.py::test_move_line_raises_for_an_out_of_range_index
+  - tests/python/ubl/test_obligation_party_replacement.py::test_replace_party_refuses_an_unknown_role
+  - tests/python/ubl/test_obligation_party_replacement.py::test_replace_party_refuses_a_non_party_replacement_node
+  - tests/python/ubl/test_obligation_party_replacement.py::test_replace_party_refuses_when_the_wrapper_does_not_exist
   execution_evidence_ids:
   - UBL-LINE-CRUD-PROOF
+  - UBL-PARTY-REPLACE-PROOF
   implemented_behavior:
   - 'FF6-EVENT-000298: real CRUD now exists for line-role components (InvoiceLine/CreditNoteLine/OrderLine), composing existing primitives (XmlNode.with_children(), reorder_for_schema_order() from FF6-EVENT-000286, validate(), and a new duplicate-line-id check reused from the referential layer built for validate_all() at FF6-EVENT-000296) into add_line/remove_line/move_line/renumber_lines (lines.py). Every operation refuses (raises UblValidationError) if the result would introduce a validation or referential-integrity failure the source document did not already have -- directly satisfying "edits cannot produce elements the schema forbids at that position" for this component category. New lines are inserted after the last existing line, which is schema-position-correct by construction (Line elements are always the trailing repeating group in every UBL maindoc type''s own schema sequence), then run through reorder_for_schema_order() so the inserted line''s own internal field order is also corrected regardless of how the caller constructed it.'
+  - 'FF6-EVENT-000335: replace_party() (new module components.py) further narrows this obligation''s own remaining "core business components" gap by closing UPDATE for cac:Party, one of this obligation''s own three cited authority facts (SAL-UBL-00123). Investigated directly and found Party does not need the arbitrary-position INSERT support the missing_behavior text names as the real blocker: a Party is always nested inside an already-existing, single-occurrence root-level wrapper (cac:AccountingSupplierParty or cac:AccountingCustomerParty), so replacing it needs only the same with_children() immutable-replace primitive lines.py already composes, applied one level deeper -- no _ORDER_CHECKED_COMPONENTS-style position knowledge required. Refuses an unknown role, a non-Party replacement node, or a missing wrapper (creating a brand-new wrapper remains the still-unbuilt Create/arbitrary-position problem) rather than silently accepting or fabricating one. Reuses the identical before/after diagnostic-comparison refusal pattern lines.py already established. 7 new tests (tests/python/ubl/test_obligation_party_replacement.py).'
   missing_behavior:
-  - '"Core business components" in the schema is far broader than lines -- parties, payment means, tax totals, allowance charges, and more all qualify, and none of those have a dedicated CRUD API yet. A general schema-order-aware CRUD layer for arbitrary component types remains a separate, larger undertaking: unlike lines (always the trailing group, so append-and-reorder-the-inserted-node is sufficient), inserting an arbitrary component at an arbitrary position inside the header portion of the document would need _ORDER_CHECKED_COMPONENTS-style ordering knowledge extended to cover document root types, which this slice deliberately did not attempt.'
+  - '"Core business components" in the schema is far broader than lines and party (now updatable) -- payment means, tax totals, allowance charges, and more still qualify, and none of those have a dedicated CRUD API yet. Creating a brand-new instance of any core business component (including a Party wrapper a document does not already have) also remains unbuilt for all categories. A general schema-order-aware CRUD layer for arbitrary component types AND arbitrary insertion remains a separate, larger undertaking: unlike lines (always the trailing group) and an already-present Party (already at a known position), inserting a brand-new component at an arbitrary position inside the header portion of the document would need _ORDER_CHECKED_COMPONENTS-style ordering knowledge extended to cover document root types, which this slice deliberately did not attempt.'
   proof_requirements:
     positive:
     - Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite.
