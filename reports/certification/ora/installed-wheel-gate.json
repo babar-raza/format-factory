@@ -5,7 +5,7 @@
   "canonical_manifest": "reports/package-install-proof/proof-manifest.json",
   "status": "PASS",
   "verdict": "PASS",
-  "proof_id": "PACKAGE-PROOF-51B3C82BF8AEA3001568D08D94727A4C1E0E417E5B3CFE0D2C38FE0D618D0666",
+  "proof_id": "PACKAGE-PROOF-4E5BBC16DB4F3F133A9F52F5FDF026A1DC449F696A9DB66C8411C01573CE3DC4",
   "checks": {
     "build_mode": "native_pyproject",
     "install_result": "PASS -- installed from a freshly built wheel into an isolated ephemeral venv, not the dev checkout",
@@ -15,7 +15,7 @@
     "smoke_result": "PASS -- format_factory.ora.load on samples/by-format/ora/valid/minimal.ora",
     "pytest_in_proof_venv": "2 passed, 1 skipped"
   },
-  "re_run_this_tick": "Ran fresh after this tick's own source changes to lifecycle.py (typing fix, max_output_bytes enforcement) -- source_digest and wheel_sha256 bound to the current, corrected wheel content.",
+  "re_run_this_tick": "Ran fresh after this tick's own source changes to lifecycle.py (typing fix, max_output_bytes enforcement) -- source_digest and wheel_sha256 bound to the current, corrected wheel content. FF6-EVENT-000431: independently re-ran again, continuing the ora leg of the nrrd/ora/ubl gate sweep. Result unchanged: 13/13 submodules PASS. The wheel_sha256 (fca937fc554627d475e82125d26400a8ac3dfa7397a800a41b83cf8d2a5a8c2a) already matched current HEAD -- it was refreshed as a side effect of the full 6-format co-install re-run at Event 407, this gate's own committed proof_id text simply hadn't been synced to that already-fresh value until now. New proof_id recorded (4E5BBC16...).",
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the installed-wheel invariant only, not a certification claim for the format as a whole.",
   "commit": "pending"
 }
