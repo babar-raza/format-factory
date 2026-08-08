@@ -1,0 +1,66 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-invalid-corpus-diagnostics-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T01:57:55Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_INVALID_CORPUS_DIAGNOSTICS_001",
+    "task_kind": "corpus-and-test-coverage-backfill",
+    "root_cause": "ora's Gate 10 readiness assessment (FF6-EVENT-000289) found samples/by-format/ora/invalid/ had zero fixture files, unlike every other FF6 format. A follow-up grep found 8 of 9 real diagnostic codes in lifecycle.py's validate()/_baseline_asset_diagnostics()/_layer_png_diagnostics() had zero test coverage by name anywhere in the ora suite.",
+    "obligation_targeted": "No obligation status change (this is corpus/test-evidence strengthening on already-implemented validation code, not a missing->implemented promotion). Strengthens evidence underlying ORA-BASELINEASSET-001's already-shipped diagnostics.",
+    "acceptance_evidence": "3 new committed .ora fixture files, each independently verified to trigger exactly the intended diagnostic code before any test was written; 10 new tests asserting validate()/load(STRICT)/load(TOLERANT) behavior for each.",
+    "regression_tier": "full ora package suite plus 6-format regression"
+  },
+  "execution_steps": [
+    "1. Investigated FF6-EVENT-000288's own deferred nrrd trailing-payload item with fresh eyes first (per the session's established discipline); confirmed it genuinely needs new plumbing (decode_encoding has no existing diagnostics-reporting path reaching validate(), unlike the UBL-WRITE-001 case that reused an existing dict) -- correctly left unattempted rather than forced.",
+    "2. Pivoted to ora's own Gate10-readiness-surfaced gap: no samples/by-format/ora/invalid/ fixtures at all. Grepped all 9 real diagnostic codes lifecycle.py's validation functions can produce against the full ora test suite by name; found 8 of 9 untested (only ORA_MERGED_IMAGE_MISSING had in-memory coverage).",
+    "3. Built 3 real .ora fixtures by loading valid/minimal.ora's own ZIP members and mutating exactly one member each (remove data/layer.png; remove Thumbnails/thumbnail.png; replace data/layer.png's bytes with non-PNG content), preserving the mimetype-first/STORED requirement the container reader enforces.",
+    "4. Independently verified each fixture via validate()/load() BEFORE writing any test, confirming each produces exactly its intended diagnostic code (ORA_LAYER_SOURCE_MISSING, ORA_THUMBNAIL_MISSING, ORA_LAYER_SOURCE_INVALID_PNG) and not some unrelated ORA_UNREADABLE container-level failure.",
+    "5. Wrote tests/python/ora/test_obligation_invalid_corpus_diagnostics.py: 10 tests covering validate()'s diagnostic report, load(STRICT)'s raise behavior, load(TOLERANT)'s recovery_actions reporting, and a container-integrity sanity check across all 3 fixtures.",
+    "6. Updated samples/by-format/ora/_provenance.yaml with all 3 new fixtures (provenance_status: confirmed, Apache-2.0, expected_error: true) plus an explicit note naming the 4 diagnostic codes that remain genuinely untested (not claimed closed).",
+    "7. Ran ruff (clean), the new test file alone (10 passed), and the full 6-format regression (3627 -> 3637 passed, +10 exactly matching the new tests, 0 failed)."
+  ],
+  "allowed_files": [
+    "tests/python/ora/test_obligation_invalid_corpus_diagnostics.py",
+    "samples/by-format/ora/invalid/missing-layer-source.ora",
+    "samples/by-format/ora/invalid/missing-thumbnail.ora",
+    "samples/by-format/ora/invalid/corrupt-layer-source.ora",
+    "samples/by-format/ora/_provenance.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ora/test_obligation_invalid_corpus_diagnostics.py",
+    "samples/by-format/ora/invalid/missing-layer-source.ora",
+    "samples/by-format/ora/invalid/missing-thumbnail.ora",
+    "samples/by-format/ora/invalid/corrupt-layer-source.ora",
+    "samples/by-format/ora/_provenance.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_invalid_corpus_diagnostics.py -v -- 10 passed (all new)",
+    ".venv/Scripts/python -m ruff check tests/python/ora/test_obligation_invalid_corpus_diagnostics.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3637 passed, 4 skipped, 0 failed (was 3627)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations promoted (corpus/test evidence strengthening only, no status change)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "new_tests": 10,
+    "new_corpus_fixtures": 3,
+    "diagnostic_codes_newly_covered": [
+      "ORA_LAYER_SOURCE_MISSING",
+      "ORA_THUMBNAIL_MISSING",
+      "ORA_LAYER_SOURCE_INVALID_PNG"
+    ],
+    "diagnostic_codes_still_uncovered": [
+      "ORA_THUMBNAIL_UNREADABLE",
+      "ORA_THUMBNAIL_NON_CONFORMING",
+      "ORA_MERGED_IMAGE_UNREADABLE",
+      "ORA_MERGED_IMAGE_NON_CONFORMING"
+    ]
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

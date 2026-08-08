@@ -47,7 +47,42 @@ samples:
     copyright: "format-factory project"
     provenance_status: confirmed
 
-# Note: samples/by-format/ora/invalid/ currently has no fixture files. This is
-# a separate, pre-existing gap from the provenance-record gap this file closes
-# -- not addressed here since it requires new invalid-case content, not a
-# provenance record for content that already exists.
+  - sample_id: invalid/missing-layer-source.ora
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib zipfile, derived from valid/minimal.ora with data/layer.png removed"
+    generation_date: "2026-08-08"
+    input_content: "valid/minimal.ora with its referenced layer PNG member deleted from the archive while stack.xml still references it -- exercises ORA_LAYER_SOURCE_MISSING."
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+    expected_error: true
+
+  - sample_id: invalid/missing-thumbnail.ora
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib zipfile, derived from valid/minimal.ora with Thumbnails/thumbnail.png removed"
+    generation_date: "2026-08-08"
+    input_content: "valid/minimal.ora with the mandatory Thumbnails/thumbnail.png member deleted -- exercises ORA_THUMBNAIL_MISSING."
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+    expected_error: true
+
+  - sample_id: invalid/corrupt-layer-source.ora
+    source_type: project-owned-synthetic
+    generation_tool: "Python 3.13 stdlib zipfile, derived from valid/minimal.ora with data/layer.png content replaced by non-PNG bytes"
+    generation_date: "2026-08-08"
+    input_content: "valid/minimal.ora with its layer PNG member's bytes replaced by a deliberately non-PNG payload while the archive/ZIP structure and stack.xml reference remain intact -- exercises ORA_LAYER_SOURCE_INVALID_PNG."
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+    expected_error: true
+
+# Note: samples/by-format/ora/invalid/ now has 3 fixture files covering
+# ORA_LAYER_SOURCE_MISSING, ORA_THUMBNAIL_MISSING, and
+# ORA_LAYER_SOURCE_INVALID_PNG (tests/python/ora/test_obligation_invalid_corpus_diagnostics.py).
+# ORA_MERGED_IMAGE_MISSING already has in-memory (not file-based) coverage in
+# test_obligation_lifecycle_and_write.py. ORA_THUMBNAIL_UNREADABLE,
+# ORA_THUMBNAIL_NON_CONFORMING, ORA_MERGED_IMAGE_UNREADABLE, and
+# ORA_MERGED_IMAGE_NON_CONFORMING remain untested by any file-based or
+# in-memory fixture as of this entry -- a real, still-open corpus gap, not
+# claimed closed here.
