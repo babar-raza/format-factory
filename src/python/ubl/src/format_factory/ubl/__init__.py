@@ -150,6 +150,7 @@ from .security import UBL_DEFAULT_LIMITS
 from .validation import (
     ProfileValidator,
     ProfileValidatorRegistry,
+    bundled_maindoc_schema_paths,
     schema_validate,
     validate,
     validate_profile,
@@ -273,6 +274,7 @@ __all__ = [
     "UblValidationError",
     "UblWriteError",
     "XmlNode",
+    "bundled_maindoc_schema_paths",
     "canonicalize",
     "check_preservation",
     "dump",

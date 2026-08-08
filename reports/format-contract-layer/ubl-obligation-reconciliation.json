@@ -162,6 +162,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Closes 23 obligations across UBL-MODEL-001/PARSE-001/VALIDATE-001/DOCTYPES-001/EDIT-001/REF-001/VALUES-001, spanning 5 distinct rule_texts (2 Order variants, 1 CreditNote, 1 DespatchAdvice, 1 ApplicationResponse). None of OrderLine, CreditNoteLine, DespatchLine, or DocumentResponse had any model representation before this slice, confirmed by grepping for each class name (zero hits). Unblocked the same way events 193/194 unblocked PaymentMeans.payee_financial_account and Party/PostalAddress: reading the pinned OASIS UBL 2.3 release package's own vendored XSD directly (xsd/common/UBL-CommonAggregateComponents-2.3.xsd, extracted from the ZIP) rather than the incomplete SAL fact cache. A new model/lines.py module adds 7 dataclasses (LineItem, OrderLine, CreditNoteLine, DespatchLine, DocumentReference, Response, DocumentResponse) and matching projectors. Each type's required-field shape was read exactly from its own complexType rather than assumed uniform: OrderLine wraps a required LineItem (mirroring InvoiceLine); CreditNoteLine requires only cbc:ID (quantity/amount/item all optional per its own XSD, unlike InvoiceLine); DespatchLine requires ID and Item; DocumentResponse requires a nested Response plus DocumentReference(s). 14 new tests prove every projector's positive, required-field, and optional-field cases plus a full document round trip through a real Order document. ubl suite: 757 -> 771 passed. Verified against the pinned XSD directly -- higher-confidence than typical SELF-CONSISTENT evidence, though still not cross-checked against an independent reference UBL implementation, per GAP-008. Covers the 23 obligation IDs listed in this slice's commit message only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "UBL-MAINDOC-SCHEMA-BUNDLE-INVENTORY-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-maindoc-bundle-inventory-001.json",
+      "sha256": "6c4e863817e66b5955799c9b7c4fe30b88ab1b598bfd22eb86968d154c4ffd48",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact test selectors proving the pinned UBL 2.3 OASIS Standard distribution package's own maindoc inventory claim -- exactly 91 XSD files, one per ROOT_NAME_SET entry -- reconciling FF6-EVENT-000274's own already-bundled, already-bundled-and-tested files to three obligation IDs that stale SPEC-PACKAGE-FACT text had never linked them to. No new files were extracted this event; bundled_maindoc_schema_paths() is a new accessor over files FF6-EVENT-000274 already bundled from the same pinned src-ubl-002.bin ZIP. Covers the three obligations named in this slice's transcript only; it supports no other obligation and promotes no other product state."
+    },
+    {
       "evidence_id": "UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -349,7 +357,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "7842a50cbc8696a866ea150b75dc4853e607bea149b29be08361b833546d7c1b",
+    "implementation_evidence": "6077fa78f358d42afcd6e62a2028fc504682cc30365646b7284254927c84dc4e",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -907,14 +915,19 @@
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "SPEC-PACKAGE-FACT: this obligation describes the contents of the official pinned UBL 2.3 OASIS Standard distribution package itself (exactly 91 maindoc XSD files), not format_factory's runtime behavior. No XSD files from the official package are vendored in this repository, so there is nothing to unit-test this claim against -- the closest available evidence is the package's own file inventory, which is not committed. This mirrors the SPEC-PACKAGE-FACT category identified in XLIFF-PARSE-001's citation audit earlier this session (obligations about the physical spec artifact rather than product behavior). Not force-promoted and not left as a generic placeholder."
+      "execution_evidence_ids": [
+        "UBL-MAINDOC-SCHEMA-BUNDLE-INVENTORY-PROOF"
       ],
+      "implemented_behavior": [
+        "FF6-EVENT-000278: this SPEC-PACKAGE-FACT claim was already false when written -- FF6-EVENT-000274 bundled all 91 maindoc XSD files (plus 15 common component schemas) from the same pinned src-ubl-002.bin ZIP already used for the official genericode code lists, but that evidence was never linked to this specific inventory-fact obligation. bundled_maindoc_schema_paths() returns exactly 91 paths, one per ROOT_NAME_SET entry, confirmed by a dedicated exact-count/exact-name test."
+      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-1549D8ECF079779C",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py::test_exactly_ninety_one_maindoc_schemas_are_bundled",
+        "tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py::test_bundled_maindoc_schemas_cover_every_root_name_set_entry"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -923,9 +936,11 @@
           "Factory round-trip per supported type; detect_document_type agrees with the parsed root on every official sample."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::bundled_maindoc_schema_paths"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
@@ -1204,14 +1219,19 @@
     },
     {
       "capability_id": "UBL-PARSE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Same confirmed status as UBL-DOCTYPES-001's SAL-UBL-OBL-1549D8ECF079779C (identical rule_text). SPEC-PACKAGE-FACT: this obligation describes the contents of the official pinned UBL 2.3 OASIS Standard distribution package itself (exactly 91 maindoc XSD files), not format_factory's runtime behavior. No XSD files from the official package are vendored in this repository, so there is nothing to unit-test this claim against -- the closest available evidence is the package's own file inventory, which is not committed. This mirrors the SPEC-PACKAGE-FACT category identified in XLIFF-PARSE-001's citation audit earlier this session (obligations about the physical spec artifact rather than product behavior). Not force-promoted and not left as a generic placeholder."
+      "execution_evidence_ids": [
+        "UBL-MAINDOC-SCHEMA-BUNDLE-INVENTORY-PROOF"
       ],
+      "implemented_behavior": [
+        "FF6-EVENT-000278: same fact and resolution as SAL-UBL-OBL-1549D8ECF079779C -- all 91 maindoc XSD files were already bundled at FF6-EVENT-000274, that evidence just was not yet linked to this specific inventory-fact obligation."
+      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-1EEEC2DD4CA2C80E",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py::test_exactly_ninety_one_maindoc_schemas_are_bundled",
+        "tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py::test_bundled_maindoc_schemas_cover_every_root_name_set_entry"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1220,9 +1240,11 @@
           "Same document under default namespace, prefixed, and re-prefixed forms parses to identical models; spoofed-namespace fixtures rejected."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::bundled_maindoc_schema_paths"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-EXT-001",
@@ -1759,14 +1781,19 @@
     },
     {
       "capability_id": "UBL-VALIDATE-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Same confirmed status as UBL-PARSE-001's SAL-UBL-OBL-1EEEC2DD4CA2C80E (identical rule_text). Same confirmed status as UBL-DOCTYPES-001's SAL-UBL-OBL-1549D8ECF079779C (identical rule_text). SPEC-PACKAGE-FACT: this obligation describes the contents of the official pinned UBL 2.3 OASIS Standard distribution package itself (exactly 91 maindoc XSD files), not format_factory's runtime behavior. No XSD files from the official package are vendored in this repository, so there is nothing to unit-test this claim against -- the closest available evidence is the package's own file inventory, which is not committed. This mirrors the SPEC-PACKAGE-FACT category identified in XLIFF-PARSE-001's citation audit earlier this session (obligations about the physical spec artifact rather than product behavior). Not force-promoted and not left as a generic placeholder."
+      "execution_evidence_ids": [
+        "UBL-MAINDOC-SCHEMA-BUNDLE-INVENTORY-PROOF"
       ],
+      "implemented_behavior": [
+        "FF6-EVENT-000278: same fact and resolution as SAL-UBL-OBL-1549D8ECF079779C -- all 91 maindoc XSD files were already bundled at FF6-EVENT-000274, that evidence just was not yet linked to this specific inventory-fact obligation."
+      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-2FCD900E00C1654E",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py::test_exactly_ninety_one_maindoc_schemas_are_bundled",
+        "tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py::test_bundled_maindoc_schemas_cover_every_root_name_set_entry"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1775,9 +1802,11 @@
           "Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::bundled_maindoc_schema_paths"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-MODEL-001",
@@ -7409,6 +7438,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-item-price-cardinality-order-001.json": "2536fe081ddf4fdd5359614b3283a6352431a13813fe076a6ca560b62c8cff51",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lifecycle-io-001.json": "ed787921f2225a81573186c4cd81377a417d211b447444ba0807685ba1e837b8",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lines-cardinality-001.json": "e59fc35d67c0bfe1120e3e1841a38aa52649cf7a9c6b9b7b206be58f91e6a94c",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-maindoc-bundle-inventory-001.json": "6c4e863817e66b5955799c9b7c4fe30b88ab1b598bfd22eb86968d154c4ffd48",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-maindoc-lines-001.json": "59537e2a072991398c7ec9a483c13e0abc19149487f1834e46668e43dce5d3c6",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-model-citation-audit-001.json": "d2c7dfa39a36272ee884db3f991425e0013760681491767abedad051028572e6",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-namespace-shadowing-security-001.json": "8b8e5a614adac3135fe20e31f21dd43aa6bc972c3e4d5e28c9697e780c5ee3b0",
@@ -7455,7 +7485,7 @@
     "src/python/ubl/src/format_factory/ubl/model/values.py": "4aaa55d4f2c6faa457b1a03ab6bf9a5ff83ffcd7ee90f87c0b649c18b39b642f",
     "src/python/ubl/src/format_factory/ubl/security/limits.py": "95ba5485bad5547fe800d4952518507824e217d15a197df822945f73921afc6d",
     "src/python/ubl/src/format_factory/ubl/validation/profiles.py": "9be1805b9ea265200e890fc833526dd3589b0be559d61f1d6ba76954f63b0c35",
-    "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py": "3b722ccac71d0ce7d8804c90bf609623bece6141d8f559658c119930167dd1e7",
+    "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py": "c77851e976fe374089eb7a70e7697107018b2f66b3a30c2086a73d8f817ef84b",
     "src/python/ubl/src/format_factory/ubl/validation/validator.py": "35d9ef28d8d8d97a80cf87439ddbf2b65afed8cf0d6dacac6e7956db8add1a12",
     "tests/python/ubl/test_obligation_aggregate_components.py": "26e36e29e05e239f1fc17915ebf243ae61b55799c7811dbfe8c3fee0fac66242",
     "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py": "ec56ba759bb06b3ca638a7b030d5795cb9c3e9e673d90690334b8f18c7b5dfee",
@@ -7477,6 +7507,7 @@
     "tests/python/ubl/test_obligation_lifecycle_io.py": "6189da6be51a33cbe60b72e6d98b632dfda9232838d41788dfd7547ec824f7ed",
     "tests/python/ubl/test_obligation_lines_cardinality_validation.py": "9cc83daec77c593684701ba892221d488398e6ae8c782678d8c61361d1217cec",
     "tests/python/ubl/test_obligation_maindoc_lines.py": "2fdad6d4d11e62df2820eaf8ea2d499f38a2f587439497b3dd7369bdf05e2812",
+    "tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py": "a4a88a5592e9758e1e9820ae97251888e5ef180fdc04d44e4282d23d6d9f258d",
     "tests/python/ubl/test_obligation_namespace_shadowing_security.py": "09f618f4e2dc90fc400cd35109fe302bae72ab17d7087edce0bfaf6d580718fb",
     "tests/python/ubl/test_obligation_official_code_lists.py": "9020e26658e6c89b21ddbe3199d78b101d768340671a15449dc9f703970a2e97",
     "tests/python/ubl/test_obligation_party_and_postal_address.py": "d35d55402a5d020574bcd2af1f841f59a3e1097929d17eddfcfab0d8bada261b",
@@ -7502,12 +7533,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 182,
-      "missing": 6,
+      "implemented": 185,
+      "missing": 3,
       "partial": 6
     },
     "total": 194,
-    "unresolved": 12
+    "unresolved": 9
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

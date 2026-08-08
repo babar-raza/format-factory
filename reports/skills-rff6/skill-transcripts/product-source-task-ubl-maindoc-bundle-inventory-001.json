@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-maindoc-bundle-inventory-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T01:05:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_MAINDOC_BUNDLE_INVENTORY_001",
+    "task_kind": "evidence-reconciliation-for-already-resolved-capability",
+    "root_cause": "Three of ubl's 12 unresolved obligations shared a stale SPEC-PACKAGE-FACT claim: 'No XSD files from the official package are vendored in this repository.' That was already false -- FF6-EVENT-000274 bundled all 91 maindoc XSD files (plus 15 common component schemas) from the pinned src-ubl-002.bin ZIP -- but the evidence was never linked to these three specific obligation IDs, which describe the package's own maindoc-file-count inventory rather than the schema-validation capability FF6-EVENT-000274's own tests targeted.",
+    "obligation_targeted": "3 obligations promoted missing->implemented: SAL-UBL-OBL-1549D8ECF079779C (UBL-DOCTYPES-001), SAL-UBL-OBL-1EEEC2DD4CA2C80E (UBL-PARSE-001), SAL-UBL-OBL-2FCD900E00C1654E (UBL-VALIDATE-001) -- all three share byte-identical rule_text: 'the pinned UBL 2.3 OASIS Standard package contains exactly 91 maindoc XSD files, one for each supported UBL document root.'",
+    "acceptance_evidence": "2 new tests (tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py) proving exact file count (91) and exact name coverage (one per ROOT_NAME_SET entry) for the bundled maindoc schemas.",
+    "regression_tier": "full ubl package suite"
+  },
+  "execution_steps": [
+    "1. After xliff's Schematron/NVDL bundle discovery (FF6-EVENT-000277) confirmed a repeatable pattern -- 'SPEC-PACKAGE-FACT' obligations claiming files are not vendored when they actually already are, just not linked to that specific obligation ID -- re-read ubl's own remaining 12 unresolved obligations with the same lens.",
+    "2. Found 3 obligations (1549D8ECF079779C, 1EEEC2DD4CA2C80E, 2FCD900E00C1654E) making the identical claim for ubl's maindoc XSD files. Directly counted the bundled directory: 91 files, confirmed against the obligation's own precise claim ('exactly 91 maindoc XSD files, one for each supported UBL document root') and against ROOT_NAME_SET's own length (91).",
+    "3. No new extraction was needed -- FF6-EVENT-000274 already bundled these files; this slice adds a dedicated public accessor (bundled_maindoc_schema_paths(), mirroring xliff's bundled_schematron_paths()/bundled_module_schema_paths() pattern from the prior event) and an explicit exact-count/exact-name test, then reconciles the evidence link to these three specific obligation IDs.",
+    "4. Ran the full ubl suite (1011 -> 1013 passed), ruff (clean), and mypy --strict (36 source files, clean).",
+    "5. Updated the implementation-evidence ledger for all 3 target obligations plus a new dedicated evidence entry, validating the YAML parses correctly and the obligation/evidence counts match expectations (194 obligations unchanged, evidence 43->44) after every edit -- applying the missing_behavior: [] lesson learned during the prior xliff slice's own self-correction."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py",
+    "src/python/ubl/src/format_factory/ubl/validation/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py",
+    "src/python/ubl/src/format_factory/ubl/validation/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py -v -- 2 passed",
+    ".venv/Scripts/pytest tests/python/ubl -q -- 1013 passed (was 1011 before)",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/ -- Success: no issues found in 36 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "3 obligations promoted missing->implemented",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 3,
+    "obligations_total_for_format": 194,
+    "oracle": "The bundled maindoc schemas are the authoritative OASIS-published UBL 2.3 files, extracted at FF6-EVENT-000274 byte-for-byte from the pinned official UBL 2.3 distribution package."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

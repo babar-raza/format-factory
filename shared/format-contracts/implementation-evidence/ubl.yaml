@@ -503,6 +503,22 @@ execution_evidence:
     independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the
     execution-recovery directive's GAP-008 rule, not VERIFIED. Promotes no product state beyond the 20
     obligations moved to `implemented`.
+- evidence_id: UBL-MAINDOC-SCHEMA-BUNDLE-INVENTORY-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-maindoc-bundle-inventory-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact test
+    selectors proving the pinned UBL 2.3 OASIS Standard distribution
+    package's own maindoc inventory claim -- exactly 91 XSD files, one
+    per ROOT_NAME_SET entry -- reconciling FF6-EVENT-000274's own
+    already-bundled, already-bundled-and-tested files to three obligation
+    IDs that stale SPEC-PACKAGE-FACT text had never linked them to. No
+    new files were extracted this event; bundled_maindoc_schema_paths()
+    is a new accessor over files FF6-EVENT-000274 already bundled from
+    the same pinned src-ubl-002.bin ZIP. Covers the three obligations
+    named in this slice's transcript only; it supports no other
+    obligation and promotes no other product state.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -919,14 +935,18 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-1549D8ECF079779C
   capability_id: UBL-DOCTYPES-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: implemented
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::bundled_maindoc_schema_paths
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py::test_exactly_ninety_one_maindoc_schemas_are_bundled
+  - tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py::test_bundled_maindoc_schemas_cover_every_root_name_set_entry
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'SPEC-PACKAGE-FACT: this obligation describes the contents of the official pinned UBL 2.3 OASIS Standard distribution package itself (exactly 91 maindoc XSD files), not format_factory''s runtime behavior. No XSD files from the official package are vendored in this repository, so there is nothing to unit-test this claim against -- the closest available evidence is the package''s own file inventory, which is not committed. This mirrors the SPEC-PACKAGE-FACT category identified in XLIFF-PARSE-001''s citation audit earlier this session (obligations about the physical spec artifact rather than product behavior). Not force-promoted and not left as a generic placeholder.'
+  execution_evidence_ids:
+  - UBL-MAINDOC-SCHEMA-BUNDLE-INVENTORY-PROOF
+  implemented_behavior:
+  - 'FF6-EVENT-000278: this SPEC-PACKAGE-FACT claim was already false when written -- FF6-EVENT-000274 bundled all 91 maindoc XSD files (plus 15 common component schemas) from the same pinned src-ubl-002.bin ZIP already used for the official genericode code lists, but that evidence was never linked to this specific inventory-fact obligation. bundled_maindoc_schema_paths() returns exactly 91 paths, one per ROOT_NAME_SET entry, confirmed by a dedicated exact-count/exact-name test.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Factory round-trip per supported type; detect_document_type agrees with the parsed root on every
@@ -1141,14 +1161,18 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-1EEEC2DD4CA2C80E
   capability_id: UBL-PARSE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: implemented
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::bundled_maindoc_schema_paths
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py::test_exactly_ninety_one_maindoc_schemas_are_bundled
+  - tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py::test_bundled_maindoc_schemas_cover_every_root_name_set_entry
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Same confirmed status as UBL-DOCTYPES-001''s SAL-UBL-OBL-1549D8ECF079779C (identical rule_text). SPEC-PACKAGE-FACT: this obligation describes the contents of the official pinned UBL 2.3 OASIS Standard distribution package itself (exactly 91 maindoc XSD files), not format_factory''s runtime behavior. No XSD files from the official package are vendored in this repository, so there is nothing to unit-test this claim against -- the closest available evidence is the package''s own file inventory, which is not committed. This mirrors the SPEC-PACKAGE-FACT category identified in XLIFF-PARSE-001''s citation audit earlier this session (obligations about the physical spec artifact rather than product behavior). Not force-promoted and not left as a generic placeholder.'
+  execution_evidence_ids:
+  - UBL-MAINDOC-SCHEMA-BUNDLE-INVENTORY-PROOF
+  implemented_behavior:
+  - 'FF6-EVENT-000278: same fact and resolution as SAL-UBL-OBL-1549D8ECF079779C -- all 91 maindoc XSD files were already bundled at FF6-EVENT-000274, that evidence just was not yet linked to this specific inventory-fact obligation.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
@@ -1533,14 +1557,18 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-2FCD900E00C1654E
   capability_id: UBL-VALIDATE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: implemented
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::bundled_maindoc_schema_paths
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py::test_exactly_ninety_one_maindoc_schemas_are_bundled
+  - tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py::test_bundled_maindoc_schemas_cover_every_root_name_set_entry
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Same confirmed status as UBL-PARSE-001''s SAL-UBL-OBL-1EEEC2DD4CA2C80E (identical rule_text). Same confirmed status as UBL-DOCTYPES-001''s SAL-UBL-OBL-1549D8ECF079779C (identical rule_text). SPEC-PACKAGE-FACT: this obligation describes the contents of the official pinned UBL 2.3 OASIS Standard distribution package itself (exactly 91 maindoc XSD files), not format_factory''s runtime behavior. No XSD files from the official package are vendored in this repository, so there is nothing to unit-test this claim against -- the closest available evidence is the package''s own file inventory, which is not committed. This mirrors the SPEC-PACKAGE-FACT category identified in XLIFF-PARSE-001''s citation audit earlier this session (obligations about the physical spec artifact rather than product behavior). Not force-promoted and not left as a generic placeholder.'
+  execution_evidence_ids:
+  - UBL-MAINDOC-SCHEMA-BUNDLE-INVENTORY-PROOF
+  implemented_behavior:
+  - 'FF6-EVENT-000278: same fact and resolution as SAL-UBL-OBL-1549D8ECF079779C -- all 91 maindoc XSD files were already bundled at FF6-EVENT-000274, that evidence just was not yet linked to this specific inventory-fact obligation.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Per-layer positive/negative fixtures; layered report structure asserted machine-readable.

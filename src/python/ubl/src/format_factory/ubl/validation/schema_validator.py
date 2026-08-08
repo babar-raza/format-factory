@@ -94,6 +94,18 @@ def _load_schema(root_name: str) -> "_xmlschema_typing.XMLSchema":
     return cast("_xmlschema_typing.XMLSchema", xmlschema.XMLSchema(str(path)))
 
 
+def bundled_maindoc_schema_paths() -> tuple[Path, ...]:
+    """The official maindoc XSD files bundled with this package -- one per
+    supported root document type (SAL-UBL-OBL-1549D8ECF079779C /
+    1EEEC2DD4CA2C80E / 2FCD900E00C1654E: "the pinned UBL 2.3 OASIS Standard
+    package contains exactly 91 maindoc XSD files, one for each supported
+    UBL document root"). Returned as real paths, one per ROOT_NAME_SET
+    entry, for a caller that wants the files directly rather than a loaded
+    xmlschema.XMLSchema object.
+    """
+    return tuple(_MAINDOC_DIR / f"UBL-{name}-2.3.xsd" for name in sorted(ROOT_NAME_SET))
+
+
 def schema_validate(source: bytes | str, *, root_name: str | None = None) -> ValidationReport:
     """Validate raw UBL XML `source` against the bundled official schema
     matching its own root document type.
@@ -136,4 +148,4 @@ def schema_validate(source: bytes | str, *, root_name: str | None = None) -> Val
     return ValidationReport(diagnostics)
 
 
-__all__ = ["schema_validate"]
+__all__ = ["bundled_maindoc_schema_paths", "schema_validate"]
