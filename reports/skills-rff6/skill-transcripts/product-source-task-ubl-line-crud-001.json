@@ -1,0 +1,60 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-line-crud-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T03:17:25Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_LINE_CRUD_001",
+    "task_kind": "genuine-multi-tick-scoped-architecture-item-attempted-and-largely-closed",
+    "root_cause": "FF6-EVENT-000297's own exact_next_action named UBL-EDIT-001 as an un-re-investigated 'large architecture item' worth the same fresh-eyes skepticism applied to UBL-VALIDATE-001 (Event 296). Re-read both obligations' own precise rule_text: 'CRUD for core business components with schema-order preservation; edits cannot produce elements the schema forbids at that position' and 'Line insertion, removal, movement, and renumbering maintain referential integrity via an explicit reference-rewrite map.' Checked what primitives already existed: XmlNode.with_children()/UblDocument.with_root() (immutable-replace), reorder_for_schema_order() (Event 286), validate() and DocumentIndex.duplicate_line_ids() (Event 296's own referential layer). All four were composable into real line-scoped CRUD without inventing new low-level infrastructure.",
+    "obligation_targeted": "SAL-UBL-OBL-AF5263F0FC7036B9 (UBL-EDIT-001) promoted missing->implemented in full. SAL-UBL-OBL-237188D47391391E (UBL-EDIT-001, sibling, broader scope) narrowed missing->partial, honestly scoped to lines only.",
+    "acceptance_evidence": "New module lines.py exporting add_line/remove_line/move_line/renumber_lines, each refusing (raising UblValidationError) to leave the document with a new validation or referential-integrity failure. 12 tests including a caught-and-fixed regression case (add_line initially missed a newly-introduced duplicate line ID since the base validate() lacks the referential layer -- fixed by including DocumentIndex.duplicate_line_ids() directly in the before/after comparison).",
+    "regression_tier": "full ubl package suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Confirmed UBL Line elements (InvoiceLine/CreditNoteLine/OrderLine) are always the trailing repeating group in every maindoc type's own real schema sequence -- meaning appending a new line after the last existing one (or at the end of the root's children when none exist) is schema-position-correct by construction, without needing root-level reordering support (_ORDER_CHECKED_COMPONENTS does not cover document root types, only nested complexTypes).",
+    "2. Designed add_line/remove_line/move_line/renumber_lines around business_role()/DocumentIndex (query.py) for line identification, _own_identifier for reading a line's own ID, and a shared _refuse_if_worse helper comparing before/after validate() diagnostic codes.",
+    "3. Verified all 4 operations end-to-end via a standalone repro before writing any test: add appends correctly and stays valid; move reorders among lines only; renumber_lines rewrites IDs and returns the exact old->new map applied; remove deletes the matching line only. Also verified all refusal paths (nonexistent ID, out-of-range move index, two lines mapped to the same new ID, a rename colliding with an unrenamed line's own existing ID).",
+    "4. Found a real gap in the first draft: add_line silently accepted a new line whose ID duplicated an EXISTING line's ID, because _refuse_if_worse only called the base validate() (chassis-only), which has no duplicate-line-id check -- that check lives in the referential layer built for validate_all() at FF6-EVENT-000296, a DIFFERENT function operating on raw sources rather than an already-loaded UblDocument. Fixed by inlining a local DocumentIndex(document.root).duplicate_line_ids()-based check into _refuse_if_worse directly (not by depending on combined.py's own private helper, to avoid an unusual reverse-layering dependency), then added a dedicated regression test naming the bug.",
+    "5. Ran mypy --strict (clean), ruff (clean), the full ubl suite (1044 passed at first pass, 1044 unchanged after the referential-check fix since it only added 1 more test), and the 6-format regression (3677 -> 3678 passed, +1 for the regression test, 0 failed).",
+    "6. Updated the ledger: SAL-UBL-OBL-AF5263F0FC7036B9 promoted missing->implemented (all 4 named operations exist, renumber_lines returns the explicit reference-rewrite map the rule_text names verbatim). SAL-UBL-OBL-237188D47391391E narrowed missing->partial, honestly documenting that 'core business components' is broader than lines -- parties, payment means, tax totals etc. remain uncovered by a dedicated CRUD API, a genuinely separate, larger undertaking since arbitrary-position insertion (unlike lines, always trailing) would need order knowledge extended to document root types."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/lines.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_line_crud.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/lines.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_line_crud.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_line_crud.py -v -- 12 passed (all new)",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/lines.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ubl -q -- 1044 passed",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3678 passed, 4 skipped, 0 failed (was 3666 before this event started, 3678 after this and the immediately preceding sample-fix event)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation promoted missing->implemented; 1 obligation narrowed missing->partial",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_narrowed": 1,
+    "new_public_api": [
+      "format_factory.ubl.add_line",
+      "format_factory.ubl.remove_line",
+      "format_factory.ubl.move_line",
+      "format_factory.ubl.renumber_lines"
+    ]
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

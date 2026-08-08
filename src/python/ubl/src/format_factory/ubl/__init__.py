@@ -42,6 +42,7 @@ from .errors import (
     UblValidationError,
     UblWriteError,
 )
+from .lines import add_line, move_line, remove_line, renumber_lines
 from .model import (
     ROOT_CLASSES,
     AllowanceCharge,
@@ -297,6 +298,10 @@ __all__ = [
     "validate_profile",
     "ProfileValidator",
     "ProfileValidatorRegistry",
+    "add_line",
+    "move_line",
+    "remove_line",
+    "renumber_lines",
 ]
 
 __version__ = "0.2.0.dev0"

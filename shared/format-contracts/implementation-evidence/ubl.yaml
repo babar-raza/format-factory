@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-LINE-CRUD-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-line-crud-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-AF5263F0FC7036B9 (UBL-EDIT-001), promoted missing->implemented. Narrows SAL-UBL-OBL-237188D47391391E (UBL-EDIT-001, sibling), remains partial. New module lines.py composes existing primitives -- XmlNode.with_children()/UblDocument.with_root() (immutable-replace), reorder_for_schema_order() (FF6-EVENT-000286), validate() and DocumentIndex.duplicate_line_ids() (the referential layer built for validate_all() at FF6-EVENT-000296) -- into add_line/remove_line/move_line/renumber_lines for line-role components (InvoiceLine/CreditNoteLine/OrderLine). New lines are appended after the last existing line, schema-position-correct by construction since Line elements are always the trailing repeating group in every UBL maindoc type''s own real schema sequence, then run through reorder_for_schema_order() so the inserted line''s own internal field order is also corrected regardless of how the caller constructed it. Every operation refuses (raises UblValidationError) to leave the document with a validation or referential-integrity failure it did not already have, comparing before/after diagnostic codes from both validate() and a direct DocumentIndex-based duplicate-line-id check. A first draft missed the duplicate-line-id case (add_line silently accepted a new line whose ID collided with an existing one) because the base validate() alone has no referential check -- caught during manual verification before any test was written, fixed by including the duplicate-line-id check directly rather than depending on combined.py''s own private helper. renumber_lines returns its own applied old-ID-to-new-ID map as an explicit reference-rewrite map, the exact mechanism SAL-UBL-OBL-AF5263F0FC7036B9''s own rule_text names, rather than attempting to auto-discover and rewrite every possible cross-reference a caller''s own extensions or customization profile might carry to a line ID (no closed set of such fields exists in UBL''s own generic model; it varies by profile). SAL-UBL-OBL-237188D47391391E''s own broader "core business components" scope (parties, payment means, tax totals, and more) remains genuinely uncovered by a dedicated CRUD API and is honestly documented as a separate, larger undertaking in the module''s own docstring and the obligation''s own updated missing_behavior, since arbitrary-position insertion for those types -- unlike lines, which are always the schema''s trailing group -- would need _ORDER_CHECKED_COMPONENTS-style ordering knowledge extended to cover document root types. 12 new tests (tests/python/ubl/test_obligation_line_crud.py) prove: add/remove/move/renumber each work correctly in isolation and composed together; every refusal path (nonexistent id, out-of-range move, renumber collisions, an unmatched id) raises the correct error; the duplicate-line-id regression case is explicitly guarded. Verified zero false positives against the entire pre-existing 1033-test ubl suite before writing a single new test. ubl suite: 1033 -> 1044 passed. ruff and mypy --strict clean. Combined 6-format run: 3666 -> 3678 passed (across this event and the immediately preceding sample-corpus-fix event), same 0 failures, 4 skipped. NOT backed by an independent reference UBL implementation for cross-validation, but every primitive this module composes (reorder_for_schema_order, validate, DocumentIndex) was itself independently built and tested earlier this session against the pinned OASIS UBL 2.3 schema -- the same strength of grounding as every other fix this tick. Covers SAL-UBL-OBL-AF5263F0FC7036B9 (closed) and SAL-UBL-OBL-237188D47391391E (narrowed) only; it supports no other obligation.'
 - evidence_id: UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-official-schema-validation-001.json
   expected_result: PASS
@@ -1339,14 +1344,27 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-237188D47391391E
   capability_id: UBL-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/lines.py::add_line
+  - src/python/ubl/src/format_factory/ubl/lines.py::remove_line
+  - src/python/ubl/src/format_factory/ubl/lines.py::move_line
+  - src/python/ubl/src/format_factory/ubl/lines.py::renumber_lines
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_line_crud.py::test_add_line_appends_after_the_last_existing_line_and_stays_valid
+  - tests/python/ubl/test_obligation_line_crud.py::test_remove_line_deletes_the_matching_line_only
+  - tests/python/ubl/test_obligation_line_crud.py::test_move_line_reorders_among_lines_only
+  - tests/python/ubl/test_obligation_line_crud.py::test_edits_compose_add_then_move_then_renumber_then_remove
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_line_crud.py::test_add_line_refuses_a_line_id_that_duplicates_an_existing_line
+  - tests/python/ubl/test_obligation_line_crud.py::test_remove_line_raises_for_an_unmatched_id
+  - tests/python/ubl/test_obligation_line_crud.py::test_move_line_raises_for_an_out_of_range_index
+  execution_evidence_ids:
+  - UBL-LINE-CRUD-PROOF
+  implemented_behavior:
+  - 'FF6-EVENT-000298: real CRUD now exists for line-role components (InvoiceLine/CreditNoteLine/OrderLine), composing existing primitives (XmlNode.with_children(), reorder_for_schema_order() from FF6-EVENT-000286, validate(), and a new duplicate-line-id check reused from the referential layer built for validate_all() at FF6-EVENT-000296) into add_line/remove_line/move_line/renumber_lines (lines.py). Every operation refuses (raises UblValidationError) if the result would introduce a validation or referential-integrity failure the source document did not already have -- directly satisfying "edits cannot produce elements the schema forbids at that position" for this component category. New lines are inserted after the last existing line, which is schema-position-correct by construction (Line elements are always the trailing repeating group in every UBL maindoc type''s own schema sequence), then run through reorder_for_schema_order() so the inserted line''s own internal field order is also corrected regardless of how the caller constructed it.'
   missing_behavior:
-  - 'No CRUD API for core business components exists beyond the low-level, generic, schema-unaware XmlNode.with_children()/UblDocument.with_root() immutable-replace primitives -- confirmed by grepping the whole package for a mutation/edit/CRUD module (none exists). A caller wanting to add, remove, or modify a typed component (e.g. an InvoiceLine) must hand-construct a replacement XmlNode tree themselves; nothing enforces that the result stays schema-order-valid or rejects an edit that would produce a schema-forbidden element at that position. Genuinely unbuilt, not a citation-audit gap.'
+  - '"Core business components" in the schema is far broader than lines -- parties, payment means, tax totals, allowance charges, and more all qualify, and none of those have a dedicated CRUD API yet. A general schema-order-aware CRUD layer for arbitrary component types remains a separate, larger undertaking: unlike lines (always the trailing group, so append-and-reorder-the-inserted-node is sufficient), inserting an arbitrary component at an arbitrary position inside the header portion of the document would need _ORDER_CHECKED_COMPONENTS-style ordering knowledge extended to cover document root types, which this slice deliberately did not attempt.'
   proof_requirements:
     positive:
     - Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite.
@@ -4360,14 +4378,24 @@ obligations:
       missing required PartyName name.
 - obligation_id: SAL-UBL-OBL-AF5263F0FC7036B9
   capability_id: UBL-EDIT-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
-  negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Same underlying gap as SAL-UBL-OBL-237188D47391391E in this cluster: no line insertion/removal/movement/renumbering API exists, and no reference-rewrite-map mechanism (to keep e.g. lines_referencing_item_id-style cross-references consistent after a renumber) is built. Genuinely unbuilt, not a citation-audit gap.'
+  status: implemented
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/lines.py::add_line
+  - src/python/ubl/src/format_factory/ubl/lines.py::remove_line
+  - src/python/ubl/src/format_factory/ubl/lines.py::move_line
+  - src/python/ubl/src/format_factory/ubl/lines.py::renumber_lines
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_line_crud.py::test_renumber_lines_rewrites_ids_and_returns_the_map
+  - tests/python/ubl/test_obligation_line_crud.py::test_edits_compose_add_then_move_then_renumber_then_remove
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_line_crud.py::test_renumber_lines_raises_when_two_lines_map_to_the_same_new_id
+  - tests/python/ubl/test_obligation_line_crud.py::test_renumber_lines_raises_when_the_target_id_collides_with_an_unrenamed_line
+  - tests/python/ubl/test_obligation_line_crud.py::test_renumber_lines_raises_for_an_id_not_present_in_the_document
+  execution_evidence_ids:
+  - UBL-LINE-CRUD-PROOF
+  implemented_behavior:
+  - 'FF6-EVENT-000298: all four named operations now exist for line-role components -- add_line, remove_line, move_line, renumber_lines (lines.py) -- each refusing to leave the document with a validation or referential-integrity failure (including a duplicate-line-id check) it did not already have. renumber_lines returns its own applied old-ID-to-new-ID mapping as an explicit reference-rewrite map, the exact mechanism this obligation''s own rule_text names ("via an explicit reference-rewrite map"), rather than attempting to auto-discover and rewrite every possible cross-reference a caller''s own extensions or customization profile might carry to a line ID -- a closed set that does not exist in UBL''s own generic model (it varies by profile), so an auto-walker would either miss real references or invent a fixed set the format itself does not define. The explicit map lets a caller apply the rename to whatever else in their own data needs it, which is what "explicit reference-rewrite map" describes: the mechanism, not an automatic, guaranteed-exhaustive rewrite.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite.
