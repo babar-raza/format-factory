@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Mapping
+from typing import Any, ClassVar, Mapping
 
 
 DOMAIN_KINDS = frozenset({"domain", "space", "time"})
@@ -71,6 +71,13 @@ class PreservationReport:
 @dataclass(slots=True)
 class NrrdDocument:
     """A decoded NRRD document with preserved headers and comments."""
+
+    #: The spec QName this document's own root construct maps to. Fixed
+    #: for every NRRD document -- carried over from the deprecated alpha
+    #: model (src/python/nrrd/models.py), which had this as a ClassVar
+    #: but was dropped when this production model was built, leaving
+    #: to_dict()'s own consumers with no way to recover it.
+    spec_qname: ClassVar[str] = "nrrd:header"
 
     version: int
     header: dict[str, str]
@@ -377,6 +384,7 @@ class NrrdDocument:
         """Return a compatibility mapping without exposing internal dicts."""
 
         return {
+            "spec_qname": self.spec_qname,
             "version": self.version,
             "detected_version": self.detected_version,
             "header": dict(self.header),

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Iterator
+from typing import ClassVar, Iterator
 
 from .inline import InlineElement, InlineNode, flatten_inline_content
 
@@ -213,6 +213,11 @@ class XliffFile:
 @dataclass(slots=True)
 class XliffDocument:
     """XLIFF 2.0/2.1 document; external references stay passive strings."""
+
+    #: shared/qname-registry/xliff.yaml -- xliff:file entry. Matches the
+    #: deprecated alpha model's own convention (src/python/xliff/models.py),
+    #: which was never propagated when this production model was built.
+    spec_qname: ClassVar[str] = "xliff:file"
 
     version: str
     source_language: str

@@ -6,7 +6,7 @@ from collections.abc import Iterator, Mapping
 from dataclasses import dataclass, field
 from enum import StrEnum
 from types import MappingProxyType
-from typing import Any
+from typing import Any, ClassVar
 
 from format_factory.core import CheckedArithmeticError, checked_product
 
@@ -179,6 +179,13 @@ class SafeTensorsHeader:
 
 class SafeTensorsDocument:
     """Immutable descriptors plus a zero-copy view of the tensor data buffer."""
+
+    #: The spec QName this document's own header construct maps to. Fixed
+    #: for every safetensors document -- carried over from the deprecated
+    #: alpha model (src/python/safetensors/models.py), which had this as a
+    #: ClassVar but never propagated it when this production model was
+    #: built.
+    spec_qname: ClassVar[str] = "safetensors:header"
 
     __slots__ = (
         "_closed",
