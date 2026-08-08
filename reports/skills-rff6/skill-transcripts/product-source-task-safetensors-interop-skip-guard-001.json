@@ -1,0 +1,53 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-safetensors-interop-skip-guard-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T01:25:00Z",
+  "inputs": {
+    "format_id": "safetensors",
+    "task_id": "TC_FF6_SAFETENSORS_INTEROP_SKIP_GUARD_001",
+    "task_kind": "certification-gate-verification-and-test-hygiene-fix",
+    "root_cause": "Ran the same 10-gate certification-readiness survey used for ipynb earlier this session against safetensors. Found the independent-oracle gate had already been fixed by FF6-EVENT-000275 (fresh, non-stale, exercising real shipped code) and reproducible-build/installed-wheel were already STRONG. The compatibility gate showed 4 tests failing with PackageNotFoundError for the official 'safetensors' PyPI package -- the same '4 pre-existing unrelated safetensors interop failures' noted as background noise in every regression check this entire session. Investigation found this is NOT a real product defect: src/python/safetensors/pyproject.toml's own 'reference' extra comment documents that the official package's import name collides with this repository's own legacy shadow package, so it is deliberately never installed in the shared dev venv -- these tests are meant to run in an isolated environment. But the tests themselves had no graceful skip guard: they hard-failed with an uncaught PackageNotFoundError instead of skipping, so every regression check this session showed 4 FAILED rather than 4 SKIPPED, and the compatibility gate had never actually been verified end-to-end in the correct environment.",
+    "obligation_targeted": "Certification gate verification (compatibility), not an SAL obligation -- no obligation_id promoted this slice. Also a test-hygiene fix eliminating persistent false-failure noise.",
+    "acceptance_evidence": "reports/certification/safetensors/compatibility-gate.json: 4/4 target interop tests PASS in a real isolated environment (non-editable site-packages install + official safetensors==0.8.0 co-installed), plus 275/276 of the broader shipped-namespace suite passing in the same environment with zero collateral breakage.",
+    "regression_tier": "full 6-format regression suite, both before and after the skip-guard fix"
+  },
+  "execution_steps": [
+    "1. Ran the ipynb-pattern 10-gate certification survey against safetensors via a research agent: 2 STRONG (installed-wheel, reproducible-build), 1 STRONG-with-caveat (independent-oracle, confirmed genuinely fixed by FF6-EVENT-000275), 6 PARTIAL (corpus, security, resource, typing, documentation, compatibility), 1 NO_EVIDENCE (performance, matches ipynb).",
+    "2. The compatibility gate's PARTIAL rating was specifically because test_official_interop.py/test_obligation_bidirectional_interop.py fail with PackageNotFoundError in the shared dev venv. Read pyproject.toml's own 'reference' extra comment: this is DOCUMENTED, INTENTIONAL isolation, not a gap -- 'Install it in an isolated environment to run the interop tests.'",
+    "3. Created an isolated venv at .local/interop-venvs/safetensors (gitignored, throwaway) and installed safetensors==0.8.0, numpy, pytest, hypothesis, plus format-factory-core and format-factory-safetensors as REAL (non-editable) wheel installs -- confirmed empirically that an editable install fails 2 of the 4 target tests (they specifically assert 'site-packages' in the installed package's own file path), while a real wheel install passes all 4.",
+    "4. Ran the 4 target tests in this isolated environment: 4/4 PASS. Ran the broader safetensors suite (excluding 7 legacy shadow-package-only test files, out of scope for this shipped-namespace verification): 275 passed, 1 skipped, 0 failed -- confirms co-installing the reference package causes no collateral breakage.",
+    "5. Wrote reports/certification/safetensors/compatibility-gate.json documenting the environment, install method, and results, matching the existing reproducible-build.json evidence pattern for this format.",
+    "6. Fixed the underlying test-hygiene gap: added a module-level skip guard to both test files (checking importlib.metadata.version('safetensors') and calling pytest.skip(allow_module_level=True) on PackageNotFoundError) so the shared dev venv correctly reports these as SKIPPED rather than FAILED -- eliminating the '4 pre-existing unrelated failures' that have appeared in every regression check this entire session as background noise, while still passing cleanly (verified) when run in the correct isolated environment.",
+    "7. Verified both environments after the fix: shared dev venv now shows '2 skipped' for these two files (was '4 failed'); isolated venv still shows '4 passed'. Ran the full 6-format regression suite: 3618 passed, 4 skipped, 0 failed -- the FIRST zero-failure regression result this entire session."
+  ],
+  "allowed_files": [
+    "tests/python/safetensors/test_official_interop.py",
+    "tests/python/safetensors/test_obligation_bidirectional_interop.py",
+    "reports/certification/safetensors/compatibility-gate.json"
+  ],
+  "actual_files_changed": [
+    "tests/python/safetensors/test_official_interop.py",
+    "tests/python/safetensors/test_obligation_bidirectional_interop.py",
+    "reports/certification/safetensors/compatibility-gate.json"
+  ],
+  "tests_run": [
+    "isolated venv: pytest tests/python/safetensors/test_official_interop.py tests/python/safetensors/test_obligation_bidirectional_interop.py -v -- 4 passed",
+    "isolated venv: pytest tests/python/safetensors -q (7 legacy shadow-only files excluded) -- 275 passed, 1 skipped",
+    "shared dev venv: pytest tests/python/safetensors/test_official_interop.py tests/python/safetensors/test_obligation_bidirectional_interop.py -v -- 2 skipped (was 4 failed before this fix)",
+    "shared dev venv: pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3618 passed, 4 skipped, 0 failed",
+    ".venv/Scripts/python -m ruff check <changed test files> -- All checks passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations promoted -- this is a certification-gate verification and test-hygiene fix, not an obligation closure",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "gate_advanced": "safetensors compatibility gate: PARTIAL_EVIDENCE -> STRONG_EVIDENCE with dated, isolated-environment proof (reports/certification/safetensors/compatibility-gate.json)",
+    "oracle": "The official Hugging Face safetensors==0.8.0 PyPI distribution, the independent reference implementation for this format."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

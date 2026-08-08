@@ -6,12 +6,31 @@ import json
 import struct
 import sys
 from importlib import util
-from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError, distribution
 from importlib.metadata import version
 from pathlib import Path
 
+import pytest
+
 import format_factory.safetensors as format_factory_safetensors
 from format_factory.safetensors import dump, load, loads
+
+try:
+    version("safetensors")
+except PackageNotFoundError:
+    # The official reference package deliberately cannot share the ambient
+    # dev venv with this repository's own legacy shadow package of the same
+    # import name (see src/python/safetensors/pyproject.toml's own comment
+    # on the "reference" extra) -- a missing distribution here means the
+    # isolated interop environment was not set up, not that the code is
+    # broken, so this must SKIP rather than fail every collection.
+    pytest.skip(
+        "official 'safetensors' reference package not installed in this "
+        "environment -- install the 'reference' extra "
+        "(format-factory-safetensors[reference]) in an isolated, non-editable "
+        "environment to run these interop tests",
+        allow_module_level=True,
+    )
 
 
 def _official_safetensors() -> object:

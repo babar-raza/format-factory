@@ -1,0 +1,32 @@
+{
+  "gate": "compatibility",
+  "format_id": "safetensors",
+  "product_id": "format-factory-safetensors",
+  "reference_implementation": {
+    "distribution": "safetensors",
+    "version": "0.8.0",
+    "publisher": "Hugging Face"
+  },
+  "why_isolated_environment_required": "format_factory.safetensors's own pyproject.toml documents that the official 'safetensors' PyPI distribution's top-level import name ('safetensors') collides with this repository's own legacy shadow package of the same name at src/python/safetensors/ (GAP-017) -- co-installing the reference package into the shared dev venv breaks that shadow package's direct imports. This is why tests/python/safetensors/test_official_interop.py and test_obligation_bidirectional_interop.py fail with PackageNotFoundError in the shared dev venv: the reference package is deliberately NOT installed there. This report verifies compatibility in the isolated environment pyproject.toml itself instructs callers to use.",
+  "environment": {
+    "venv_path": ".local/interop-venvs/safetensors (gitignored, throwaway, not committed)",
+    "python_version": "3.13.2",
+    "install_method": "pip install src/python/core src/python/safetensors (real wheel build, NOT -e/editable -- two of the four target tests specifically assert an installed package resolves under site-packages, which an editable install does not satisfy; verified this distinction empirically: the same install with -e produced 2/4 pass, the same install without -e produced 4/4 pass)",
+    "reference_package_install": "pip install safetensors==0.8.0 numpy pytest hypothesis"
+  },
+  "results": {
+    "target_tests": [
+      "tests/python/safetensors/test_official_interop.py::test_preservation_roundtrip_is_officially_readable",
+      "tests/python/safetensors/test_obligation_bidirectional_interop.py::test_official_writer_is_readable_by_factory",
+      "tests/python/safetensors/test_obligation_bidirectional_interop.py::test_factory_writer_is_readable_by_official_implementation",
+      "tests/python/safetensors/test_obligation_bidirectional_interop.py::test_official_and_factory_distributions_coinstall_without_collision"
+    ],
+    "target_tests_result": "4/4 PASSED",
+    "broader_suite_check": "Full tests/python/safetensors suite run in the same isolated environment, excluding the 7 legacy shadow-package-only test files (test_safetensors_compat.py and siblings, which import the deprecated bare 'safetensors.*' shim and are out of scope for this shipped-namespace verification): 275 passed, 1 skipped, 0 failed -- confirms co-installing the real reference package alongside format_factory.safetensors causes no collateral breakage for any shipped-namespace test."
+  },
+  "verdict": "PASS",
+  "verdict_scope": "Verifies format_factory.safetensors round-trips losslessly through the official Hugging Face reference implementation in both directions (factory writer read by official parser; official writer read by factory parser) and that both distributions co-install and resolve to their own distinct, correct site-packages locations without collision. Does not verify performance parity, torch/numpy adapter interop beyond what test_obligation_bidirectional_interop.py already exercises, or any FF6 format other than safetensors.",
+  "generated_by": "claude",
+  "visibility": "generated",
+  "recorded_at": "2026-08-08"
+}

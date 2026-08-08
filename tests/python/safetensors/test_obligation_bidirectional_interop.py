@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import sys
 from importlib import util
-from importlib.metadata import distribution, version
+from importlib.metadata import PackageNotFoundError, distribution, version
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 import format_factory.safetensors as factory_safetensors
 from format_factory.safetensors import (
@@ -15,6 +16,21 @@ from format_factory.safetensors import (
     dumps,
     loads,
 )
+
+try:
+    version("safetensors")
+except PackageNotFoundError:
+    # See test_official_interop.py's own module-level guard for the full
+    # rationale: the official reference package deliberately cannot share
+    # the ambient dev venv with this repository's own legacy shadow
+    # package of the same import name.
+    pytest.skip(
+        "official 'safetensors' reference package not installed in this "
+        "environment -- install the 'reference' extra "
+        "(format-factory-safetensors[reference]) in an isolated, non-editable "
+        "environment to run these interop tests",
+        allow_module_level=True,
+    )
 
 
 def _official_safetensors() -> object:
