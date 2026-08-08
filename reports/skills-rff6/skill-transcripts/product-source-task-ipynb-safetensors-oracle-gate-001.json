@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-safetensors-oracle-gate-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-ce5a0448dd3b2cd4",
+  "mode": "live",
+  "timestamp": "2026-08-08T05:21:05Z",
+  "inputs": {
+    "format_id": "ipynb+safetensors",
+    "task_id": "TC_FF6_IPYNB_SAFETENSORS_ORACLE_GATE_001",
+    "task_kind": "certification-gate-frontier-third-concrete-step-plus-scoped-schema-fix",
+    "root_cause": "Event 309's own exact_next_action named 'independent-oracle' as the next invariant, noting both formats already pass 5/5 via the existing oracle tool but each emits a schema-validation WARNING worth investigating first. Investigated the warning: oracle/schema/oracle-package.schema.json's additionalProperties:false rejected 3 fields (dependency_hashes, executor_config, profiles_not_applicable) used by ALL 26 oracle packages in the repo, confirming the schema was simply stale relative to an already-established, universal convention -- not a real defect in any package.",
+    "obligation_targeted": "product-goal.yaml's own 'independent-oracle' completion invariant for ipynb and safetensors -- NOT a certification claim for either format as a whole.",
+    "acceptance_evidence": "Added the 3 missing property definitions (plus a new $defs/profile_id reused by the new profiles_not_applicable field) to oracle-package.schema.json, purely additive and non-behavior-changing (schema validation is advisory/non-blocking per execute_oracle.py's own docstring; oracle case execution never depended on it). Re-running validation against all 26 packages revealed the schema's staleness is much larger (family enum missing ~7 values, corpus_refs/authority.specification_refs item types wrong, a couple of legacy packages missing required properties entirely) -- spans the whole 26-format portfolio including the pre-existing 20-format legacy system, not just ipynb/safetensors or the FF6 mission. Deliberately stopped here rather than chasing the full reconciliation: the warning is cosmetic metadata validation, unrelated to the oracle's own real PASS/FAIL verdict, which is what the 'independent-oracle' invariant actually measures. Recorded that verdict directly: both formats ALL_PASS 5/5.",
+    "regression_tier": "full 6-format regression"
+  },
+  "execution_steps": [
+    "1. Re-ran tools.oracle.execute_oracle for ipynb, safetensors, and (for comparison) nrrd/xliff/ubl -- confirmed the schema-validation WARNING is universal, present for every format that uses dependency_hashes/executor_config/profiles_not_applicable, not specific to ipynb/safetensors.",
+    "2. Located the schema at oracle/schema/oracle-package.schema.json and the validator call site (execute_oracle.py::_validate_oracle_package_schema, TC-ORC-006) -- confirmed via its own docstring this is 'Non-blocking: callers print WARNING but do not crash', i.e. advisory metadata validation, not a gate on the oracle's own actual verdict.",
+    "3. Confirmed via a grep across all 26 oracle/formats/*/oracle-package.yaml files that dependency_hashes, executor_config, and profiles_not_applicable are used identically (same shape) in ALL 26 packages, not a handful -- a safe, high-confidence addition, not a guess.",
+    "4. Added the 3 property definitions to the schema (dependency_hashes: object with executor_hash/registry_hash/recorded_at; executor_config: object with required module/callable; profiles_not_applicable: array of {profile, reason}), plus a new $defs/profile_id (the same 17-value enum profiles.items already used, reused rather than duplicated) referenced by profiles_not_applicable's own profile field.",
+    "5. Validated the schema is still well-formed JSON and re-ran the oracle for ipynb/safetensors/nrrd/xliff/ubl: confirmed the FIRST reported schema error is now gone for all of them, but running the full jsonschema Draft202012Validator against all 26 packages surfaced a much larger set of pre-existing mismatches (family enum missing ~7 already-established values like 'ai'/'scientific'/'localization'/'business'/'3d'/'text'/'document'; authority.specification_refs and corpus_refs items are objects everywhere but the schema still says string; invalid_cases.expected_failure_stage missing 'PARSE'; abw/fodg appear to be missing several required top-level properties entirely; csv/fods/zst have additional unexpected top-level properties).",
+    "6. Assessed this fuller staleness as a genuinely large, whole-portfolio undertaking (spans the pre-existing 20-legacy-format system too, not just FF6's 6 formats) and deliberately did NOT attempt it this tick -- flagged clearly for a dedicated future pass rather than half-fixing it.",
+    "7. Reframed the actual 'independent-oracle' gate correctly: the invariant is about the oracle's own real PASS/FAIL verdict (does this format's own output match ground truth), not about whether its metadata YAML validates cleanly against a schema. Both formats already show a genuine, real ALL_PASS 5/5 verdict (oracle-run-summary.json), unaffected by the metadata-schema warning.",
+    "8. Wrote reports/certification/ipynb/independent-oracle-gate.json and reports/certification/safetensors/independent-oracle-gate.json recording the real oracle verdict, the depth histogram (D1=3, D0=2 for both -- an honest report, not inflated: D2/schema-level depth does not apply to either format), and a clear note on the separate, non-blocking schema-metadata warning and its scoped partial fix.",
+    "9. Ran the full 6-format regression (3767 passed, 4 skipped, 0 failed) to confirm the schema change caused no regression anywhere."
+  ],
+  "allowed_files": [
+    "oracle/schema/oracle-package.schema.json",
+    "reports/certification/ipynb/independent-oracle-gate.json",
+    "reports/certification/safetensors/independent-oracle-gate.json"
+  ],
+  "actual_files_changed": [
+    "oracle/schema/oracle-package.schema.json",
+    "reports/certification/ipynb/independent-oracle-gate.json",
+    "reports/certification/safetensors/independent-oracle-gate.json"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python -c \"import json; json.load(open('oracle/schema/oracle-package.schema.json'))\" -- valid JSON",
+    ".venv/Scripts/python -m tools.oracle.execute_oracle --format ipynb -- 5/5 PASS (unchanged)",
+    ".venv/Scripts/python -m tools.oracle.execute_oracle --format safetensors -- 5/5 PASS (unchanged)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3767 passed, 4 skipped, 0 failed (unchanged)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations closed (this is a certification-gate invariant, not an obligation)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": "ipynb=68, safetensors=86",
+    "new_public_api": null
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

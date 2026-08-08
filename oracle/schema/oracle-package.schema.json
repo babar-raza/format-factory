@@ -210,9 +210,61 @@
     },
     "stale_reason": {
       "type": "string"
+    },
+    "dependency_hashes": {
+      "type": "object",
+      "description": "Digests binding this package's verdict to the executor/registry state it was recorded against, so a later drift can be detected.",
+      "properties": {
+        "executor_hash": {"type": ["string", "null"]},
+        "registry_hash": {"type": ["string", "null"]},
+        "recorded_at": {"type": "string", "format": "date"}
+      }
+    },
+    "executor_config": {
+      "type": "object",
+      "description": "Which product callable execute_oracle.py invokes to run this format's valid/invalid cases.",
+      "required": ["module", "callable"],
+      "properties": {
+        "module": {"type": "string"},
+        "callable": {"type": "string"}
+      }
+    },
+    "profiles_not_applicable": {
+      "type": "array",
+      "description": "Profiles from the same enum as `profiles` that this format deliberately does not exercise, with a stated reason -- distinct from a profile simply being unbuilt.",
+      "items": {
+        "type": "object",
+        "required": ["profile", "reason"],
+        "properties": {
+          "profile": {"$ref": "#/$defs/profile_id"},
+          "reason": {"type": "string"}
+        }
+      }
     }
   },
   "$defs": {
+    "profile_id": {
+      "type": "string",
+      "enum": [
+        "STRUCTURAL_VALIDITY",
+        "PARSE_VALIDITY",
+        "INVALID_INPUT_REJECTION",
+        "DOMAIN_MODEL_MAPPING",
+        "MUTATION_BEHAVIOR",
+        "SAME_FORMAT_SERIALIZATION",
+        "ROUNDTRIP_SEMANTIC_EQUIVALENCE",
+        "UNKNOWN_CONTENT_PRESERVATION",
+        "NORMALIZATION",
+        "LOSSY_TRANSFORMATION",
+        "LOSSLESS_TRANSFORMATION",
+        "EXPORT_CONFORMANCE",
+        "ERROR_CONTRACT",
+        "LIMITS_AND_BOUNDARIES",
+        "PACKAGE_CONSUMER",
+        "INTEROPERABILITY",
+        "SECURITY_ROBUSTNESS"
+      ]
+    },
     "authority_class": {
       "type": "string",
       "enum": [
