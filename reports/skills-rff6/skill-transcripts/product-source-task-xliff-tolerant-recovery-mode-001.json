@@ -1,0 +1,63 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-tolerant-recovery-mode-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-07b60e8414047a88",
+  "mode": "live",
+  "timestamp": "2026-08-08T04:37:30Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_TOLERANT_RECOVERY_MODE_001",
+    "task_kind": "genuinely-large-item-fully-scoped-and-built",
+    "root_cause": "SAL-XLIFF-OBL-0C477B7B6441FE75 (XLIFF-LIFECYCLE-001) required 'a tolerant read mode that recovers where the format permits, with recovery actions reported.' mode=\"preservation\" was accepted by loads()/load() but was never wired to anything -- _parse() had no mode parameter at all, so preservation and strict behaved identically on every malformed input. Read every raise site in the recursive parser (reader.py) and classified each as recoverable (a well-scoped value defect with an obvious conservative default) or genuinely unrecoverable (a structural gate where there is no tree to recover into): 5 recoverable, 2 hard.",
+    "obligation_targeted": "SAL-XLIFF-OBL-0C477B7B6441FE75 (XLIFF-LIFECYCLE-001) promoted partial -> implemented.",
+    "acceptance_evidence": "A new _ParseContext dataclass is threaded through every recursive parse function; each of the 5 recoverable raise sites calls context.fail_or_recover(message, action) instead of an unconditional raise. Strict mode's own exact pre-existing error messages are unchanged (proven by the full pre-existing suite passing with zero test modification). Preservation mode applies a conservative default and records a human-readable action on the document's new recovery_actions field. Verified end-to-end with standalone repros before any test was written. 18 new tests.",
+    "regression_tier": "full xliff package suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Enumerated every raise site inside the recursive parser (reader.py): _parse (invalid XML, non-XLIFF root, unsupported version, missing srcLang), _parse_segment (duplicate source, duplicate target, missing source), _parse_notes (non-integer priority).",
+    "2. Classified each: invalid XML syntax and a non-XLIFF root stay hard failures under both modes (no tree exists to recover into, or the tree's own basic shape is unknown) -- same discipline already applied to nrrd's security-sensitive raise sites this session. The other 5 have an obvious, conservative, spec-consistent default and are safe to recover.",
+    "3. Added _ParseContext(tolerant: bool, recovery_actions: list[str]) with a fail_or_recover(message, action) helper: raises XliffParseError(message) when not tolerant, otherwise appends action and returns, letting the caller continue with its own chosen default.",
+    "4. Threaded context as a parameter through _parse_notes, _parse_segment, _parse_unit, _parse_group, _parse_file, and top-level _parse (which now also accepts mode: str = \"strict\" and builds the context from it).",
+    "5. Rewrote each of the 5 recoverable raise sites to call context.fail_or_recover / inline the same tolerant-check pattern, each producing a distinct, identifiable human-readable recovery_actions entry including the relevant id where available (segment id, note id).",
+    "6. Added XliffDocument.recovery_actions: list[str] = field(default_factory=list) (model/document.py) -- empty by default for both strict-mode reads and documents built directly in memory.",
+    "7. Wired mode through loads()/load() into _parse(data, limits, mode=mode) -- previously mode was validated but silently discarded.",
+    "8. Verified directly with standalone repros before writing any test: strict mode raises identically to before on all 5 defect types; preservation mode recovers each with the documented default and exactly one recovery_actions entry; a document combining 4 independent defects recovers all 4 in one pass; a clean document has an empty recovery_actions list under either mode.",
+    "9. Searched the whole repo for any other caller of the now-reshaped private functions (_parse_segment, _parse_notes, etc.) -- found none; the legacy shadow package (xliff_codec.py) has its own independent, unrelated same-named private functions with a different signature, no collision.",
+    "10. Added 18 tests (test_obligation_tolerant_recovery_mode.py): one strict-refuses/preservation-recovers pair per defect type, a multi-defect-in-one-pass accumulation test, 2 hard-failure-stays-hard-under-both-modes tests, and 2 recovery_actions-stays-empty tests (real clean document; in-memory-constructed document).",
+    "11. Ran mypy --strict (clean), ruff (clean), the full xliff suite (554 -> 572 passed), and the 6-format regression (3728 -> 3746 passed, +18, 0 failed, 4 skipped).",
+    "12. Promoted the target obligation to implemented: both required behaviors (strict rejection with diagnostics; tolerant recovery with recovery actions reported) are now genuinely, distinctly built and tested."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "tests/python/xliff/test_obligation_tolerant_recovery_mode.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "tests/python/xliff/test_obligation_tolerant_recovery_mode.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_tolerant_recovery_mode.py -v -- 18 passed (all new)",
+    ".venv/Scripts/python -m mypy --strict src/python/xliff/src/format_factory/xliff/codec/reader/reader.py src/python/xliff/src/format_factory/xliff/model/document.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/xliff -q -- 572 passed (was 554)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3746 passed, 4 skipped, 0 failed (was 3728)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation closed (partial -> implemented)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 142,
+    "new_public_api": "format_factory.xliff.XliffDocument.recovery_actions"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

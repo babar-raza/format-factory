@@ -235,6 +235,11 @@ class XliffDocument:
     #: would need. None on a document built directly in memory, since
     #: nothing was detected.
     detected_version: str | None = None
+    #: Set by the reader when `mode="preservation"` (XLIFF-LIFECYCLE-001)
+    #: recovered from a malformed input that strict mode would have
+    #: refused -- one human-readable entry per recovery. Always empty for
+    #: a document built directly in memory or read under strict mode.
+    recovery_actions: list[str] = field(default_factory=list)
 
     @property
     def xml_space(self) -> str:

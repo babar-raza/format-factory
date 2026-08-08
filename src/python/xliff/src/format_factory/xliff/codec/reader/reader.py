@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import xml.etree.ElementTree as ET
+from dataclasses import dataclass, field
 from os import PathLike
 from pathlib import Path
 
@@ -25,6 +26,20 @@ from ...security import effective_limits
 
 XLIFF_NAMESPACE = "urn:oasis:names:tc:xliff:document:2.0"
 SUPPORTED_VERSIONS = frozenset({"2.0", "2.1"})
+
+
+@dataclass
+class _ParseContext:
+    """Threaded through the recursive parse so every raise site can decide,
+    in one place, whether to refuse (strict) or recover (preservation)."""
+
+    tolerant: bool
+    recovery_actions: list[str] = field(default_factory=list)
+
+    def fail_or_recover(self, message: str, action: str) -> None:
+        if not self.tolerant:
+            raise XliffParseError(message)
+        self.recovery_actions.append(action)
 
 
 def _read_source(source: BinarySource, limits: ResourceLimits) -> bytes:
@@ -94,7 +109,7 @@ def _parse_inline(element: ET.Element) -> list[InlineNode]:
     return content
 
 
-def _parse_notes(element: ET.Element) -> list[Note]:
+def _parse_notes(element: ET.Element, context: _ParseContext) -> list[Note]:
     result: list[Note] = []
     for child in element:
         if child.tag != f"{{{XLIFF_NAMESPACE}}}notes":
@@ -107,7 +122,14 @@ def _parse_notes(element: ET.Element) -> list[Note]:
                 try:
                     priority = int(note.attrib["priority"])
                 except ValueError as exc:
-                    raise XliffParseError("note priority must be an integer") from exc
+                    if not context.tolerant:
+                        raise XliffParseError(
+                            "note priority must be an integer"
+                        ) from exc
+                    context.recovery_actions.append(
+                        f"note {note.get('id', '')!r}: non-integer priority "
+                        f"{note.attrib['priority']!r} ignored"
+                    )
             result.append(
                 Note(
                     text="".join(note.itertext()),
@@ -123,7 +145,7 @@ def _parse_notes(element: ET.Element) -> list[Note]:
     return result
 
 
-def _parse_segment(element: ET.Element) -> Segment:
+def _parse_segment(element: ET.Element, context: _ParseContext) -> Segment:
     source: list[InlineNode] | None = None
     target: list[InlineNode] | None = None
     source_attributes: dict[str, str] = {}
@@ -132,18 +154,36 @@ def _parse_segment(element: ET.Element) -> Segment:
     for child in element:
         if child.tag == f"{{{XLIFF_NAMESPACE}}}source":
             if source is not None:
-                raise XliffParseError("segment has duplicate source elements")
+                if not context.tolerant:
+                    raise XliffParseError("segment has duplicate source elements")
+                context.recovery_actions.append(
+                    f"{_local(element.tag)} {element.get('id', '')!r}: duplicate "
+                    "<source> ignored, kept first occurrence"
+                )
+                continue
             source = _parse_inline(child)
             source_attributes = dict(child.attrib)
         elif child.tag == f"{{{XLIFF_NAMESPACE}}}target":
             if target is not None:
-                raise XliffParseError("segment has duplicate target elements")
+                if not context.tolerant:
+                    raise XliffParseError("segment has duplicate target elements")
+                context.recovery_actions.append(
+                    f"{_local(element.tag)} {element.get('id', '')!r}: duplicate "
+                    "<target> ignored, kept first occurrence"
+                )
+                continue
             target = _parse_inline(child)
             target_attributes = dict(child.attrib)
         else:
             extensions.append(_extension(child))
     if source is None:
-        raise XliffParseError(f"{_local(element.tag)} is missing source")
+        if not context.tolerant:
+            raise XliffParseError(f"{_local(element.tag)} is missing source")
+        context.recovery_actions.append(
+            f"{_local(element.tag)} {element.get('id', '')!r}: missing required "
+            "<source>; defaulted to empty"
+        )
+        source = []
     return Segment(
         id=element.get("id", ""),
         source=source,
@@ -174,10 +214,10 @@ def _parse_original_data(element: ET.Element) -> list[DataElement]:
     return result
 
 
-def _parse_unit(element: ET.Element) -> Unit:
+def _parse_unit(element: ET.Element, context: _ParseContext) -> Unit:
     unit = Unit(
         id=element.get("id", ""),
-        notes=_parse_notes(element),
+        notes=_parse_notes(element, context),
         attributes=_unknown_attributes(element, {"id"}),
     )
     for child in element:
@@ -189,43 +229,43 @@ def _parse_unit(element: ET.Element) -> Unit:
             f"{{{XLIFF_NAMESPACE}}}segment",
             f"{{{XLIFF_NAMESPACE}}}ignorable",
         }:
-            unit.children.append(_parse_segment(child))
+            unit.children.append(_parse_segment(child, context))
         else:
             unit.children.append(_extension(child))
     return unit
 
 
-def _parse_group(element: ET.Element) -> Group:
+def _parse_group(element: ET.Element, context: _ParseContext) -> Group:
     group = Group(
         id=element.get("id", ""),
-        notes=_parse_notes(element),
+        notes=_parse_notes(element, context),
         attributes=_unknown_attributes(element, {"id"}),
     )
     for child in element:
         if child.tag == f"{{{XLIFF_NAMESPACE}}}notes":
             continue
         if child.tag == f"{{{XLIFF_NAMESPACE}}}group":
-            group.children.append(_parse_group(child))
+            group.children.append(_parse_group(child, context))
         elif child.tag == f"{{{XLIFF_NAMESPACE}}}unit":
-            group.children.append(_parse_unit(child))
+            group.children.append(_parse_unit(child, context))
         else:
             group.children.append(_extension(child))
     return group
 
 
-def _parse_file(element: ET.Element) -> XliffFile:
+def _parse_file(element: ET.Element, context: _ParseContext) -> XliffFile:
     file = XliffFile(
         id=element.get("id", ""),
-        notes=_parse_notes(element),
+        notes=_parse_notes(element, context),
         attributes=_unknown_attributes(element, {"id"}),
     )
     for child in element:
         if child.tag == f"{{{XLIFF_NAMESPACE}}}notes":
             continue
         if child.tag == f"{{{XLIFF_NAMESPACE}}}group":
-            file.children.append(_parse_group(child))
+            file.children.append(_parse_group(child, context))
         elif child.tag == f"{{{XLIFF_NAMESPACE}}}unit":
-            file.children.append(_parse_unit(child))
+            file.children.append(_parse_unit(child, context))
         else:
             file.children.append(_extension(child))
     return file
@@ -255,7 +295,7 @@ def _enforce_tree_limits(root: ET.Element, limits: ResourceLimits) -> None:
         stack.extend((child, depth + 1) for child in node)
 
 
-def _parse(data: bytes, limits: ResourceLimits) -> XliffDocument:
+def _parse(data: bytes, limits: ResourceLimits, *, mode: str = "strict") -> XliffDocument:
     from format_factory.core import reject_unsafe_xml
 
     reject_unsafe_xml(data, error_class=XliffParseError)
@@ -266,18 +306,23 @@ def _parse(data: bytes, limits: ResourceLimits) -> XliffDocument:
     _enforce_tree_limits(root, limits)
     if root.tag != f"{{{XLIFF_NAMESPACE}}}xliff":
         raise XliffParseError("root is not an XLIFF 2.x document")
+    context = _ParseContext(tolerant=(mode == "preservation"))
     version = root.get("version", "")
     if version not in SUPPORTED_VERSIONS:
-        raise XliffParseError(
-            f"stable profile supports XLIFF 2.0 and 2.1, got {version!r}"
+        context.fail_or_recover(
+            f"stable profile supports XLIFF 2.0 and 2.1, got {version!r}",
+            f"unsupported version {version!r} accepted under tolerant mode",
         )
     source_language = root.get("srcLang", "")
     if not source_language:
-        raise XliffParseError("XLIFF root is missing srcLang")
+        context.fail_or_recover(
+            "XLIFF root is missing srcLang",
+            "XLIFF root missing srcLang; defaulted to empty string",
+        )
     children: list[XliffFile | ExtensionNode] = []
     for child in root:
         if child.tag == f"{{{XLIFF_NAMESPACE}}}file":
-            children.append(_parse_file(child))
+            children.append(_parse_file(child, context))
         else:
             children.append(_extension(child))
     return XliffDocument(
@@ -287,6 +332,7 @@ def _parse(data: bytes, limits: ResourceLimits) -> XliffDocument:
         children=children,
         attributes=_unknown_attributes(root, {"version", "srcLang", "trgLang"}),
         detected_version=version,
+        recovery_actions=context.recovery_actions,
     )
 
 
@@ -318,7 +364,7 @@ def loads(
     encoded = data.encode("utf-8") if isinstance(data, str) else bytes(data)
     active_limits = effective_limits(limits)
     active_limits.enforce("max_input_bytes", len(encoded))
-    return _parse(encoded, active_limits)
+    return _parse(encoded, active_limits, mode=mode)
 
 
 def load(
@@ -330,4 +376,4 @@ def load(
     if mode not in {"strict", "preservation"}:
         raise ValueError("mode must be 'strict' or 'preservation'")
     active_limits = effective_limits(limits)
-    return _parse(_read_source(source, active_limits), active_limits)
+    return _parse(_read_source(source, active_limits), active_limits, mode=mode)
