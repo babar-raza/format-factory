@@ -2,24 +2,24 @@
   "format_id": "ora",
   "gate": "independent-repository-extraction",
   "source_dir": "src/python/ora",
-  "isolated_location": "C:\\Users\\prora\\AppData\\Local\\Temp\\ff6-independent-repo-ora-osex8nq4\\ora",
+  "isolated_location": "C:\\Users\\prora\\AppData\\Local\\Temp\\ff6-independent-repo-ora-flcc1e9u\\ora",
   "source_file_count": 21,
   "source_preserved_byte_identical": true,
   "build_epoch": "315532800",
   "isolated_build": {
     "ok": true,
-    "seconds": 14.5,
+    "seconds": 13.8,
     "artifacts": {
-      "format_factory_ora-0.1.0.dev0-py3-none-any.whl": "4ee77c317a402212037e063d1e488d3f05e45555e2bfffb1b3434f71c7112755",
-      "format_factory_ora-0.1.0.dev0.tar.gz": "d0979c5eb447c1a859963a5a23c4349cc417c2d7a57bd84ffe51393604509226"
+      "format_factory_ora-0.1.0.dev0-py3-none-any.whl": "fca937fc554627d475e82125d26400a8ac3dfa7397a800a41b83cf8d2a5a8c2a",
+      "format_factory_ora-0.1.0.dev0.tar.gz": "104b86784204102d4ba93c75c5b511d523f82f0b664336adeecf5787fbbaf5fa"
     }
   },
   "in_place_build": {
     "ok": true,
-    "seconds": 19.5,
+    "seconds": 12.8,
     "artifacts": {
-      "format_factory_ora-0.1.0.dev0-py3-none-any.whl": "4ee77c317a402212037e063d1e488d3f05e45555e2bfffb1b3434f71c7112755",
-      "format_factory_ora-0.1.0.dev0.tar.gz": "d0979c5eb447c1a859963a5a23c4349cc417c2d7a57bd84ffe51393604509226"
+      "format_factory_ora-0.1.0.dev0-py3-none-any.whl": "fca937fc554627d475e82125d26400a8ac3dfa7397a800a41b83cf8d2a5a8c2a",
+      "format_factory_ora-0.1.0.dev0.tar.gz": "104b86784204102d4ba93c75c5b511d523f82f0b664336adeecf5787fbbaf5fa"
     }
   },
   "package_digests_preserved": true,
@@ -30,5 +30,6 @@
   "tool": "tools/certification/independent_repository_extraction_gate.py --format ora",
   "method": "Copied src/python/ora/ verbatim (21 files, excluding build/.pytest_cache/etc.) into a fresh OS-temp directory with no ancestor relationship to this repository, confirmed byte-identical against the original, built a wheel+sdist from that isolated copy with its own cwd (never this repository root), built a second wheel+sdist from the in-place source at the same pinned SOURCE_DATE_EPOCH, and compared artifact digests.",
   "note": "Clean on the first run for THIS gate. Separately, this format's own PRE-EXISTING reports/certification/ora/reproducible-build.json was found stale and was refreshed this same tick using the now-fixed reproducible_build_gate.py -- the two now agree exactly. This is one of product-goal.yaml's own completion invariants, separate from the 10-item gate list (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build). Not a certification claim -- the other outstanding program-wide invariant (all-six-co-install, already separately satisfied at FF6-EVENT-000322) and this format's own remaining obligation/gate work are tracked independently.",
+  "re_run_this_tick": "FF6-EVENT-000440: independently re-ran this gate fresh, completing all 11 gate slots for ora across this sweep (independent-oracle, installed-wheel, corpus, security, documentation, resource, typing, compatibility, reproducible-build, performance, and now this one). Verdict unchanged: EXTRACTS_INDEPENDENTLY, source_file_count still 21. The fresh wheel_sha256 (fca937fc554627d475e82125d26400a8ac3dfa7397a800a41b83cf8d2a5a8c2a) is byte-for-byte IDENTICAL to the wheel independently built by both the installed-wheel gate (Event 431) and reproducible-build gate (Event 438) -- ora reaches the same full 3-tool cross-confirmation already demonstrated for ipynb/xliff/safetensors/nrrd. Ran to a scratch path first and merged by hand, preserving all pre-existing narrative fields.",
   "commit": "pending"
 }
