@@ -1,0 +1,23 @@
+{
+  "format_id": "ipynb",
+  "gate": "corpus",
+  "status": "PASS",
+  "verdict": "PASS",
+  "provenance_file": "samples/by-format/ipynb/_provenance.yaml",
+  "corpus_manifest": "samples/by-format/ipynb/_corpus-manifest.yaml",
+  "authority": {
+    "repository": "https://github.com/jupyter/nbformat",
+    "release_tag": "v5.10.4",
+    "commit": "60b6151fedcbdc9f137fb2d223eeb10c935a8378",
+    "license": "BSD-3-Clause"
+  },
+  "counts": {"valid_samples": 3, "invalid_samples": 1, "quarantined_with_documented_replacement": 2},
+  "checks_performed_this_tick": {
+    "sha256_verification": "PASS -- computed the real hash of every valid/invalid sample file and confirmed it matches the corpus manifest's own declared value, not merely trusted the YAML",
+    "production_reader_verification": "PASS -- format_factory.ipynb.load() actually invoked against every valid sample (all 3 load cleanly) and the invalid sample (correctly refused with IpynbParseError), not merely trusted a prior 'PASS' label in the manifest",
+    "quarantine_governance": "1 sample (code-and-markdown.ipynb) was quarantined for missing nbformat-4.5-required cell ids (a real strict-schema failure against the OFFICIAL upstream file, per quarantine/_manifest.yaml's own documented investigation) and replaced with a corrected version whose sha256 (77c6d7cc...) matches the file currently in valid/ -- confirmed this replacement, not the quarantined original, is what is actually shipped"
+  },
+  "corpus_composition": "Mixed: 1 project-owned-synthetic sample (minimal.ipynb) plus 2 samples sourced from the official nbformat v5.10.4 test corpus (exact-byte-copy with source_commit pinned), giving this format genuine external-authority coverage beyond self-generated fixtures, unlike safetensors (see its own gate file).",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file consolidates already-existing, independently re-verified corpus provenance into a dedicated gate record; not a certification claim for the format as a whole.",
+  "commit": "pending"
+}

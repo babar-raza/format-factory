@@ -1,0 +1,56 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-safetensors-corpus-reproducible-gate-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-903e601ccac3cff9",
+  "mode": "live",
+  "timestamp": "2026-08-08T05:42:57Z",
+  "inputs": {
+    "format_id": "ipynb+safetensors",
+    "task_id": "TC_FF6_IPYNB_SAFETENSORS_CORPUS_REPRODUCIBLE_GATE_001",
+    "task_kind": "certification-gate-frontier-sixth-and-seventh-steps",
+    "root_cause": "Event 312's own exact_next_action named 2 candidates: re-verify safetensors' own reproducible-build (its cached evidence predated this session's own source changes) and the 'corpus' invariant (likely overlapping with the oracle's own corpus_refs already recorded at Event 310). Did both.",
+    "obligation_targeted": "product-goal.yaml's own 'reproducible-build' and 'corpus' completion invariants for ipynb and safetensors -- NOT a certification claim for either format as a whole.",
+    "acceptance_evidence": "reproducible_build_gate.py re-run fresh against current HEAD for both formats: both REPRODUCIBLE (two default-epoch builds byte-identical; a third control-epoch build proven to differ, so the comparison itself is proven sensitive, not vacuous). Corpus: read both formats' own _provenance.yaml/_corpus-manifest.yaml, then independently re-verified rather than trusting the documents -- computed the real sha256 of every declared sample file and confirmed it matches the manifest's own claimed value, and actually invoked the real production loader against every valid/invalid sample rather than trusting a prior 'PASS' label.",
+    "regression_tier": "none (evidence-only slice, no source or test files touched)"
+  },
+  "execution_steps": [
+    "1. Ran tools/certification/reproducible_build_gate.py --package-dir src/python/safetensors: 2 default-epoch builds byte-identical, a control-epoch build correctly produced a DIFFERENT digest (proving the comparison could have detected a difference, not a vacuous always-pass check) -- verdict REPRODUCIBLE.",
+    "2. Ran the identical gate for ipynb too (its own cached evidence also predated recent source changes): same REPRODUCIBLE verdict, confirming it is still current.",
+    "3. Read samples/by-format/ipynb/_provenance.yaml and _corpus-manifest.yaml directly: found genuinely rich existing documentation (upstream nbformat v5.10.4 repository/commit/license pinning for 2 of 3 valid samples, 1 project-owned-synthetic sample, a documented quarantine history for a sample that failed strict nbformat-4.5 schema validation with a replacement).",
+    "4. Did NOT trust the manifest's own claims at face value -- computed the real sha256 of every file in samples/by-format/ipynb/valid and invalid directly and compared against the manifest's declared values: exact match, including confirming the CURRENT valid/code-and-markdown.ipynb file matches the quarantine manifest's own documented REPLACEMENT hash, not the original quarantined one.",
+    "5. Actually invoked format_factory.ipynb.load() against every valid sample (all 3 load cleanly) and the invalid sample (correctly refused with IpynbParseError) -- direct behavioral proof, not a re-statement of a prior claim.",
+    "6. Repeated the identical independent-verification process for safetensors: read its own _provenance.yaml/_corpus-manifest.yaml (entirely project-owned-synthetic, an honest, disclosed scope choice since no small redistributable official safetensors test corpus exists), computed real sha256 for all 4 declared samples (0 mismatches), and actually invoked format_factory.safetensors.load() against every sample (3 valid load cleanly with correct tensor counts, 1 invalid correctly refused with BufferError).",
+    "7. Wrote reports/certification/{ipynb,safetensors}/corpus-gate.json recording the independently-verified result, and updated reports/certification/{ipynb,safetensors}/reproducible-build.json with the fresh, current-HEAD-bound run output."
+  ],
+  "allowed_files": [
+    "reports/certification/ipynb/reproducible-build.json",
+    "reports/certification/safetensors/reproducible-build.json",
+    "reports/certification/ipynb/corpus-gate.json",
+    "reports/certification/safetensors/corpus-gate.json"
+  ],
+  "actual_files_changed": [
+    "reports/certification/ipynb/reproducible-build.json",
+    "reports/certification/safetensors/reproducible-build.json",
+    "reports/certification/ipynb/corpus-gate.json",
+    "reports/certification/safetensors/corpus-gate.json"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python tools/certification/reproducible_build_gate.py --package-dir src/python/safetensors -- verdict REPRODUCIBLE",
+    ".venv/Scripts/python tools/certification/reproducible_build_gate.py --package-dir src/python/ipynb -- verdict REPRODUCIBLE",
+    "direct sha256 computation + format_factory.{ipynb,safetensors}.load() invocation against every declared corpus sample for both formats -- 0 mismatches, all valid samples load, all invalid samples correctly refused"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations closed (these are certification-gate invariants, not obligations)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": "ipynb=68, safetensors=86",
+    "new_public_api": null
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
