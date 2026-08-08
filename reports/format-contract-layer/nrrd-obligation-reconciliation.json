@@ -208,12 +208,20 @@
       "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json",
       "sha256": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact positive and negative test selectors proving `detected_version` and `version` are distinct, reader-vs-caller-populated fields, and that a declared or requested profile too old for the document's populated fields is refused (writer) or flagged (validator) rather than silently accepted or silently rewritten. The underlying feature-to-minimum-version gate table is backed by verified SAL facts (SAL-NRRD-00006, SAL-NRRD-00019, SAL-NRRD-00020, SAL-NRRD-00021, SAL-NRRD-00022, SAL-NRRD-00023, SAL-NRRD-00024) for the spec content itself, but this implementation is NOT independently cross-checked against Teem or another reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-028C0109E783B8F3 only; it supports no other obligation and promotes no product state."
+    },
+    {
+      "evidence_id": "NRRD-WRITE-ABSENCE-DETACHED-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-write-absence-detached-001.json",
+      "sha256": "853a89951c3d5e0fab07c420618a2b1de049c5b1303d741624536726789d991e",
+      "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-284E2438B08DA529 (NRRD-WRITE-001), promoted partial->implemented. This obligation's own missing_behavior text read \"No detached partition writer or complete conditional/optional absence policy\" -- investigated directly rather than assumed current, and found stale on both counts. The detached-partition writer already exists: dump_multifile()/dump_multifile_printf() (codec/writer/writer.py, FF6-EVENT-000303/000305) were built for the sibling obligation NRRD-MULTIFILE-001 (SAL-NRRD-OBL-807586E5B4D0EDB2/SAL-NRRD-OBL-EBE5230D5204B4AD, both already implemented, with their own extensive existing coverage in test_obligation_multifile_writer.py/test_obligation_multifile_printf_writer.py -- round trips, uneven-split refusal, cross-directory refusal, version-gate refusal, compressed payloads). The capability genuinely exists; it had simply never been cross-mapped onto THIS obligation's own evidence entry. Added both writer functions to this obligation's own source_symbols and added a freestanding, dedicated round-trip test for each (test_dump_multifile_round_trips_directly, test_dump_multifile_printf_round_trips_directly) rather than merely re-citing the sibling obligation's tests as if they were this obligation's own -- plus cross-referenced the sibling's own negative refusal tests as supplementary evidence for this obligation's \"unrepresentable... combinations fail before write\" proof requirement. Optional-field absence in canonical-mode writing was investigated by direct source read of _header_bytes (codec/writer/writer.py): it iterates document.header (a plain dict[str, str]) and emits exactly the keys present in it -- a field absent from that dict at load time is never synthesized on write, and a field present is always re-emitted unchanged. This is the field-presence policy the writer itself owns, proven here by two new dedicated tests (a present optional field round-trips unchanged; an absent one is never synthesized). The deeper question of whether an explicit default value and an absent optional field are modeled as DISTINGUISHABLE states in the first place remains NRRD-PRESERVE-001's own, separate, still-partial scope (SAL-NRRD-OBL-ADAC45BDF110C59C) -- not duplicated or closed by this entry. Lossless-mode absence preservation needed no dedicated test: dumps(mode=\"lossless\") returns document.source_bytes verbatim by construction (see writer.py's own dumps()), already covered by this format's existing preservation-report test suites. Determinism (the obligation's own third required_tests item, \"determinism byte-compare\") was also unproven before this entry -- two new dedicated tests prove repeated dumps() calls on the same document are byte-identical, and that field order in the output does not depend on the source header mapping's own insertion order (matching _header_bytes' own fixed _FIELD_ORDER tuple plus sorted() construction). 6 new tests (tests/python/nrrd/test_obligation_write_absence_and_detached_policy.py). mypy --strict and ruff clean. nrrd suite: 680 -> 686 passed, 1 skipped (unchanged). NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; this entry composes and cross-references already-proven writer contracts rather than introducing new spec interpretation. Covers SAL-NRRD-OBL-284E2438B08DA529 only; it supports no other obligation and promotes no other product state."
     }
   ],
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "3f2daee1c6696f237e0814ccf23a4f5e08485ac7d4383f2ae2d8aa18686685af",
+    "implementation_evidence": "0c481ac9e3d5e278acedff9b278530e8db1d6c82847cc5540d97b0e453c610f2",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -672,18 +680,30 @@
     {
       "capability_id": "NRRD-WRITE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-WRITE-ABSENCE-DETACHED-PROOF"
       ],
       "implemented_behavior": [
-        "Attached deterministic writer emits required fields; a declared or requested profile too old for the populated fields is refused rather than silently accepted (see SAL-NRRD-OBL-028C0109E783B8F3), and profile=\"auto\" selects the oldest sufficient profile on explicit request."
+        "Attached deterministic writer emits required fields; a declared or requested profile too old for the populated fields is refused rather than silently accepted (see SAL-NRRD-OBL-028C0109E783B8F3), and profile=\"auto\" selects the oldest sufficient profile on explicit request.",
+        "FF6-EVENT-000329: the detached-partition writer this obligation's own missing_behavior previously called absent already exists (dump_multifile/dump_multifile_printf, codec/writer/writer.py) under sibling obligation NRRD-MULTIFILE-001 (already implemented) -- stale text on this obligation's own evidence entry, not a real product gap; both functions are now also mapped directly here with a freestanding round-trip proof of their own. Determinism (repeated dumps() calls byte-identical; field order independent of header-dict insertion order) and optional-field absence in canonical mode (a field absent from the loaded header dict is never synthesized on write; a present field is re-emitted unchanged, driven by _header_bytes' own dict-presence iteration) are both proven directly for the first time. Lossless-mode absence preservation needs no separate proof: dumps(mode=\"lossless\") returns document.source_bytes verbatim by construction."
       ],
-      "missing_behavior": [
-        "No detached partition writer or complete conditional/optional absence policy."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_an_uneven_split_is_refused_with_a_clear_reason",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_an_older_profile_is_refused_because_list_needs_nrrd0004",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_an_older_profile_is_refused_because_printf_needs_nrrd0004"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-284E2438B08DA529",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_lifecycle_api_and_stream_destination"
+        "tests/python/nrrd/test_production_namespace.py::test_lifecycle_api_and_stream_destination",
+        "tests/python/nrrd/test_obligation_write_absence_and_detached_policy.py::test_repeated_dumps_calls_on_the_same_document_are_byte_identical",
+        "tests/python/nrrd/test_obligation_write_absence_and_detached_policy.py::test_field_order_is_stable_across_repeated_calls_regardless_of_dict_insertion",
+        "tests/python/nrrd/test_obligation_write_absence_and_detached_policy.py::test_dump_multifile_round_trips_directly",
+        "tests/python/nrrd/test_obligation_write_absence_and_detached_policy.py::test_dump_multifile_printf_round_trips_directly",
+        "tests/python/nrrd/test_obligation_write_absence_and_detached_policy.py::test_a_field_absent_from_the_loaded_header_is_not_synthesized_on_write",
+        "tests/python/nrrd/test_obligation_write_absence_and_detached_policy.py::test_a_field_present_in_the_loaded_header_is_reemitted_unchanged",
+        "tests/python/nrrd/test_obligation_multifile_writer.py::test_a_multifile_write_round_trips_through_the_existing_reader",
+        "tests/python/nrrd/test_obligation_multifile_printf_writer.py::test_a_printf_write_round_trips_through_the_existing_reader"
       ],
       "proof_requirements": {
         "negative": [
@@ -693,14 +713,16 @@
           "All profiles, encodings, detached forms, and absence semantics against independent readers."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump_multifile",
+        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump_multifile_printf",
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::minimal_version_for"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-SEC-001",
@@ -2736,6 +2758,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-space-consistency-validation-001.json": "1d0eb0868c8c67f8960e37d737fd2fcdec5f2dbd2794e9415754230864574b26",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-reconciliation-001.json": "e5b54b72b12920fa20b64906a008fb432025569268ab0211532f04a04b2ecff1",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-write-absence-detached-001.json": "853a89951c3d5e0fab07c420618a2b1de049c5b1303d741624536726789d991e",
     "reports/skills-rff6/skill-transcripts/reconcile-contract-capabilities-nrrd-readiness-001.json": "4675509f009d4b78181543769a6e18dd8292afb65b0624bd347a5b6ccdab2869",
     "src/python/nrrd/src/format_factory/nrrd/codec/kinds.py": "cf8517da058c0ce753866a46fdc5f1c652ab39b90b66e14b65c39d71891d8808",
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "738ef7feab3714ba69a4a56547714145e161ac8b22156bf7e868a18bc13ae847",
@@ -2779,17 +2802,18 @@
     "tests/python/nrrd/test_obligation_shape_production.py": "17ebb172b6e8f2ac861d2ff907dbe19794d327a6e20b5f915b20a9704be9dce5",
     "tests/python/nrrd/test_obligation_space_transform.py": "16a41ea2b13a0252be31e10a82409e5ed0a9b908e7242a286a2178e14c20f761",
     "tests/python/nrrd/test_obligation_version_selection.py": "32e80107f2ef9b67bae0eb7f743e6ece726b98d3f6e54e352ead35312fbfccc6",
+    "tests/python/nrrd/test_obligation_write_absence_and_detached_policy.py": "e1bd3477c368a5d8c87c247139b5830e8f50830eeb1b2ae6793d961540f2210b",
     "tests/python/nrrd/test_production_namespace.py": "f64bdefe17d6c0281231dbbead8badf0d26d072f75917f267bfcddaa37bcdc7e"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 52,
-      "partial": 10,
+      "implemented": 53,
+      "partial": 9,
       "preservation_only": 3
     },
     "total": 65,
-    "unresolved": 13
+    "unresolved": 12
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

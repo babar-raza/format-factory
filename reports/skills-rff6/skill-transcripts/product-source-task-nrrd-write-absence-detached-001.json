@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-write-absence-detached-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-9bd22bb94ac74b1f",
+  "mode": "live",
+  "timestamp": "2026-08-08T10:16:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_WRITE_ABSENCE_DETACHED_001",
+    "task_kind": "found-stale-evidence-not-a-real-product-gap",
+    "root_cause": "After closing NRRD-CONVERT-001 (Event 328), surveyed nrrd's remaining 13 obligations directly and also surveyed ora's 7 and ubl's 6 as alternatives before committing to a candidate. UBL-REF-001's own 'broken references'/'inconsistent line references' text carried real semantic ambiguity risk (the existing test_obligation_referential_integrity.py's own docstring had already deliberately scoped out cross-document resolution and wrapper-vs-leaf Reference completeness as unbuildable without verified schema data -- extending that further risked inventing ungrounded semantics, the same failure mode this session's ORA mask/metadata work correctly avoided by refusing to build). Pivoted back to nrrd's own NRRD-WRITE-001 (SAL-NRRD-OBL-284E2438B08DA529), whose own missing_behavior text claimed 'No detached partition writer or complete conditional/optional absence policy' -- but Event 316's own narrative (recorded earlier this session) explicitly stated dump_multifile()/dump_multifile_printf() already existed in codec/writer/writer.py, built for a DIFFERENT obligation (NRRD-MULTIFILE-001). Investigated directly: confirmed NRRD-MULTIFILE-001's two obligations (SAL-NRRD-OBL-807586E5B4D0EDB2, SAL-NRRD-OBL-EBE5230D5204B4AD) are both already status=implemented with extensive existing test coverage (test_obligation_multifile_writer.py, test_obligation_multifile_printf_writer.py) that NRRD-WRITE-001's own evidence entry had simply never cross-referenced.",
+    "obligation_targeted": "SAL-NRRD-OBL-284E2438B08DA529 (NRRD-WRITE-001) promoted partial -> implemented.",
+    "acceptance_evidence": "Read _header_bytes (codec/writer/writer.py) directly: it iterates document.header, a plain dict[str, str], and emits exactly the keys present in it in a fixed order (_FIELD_ORDER tuple plus sorted() for the rest) -- so the field-presence policy the writer itself owns already correctly preserves optional-field absence lexically (present -> re-emitted, absent -> never synthesized). Lossless mode (dumps(mode='lossless')) returns document.source_bytes verbatim by construction, needing no dedicated test. Wrote a new, dedicated test file rather than assuming coverage: 2 determinism tests (repeated dumps() calls byte-identical; field order independent of header-dict insertion order), 2 direct detached-partition round-trip tests calling dump_multifile/dump_multifile_printf directly (not through NRRD-CONVERT-001's convert_to_detached_* wrapper layer, which already has its own separate tests), and 2 absence-policy tests (a present optional field round-trips unchanged; an absent one is never synthesized). Cross-referenced NRRD-MULTIFILE-001's own existing round-trip and refusal tests as supplementary positive/negative evidence for this obligation too, since they exercise the exact same writer functions this obligation's own source_symbols now also claim."
+  },
+  "execution_steps": [
+    "1. Checked git log/status/coordination leases for concurrent-worker conflicts before starting -- clean, no new commits since this session's own Event 328 commit.",
+    "2. Surveyed ora's 7 remaining obligations fresh: all 7 trace back to a rendering/compositing engine ORA does not have (ORA-COMPOSITE-001, ORA-RENDER-001) or are already correctly, deliberately left missing after direct spec-text verification found no grounding (mask/metadata) -- none were smaller-than-framed candidates.",
+    "3. Surveyed ubl's 6 remaining obligations fresh: UBL-REF-001's broken-reference/inconsistent-line-reference text looked promising at first (the ledger's own missing_behavior said 'the primitive to build such a check exists, the check itself does not') but the EXISTING test file for this exact obligation (test_obligation_referential_integrity.py) already carries an extensive docstring explaining why cross-document reference resolution and wrapper-vs-leaf Reference completeness-checking were deliberately NOT attempted (no verified schema data, no multi-document context) -- extending this obligation further risked the same invent-ungrounded-semantics failure mode this session's own ORA work correctly avoided. The other 5 ubl obligations (find()/find_all() 78-call-site audit, general schema-aware CRUD, code-list automatic field discovery, version-migration transforms, remaining-36-types official examples) were each independently already confirmed large/blocked by their own missing_behavior text.",
+    "4. Pivoted to nrrd's own remaining 13, re-reading each one's own missing_behavior text fresh. NRRD-WRITE-001's own text ('No detached partition writer...') contradicted this session's own Event 316 narrative, which said the detached-partition writer (dump_multifile/dump_multifile_printf) already existed, built for NRRD-MULTIFILE-001. Investigated directly rather than trusting either text: confirmed via the obligation register that NRRD-MULTIFILE-001's two obligations are both status=implemented, and confirmed via grep that dedicated test files (test_obligation_multifile_writer.py, test_obligation_multifile_printf_writer.py) already exist with thorough round-trip/refusal coverage, calling dump_multifile/dump_multifile_printf directly.",
+    "5. Confirmed this is a genuine stale-evidence gap, not a real product gap: NRRD-WRITE-001's own evidence entry (source_symbols, positive_test_selectors) had simply never been updated to reference these functions or their tests after NRRD-MULTIFILE-001 closed them at Event 303/305.",
+    "6. Read _header_bytes/_select_profile/dumps/dump/dump_detached in full (codec/writer/writer.py) to confirm the second half of the missing_behavior text ('complete conditional/optional absence policy') -- found the writer already implements absence preservation lexically via dict-key presence, and lossless mode returns source bytes verbatim; the deeper semantic-default-vs-absence MODEL distinction belongs to NRRD-PRESERVE-001, a separate, still-partial obligation not touched by this entry.",
+    "7. Wrote a new, dedicated test file (test_obligation_write_absence_and_detached_policy.py) with 6 tests: 2 determinism (repeated-call byte-identity; header-dict-insertion-order independence, the latter requiring a corrected understanding of NrrdDocument.from_mapping's own nested-header-mapping shape after an initial wrong construction raised KeyError), 2 direct detached-partition round trips (dump_multifile, dump_multifile_printf, called directly rather than through the convert.py wrapper layer), 2 absence-policy (present field re-emitted unchanged; absent field never synthesized).",
+    "8. Fixed 2 mypy --strict errors on first run: missing return-type annotation on a helper (_document), and list[Path] vs list[str | PathLike[str]] invariance on dump_multifile's own parts argument (fixed by importing PathLike and annotating the local variable with the function's own exact parameter type).",
+    "9. Ran the new file alone (6/6 pass), then the full nrrd suite (686 passed, 1 skipped, was 680) to confirm zero regression.",
+    "10. Updated the ledger: promoted SAL-NRRD-OBL-284E2438B08DA529 to status=implemented (missing_behavior: []), added dump_multifile/dump_multifile_printf to its own source_symbols, added the 6 new tests plus 2 cross-referenced sibling-obligation round-trip tests as positive_test_selectors and 3 cross-referenced sibling-obligation refusal tests as negative_test_selectors, added a new execution_evidence entry (NRRD-WRITE-ABSENCE-DETACHED-PROOF). Because this obligation's source_symbols/positive_test_selectors were previously YAML anchors (&WRITE, &TLIFE) shared with two OTHER, unrelated obligations (SAL-NRRD-OBL-EDFA0571B89A85E0, SAL-NRRD-OBL-5D42CA3E8390D37E), de-aliased this entry into its own explicit list and moved the anchor DEFINITIONS to those other obligations' own lines (preserving their original resolved content exactly) rather than mutating shared anchors and silently changing what those unrelated obligations claim as their own evidence -- verified via a script comparing each anchor's resolved value before and after the edit."
+  ],
+  "allowed_files": [
+    "tests/python/nrrd/test_obligation_write_absence_and_detached_policy.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/nrrd/test_obligation_write_absence_and_detached_policy.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_write_absence_and_detached_policy.py -q -- 6 passed (new file)",
+    ".venv/Scripts/python -m mypy --strict tests/python/nrrd/test_obligation_write_absence_and_detached_policy.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check tests/python/nrrd/test_obligation_write_absence_and_detached_policy.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd -q -- 686 passed, 1 skipped (was 680)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation closed (partial -> implemented) -- NRRD-WRITE-001, via stale-evidence correction plus new dedicated proof",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "none -- no new production source symbols added; dump_multifile/dump_multifile_printf already existed and are only newly cross-referenced/tested under this obligation"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
