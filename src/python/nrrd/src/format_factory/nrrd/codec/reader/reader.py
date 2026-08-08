@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from dataclasses import replace
 from os import PathLike
 from pathlib import Path
 
@@ -408,12 +409,23 @@ def _load(source: BinarySource, *, limits: ResourceLimits, recovery_actions: tup
         else attached
     )
     payload = _apply_skips(payload, header)
+    # SAL-NRRD-OBL-9C262130232DCD09 (NRRD-VALIDATE-001): "checked arithmetic
+    # BEFORE any payload allocation... hostile headers must fail cheaply."
+    # expected_binary_size() computes the declared shape's own exact byte
+    # count via checked arithmetic and already enforces it against
+    # limits.max_decompressed_bytes -- computing it once, upfront, for every
+    # encoding (not only the byte-skip -1 case below) lets a compressed
+    # payload's own decompression be capped at what the header's own
+    # declared shape could ever need, not just the generic global ceiling.
+    # A hostile file whose compressed bytes are small but whose header
+    # claims a decompressed size near the generic 2GB default now fails at
+    # the declared-shape arithmetic check, before a single byte is
+    # decompressed, rather than only being caught partway through
+    # decompression by the unrelated, much larger global limit.
+    expected = expected_binary_size(header["type"], sizes, limits, block_size=block_size)
     if header.get("byte skip", header.get("byteskip")) == "-1":
         if encoding != "raw":
             raise NrrdParseError("byte skip -1 is valid only for raw encoding")
-        expected = expected_binary_size(
-            header["type"], sizes, limits, block_size=block_size
-        )
         if expected > len(payload):
             raise NrrdParseError("byte skip -1 payload is truncated")
         payload = payload[-expected:]
@@ -433,7 +445,10 @@ def _load(source: BinarySource, *, limits: ResourceLimits, recovery_actions: tup
             require_endian=False,
         )
     else:
-        binary = decode_encoding(payload, encoding, limits=limits)
+        decode_limits = replace(
+            limits, max_decompressed_bytes=min(limits.max_decompressed_bytes, expected)
+        )
+        binary = decode_encoding(payload, encoding, limits=decode_limits)
         array = decode_binary(
             header["type"],
             sizes,

@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-header-arithmetic-decompression-cap-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T03:49:17Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_HEADER_ARITHMETIC_DECOMPRESSION_CAP_001",
+    "task_kind": "seventh-item-this-session-found-smaller-than-framed-security-hardening",
+    "root_cause": "Continued the fresh systematic pass over nrrd's remaining obligations (per FF6-EVENT-000300's own exact_next_action naming 16 more nrrd obligations not yet individually re-checked). SAL-NRRD-OBL-9C262130232DCD09's (NRRD-VALIDATE-001) own missing_behavior said compressed payloads are still decompressed within the bounded generic envelope before comparison against the declared exact size, 'rather than being rejected from the header arithmetic alone -- this remains a real architectural gap.' Checked codec/payload.py's own expected_binary_size(): it already computes the declared shape's exact byte count via checked arithmetic AND already enforces it against limits.max_decompressed_bytes internally -- it was already doing exactly what the missing_behavior said was missing, just not yet being CALLED before decode_encoding() for the general (non-byte-skip-negative-one) case.",
+    "obligation_targeted": "SAL-NRRD-OBL-9C262130232DCD09 (NRRD-VALIDATE-001) promoted partial->implemented in full.",
+    "acceptance_evidence": "reader.py's _load() now computes expected_binary_size() once, upfront, for every encoding (not only the pre-existing byte-skip -1 case), and uses it to build a tighter, document-specific ResourceLimits capping decode_encoding()'s own decompression at min(generic global limit, declared-shape expected size). Verified directly: a header declaring 10 bytes wrapping a compressed 5MB-of-zeros bomb is rejected citing the tightened limit; a legitimate payload whose real decompressed size exactly matches its own declared shape still loads correctly. 2 new tests plus zero regressions across the full 631-test (now 633) nrrd suite.",
+    "regression_tier": "full nrrd package suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Read expected_binary_size()'s own implementation (codec/payload.py) precisely: computes checked_element_count(sizes, limits) * item_size, then calls limits.enforce('max_decompressed_bytes', expected) itself -- already doing checked-arithmetic validation of the declared shape against the SAME limit name the rule_text's own 'hostile headers must fail cheaply' wording is about.",
+    "2. Found expected_binary_size() was already imported and called in reader.py, but only conditionally inside the byte-skip -1 branch (a narrow, rarely-hit case) -- never unconditionally before the general decode_encoding() call path every other file goes through.",
+    "3. Verified with a standalone repro before writing any code: a header declaring only 10 bytes wrapping a gzip-compressed 5MB-of-zeros payload (highly compressible, so the ON-DISK compressed size is tiny -- 5128 bytes -- while the claimed decompressed size vastly exceeds the declared shape) was NOT rejected by the pre-fix code until the generic 2GB global ceiling, allowing substantial wasted decompression work for a file that should have been rejected immediately from its own header arithmetic.",
+    "4. Moved expected_binary_size()'s computation to happen unconditionally, once, before the encoding-specific branch. For the non-textual (raw/gzip/bzip2/hex) branch, built a tightened ResourceLimits via dataclasses.replace(limits, max_decompressed_bytes=min(limits.max_decompressed_bytes, expected)) and passed it into decode_encoding() instead of the original limits object -- no change to decode_encoding()'s own signature or internal logic.",
+    "5. Re-verified the same bomb repro now correctly raises ResourceLimitError citing the tightened decompression limit, and confirmed a legitimate gzip round-trip (array length matching the declared shape exactly) still loads correctly -- the cap is exactly permissive enough, not over-tight, for a well-formed file.",
+    "6. Added 2 tests to tests/python/nrrd/test_obligation_security_baseline.py (the existing home for nrrd's own resource-limit/hostile-input tests): the disproportionate-bomb rejection case, and a regression guard proving a legitimate compressed payload matching its own declared shape still loads.",
+    "7. Ran mypy --strict (clean), ruff (clean), the full nrrd suite (631 -> 633 passed, 1 skipped), and the 6-format regression (3694 -> 3696 passed, +2, 0 failed).",
+    "8. Promoted SAL-NRRD-OBL-9C262130232DCD09 partial->implemented in full -- this was the obligation's own last remaining clause after the trailing-data-policy fix earlier this session (FF6-EVENT-000276/281 area)."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_security_baseline.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_security_baseline.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_security_baseline.py -v -- 8 passed (2 new)",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd -q -- 633 passed, 1 skipped (was 631)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3696 passed, 4 skipped, 0 failed (was 3694)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation promoted partial->implemented",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 65,
+    "security_posture": "strengthened -- hostile files whose declared shape is disproportionate to their compressed payload's true decompressed size now fail earlier and cheaper, at a document-specific bound derived from the header's own checked arithmetic rather than only a generic global ceiling"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

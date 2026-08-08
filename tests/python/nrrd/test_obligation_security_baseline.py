@@ -21,6 +21,7 @@ description but no dedicated security test file existed for nrrd at all.
 from __future__ import annotations
 
 import ast
+import gzip
 from pathlib import Path
 
 import pytest
@@ -146,3 +147,34 @@ def test_element_count_multiplication_is_checked_against_the_decompressed_ceilin
 
     with pytest.raises(ResourceLimitError, match="resource limits"):
         loads(header)
+
+
+def test_a_compressed_bomb_disproportionate_to_the_declared_shape_fails_cheaply() -> None:
+    """SAL-NRRD-OBL-9C262130232DCD09 (NRRD-VALIDATE-001): "Validate declared
+    shape and encoded payload size with checked arithmetic BEFORE any
+    payload allocation... hostile headers must fail cheaply."
+
+    A header declaring a tiny shape (10 bytes) but wrapping a highly
+    compressible multi-megabyte payload must be rejected using the
+    declared shape's own checked arithmetic as the decompression cap, not
+    only the unrelated, much larger generic global ceiling -- so the
+    rejection happens at a size bound derived from what the header itself
+    claims, not merely "eventually, once some unrelated limit is hit."
+    """
+    header = _header("type: uint8\ndimension: 1\nsizes: 10\nencoding: gzip", payload=b"")
+    bomb = gzip.compress(bytes(5 * 1024 * 1024))
+
+    with pytest.raises(ResourceLimitError, match="decompression limit"):
+        loads(header + bomb)
+
+
+def test_a_legitimate_compressed_payload_matching_the_declared_shape_still_loads() -> None:
+    """Regression guard for the fix above: the declared-shape cap must be
+    exactly permissive enough for a well-formed file, not so tight it
+    rejects valid data."""
+    values = bytes(range(200)) + bytes(range(56))  # exactly 256 bytes
+    header = _header("type: uint8\ndimension: 1\nsizes: 256\nencoding: gzip", payload=b"")
+
+    document = loads(header + gzip.compress(values))
+
+    assert bytes(document.array) == values
