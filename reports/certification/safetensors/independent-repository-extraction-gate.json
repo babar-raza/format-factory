@@ -1,0 +1,34 @@
+{
+  "format_id": "safetensors",
+  "gate": "independent-repository-extraction",
+  "source_dir": "src/python/safetensors",
+  "isolated_location": "C:\\Users\\prora\\AppData\\Local\\Temp\\ff6-independent-repo-safetensors-a8i8a3us\\safetensors",
+  "source_file_count": 47,
+  "source_preserved_byte_identical": true,
+  "build_epoch": "315532800",
+  "isolated_build": {
+    "ok": true,
+    "seconds": 15.7,
+    "artifacts": {
+      "format_factory_safetensors-0.2.0.dev0-py3-none-any.whl": "715854d736a0685ba809fce7b10664cbc6f48434daea055ea380b26207cdab5b",
+      "format_factory_safetensors-0.2.0.dev0.tar.gz": "29cdc4b8408605ba8196e0d96d2bbcb19c5440a7fe0583851e5857f1bb22d945"
+    }
+  },
+  "in_place_build": {
+    "ok": true,
+    "seconds": 15.3,
+    "artifacts": {
+      "format_factory_safetensors-0.2.0.dev0-py3-none-any.whl": "715854d736a0685ba809fce7b10664cbc6f48434daea055ea380b26207cdab5b",
+      "format_factory_safetensors-0.2.0.dev0.tar.gz": "29cdc4b8408605ba8196e0d96d2bbcb19c5440a7fe0583851e5857f1bb22d945"
+    }
+  },
+  "package_digests_preserved": true,
+  "extracts_independently": true,
+  "verdict": "EXTRACTS_INDEPENDENTLY",
+  "invariant_text": "Every distribution extracts to an independent repository with preserved canonical source and package digests.",
+  "invariant_source": "plans/strategic/ff6/product-goal.yaml completion_invariants",
+  "tool": "tools/certification/independent_repository_extraction_gate.py --format safetensors",
+  "method": "Copied src/python/safetensors/ verbatim (47 files, excluding build/.pytest_cache/etc.) into a fresh OS-temp directory with no ancestor relationship to this repository, confirmed byte-identical against the original, built a wheel+sdist from that isolated copy with its own cwd (never this repository root), built a second wheel+sdist from the in-place source at the same pinned SOURCE_DATE_EPOCH, and compared artifact digests.",
+  "note": "Clean on the first run -- no build/-cache contamination found. This is one of product-goal.yaml's own completion invariants, separate from the 10-item gate list (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build). Not a certification claim -- the other outstanding program-wide invariant (all-six-co-install, already separately satisfied at FF6-EVENT-000322) and this format's own remaining obligation/gate work are tracked independently.",
+  "commit": "pending"
+}

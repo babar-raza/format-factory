@@ -1,0 +1,31 @@
+{
+  "summary": "ff6-six-format-independent-repository-extraction",
+  "goal_id": "FF6-PRODUCTION-LIBRARIES-001",
+  "invariant_text": "Every distribution extracts to an independent repository with preserved canonical source and package digests.",
+  "invariant_source": "plans/strategic/ff6/product-goal.yaml completion_invariants",
+  "status": "PASS_ALL_SIX",
+  "first_all_six_satisfied_at": "FF6-EVENT-000324",
+  "per_format_gate_files": {
+    "ipynb": "reports/certification/ipynb/independent-repository-extraction-gate.json",
+    "ora": "reports/certification/ora/independent-repository-extraction-gate.json",
+    "nrrd": "reports/certification/nrrd/independent-repository-extraction-gate.json",
+    "xliff": "reports/certification/xliff/independent-repository-extraction-gate.json",
+    "safetensors": "reports/certification/safetensors/independent-repository-extraction-gate.json",
+    "ubl": "reports/certification/ubl/independent-repository-extraction-gate.json"
+  },
+  "verdicts": {
+    "ipynb": "EXTRACTS_INDEPENDENTLY",
+    "ora": "EXTRACTS_INDEPENDENTLY",
+    "nrrd": "EXTRACTS_INDEPENDENTLY",
+    "xliff": "EXTRACTS_INDEPENDENTLY",
+    "safetensors": "EXTRACTS_INDEPENDENTLY",
+    "ubl": "EXTRACTS_INDEPENDENTLY"
+  },
+  "how_this_was_reached": "xliff was proven first (FF6-EVENT-000323), which surfaced a genuine build-hygiene bug: setuptools' legacy build_py incrementally reuses an existing build/ cache directory under a format's own src/python/{format}/ tree rather than clearing it first, so a stale file left over from an earlier source layout can silently ship inside a wheel. Fixed the two shared build tools that build in-place (packaging/python/build-local-packages.py, tools/certification/reproducible_build_gate.py) to clear source_dir/build before every build. Swept the remaining five formats this tick: ipynb and safetensors were already clean (no contamination found); nrrd, ora, and ubl passed this gate cleanly (their own build/ directories, some with well over a hundred stray files, were correctly cleared by the fix before comparison) but their separately-existing reproducible-build.json files were found stale against older digests and were refreshed using the now-fixed tool -- all three now agree exactly with this gate's own isolated-build digest.",
+  "honest_disclosed_gaps": [
+    "ubl: tools/run_package_install_proof.py (invoked with the system python resolved from PATH, not this repository's own .venv/Scripts/python.exe) produced a wheel digest for ubl that differs from this gate's own (both .venv-pinned) result. Confirmed this is NOT the build-cache bug (both interpreters individually produce stable, self-consistent output across repeated runs) -- it is a separate, genuine build-environment-pinning inconsistency: which python resolves PEP 517 build-time dependencies (setuptools/wheel/build) is not currently pinned consistently across every certification tool that invokes `python -m build`. Disclosed honestly, not fixed this tick -- a bounded, well-scoped future task (pin sys.executable consistently, or document that installed-wheel-gate proofs and reproducible-build/independent-repository-extraction proofs are not expected to byte-match when built via different interpreters).",
+    "This gate proves a format's OWN src/python/{format}/ tree is self-contained for BUILD purposes (producing a wheel needs no runtime dependency resolution, only PEP 517 build-system requirements). It does not separately re-verify that the built wheel then INSTALLS and IMPORTS correctly from a location with zero sibling FF6 packages present -- that is what the installed-wheel gate and the six-format co-install gate (reports/certification/ff6-six-format-co-install-gate.json) already cover, and both are cited as complementary evidence, not superseded by this one."
+  ],
+  "note": "This is one of product-goal.yaml's own multiple completion_invariants -- together with reports/certification/ff6-six-format-co-install-gate.json (satisfied at FF6-EVENT-000322), this closes the second of the two program-wide/per-format invariants that were completely unaddressed at the start of this session. Not a certification claim for any format -- no promotion.* field in controller-state.yaml changes as a result. The remaining, still-open work toward 6/6 is per-format obligation closure (nrrd/ora/ubl each still have unresolved obligations) and building the remaining 9 completion-invariant gates for ora/nrrd/ubl (currently only xliff/ipynb/safetensors have a full 10-gate set).",
+  "commit": "pending"
+}

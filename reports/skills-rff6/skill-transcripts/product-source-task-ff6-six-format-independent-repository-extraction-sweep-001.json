@@ -1,0 +1,80 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ff6-six-format-independent-repository-extraction-sweep-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-c40f76ac4ffcf236",
+  "mode": "live",
+  "timestamp": "2026-08-08T08:28:13Z",
+  "inputs": {
+    "format_id": "program-wide (ipynb, ora, nrrd, xliff, safetensors, ubl)",
+    "task_id": "TC_FF6_SIX_FORMAT_INDEPENDENT_REPOSITORY_EXTRACTION_SWEEP_001",
+    "task_kind": "mechanical-sweep-of-new-gate-plus-real-staleness-found-and-fixed",
+    "root_cause": "Event 323's own exact_next_action flagged an honest, disclosed gap: independent_repository_extraction_gate.py had only been run for xliff, and every other format's own build/ directory has stray files that MAY carry the same class of staleness the xliff run found and fixed -- worth a fast sweep before assuming the other five formats' own currently-recorded evidence is clean.",
+    "obligation_targeted": "Not a SAL-derived obligation -- product-goal.yaml's own completion_invariants, specifically completing the independent-repository-extraction clause for the remaining five FF6 formats (xliff already done at Event 323).",
+    "acceptance_evidence": "Ran tools/certification/independent_repository_extraction_gate.py --format <fmt> for ipynb, safetensors, nrrd, ora, and ubl. All five: EXTRACTS_INDEPENDENTLY. ipynb and safetensors had no contamination at all. nrrd, ora, and ubl each passed THIS gate cleanly (their own in-place _build() call already clears build/ per the Event 323 fix), but comparing against their separately-existing reproducible-build.json files revealed those were stale (recorded an older digest predating this session's own source changes to those formats) -- refreshed all three with the now-fixed reproducible_build_gate.py; all three now agree exactly with the independent-repository-extraction gate's own digest. Ran a fresh 6-format co-install proof afterward (6/6 PASS, unchanged) and discovered one further, separate, disclosed-not-fixed finding: ubl's wheel digest differs between tools/run_package_install_proof.py (system python on PATH) and the .venv-pinned gates -- confirmed this is a build-environment-pinning inconsistency, not the same build-cache bug.",
+    "regression_tier": "6-format regression, plus the independent-repository-extraction/reproducible-build/install-proof tools' own pass/fail verdicts for all 6 formats"
+  },
+  "execution_steps": [
+    "1. Ran tools/certification/independent_repository_extraction_gate.py --format ipynb -- EXTRACTS_INDEPENDENTLY on the first try, no contamination.",
+    "2. Ran the same for --format safetensors -- EXTRACTS_INDEPENDENTLY on the first try, no contamination.",
+    "3. Ran the same for --format nrrd -- EXTRACTS_INDEPENDENTLY. Compared this gate's own isolated-build wheel digest against the separately-existing reports/certification/nrrd/reproducible-build.json and found they DISAGREED (0ceea891... recorded vs 5c4b1745... from this gate) -- the existing reproducible-build.json predated this session's own source changes to nrrd (the attachment-conversion work from earlier this segment) and was simply stale, not re-verified since.",
+    "4. Ran the same for --format ora -- EXTRACTS_INDEPENDENTLY, same kind of staleness found in its own pre-existing reproducible-build.json (recorded before ora's own packaging-matrix entry was added this session).",
+    "5. Ran the same for --format ubl -- EXTRACTS_INDEPENDENTLY despite ubl's own build/ directory having 155 stray files, the most of any FF6 format (correctly cleared by this gate's own already-fixed _build()). Its own pre-existing reproducible-build.json was also stale (predating this session's own official-sample-roundtrip and other ubl work).",
+    "6. Re-ran tools/certification/reproducible_build_gate.py for nrrd, ora, and ubl to refresh their stale evidence with the now-fixed tool. All three: REPRODUCIBLE. Cross-checked each refreshed digest against the corresponding independent-repository-extraction gate's own isolated-build digest -- all three match exactly, confirming both tools now agree.",
+    "7. Ran a fresh 6-format co-install proof (tools/run_package_install_proof.py --format nrrd --format ora --format xliff --format ipynb --format safetensors --format ubl) to re-verify co-install still holds with the corrected wheels -- 6/6 PASS, deep_import failures unchanged from the prior run (ubl's own 2 pre-existing, unrelated findings).",
+    "8. Investigated one more discrepancy found while cross-checking: the proof-manifest.json's own wheel_sha256 for ubl (9f0aeab8...) did not match reproducible_build_gate.py's/the independent-repository-extraction gate's own digest (86a247c8...) for ubl specifically, even though both should now be building from an equally-cleared build/ dir. Root-caused directly: run_package_install_proof.py is invoked with plain `python` (resolves to the system Python on PATH, /c/Python313/python), which launches build-local-packages.py and therefore `python -m build` with that SAME system interpreter, while reproducible_build_gate.py and independent_repository_extraction_gate.py both explicitly pin .venv/Scripts/python.exe. Verified this is genuinely an interpreter-choice issue, not a residual build-cache bug: rebuilt ubl manually via .venv/Scripts/python -m build twice (with and without PYTHONHASHSEED=0) and got the identical digest (86a247c8...) both times, ruling out PYTHONHASHSEED as the cause and confirming the venv-python build path is itself stable. Disclosed this honestly in both the ubl gate file and the new program-wide summary rather than silently ignoring it or over-scoping into a same-tick fix across every tool's own interpreter resolution.",
+    "9. Wrote reports/certification/ff6-six-format-independent-repository-extraction-summary.json, a new program-wide record (mirroring the existing ff6-six-format-co-install-gate.json's own placement and style) consolidating all six formats' own verdicts, the how-this-was-reached narrative, and both honestly disclosed remaining gaps (the ubl interpreter-pinning finding, and this gate's own necessarily-narrower scope versus the install/co-install gates).",
+    "10. Enriched all 5 new per-format gate JSON files with the same narrative fields (invariant_text, invariant_source, tool, method, note) already established for xliff's own gate file at Event 323, for consistency across the full six-format set.",
+    "11. Ran the full 6-format regression (3930 passed, 4 skipped, 0 failed, unchanged) to confirm none of this tick's evidence-refresh work altered any product behavior."
+  ],
+  "allowed_files": [
+    "reports/certification/ipynb/independent-repository-extraction-gate.json",
+    "reports/certification/safetensors/independent-repository-extraction-gate.json",
+    "reports/certification/nrrd/independent-repository-extraction-gate.json",
+    "reports/certification/ora/independent-repository-extraction-gate.json",
+    "reports/certification/ubl/independent-repository-extraction-gate.json",
+    "reports/certification/ff6-six-format-independent-repository-extraction-summary.json",
+    "reports/certification/nrrd/reproducible-build.json",
+    "reports/certification/ora/reproducible-build.json",
+    "reports/certification/ubl/reproducible-build.json",
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/transcripts"
+  ],
+  "actual_files_changed": [
+    "reports/certification/ipynb/independent-repository-extraction-gate.json",
+    "reports/certification/safetensors/independent-repository-extraction-gate.json",
+    "reports/certification/nrrd/independent-repository-extraction-gate.json",
+    "reports/certification/ora/independent-repository-extraction-gate.json",
+    "reports/certification/ubl/independent-repository-extraction-gate.json",
+    "reports/certification/ff6-six-format-independent-repository-extraction-summary.json",
+    "reports/certification/nrrd/reproducible-build.json",
+    "reports/certification/ora/reproducible-build.json",
+    "reports/certification/ubl/reproducible-build.json",
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/transcripts/package-install-proof-ipynb.json",
+    "reports/package-install-proof/transcripts/package-install-proof-nrrd.json",
+    "reports/package-install-proof/transcripts/package-install-proof-ora.json",
+    "reports/package-install-proof/transcripts/package-install-proof-safetensors.json",
+    "reports/package-install-proof/transcripts/package-install-proof-ubl.json",
+    "reports/package-install-proof/transcripts/package-install-proof-xliff.json"
+  ],
+  "tests_run": [
+    "python tools/certification/independent_repository_extraction_gate.py --format {ipynb,safetensors,nrrd,ora,ubl} -- all 5: EXTRACTS_INDEPENDENTLY",
+    "python tools/certification/reproducible_build_gate.py --package-dir src/python/{nrrd,ora,ubl} -- all 3: REPRODUCIBLE",
+    "python tools/run_package_install_proof.py --format nrrd --format ora --format xliff --format ipynb --format safetensors --format ubl -- RESULT: 6/6 PASS",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3930 passed, 4 skipped, 0 failed (unchanged)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "The independent-repository-extraction completion invariant now has direct PASS evidence for all six FF6 formats -- the second and last of the two previously-fully-unaddressed program-wide/per-format invariants is now closed for the whole program (the first, all-six-co-install, closed at Event 322).",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": "N/A (program-wide slice)",
+    "new_public_api": "none -- evidence-generation and tooling-verification work only"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
