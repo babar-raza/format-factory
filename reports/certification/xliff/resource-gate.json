@@ -21,8 +21,9 @@
       "tests/python/xliff/test_obligation_security_limits.py",
       "tests/python/xliff/test_obligation_resource_resolution_security.py"
     ],
-    "tests_run": 14,
-    "tests_passed": 14,
+    "tests_run": 17,
+    "tests_passed": 17,
+    "correction_note": "FF6-EVENT-000399 found and corrected a miscount: this field previously read 14, which is the number of `def test_...` FUNCTION DEFINITIONS across both files (11 + 3), not the number of test CASES pytest actually collects and runs. test_a_hostile_note_path_never_touches_the_filesystem in test_obligation_resource_resolution_security.py is parametrized over 4 cases (relative-traversal, unix-absolute-path, windows-absolute-path, file-uri-scheme), so 1 function definition produces 4 executed test cases -- 11 + (3 - 1 + 4) = 17, independently reconfirmed via `pytest -v` collecting and passing exactly 17 items. Both files were already in their current, already-parametrized form when this gate was originally built (verified via git log: no commits to either file after the gate-building commit), so this was a genuine counting error at authorship time, not evidence drift.",
     "key_proof": "test_an_attribute_flood_on_one_element_is_rejected and test_a_text_flood_exceeding_the_decoded_byte_limit_is_rejected both prove max_entries/max_decompressed_bytes enforcement happens incrementally during parsing, not after the full document is already materialized; test_a_wide_shallow_document_is_bounded_by_node_count_not_depth proves max_xml_nodes and max_nesting_depth are independent dimensions, not one masking the other; test_default_limits_apply_without_caller_opt_in proves XLIFF_DEFAULT_LIMITS is the enforced floor even when a caller passes no explicit limits."
   },
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file consolidates already-existing, already-passing resource-limit evidence into a dedicated gate record; not a certification claim for the format as a whole.",
