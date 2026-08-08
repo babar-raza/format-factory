@@ -1,0 +1,53 @@
+format_id: ora
+provenance_version: "1.0"
+provenance_date: "2026-08-08"
+acquisition_sprint: FF6-EVENT-000288-PROVENANCE-BACKFILL
+commercial_product_ready: false
+
+# All ORA (OpenRaster) corpus samples are project-owned synthetic archives,
+# conformant to the OpenRaster baseline/file-layout/layer-stack specifications
+# pinned in shared/format-contracts/authority-lock.yaml:
+#   https://invent.kde.org/documentation/openraster-org/-/raw/f050b99fa8af44cb4cc3c9d842d25097458765f6/baseline/baseline.rst
+# Originally added in commit 356a0008 ("ORA gains layer-source PNG structural
+# validation... and its first sample fixtures, which the format had none of"),
+# alongside the layer-PNG-validation and lifecycle/write obligation tests that
+# consume them (tests/python/ora/test_obligation_lifecycle_and_write.py,
+# test_obligation_stack_and_document.py). No standalone generation script was
+# preserved separately from that commit; the fixtures were built as ZIP
+# archives containing a stack.xml layer manifest plus PNG layer/thumbnail/
+# mergedimage members, matching the structure the format's own reader/writer
+# round-trips exercise in the same commit's test additions.
+# All files are fully deterministic, zero third-party sample content.
+
+samples:
+  - sample_id: valid/minimal.ora
+    source_type: project-owned-synthetic
+    generation_tool: "format_factory.ora write path (commit 356a0008)"
+    generation_date: "2026-08-05"
+    input_content: "Minimal single-layer OpenRaster document: one PNG layer plus required mergedimage/thumbnail members and a stack.xml layer manifest."
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/multi-layer.ora
+    source_type: project-owned-synthetic
+    generation_tool: "format_factory.ora write path (commit 356a0008)"
+    generation_date: "2026-08-05"
+    input_content: "OpenRaster document with multiple stacked PNG layers under a single layer stack, exercising layer-order and opacity/visibility attributes."
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+  - sample_id: valid/with-groups.ora
+    source_type: project-owned-synthetic
+    generation_tool: "format_factory.ora write path (commit 356a0008)"
+    generation_date: "2026-08-05"
+    input_content: "OpenRaster document with nested layer groups (<stack> elements containing child <stack>/<layer> elements), exercising the format's group-nesting model."
+    license: Apache-2.0
+    copyright: "format-factory project"
+    provenance_status: confirmed
+
+# Note: samples/by-format/ora/invalid/ currently has no fixture files. This is
+# a separate, pre-existing gap from the provenance-record gap this file closes
+# -- not addressed here since it requires new invalid-case content, not a
+# provenance record for content that already exists.
