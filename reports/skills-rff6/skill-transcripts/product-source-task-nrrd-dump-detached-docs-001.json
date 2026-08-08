@@ -1,0 +1,50 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-dump-detached-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-d59e4d15e0f7fba0",
+  "mode": "live",
+  "timestamp": "2026-08-08T17:25:47Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_DUMP_DETACHED_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-a-final-attempt-in-a-long-documentation-completeness-effort",
+    "root_cause": "Event 366's own exact_next_action named nrrd's dump_detached as the most promising remaining candidate for one more documentation-direction attempt, parallel to the already-documented convert_to_attached/convert_to_detached_list family. Read codec/writer/writer.py's dump_detached() in full: confirmed it is a real, obligation-linked (NRRD-PAYLOAD-001, NRRD-SEC-001) direct write path for the single-file detached form -- distinct from convert_to_attached/convert_to_detached_list, which convert an ALREADY-LOADED document's own form, since dump_detached writes any document straight to header+separate-payload destinations in one call. Grepped the README directly for the literal string and confirmed zero prior mentions.",
+    "obligation_targeted": "No specific obligation-register status change (nrrd remains at 9/65 unresolved, unaffected by this tick) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage.",
+    "acceptance_evidence": "Verified dump_detached() end-to-end against a real corpus document (loaded via load() from samples/by-format/nrrd/valid/2d-float32.nrrd): wrote it to a real temporary header file and a real, separate temporary payload file, confirmed both exist on disk, confirmed the written header's own 'data file:' field correctly names the payload file, and confirmed reloading the header via load() reproduces the document's exact original array values -- a genuine, complete write-then-reload round trip against real data, not a synthetic in-memory-only check."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 366 commit (b10c61486); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Read codec/writer/writer.py's dump_detached() (lines 206-236+) in full: confirmed it writes a document's header (with a correctly-named 'data file:' field) to one destination and the encoded payload to a separate destination, enforcing the same detached-path confinement rules the reader itself later applies when reading the file back (payload_destination must resolve inside header_destination's own directory) -- a real, deliberate, obligation-linked write path, not a supporting internal detail.",
+    "3. Confirmed via grep that 'dump_detached' appears nowhere in src/python/nrrd/README.md before this tick.",
+    "4. Verified the exact example before writing it: loaded a real corpus document (samples/by-format/nrrd/valid/2d-float32.nrrd) via load(), called dump_detached(document, header_path, payload_path) against real temporary file paths, confirmed both files were actually created on disk, read the written header text back and confirmed its own 'data file:' field correctly names the payload file by its relative filename, and reloaded the header via load() -- confirmed the reloaded document's own array values matched the original document's exactly, proving a genuine, complete round trip through real files, not merely that the function runs without raising.",
+    "5. Added dump_detached() to the existing 'Attachment-form conversion' README section (rather than creating a new section, since it is thematically and functionally adjacent to the already-documented convert_to_attached/convert_to_detached_list family), with one new example line and an extended prose sentence explaining the distinction between converting an already-loaded document's own form and writing any document directly to single-file detached form, plus the confinement rule grounded directly in the source's own docstring.",
+    "6. Regenerated reports/certification/nrrd/documentation-gate.json to reflect the addition -- updated readme_line_count (221 -> 229), symbol_existence count (24 distinct names now, +dump_detached), a new dedicated 'dump_detached_verified' check entry documenting the full round-trip verification, and extended the incidental_finding and honest_gap to note this closes dump_detached while decode_nrrd_data/encode_nrrd_data (low-level codec functions) and load_nrrd/probe_nrrd/write_nrrd (likely alpha-compatibility facades, matching the pattern already confirmed for ipynb's own load_ipynb/write_ipynb/probe_ipynb at Event 363) remain smaller, lower-priority candidates for a future tick.",
+    "7. Did not modify any production source code -- dump_detached already existed, fully correct and already tested by the existing test suite; this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration. Did not re-run the nrrd test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/README.md",
+    "reports/certification/nrrd/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/README.md",
+    "reports/certification/nrrd/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: dump_detached against a real corpus document loaded via load() -- confirmed both output files created, header content correct, and a full write-then-reload round trip reproducing the exact original array values",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap for an already-implemented, already-exported, obligation-linked capability (dump_detached, NRRD-PAYLOAD-001/NRRD-SEC-001) -- no obligation status change (nrrd remains at 9/65 unresolved, unaffected), but a real developer-discoverability improvement to an already-PASS-ing documentation gate.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

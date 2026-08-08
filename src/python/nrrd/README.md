@@ -35,7 +35,7 @@ on the first problem.
 ## Attachment-form conversion
 
 ```python
-from format_factory.nrrd import convert_to_attached, convert_to_detached_list
+from format_factory.nrrd import convert_to_attached, convert_to_detached_list, dump_detached
 
 # Detached (header + separate .raw payload file(s)) -> single attached file
 report = convert_to_attached(document, "combined.nrrd")
@@ -43,11 +43,19 @@ report = convert_to_attached(document, "combined.nrrd")
 # Attached -> detached LIST form, one payload file per declared axis slice
 report = convert_to_detached_list(document, "volume.nhdr", ["slice-0.raw", "slice-1.raw"])
 print(report.bytes_written, report.form)
+
+# Write any document straight to single-file detached form
+dump_detached(document, "volume.nhdr", "volume.raw")
 ```
 
 Composes the existing reader/writer primitives rather than a separate
 code path -- the same document round-trips identically regardless of
-which attachment form it started or ends in.
+which attachment form it started or ends in. `dump_detached()` is the
+direct write path for the single-file detached case (as opposed to
+converting an already-loaded document's own form): the payload
+destination must resolve to a path inside the header destination's own
+directory, the same confinement `load()` itself enforces when reading a
+detached file back.
 
 ## Encoding and dtype conversion
 
