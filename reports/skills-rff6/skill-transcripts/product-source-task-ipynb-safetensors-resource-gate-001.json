@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-safetensors-resource-gate-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-290456768f5b0bfd",
+  "mode": "live",
+  "timestamp": "2026-08-08T05:30:38Z",
+  "inputs": {
+    "format_id": "ipynb+safetensors",
+    "task_id": "TC_FF6_IPYNB_SAFETENSORS_RESOURCE_GATE_001",
+    "task_kind": "certification-gate-frontier-fourth-step-plus-genuine-writer-gap-fix",
+    "root_cause": "Event 310's own exact_next_action named 'resource' as the next invariant, noting ResourceLimits enforcement is already extensively tested but not consolidated into a gate record. Confirmed ipynb's own coverage directly (5 enforced dimensions, 8 dedicated tests, all passing). While doing the same audit for safetensors, read security/limits.py and found SAFETENSORS_LIMITS already declares max_output_bytes=512MiB, but grepping writer.py for limits.enforce found zero hits -- dumps()/dump() had no limits parameter at all, confirmed by reading the full file.",
+    "obligation_targeted": "product-goal.yaml's own 'resource' completion invariant for ipynb and safetensors -- NOT a certification claim for either format as a whole. The safetensors writer fix is also a genuine, real product-capability gap closure (an already-declared but unenforced resource limit).",
+    "acceptance_evidence": "safetensors dumps()/dump() now accept an optional limits keyword (defaulting via effective_limits(), the same resolution every other entry point already uses) and enforce max_output_bytes against the final encoded byte length before returning. Verified end-to-end with a standalone repro before any test was written: default limits permit a small document; a tiny max_output_bytes refuses with the correct actual/allowed values in the message; dump() to a path never touches the destination file when refused. 5 new tests.",
+    "regression_tier": "full safetensors suite, full 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Ran tests/python/ipynb/test_obligation_security_limits.py directly (8/8 passed) and grepped ipynb's own source for every limits.enforce call site (5 dimensions: max_input_bytes, max_output_bytes, max_decompressed_bytes, max_entries, max_nesting_depth, spread across reader.py, writer.py, security/limits.py, security/sanitizer.py, security/trust.py) to build an accurate, non-inflated inventory.",
+    "2. Ran the same grep for safetensors' own source: 5 dimensions enforced on the READ side (max_input_bytes, max_entries, max_tensor_count, max_nesting_depth, max_header_bytes), zero on the write side.",
+    "3. Read security/limits.py directly: SAFETENSORS_LIMITS already declares max_output_bytes=512*1024*1024 -- the VALUE exists and is documented, but nothing calls .enforce('max_output_bytes', ...) anywhere in the package. Read writer.py's full dumps()/dump() signatures directly: confirmed neither accepts a limits parameter at all.",
+    "4. Ran the same keyword-matched test search used for the resource-gate audit (limit/bound/oversized/exceed) across the whole safetensors suite: 27 tests across 7 files, all passing, none touching the writer's own output size.",
+    "5. Fixed the gap: added limits: ResourceLimits | None = None to dumps(), resolved via effective_limits() (the same helper every reader entry point already uses), and called active_limits.enforce('max_output_bytes', len(result)) on the final assembled bytes (length-prefix + header JSON + every tensor's payload) before returning. Threaded the same parameter through dump(), passed straight to dumps().",
+    "6. Verified no other caller in __init__.py wraps dumps/dump with a fixed signature that the new optional kwarg could break -- confirmed plain re-export only.",
+    "7. Verified directly with a standalone repro before writing any test: loaded a real sample (samples/by-format/safetensors/valid/single-tensor.safetensors), confirmed default-limits dumps() still works, and a tiny max_output_bytes=10 limit correctly raises ResourceLimitError with the actual/allowed values in the message (72 > 10) -- discovered during this repro that .enforce() raises the CORE ResourceLimitError directly (not wrapped into SafeTensorsWriteError), matching the reader's own existing behavior, and corrected the test file's initial (wrong) exception-type assumption before it was ever run against a red test.",
+    "8. Added 5 tests (test_obligation_writer_output_limit.py): default limits permit a small document; an oversized document is refused; an explicit larger limit still writes; dump() to a path never touches the destination when refused; the refusal message names both actual and allowed sizes.",
+    "9. Ran mypy --strict (clean), ruff (clean), the full safetensors suite (411 -> 416 passed, +5), and the 6-format regression (3767 -> 3772 passed, +5, 0 failed, 4 skipped).",
+    "10. Wrote reports/certification/ipynb/resource-gate.json (consolidating existing evidence, no source change needed) and reports/certification/safetensors/resource-gate.json (consolidating existing evidence PLUS the new max_output_bytes fix, moved from 'not_applicable_dimensions' to 'enforced_dimensions' with an honest note explaining what changed and why)."
+  ],
+  "allowed_files": [
+    "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py",
+    "tests/python/safetensors/test_obligation_writer_output_limit.py",
+    "reports/certification/ipynb/resource-gate.json",
+    "reports/certification/safetensors/resource-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py",
+    "tests/python/safetensors/test_obligation_writer_output_limit.py",
+    "reports/certification/ipynb/resource-gate.json",
+    "reports/certification/safetensors/resource-gate.json"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/safetensors/test_obligation_writer_output_limit.py -v -- 5 passed (all new)",
+    ".venv/Scripts/python -m mypy --strict src/python/safetensors/src/format_factory/safetensors/codec/writer/writer.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/safetensors -q -- 416 passed, 3 skipped (was 411 passed, 3 skipped)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3772 passed, 4 skipped, 0 failed (was 3767)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations closed (this is a certification-gate invariant, not an obligation); 1 genuine resource-enforcement gap fixed in shipped product source",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": "ipynb=68, safetensors=86",
+    "new_public_api": "format_factory.safetensors.dumps(..., limits=...) / dump(..., limits=...)"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

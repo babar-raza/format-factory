@@ -1,0 +1,30 @@
+{
+  "format_id": "ipynb",
+  "gate": "resource",
+  "status": "PASS",
+  "verdict": "PASS",
+  "enforced_dimensions": {
+    "max_input_bytes": "codec/reader/reader.py, security/trust.py",
+    "max_output_bytes": "codec/writer/writer.py",
+    "max_decompressed_bytes": "codec/reader/reader.py, security/limits.py, security/sanitizer.py, security/trust.py",
+    "max_entries": "security/limits.py, security/sanitizer.py, security/trust.py -- enforced incrementally during parsing (bounded_object_pairs_hook), not only after full materialization",
+    "max_nesting_depth": "security/limits.py, security/trust.py"
+  },
+  "not_applicable_dimensions": {
+    "max_header_bytes": "no fixed-size binary header in this format",
+    "max_compression_ratio": "no compression in nbformat JSON",
+    "max_xml_nodes": "not an XML format",
+    "max_tensor_count": "not a tensor format"
+  },
+  "evidence": {
+    "test_file": "tests/python/ipynb/test_obligation_security_limits.py",
+    "tests_run": 8,
+    "tests_passed": 8,
+    "key_proof": "test_a_single_oversized_object_is_rejected_before_full_materialization and test_many_separate_objects_are_rejected_on_the_cumulative_running_total both prove enforcement happens incrementally during json.loads' own object_pairs_hook, not after the full document is already materialized in memory -- a 200,000-key object with max_entries=5 is refused without ever building the full dict."
+  },
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file consolidates already-existing, already-passing resource-limit evidence into a dedicated gate record; not a certification claim for the format as a whole.",
+  "regression": {
+    "ipynb_suite": "725 passed (unchanged, pure evidence consolidation)"
+  },
+  "commit": "pending"
+}

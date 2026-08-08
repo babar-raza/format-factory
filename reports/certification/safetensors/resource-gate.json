@@ -1,0 +1,38 @@
+{
+  "format_id": "safetensors",
+  "gate": "resource",
+  "status": "PASS",
+  "verdict": "PASS",
+  "enforced_dimensions": {
+    "max_input_bytes": "codec/reader/reader.py",
+    "max_output_bytes": "codec/writer/writer.py -- FIXED this tick: SAFETENSORS_LIMITS already declared this ceiling but dumps()/dump() never consulted it (no limits parameter existed on either). Now enforced against the final encoded byte length (length-prefix + header JSON + all tensor payloads) before returning. See tests/python/safetensors/test_obligation_writer_output_limit.py.",
+    "max_entries": "codec/reader/reader.py -- header entry count bounded during parsing, not only after (test_header_entry_count_is_bounded_during_parsing_not_only_after)",
+    "max_tensor_count": "codec/reader/reader.py",
+    "max_nesting_depth": "codec/reader/reader.py -- reused as the configurable tensor-rank limit (test_tensor_rank_uses_the_configurable_nesting_limit)",
+    "max_header_bytes": "codec/reader/reader.py plus a dedicated official-spec-value test (100,000,000 bytes) and a stricter-default-than-official-ceiling test"
+  },
+  "not_applicable_dimensions": {
+    "max_decompressed_bytes": "safetensors has no compression layer",
+    "max_xml_nodes": "not an XML format"
+  },
+  "evidence": {
+    "test_files": [
+      "tests/python/safetensors/test_obligation_validation_contract.py",
+      "tests/python/safetensors/test_reference_header_layout_lazy_slice.py",
+      "tests/python/safetensors/test_obligation_tensor_regions.py",
+      "tests/python/safetensors/test_obligation_integer_overflow.py",
+      "tests/python/safetensors/test_safetensors_validation.py",
+      "tests/python/safetensors/test_lazy_io.py",
+      "tests/python/safetensors/test_production_namespace.py",
+      "tests/python/safetensors/test_obligation_writer_output_limit.py"
+    ],
+    "tests_matched_and_run": 32,
+    "tests_passed": 32,
+    "key_proof": "test_official_header_limit_100_000_000_bytes_enforced and test_default_limit_is_stricter_than_the_official_ceiling together prove the enforced default is deliberately tighter than the official spec's own maximum, not merely matching it; test_header_entry_count_is_bounded_during_parsing_not_only_after proves incremental (not post-hoc) enforcement; the offset/region-bounds and integer-overflow tests prove tensor byte-range and shape-dimension arithmetic is checked, not merely trusted from the header; test_obligation_writer_output_limit.py (5 new tests) proves the newly-added max_output_bytes writer enforcement: refuses an oversized document, permits one within an explicit larger limit, refuses before any bytes reach dump()'s own destination write, and the refusal message names both the actual and allowed size."
+  },
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file consolidates already-existing resource-limit evidence plus 1 genuine gap fixed this tick (writer output-size enforcement) into a dedicated gate record; not a certification claim for the format as a whole.",
+  "regression": {
+    "safetensors_suite": "411 -> 416 passed, 3 skipped (+5)"
+  },
+  "commit": "pending"
+}

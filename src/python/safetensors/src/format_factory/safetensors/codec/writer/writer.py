@@ -7,10 +7,11 @@ import struct
 from os import PathLike
 from pathlib import Path
 
-from format_factory.core import BinaryDestination
+from format_factory.core import BinaryDestination, ResourceLimits
 
 from ...errors import SafeTensorsWriteError
 from ...model import SafeTensorsDocument
+from ...security import effective_limits
 from ...validation.validator import validate
 
 
@@ -18,12 +19,14 @@ def dumps(
     document: SafeTensorsDocument,
     *,
     profile: str | None = None,
+    limits: ResourceLimits | None = None,
 ) -> bytes:
     if profile not in {None, "v0.8.0"}:
         raise ValueError("only the v0.8.0 profile is supported")
     report = validate(document)
     if not report:
         raise SafeTensorsWriteError(report.errors[0].message)
+    active_limits = effective_limits(limits)
 
     header: dict[str, object] = {}
     if document.metadata_declared:
@@ -58,7 +61,9 @@ def dumps(
         raise SafeTensorsWriteError(f"header is not JSON serializable: {exc}") from exc
     padding = (-len(encoded)) % 8
     encoded += b" " * padding
-    return struct.pack("<Q", len(encoded)) + encoded + b"".join(payload_parts)
+    result = struct.pack("<Q", len(encoded)) + encoded + b"".join(payload_parts)
+    active_limits.enforce("max_output_bytes", len(result))
+    return result
 
 
 def dump(
@@ -66,8 +71,9 @@ def dump(
     destination: BinaryDestination,
     *,
     profile: str | None = None,
+    limits: ResourceLimits | None = None,
 ) -> None:
-    data = dumps(document, profile=profile)
+    data = dumps(document, profile=profile, limits=limits)
     if isinstance(destination, (str, PathLike)):
         Path(destination).write_bytes(data)
         return
