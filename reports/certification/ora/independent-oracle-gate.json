@@ -1,0 +1,18 @@
+{
+  "format_id": "ora",
+  "gate": "independent-oracle",
+  "tool": "tools/oracle/execute_oracle.py --format ora",
+  "oracle_package": "oracle/formats/ora/oracle-package.yaml",
+  "run_summary": "oracle/formats/ora/reports/oracle-run-summary.json",
+  "total_cases": 5,
+  "results": {"PASS": 5, "FAIL": 0, "BLOCKED": 0, "INCONCLUSIVE": 0},
+  "pass_rate": "5/5",
+  "verdict": "ALL_PASS",
+  "status": "PASS",
+  "format_depth_score": "D1",
+  "depth_histogram": {"D1": 3, "D0": 2},
+  "coverage_gaps": [],
+  "genuinely_new_this_tick": "No oracle package existed for ora anywhere in the repository before this tick -- oracle/formats/ora/ did not exist. Built oracle-package.yaml from scratch, citing the 3 pinned OpenRaster authority sources (SRC-ORA-001/002/003, baseline/file-layout/layer-stack specs) already used for this format's own obligation register, and the 3 real valid samples plus 2 of the 6 real invalid samples already present in samples/by-format/ora/. Registered ora in tools/oracle/enriched_generic.py's own ENRICHED_LOADERS dict (it had no entry there either) with a new _enrich_model() branch exposing declared_version, detected_version, width, height, and a newly-written recursive layer_count helper -- the generic single-level-attribute oracle executor cannot see nested OraImage.document.width directly, so this enrichment step is what makes those properties observable at all, following the exact same pattern already established for safetensors/ubl/xliff in that same file.",
+  "note": "D1 = model properties (declared/detected version, canvas width/height, recursive layer count) compared against expected values (3 cases); D0 = load did not crash, no property comparison (2 cases, both invalid-input refusals). D2 (schema validation via lxml/RelaxNG) does not apply -- ora has no XSD-family schema, its own container/stack.xml grammar is enforced by hand-written parsers directly. Oracle package schema-validation carries a separate, non-blocking WARNING (oracle-package.schema.json's own corpus_refs property expects an array of plain strings, but this package -- like every other FF6 oracle package, xliff included -- uses richer per-sample objects; this exact staleness was already identified and deliberately deferred at FF6-EVENT-000310 as a portfolio-wide, not ora-specific, gap). This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the independent-oracle invariant only, not a certification claim for the format as a whole.",
+  "commit": "pending"
+}

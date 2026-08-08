@@ -1,0 +1,23 @@
+{
+  "format_id": "ora",
+  "gate": "security",
+  "tool": "AST static import/call sweep + existing ORA-SEC-001 test suite",
+  "target": "src/python/ora/src/format_factory/ora",
+  "status": "PASS",
+  "verdict": "PASS",
+  "checks": {
+    "fully_forbidden_modules_never_imported": "PASS (socket, http, ftplib, smtplib, pkgutil, ctypes, subprocess -- 0 occurrences)",
+    "urllib_never_imported": "PASS (0 occurrences of any urllib submodule anywhere in the package)",
+    "no_dynamic_import_call_anywhere": "PASS (no importlib.import_module or __import__ call anywhere)",
+    "no_eval_exec_compile_call_anywhere_in_source": "PASS"
+  },
+  "prior_art": "ora's own ORA-SEC-001 obligation (configurable resource limits with safe defaults, no implicit external effects, ZIP path-traversal protection, untrusted-payload discipline, complexity-attack guards) already has its own dedicated, substantial test file: tests/python/ora/test_obligation_security_baseline.py (17 tests). This gate adds the one complementary check that file does not already provide: a package-wide static import/call sweep. A direct AST sweep confirmed ora has zero legitimate use case anywhere for subprocess, networking modules, or dynamic imports -- no allow-list exceptions needed, matching the identical finding already made for xliff this session.",
+  "new_tests": "tests/python/ora/test_obligation_security_static_sweep.py (4 tests, all new -- a separate file from the pre-existing test_obligation_security_baseline.py, not a replacement of it)",
+  "correction_this_tick": "A first draft of this gate's own new test file was mistakenly WRITTEN OVER the pre-existing test_obligation_security_baseline.py (a real, substantial 17-test ORA-SEC-001 proof committed earlier this session, commits 8c7600da/8f8a7fcc) instead of being added as a new file. Caught via a full-suite test-count check (349 expected, 332 observed after the mistaken overwrite) before any commit -- git checkout -- restored the original file intact, and the new checks were placed in a distinctly-named test_obligation_security_static_sweep.py instead. No test coverage was lost; this is disclosed for the record, not silently corrected.",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the security invariant only, not a certification claim for the format as a whole.",
+  "regression": {
+    "ora_suite": "355 passed (was 349, +4 static-sweep +2 max_output_bytes tests recorded separately under the resource gate)",
+    "six_format_suite": "3936 passed, 4 skipped, 0 failed"
+  },
+  "commit": "pending"
+}

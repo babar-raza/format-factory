@@ -30,9 +30,11 @@ import zlib
 
 import pytest
 
+from format_factory.core import ResourceLimits
 from format_factory.ora import (
     OraArchiveError,
     OraImage,
+    OraLimitError,
     OraValidationError,
     PreservationMode,
     ReadMode,
@@ -316,6 +318,26 @@ def test_output_does_not_depend_on_input_member_order() -> None:
     )
 
     assert dumps(loads(first)) == dumps(loads(second))
+
+
+def test_dumps_enforces_max_output_bytes() -> None:
+    """The serialized archive's own final byte length is checked against
+    limits.max_output_bytes -- a caller-supplied ceiling smaller than the
+    real output is refused, not silently written anyway."""
+    image = loads(complete_archive())
+    tiny_limits = ResourceLimits(max_output_bytes=10)
+
+    with pytest.raises(OraLimitError, match="max_output_bytes|over the limit"):
+        dumps(image, limits=tiny_limits)
+
+
+def test_dumps_within_max_output_bytes_still_succeeds() -> None:
+    image = loads(complete_archive())
+    generous_limits = ResourceLimits(max_output_bytes=10_000_000)
+
+    payload = dumps(image, limits=generous_limits)
+
+    assert len(payload) <= generous_limits.max_output_bytes
 
 
 def test_the_written_archive_is_accepted_by_our_own_loader() -> None:

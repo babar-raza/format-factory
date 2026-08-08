@@ -1,0 +1,31 @@
+{
+  "format_id": "ora",
+  "gate": "resource",
+  "status": "PASS",
+  "verdict": "PASS",
+  "enforced_dimensions": {
+    "max_input_bytes": "codec/container.py::OraContainer.from_bytes -- enforced on the raw archive payload length before any parsing",
+    "max_entries": "codec/container.py::_check_limits -- enforced on the ZIP central directory's own declared member count, refused before decompressing a single byte; also independently enforced per-element as a cumulative attribute-count guard in codec/stack_xml.py's incremental walk",
+    "max_decompressed_bytes": "codec/container.py::_check_limits -- enforced on the ZIP central directory's own declared uncompressed size sum (a zip-bomb whose declared sizes alone exceed the limit is refused without decompression); also enforced as a canvas-pixel-count ceiling in codec/stack_xml.py and codec/png_metadata.py via checked_product, an overflow-safe width*height multiplication",
+    "max_compression_ratio": "codec/container.py::_check_limits -- a genuine zip-bomb detector: declared-uncompressed / declared-compressed is checked against the ratio ceiling from the central directory alone, before any member is extracted",
+    "max_xml_nodes": "codec/stack_xml.py -- enforced incrementally during stack.xml element parsing, not only after full materialization",
+    "max_nesting_depth": "codec/stack_xml.py -- enforced incrementally during stack.xml element parsing",
+    "max_header_bytes": "codec/stack_xml.py -- enforced on the stack.xml payload length before parsing",
+    "max_output_bytes": "lifecycle.py::dumps() -- NEW this tick. Previously unenforced (dumps()/dump() accepted no limits parameter at all, confirmed by reading the source directly, not assumed). Added a limits: ResourceLimits = DEFAULT_LIMITS parameter to both dumps() and dump(), enforced on the final serialized archive's own byte length, raising OraLimitError -- matching the exact pattern already used by xliff/ipynb/safetensors/ubl's own writer.py."
+  },
+  "evidence": {
+    "test_files": [
+      "tests/python/ora/test_obligation_security_baseline.py",
+      "tests/python/ora/test_obligation_stack_and_document.py",
+      "tests/python/ora/test_obligation_lifecycle_and_write.py"
+    ],
+    "tests_run": 15,
+    "tests_passed": 15,
+    "key_proof": "test_total_declared_size_over_the_limit_is_refused_before_reading and test_an_extreme_compression_ratio_is_refused both prove the zip-bomb dimensions (max_decompressed_bytes, max_compression_ratio) are checked from the ZIP central directory alone, before any member is decompressed. test_a_nested_layer_attribute_flood_is_rejected/test_a_root_image_attribute_flood_is_rejected/test_a_top_level_stack_attribute_flood_is_rejected prove max_entries is enforced cumulatively across every element in the tree, not just the root. The two new tests this tick, test_dumps_enforces_max_output_bytes and test_dumps_within_max_output_bytes_still_succeeds, prove the newly-added max_output_bytes enforcement on the write path: a caller-supplied ceiling smaller than the real output is refused with OraLimitError, not silently written anyway."
+  },
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file consolidates already-existing resource-limit evidence AND closes one genuine, real gap found this tick (max_output_bytes was entirely unenforced on the write path before this fix). Not a certification claim for the format as a whole.",
+  "regression": {
+    "ora_suite": "355 passed (was 349; +4 static-sweep security tests, +2 max_output_bytes tests)"
+  },
+  "commit": "pending"
+}

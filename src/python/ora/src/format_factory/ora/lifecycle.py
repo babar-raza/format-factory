@@ -87,9 +87,8 @@ def _read_source(source: Source) -> bytes:
         return bytes(source)
     if isinstance(source, (str, os.PathLike)):
         return Path(source).read_bytes()
-    read = getattr(source, "read", None)
-    if callable(read):
-        return read()
+    if hasattr(source, "read"):
+        return source.read()
     raise TypeError(
         f"cannot load an OpenRaster image from {type(source).__name__}; expected "
         "bytes, a filesystem path, or a readable binary stream"
@@ -421,7 +420,10 @@ def _escape(value: str) -> str:
 
 
 def dumps(
-    image: OraImage, *, preservation: PreservationMode = PreservationMode.LOSSLESS
+    image: OraImage,
+    *,
+    preservation: PreservationMode = PreservationMode.LOSSLESS,
+    limits: ResourceLimits = DEFAULT_LIMITS,
 ) -> bytes:
     """Serialize deterministically.
 
@@ -449,7 +451,13 @@ def dumps(
             info.external_attr = 0o644 << 16
             archive.writestr(info, members[name])
 
-    return buffer.getvalue()
+    payload = buffer.getvalue()
+    if len(payload) > limits.max_output_bytes:
+        raise OraLimitError(
+            f"serialized archive is {len(payload)} bytes, over the limit of "
+            f"{limits.max_output_bytes}"
+        )
+    return payload
 
 
 def dump(
@@ -457,19 +465,19 @@ def dump(
     destination: "os.PathLike[str] | str | IO[bytes]",
     *,
     preservation: PreservationMode = PreservationMode.LOSSLESS,
+    limits: ResourceLimits = DEFAULT_LIMITS,
 ) -> None:
     """Write to a path or a writable binary stream."""
-    payload = dumps(image, preservation=preservation)
+    payload = dumps(image, preservation=preservation, limits=limits)
     if isinstance(destination, (str, os.PathLike)):
         Path(destination).write_bytes(payload)
         return
-    write = getattr(destination, "write", None)
-    if not callable(write):
+    if not hasattr(destination, "write"):
         raise TypeError(
             f"cannot write an OpenRaster image to {type(destination).__name__}; "
             "expected a filesystem path or a writable binary stream"
         )
-    write(payload)
+    destination.write(payload)
 
 
 __all__ = [

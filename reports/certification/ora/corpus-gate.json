@@ -1,0 +1,20 @@
+{
+  "format_id": "ora",
+  "gate": "corpus",
+  "status": "PASS",
+  "verdict": "PASS",
+  "provenance_file": "samples/by-format/ora/_provenance.yaml",
+  "corpus_manifest": null,
+  "authority": {
+    "specification": "OpenRaster 0.0.5 (commit f050b99fa8af44cb4cc3c9d842d25097458765f6), pinned as SRC-ORA-001/002/003 in shared/format-contracts/authority-lock.yaml",
+    "source_type": "project-owned-synthetic (all 10 samples), generated deterministically via Python stdlib zipfile/struct/zlib, no third-party dependency"
+  },
+  "counts": {"valid_samples": 3, "invalid_samples": 7},
+  "checks_performed_this_tick": {
+    "sha256_verification": "PASS -- computed the real hash of all 10 samples (3 valid, 7 invalid) directly and cross-checked against this format's own _provenance.yaml narrative, not merely trusted a prior label",
+    "production_reader_verification": "PASS -- format_factory.ora.load() actually invoked against every valid sample (all 3 load cleanly, declared version 0.0.5 each) and every invalid sample (all 7 correctly refused with OraValidationError, one per named defect_class: corrupt-layer-source, mergedimage-non-conforming, mergedimage-unreadable, missing-layer-source, missing-thumbnail, thumbnail-non-conforming, thumbnail-unreadable) -- not merely trusted a prior label in the manifest"
+  },
+  "corpus_manifest_absence_note": "Unlike xliff/ipynb/safetensors, ora has no separate _corpus-manifest.yaml file -- only _provenance.yaml, which is itself unusually thorough (each of the 7 invalid samples documents its own exact defect_class, generation method, and -- for 2 of them -- a real bug this fixture's own construction surfaced and fixed in lifecycle.py's exception handling). This is treated as sufficient corpus documentation rather than a gap requiring a second, partially-redundant manifest file to be authored.",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file consolidates already-existing, independently re-verified corpus provenance into a dedicated gate record; not a certification claim for the format as a whole.",
+  "commit": "pending"
+}

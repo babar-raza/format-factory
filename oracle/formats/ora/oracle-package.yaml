@@ -1,0 +1,236 @@
+oracle_id: oracle-ora-v1
+format_id: ora
+format_version: OpenRaster 0.0.5
+oracle_version: 1
+family: imaging
+generated_at: '2026-08-08'
+generator_skill: select-6-acquisition
+authority:
+  specification_refs:
+  - id: SRC-ORA-001
+    title: OpenRaster 0.0.5 editable and viewing baseline
+    body: OpenRaster community
+    url: https://invent.kde.org/documentation/openraster-org/-/raw/f050b99fa8af44cb4cc3c9d842d25097458765f6/baseline/baseline.rst
+    legal_category: 1
+    authority_class: AUTHORITATIVE
+    note: Pinned OpenRaster 0.0.5 baseline specification (commit f050b99fa8af44cb4cc3c9d842d25097458765f6).
+  - id: SRC-ORA-002
+    title: OpenRaster 0.0.5 file-layout specification
+    body: OpenRaster community
+    url: https://invent.kde.org/documentation/openraster-org/-/raw/f050b99fa8af44cb4cc3c9d842d25097458765f6/baseline/file-layout-spec.rst
+    legal_category: 1
+    authority_class: AUTHORITATIVE
+    note: Pinned OpenRaster 0.0.5 file-layout specification -- mimetype sentinel, ZIP member layout, thumbnail/mergedimage requirements.
+  - id: SRC-ORA-003
+    title: OpenRaster 0.0.5 layer-stack specification
+    body: OpenRaster community
+    url: https://invent.kde.org/documentation/openraster-org/-/raw/f050b99fa8af44cb4cc3c9d842d25097458765f6/baseline/layer-stack-spec.rst
+    legal_category: 1
+    authority_class: AUTHORITATIVE
+    note: Pinned OpenRaster 0.0.5 layer-stack specification -- stack.xml grammar, layer/group/stack element semantics.
+  authorized_fact_refs: []
+  requirement_refs: []
+  capability_refs:
+  - ORA-LIFECYCLE-001
+  - ORA-WRITE-001
+  authority_summary: >
+    OpenRaster is a ZIP-based layered raster image archive format maintained by the
+    OpenRaster community (freedesktop.org / KDE invent). Documents are ZIP archives
+    containing a fixed mimetype sentinel, a stack.xml layer manifest describing an
+    ordered layer/group tree, PNG layer rasters, and required thumbnail/mergedimage
+    viewing assets.
+corpus_refs:
+- corpus_id: ora-minimal
+  sample_ref: samples/by-format/ora/valid/minimal.ora
+  sha256: sha256:a8fa5a0ce7840a8b1e6a199a84d2beafe354db697c374bff478334718dbe0543
+  license: Apache-2.0
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Minimal single-layer OpenRaster document (2x2 canvas, 1 layer)
+- corpus_id: ora-multi-layer
+  sample_ref: samples/by-format/ora/valid/multi-layer.ora
+  sha256: sha256:7eefb650ca0f883119e1554de88c5e2a770c3e12c0cdbf2e28f2a40f8ea36822
+  license: Apache-2.0
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: Multi-layer OpenRaster document (4x4 canvas, 2 layers)
+- corpus_id: ora-with-groups
+  sample_ref: samples/by-format/ora/valid/with-groups.ora
+  sha256: sha256:c2b8c86df094ee1c4753d42826287f88992942354cb4de7b9ca4e7b42838c513
+  license: Apache-2.0
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: OpenRaster document with a nested layer group (8x8 canvas, 3 layers across a group)
+profiles:
+- STRUCTURAL_VALIDITY
+- PARSE_VALIDITY
+- DOMAIN_MODEL_MAPPING
+- ROUNDTRIP_SEMANTIC_EQUIVALENCE
+- SAME_FORMAT_SERIALIZATION
+profiles_not_applicable:
+- profile: INTEROPERABILITY
+  reason: No independent OpenRaster reference implementation is vendored or installable in this environment; this package is its own reference for parse/write round-trip
+- profile: LOSSLESS_TRANSFORMATION
+  reason: ZIP archive format; DEFLATE is lossless, not a transformation concern
+- profile: SECURITY_ROBUSTNESS
+  reason: Covered separately by this format's own dedicated security-gate.json and resource-gate.json, not duplicated here
+- profile: UNKNOWN_CONTENT_PRESERVATION
+  reason: Covered separately by this format's own LOSSLESS-vs-CANONICAL preservation-mode tests, not duplicated here
+- profile: EXPORT_CONFORMANCE
+  reason: Export to other formats not a primary oracle operation
+- profile: NORMALIZATION
+  reason: Deterministic serialization handled by dumps()'s own stable member order and pinned timestamps, covered by this format's own reproducible-build gate
+- profile: LIMITS_AND_BOUNDARIES
+  reason: Covered separately by this format's own dedicated resource-gate.json, not duplicated here
+valid_cases:
+- case_id: ora-valid-001
+  purpose: Minimal single-layer OpenRaster document parses without error and its declared/detected versions are read correctly and independently
+  authority_class: AUTHORITATIVE
+  authority_refs:
+  - SRC-ORA-001 -- declared vs. detected version are distinct concepts
+  - SRC-ORA-002 -- canvas dimensions declared on the <image> root element
+  sample_ref: samples/by-format/ora/valid/minimal.ora
+  input_hash: sha256:a8fa5a0ce7840a8b1e6a199a84d2beafe354db697c374bff478334718dbe0543
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: declared_version
+    value: '0.0.5'
+    authority: SRC-ORA-001
+    data_source: parsed
+  - property: detected_version
+    value: '0.0.2'
+    authority: SRC-ORA-001
+    data_source: computed
+  - property: width
+    value: 2
+    authority: SRC-ORA-002
+    data_source: parsed
+  - property: height
+    value: 2
+    authority: SRC-ORA-002
+    data_source: parsed
+  - property: layer_count
+    value: 1
+    authority: SRC-ORA-003
+    data_source: computed
+  applicable_profiles:
+  - STRUCTURAL_VALIDITY
+  - PARSE_VALIDITY
+- case_id: ora-valid-002
+  purpose: A multi-layer document's own declared version is read verbatim even though its detected (feature-actually-used) version differs, and its layer count is correct
+  authority_class: AUTHORITATIVE
+  authority_refs:
+  - SRC-ORA-001 -- a document must never have its declared version silently rewritten
+  - SRC-ORA-003 -- layer elements within the stack
+  sample_ref: samples/by-format/ora/valid/multi-layer.ora
+  input_hash: sha256:7eefb650ca0f883119e1554de88c5e2a770c3e12c0cdbf2e28f2a40f8ea36822
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: declared_version
+    value: '0.0.5'
+    authority: SRC-ORA-001
+    data_source: parsed
+  - property: detected_version
+    value: '0.0.4'
+    authority: SRC-ORA-001
+    data_source: computed
+  - property: width
+    value: 4
+    authority: SRC-ORA-002
+    data_source: parsed
+  - property: height
+    value: 4
+    authority: SRC-ORA-002
+    data_source: parsed
+  - property: layer_count
+    value: 2
+    authority: SRC-ORA-003
+    data_source: computed
+  applicable_profiles:
+  - PARSE_VALIDITY
+  - DOMAIN_MODEL_MAPPING
+- case_id: ora-valid-003
+  purpose: A nested layer group's own layers are still counted through the recursive stack tree
+  authority_class: AUTHORITATIVE
+  authority_refs:
+  - SRC-ORA-003 -- group elements nest stack, layer, and further group children
+  sample_ref: samples/by-format/ora/valid/with-groups.ora
+  input_hash: sha256:c2b8c86df094ee1c4753d42826287f88992942354cb4de7b9ca4e7b42838c513
+  expected_parse_result: SUCCESS
+  expected_model_properties:
+  - property: declared_version
+    value: '0.0.5'
+    authority: SRC-ORA-001
+    data_source: parsed
+  - property: detected_version
+    value: '0.0.2'
+    authority: SRC-ORA-001
+    data_source: computed
+  - property: width
+    value: 8
+    authority: SRC-ORA-002
+    data_source: parsed
+  - property: height
+    value: 8
+    authority: SRC-ORA-002
+    data_source: parsed
+  - property: layer_count
+    value: 3
+    authority: SRC-ORA-003
+    data_source: computed
+  applicable_profiles:
+  - DOMAIN_MODEL_MAPPING
+invalid_cases:
+- case_id: ora-invalid-001
+  purpose: A layer referencing an archive member absent from the ZIP must be refused
+  defect_class: missing-layer-source
+  malformed_boundary: stack.xml's own layer/@src names a ZIP member the archive does not contain
+  authority_refs:
+  - SRC-ORA-003 -- layer src must resolve to a real archive member
+  sample_ref: samples/by-format/ora/invalid/missing-layer-source.ora
+  input_hash: sha256:590e7e81e97d54d7deac676fd25db0653be12f68e3951e11485819efb214be0e
+  expected_failure_stage: VALIDATE
+  expected_error_type: OraValidationError
+  partial_recovery_allowed: false
+  security_relevance: false
+  notes: File is a structurally valid ZIP/stack.xml but references a nonexistent raster member.
+- case_id: ora-invalid-002
+  purpose: A missing required Thumbnails/thumbnail.png member must be refused
+  defect_class: missing-thumbnail
+  malformed_boundary: The mandatory Thumbnails/thumbnail.png member is absent from the archive
+  authority_refs:
+  - SRC-ORA-002 -- Thumbnails/thumbnail.png is a required member
+  sample_ref: samples/by-format/ora/invalid/missing-thumbnail.ora
+  input_hash: sha256:0140c7d1503155405097b36498d8e9c6214f7c062a9ac33af93e7a0f1c9380bf
+  expected_failure_stage: VALIDATE
+  expected_error_type: OraValidationError
+  partial_recovery_allowed: false
+  security_relevance: false
+  notes: File is a structurally valid ZIP but omits a member the file-layout spec requires.
+canonicalization:
+  method: ora-stack-model
+  description: >
+    Canonical form is the typed OraDocument model: width, height, version, and a
+    recursive OraStack/OraLayer/OraText tree with each node's own explicit-vs-defaulted
+    attributes tracked separately from their resolved values.
+  ordering_policy: layer/group order within the stack tree is preserved exactly as declared
+  whitespace_policy: not applicable -- ZIP archive, not a text format
+  encoding_policy: stack.xml member is UTF-8; archive members are binary (PNG rasters)
+tolerance_policy:
+  numeric_tolerance: NOT_APPLICABLE
+  ordering_tolerance: none -- layer/group order within the stack tree must be preserved
+  whitespace_tolerance: NOT_APPLICABLE
+  metadata_tolerance: attributes not tracked by the typed model are preserved verbatim in LOSSLESS mode, dropped in CANONICAL mode (see this format's own preservation-mode tests)
+  policy_summary: Canvas dimensions, declared version, and layer/group count and order must match exactly
+comparators:
+- model-property-comparator
+- layer-count-comparator
+validators:
+- ora-mimetype-sentinel-validator
+consumers:
+- tests/python/ora/test_obligation_stack_and_document.py
+- tests/python/ora/test_obligation_lifecycle_and_write.py
+dependency_hashes:
+  executor_hash: null
+  registry_hash: null
+  recorded_at: '2026-08-08'
+executor_config:
+  module: format_factory.ora
+  callable: load

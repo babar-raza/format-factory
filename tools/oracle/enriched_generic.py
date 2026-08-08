@@ -16,6 +16,7 @@ ENRICHED_LOADERS = {
     "ipynb": ("format_factory.ipynb", "load_ipynb"),
     "mtlx": ("mtlx.mtlx_codec", "load_mtlx"),
     "nrrd": ("format_factory.nrrd", "load_nrrd"),
+    "ora": ("format_factory.ora", "load"),
     "safetensors": ("format_factory.safetensors", "load"),
     "ubl": ("format_factory.ubl", "load"),
     "xliff": ("format_factory.xliff", "load_xliff"),
@@ -80,7 +81,25 @@ def _enrich_model(result_val, format_id: str) -> dict:
         enriched["spec_qname"] = _UBL_SPEC_QNAME_BY_ROOT_NAME.get(root_name)
     elif format_id == "xliff":
         enriched["unit_count"] = result_val.unit_count
+    elif format_id == "ora":
+        del enriched["spec_qname"]  # ora's model has no spec_qname concept
+        enriched["declared_version"] = result_val.declared_version
+        enriched["detected_version"] = result_val.detected_version
+        enriched["width"] = result_val.document.width
+        enriched["height"] = result_val.document.height
+        enriched["layer_count"] = _count_ora_layers(result_val.document.root)
     return enriched
+
+
+def _count_ora_layers(node) -> int:
+    """Recursively count OraLayer descendants of an OraStack/OraNode."""
+    count = 0
+    for child in getattr(node, "children", ()):
+        if type(child).__name__ == "OraLayer":
+            count += 1
+        elif type(child).__name__ == "OraStack":
+            count += _count_ora_layers(child)
+    return count
 
 
 def execute_enriched_generic(core, case, pkg, format_id, module, callable_name):
