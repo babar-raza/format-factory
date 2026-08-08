@@ -97,6 +97,22 @@ path-normalized or fuzzily matched) and read its PNG metadata without
 decoding pixel data. `resolve_all_assets` fails on the first unresolvable
 reference rather than returning a partial list.
 
+Both compose `read_png_metadata()`, which works on any PNG bytes directly
+-- useful for inspecting a raster's declared size and bit depth (for
+example, before deciding whether it is safe to decode) without needing an
+OpenRaster archive at all:
+
+```python
+from format_factory.ora import read_png_metadata
+
+metadata = read_png_metadata(png_bytes)
+print(metadata.width, metadata.height, metadata.bit_depth, metadata.channels)
+```
+
+It parses only the 25-byte IHDR chunk and never inflates pixel data, so a
+file whose compressed pixel data is corrupt still yields correct metadata
+-- the caller decides whether to spend the decode.
+
 ## Baseline asset replacement
 
 ```python

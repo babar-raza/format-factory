@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-read-png-metadata-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-e5b669b94f9b8fb2",
+  "mode": "live",
+  "timestamp": "2026-08-08T15:42:37Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_READ_PNG_METADATA_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-a-second-lower-priority-pass-on-previously-named-candidates",
+    "root_cause": "Event 354's own exact_next_action named ora's read_png_metadata as the most promising remaining candidate for the second, lower-priority documentation pass, following the same productive pattern already confirmed for nrrd's with_array (Event 353) and xliff's canonicalize/check_drift (Event 354). read_png_metadata was named at Event 344 as 'used internally by replace_baseline_asset/resolve_asset, likely independently useful for inspecting a PNG's own metadata without an ora archive' but deliberately deferred at the time.",
+    "obligation_targeted": "No specific obligation-register status change (ora remains at 7/134 unresolved, unaffected by this tick) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage of a security-relevant standalone capability.",
+    "acceptance_evidence": "Read codec/png_metadata.py in full: read_png_metadata() parses only the PNG's 25-byte IHDR chunk (signature + length + type + IHDR payload) and never inflates pixel data -- explicitly designed, per the module's own docstring, so a caller can learn a raster's declared dimensions and bit depth before committing to a potentially enormous or decompression-bomb decode, and so a file with corrupt compressed pixel data still yields correct metadata. Verified directly against a real PNG extracted from samples/by-format/ora/valid/multi-layer.ora's own thumbnail member, called on the raw bytes directly (not through resolve_asset/resolve_all_assets) to prove standalone use: returned width=64, height=64, bit_depth=8, colour_type=6, channels=4, declared_byte_size=16384, satisfies_thumbnail_constraints()=True."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 354 commit (7d1eebfa); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Reviewed Event 344's own named list of ora's remaining undocumented __all__ candidates (read_png_metadata, parse_stack, ReadMode, the OraError exception hierarchy) and Event 354's own exact_next_action, which specifically flagged read_png_metadata as the most promising next candidate given the same 'real capability adjacent to something already documented' shape that made nrrd's with_array and xliff's canonicalize/check_drift findings productive.",
+    "3. Read codec/png_metadata.py in full (140+ lines): read_png_metadata() parses only the IHDR chunk (25 bytes) and never inflates pixel data. Confirmed via the module's own docstring this is a deliberate security property, not an implementation detail worth omitting -- 'A layer's raster may be enormous or a decompression bomb, so a caller has to learn its dimensions and depth before committing to decoding' -- and that a file with corrupt compressed pixel data still yields correct metadata, letting the caller decide whether to spend the decode.",
+    "4. Confirmed read_png_metadata/RasterMetadata are both directly importable from the top-level format_factory.ora module via hasattr, and confirmed via source that resolve_asset/resolve_all_assets/replace_baseline_asset all already compose read_png_metadata internally -- but none of the README's existing examples for those functions ever showed read_png_metadata as its own directly-callable entry point.",
+    "5. Verified the exact example before writing it: loaded a real ora corpus archive (samples/by-format/ora/valid/multi-layer.ora), extracted its own real thumbnail PNG member bytes, and called read_png_metadata() directly on those raw bytes -- deliberately NOT going through resolve_asset/resolve_all_assets, to prove the function genuinely works standalone without any ora archive machinery. Confirmed the returned RasterMetadata matched the real PNG's own known content (64x64, 8-bit, colour_type=6/RGBA, 4 channels, 16384 declared bytes, satisfies thumbnail constraints).",
+    "6. Extended the existing 'Raster asset resolution' README section (rather than creating a new section, since read_png_metadata is the shared primitive that section's own two functions already compose) with a short paragraph and code block showing standalone use on arbitrary PNG bytes, framed explicitly around its security-relevant purpose (inspect before deciding whether to decode).",
+    "7. Regenerated reports/certification/ora/documentation-gate.json to reflect the addition -- updated readme_line_count (187 -> 203), symbol_existence count (16 distinct names/10 code blocks now, +read_png_metadata), a new example_execution entry documenting the standalone real-PNG verification, and extended the incidental_finding to note this second, lower-priority pass closed read_png_metadata while parse_stack, ReadMode, and the OraError exception hierarchy remain for a future tick.",
+    "8. Did not modify any production source code -- read_png_metadata already existed, fully correct and already tested by the existing test suite; this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration. Did not re-run the ora test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/ora/README.md",
+    "reports/certification/ora/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/README.md",
+    "reports/certification/ora/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: read_png_metadata called directly on real PNG bytes extracted from samples/by-format/ora/valid/multi-layer.ora's own thumbnail member, deliberately bypassing resolve_asset/resolve_all_assets to prove standalone use",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap for an already-implemented, already-exported, security-relevant standalone capability (read_png_metadata) -- no obligation status change (ora remains at 7/134 unresolved, unaffected), but a real developer-discoverability improvement to an already-PASS-ing documentation gate.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 134,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
