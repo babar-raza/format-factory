@@ -1,0 +1,62 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-component-removal-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-94f8336162584e11",
+  "mode": "live",
+  "timestamp": "2026-08-08T13:20:45Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_COMPONENT_REMOVAL_001",
+    "task_kind": "complete-crud-delete-quarter-plus-honest-limitation-disclosure",
+    "root_cause": "Event 337's own exact_next_action named remove_component (Delete for non-line components) as a smaller, similarly-scoped lead worth attempting before assessing first-occurrence insertion. Design was straightforward given the 3 prior components.py functions already established the with_children()-composition pattern -- Delete needed only an omit rather than a replace.",
+    "obligation_targeted": "SAL-UBL-OBL-237188D47391391E (UBL-EDIT-001) narrowed to its final, sole remaining named gap (first-occurrence insertion for a not-yet-present type); real new product code shipped, plus a genuine, surprising validate()-coverage limitation found and honestly disclosed.",
+    "acceptance_evidence": "remove_component composes with_children() to omit rather than replace a child, needing no type check (nothing to validate about the shape of a REMOVED node). Reused the identical _refuse_if_worse before/after diagnostic-comparison pattern already shared by every other function in the module. During test-writing, an initial draft asserted that removing a document's own mandatory AccountingSupplierParty would be refused by validate() -- this failed when run. Investigated directly (not assumed) via a standalone probe: confirmed validate() does not check presence of ANY mandatory top-level element (IssueDate, InvoiceTypeCode, DocumentCurrencyCode, AccountingSupplierParty all XSD minOccurs=1, all missing simultaneously still reports is_valid=True). Corrected both the test and the function's own docstring (which had made the same wrong claim before being caught) to state the verified truth."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 337 commit.",
+    "2. Re-read components.py's own current state (replace_party, update_component, add_component, and the shared _refuse_if_worse helper) before designing anything new.",
+    "3. Designed remove_component(document, *, component_name, index) -> UblDocument: locate the index-th root child matching component_name by local name, refuse an out-of-range index, remove it via tuple slicing (the omit-rather-than-replace variant of with_children() every other function in this module already uses), rebuild via with_root(), run _refuse_if_worse. No type check needed since nothing about the shape of a REMOVED node requires validation (unlike replace_party/update_component/add_component, which each validate a REPLACEMENT node's own type).",
+    "4. Added the function to the SAME components.py file, updated the module docstring to describe the now-complete CRUD-for-already-present-occurrences picture. Ran mypy --strict and ruff before writing any test -- clean on the first pass.",
+    "5. Wired the export through the top-level __init__.py, ran the full ubl suite (1201 passed, unchanged) to confirm zero regression from the additive change alone.",
+    "6. Wrote a first draft of a test file including a refusal test asserting that removing a document's own only AccountingSupplierParty (confirmed via direct XSD read to be minOccurs='1', mandatory) would raise UblValidationError, reasoning by analogy that validate() would catch the resulting schema violation the same way it catches other regressions elsewhere in this session's own work.",
+    "7. Ran the test suite -- this specific test FAILED with 'DID NOT RAISE'. Did not assume the test was simply flaky or wrong without investigating: wrote a standalone Python probe loading a document missing IssueDate/InvoiceTypeCode/DocumentCurrencyCode/AccountingSupplierParty simultaneously (all XSD minOccurs='1' per direct schema read) and calling validate() directly -- confirmed is_valid=True, zero diagnostics. This is a genuine, previously-undiscovered gap in validate()'s own coverage: it does not check for mandatory top-level element presence at all, only checks things it happens to check within elements that ARE present (types, ordering, referential integrity for lines).",
+    "8. Corrected the test file: replaced the false-premise refusal test with a new test that directly documents and PROVES the actual, verified behavior (removal succeeds, the element is genuinely gone, matching what actually happens) rather than asserting a false claim -- with a detailed docstring explaining the investigation and explicitly noting this is validate()'s own scope gap, not remove_component's own defect, and not something UBL-EDIT-001 is responsible for closing.",
+    "9. Also found and corrected the IDENTICAL wrong claim already written into remove_component's own source docstring in components.py (written before the test caught the error) -- updated it to state the same verified truth rather than leave a misleading claim in the shipped API's own documentation.",
+    "10. Re-ran the corrected test file (8/8 pass), mypy --strict and ruff on both changed source files (clean), the full ubl suite again (1209 passed, was 1201), and the combined 6-format regression (4020 passed, 4 skipped, 0 failed, was 4012) since production source was touched.",
+    "11. Considered whether to open a formal found-issue-register.yaml entry for the validate()-coverage gap -- decided against creating one this tick (that registry's own full lifecycle machinery, root-cause IDs, healing taskcards, is a heavier governance action than this tick's own focused CRUD scope warrants, and Rule 2's product-first/minimal-machinery guidance favors disclosing this honestly in the evidence text over spawning new governance ceremony); the finding is fully disclosed in this obligation's own ledger entry, evidence truth_boundary, and this transcript instead, discoverable by any future tick investigating validate()'s own obligation.",
+    "12. Updated the ledger: kept SAL-UBL-OBL-237188D47391391E at status=partial (first-occurrence insertion is now the obligation's own SOLE remaining gap), added remove_component to source_symbols, added all 8 new tests split into positive/negative selectors, added a new execution_evidence entry (UBL-COMPONENT-REMOVAL-PROOF) with the validate()-gap finding disclosed in full, and rewrote missing_behavior to name the single remaining Create gap precisely while separately, honestly noting the validate()-coverage limitation as out-of-scope for this obligation rather than silently omitting it."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/components.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_component_removal.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/components.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_component_removal.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_component_removal.py -q -- 8 passed (new file, after correcting 1 false-premise test)",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/components.py src/python/ubl/src/format_factory/ubl/__init__.py tests/python/ubl/test_obligation_component_removal.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/components.py src/python/ubl/src/format_factory/ubl/__init__.py tests/python/ubl/test_obligation_component_removal.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ubl -q -- 1209 passed (was 1201)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q -- 4020 passed, 4 skipped, 0 failed (6-format regression, was 4012)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation narrowed to its sole remaining gap (stays partial) with REAL new product capability added: remove_component() completes CRUD for already-present occurrences; plus a genuine, disclosed validate()-coverage limitation found via a caught test failure",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "format_factory.ubl's remove_component(document, *, component_name, index) -> UblDocument"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

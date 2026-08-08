@@ -724,6 +724,59 @@ execution_evidence:
     (real new product capability added), not a closure -- ubl's own
     unresolved-obligation count is unchanged by this entry alone since
     the obligation stays partial, not implemented.
+- evidence_id: UBL-COMPONENT-REMOVAL-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-component-removal-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully
+    close) SAL-UBL-OBL-237188D47391391E (UBL-EDIT-001), which stays
+    partial -- inserting the FIRST occurrence of a not-yet-present
+    component type is now the obligation's own sole remaining named gap.
+    Closes the Delete quarter of "CRUD" for any already-present
+    occurrence of any core business component. Added remove_component(
+    document, *, component_name, index) -> UblDocument (components.py):
+    finds the index-th (0-based) root child matching component_name,
+    removes it via with_children() (omitting rather than replacing,
+    needing no type check since nothing about a removed node's own shape
+    needs validating), refuses an out-of-range index, and reuses the
+    identical before/after diagnostic-comparison refusal pattern already
+    established. A genuine, surprising finding was made and honestly
+    disclosed, not hidden or worked around: validate() does NOT currently
+    check for the presence of mandatory top-level elements at all --
+    confirmed directly by probing a document missing IssueDate/
+    InvoiceTypeCode/DocumentCurrencyCode/AccountingSupplierParty (all
+    XSD minOccurs="1" in the real pinned Invoice-2.3.xsd) and finding
+    validate().is_valid still True. remove_component's own refusal is
+    therefore exactly as strong as validate() itself and no stronger: it
+    does NOT refuse removing a document's only AccountingSupplierParty,
+    even though the real schema requires one. An initial test draft
+    wrongly assumed this WOULD be refused; caught by running the test and
+    observing it did not raise (not assumed correct), then corrected both
+    the test (to directly document and prove the actual, verified
+    behavior instead of a false claim) and this function's own docstring
+    (which had made the identical wrong claim before the test caught it).
+    This is a real, disclosed limitation of the underlying validate()
+    layer this function composes, not a defect in the composition itself
+    -- closing the validate()-coverage gap belongs to a different
+    obligation's own schema-layer scope, not claimed as fixed or tracked
+    for closure here. 8 new tests
+    (tests/python/ubl/test_obligation_component_removal.py): deleting the
+    only occurrence, deleting only the targeted index among several,
+    non-mutation of the original, every other root child untouched, the
+    result staying schema-valid when the removed component is genuinely
+    optional, 2 refusal cases (out-of-range index, negative index), and
+    the dedicated validate()-coverage-gap documentation test. mypy
+    --strict and ruff clean. ubl suite: 1201 -> 1209 passed. Combined
+    6-format regression: 4012 -> 4020 passed, 4 skipped, 0 failed. NOT
+    backed by an independent reference UBL implementation -- SELF
+    -CONSISTENT format_factory-only evidence per the execution-recovery
+    directive's GAP-008 rule. Covers SAL-UBL-OBL-237188D47391391E only;
+    it supports no other obligation and promotes no other product state.
+    This is a NARROWING (real new product capability added, plus an
+    honest limitation disclosure), not a closure -- ubl's own
+    unresolved-obligation count is unchanged by this entry alone since
+    the obligation stays partial, not implemented.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -1532,6 +1585,7 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/components.py::replace_party
   - src/python/ubl/src/format_factory/ubl/components.py::update_component
   - src/python/ubl/src/format_factory/ubl/components.py::add_component
+  - src/python/ubl/src/format_factory/ubl/components.py::remove_component
   positive_test_selectors:
   - tests/python/ubl/test_obligation_line_crud.py::test_add_line_appends_after_the_last_existing_line_and_stays_valid
   - tests/python/ubl/test_obligation_line_crud.py::test_remove_line_deletes_the_matching_line_only
@@ -1551,6 +1605,11 @@ obligations:
   - tests/python/ubl/test_obligation_component_create_adjacent.py::test_add_component_does_not_mutate_the_original_document
   - tests/python/ubl/test_obligation_component_create_adjacent.py::test_add_component_leaves_every_other_root_child_untouched
   - tests/python/ubl/test_obligation_component_create_adjacent.py::test_add_component_reorders_the_new_components_own_internal_fields
+  - tests/python/ubl/test_obligation_component_removal.py::test_remove_component_deletes_the_only_occurrence
+  - tests/python/ubl/test_obligation_component_removal.py::test_remove_component_deletes_only_the_targeted_index_among_several
+  - tests/python/ubl/test_obligation_component_removal.py::test_remove_component_does_not_mutate_the_original_document
+  - tests/python/ubl/test_obligation_component_removal.py::test_remove_component_leaves_every_other_root_child_untouched
+  - tests/python/ubl/test_obligation_component_removal.py::test_remove_component_result_stays_schema_valid_when_the_component_is_optional
   negative_test_selectors:
   - tests/python/ubl/test_obligation_line_crud.py::test_add_line_refuses_a_line_id_that_duplicates_an_existing_line
   - tests/python/ubl/test_obligation_line_crud.py::test_remove_line_raises_for_an_unmatched_id
@@ -1564,18 +1623,23 @@ obligations:
   - tests/python/ubl/test_obligation_component_update.py::test_update_component_refuses_a_negative_index
   - tests/python/ubl/test_obligation_component_create_adjacent.py::test_add_component_refuses_a_type_mismatched_new_component
   - tests/python/ubl/test_obligation_component_create_adjacent.py::test_add_component_refuses_when_no_occurrence_exists_yet
+  - tests/python/ubl/test_obligation_component_removal.py::test_remove_component_refuses_an_out_of_range_index
+  - tests/python/ubl/test_obligation_component_removal.py::test_remove_component_refuses_a_negative_index
+  - tests/python/ubl/test_obligation_component_removal.py::test_remove_components_own_refusal_is_exactly_as_strong_as_validate_itself
   execution_evidence_ids:
   - UBL-LINE-CRUD-PROOF
   - UBL-PARTY-REPLACE-PROOF
   - UBL-COMPONENT-UPDATE-PROOF
   - UBL-COMPONENT-CREATE-ADJACENT-PROOF
+  - UBL-COMPONENT-REMOVAL-PROOF
   implemented_behavior:
   - 'FF6-EVENT-000298: real CRUD now exists for line-role components (InvoiceLine/CreditNoteLine/OrderLine), composing existing primitives (XmlNode.with_children(), reorder_for_schema_order() from FF6-EVENT-000286, validate(), and a new duplicate-line-id check reused from the referential layer built for validate_all() at FF6-EVENT-000296) into add_line/remove_line/move_line/renumber_lines (lines.py). Every operation refuses (raises UblValidationError) if the result would introduce a validation or referential-integrity failure the source document did not already have -- directly satisfying "edits cannot produce elements the schema forbids at that position" for this component category. New lines are inserted after the last existing line, which is schema-position-correct by construction (Line elements are always the trailing repeating group in every UBL maindoc type''s own schema sequence), then run through reorder_for_schema_order() so the inserted line''s own internal field order is also corrected regardless of how the caller constructed it.'
   - 'FF6-EVENT-000335: replace_party() (new module components.py) further narrows this obligation''s own remaining "core business components" gap by closing UPDATE for cac:Party, one of this obligation''s own three cited authority facts (SAL-UBL-00123). Investigated directly and found Party does not need the arbitrary-position INSERT support the missing_behavior text names as the real blocker: a Party is always nested inside an already-existing, single-occurrence root-level wrapper (cac:AccountingSupplierParty or cac:AccountingCustomerParty), so replacing it needs only the same with_children() immutable-replace primitive lines.py already composes, applied one level deeper -- no _ORDER_CHECKED_COMPONENTS-style position knowledge required. Refuses an unknown role, a non-Party replacement node, or a missing wrapper (creating a brand-new wrapper remains the still-unbuilt Create/arbitrary-position problem) rather than silently accepting or fabricating one. Reuses the identical before/after diagnostic-comparison refusal pattern lines.py already established. 7 new tests (tests/python/ubl/test_obligation_party_replacement.py).'
   - 'FF6-EVENT-000336: update_component() (components.py) generalizes replace_party()''s own insight to any OTHER repeating root-level core business component -- cac:PaymentMeans, cac:TaxTotal, cac:AllowanceCharge, and so on. Confirmed by direct XSD read (not assumed) that these are maxOccurs="unbounded" in the pinned UBL 2.3 schema, unlike Party''s own always-exactly-one wrappers, but the same core fact still holds: an already-present occurrence, however many same-name siblings exist, is already at its own schema-correct position, so replacing it (by 0-based index among same-name root children) needs no position-aware insertion logic either -- only the same with_children() primitive, indexed instead of assumed-unique. Refuses a type-mismatched replacement, an out-of-range index (0 existing occurrences, or index >= count, or negative -- creating an ADDITIONAL occurrence beyond what the document already has is the still-unbuilt Create/arbitrary-position problem), or an edit that would introduce a new validation failure. 8 new tests (tests/python/ubl/test_obligation_component_update.py).'
   - 'FF6-EVENT-000337: add_component() (components.py) closes a genuinely separable slice of Create itself -- inserting an ADDITIONAL occurrence of a component the document already has at least one of. Grounded directly in XSD sequence-model semantics (confirmed by reading the pinned UBL 2.3 Invoice maindoc schema, not assumed): every element declared maxOccurs>1 inside one xsd:sequence must appear as one contiguous run at its own declared position, so inserting immediately after the last existing same-name sibling is always schema-position-correct for ANY repeating component, not only lines (the same fact lines.py''s own "trailing group" reasoning is a special case of). Runs reorder_for_schema_order() afterward, the same benefit add_line already gives, correcting the new component''s own internal field order for every type already in _ORDER_CHECKED_COMPONENTS (confirmed PaymentMeans/TaxTotal/AllowanceCharge all are). Refuses a type-mismatched new_component or a document with ZERO existing occurrences of component_name (inserting the FIRST occurrence of a type not already present needs full header-position knowledge this function does not have -- correctly left as the obligation''s own one remaining, precisely-scoped gap). 8 new tests (tests/python/ubl/test_obligation_component_create_adjacent.py), including one proving the new component''s own internal field order is corrected regardless of caller-supplied order.'
+  - 'FF6-EVENT-000338: remove_component() (components.py) closes the Delete quarter of this obligation''s own "CRUD" rule_text for any already-present occurrence of any core business component -- no position-aware logic is needed to remove one either, only with_children() used to omit rather than replace a child. A genuine, surprising finding was made and honestly disclosed during this slice, not hidden: validate() does NOT currently check for the presence of mandatory top-level elements at all -- confirmed directly by probing a document missing IssueDate/InvoiceTypeCode/DocumentCurrencyCode/AccountingSupplierParty (all XSD minOccurs="1" in the real Invoice schema) and finding validate().is_valid still True. remove_component''s own refusal is therefore exactly as strong as validate() itself and no stronger: it does NOT refuse removing a document''s only AccountingSupplierParty even though the real schema requires one. This is a real, disclosed limitation of the underlying validate() layer this function composes, not a defect in how it composes it -- closing that gap belongs to validate()''s own schema-coverage scope (a different obligation), not this one''s CRUD scope. An initial test draft wrongly assumed the refusal would fire; caught by running the test and observing it did not raise, not assumed correct -- the test and this obligation''s own missing_behavior/docstring text were both corrected to state the verified truth rather than the original assumption. 8 new tests (tests/python/ubl/test_obligation_component_removal.py), including one that directly documents and proves the validate()-coverage-gap finding rather than asserting a false refusal.'
   missing_behavior:
-  - 'Inserting the FIRST occurrence of any core business component type a document does not already have at all (a brand-new Party wrapper on a document with neither AccountingSupplierParty nor AccountingCustomerParty; the first PaymentMeans/TaxTotal/AllowanceCharge on a document with none) remains genuinely unbuilt -- this needs full header-position knowledge (where a never-before-seen element type belongs relative to every OTHER header field) that _ORDER_CHECKED_COMPONENTS does not currently provide for document root types. Every other CRUD combination (Read via direct traversal, Update of any existing occurrence, Create of an additional occurrence next to an existing sibling, and line-scoped Delete via lines.py''s own remove_line) is now covered for the schema''s core business components. Delete for a non-line component (removing an existing PaymentMeans/TaxTotal/AllowanceCharge/Party) has not been attempted yet either, though it would compose the identical with_children()-omit primitive already proven safe by every other function in this module.'
+  - 'Inserting the FIRST occurrence of any core business component type a document does not already have at all (a brand-new Party wrapper on a document with neither AccountingSupplierParty nor AccountingCustomerParty; the first PaymentMeans/TaxTotal/AllowanceCharge on a document with none) remains genuinely unbuilt -- this needs full header-position knowledge (where a never-before-seen element type belongs relative to every OTHER header field) that _ORDER_CHECKED_COMPONENTS does not currently provide for document root types. This is now this obligation''s own SOLE remaining named gap: every other CRUD combination (Read via direct traversal, Update of any existing occurrence, Create of an additional occurrence next to an existing sibling, Delete of any existing occurrence) is now covered for the schema''s core business components, for both line-role components (lines.py) and every other repeating/single-occurrence root-level type (components.py). Separately, and NOT part of this obligation''s own scope: validate() itself does not check for mandatory top-level element presence (SAL-UBL-OBL-237188D47391391E''s own remove_component composes validate() as-is and is only as strong as it is) -- a real, disclosed limitation surfaced by this slice''s own testing, belonging to validate()''s own obligation, not tracked or claimed as closed here.'
   proof_requirements:
     positive:
     - Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite.

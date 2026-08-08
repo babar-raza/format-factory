@@ -42,7 +42,7 @@ from .errors import (
     UblValidationError,
     UblWriteError,
 )
-from .components import add_component, replace_party, update_component
+from .components import add_component, remove_component, replace_party, update_component
 from .lines import add_line, move_line, remove_line, renumber_lines
 from .model import (
     ROOT_CLASSES,
@@ -306,6 +306,7 @@ __all__ = [
     "replace_party",
     "update_component",
     "add_component",
+    "remove_component",
 ]
 
 __version__ = "0.2.0.dev0"

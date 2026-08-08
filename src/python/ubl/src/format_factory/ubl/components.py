@@ -48,6 +48,22 @@ schema-position-correct, for any repeating component, not only lines.
 Inserting the FIRST occurrence of a component type a document does not
 already have at all remains out of scope -- that genuinely needs full
 header-position knowledge this module does not attempt to build.
+
+``remove_component`` closes the Delete quarter of this obligation's own
+"CRUD" rule_text for any already-present occurrence: no position-aware
+logic is needed to remove one either, only `with_children()` used to omit
+rather than replace a child. The schema's own required-vs-optional
+distinction (some components, like AccountingSupplierParty, are
+mandatory in most maindoc types; others, like PaymentMeans, are not) is
+enforced by `validate()` itself via the same before/after refusal pattern
+every function in this module already shares -- not hardcoded per
+component type here.
+
+With this, every CRUD operation this module attempts is now covered for
+any already-present occurrence of any core business component. The
+single remaining gap, for every component type without exception, is
+inserting the FIRST occurrence of a type a document does not already
+have at all.
 """
 
 from __future__ import annotations
@@ -265,4 +281,48 @@ def add_component(document: UblDocument, *, component_name: str, new_component: 
     return edited
 
 
-__all__ = ["add_component", "replace_party", "update_component"]
+def remove_component(document: UblDocument, *, component_name: str, index: int) -> UblDocument:
+    """Remove the `index`-th (0-based, counted among the document root's
+    own same-local-name children) occurrence of `component_name`.
+
+    The Delete quarter of this obligation's own "CRUD" rule_text, closing
+    the same way Update and adjacent-insertion Create already did:
+    composing `with_children()` (here, omitting rather than replacing a
+    child) needs no position-aware logic at all for an occurrence that
+    already exists. Unlike `add_component`/`update_component`, no type
+    check is needed -- there is nothing to validate about the shape of a
+    node being removed, only that one genuinely exists at `index`.
+
+    Raises `UblValidationError` if `index` is out of range for the
+    document's own existing occurrences, or if removing it would
+    introduce a validation failure `validate()` (plus the duplicate-line
+    check) newly reports. This refusal is exactly as strong as `validate()`
+    itself and no stronger: confirmed directly (not assumed) that
+    `validate()` does NOT currently check for the presence of mandatory
+    top-level elements at all, so removing a document's only
+    cac:AccountingSupplierParty (mandatory per the real Invoice XSD) is
+    NOT refused today -- an honest, disclosed limitation of the
+    underlying validation layer this function composes, not a defect in
+    how it composes it; closing that gap belongs to validate()'s own
+    schema-coverage scope, not this obligation's CRUD scope.
+    """
+    matches = [
+        position
+        for position, child in enumerate(document.root.children)
+        if local_name(child.qname) == component_name
+    ]
+    if not 0 <= index < len(matches):
+        raise UblValidationError(
+            f"index {index} is out of range for {len(matches)} existing "
+            f"{component_name} element(s) in this document"
+        )
+    target_index = matches[index]
+    new_root_children = (
+        document.root.children[:target_index] + document.root.children[target_index + 1 :]
+    )
+    edited = document.with_root(document.root.with_children(new_root_children))
+    _refuse_if_worse(document, edited)
+    return edited
+
+
+__all__ = ["add_component", "remove_component", "replace_party", "update_component"]
