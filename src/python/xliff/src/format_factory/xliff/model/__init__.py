@@ -9,6 +9,7 @@ from .document import (
     Unit,
     XliffDocument,
     XliffFile,
+    effective_attributes_by_unit,
     effective_xml_lang,
     effective_xml_space,
 )
@@ -29,6 +30,7 @@ __all__ = [
     "XliffDocument",
     "XliffFile",
     "copy_source_to_target",
+    "effective_attributes_by_unit",
     "effective_xml_lang",
     "effective_xml_space",
     "flatten_inline_content",

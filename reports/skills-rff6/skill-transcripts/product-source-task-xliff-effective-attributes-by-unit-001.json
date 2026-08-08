@@ -1,0 +1,59 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-effective-attributes-by-unit-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T03:29:43Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_EFFECTIVE_ATTRIBUTES_BY_UNIT_001",
+    "task_kind": "fourth-large-architecture-item-this-session-found-smaller-than-framed",
+    "root_cause": "FF6-EVENT-000298's own exact_next_action named xliff's whole-tree xml:space/xml:lang walker as the last un-re-investigated large item. Both XLIFF-MODEL-001 obligations' own missing_behavior claimed a walker answering 'this unit's effective xml:space/xml:lang' would need parent pointers or a redesigned tree. Read effective_xml_space()/effective_xml_lang()'s own docstrings directly: both explicitly describe themselves as reusable RULES meant to be composed by 'a caller descending the hierarchy it already navigates... passing each level's own attribute value and its parent's already-resolved effective value' -- exactly a top-down walk, which needs no parent back-references since it threads state DOWN through recursion rather than looking UP through stored pointers.",
+    "obligation_targeted": "Both SAL-XLIFF-OBL-7DA078717EA60881 and SAL-XLIFF-OBL-867500AA0AC3D2C1 (XLIFF-MODEL-001, sibling obligations sharing the same missing_behavior) promoted partial->implemented in full.",
+    "acceptance_evidence": "effective_attributes_by_unit() (model/document.py) walks document -> file -> group* -> unit once, composing the two already-tested primitives at each level. 7 new tests prove root defaults, file-level and group-level inheritance, local-override-wins, nested-group composition, independent sibling-file resolution, and full document coverage.",
+    "regression_tier": "full xliff package suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Checked the XliffDocument tree shape precisely: XliffDocument.children -> XliffFile(s) -> Group|Unit|ExtensionNode (Group nests recursively) -> for Unit, .children -> Segment|ExtensionNode. Each of XliffDocument/XliffFile/Group/Unit has its own .attributes dict, where xml:space/xml:lang would be stored under the expanded-namespace keys ({http://www.w3.org/XML/1998/namespace}space / ...lang), the exact same convention validator.py's own _XML_LANG constant already used.",
+    "2. Confirmed the missing_behavior's own scope is unit-level specifically ('this unit's effective xml:space/xml:lang'), not deeper into segments/source/target/inline content -- a materially smaller, well-bounded walk (document -> file -> group* -> unit, at most a handful of levels) than a generic whole-tree walker would need to be.",
+    "3. Added effective_attributes_by_unit(document) to model/document.py: a nested recursive _walk() closure threading (parent_space, parent_lang) down through Group/Unit children, calling effective_xml_space()/effective_xml_lang() at each level with the current node's own local attribute value and the already-resolved parent value -- exactly the composition pattern both primitives' own docstrings describe. Returns {unit_id: (effective_space, effective_lang)} for every unit in one pass.",
+    "4. Verified end-to-end with a hand-built 2-group, 2-unit document before writing any test: a unit under a group with no local override correctly inherited both an ancestor file's xml:space and an ancestor group's xml:lang; a sibling unit with its own local xml:space override correctly took precedence while still inheriting the group's xml:lang.",
+    "5. Exported effective_attributes_by_unit from model/__init__.py and the top-level xliff/__init__.py, matching the existing effective_xml_space/effective_xml_lang export pattern exactly.",
+    "6. Wrote 7 tests (test_obligation_effective_attributes_by_unit.py): root defaults with no ancestor overrides; file-level xml:space inheritance; group-level xml:lang inheritance; local-attribute-overrides-inherited-value; nested-group composition at every level; independent sibling-file resolution; full-document unit coverage.",
+    "7. Ran mypy --strict (clean), ruff (clean), the full xliff suite (554 passed), and the 6-format regression (3678 -> 3685 passed, +7, 0 failed).",
+    "8. Promoted both SAL-XLIFF-OBL-7DA078717EA60881 and SAL-XLIFF-OBL-867500AA0AC3D2C1 partial->implemented, citing the new function and tests alongside each obligation's own already-existing evidence for the underlying resolution rules (unchanged, still valid)."
+  ],
+  "allowed_files": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_obligation_effective_attributes_by_unit.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/src/format_factory/xliff/model/document.py",
+    "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+    "src/python/xliff/src/format_factory/xliff/__init__.py",
+    "tests/python/xliff/test_obligation_effective_attributes_by_unit.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_effective_attributes_by_unit.py -v -- 7 passed (all new)",
+    ".venv/Scripts/python -m mypy --strict src/python/xliff/src/format_factory/xliff/model/document.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/xliff -q -- 554 passed",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3685 passed, 4 skipped, 0 failed (was 3678)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations promoted partial->implemented",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 142,
+    "new_public_api": "format_factory.xliff.effective_attributes_by_unit"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

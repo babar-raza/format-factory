@@ -8,6 +8,7 @@ from typing import ClassVar, Iterator
 from .inline import InlineElement, InlineNode, flatten_inline_content
 
 _XML_SPACE = "{http://www.w3.org/XML/1998/namespace}space"
+_XML_LANG = "{http://www.w3.org/XML/1998/namespace}lang"
 
 
 def effective_xml_space(
@@ -264,3 +265,52 @@ class XliffDocument:
     @property
     def unit_count(self) -> int:
         return sum(1 for _ in self.iter_units())
+
+
+def effective_attributes_by_unit(
+    document: XliffDocument,
+) -> dict[str, tuple[str, str | None]]:
+    """SAL-XLIFF-OBL-7DA078717EA60881 / SAL-XLIFF-OBL-867500AA0AC3D2C1
+    (XLIFF-MODEL-001): "this unit's effective xml:space/xml:lang", resolved
+    for every unit in `document` in one pass.
+
+    `effective_xml_space()`/`effective_xml_lang()` are documented as
+    reusable RULES, not a tree-wide walker, precisely because this
+    package's model has no parent back-references -- composing them here
+    needs none either: this function walks top-down (document -> file ->
+    group* -> unit), threading each level's own already-resolved value
+    into the next as `parent`, the exact composition pattern each
+    function's own docstring names. No parent pointers or tree redesign
+    were needed, contrary to this obligation's own earlier missing_behavior
+    assessment.
+
+    Returns `{unit_id: (effective_xml_space, effective_xml_lang)}`. A unit
+    ID repeated across multiple files/groups (the model does not itself
+    guarantee document-wide unit ID uniqueness) resolves to whichever
+    occurrence is walked last -- a caller needing per-occurrence resolution
+    should walk the tree directly using the same primitives this function
+    composes, available for exactly that reason.
+    """
+
+    root_space = document.xml_space
+    root_lang = document.attributes.get(_XML_LANG)
+    result: dict[str, tuple[str, str | None]] = {}
+
+    def _walk(node: Group | Unit, parent_space: str, parent_lang: str | None) -> None:
+        space = effective_xml_space(node.attributes.get(_XML_SPACE), parent=parent_space)
+        lang = effective_xml_lang(node.attributes.get(_XML_LANG), parent=parent_lang)
+        if isinstance(node, Unit):
+            result[node.id] = (space, lang)
+            return
+        for child in node.children:
+            if isinstance(child, (Group, Unit)):
+                _walk(child, space, lang)
+
+    for file in document.files:
+        file_space = effective_xml_space(file.attributes.get(_XML_SPACE), parent=root_space)
+        file_lang = effective_xml_lang(file.attributes.get(_XML_LANG), parent=root_lang)
+        for child in file.children:
+            if isinstance(child, (Group, Unit)):
+                _walk(child, file_space, file_lang)
+
+    return result
