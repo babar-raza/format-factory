@@ -1,0 +1,59 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-typing-gate-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-3fdd81e93e55df06",
+  "mode": "live",
+  "timestamp": "2026-08-08T05:06:25Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_TYPING_GATE_001",
+    "task_kind": "certification-gate-frontier-first-concrete-step",
+    "root_cause": "Event 307 discovered ipynb and safetensors are both fully obligation-complete (0/68, 0/86 unresolved) but not CERTIFIED per controller-state.yaml's own promotion map, because the mission's own product-goal.yaml completion_invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) require separate, dedicated verification never run for either format. Rather than attempt all 10 invariants at once (deferred as a genuinely large, multi-tick undertaking), picked the single fastest, most mechanical, cleanly binary invariant -- typing -- as a bounded first concrete step this tick.",
+    "obligation_targeted": "product-goal.yaml's own 'typing' completion invariant for ipynb and safetensors -- NOT a certification claim for either format as a whole, which requires all 10 invariants plus an explicit promotion-map update this tick deliberately does not attempt.",
+    "acceptance_evidence": "mypy --strict src/python/ipynb/src/format_factory/ipynb found 1 real error (adapters/execute.py::_cell_source, a bare `dict` parameter annotation missing type arguments) -- fixed to `dict[str, Any]`, matching IpynbDocument.code_cells' own declared list[dict[str, Any]] return type. Re-run: 0 errors across all 32 source files. safetensors: 0 errors across all 22 source files already, no fix needed. Both recorded in dedicated typing-gate.json evidence files.",
+    "regression_tier": "full ipynb suite, full 6-format regression, ruff"
+  },
+  "execution_steps": [
+    "1. Investigated ipynb's own reconciler-confirmed 0/68 unresolved state and cross-checked tools/certification/certification_dashboard.py's own collect_format_status() output (overall_verdict=IN_PROGRESS, 7/9 dashboard dimensions NOT_AUDITED) against product-goal.yaml's own separate 10-item completion_invariants list -- confirmed these are two DIFFERENT taxonomies (the dashboard's 9 dimensions were built for the older 20-legacy-format certification system, ALL_FORMATS constant confirms it does not even list the 6 FF6 formats), so the dashboard's own verdict is not directly wired into FF6's controller-state.yaml promotion map by any code path found.",
+    "2. Searched for any existing tool that writes controller-state.yaml's own promotion field -- found none; promotion_manager.py is an unrelated architecture-promotion-level system for a different 30-product+language registry. Confirmed promotion:CERTIFIED for FF6 is a deliberate, explicit, manual declaration an agent must make only once independently satisfied all 10 of product-goal.yaml's own completion_invariants -- and the controller-state.yaml's own next_task text repeats 'Do not claim certification for any format' multiple times, a clear signal against a rushed or partial claim.",
+    "3. Chose 'typing' as the first concrete invariant to advance this tick: fast, mechanical, cleanly binary (mypy --strict pass/fail), and directly named in product-goal.yaml's own invariant list, unlike the dashboard's mismatched 9-dimension taxonomy.",
+    "4. Ran mypy --strict against ipynb's full source tree: found 1 real error at adapters/execute.py:154 (_cell_source(cell: dict) -> str, bare dict missing type-arg).",
+    "5. Checked the actual call site and the caller's own type: document.code_cells (model/document.py) is declared -> list[dict[str, Any]], confirming dict[str, Any] is the precise, correct annotation rather than a vague Any or dict[str, object].",
+    "6. Added `from typing import Any` (not previously imported) and corrected the annotation to `cell: dict[str, Any]`.",
+    "7. Re-ran mypy --strict: 0 errors across all 32 ipynb source files.",
+    "8. Ran mypy --strict against safetensors' full source tree for comparison: 0 errors across all 22 source files already, confirming no fix needed there.",
+    "9. Ran ruff on the changed file (clean), the full ipynb suite (720 passed, unchanged -- a type-annotation-only fix has no runtime behavior change), and the full 6-format regression (3758 passed, 4 skipped, 0 failed).",
+    "10. Wrote reports/certification/ipynb/typing-gate.json and reports/certification/safetensors/typing-gate.json recording each package's own genuine, verified typing-gate result -- explicitly NOT a certification verdict for the format as a whole, only the one named invariant."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/src/format_factory/ipynb/adapters/execute.py",
+    "reports/certification/ipynb/typing-gate.json",
+    "reports/certification/safetensors/typing-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/src/format_factory/ipynb/adapters/execute.py",
+    "reports/certification/ipynb/typing-gate.json",
+    "reports/certification/safetensors/typing-gate.json"
+  ],
+  "tests_run": [
+    ".venv/Scripts/python -m mypy --strict src/python/ipynb/src/format_factory/ipynb -- Success: no issues found in 32 source files (1 error fixed)",
+    ".venv/Scripts/python -m mypy --strict src/python/safetensors/src/format_factory/safetensors -- Success: no issues found in 22 source files (0 errors, no fix needed)",
+    ".venv/Scripts/python -m ruff check src/python/ipynb/src/format_factory/ipynb/adapters/execute.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ipynb -q -- 720 passed",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3758 passed, 4 skipped, 0 failed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations closed (this is a certification-gate invariant, not an obligation)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 68,
+    "new_public_api": null
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

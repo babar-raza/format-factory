@@ -1,0 +1,15 @@
+{
+  "format_id": "safetensors",
+  "gate": "typing",
+  "tool": "mypy --strict",
+  "target": "src/python/safetensors/src/format_factory/safetensors",
+  "source_files_checked": 22,
+  "errors_found": 0,
+  "status": "PASS",
+  "verdict": "PASS",
+  "note": "Zero errors found across all 22 source files, no fix needed. This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the typing invariant only, not a certification claim for the format as a whole.",
+  "regression": {
+    "six_format_suite": "3758 passed, 4 skipped, 0 failed"
+  },
+  "commit": "pending"
+}

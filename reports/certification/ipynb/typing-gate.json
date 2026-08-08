@@ -1,0 +1,16 @@
+{
+  "format_id": "ipynb",
+  "gate": "typing",
+  "tool": "mypy --strict",
+  "target": "src/python/ipynb/src/format_factory/ipynb",
+  "source_files_checked": 32,
+  "errors_found": 0,
+  "status": "PASS",
+  "verdict": "PASS",
+  "note": "1 pre-existing error fixed as part of this run (adapters/execute.py::_cell_source had a bare `dict` parameter annotation, missing type arguments; corrected to `dict[str, Any]` matching IpynbDocument.code_cells' own declared `list[dict[str, Any]]` return type). Zero errors remain across all 32 source files. This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the typing invariant only, not a certification claim for the format as a whole.",
+  "regression": {
+    "ipynb_suite": "720 passed, 0 failed (unchanged by this fix)",
+    "six_format_suite": "3758 passed, 4 skipped, 0 failed"
+  },
+  "commit": "pending"
+}

@@ -37,6 +37,7 @@ import json
 import subprocess
 import sys
 from dataclasses import dataclass
+from typing import Any
 
 from ..errors import IpynbExecutionError
 from ..model.document import IpynbDocument
@@ -151,7 +152,7 @@ def _resolve_kernel(document: IpynbDocument, kernel: str | None) -> str:
     return sys.executable
 
 
-def _cell_source(cell: dict) -> str:
+def _cell_source(cell: dict[str, Any]) -> str:
     value = cell.get("source", "")
     return value if isinstance(value, str) else "".join(value)
 
