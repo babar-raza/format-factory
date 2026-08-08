@@ -1,0 +1,21 @@
+{
+  "format_id": "nrrd",
+  "gate": "installed-wheel",
+  "tool": "tools/run_package_install_proof.py --format nrrd",
+  "canonical_manifest": "reports/package-install-proof/proof-manifest.json",
+  "status": "PASS",
+  "verdict": "PASS",
+  "proof_id": "PACKAGE-PROOF-3EB9973E67628680965519DA7F4F6E598868946E7E2726CCCDBE027775287097",
+  "checks": {
+    "build_mode": "native_pyproject",
+    "install_result": "PASS -- installed from a freshly built wheel into an isolated ephemeral venv, not the dev checkout",
+    "local_dependency": "format-factory-core wheel installed first, PASS",
+    "import_result": "PASS",
+    "deep_import": "PASS -- 20/20 submodules import cleanly, 0 failing",
+    "smoke_result": "PASS -- format_factory.nrrd.load_nrrd on samples/by-format/nrrd/valid/1d-int8.nrrd",
+    "pytest_in_proof_venv": "2 passed, 1 skipped"
+  },
+  "wheel_digest_cross_check": "wheel_sha256 5c4b174577ae38900e18bf4430c06e7a38107f7ff944c5865e067f7af324fc3a matches exactly the digest already recorded by this format's own reproducible-build.json and independent-repository-extraction-gate.json (both refreshed at FF6-EVENT-000324 after the stale-build-cache fix) -- confirms all three gates agree on the current, clean wheel content.",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the installed-wheel invariant only, not a certification claim for the format as a whole.",
+  "commit": "pending"
+}

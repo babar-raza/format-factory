@@ -305,6 +305,50 @@ def benchmark_ora():
     }
 
 
+def benchmark_nrrd():
+    """Benchmark nrrd parse (load) and write (dumps)."""
+    from format_factory.nrrd import load, dumps
+
+    sample = REPO_ROOT / "samples" / "by-format" / "nrrd" / "valid" / "2d-float32.nrrd"
+    if not sample.exists():
+        candidates = list((REPO_ROOT / "samples" / "by-format" / "nrrd" / "valid").rglob("*.nrrd"))
+        if candidates:
+            sample = candidates[0]
+        else:
+            return {"error": "No nrrd sample found"}
+
+    # Parse benchmark
+    parse_times = []
+    for _ in range(RUNS):
+        t0 = time.perf_counter()
+        document = load(sample)
+        parse_times.append(time.perf_counter() - t0)
+
+    # Write benchmark
+    write_times = []
+    for _ in range(RUNS):
+        t0 = time.perf_counter()
+        _ = dumps(document)
+        write_times.append(time.perf_counter() - t0)
+
+    # Memory benchmark
+    tracemalloc.start()
+    _ = load(sample)
+    _, peak = tracemalloc.get_traced_memory()
+    tracemalloc.stop()
+
+    return {
+        "format": "nrrd",
+        "sample": str(sample.relative_to(REPO_ROOT)),
+        "parse_median_ms": round(statistics.median(parse_times) * 1000, 2),
+        "parse_min_ms": round(min(parse_times) * 1000, 2),
+        "write_median_ms": round(statistics.median(write_times) * 1000, 2),
+        "write_min_ms": round(min(write_times) * 1000, 2),
+        "memory_peak_kb": round(peak / 1024, 1),
+        "runs": RUNS,
+    }
+
+
 def benchmark_zst():
     """Benchmark ZST compress and decompress."""
     from zst import compress_bytes, decompress_bytes
@@ -357,6 +401,7 @@ def main():
         ("safetensors", benchmark_safetensors),
         ("xliff", benchmark_xliff),
         ("ora", benchmark_ora),
+        ("nrrd", benchmark_nrrd),
     ]:
         print(f"Benchmarking {name.upper()}...", end=" ", flush=True)
         try:

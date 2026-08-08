@@ -1,0 +1,21 @@
+{
+  "format_id": "nrrd",
+  "gate": "security",
+  "tool": "AST static import/call sweep + existing NRRD-SEC-001 test suite",
+  "target": "src/python/nrrd/src/format_factory/nrrd",
+  "status": "PASS",
+  "verdict": "PASS",
+  "checks": {
+    "fully_forbidden_modules_never_imported": "PASS -- already proven by the pre-existing tests/python/nrrd/test_obligation_security_baseline.py::test_no_source_file_imports_networking_execution_or_plugin_modules, which blocks a broad set (socket, urllib, http, ftplib, smtplib, subprocess, importlib, pkgutil, ctypes) -- importlib being fully forbidden already rules out importlib.import_module.",
+    "no_eval_exec_compile_call_anywhere_in_source": "PASS -- NEW this tick (the existing sweep is import-based and cannot see builtin calls)",
+    "no_dunder_import_call_anywhere": "PASS -- NEW this tick, same reasoning as eval/exec/compile"
+  },
+  "prior_art": "NRRD-SEC-001's own 4 obligations (resolver policy confinement, hostile-content opacity, configurable limits with checked arithmetic) already have a substantial, pre-existing dedicated test file: tests/python/nrrd/test_obligation_security_baseline.py. That file's own forbidden-module sweep is already broader than the minimal set used for xliff/ora (it also blocks importlib entirely, not just a dynamic-import CALL). This gate adds the one narrow gap that sweep cannot see: bare eval/exec/compile/__import__ builtin calls, which import-based AST scanning does not detect.",
+  "new_tests": "tests/python/nrrd/test_obligation_security_eval_exec_sweep.py (2 tests, all new -- a separate file from the pre-existing test_obligation_security_baseline.py, not a modification of it, following the exact recovery discipline established during ora's own security-gate tick)",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the security invariant only, not a certification claim for the format as a whole.",
+  "regression": {
+    "nrrd_suite": "675 passed (was 673, +2)",
+    "six_format_suite": "3938 passed, 4 skipped, 0 failed"
+  },
+  "commit": "pending"
+}

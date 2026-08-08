@@ -14,6 +14,7 @@ valid_samples:
     category: minimal-valid
     description: "Minimal 1D array of int8 values with raw encoding. Tests baseline NRRD header parsing and 1D data extraction."
     structural_test: PASS
+    sha256: 584a2d207555a23bd5a7ce301ae9ad0bd7ae4a3f4883315e33a8403b8cd62c8b
 
   - filename: valid/2d-float32.nrrd
     source: project-owned-synthetic
@@ -23,6 +24,7 @@ valid_samples:
     category: multi-dimensional
     description: "2D float32 array with sizes and spacings. Tests multi-dimensional field parsing and float data interpretation."
     structural_test: PASS
+    sha256: c5215930336c999d4facb855b8a72d3ada36b37161b51ed72611a11c2b24227e
 
   - filename: valid/gzip-encoded.nrrd
     source: project-owned-synthetic
@@ -32,6 +34,7 @@ valid_samples:
     category: compressed-encoding
     description: "NRRD file with gzip-compressed data payload. Tests encoding field detection and gzip decompression path."
     structural_test: PASS
+    sha256: 2fddb67de61ab33ad6923ec8db32644be04119c8522d0e8d0a9548cf8ffc0fe2
 
 invalid_samples:
   - filename: invalid/bad-magic.nrrd
@@ -43,6 +46,7 @@ invalid_samples:
     description: "File missing the required 'NRRD' magic line at start. Tests magic line validation in parser."
     expected_error: true
     error_type: InvalidMagic
+    sha256: 62c4a71cb80e4d6395f5bb86caf13c318af5d40192deae65330da00ab898be5c
 
 summary:
   valid_count: 3

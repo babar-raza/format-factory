@@ -1,0 +1,24 @@
+{
+  "format_id": "nrrd",
+  "gate": "documentation",
+  "status": "PASS",
+  "verdict": "PASS",
+  "docs_present": ["README.md", "CHANGELOG.md", "MIGRATION.md", "SECURITY.md"],
+  "readme_line_count": 144,
+  "readme_sections": [
+    "Installation", "Common lifecycle", "Attachment-form conversion", "Encoding and dtype conversion",
+    "Lazy payload access", "Space transforms", "Preservation and array access",
+    "Security and resource limits", "Current scope", "License"
+  ],
+  "checks_performed_this_tick": {
+    "readme_substantially_rewritten": "The prior README was 37 lines with no section headers and documented only the basic lifecycle -- it did not mention attachment-form conversion (convert_to_attached/convert_to_detached_list, this session's own Event 316 work), encoding/dtype conversion, lazy payload access, or space transforms, all of which are real, existing, tested public API. Rewritten to 144 lines / 10 sections covering the real feature depth, following the exact same pattern already established for xliff/ora.",
+    "symbol_existence": "PASS -- every symbol referenced by a `from format_factory.nrrd import ...` statement in the README (18 distinct names across 7 code blocks) actually exists on the current module, checked via hasattr, not merely assumed from the source text",
+    "example_execution": "PASS -- the README's own 'Common lifecycle' example (probe/load/validate/dump) was executed verbatim against a real corpus sample (samples/by-format/nrrd/valid/2d-float32.nrrd) end-to-end: probed true, loaded, validated clean, and dumped to a real output file"
+  },
+  "honest_gap": "Not every one of the README's 7 code examples was executed end-to-end this tick (the attachment-conversion, dtype-conversion, lazy-access, and space-transform examples reference illustrative variables/files a real caller would supply) -- symbol-existence was verified for all of them via direct API/signature inspection, matching the exact scope already established for xliff/ora's own documentation gates.",
+  "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the documentation invariant only, not a certification claim for the format as a whole.",
+  "regression": {
+    "nrrd_suite": "675 passed, 1 skipped (unchanged by the README rewrite)"
+  },
+  "commit": "pending"
+}

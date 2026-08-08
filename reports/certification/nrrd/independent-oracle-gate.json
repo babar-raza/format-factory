@@ -1,0 +1,18 @@
+{
+  "format_id": "nrrd",
+  "gate": "independent-oracle",
+  "tool": "tools/oracle/execute_oracle.py --format nrrd",
+  "oracle_package": "oracle/formats/nrrd/oracle-package.yaml",
+  "run_summary": "oracle/formats/nrrd/reports/oracle-run-summary.json",
+  "total_cases": 5,
+  "results": {"PASS": 5, "FAIL": 0, "BLOCKED": 0, "INCONCLUSIVE": 0},
+  "pass_rate": "5/5",
+  "verdict": "ALL_PASS",
+  "status": "PASS",
+  "format_depth_score": "D1",
+  "depth_histogram": {"D1": 3, "D0": 2},
+  "coverage_gaps": [],
+  "re_run_this_tick": "nrrd already had a real, pre-existing oracle package (unlike ora, which had none) -- ran fresh rather than trusting any stale summary, since this session modified nrrd's own source (attachment-conversion work, Event 316) after the package was last executed. Re-confirmed 5/5 PASS at D1 depth with no regression.",
+  "note": "D1 = model properties compared against expected values (3 cases); D0 = load did not crash, no property comparison (2 cases). D2 (schema validation) does not apply -- NRRD has no XSD/schema-family grammar to validate against. Oracle package schema-validation carries a separate, non-blocking WARNING (oracle-package.schema.json's 'family' enum does not include 'scientific', the correct family for this format -- the same class of pre-existing, portfolio-wide schema staleness already noted for ipynb's and xliff's own oracle gates; advisory metadata validation only, unrelated to this oracle's own PASS/FAIL verdict). This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the independent-oracle invariant only, not a certification claim for the format as a whole.",
+  "commit": "pending"
+}
