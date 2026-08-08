@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-changelog-catchup-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-9d82f0fdcce7611d",
+  "mode": "live",
+  "timestamp": "2026-08-08T14:57:06Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_CHANGELOG_CATCHUP_001",
+    "task_kind": "close-a-changelog-content-staleness-gap-found-via-a-cross-format-survey",
+    "root_cause": "Event 347's own exact_next_action named ora as the natural next tick after closing the CHANGELOG staleness gap for ubl (Event 346) and nrrd (Event 347), since ora's own capability inventory was already fully compiled during its README fix at Event 344. ora's CHANGELOG.md had exactly one entry ('First code', the initial container/media-type-sentinel milestone), with no mention of the layer stack model, transactional editing, raster asset resolution, baseline asset replacement, or preservation modes.",
+    "obligation_targeted": "No specific obligation-register status change (ora remains at 7/134 unresolved, unaffected by this tick) -- this closes the same changelog-content-accuracy gap dimension opened at Event 346, adjacent to but distinct from product-goal.yaml invariant #4.",
+    "acceptance_evidence": "Confirmed ora's pyproject.toml still declares version 0.1.0.dev0, matching the CHANGELOG's own latest (and only) heading exactly, so new bullets belong under the same heading. Compiled the real capability list directly from this session's own already-fully-verified README work (Event 344 in particular, plus the README's own remaining sections already audited at that same tick): transactional editing, layer stack model and composite operations, raster asset resolution, baseline asset replacement, preservation modes. Verified all 15 symbols cited in the 5 new bullets exist on the current module via hasattr before writing."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 347 commit (20e30981); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Read src/python/ora/CHANGELOG.md (10 lines, one entry describing only the initial archive-container/media-type-sentinel milestone) -- the same one-entry-ever staleness pattern already confirmed for ubl and nrrd.",
+    "3. Confirmed ora's own pyproject.toml still declares `version = \"0.1.0.dev0\"`, identical to the CHANGELOG's own latest heading ('0.1.0.dev0 (unreleased)') -- appending to the existing section, not creating a new heading, following the same reasoning already verified and applied for ubl and nrrd.",
+    "4. Compiled the list of real, shipped, previously undocumented-in-changelog ora capabilities directly from this session's own README work at Event 344, which had already fully investigated and verified every one of ora's README sections beyond 'Installation'/'Common lifecycle': transactional editing (apply_transaction/EditStep/TransactionResult), the layer stack model and composite operations (OraStack/OraLayer/OraText/OraNode/composite_op_info), raster asset resolution (OraContainer/resolve_asset/resolve_all_assets), baseline asset replacement (replace_baseline_asset, this session's own Events 332-334 addition, README-documented at Event 344), and preservation modes (dumps/PreservationMode/check_preservation).",
+    "5. Verified all 15 distinct symbols named in the 5 drafted bullets exist on the current format_factory.ora module via hasattr before writing anything.",
+    "6. Appended 5 new bullets to the existing '## 0.1.0.dev0 (unreleased)' section of src/python/ora/CHANGELOG.md.",
+    "7. Regenerated reports/certification/ora/documentation-gate.json to add a 'changelog_content_accuracy' check dimension (matching the structure introduced for ubl at Event 346 and nrrd at Event 347) documenting the gap found and the fix applied, and extended the incidental_finding to note this closes the ora instance of the cross-format staleness pattern, leaving xliff/ipynb/safetensors open.",
+    "8. Did not modify any production source code, README.md, or any other file -- this slice is purely a CHANGELOG.md content-accuracy fix plus its own supporting gate-evidence regeneration. Did not re-run the ora test suite since no production/test source changed; regression figures already on file (355 passed) remain accurate."
+  ],
+  "allowed_files": [
+    "src/python/ora/CHANGELOG.md",
+    "reports/certification/ora/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/CHANGELOG.md",
+    "reports/certification/ora/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct verification: hasattr checks for all 15 symbols cited in the new CHANGELOG bullets against the current format_factory.ora module",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a changelog-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine CHANGELOG.md content-staleness gap for ora -- no obligation status change (ora remains at 7/134 unresolved, unaffected), but a real developer-facing accuracy improvement matching the same fix already applied to ubl and nrrd.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 134,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API in a changelog entry; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
