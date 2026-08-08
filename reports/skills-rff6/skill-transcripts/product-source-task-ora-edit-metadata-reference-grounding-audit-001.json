@@ -1,0 +1,50 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-edit-metadata-reference-grounding-audit-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-689632f9f72a2863",
+  "mode": "live",
+  "timestamp": "2026-08-08T06:30:08Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_EDIT_METADATA_REFERENCE_GROUNDING_AUDIT_001",
+    "task_kind": "rule_text-grounding-citation-audit-same-class-as-ora-mask-001",
+    "root_cause": "Event 317's own exact_next_action named ORA-EDIT-001's own reference-maintenance clause as the one remaining ora item not obviously blocked on the confirmed-large rendering cluster, worth a closer look. Before assuming it was buildable, checked whether it was grounded in the real spec at all -- the same question already answered for this obligation's own ORA-MASK-001 sibling (same authority cluster).",
+    "obligation_targeted": "SAL-ORA-OBL-EC8D65524EB96820 (ORA-EDIT-001) -- narrowed with a corrected, more precise missing_behavior; stays partial, not force-closed.",
+    "acceptance_evidence": "Full-text-searched all 3 pinned acquired OpenRaster spec sources for 'metadata' (0 hits in all 3) and 'reference' (4 hits, all describing the src attribute as an archive-member file path, zero describing a cross-element reference concept). Confirmed directly that model/stack.py's own validate_src produces a static, tree-position-independent path, so 'reference maintenance' on rename/move/remove has nothing to actually repair. Both clauses confirmed ungrounded, matching ORA-MASK-001's own established disposition (documented, not force-built, per GAP-008). The 3rd remaining clause (stale-derived-view invalidation) was explicitly confirmed to be a DIFFERENT kind of gap -- genuinely blocked on the still-unbuilt rendering engine, not an authoring artifact.",
+    "regression_tier": "none (evidence-only slice, no source or test files touched)"
+  },
+  "execution_steps": [
+    "1. Read SAL-ORA-OBL-EC8D65524EB96820's own rule_text directly from the obligation register (not just the evidence file's paraphrase): 'Provide transactional add, replace, move, rename, and remove operations for groups, layers, assets, and metadata; maintain references and invalidate stale derived views.' -- confirmed 'metadata' and 'references' are named at the MUST/STABLE_REQUIRED level, not merely implied by a looser missing_behavior summary.",
+    "2. Full-text-searched all 3 pinned acquired OpenRaster spec sources (.local/format-contracts/acquired/ora/src-ora-00{1,2,3}.bin) for the literal string 'metadata' (case-insensitive): 0 occurrences in any of the 3 files. Confirmed OpenRaster is a ZIP of mimetype + stack.xml + raster assets with no dedicated metadata element or schema, unlike ODF's own meta.xml.",
+    "3. Searched the same 3 sources for 'reference': 4 occurrences, all in src-ora-002.bin. Read each hit's own surrounding line directly: all 4 describe the src attribute as an archive-member FILE PATH ('image data files referenced by stack.xml, typically layer*.png', 'Files must be referenced in stack.xml by their full path relative to the [archive root]', 'All files inside this directory should be referenced from somewhere', 'The thumbnail file must not be referenced in any .xml file') -- zero hits describing any cross-ELEMENT reference concept (e.g. one layer pointing at another by id) within the model tree itself.",
+    "4. Cross-checked against model/stack.py's own validate_src and the OraLayer/OraText src field: confirmed src is a static, archive-root-relative path string, computed once at parse time, with no dependency on the element's own position in the tree -- renaming, moving, or removing a layer via apply_transaction does not change what that layer's own src value means, so there is nothing for 'reference maintenance' to actually repair even if a cross-element reference concept existed.",
+    "5. Concluded both 'metadata' and 'maintain references' are ungrounded authoring artifacts -- the same disposition already independently established for this obligation's own sibling, ORA-MASK-001 (same authority_fact_ids cluster including SAL-ORA-00008), whose own missing_behavior explicitly documents 'the word mask appears zero times across all three pinned OpenRaster spec sources.'",
+    "6. Explicitly verified the 3rd remaining clause, stale-derived-view invalidation, is NOT part of this finding -- re-confirmed no pixel-compositing/rendering infrastructure exists anywhere in the ora package (matching ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF's own earlier finding this session that the only render() in the codebase generates XML text, not pixels), a genuine dependency block on ORA-RENDER-001/ORA-COMPOSITE-001, not an authoring artifact.",
+    "7. Updated the obligation's own implemented_behavior (adding the finding, dated FF6-EVENT-000318) and missing_behavior (precisely distinguishing the 2 now-confirmed-ungrounded clauses from the 1 genuinely-blocked clause) in shared/format-contracts/implementation-evidence/ora.yaml. Left status as partial, matching the ORA-MASK-001 precedent of not force-closing an obligation whose own rule_text still names an ungrounded clause.",
+    "8. Registered a new execution_evidence entry (ORA-EDIT-METADATA-REFERENCE-GROUNDING-AUDIT-PROOF) documenting the full finding, referenced by the obligation's own execution_evidence_ids.",
+    "9. Ran the full ora suite to confirm zero regression (349 passed, unchanged -- no source or test files were touched, this is a pure evidence-grounding correction)."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora -q -- 349 passed, unchanged (no source or test files touched)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "0 obligations closed (evidence-grounding correction, obligation stays partial)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 134,
+    "new_public_api": null
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
