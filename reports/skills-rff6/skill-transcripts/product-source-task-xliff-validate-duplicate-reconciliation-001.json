@@ -1,0 +1,43 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-validate-duplicate-reconciliation-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T02:12:04Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_VALIDATE_DUPLICATE_RECONCILIATION_001",
+    "task_kind": "missed-duplicate-obligation-reconciliation",
+    "root_cause": "While auditing whether the nrrd validate()-accepts-raw-source pattern generalized to xliff/ubl, found xliff's own validate() lacks raw-source support (a genuine, separate gap) but also noticed XLIFF-VALIDATE-001's own remaining unresolved obligation (SAL-XLIFF-OBL-43570A6F4917147B) carries rule_text word-for-word identical to two already-implemented siblings (SAL-XLIFF-OBL-078DE5F17834C232/XLIFF-MODULE-001, SAL-XLIFF-OBL-C1BB9934B09B3B70/XLIFF-PARSE-001) closed earlier this session via schema_validate()/full_schema_validate(). Its own missing_behavior text ('no schema files are bundled... xmlschema... never imported anywhere') was stale, predating that work.",
+    "obligation_targeted": "1 obligation promoted partial->implemented: SAL-XLIFF-OBL-43570A6F4917147B (XLIFF-VALIDATE-001).",
+    "acceptance_evidence": "Reused the exact existing evidence its two siblings already cite: schema_validate()/full_schema_validate() (schema_validator.py) and their existing test suites (test_obligation_core_schema_validation.py, test_obligation_full_module_schema_validation.py). Zero new source or test code.",
+    "regression_tier": "full xliff suite"
+  },
+  "execution_steps": [
+    "1. Confirmed the rule_text match is exact (not merely similar): grepped both sibling obligations' own rule_text field in plans/strategic/ff6/obligations/xliff.yaml and diffed against SAL-XLIFF-OBL-43570A6F4917147B's own -- word-for-word identical: '(XLIFF conformance) XLIFF documents must be well-formed XML and valid against the core schema with module content valid against its module schema'.",
+    "2. Confirmed via the reconciliation JSON that both siblings are already status=implemented, and confirmed schema_validate()/full_schema_validate() actually exist, are wired to the bundled OASIS XSD files, and xmlschema==4.1.0 is genuinely importable in this environment (not aspirational).",
+    "3. Updated shared/format-contracts/implementation-evidence/xliff.yaml: added the two schema-validation functions to source_symbols, added 4 already-existing tests (2 positive, 4 negative) from the two sibling test files as additional selectors, cleared missing_behavior, promoted status to implemented.",
+    "4. Ran the reconciler (7/142 -> 6/142 unresolved, -1 matching the promotion) and the full xliff suite (543 passed, unchanged -- confirming zero new test code was needed since the existing evidence already fully proves this obligation's own claim)."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff -q -- 543 passed (unchanged)",
+    "python -m tools.format_contract.contract_reconciler --format-id xliff -- 6/142 unresolved (was 7)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation promoted partial->implemented (evidence reuse, zero new code)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 142
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

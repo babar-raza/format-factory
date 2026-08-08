@@ -1674,22 +1674,29 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-43570A6F4917147B
   capability_id: XLIFF-VALIDATE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/codec/reader/reader.py::loads
+  - src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::schema_validate
+  - src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::full_schema_validate
   positive_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected
   - tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_a_schema_valid_document_reports_no_diagnostics
+  - tests/python/xliff/test_obligation_full_module_schema_validation.py::test_a_well_formed_glossary_extension_validates_cleanly
   negative_test_selectors:
   - tests/python/xliff/test_production_namespace.py::test_dtd_and_entity_declarations_are_rejected
   - tests/python/xliff/test_production_namespace.py::test_preview_and_legacy_profiles_are_isolated
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_a_missing_required_attribute_is_flagged
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_every_violation_is_reported_not_just_the_first
+  - tests/python/xliff/test_obligation_full_module_schema_validation.py::test_a_glossary_entry_with_two_terms_violates_the_module_schema
+  - tests/python/xliff/test_obligation_full_module_schema_validation.py::test_a_core_level_violation_is_still_caught_when_a_module_extension_is_present
   execution_evidence_ids:
   - XLIFF-BASELINE-SUITE
   - XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   implemented_behavior:
-  - 'Cross-capability duplicate of XLIFF-PARSE-001''s SAL-XLIFF-OBL-C1BB9934B09B3B70 (identical rule_text): The "well-formed XML" half is proven (DTD/entity declarations refused; unsupported namespace/version refused).'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: "valid against the core schema with module content valid against its module schema" (true XSD/Schematron validation) is not implemented -- no schema files are bundled in this package, and the optional xmlschema dependency declared in pyproject.toml is never imported anywhere in the source. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first.'
+  - 'FF6-EVENT-000292: this obligation''s own rule_text ("XLIFF documents must be well-formed XML and valid against the core schema with module content valid against its module schema") is WORD-FOR-WORD IDENTICAL to SAL-XLIFF-OBL-078DE5F17834C232 (XLIFF-MODULE-001) and SAL-XLIFF-OBL-C1BB9934B09B3B70 (XLIFF-PARSE-001), both already promoted to implemented earlier this session citing schema_validate()/full_schema_validate() against the bundled, official OASIS XLIFF 2.1 core+module schema files (validation/schemas/*.xsd, extracted byte-for-byte from the pinned acquisition cache). This third obligation, filed under a different capability_id (XLIFF-VALIDATE-001), was missed by those earlier sweeps -- its own "well-formed XML" half was already separately proven (DTD/entity declarations refused; unsupported namespace/version refused); the "valid against core schema" and "module content valid against its module schema" halves are proven by the identical already-existing evidence its two siblings cite, not new work.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
