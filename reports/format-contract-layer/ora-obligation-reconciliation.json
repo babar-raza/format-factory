@@ -74,6 +74,14 @@
       "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE. Narrows (does not fully close) SAL-ORA-OBL-EC8D65524EB96820 (ORA-EDIT-001). apply_transaction was already fully generic before this slice -- any OraImage -> OraImage callable built from dataclasses.replace() is a valid step -- so replace/move/remove were not a missing feature, only untested through the existing machinery. Verified interactively before writing any test: a replace step swapping one layer for a newly-constructed one, a move step relocating a layer from the root into a nested group (OraStack nesting is the group mechanism), a remove step deleting a layer, a remove step deleting an entire group along with its children, and a rollback proof combining a replace and a group-remove that both revert together on a later failure -- all 5 confirmed working on the first attempt via the model's existing dataclasses.replace()-based mutation, then formalized as 5 new pytest tests. Metadata targets remain untested (no metadata concept exists in the model); reference maintenance and stale-view invalidation remain untested (no reference type or rendering engine exists) -- both correctly left as open gaps per GAP-008, not force-closed. ora suite: 289 -> 294 passed. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-ORA-OBL-EC8D65524EB96820 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "ORA-GROUP-UNKNOWN-EXTENSION-PRESERVATION-RECONCILIATION-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-group-unknown-extension-reconciliation-001.json",
+      "sha256": "b454badcf59436c6a27497704273265072017d97cfa638c0f28aef25d2db44c7",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact test selectors proving ORA-GROUP-001's own last-remaining gap (\"unknown- extension preservation... for a group specifically\") is already resolved by ORA-PRESERVE-001's own check_preservation() mechanism, which treats <stack> (the group element) identically to <layer>/<text>/<image> -- an unmodeled attribute on a group survives a LOSSLESS round trip byte-for-byte and is correctly named in a CANONICAL-mode loss report, including for a group nested inside another group. Zero new source or test code -- pure evidence reconciliation citing tests already built and passing for a sibling obligation. Covers SAL-ORA-OBL-96D74D42B49F8C8B only; it supports no other obligation and promotes no other product state."
+    },
+    {
       "evidence_id": "ORA-LAYER-GROUP-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -189,7 +197,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "8129077d8fe43a3af34feab73e7fbd8e6cf8d8bc8f17cc025fa6b7c80332db6b",
+    "implementation_evidence": "f146712ceaf9275e9ddd9283d67f593608a8ac3405c9f1244db5ce79d0e42117",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -3175,15 +3183,15 @@
       "execution_evidence_ids": [
         "ORA-BASELINE-SUITE",
         "ORA-LAYER-GROUP-CITATION-AUDIT-SELECTOR-PROOF",
-        "ORA-COMPOSITE-OP-REJECTION-SCOPE-CORRECTION-PROOF"
+        "ORA-COMPOSITE-OP-REJECTION-SCOPE-CORRECTION-PROOF",
+        "ORA-GROUP-UNKNOWN-EXTENSION-PRESERVATION-RECONCILIATION-PROOF"
       ],
       "implemented_behavior": [
         "Create, edit, move, and remove are all proven (see the 6 already-cited tests). Group attributes (opacity, visibility) are validated identically to layers at both construction and edit time. Root restrictions are now also proven: root-versus-non-root constraints (exactly one root <stack> under <image>) were confirmed enforced in source but untested by any test in the whole ora suite in an earlier tick this session, and 2 new tests closed that gap (test_an_image_with_no_root_stack_is_refused, test_an_image_with_multiple_root_stacks_is_refused, in test_obligation_stack_and_document.py) -- added directly to this obligation's citation, which had gone stale (its own docstring wrongly claimed this was already re-proven).",
-        "Corrected understanding of the composite-op sub-clause, resolving the dedicated future investigation an earlier tick this session explicitly deferred: re-reading the pinned Layer Stack Specification directly (.local/format-contracts/acquired/ora/src-ora-003.bin) confirms composite-op's lack of a rejecting validator is spec-mandated, not an unbuilt check -- the spec's own text states \"In the future other compositing modes might be added,\" an explicitly open, forward-compatible vocabulary. 'Enforcing group attributes' does not need to extend a rejection rule to composite-op, since the spec itself forbids treating an unrecognized value as invalid; composite_op_info() (model/composite_ops.py) already correctly returns None for unrecognized values without rejecting them, proven by test_an_unrecognized_composite_op_on_a_layer_is_preserved_not_rejected."
+        "Corrected understanding of the composite-op sub-clause, resolving the dedicated future investigation an earlier tick this session explicitly deferred: re-reading the pinned Layer Stack Specification directly (.local/format-contracts/acquired/ora/src-ora-003.bin) confirms composite-op's lack of a rejecting validator is spec-mandated, not an unbuilt check -- the spec's own text states \"In the future other compositing modes might be added,\" an explicitly open, forward-compatible vocabulary. 'Enforcing group attributes' does not need to extend a rejection rule to composite-op, since the spec itself forbids treating an unrecognized value as invalid; composite_op_info() (model/composite_ops.py) already correctly returns None for unrecognized values without rejecting them, proven by test_an_unrecognized_composite_op_on_a_layer_is_preserved_not_rejected.",
+        "FF6-EVENT-000285: this obligation's own last remaining gap (\"unknown-extension preservation... for a group specifically was not investigated\") is resolved -- not by new source, by reconciling already-existing ORA-PRESERVE-001 evidence that was never cross-referenced here. preservation.py's check_preservation()/_KNOWN_ATTRIBUTES already treats <stack> (the group element) identically to <layer>/<text>/<image>: any attribute on a <stack> the model does not carry is (a) preserved verbatim under LOSSLESS mode and (b) reported as a named loss item under CANONICAL mode. test_lossless_round_trip_preserves_an_unmodeled_stack_attribute directly proves a <stack> carrying an unmodeled vendor attribute (data-vendor-tag) survives a LOSSLESS round trip byte-for-byte; test_loss_report_locates_a_deeply_nested_unmodeled_attribute goes further, nesting a <stack> INSIDE a <stack> (a group inside a group) with an unmodeled attribute on a descendant layer, confirming the mechanism also works for nested groups, not merely a top-level one. Both were written for ORA-PRESERVE-001 and are unchanged by this event -- zero new source or test code."
       ],
-      "missing_behavior": [
-        "'Unknown-extension preservation' (this obligation's own required_tests line) is not tested either -- this model has no ExtensionNode-style typed slot for unrecognized content (everything is a plain OraStack/OraLayer/OraText), so what 'unknown extension' means for a group specifically was not investigated this slice."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_group_with_invalid_opacity_is_refused",
         "tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_group_with_invalid_visibility_is_refused",
@@ -3199,7 +3207,9 @@
         "tests/python/ora/test_obligation_layer_and_group_editing.py::test_removing_a_nested_child_group_preserves_its_siblings",
         "tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_group_to_an_invalid_opacity_is_refused_and_original_survives",
         "tests/python/ora/test_obligation_stack_and_document.py::test_an_image_with_no_root_stack_is_refused",
-        "tests/python/ora/test_obligation_stack_and_document.py::test_an_image_with_multiple_root_stacks_is_refused"
+        "tests/python/ora/test_obligation_stack_and_document.py::test_an_image_with_multiple_root_stacks_is_refused",
+        "tests/python/ora/test_obligation_preservation_baseline.py::test_lossless_round_trip_preserves_an_unmodeled_stack_attribute",
+        "tests/python/ora/test_obligation_preservation_baseline.py::test_loss_report_locates_a_deeply_nested_unmodeled_attribute"
       ],
       "proof_requirements": {
         "negative": [
@@ -3209,12 +3219,13 @@
           "Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove, root restriction, and unknown-extension preservation tests."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ora/src/format_factory/ora/model/stack.py::OraStack",
-        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack"
+        "src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack",
+        "src/python/ora/src/format_factory/ora/preservation.py::check_preservation"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-MASK-001",
@@ -4787,6 +4798,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-container-citation-audit-001.json": "a8da421c2df540a82a0ebcca93b5642299a8ad71ee0100a9b64ac808e58b1d63",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-document-model-construction-001.json": "e722f98266ec914ed9f2aca1d75695070ed123949b66335d7d572ba4e7c05171",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-edit-ops-001.json": "a7ba7c5e2dfa1fca5c6bb1193895f22f55af7df543f92f3fba30c623600eda77",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-group-unknown-extension-reconciliation-001.json": "b454badcf59436c6a27497704273265072017d97cfa638c0f28aef25d2db44c7",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-layer-group-citation-audit-001.json": "5947a5b1537dec0f8af2e84da905a1678ddaa1d995e739f890be90806f215ae1",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-lifecycle-citation-audit-001.json": "0da740721908a1871474ec18c8790f54228235cba7bb60c2c7c0292b31018096",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-malformed-unicode-member-name-001.json": "4c271c6b07121dd5e39c1e4449a23b2404016432fdc60042d8400849ec5726ee",
@@ -4828,12 +4840,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 125,
+      "implemented": 126,
       "missing": 5,
-      "partial": 4
+      "partial": 3
     },
     "total": 134,
-    "unresolved": 9
+    "unresolved": 8
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

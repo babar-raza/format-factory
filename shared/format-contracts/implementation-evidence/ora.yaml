@@ -465,6 +465,23 @@ execution_evidence:
     SAL-ORA-OBL-5495E8C27E9DFFCE, and SAL-ORA-OBL-F969AF770A7D350A
     only; it supports no other obligation and promotes no product
     state.
+- evidence_id: ORA-GROUP-UNKNOWN-EXTENSION-PRESERVATION-RECONCILIATION-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-group-unknown-extension-reconciliation-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike ORA-BASELINE-SUITE: it names the exact test
+    selectors proving ORA-GROUP-001's own last-remaining gap ("unknown-
+    extension preservation... for a group specifically") is already
+    resolved by ORA-PRESERVE-001's own check_preservation() mechanism,
+    which treats <stack> (the group element) identically to
+    <layer>/<text>/<image> -- an unmodeled attribute on a group survives
+    a LOSSLESS round trip byte-for-byte and is correctly named in a
+    CANONICAL-mode loss report, including for a group nested inside
+    another group. Zero new source or test code -- pure evidence
+    reconciliation citing tests already built and passing for a sibling
+    obligation. Covers SAL-ORA-OBL-96D74D42B49F8C8B only; it supports
+    no other obligation and promotes no other product state.
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -2680,10 +2697,11 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-96D74D42B49F8C8B
   capability_id: ORA-GROUP-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/codec/stack_xml.py::parse_stack
+  - src/python/ora/src/format_factory/ora/preservation.py::check_preservation
   positive_test_selectors:
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_creating_a_nested_group_with_child_layers
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_group_attributes_preserves_children_losslessly
@@ -2693,6 +2711,8 @@ obligations:
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_editing_a_group_to_an_invalid_opacity_is_refused_and_original_survives
   - tests/python/ora/test_obligation_stack_and_document.py::test_an_image_with_no_root_stack_is_refused
   - tests/python/ora/test_obligation_stack_and_document.py::test_an_image_with_multiple_root_stacks_is_refused
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_lossless_round_trip_preserves_an_unmodeled_stack_attribute
+  - tests/python/ora/test_obligation_preservation_baseline.py::test_loss_report_locates_a_deeply_nested_unmodeled_attribute
   negative_test_selectors:
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_group_with_invalid_opacity_is_refused
   - tests/python/ora/test_obligation_layer_and_group_editing.py::test_constructing_a_group_with_invalid_visibility_is_refused
@@ -2702,11 +2722,12 @@ obligations:
   - ORA-BASELINE-SUITE
   - ORA-LAYER-GROUP-CITATION-AUDIT-SELECTOR-PROOF
   - ORA-COMPOSITE-OP-REJECTION-SCOPE-CORRECTION-PROOF
+  - ORA-GROUP-UNKNOWN-EXTENSION-PRESERVATION-RECONCILIATION-PROOF
   implemented_behavior:
   - 'Create, edit, move, and remove are all proven (see the 6 already-cited tests). Group attributes (opacity, visibility) are validated identically to layers at both construction and edit time. Root restrictions are now also proven: root-versus-non-root constraints (exactly one root <stack> under <image>) were confirmed enforced in source but untested by any test in the whole ora suite in an earlier tick this session, and 2 new tests closed that gap (test_an_image_with_no_root_stack_is_refused, test_an_image_with_multiple_root_stacks_is_refused, in test_obligation_stack_and_document.py) -- added directly to this obligation''s citation, which had gone stale (its own docstring wrongly claimed this was already re-proven).'
   - 'Corrected understanding of the composite-op sub-clause, resolving the dedicated future investigation an earlier tick this session explicitly deferred: re-reading the pinned Layer Stack Specification directly (.local/format-contracts/acquired/ora/src-ora-003.bin) confirms composite-op''s lack of a rejecting validator is spec-mandated, not an unbuilt check -- the spec''s own text states "In the future other compositing modes might be added," an explicitly open, forward-compatible vocabulary. ''Enforcing group attributes'' does not need to extend a rejection rule to composite-op, since the spec itself forbids treating an unrecognized value as invalid; composite_op_info() (model/composite_ops.py) already correctly returns None for unrecognized values without rejecting them, proven by test_an_unrecognized_composite_op_on_a_layer_is_preserved_not_rejected.'
-  missing_behavior:
-  - '''Unknown-extension preservation'' (this obligation''s own required_tests line) is not tested either -- this model has no ExtensionNode-style typed slot for unrecognized content (everything is a plain OraStack/OraLayer/OraText), so what ''unknown extension'' means for a group specifically was not investigated this slice.'
+  - 'FF6-EVENT-000285: this obligation''s own last remaining gap ("unknown-extension preservation... for a group specifically was not investigated") is resolved -- not by new source, by reconciling already-existing ORA-PRESERVE-001 evidence that was never cross-referenced here. preservation.py''s check_preservation()/_KNOWN_ATTRIBUTES already treats <stack> (the group element) identically to <layer>/<text>/<image>: any attribute on a <stack> the model does not carry is (a) preserved verbatim under LOSSLESS mode and (b) reported as a named loss item under CANONICAL mode. test_lossless_round_trip_preserves_an_unmodeled_stack_attribute directly proves a <stack> carrying an unmodeled vendor attribute (data-vendor-tag) survives a LOSSLESS round trip byte-for-byte; test_loss_report_locates_a_deeply_nested_unmodeled_attribute goes further, nesting a <stack> INSIDE a <stack> (a group inside a group) with an unmodeled attribute on a descendant layer, confirming the mechanism also works for nested groups, not merely a top-level one. Both were written for ORA-PRESERVE-001 and are unchanged by this event -- zero new source or test code.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Full attribute boundary matrix and add/edit/move/remove semantic round trips; group create/edit/move/remove,

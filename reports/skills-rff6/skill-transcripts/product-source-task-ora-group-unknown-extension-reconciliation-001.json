@@ -1,0 +1,46 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-group-unknown-extension-reconciliation-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T02:00:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_GROUP_UNKNOWN_EXTENSION_RECONCILIATION_001",
+    "task_kind": "evidence-reconciliation-for-already-resolved-capability",
+    "root_cause": "ORA-GROUP-001's own missing_behavior claimed 'unknown-extension preservation... for a group specifically was not investigated' -- but ORA-PRESERVE-001's own check_preservation() mechanism (preservation.py) already treats <stack> (OpenRaster's group element) identically to <layer>/<text>/<image> in its _KNOWN_ATTRIBUTES table, and dedicated tests for this exact case (an unmodeled attribute on a <stack>, including a nested <stack>-inside-<stack>) already exist and pass -- they were simply never linked to ORA-GROUP-001's own obligation ID.",
+    "obligation_targeted": "1 obligation promoted partial->implemented: SAL-ORA-OBL-96D74D42B49F8C8B (ORA-GROUP-001).",
+    "acceptance_evidence": "2 already-existing, already-passing tests cited: test_lossless_round_trip_preserves_an_unmodeled_stack_attribute and test_loss_report_locates_a_deeply_nested_unmodeled_attribute (both in test_obligation_preservation_baseline.py, built for ORA-PRESERVE-001).",
+    "regression_tier": "full ora package suite"
+  },
+  "execution_steps": [
+    "1. After exhausting the two candidates named at earlier ora-adjacent investigation (xliff_core_2.1.sch's F1 pattern, ora's own 3 tiny acquisition files confirmed plain text not archives), re-read ora's 9 remaining unresolved obligations with the 'rule_text vs missing_behavior, and check for already-existing-but-unlinked evidence' discipline established 4 times already this session for other formats.",
+    "2. ORA-GROUP-001's own missing_behavior named a precise, narrow gap: unknown-extension preservation for a group. Checked whether ORA's own generic preservation mechanism (built for the separate ORA-PRESERVE-001 obligation, preservation.py's check_preservation()) already covers this by construction -- read _KNOWN_ATTRIBUTES and confirmed <stack> (the group element) is treated identically to <layer>/<text>/<image>: any attribute the model does not carry survives LOSSLESS round-trip verbatim and is named in a CANONICAL-mode loss report.",
+    "3. Checked test_obligation_preservation_baseline.py directly (built for ORA-PRESERVE-001, not ORA-GROUP-001) and found it already includes a <stack>-carrying-an-unmodeled-attribute fixture (_VENDOR_STACK_XML) and, further, a NESTED <stack>-inside-<stack> fixture (test_loss_report_locates_a_deeply_nested_unmodeled_attribute) -- i.e. a group inside a group, exactly the 'for a group specifically' scenario ORA-GROUP-001's own missing_behavior named as uninvestigated.",
+    "4. Confirmed via the pytest suite that both cited tests currently pass (part of the existing 320-test ora suite, unchanged by this event).",
+    "5. Updated the implementation-evidence ledger: promoted ORA-GROUP-001 to implemented, added the 2 preservation tests as additional positive_test_selectors, added a new dedicated evidence entry documenting the reconciliation. Zero new source or test code.",
+    "6. Ran the full ora suite (320 passed, unchanged) and the reconciler (confirmed the obligation count moved)."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_preservation_baseline.py -v -- all passed (pre-existing, unchanged)",
+    ".venv/Scripts/pytest tests/python/ora -q -- 320 passed (unchanged)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation promoted partial->implemented",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 134,
+    "oracle": "preservation.py's check_preservation() and its own already-passing tests, built for the sibling ORA-PRESERVE-001 obligation and independently re-verified here."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
