@@ -290,15 +290,15 @@
       ],
       "module_import": "format_factory.nrrd",
       "package_name": "format-factory-nrrd",
-      "proof_id": "PACKAGE-PROOF-5C9E4872C25BA965DE452F10F34C9FA4AF67028C43ECFEC6D86832E4152803D0",
-      "proof_input_digest": "3e10921246b03bae17cf4302c4084b722bcc79e552e99e09ecda4737727d86ba",
+      "proof_id": "PACKAGE-PROOF-8A111351D621C84E236BC4041B4FC2180B998033E58985894942F699509816FB",
+      "proof_input_digest": "3bdd7b7fcd2a3980890cadd5451b7676d035638db490edb0242626523b6b1cd9",
       "smoke_result": "PASS",
       "smoke_test": "format_factory.nrrd.load_nrrd on samples/by-format/nrrd/valid/1d-int8.nrrd",
-      "source_digest": "29a6ce4f360b05ff8845b812a9d69936e69abd16f3a6c1c3ce9a4efc6eea9ce7",
+      "source_digest": "d4f8857801b42be4f027b0064a17d6a93d0de0e9d5c9a45b3f99a4cd2cf183c2",
       "verdict": "PASS",
       "version": "0.2.0.dev0",
       "wheel_file": "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "100ec54a2485f36913f1940de52d6c19cb4faedaab17b636af9d379ef2cc22cc"
+      "wheel_sha256": "87e31b5766b91f423583e8cf9a43ef2e5dc93fa030e445620606a83d0cc68133"
     },
     "ods": {
       "build_mode": "legacy_staging",
@@ -367,15 +367,15 @@
       ],
       "module_import": "format_factory.ora",
       "package_name": "format-factory-ora",
-      "proof_id": "PACKAGE-PROOF-8E6D47D88217A86A326071828A144E61D1A9C52835A1F0495A73579E4EEE95AE",
-      "proof_input_digest": "6e8c9de40e68e6924688c68a89a316c9c77d3a6066134d8ae9d7a0ec8806ce2a",
+      "proof_id": "PACKAGE-PROOF-4E5BBC16DB4F3F133A9F52F5FDF026A1DC449F696A9DB66C8411C01573CE3DC4",
+      "proof_input_digest": "bd8296845c7e4a800265a4834e8095b4c57414b1f2c125c707f3085c7b398738",
       "smoke_result": "PASS",
       "smoke_test": "format_factory.ora.load on samples/by-format/ora/valid/minimal.ora",
-      "source_digest": "e1994f4dfca2617a67051eb8c0379d28621728b587c3b670fc2206f5bce349e3",
+      "source_digest": "8652e5a64bb58aa61be9384339ee132ecc7e322a1441b26f4e9aec3be7b5ecce",
       "verdict": "PASS",
       "version": "0.1.0.dev0",
       "wheel_file": "format_factory_ora-0.1.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "ae11eae886102efe106ac2ba20dc096236ac74a13926bfa8a2ed2d44439b5ece"
+      "wheel_sha256": "fca937fc554627d475e82125d26400a8ac3dfa7397a800a41b83cf8d2a5a8c2a"
     },
     "pbm": {
       "build_mode": "legacy_staging",
@@ -571,7 +571,7 @@
       "deep_import": {
         "failed": 0,
         "failing_modules": {},
-        "total": 37
+        "total": 38
       },
       "import_result": "PASS",
       "install_result": "PASS",
@@ -585,15 +585,15 @@
       ],
       "module_import": "format_factory.ubl",
       "package_name": "format-factory-ubl",
-      "proof_id": "PACKAGE-PROOF-EBB3818850D8DFED60332CCA4738B064F60C40C1D87D7D9343561E1EA5AB913F",
-      "proof_input_digest": "de643dd513a9a0817dd71b36e456f01ef37281edd6b3588cf0461cc1450cccb3",
+      "proof_id": "PACKAGE-PROOF-AAB5DAE8643DF3E244FC7FC97D4B907294BDEA28B287C9E68D2E826C5C338810",
+      "proof_input_digest": "2468d98a5d767c2b9a9fbf6df5c8270bfb5ef12764b8921c676f78125dacba52",
       "smoke_result": "PASS",
       "smoke_test": "format_factory.ubl.load on samples/by-format/ubl/valid/minimal-order.xml",
-      "source_digest": "c04ea8ca0287f46082e15bf7af9d61bf9f87c5a1371eb2be25515ad9ea01c26c",
+      "source_digest": "4b8e4392f3b5ce0afa055bc8cfbccedcdc032d54b9e8c6bf8e36a0e798d60f44",
       "verdict": "PASS",
       "version": "0.2.0.dev0",
       "wheel_file": "format_factory_ubl-0.2.0.dev0-py3-none-any.whl",
-      "wheel_sha256": "d6911895d3114985be393b57274c3b02ab596739c1e531bc4770dbee6c173666"
+      "wheel_sha256": "718fceb73655d8a070edeb46fe957287637f9d3c4b0c10764543d63a6349341b"
     },
     "xcf": {
       "build_mode": "legacy_staging",
@@ -672,7 +672,12 @@
   "generated_by": "tools/run_package_install_proof.py",
   "last_run": {
     "formats": [
-      "safetensors"
+      "ipynb",
+      "nrrd",
+      "ora",
+      "safetensors",
+      "ubl",
+      "xliff"
     ],
     "full_fleet": false
   },
