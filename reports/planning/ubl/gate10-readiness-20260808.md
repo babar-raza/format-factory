@@ -44,20 +44,30 @@ format. Criterion 7 is the human gate itself.**
 
 ## 2. The 8 remaining unresolved obligations (honest accounting)
 
-Per this session's own direct work (FF6-EVENT-000278, 282, 286, 288) and the live
-reconciler run (`ubl: 8/194 obligations unresolved` as of this session):
+**Correction (FF6-EVENT-000293):** this section originally claimed `UBL-CODELIST-001`
+was "the majority of the 8" remaining obligations. That claim was stale, carried forward
+from an earlier session narrative without a fresh check against this session's own
+reconciler output, and was wrong: a direct reconciliation run confirms all 10
+`UBL-CODELIST-001` obligations are `implemented`. The table below lists the actual 8,
+verified directly against `reports/format-contract-layer/ubl-obligation-reconciliation.json`
+at the time of this correction.
 
-| Obligation area | Nature of the gap |
-|---|---|
-| `UBL-CODELIST-001` (majority of the 8) | Needs a verified source for real official UBL code-list reference data (currency/unit/country codes per the OASIS-published genericode files) — a data-acquisition task, not yet found a usable vendored or licensable source. |
-| `UBL-UPGRADE-001` | Needs concrete version-migration semantics (UBL 2.1→2.3 etc.) beyond the one coarse SAL fact currently mapped — a real, scoped design item. |
-| `SAL-UBL-OBL-F9D5251F2302AE3A` (`UBL-WRITE-001`, narrowed this session) | The schema-valid-element-order clause is now `implemented` (FF6-EVENT-000286's `reorder_for_schema_order()`). The obligation's own remaining clause — proving round-trip fidelity against **real official UBL sample documents** — needs a genuine external corpus; the project's own samples are synthetic (see `samples/by-format/ubl/_provenance.yaml`), which is sufficient for Gate 10 criterion 6 (a compatible-license synthetic sample is still `confirmed`) but not for this specific obligation's own official-round-trip claim. |
-| Remaining large-architecture items | A typed builder/mutation CRUD API redesign was independently investigated and rejected as out of scope for a single slice, both earlier in this session and re-confirmed at FF6-EVENT-000288. |
+| Obligation | Capability | Nature of the gap |
+|---|---|---|
+| `SAL-UBL-OBL-0996E6D7B91D544F` | `UBL-PARSE-001` | `find()`/`find_all()` (model/typed.py) can return a spoofed element's value when called directly without validating the document first — a real, confirmed primitive-level gap, not merely untested. |
+| `SAL-UBL-OBL-237188D47391391E`, `SAL-UBL-OBL-AF5263F0FC7036B9` | `UBL-EDIT-001` (2 obligations) | No CRUD API for core business components beyond the low-level, schema-unaware `XmlNode.with_children()`/`UblDocument.with_root()` immutable-replace primitives — confirmed by grepping the whole package for a mutation/edit module (none exists). A typed builder/mutation API redesign was independently investigated and rejected as out of scope for a single slice, both earlier this session and re-confirmed at FF6-EVENT-000288. |
+| `SAL-UBL-OBL-49E8A72A55F540E1` | `UBL-REF-001` | "Broken references" and "inconsistent line references" are not built as dedicated diagnostics. `DocumentIndex.by_id()`/`lines_referencing_item_id()` (model/query.py) exist and could be composed into such a check the same way `duplicate_line_ids()` already is, but the exact UBL semantics of what counts as a "broken" cross-document reference (many reference roles legitimately point outside a single document) were judged too ambiguous to build without inventing unstated spec content — deliberately left unattempted rather than risk false positives on valid documents. |
+| `SAL-UBL-OBL-6C91BBF7F11E4402` | `UBL-LIFECYCLE-001` | `reader.py` validates `mode` is one of `"strict"`/`"preservation"` but never branches on its value — both modes reject malformed input identically. A genuine tolerant/recovery read mode does not exist. |
+| `SAL-UBL-OBL-788B2748204338B8` | `UBL-VALIDATE-001` | The 5 validation layers (`validate()`, `schema_validate()`, `DocumentIndex` methods, `CodeListRegistry.validate_code`, `ProfileValidatorRegistry`) are not unified into one combined call; would additionally require a pluggable business-rule mechanism with a real default rule set, a genuinely separate, larger undertaking. |
+| `SAL-UBL-OBL-7B16479ACBBC8EFC` | `UBL-UPGRADE-001` | No transform infrastructure exists for any UBL version pair (2.0→2.3, 2.1→2.3, etc.) — needs concrete version-migration semantics beyond the one coarse SAL fact currently mapped, a real, scoped design item. |
+| `SAL-UBL-OBL-F9D5251F2302AE3A` | `UBL-WRITE-001` (narrowed this session) | The schema-valid-element-order clause is now `implemented` (FF6-EVENT-000286's `reorder_for_schema_order()`). The obligation's own remaining clause — proving round-trip fidelity against **real official UBL sample documents** — needs a genuine external corpus; the project's own samples are synthetic (see `samples/by-format/ubl/_provenance.yaml`), sufficient for Gate 10 criterion 6 but not for this obligation's own official-round-trip claim. |
 
 None of these are stale-evidence reconciliation gaps — all 8 were independently re-verified
-this session as requiring either new external data (code lists, an official sample corpus)
-or genuine new design work (version-migration semantics), not wiring of an already-built
-capability.
+this session (including a fresh word-for-word duplicate-rule_text sweep against every other
+already-implemented ubl obligation, which found none) as requiring either new external data
+(an official sample corpus), genuine new design work (version-migration semantics, a unified
+validation call, a CRUD API), or a semantics question too ambiguous to resolve without
+inventing unstated spec content (broken-reference detection).
 
 ---
 
@@ -65,10 +75,13 @@ capability.
 
 1. Same repo-wide frontmatter step as every other format's Gate 10 packet — deferred to
    the same human-reviewed batch, not done unilaterally here.
-2. `UBL-CODELIST-001`'s 5+ obligations are the single largest closeable cluster if a
-   licensable official UBL genericode source is located — this is the most promising
-   concrete next data-acquisition task for ubl specifically, distinct from the
-   architecture-scale items in nrrd/ora/xliff noted at FF6-EVENT-000288.
+2. None of the 8 remaining obligations are small: `UBL-PARSE-001`'s own remaining gap
+   is itself a real cross-cutting audit (the document-level namespace-spoofing detection
+   already in place is a genuine defense-in-depth mitigation, but the obligation's own
+   full "unambiguous resolution" claim needs roughly 78 call sites across
+   typed.py/aggregates.py/charges.py/reference.py/document.py individually audited and
+   fixed to check namespace, not just local name — comparable in scope to the CRUD API
+   or unified-validation items, not a quick follow-up).
 3. Gate 10's own text does not require 100% obligation closure, only "production-quality
    source... for the delivery-plan tiers." Whether 186/194 clears that bar is a human
    judgment call, not this document's to make.
