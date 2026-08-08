@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-TOLERANT-RECOVERY-MODE-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-tolerant-recovery-mode-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-6C91BBF7F11E4402 (UBL-LIFECYCLE-001), promoted partial->implemented. reader.py::_parse has exactly 3 raise sites: malformed XML syntax, an unrecognized document root name, and a root namespace mismatch. The first two stay hard failures under both modes (no tree exists at all under the first; no typed document class can be selected without a recognized root name under the second, matching the same discipline already applied to xliff''s own non-XLIFF-root case this same session). The third is the one genuinely recoverable defect: model/typed.py''s own find()/find_all() -- the primitive every typed field lookup in this package is built on -- is documented in its own docstring as matching by LOCAL NAME ONLY ("navigate by ID rather than {urn:...}ID"), never by namespace. Confirmed directly by interactive probe before writing any test: a document built with a deliberately wrong root namespace is still 100% field-accessible via find()/find_all() once accepted, since the mismatch never reaches any downstream lookup -- this is a materially SMALLER and SAFER recovery than xliff''s own 5-site fix, since the recovered document is not degraded at all, only a structural sanity check the object model never actually depended on is relaxed. Under mode="preservation", _parse now accepts the document using its already-recognized root_name and records a human-readable action on a new UblDocument.recovery_actions field (a frozen dataclass, tuple-typed for immutability consistency with the rest of the model); strict mode''s own exact pre-existing UblParseError message is unchanged, proven by the full pre-existing 1045-test suite passing with zero test modification. probe() is deliberately switched from mode="preservation" to mode="strict" in the same slice: before this obligation had any real recovery behavior that choice was inconsequential (both modes behaved identically), but it would now silently make probe() recognize a namespace-mismatched document as UBL, which is not what a probe''s own yes/no recognition judgment should mean -- verified the pre-existing test_wrong_namespace_and_preview_profile_fail_closed and probe(b"<Invoice/>")/probe(b"<Invoice/>") assertions (test_production_namespace.py) both still pass unchanged after the switch. 11 new tests (test_obligation_tolerant_recovery_mode.py) prove: strict refuses a namespace mismatch; preservation recovers it with exactly one recovery_actions entry; the recovered document is fully field-accessible; the default mode (no explicit kwarg) is strict; a correctly-namespaced document has an empty recovery_actions tuple under either mode; a document built directly in memory also has an empty tuple; malformed XML and an unrecognized root name both stay hard failures under both modes; probe() still rejects a namespace-mismatched document, still accepts a correctly-namespaced one, and still rejects a bare unnamespaced element. 1 sibling test in test_obligation_read_mode_lifecycle.py was renamed and its docstring corrected (its own "no document that preservation mode accepts while strict rejects" claim was accurate when originally written, now superseded by this slice, not wrong at the time it was written). ubl suite: 1045 -> 1056 passed. mypy --strict and ruff clean on all 3 changed source files. Combined 6-format run: 3746 -> 3757 passed, +11, 0 failed, 4 skipped -- zero regression. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule; the recovery''s own safety is grounded directly in this package''s own find()/find_all() primitive''s already-documented, already-proven namespace-agnostic matching behavior, not a new spec interpretation. Covers SAL-UBL-OBL-6C91BBF7F11E4402 only; it supports no other obligation.'
 - evidence_id: UBL-LINE-CRUD-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-line-crud-001.json
   expected_result: PASS
@@ -2929,11 +2934,14 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-6C91BBF7F11E4402
   capability_id: UBL-LIFECYCLE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads
   - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load
   - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe
+  - src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::_parse
+  - src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument
+  - src/python/ubl/src/format_factory/ubl/model/__init__.py::document_from_root
   - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps
   - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dump
   - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::semantic_sha256
@@ -2943,23 +2951,49 @@ obligations:
   - tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically
   - tests/python/ubl/test_obligation_read_mode_lifecycle.py::test_strict_mode_rejects_malformed_xml_with_a_diagnostic
   - tests/python/ubl/test_obligation_read_mode_lifecycle.py::test_an_unrecognized_mode_string_is_rejected
+  - tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestNamespaceMismatch::test_preservation_mode_recovers_a_namespace_mismatch
+  - tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestNamespaceMismatch::test_recovered_document_is_fully_field_accessible
+  - tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestCleanDocumentUnaffected::test_a_correctly_namespaced_document_has_no_recovery_actions
+  - tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestCleanDocumentUnaffected::test_a_document_built_directly_in_memory_has_no_recovery_actions
+  - tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestProbeStaysStrict::test_probe_accepts_a_correctly_namespaced_document
   negative_test_selectors:
-  - tests/python/ubl/test_obligation_read_mode_lifecycle.py::test_preservation_mode_currently_rejects_the_same_malformed_xml_identically
+  - tests/python/ubl/test_obligation_read_mode_lifecycle.py::test_preservation_mode_still_rejects_genuinely_malformed_xml
+  - tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestNamespaceMismatch::test_strict_mode_refuses_a_namespace_mismatch
+  - tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestNamespaceMismatch::test_default_mode_is_strict_and_still_refuses
+  - tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestUnrecoverableDefectsStayHardFailuresInBothModes::test_malformed_xml_syntax_is_never_recoverable
+  - tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestUnrecoverableDefectsStayHardFailuresInBothModes::test_an_unrecognized_root_name_is_never_recoverable
+  - tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestProbeStaysStrict::test_probe_rejects_a_namespace_mismatched_document
+  - tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestProbeStaysStrict::test_probe_still_rejects_a_bare_unnamespaced_element
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
+  - UBL-TOLERANT-RECOVERY-MODE-PROOF
   implemented_behavior:
   - 'Strict mode is real and tested: loads(mode="strict") rejects malformed XML with a diagnostic
     (test_strict_mode_rejects_malformed_xml_with_a_diagnostic), and an unrecognized mode string is rejected
-    outright (test_an_unrecognized_mode_string_is_rejected). Added this slice, closing the generic placeholder
-    with a precise, verified finding: no test previously ever passed mode="preservation" at all.'
-  missing_behavior:
-  - 'Confirmed genuinely unimplemented, not merely untested: reader.py validates mode is one of "strict"/"preservation"
-    but never branches on its value for malformed-input handling -- both modes reject a given malformed
-    document identically (test_preservation_mode_currently_rejects_the_same_malformed_xml_identically,
-    added this slice, verified interactively before writing). There is no tolerant recovery path, no document
-    that "preservation" mode accepts while "strict" rejects, and no recovery-action report type at all. The
-    "preservation" mode name currently governs only round-trip disclosure (see UBL-PRESERVE-001), not
-    input-error tolerance as this obligation requires.'
+    outright (test_an_unrecognized_mode_string_is_rejected).'
+  - 'FF6-EVENT-000306: mode="preservation" now has a genuine, distinct recovery behavior. reader.py::_parse
+    has exactly 3 raise sites: malformed XML syntax, an unrecognized document root name, and a root namespace
+    mismatch. The first two are genuinely unrecoverable (no tree exists at all; no typed document class can
+    be selected without a recognized root name) and stay hard failures under both modes. The third -- a root
+    namespace mismatch -- is genuinely recoverable: model/typed.py''s own find()/find_all(), the primitive
+    every typed field lookup in this package is built on, is documented as matching by LOCAL NAME ONLY,
+    never by namespace ("navigate by ID rather than {urn:...}ID") -- confirmed directly by interactive probe
+    before writing any test: a document built with a deliberately wrong root namespace is still 100%
+    field-accessible via find()/find_all() after being accepted, since the mismatch never reaches any
+    downstream lookup. Under mode="preservation", _parse accepts the document using its recognized root_name
+    and records a human-readable action on the new UblDocument.recovery_actions field (frozen dataclass, a
+    tuple default); strict mode''s own exact pre-existing UblParseError message is unchanged. probe() is
+    switched from mode="preservation" to mode="strict": before this obligation had real recovery behavior
+    that choice was a no-op, but it would now silently make probe() recognize a namespace-mismatched
+    document as UBL, which is not what a probe''s own yes/no judgment should mean -- confirmed the existing
+    test_wrong_namespace_and_preview_profile_fail_closed and probe(b"<Invoice/>") assertions
+    (test_production_namespace.py) both still pass unchanged. 11 new tests
+    (test_obligation_tolerant_recovery_mode.py) plus 1 corrected stale docstring/test-name in the sibling
+    test_obligation_read_mode_lifecycle.py (its own "no document that preservation mode accepts while strict
+    rejects" claim was accurate when written and is now superseded, not wrong at the time). ubl suite: 1045
+    -> 1056 passed. mypy --strict and ruff clean. Combined 6-format run: 3746 -> 3757 passed, +11, 0 failed,
+    4 skipped.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative

@@ -4,13 +4,13 @@ MUST (SAL-UBL-OBL-6C91BBF7F11E4402): "Support a strict read mode that
 rejects malformed input with diagnostics and a tolerant read mode that
 recovers where the format permits, with recovery actions reported."
 
-Before this slice, mode="strict"/"preservation" was validated as one of two
-accepted strings in loads()/load(), but no test ever passed mode="preservation"
-explicitly, and reader.py never branches on the mode value for malformed-input
-handling -- both modes currently reject a given malformed document identically.
-The obligation's "tolerant read mode that recovers ... with recovery actions
-reported" is not implemented: there is no recovery-action report type, and no
-document that "preservation" mode accepts while "strict" rejects.
+This file characterizes the boundary of what tolerant mode does NOT
+recover: malformed XML syntax (ElementTree cannot produce a tree to
+recover into at all) stays a hard failure under both modes, matching the
+same discipline test_obligation_tolerant_recovery_mode.py proves for the
+one defect this reader's own structure makes genuinely recoverable (a
+root namespace mismatch) -- see that file for the actual recovery path
+and the reader.py::recovery_actions field it now proves.
 """
 
 from __future__ import annotations
@@ -27,10 +27,10 @@ def test_strict_mode_rejects_malformed_xml_with_a_diagnostic() -> None:
         loads(_MALFORMED, mode="strict")
 
 
-def test_preservation_mode_currently_rejects_the_same_malformed_xml_identically() -> None:
-    """Characterizes the current (honest) state: 'preservation' is accepted as
-    a mode value but provides no distinct fault-tolerant recovery path yet --
-    both modes reject this malformed document the same way."""
+def test_preservation_mode_still_rejects_genuinely_malformed_xml() -> None:
+    """Malformed XML syntax is genuinely unrecoverable -- there is no tree
+    to recover into at all -- so both modes reject it identically, unlike
+    the root-namespace-mismatch case tolerant mode does recover from."""
 
     with pytest.raises(UblParseError, match="malformed XML"):
         loads(_MALFORMED, mode="preservation")

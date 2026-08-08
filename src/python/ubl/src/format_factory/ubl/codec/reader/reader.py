@@ -94,7 +94,7 @@ def _has_signature(root: ET.Element) -> bool:
     return False
 
 
-def _parse(data: bytes, *, limits: ResourceLimits) -> UblDocument:
+def _parse(data: bytes, *, limits: ResourceLimits, mode: str = "strict") -> UblDocument:
     reject_unsafe_xml(data, error_class=UblParseError)
     try:
         root = ET.fromstring(data)
@@ -105,16 +105,25 @@ def _parse(data: bytes, *, limits: ResourceLimits) -> UblDocument:
     if root_name not in ROOT_NAME_SET:
         raise UblParseError(f"unsupported UBL document root: {root_name!r}")
     expected_namespace = ROOT_NAMESPACES[root_name]
+    recovery_actions: tuple[str, ...] = ()
     if namespace != expected_namespace:
-        raise UblParseError(
+        if mode != "preservation":
+            raise UblParseError(
+                f"root namespace mismatch for {root_name}: expected "
+                f"{expected_namespace!r}, got {namespace!r}"
+            )
+        recovery_actions = (
             f"root namespace mismatch for {root_name}: expected "
-            f"{expected_namespace!r}, got {namespace!r}"
+            f"{expected_namespace!r}, got {namespace!r}; accepted under "
+            "tolerant mode (every field lookup in this package matches by "
+            "local name only, so the mismatch has no functional effect)",
         )
     source_sha256 = hashlib.sha256(data).hexdigest()
     return document_from_root(
         _to_node(root),
         source_sha256=source_sha256,
         signed_content_sha256=source_sha256 if _has_signature(root) else None,
+        recovery_actions=recovery_actions,
     )
 
 
@@ -131,7 +140,7 @@ def loads(
     raw = data.encode("utf-8") if isinstance(data, str) else bytes(data)
     selected_limits = effective_limits(limits)
     selected_limits.enforce("max_input_bytes", len(raw))
-    return _parse(raw, limits=selected_limits)
+    return _parse(raw, limits=selected_limits, mode=mode)
 
 
 def load(
@@ -145,16 +154,25 @@ def load(
     if mode not in {"strict", "preservation"}:
         raise ValueError("mode must be 'strict' or 'preservation'")
     selected_limits = effective_limits(limits)
-    return _parse(_read_source(source, selected_limits), limits=selected_limits)
+    return _parse(_read_source(source, selected_limits), limits=selected_limits, mode=mode)
 
 
 def probe(
     source: BinarySource, *, limits: ResourceLimits | None = None
 ) -> ProbeResult:
-    """Probe a source without raising."""
+    """Probe a source without raising.
+
+    Deliberately strict, not tolerant: recognition should mean "this is
+    genuinely a well-formed, correctly-namespaced UBL document," not
+    merely "this would load in recovery mode." Before UBL-LIFECYCLE-001's
+    tolerant/recovery mode existed, `mode="preservation"` here was a
+    no-op (both modes behaved identically); it would now silently make
+    probe() recognize a namespace-mismatched document as UBL, which is
+    not what a probe's own yes/no judgment should mean.
+    """
 
     try:
-        document = load(source, mode="preservation", limits=limits)
+        document = load(source, mode="strict", limits=limits)
     except (Exception, KeyboardInterrupt):
         return ProbeResult(False, 0.0, "ubl", reason="not bounded UBL 2.3 XML")
     return ProbeResult(

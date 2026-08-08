@@ -1,0 +1,68 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-tolerant-recovery-mode-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-7c2809446c937a33",
+  "mode": "live",
+  "timestamp": "2026-08-08T04:49:16Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_TOLERANT_RECOVERY_MODE_001",
+    "task_kind": "smaller-than-xliff-sibling-fresh-investigation-confirmed",
+    "root_cause": "SAL-UBL-OBL-6C91BBF7F11E4402 (UBL-LIFECYCLE-001) shares xliff's own just-closed rule_text verbatim: 'Support a strict read mode that rejects malformed input with diagnostics and a tolerant read mode that recovers where the format permits, with recovery actions reported.' reader.py::_parse has exactly 3 raise sites (malformed XML, unrecognized root name, root namespace mismatch) versus xliff's 7 -- a much smaller surface. Investigated whether the namespace-mismatch site was genuinely safe to recover from: model/typed.py's own find()/find_all() docstring states they match by LOCAL NAME ONLY, never by namespace, confirmed by direct interactive probe (a document built with a deliberately wrong root namespace was still 100% field-accessible after being accepted).",
+    "obligation_targeted": "SAL-UBL-OBL-6C91BBF7F11E4402 (UBL-LIFECYCLE-001) promoted partial -> implemented.",
+    "acceptance_evidence": "_parse now accepts a namespace-mismatched document under mode='preservation', recording a human-readable action on a new UblDocument.recovery_actions field; strict mode's exact pre-existing error is unchanged. probe() switched from mode='preservation' to mode='strict' to avoid silently becoming over-permissive now that preservation mode has real teeth. Verified end-to-end with standalone repros before any test was written. 11 new tests.",
+    "regression_tier": "full ubl package suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Enumerated reader.py::_parse's own raise sites: malformed XML syntax (ET.ParseError), an unrecognized document root name (root_name not in ROOT_NAME_SET), and a root namespace mismatch (namespace != expected_namespace). Confirmed via document_from_root/model/__init__.py that a typed document class cannot be selected at all without a recognized root name, so that site (like malformed XML) is genuinely unrecoverable.",
+    "2. Investigated whether the namespace-mismatch site was safe to recover from by reading model/typed.py's find()/find_all() directly: 'The first child with this local name' / matches by local_name(child.qname), never checking namespace at all. Verified directly: built an Invoice document with a deliberately wrong root xmlns, called document_from_root on it directly (bypassing the reader's own check), and confirmed find() still located a known child field correctly -- the root's own namespace value is never consulted by any downstream lookup.",
+    "3. Added recovery_actions: tuple[str, ...] = () to UblDocument (model/document.py, a frozen dataclass -- tuple chosen for immutability consistency with the rest of the model, matching LossReport's own tuple-typed fields elsewhere in this session's xliff work).",
+    "4. Threaded recovery_actions through document_from_root (model/__init__.py) as a new keyword-only parameter, passed to document_type(...) alongside the existing fields.",
+    "5. Rewrote reader.py::_parse to accept mode: str = 'strict' and branch on the namespace-mismatch check: strict raises the exact pre-existing UblParseError message unchanged; preservation builds a one-entry recovery_actions tuple explaining both what mismatched and why it is safe (find()/find_all() match by local name only) and proceeds using the already-recognized root_name.",
+    "6. Threaded mode through loads()/load() into _parse(..., mode=mode) -- previously mode was validated but silently discarded, identical bug pattern to the just-fixed xliff sibling.",
+    "7. Reviewed probe()'s own use of mode='preservation': before this fix that choice was a no-op (both modes behaved identically), but it would now silently make probe() recognize a namespace-mismatched document as UBL. Switched probe() to mode='strict' -- its own yes/no recognition judgment should mean genuinely well-formed and correctly-namespaced, not merely loadable in recovery mode. Verified the pre-existing test_wrong_namespace_and_preview_profile_fail_closed and probe(b'<Invoice/>')/probe(fixture) assertions in test_production_namespace.py still pass unchanged.",
+    "8. Verified directly with standalone repros before writing any test: strict raises on namespace mismatch with the unchanged message; preservation recovers with exactly one recovery_actions entry; the recovered document's field lookup (find(doc.root, 'ID')) still works correctly; probe() still rejects both a namespace-mismatched document and a bare unnamespaced <Invoice/> element; a clean document has an empty recovery_actions tuple under either mode.",
+    "9. Searched for other callers of document_from_root -- found only reader.py's own call site, no signature-break risk elsewhere.",
+    "10. Added 11 tests (test_obligation_tolerant_recovery_mode.py): strict-refuses/preservation-recovers pair, field-accessibility-after-recovery, default-mode-is-strict, clean-document-empty-tuple (real and in-memory-constructed), 2 hard-failure-stays-hard-under-both-modes tests, and 3 probe()-stays-strict tests.",
+    "11. Corrected the sibling test_obligation_read_mode_lifecycle.py: renamed test_preservation_mode_currently_rejects_the_same_malformed_xml_identically to test_preservation_mode_still_rejects_genuinely_malformed_xml and updated its docstring plus the file's own module docstring, both of which correctly stated 'no distinct recovery behavior exists yet' when originally written but were now stale relative to the whole obligation (the malformed-XML-specific assertion itself remains accurate and unchanged).",
+    "12. Ran mypy --strict (clean), ruff (clean), the full ubl suite (1045 -> 1056 passed), and the 6-format regression (3746 -> 3757 passed, +11, 0 failed, 4 skipped).",
+    "13. Promoted the target obligation to implemented: both required behaviors (strict rejection with diagnostics; tolerant recovery with recovery actions reported) are now genuinely, distinctly built and tested."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py",
+    "src/python/ubl/src/format_factory/ubl/model/document.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "tests/python/ubl/test_obligation_tolerant_recovery_mode.py",
+    "tests/python/ubl/test_obligation_read_mode_lifecycle.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py",
+    "src/python/ubl/src/format_factory/ubl/model/document.py",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+    "tests/python/ubl/test_obligation_tolerant_recovery_mode.py",
+    "tests/python/ubl/test_obligation_read_mode_lifecycle.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_tolerant_recovery_mode.py -v -- 11 passed (all new)",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/codec/reader/reader.py src/python/ubl/src/format_factory/ubl/model/document.py src/python/ubl/src/format_factory/ubl/model/__init__.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ubl -q -- 1056 passed (was 1045)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3757 passed, 4 skipped, 0 failed (was 3746)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation closed (partial -> implemented)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 194,
+    "new_public_api": "format_factory.ubl.UblDocument.recovery_actions"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

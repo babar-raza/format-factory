@@ -129,6 +129,11 @@ class UblDocument:
     source_sha256: str | None = None
     signed_content_sha256: str | None = None
     detected_version: str | None = None
+    #: Set by the reader when `mode="preservation"` (UBL-LIFECYCLE-001)
+    #: recovered from a malformed input that strict mode would have
+    #: refused -- one human-readable entry per recovery. Always empty for
+    #: a document built directly in memory or read under strict mode.
+    recovery_actions: tuple[str, ...] = ()
 
     ROOT_NAME: ClassVar[str] = ""
 

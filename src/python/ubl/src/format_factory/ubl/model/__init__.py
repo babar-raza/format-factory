@@ -108,6 +108,7 @@ def document_from_root(
     *,
     source_sha256: str | None = None,
     signed_content_sha256: str | None = None,
+    recovery_actions: tuple[str, ...] = (),
 ) -> UblDocument:
     root_name = root.qname.rsplit("}", 1)[-1]
     document_type = ROOT_CLASSES.get(root_name)
@@ -118,6 +119,7 @@ def document_from_root(
         source_sha256=source_sha256,
         signed_content_sha256=signed_content_sha256,
         detected_version=ubl_version_id(root),
+        recovery_actions=recovery_actions,
     )
 
 __all__ = [

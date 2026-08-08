@@ -146,6 +146,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact positive and negative test selectors proving load() across path/stream/bytes, dump()/dumps() across path/stream/bytes with the library's own loader accepting every save form's output, deterministic serialization (repeated calls, separate destinations, and a load-save-load cycle all byte-identical), and validate() as a callable returning a structured report rather than raising. SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-UBL-OBL-020F06E51DE6AB65, SAL-UBL-OBL-6A1C725166031BD0, SAL-UBL-OBL-6B8BC440C33EE3B5, and SAL-UBL-OBL-F3EF323A48F1EB8A only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "UBL-LINE-CRUD-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-line-crud-001.json",
+      "sha256": "55f115cf94cfaa36b8e40a398cc4f67fa57457533b07a7f247c63808450866a6",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-AF5263F0FC7036B9 (UBL-EDIT-001), promoted missing->implemented. Narrows SAL-UBL-OBL-237188D47391391E (UBL-EDIT-001, sibling), remains partial. New module lines.py composes existing primitives -- XmlNode.with_children()/UblDocument.with_root() (immutable-replace), reorder_for_schema_order() (FF6-EVENT-000286), validate() and DocumentIndex.duplicate_line_ids() (the referential layer built for validate_all() at FF6-EVENT-000296) -- into add_line/remove_line/move_line/renumber_lines for line-role components (InvoiceLine/CreditNoteLine/OrderLine). New lines are appended after the last existing line, schema-position-correct by construction since Line elements are always the trailing repeating group in every UBL maindoc type's own real schema sequence, then run through reorder_for_schema_order() so the inserted line's own internal field order is also corrected regardless of how the caller constructed it. Every operation refuses (raises UblValidationError) to leave the document with a validation or referential-integrity failure it did not already have, comparing before/after diagnostic codes from both validate() and a direct DocumentIndex-based duplicate-line-id check. A first draft missed the duplicate-line-id case (add_line silently accepted a new line whose ID collided with an existing one) because the base validate() alone has no referential check -- caught during manual verification before any test was written, fixed by including the duplicate-line-id check directly rather than depending on combined.py's own private helper. renumber_lines returns its own applied old-ID-to-new-ID map as an explicit reference-rewrite map, the exact mechanism SAL-UBL-OBL-AF5263F0FC7036B9's own rule_text names, rather than attempting to auto-discover and rewrite every possible cross-reference a caller's own extensions or customization profile might carry to a line ID (no closed set of such fields exists in UBL's own generic model; it varies by profile). SAL-UBL-OBL-237188D47391391E's own broader \"core business components\" scope (parties, payment means, tax totals, and more) remains genuinely uncovered by a dedicated CRUD API and is honestly documented as a separate, larger undertaking in the module's own docstring and the obligation's own updated missing_behavior, since arbitrary-position insertion for those types -- unlike lines, which are always the schema's trailing group -- would need _ORDER_CHECKED_COMPONENTS-style ordering knowledge extended to cover document root types. 12 new tests (tests/python/ubl/test_obligation_line_crud.py) prove: add/remove/move/renumber each work correctly in isolation and composed together; every refusal path (nonexistent id, out-of-range move, renumber collisions, an unmatched id) raises the correct error; the duplicate-line-id regression case is explicitly guarded. Verified zero false positives against the entire pre-existing 1033-test ubl suite before writing a single new test. ubl suite: 1033 -> 1044 passed. ruff and mypy --strict clean. Combined 6-format run: 3666 -> 3678 passed (across this event and the immediately preceding sample-corpus-fix event), same 0 failures, 4 skipped. NOT backed by an independent reference UBL implementation for cross-validation, but every primitive this module composes (reorder_for_schema_order, validate, DocumentIndex) was itself independently built and tested earlier this session against the pinned OASIS UBL 2.3 schema -- the same strength of grounding as every other fix this tick. Covers SAL-UBL-OBL-AF5263F0FC7036B9 (closed) and SAL-UBL-OBL-237188D47391391E (narrowed) only; it supports no other obligation."
+    },
+    {
       "evidence_id": "UBL-LINES-CARDINALITY-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -330,6 +338,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Covers ubl's 7 remaining same-pattern clusters in one tick (UBL-SEC-001 5, UBL-REF-001 17, UBL-VALIDATE-001 14, UBL-EXT-001 8, UBL-CALC-001 7, UBL-EDIT-001 5, UBL-WRITE-001 2 -- 58 obligations combined). A programmatic exact-rule_text matcher against the pool resolved in UBL-MODEL-001/VALUES-001/DOCTYPES-001/PARSE-001 found 42 of 58 are exact-text duplicates, cross-referenced to that real evidence. Of the 16 genuinely new obligations: 6 proven directly by dedicated existing tests (arithmetic reconciliation with per-total deltas and no repair-mode mutation; DTD/entity/network-resolution rejection; embedded-payload-never-evaluated; configurable limits with safe defaults) -- promoted to implemented. 6 stay honestly partial with precise, specific reasons (duplicate-ID detection is real but broken-reference/inconsistent-line-reference diagnosis is not built; 4 of 5 named validation layers exist as separate composable diagnostics but schema/XSD-conformance is the confirmed missing layer, same root cause as UBL-MODEL-001's finding; algorithmic-complexity guards exist for depth/size/count but no dedicated complexity-attack test exists; lossless arbitrary-namespace extension read/write is real but opt-in typed-adapter registration for extension content is not built; binary-object media-type exposure is real but extension-payload checksum exposure and external-retrieval gating are not, the latter having no attack surface since nothing fetches external content at all). 4 stay honestly missing: no CRUD/mutation API exists for business components beyond generic immutable XmlNode replacement (x2); no schema-valid-element-order-on-write feature exists (matching the confirmed UBL-MODEL-001 element-order gap); the official-sample round-trip corpus is not vendored (SPEC-PACKAGE-FACT, compounded by the same missing write-ordering feature); and path-traversal prevention for detached/ referenced resources has no attack surface to test against since no feature resolves references to paths at all, recorded honestly as missing rather than a false partial since no dedicated test proves the claim either way. Zero new source code -- test-file additions only (2 tests from the immediately preceding UBL-PARSE-001 tick's namespace-resolution work were reused as citations here where applicable; no new tests were needed for this cluster's own facts, all citations reuse existing coverage). NOT backed by an independent reference implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED."
     },
     {
+      "evidence_id": "UBL-TOLERANT-RECOVERY-MODE-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-tolerant-recovery-mode-001.json",
+      "sha256": "c94dfde0cfd9adab6baa0736c613012a8ca710b73fe3a08bf7bc597588f20327",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Closes SAL-UBL-OBL-6C91BBF7F11E4402 (UBL-LIFECYCLE-001), promoted partial->implemented. reader.py::_parse has exactly 3 raise sites: malformed XML syntax, an unrecognized document root name, and a root namespace mismatch. The first two stay hard failures under both modes (no tree exists at all under the first; no typed document class can be selected without a recognized root name under the second, matching the same discipline already applied to xliff's own non-XLIFF-root case this same session). The third is the one genuinely recoverable defect: model/typed.py's own find()/find_all() -- the primitive every typed field lookup in this package is built on -- is documented in its own docstring as matching by LOCAL NAME ONLY (\"navigate by ID rather than {urn:...}ID\"), never by namespace. Confirmed directly by interactive probe before writing any test: a document built with a deliberately wrong root namespace is still 100% field-accessible via find()/find_all() once accepted, since the mismatch never reaches any downstream lookup -- this is a materially SMALLER and SAFER recovery than xliff's own 5-site fix, since the recovered document is not degraded at all, only a structural sanity check the object model never actually depended on is relaxed. Under mode=\"preservation\", _parse now accepts the document using its already-recognized root_name and records a human-readable action on a new UblDocument.recovery_actions field (a frozen dataclass, tuple-typed for immutability consistency with the rest of the model); strict mode's own exact pre-existing UblParseError message is unchanged, proven by the full pre-existing 1045-test suite passing with zero test modification. probe() is deliberately switched from mode=\"preservation\" to mode=\"strict\" in the same slice: before this obligation had any real recovery behavior that choice was inconsequential (both modes behaved identically), but it would now silently make probe() recognize a namespace-mismatched document as UBL, which is not what a probe's own yes/no recognition judgment should mean -- verified the pre-existing test_wrong_namespace_and_preview_profile_fail_closed and probe(b\"<Invoice/>\")/probe(b\"<Invoice/>\") assertions (test_production_namespace.py) both still pass unchanged after the switch. 11 new tests (test_obligation_tolerant_recovery_mode.py) prove: strict refuses a namespace mismatch; preservation recovers it with exactly one recovery_actions entry; the recovered document is fully field-accessible; the default mode (no explicit kwarg) is strict; a correctly-namespaced document has an empty recovery_actions tuple under either mode; a document built directly in memory also has an empty tuple; malformed XML and an unrecognized root name both stay hard failures under both modes; probe() still rejects a namespace-mismatched document, still accepts a correctly-namespaced one, and still rejects a bare unnamespaced element. 1 sibling test in test_obligation_read_mode_lifecycle.py was renamed and its docstring corrected (its own \"no document that preservation mode accepts while strict rejects\" claim was accurate when originally written, now superseded by this slice, not wrong at the time it was written). ubl suite: 1045 -> 1056 passed. mypy --strict and ruff clean on all 3 changed source files. Combined 6-format run: 3746 -> 3757 passed, +11, 0 failed, 4 skipped -- zero regression. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the recovery's own safety is grounded directly in this package's own find()/find_all() primitive's already-documented, already-proven namespace-agnostic matching behavior, not a new spec interpretation. Covers SAL-UBL-OBL-6C91BBF7F11E4402 only; it supports no other obligation."
+    },
+    {
       "evidence_id": "UBL-VALUES-CITATION-AUDIT-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -365,7 +381,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "c66e223e7277a0d38520a5e6f7aa56664da2e18b4c8e3f617b4ed853242f592e",
+    "implementation_evidence": "040a3076e5c0f08472ea77c0cd9883cd9ed94b0d2f18511c9e44048f35071280",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1452,14 +1468,27 @@
     },
     {
       "capability_id": "UBL-EDIT-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "No CRUD API for core business components exists beyond the low-level, generic, schema-unaware XmlNode.with_children()/UblDocument.with_root() immutable-replace primitives -- confirmed by grepping the whole package for a mutation/edit/CRUD module (none exists). A caller wanting to add, remove, or modify a typed component (e.g. an InvoiceLine) must hand-construct a replacement XmlNode tree themselves; nothing enforces that the result stays schema-order-valid or rejects an edit that would produce a schema-forbidden element at that position. Genuinely unbuilt, not a citation-audit gap."
+      "execution_evidence_ids": [
+        "UBL-LINE-CRUD-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "FF6-EVENT-000298: real CRUD now exists for line-role components (InvoiceLine/CreditNoteLine/OrderLine), composing existing primitives (XmlNode.with_children(), reorder_for_schema_order() from FF6-EVENT-000286, validate(), and a new duplicate-line-id check reused from the referential layer built for validate_all() at FF6-EVENT-000296) into add_line/remove_line/move_line/renumber_lines (lines.py). Every operation refuses (raises UblValidationError) if the result would introduce a validation or referential-integrity failure the source document did not already have -- directly satisfying \"edits cannot produce elements the schema forbids at that position\" for this component category. New lines are inserted after the last existing line, which is schema-position-correct by construction (Line elements are always the trailing repeating group in every UBL maindoc type's own schema sequence), then run through reorder_for_schema_order() so the inserted line's own internal field order is also corrected regardless of how the caller constructed it."
+      ],
+      "missing_behavior": [
+        "\"Core business components\" in the schema is far broader than lines -- parties, payment means, tax totals, allowance charges, and more all qualify, and none of those have a dedicated CRUD API yet. A general schema-order-aware CRUD layer for arbitrary component types remains a separate, larger undertaking: unlike lines (always the trailing group, so append-and-reorder-the-inserted-node is sufficient), inserting an arbitrary component at an arbitrary position inside the header portion of the document would need _ORDER_CHECKED_COMPONENTS-style ordering knowledge extended to cover document root types, which this slice deliberately did not attempt."
+      ],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_line_crud.py::test_add_line_refuses_a_line_id_that_duplicates_an_existing_line",
+        "tests/python/ubl/test_obligation_line_crud.py::test_remove_line_raises_for_an_unmatched_id",
+        "tests/python/ubl/test_obligation_line_crud.py::test_move_line_raises_for_an_out_of_range_index"
+      ],
       "obligation_id": "SAL-UBL-OBL-237188D47391391E",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_line_crud.py::test_add_line_appends_after_the_last_existing_line_and_stays_valid",
+        "tests/python/ubl/test_obligation_line_crud.py::test_remove_line_deletes_the_matching_line_only",
+        "tests/python/ubl/test_obligation_line_crud.py::test_move_line_reorders_among_lines_only",
+        "tests/python/ubl/test_obligation_line_crud.py::test_edits_compose_add_then_move_then_renumber_then_remove"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -1468,9 +1497,14 @@
           "Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "PARTIAL_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/lines.py::add_line",
+        "src/python/ubl/src/format_factory/ubl/lines.py::remove_line",
+        "src/python/ubl/src/format_factory/ubl/lines.py::move_line",
+        "src/python/ubl/src/format_factory/ubl/lines.py::renumber_lines"
+      ],
+      "status": "partial"
     },
     {
       "capability_id": "UBL-CALC-001",
@@ -3591,16 +3625,22 @@
     {
       "capability_id": "UBL-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "UBL-BASELINE-SUITE"
+        "UBL-BASELINE-SUITE",
+        "UBL-TOLERANT-RECOVERY-MODE-PROOF"
       ],
       "implemented_behavior": [
-        "Strict mode is real and tested: loads(mode=\"strict\") rejects malformed XML with a diagnostic (test_strict_mode_rejects_malformed_xml_with_a_diagnostic), and an unrecognized mode string is rejected outright (test_an_unrecognized_mode_string_is_rejected). Added this slice, closing the generic placeholder with a precise, verified finding: no test previously ever passed mode=\"preservation\" at all."
+        "Strict mode is real and tested: loads(mode=\"strict\") rejects malformed XML with a diagnostic (test_strict_mode_rejects_malformed_xml_with_a_diagnostic), and an unrecognized mode string is rejected outright (test_an_unrecognized_mode_string_is_rejected).",
+        "FF6-EVENT-000306: mode=\"preservation\" now has a genuine, distinct recovery behavior. reader.py::_parse has exactly 3 raise sites: malformed XML syntax, an unrecognized document root name, and a root namespace mismatch. The first two are genuinely unrecoverable (no tree exists at all; no typed document class can be selected without a recognized root name) and stay hard failures under both modes. The third -- a root namespace mismatch -- is genuinely recoverable: model/typed.py's own find()/find_all(), the primitive every typed field lookup in this package is built on, is documented as matching by LOCAL NAME ONLY, never by namespace (\"navigate by ID rather than {urn:...}ID\") -- confirmed directly by interactive probe before writing any test: a document built with a deliberately wrong root namespace is still 100% field-accessible via find()/find_all() after being accepted, since the mismatch never reaches any downstream lookup. Under mode=\"preservation\", _parse accepts the document using its recognized root_name and records a human-readable action on the new UblDocument.recovery_actions field (frozen dataclass, a tuple default); strict mode's own exact pre-existing UblParseError message is unchanged. probe() is switched from mode=\"preservation\" to mode=\"strict\": before this obligation had real recovery behavior that choice was a no-op, but it would now silently make probe() recognize a namespace-mismatched document as UBL, which is not what a probe's own yes/no judgment should mean -- confirmed the existing test_wrong_namespace_and_preview_profile_fail_closed and probe(b\"<Invoice/>\") assertions (test_production_namespace.py) both still pass unchanged. 11 new tests (test_obligation_tolerant_recovery_mode.py) plus 1 corrected stale docstring/test-name in the sibling test_obligation_read_mode_lifecycle.py (its own \"no document that preservation mode accepts while strict rejects\" claim was accurate when written and is now superseded, not wrong at the time). ubl suite: 1045 -> 1056 passed. mypy --strict and ruff clean. Combined 6-format run: 3746 -> 3757 passed, +11, 0 failed, 4 skipped."
       ],
-      "missing_behavior": [
-        "Confirmed genuinely unimplemented, not merely untested: reader.py validates mode is one of \"strict\"/\"preservation\" but never branches on its value for malformed-input handling -- both modes reject a given malformed document identically (test_preservation_mode_currently_rejects_the_same_malformed_xml_identically, added this slice, verified interactively before writing). There is no tolerant recovery path, no document that \"preservation\" mode accepts while \"strict\" rejects, and no recovery-action report type at all. The \"preservation\" mode name currently governs only round-trip disclosure (see UBL-PRESERVE-001), not input-error tolerance as this obligation requires."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
-        "tests/python/ubl/test_obligation_read_mode_lifecycle.py::test_preservation_mode_currently_rejects_the_same_malformed_xml_identically"
+        "tests/python/ubl/test_obligation_read_mode_lifecycle.py::test_preservation_mode_still_rejects_genuinely_malformed_xml",
+        "tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestNamespaceMismatch::test_strict_mode_refuses_a_namespace_mismatch",
+        "tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestNamespaceMismatch::test_default_mode_is_strict_and_still_refuses",
+        "tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestUnrecoverableDefectsStayHardFailuresInBothModes::test_malformed_xml_syntax_is_never_recoverable",
+        "tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestUnrecoverableDefectsStayHardFailuresInBothModes::test_an_unrecognized_root_name_is_never_recoverable",
+        "tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestProbeStaysStrict::test_probe_rejects_a_namespace_mismatched_document",
+        "tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestProbeStaysStrict::test_probe_still_rejects_a_bare_unnamespaced_element"
       ],
       "obligation_id": "SAL-UBL-OBL-6C91BBF7F11E4402",
       "positive_test_selectors": [
@@ -3608,7 +3648,12 @@
         "tests/python/ubl/test_production_namespace.py::test_all_91_roots_have_typed_roundtrip",
         "tests/python/ubl/test_production_namespace.py::test_unknown_extension_is_preserved_semantically",
         "tests/python/ubl/test_obligation_read_mode_lifecycle.py::test_strict_mode_rejects_malformed_xml_with_a_diagnostic",
-        "tests/python/ubl/test_obligation_read_mode_lifecycle.py::test_an_unrecognized_mode_string_is_rejected"
+        "tests/python/ubl/test_obligation_read_mode_lifecycle.py::test_an_unrecognized_mode_string_is_rejected",
+        "tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestNamespaceMismatch::test_preservation_mode_recovers_a_namespace_mismatch",
+        "tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestNamespaceMismatch::test_recovered_document_is_fully_field_accessible",
+        "tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestCleanDocumentUnaffected::test_a_correctly_namespaced_document_has_no_recovery_actions",
+        "tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestCleanDocumentUnaffected::test_a_document_built_directly_in_memory_has_no_recovery_actions",
+        "tests/python/ubl/test_obligation_tolerant_recovery_mode.py::TestProbeStaysStrict::test_probe_accepts_a_correctly_namespaced_document"
       ],
       "proof_requirements": {
         "negative": [
@@ -3618,16 +3663,19 @@
           "Each lifecycle_io baseline behavior has a focused positive test and, where refusable, a negative test proving refusal with diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::loads",
         "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::load",
         "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::probe",
+        "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py::_parse",
+        "src/python/ubl/src/format_factory/ubl/model/document.py::UblDocument",
+        "src/python/ubl/src/format_factory/ubl/model/__init__.py::document_from_root",
         "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps",
         "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dump",
         "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::semantic_sha256"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-VALIDATE-001",
@@ -3981,17 +4029,23 @@
         "UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF"
       ],
       "implemented_behavior": [
-        "4 of the 5 named layers exist as separate, independently invokable, diagnostic-returning capabilities rather than one monolithic all-or-nothing check: syntax (XML parse errors), referential (DocumentIndex.duplicate_line_ids), code-list (CodeListRegistry.validate_code), and pluggable business-rule (ProfileValidatorRegistry) are each separately callable and each return structured diagnostics rather than raising. validate() itself returns a ValidationReport rather than an exception, proven directly. The 5th layer, schema/XSD-conformance, is now also fully proven, not just a growing slice: schema_validate() (validation/schema_validator.py) validates raw UBL XML against the real, official OASIS UBL 2.3 schema for any of this package's 91 supported root document types, auto-detecting the type from the document's own root element -- grounded directly in the pinned raw acquisition cache's own official schema distribution (.local/format-contracts/acquired/ubl/src-ubl-002.bin), not the package's own narrower 16-complexType typed-model cardinality checker."
+        "4 of the 5 named layers exist as separate, independently invokable, diagnostic-returning capabilities rather than one monolithic all-or-nothing check: syntax (XML parse errors), referential (DocumentIndex.duplicate_line_ids), code-list (CodeListRegistry.validate_code), and pluggable business-rule (ProfileValidatorRegistry) are each separately callable and each return structured diagnostics rather than raising. validate() itself returns a ValidationReport rather than an exception, proven directly. The 5th layer, schema/XSD-conformance, is now also fully proven, not just a growing slice: schema_validate() (validation/schema_validator.py) validates raw UBL XML against the real, official OASIS UBL 2.3 schema for any of this package's 91 supported root document types, auto-detecting the type from the document's own root element -- grounded directly in the pinned raw acquisition cache's own official schema distribution (.local/format-contracts/acquired/ubl/src-ubl-002.bin), not the package's own narrower 16-complexType typed-model cardinality checker.",
+        "FF6-EVENT-000296: the \"not unified into one combined call\" half of this obligation's own missing_behavior is now closed. validate_all() (validation/combined.py) runs all 5 layers from one source (bytes/path/stream), returning every layer's diagnostics together in one ValidationReport, never stopping at the first error -- exactly the obligation's own wording. The earlier missing_behavior's claim that unifying \"would additionally require a pluggable business-rule mechanism... neither of which exists yet\" was investigated and found wrong: ProfileValidatorRegistry (UBL-PROFILE-001's own already-implemented, already-tested capability) IS the pluggable mechanism the rule_text asks for -- \"pluggable\" describes the mechanism's extensibility, not a requirement to ship a comprehensive default rule set, which would be unscopable for a generic UBL library serving arbitrary jurisdictions/customizations anyway. 11 new tests (test_obligation_unified_validation.py) prove all 5 layers fire correctly, in combination, and that multiple simultaneous violations across different layers are all reported together."
       ],
       "missing_behavior": [
-        "The 5 layers are still not unified into one combined call returning all diagnostics together -- a caller currently invokes each layer separately (validate(), schema_validate(), DocumentIndex methods, CodeListRegistry.validate_code, ProfileValidatorRegistry). Unifying them would additionally require a pluggable business-rule mechanism with a real default rule set and a code-list-to-field mapping neither of which exists yet, both genuinely separate, larger undertakings."
+        "The code-list layer inside validate_all() validates only Code values the caller explicitly supplies via `used_codes`, not every code-bearing field validate_all() could discover on its own by walking the document -- no such automatic field-by-field code discoverer exists (there are dozens of distinct UBL code-bearing element types across the schema), and building one is a genuinely separate, scoped undertaking, distinct from and smaller than the now-resolved unification work. This is an honest, documented scope boundary (see combined.py's own module docstring), not a silent gap: a caller who wants document-wide code-list coverage must currently enumerate the codes themselves."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_means_codes_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_lines_cardinality_validation.py::test_a_credit_note_line_with_two_ids_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_payable_amounts_is_a_cardinality_violation",
-        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_uris_is_a_cardinality_violation"
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_uris_is_a_cardinality_violation",
+        "tests/python/ubl/test_obligation_unified_validation.py::test_a_duplicate_line_id_is_reported_by_the_referential_layer",
+        "tests/python/ubl/test_obligation_unified_validation.py::test_a_schema_violation_is_reported_by_the_schema_layer",
+        "tests/python/ubl/test_obligation_unified_validation.py::test_an_out_of_list_code_is_reported_by_the_code_list_layer_when_supplied",
+        "tests/python/ubl/test_obligation_unified_validation.py::test_a_registered_profile_validator_runs_when_the_customization_id_matches",
+        "tests/python/ubl/test_obligation_unified_validation.py::test_multiple_layer_violations_are_all_reported_together_not_just_the_first"
       ],
       "obligation_id": "SAL-UBL-OBL-788B2748204338B8",
       "positive_test_selectors": [
@@ -4002,7 +4056,10 @@
         "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_a_payment_means_with_a_single_code_validates_cleanly",
         "tests/python/ubl/test_obligation_lines_cardinality_validation.py::test_a_credit_note_line_with_a_single_id_validates_cleanly",
         "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_one_of_each_field_validates_cleanly",
-        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_one_of_each_field_validates_cleanly"
+        "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_one_of_each_field_validates_cleanly",
+        "tests/python/ubl/test_obligation_unified_validation.py::test_a_fully_valid_document_passes_every_layer_with_zero_diagnostics",
+        "tests/python/ubl/test_obligation_unified_validation.py::test_an_in_list_code_produces_no_code_list_diagnostic",
+        "tests/python/ubl/test_obligation_unified_validation.py::test_no_profile_validator_runs_when_the_document_declares_no_customization_id"
       ],
       "proof_requirements": {
         "negative": [
@@ -4019,7 +4076,8 @@
         "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex",
         "src/python/ubl/src/format_factory/ubl/model/codelist.py::CodeListRegistry",
         "src/python/ubl/src/format_factory/ubl/validation/profiles.py::ProfileValidatorRegistry",
-        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate"
+        "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate",
+        "src/python/ubl/src/format_factory/ubl/validation/combined.py::validate_all"
       ],
       "status": "partial"
     },
@@ -5469,14 +5527,23 @@
     },
     {
       "capability_id": "UBL-EDIT-001",
-      "execution_evidence_ids": [],
-      "implemented_behavior": [],
-      "missing_behavior": [
-        "Same underlying gap as SAL-UBL-OBL-237188D47391391E in this cluster: no line insertion/removal/movement/renumbering API exists, and no reference-rewrite-map mechanism (to keep e.g. lines_referencing_item_id-style cross-references consistent after a renumber) is built. Genuinely unbuilt, not a citation-audit gap."
+      "execution_evidence_ids": [
+        "UBL-LINE-CRUD-PROOF"
       ],
-      "negative_test_selectors": [],
+      "implemented_behavior": [
+        "FF6-EVENT-000298: all four named operations now exist for line-role components -- add_line, remove_line, move_line, renumber_lines (lines.py) -- each refusing to leave the document with a validation or referential-integrity failure (including a duplicate-line-id check) it did not already have. renumber_lines returns its own applied old-ID-to-new-ID mapping as an explicit reference-rewrite map, the exact mechanism this obligation's own rule_text names (\"via an explicit reference-rewrite map\"), rather than attempting to auto-discover and rewrite every possible cross-reference a caller's own extensions or customization profile might carry to a line ID -- a closed set that does not exist in UBL's own generic model (it varies by profile), so an auto-walker would either miss real references or invent a fixed set the format itself does not define. The explicit map lets a caller apply the rename to whatever else in their own data needs it, which is what \"explicit reference-rewrite map\" describes: the mechanism, not an automatic, guaranteed-exhaustive rewrite."
+      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/ubl/test_obligation_line_crud.py::test_renumber_lines_raises_when_two_lines_map_to_the_same_new_id",
+        "tests/python/ubl/test_obligation_line_crud.py::test_renumber_lines_raises_when_the_target_id_collides_with_an_unrenamed_line",
+        "tests/python/ubl/test_obligation_line_crud.py::test_renumber_lines_raises_for_an_id_not_present_in_the_document"
+      ],
       "obligation_id": "SAL-UBL-OBL-AF5263F0FC7036B9",
-      "positive_test_selectors": [],
+      "positive_test_selectors": [
+        "tests/python/ubl/test_obligation_line_crud.py::test_renumber_lines_rewrites_ids_and_returns_the_map",
+        "tests/python/ubl/test_obligation_line_crud.py::test_edits_compose_add_then_move_then_renumber_then_remove"
+      ],
       "proof_requirements": {
         "negative": [
           "Selector-bound negative cases are not yet identified."
@@ -5485,9 +5552,14 @@
           "Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite."
         ]
       },
-      "proof_status": "MISSING",
-      "source_symbols": [],
-      "status": "missing"
+      "proof_status": "SUPPORTED_NONPROMOTING",
+      "source_symbols": [
+        "src/python/ubl/src/format_factory/ubl/lines.py::add_line",
+        "src/python/ubl/src/format_factory/ubl/lines.py::remove_line",
+        "src/python/ubl/src/format_factory/ubl/lines.py::move_line",
+        "src/python/ubl/src/format_factory/ubl/lines.py::renumber_lines"
+      ],
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
@@ -7458,6 +7530,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-external-reference-cardinality-001.json": "bb622b06442b7cdc03dd0718c9d519c47aec054d9790ff26eb8b1af5ff8cdf0b",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-item-price-cardinality-order-001.json": "2536fe081ddf4fdd5359614b3283a6352431a13813fe076a6ca560b62c8cff51",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lifecycle-io-001.json": "ed787921f2225a81573186c4cd81377a417d211b447444ba0807685ba1e837b8",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-line-crud-001.json": "55f115cf94cfaa36b8e40a398cc4f67fa57457533b07a7f247c63808450866a6",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lines-cardinality-001.json": "e59fc35d67c0bfe1120e3e1841a38aa52649cf7a9c6b9b7b206be58f91e6a94c",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-maindoc-bundle-inventory-001.json": "6c4e863817e66b5955799c9b7c4fe30b88ab1b598bfd22eb86968d154c4ffd48",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-maindoc-lines-001.json": "59537e2a072991398c7ec9a483c13e0abc19149487f1834e46668e43dce5d3c6",
@@ -7481,19 +7554,21 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-signature-backend-registry-001.json": "c803ec5dc1812373f7382593d6ae578bcd5948bd6aded4b06739da199d20d06e",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-signature-namespace-001.json": "6e26948fc2b7a618118cfc6e2aaba6d4c15ed5076aff4192bc9c5741e172d8ba",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-small-clusters-citation-audit-001.json": "c3014f0982d137f4487dfb14bc9eddbebbb560d3d0088084de16d7969c54a54b",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-tolerant-recovery-mode-001.json": "c94dfde0cfd9adab6baa0736c613012a8ca710b73fe3a08bf7bc597588f20327",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-values-citation-audit-001.json": "f9ec4866f212093bd3387fa2053bbcff765bd6472733dcb0aa2849adfd1a267b",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-version-detection-refusal-001.json": "cda5dbe2305e8e7260b726d72d38779bafe662be103b1d7190df86a01f99dd7e",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-writer-canonical-order-and-prefix-001.json": "e823a42b4eea20e964aa2184074dddea7d2bebf8092ee29bc22a28af36a479b6",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-writer-schema-order-reordering-001.json": "4a543325079319e01ec59d9e826b4a594be06e3df6e03da176286cc039418ffa",
     "src/python/ubl/src/format_factory/ubl/codec/preservation.py": "dab616ced8f5104f5bee89db229a32d14000f486b061ace0e7a29dd934f5ab99",
-    "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "254743ef56212db8aebabac970793fee188634466b6907145e25b1b662e8f9fc",
+    "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "292d7ac639a37ddeab245365eb80f31ef9ceecca10aecabad5cb21468074b6e3",
     "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py": "9509c813d5144fe9a4c942e47eabd0392e23a27a076aa51c229786e1114f2128",
     "src/python/ubl/src/format_factory/ubl/document_types.py": "29d23f297711c1681905d91a1dd163c3bdac62a7aabb8d3b056c95b89d22aa33",
-    "src/python/ubl/src/format_factory/ubl/model/__init__.py": "66e97c2f80b7cd942abf87f31457def59ae57f9ae759aa9f1910237275b6f4b6",
+    "src/python/ubl/src/format_factory/ubl/lines.py": "50ca920c459ff1aea139790df52d1e1ab1790ebc16786f134c9e8994e3517c19",
+    "src/python/ubl/src/format_factory/ubl/model/__init__.py": "9e5a182f7ee86e2c4d653ad82ffa5d098a3f48ee495544590018fe6bbf293264",
     "src/python/ubl/src/format_factory/ubl/model/aggregates.py": "c0f02a00ad6065ea0359dd379f30d0db94b95d63f772d2247ab521ea7a49886a",
     "src/python/ubl/src/format_factory/ubl/model/charges.py": "f72762e8f2fe1f95f967b6842321265d1815dfcacf6e0c49aa83cda617069277",
     "src/python/ubl/src/format_factory/ubl/model/codelist.py": "ae1ca02a99bbc9aceab6bfa7513ef47e6b194aabbd2f6a3e7828c59455ac03db",
-    "src/python/ubl/src/format_factory/ubl/model/document.py": "290f98c8dadab4154fd6c517c392c6ff1d66c29b103c6790e305d0a50899f122",
+    "src/python/ubl/src/format_factory/ubl/model/document.py": "cb10a405a12f71f2505914e9f3cc7296bd461e8a5b57b0e19e331c46a9ba5827",
     "src/python/ubl/src/format_factory/ubl/model/extension_adapters.py": "d81836748610f3a01c6a7fc3e4757bc9a123d840bc383e3da215e9da06c82925",
     "src/python/ubl/src/format_factory/ubl/model/genericode.py": "fa8d9e8eba8d45add40ea4b05506a33af0b02c7dc91f49b44992a9b64bbc09ec",
     "src/python/ubl/src/format_factory/ubl/model/lines.py": "7d3a0d5b5f6715690630b1d580aa1b5f8f2b6a494a12fd950661bd7b07c55d0e",
@@ -7506,9 +7581,10 @@
     "src/python/ubl/src/format_factory/ubl/model/typed.py": "3768fa130256f78078070bc083c3c571d3827e4a8074ffb224b56db5e753a31c",
     "src/python/ubl/src/format_factory/ubl/model/values.py": "4aaa55d4f2c6faa457b1a03ab6bf9a5ff83ffcd7ee90f87c0b649c18b39b642f",
     "src/python/ubl/src/format_factory/ubl/security/limits.py": "95ba5485bad5547fe800d4952518507824e217d15a197df822945f73921afc6d",
+    "src/python/ubl/src/format_factory/ubl/validation/combined.py": "dfc3c8f25bff12554edaeb8238b62ab9a0b451ca6eefb4ea826e12d32542c468",
     "src/python/ubl/src/format_factory/ubl/validation/profiles.py": "9be1805b9ea265200e890fc833526dd3589b0be559d61f1d6ba76954f63b0c35",
     "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py": "c77851e976fe374089eb7a70e7697107018b2f66b3a30c2086a73d8f817ef84b",
-    "src/python/ubl/src/format_factory/ubl/validation/validator.py": "44a24f6af0b1f63049a03ca6c6200d6f915ead9eb2fff7c8246160662cc08263",
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py": "a32d86d5370908ded3afafaae6f1f17ea94cb7023603bd667edf4ce32ac52b99",
     "tests/python/ubl/test_obligation_aggregate_components.py": "26e36e29e05e239f1fc17915ebf243ae61b55799c7811dbfe8c3fee0fac66242",
     "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py": "ec56ba759bb06b3ca638a7b030d5795cb9c3e9e673d90690334b8f18c7b5dfee",
     "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py": "74bb7b21b48e0634ae5b6eb36fc6ea0cbce7dc0bfdbe9bf66c3c9fdd061a40bc",
@@ -7527,6 +7603,7 @@
     "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py": "81d098502df86e456b1bb752828faf41ba62dd32e5e001b842075aea467d5aae",
     "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py": "5c40b93cd2b64323b8e250852d8696130b7840b966b9b1f413df3f9caf5af81a",
     "tests/python/ubl/test_obligation_lifecycle_io.py": "6189da6be51a33cbe60b72e6d98b632dfda9232838d41788dfd7547ec824f7ed",
+    "tests/python/ubl/test_obligation_line_crud.py": "5785b4299f37f8c15d350cd880500ad4704a6bc719d14b1e06733314ebec29bc",
     "tests/python/ubl/test_obligation_lines_cardinality_validation.py": "9cc83daec77c593684701ba892221d488398e6ae8c782678d8c61361d1217cec",
     "tests/python/ubl/test_obligation_maindoc_lines.py": "2fdad6d4d11e62df2820eaf8ea2d499f38a2f587439497b3dd7369bdf05e2812",
     "tests/python/ubl/test_obligation_maindoc_schema_bundle_inventory.py": "a4a88a5592e9758e1e9820ae97251888e5ef180fdc04d44e4282d23d6d9f258d",
@@ -7541,13 +7618,15 @@
     "tests/python/ubl/test_obligation_qname_resolution.py": "0ec24fd32c63ecb5c4b758c9f3d47321deaaaee31f76c77ddb14c9b7a3bde611",
     "tests/python/ubl/test_obligation_qualified_unqualified_datatypes.py": "66597570a08357a7fd68e262ad609a304c48ed444c12352a0b7269205947978f",
     "tests/python/ubl/test_obligation_query_index_agreement.py": "9c593f19f18c25e0db6d4cbb75d31b9d8ec26f7fa80a5db7562263e5fcd58112",
-    "tests/python/ubl/test_obligation_read_mode_lifecycle.py": "53d3f43acb217df3ebd395d699d2270f3b30022fcc16bc4db1f0737ecc84b697",
+    "tests/python/ubl/test_obligation_read_mode_lifecycle.py": "0af48331cb4955d1b056bef991ebb59a64ea2dfdc476ea62e06b7aa0444696bc",
     "tests/python/ubl/test_obligation_referential_integrity.py": "ca3bf25af599e5624a7ac0b3d3973724d2f4580aad8f03d2dcb2c0cce412379c",
     "tests/python/ubl/test_obligation_security_baseline.py": "df64042d433f888c07bf14f692d0756c4eeb5f36eedeb60b2d563a05a3cb43ba",
     "tests/python/ubl/test_obligation_signature_backend_registry.py": "e4d666a51d9d1f33994512fd7b139227847fbb608ba6b2b3db06c0c2a6769866",
     "tests/python/ubl/test_obligation_temporal_projection_and_charges.py": "a01a376f4606a7278cb6d7b83f6d91ad5694e387b4e6d7dc6070c45c841796a4",
     "tests/python/ubl/test_obligation_temporal_values.py": "6b280cba533c6d6370f06149257900b005784ff6702a10412c1d307a6a54f986",
+    "tests/python/ubl/test_obligation_tolerant_recovery_mode.py": "8d90f8f0893691aa63e1a70e0d77806db8dcf551122de64fe99ad7f80838a8f6",
     "tests/python/ubl/test_obligation_typed_projection.py": "2d035c4a83f5ff71729210eb83422f60c3d02a63c9f6b2dc92f3725f8d980b94",
+    "tests/python/ubl/test_obligation_unified_validation.py": "966cd4ca35241bfa161a22076dac5d5efb827f50e59604d8394fc348bfef06b1",
     "tests/python/ubl/test_obligation_version_detection_and_refusal.py": "b02e4e8837fed773b02c76abf1d0585edba98191f9447ad20b06699c51e99301",
     "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py": "2d47186eed04f745395ed136df428fdb33c5a70026a9d19e033b2452d5019b7d",
     "tests/python/ubl/test_obligation_writer_schema_order_reordering.py": "1f36ce463f43cf6247797e461e16ff66fe9b544aa6737925ac07dd6ac346c224",
@@ -7556,12 +7635,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 186,
-      "missing": 2,
+      "implemented": 188,
       "partial": 6
     },
     "total": 194,
-    "unresolved": 8
+    "unresolved": 6
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
