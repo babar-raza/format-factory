@@ -1,0 +1,51 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-canonicalize-check-drift-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-7b1b29b78c3bc36d",
+  "mode": "live",
+  "timestamp": "2026-08-08T15:35:53Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_CANONICALIZE_CHECK_DRIFT_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-a-second-lower-priority-pass-on-previously-named-candidates",
+    "root_cause": "Event 353's own exact_next_action named xliff's canonicalize/check_drift pair as the most promising remaining candidate for a second, lower-priority documentation pass, structurally similar to nrrd's own with_array finding (a real capability adjacent to something already documented). Both were deliberately deferred at Event 342 as lower-level counterparts of already-documented higher-level capabilities (check_preservation()/dumps(mode=CANONICAL) for canonicalize; merge_with_drift_check() for check_drift) -- re-examined this tick and judged worth documenting since each is a real, distinct entry point a caller might specifically want.",
+    "obligation_targeted": "No specific obligation-register status change (xliff remains at 0/142 unresolved, unaffected by this tick) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage.",
+    "acceptance_evidence": "Verified both functions directly against real corpus data: canonicalize() on samples/by-format/xliff/valid/multi-unit.xliff returned an empty dropped-tags tuple, consistent with check_preservation()'s own is_lossless=True for the same document (the sample has no unmodeled ExtensionNode content, so nothing was expected to drop); check_drift() against a real Skeleton/compute_source_digest pair returned None for a matching source and a descriptive drift message naming both digests for a changed source -- confirmed by direct execution, not assumed from the docstring."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 353 commit (b856291e); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Reviewed Event 342's own named list of xliff's remaining undocumented __all__ candidates and Event 353's own exact_next_action, which specifically flagged canonicalize/check_drift as the most promising next candidate given the same pattern that made nrrd's with_array finding valuable (a real, adjacent-to-documented capability, not a cosmetic supporting type).",
+    "3. Re-read codec/preservation.py's canonicalize() and merge.py's check_drift() in full (already read once at Event 342's own investigation) to confirm exact behavior: canonicalize(document) returns a tuple of (regenerated_document, dropped_tags) -- the exact primitive check_preservation() itself calls internally, exposed publicly for callers who want the canonicalized Document object rather than serialized bytes. check_drift(skeleton, live_source) returns None if the source digest still matches, or a descriptive message otherwise -- the detection half of merge_with_drift_check(), useful standalone for a caller who wants to just verify currency (e.g. a CI gate) without attempting a merge.",
+    "4. Verified both functions directly against real corpus data before writing anything: loaded samples/by-format/xliff/valid/multi-unit.xliff and called canonicalize() -- confirmed the dropped-tags tuple is empty (the sample has no unmodeled extension content) and cross-checked this matched check_preservation()'s own is_lossless=True for the same document, proving the two functions agree. Built a real Skeleton/compute_source_digest pair and called check_drift() with a matching source (returned None) and a changed source (returned a message naming both the skeleton's own digest and the live digest) -- both confirmed by direct execution.",
+    "5. Extended the existing 'Template merge and drift detection' README section with check_drift(), positioned directly after the merge_with_drift_check paragraph it complements, framed explicitly as 'the detection half on its own' for CI-gate-style use.",
+    "6. Extended the existing 'Preservation modes' README section with canonicalize(), positioned directly after the CANONICAL-mode explanation it complements, framed explicitly as what dumps(mode=CANONICAL) calls internally, exposed for callers who want the Document object rather than bytes.",
+    "7. Regenerated reports/certification/xliff/documentation-gate.json to reflect both additions -- updated readme_line_count (199 -> 225), symbol_existence count (22 distinct names/12 code blocks now, +canonicalize/check_drift), a new example_execution entry documenting the real-data verification, and extended the incidental_finding to note this second, lower-priority pass closed canonicalize/check_drift while the 6 individual check_* QA functions, load_xliff/write_xliff/probe_xliff, xliff_installed_workflow, the exception hierarchy, and bundled schema-path accessors remain for a future tick.",
+    "8. Did not modify any production source code -- canonicalize/check_drift already existed, fully correct and already tested by the existing test suite; this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration. Did not re-run the xliff test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/xliff/README.md",
+    "reports/certification/xliff/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/README.md",
+    "reports/certification/xliff/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: canonicalize() against real corpus sample samples/by-format/xliff/valid/multi-unit.xliff, cross-checked against check_preservation()'s own is_lossless flag for agreement; check_drift() against a real Skeleton/digest pair for both a matching and a changed source",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap for two already-implemented, already-exported capabilities (canonicalize, check_drift) -- no obligation status change (xliff remains at 0/142 unresolved, unaffected), but a real developer-discoverability improvement to an already-PASS-ing documentation gate.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 142,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

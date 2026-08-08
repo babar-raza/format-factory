@@ -113,6 +113,18 @@ extracted from -- stale skeletons never produce corrupted output.
 `%%TR%% ... %%TR%%`-delimited template syntax, useful for testing the
 `MergeAdapter` contract end to end.
 
+`check_drift` is the detection half on its own, for callers who want to
+verify a skeleton is still current (a CI gate, for example) without
+attempting a merge:
+
+```python
+from format_factory.xliff import check_drift
+
+report = check_drift(skeleton, live_source=current_source)  # None if unchanged
+if report is not None:
+    raise RuntimeError(report)
+```
+
 ## Module coverage and schema validation
 
 ```python
@@ -148,6 +160,20 @@ attribute verbatim via a dedicated `ExtensionNode` slot. `CANONICAL`
 regenerates the document from only what this package's typed model
 understands, dropping anything unmodeled -- `check_preservation()` reports
 exactly what would be dropped before a caller commits to that choice.
+
+`canonicalize()` is what `dumps(mode=PreservationMode.CANONICAL)` calls
+internally, exposed directly for callers who want the canonicalized
+`XliffDocument` object itself (to inspect or further edit) rather than
+serialized bytes:
+
+```python
+from format_factory.xliff import canonicalize
+
+canonical_document, dropped_tags = canonicalize(document)
+```
+
+Returns the regenerated document plus the tag of every dropped
+`ExtensionNode`, in document order, duplicates included.
 
 ## Security and resource limits
 
