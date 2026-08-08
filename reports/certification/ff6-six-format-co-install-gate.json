@@ -1,0 +1,26 @@
+{
+  "gate": "ff6-program-wide-six-format-co-install",
+  "goal_id": "FF6-PRODUCTION-LIBRARIES-001",
+  "invariant_text": "All six distributions co-install without namespace or third-party collisions.",
+  "invariant_source": "plans/strategic/ff6/product-goal.yaml completion_invariants",
+  "status": "PASS",
+  "verdict": "PASS",
+  "first_satisfied_at": "FF6-EVENT-000322",
+  "tool": "tools/run_package_install_proof.py --format nrrd --format ora --format xliff --format ipynb --format safetensors --format ubl",
+  "result_summary": "6/6 PASS -- the first time all six FF6 formats have been built as wheels and installed together into one shared ephemeral venv.",
+  "blocker_that_previously_prevented_this_check": "ora (OpenRaster) had no entry in packaging/python/package-matrix.yaml at all before this tick -- every prior compatibility-gate run (ipynb, safetensors, xliff) could only prove a 5-format co-install (nrrd+xliff+ipynb+safetensors+ubl), explicitly excluding ora and explicitly flagging this as 'a separate, pre-existing finding' in each of those gate files. Added a matrix entry for ora (format_factory.ora, load() smoke test against samples/by-format/ora/valid/minimal.ora, matching the exact schema every other format_factory.* entry already uses) -- verified with a solo `--format ora` proof (1/1 PASS) before attempting the full 6-format run.",
+  "per_format_deep_import_results": {
+    "nrrd": {"failed": 0, "total": 20},
+    "ora": {"failed": 0, "total": 13},
+    "xliff": {"failed": 0, "total": 24},
+    "ipynb": {"failed": 0, "total": 31},
+    "safetensors": {"failed": 0, "total": 21},
+    "ubl": {"failed": 2, "total": 18, "failing_modules": {
+      "ubl._build_backend": "ModuleNotFoundError: No module named 'setuptools' -- build-time-only module not installed in the runtime proof venv by design, not a collision",
+      "ubl.ubl_to_csv": "ModuleNotFoundError: No module named 'ff_csv' -- a separate, optional cross-product export package not part of this scoped 6-format set, not a collision"
+    }}
+  },
+  "collision_check": "PASS -- zero namespace collisions (every format lives under its own format_factory.{format_id} package, or a top-level {format_id} module for the non-namespace-packaged formats) and zero third-party dependency version conflicts across all 6 packages' own declared dependencies (installed together into one shared site-packages without any resolver error or forced downgrade). The only 2 import failures anywhere in the run (both ubl's own) are pre-existing, already-documented in ipynb/safetensors/xliff's own compatibility-gate.json files, and are unrelated to cross-package collision -- confirmed by their own error messages (a missing build-time dependency and a missing separate optional package, neither caused by another FF6 format being co-installed).",
+  "note": "This satisfies exactly ONE of product-goal.yaml's own multiple completion_invariants -- it is not a certification claim for any format, and it does not by itself satisfy the OTHER outstanding program-wide invariant ('every distribution extracts to an independent repository with preserved canonical source and package digests', still untouched for all six formats per this session's own Event 315 self-correction). No promotion.* field in controller-state.yaml changes as a result of this gate alone.",
+  "commit": "pending"
+}

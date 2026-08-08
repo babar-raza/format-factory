@@ -348,6 +348,35 @@
       "wheel_file": "format_factory_odt-0.1.0.dev0-py3-none-any.whl",
       "wheel_sha256": "18fc0ef3a839414da9b130292c970736acbdb96b3c12eb6ed3f156be52ca5c57"
     },
+    "ora": {
+      "build_mode": "native_pyproject",
+      "deep_import": {
+        "failed": 0,
+        "failing_modules": {},
+        "total": 13
+      },
+      "import_result": "PASS",
+      "install_result": "PASS",
+      "local_dependencies": [
+        {
+          "install_result": "PASS",
+          "package_name": "format-factory-core",
+          "wheel_file": "format_factory_core-0.1.0.dev0-py3-none-any.whl",
+          "wheel_sha256": "f15a9f3dfe6097befc6694a9c55d3ad9a706b34130f44f21bc789611c3760bc7"
+        }
+      ],
+      "module_import": "format_factory.ora",
+      "package_name": "format-factory-ora",
+      "proof_id": "PACKAGE-PROOF-3475019A79AEA5DFCBB08C6C0A4724EDAF7444BF559CBFEE0FE383C30BC4A20C",
+      "proof_input_digest": "7bcf14fac7cfc9eef3f02b87bb1478868c11ca31fd04b62af556465c37dfad46",
+      "smoke_result": "PASS",
+      "smoke_test": "format_factory.ora.load on samples/by-format/ora/valid/minimal.ora",
+      "source_digest": "ccdd7e88e4b32829b05cfefff6fccb81b43fcb731e32f99dd565cbbfa7962f42",
+      "verdict": "PASS",
+      "version": "0.1.0.dev0",
+      "wheel_file": "format_factory_ora-0.1.0.dev0-py3-none-any.whl",
+      "wheel_sha256": "4ee77c317a402212037e063d1e488d3f05e45555e2bfffb1b3434f71c7112755"
+    },
     "pbm": {
       "build_mode": "legacy_staging",
       "deep_import": {
@@ -641,6 +670,7 @@
     "formats": [
       "ipynb",
       "nrrd",
+      "ora",
       "safetensors",
       "ubl",
       "xliff"

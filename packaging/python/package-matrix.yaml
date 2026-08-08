@@ -653,6 +653,33 @@ packages:
   capability_level: alpha-foss-preview
   commercial_ready: false
   build_mode: native_pyproject
+  dependencies: []
+  description: Production OpenRaster (.ora) package
+  examples_path: null
+  format_id: ora
+  install_proof:
+    expected: object
+    smoke_callable: load
+    smoke_module: format_factory.ora
+    smoke_sample: samples/by-format/ora/valid/minimal.ora
+  license: Apache-2.0
+  local_dependencies:
+  - package_name: format-factory-core
+    source_path: src/python/core
+  module_import: format_factory.ora
+  module_path: src/python/ora/
+  onboarding_note: Onboarded FF6-EVENT-000322; added to unblock product-goal.yaml's own program-wide "all six distributions co-install" completion invariant, which cannot be satisfied for any format while ora is absent from this matrix. Gate history in registry/format-registry.yaml.
+  package_name: format-factory-ora
+  publication_authorized: false
+  publish_status: local_only_not_published
+  python_version: '>=3.11'
+  source_path: src/python/ora/
+  tests_path: tests/python/ora/
+- acquisition_gates_passed:
+  - 1
+  capability_level: alpha-foss-preview
+  commercial_ready: false
+  build_mode: native_pyproject
   dependencies:
   - numpy>=1.24
   description: Production SafeTensors (.safetensors) package

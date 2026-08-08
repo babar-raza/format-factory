@@ -1,0 +1,74 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-package-matrix-six-format-coinstall-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-94d7f8295f4a4204",
+  "mode": "live",
+  "timestamp": "2026-08-08T07:48:04Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_PACKAGE_MATRIX_SIX_FORMAT_COINSTALL_001",
+    "task_kind": "program-wide-completion-invariant-unblock",
+    "root_cause": "Event 321's own exact_next_action flagged that product-goal.yaml's own 'all six distributions co-install without namespace or third-party collisions' completion invariant was blocked for EVERY format (not just ora) because ora had no entry in packaging/python/package-matrix.yaml at all -- every prior compatibility-gate run (ipynb, safetensors, xliff, all citing the same 5-format proof) explicitly excluded ora and flagged this as a separate, unaddressed gap. This is a program-wide invariant, so fixing it once unblocks it for all six formats simultaneously, higher leverage than continuing per-format obligation closure this tick.",
+    "obligation_targeted": "Not a SAL-derived obligation -- product-goal.yaml's own separate 'completion_invariants' list, specifically: 'All six distributions co-install without namespace or third-party collisions.'",
+    "acceptance_evidence": "Added a packaging/python/package-matrix.yaml entry for ora (format_factory.ora, load() smoke test against samples/by-format/ora/valid/minimal.ora), matching the exact schema every other format_factory.* entry already uses (xliff's own entry used as the direct template). Verified with a solo `--format ora` proof (1/1 PASS) before attempting the full run. Ran tools/run_package_install_proof.py --format nrrd --format ora --format xliff --format ipynb --format safetensors --format ubl -- RESULT: 6/6 PASS, the first genuine all-six-format co-install proof this mission has ever run. Zero collisions: 5 of 6 formats had 0 failed deep imports; ubl's own 2 failures are the same pre-existing, already-documented, unrelated-to-collision findings (missing setuptools/ff_csv in the proof venv by design).",
+    "regression_tier": "ora suite regression, plus the package-install-proof tool's own pass/fail verdict for the solo and 6-format runs"
+  },
+  "execution_steps": [
+    "1. Read Event 321's own exact_next_action, which named this exact task as the higher-leverage option over continuing per-format obligation closure, since this invariant is program-wide (blocked for all six formats simultaneously by one missing matrix entry) rather than per-format.",
+    "2. Confirmed via grep that packaging/python/package-matrix.yaml genuinely had no `format_id: ora` entry (5 of the 6 FF6 formats did: ipynb, nrrd, safetensors, ubl, xliff).",
+    "3. Verified ora's own packaging readiness directly before assuming it would work: read src/python/ora/pyproject.toml (name=format-factory-ora, requires-python>=3.11, single dependency format-factory-core==0.1.0.dev0, matching every sibling FF6 format's own shape exactly), confirmed format_factory.ora.__init__ exports a load() callable, and ran load() directly against samples/by-format/ora/valid/minimal.ora in a scratch script to confirm the exact smoke-test shape before committing it to the matrix.",
+    "4. Added the ora entry to package-matrix.yaml between nrrd and safetensors (matching the file's existing alphabetical ordering), using xliff's own entry as the direct structural template (build_mode: native_pyproject, install_proof.expected: object, smoke_callable: load, local_dependencies: format-factory-core) -- no invented fields, no deviation from the established schema.",
+    "5. Validated the YAML parses and the new entry round-trips (yaml.safe_load, confirmed 'ora' in the parsed format_id list, 27 total formats now).",
+    "6. Ran tools/run_package_install_proof.py --format ora alone first (1/1 PASS) to isolate and confirm the new matrix entry itself works correctly before attempting the more expensive full 6-format run.",
+    "7. Ran tools/run_package_install_proof.py --format nrrd --format ora --format xliff --format ipynb --format safetensors --format ubl -- the first time this mission has ever attempted a genuine all-six-format co-install. RESULT: 6/6 PASS. Inspected the resulting proof-manifest.json directly per-format: nrrd/ora/xliff/ipynb/safetensors all 0 failed deep imports; ubl had the same 2 pre-existing failures (setuptools, ff_csv) already documented in every prior compatibility-gate.json this session -- confirmed these are NOT new, NOT collisions, and NOT caused by ora's own presence.",
+    "8. Wrote reports/certification/ff6-six-format-co-install-gate.json as a new, program-wide (not per-format) evidence record -- placed at the top level of reports/certification/ alongside the existing cross-product-parity.json, since no per-format directory is the right home for a program-wide invariant.",
+    "9. Updated the 3 existing per-format compatibility-gate.json files (ipynb, safetensors, xliff) that had each previously documented and explicitly flagged the 5-format-only proof with ora excluded -- corrected each to cite the new 6/6 result and cross-reference the new program-wide gate file, rather than leaving 3 now-stale 'ora excluded' notes standing uncorrected.",
+    "10. Ran the full ora test suite (349 passed, unchanged) to confirm the matrix addition itself caused zero regression to ora's own product code (it did not touch any src/ file, only a packaging manifest entry)."
+  ],
+  "allowed_files": [
+    "packaging/python/package-matrix.yaml",
+    "reports/certification/ff6-six-format-co-install-gate.json",
+    "reports/certification/ipynb/compatibility-gate.json",
+    "reports/certification/safetensors/compatibility-gate.json",
+    "reports/certification/xliff/compatibility-gate.json",
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts",
+    "reports/spec-to-code-forensic-audit/feature-proof-register.yaml"
+  ],
+  "actual_files_changed": [
+    "packaging/python/package-matrix.yaml",
+    "reports/certification/ff6-six-format-co-install-gate.json",
+    "reports/certification/ipynb/compatibility-gate.json",
+    "reports/certification/safetensors/compatibility-gate.json",
+    "reports/certification/xliff/compatibility-gate.json",
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/proof-report.md",
+    "reports/package-install-proof/transcripts/package-install-proof-ipynb.json",
+    "reports/package-install-proof/transcripts/package-install-proof-nrrd.json",
+    "reports/package-install-proof/transcripts/package-install-proof-ora.json",
+    "reports/package-install-proof/transcripts/package-install-proof-safetensors.json",
+    "reports/package-install-proof/transcripts/package-install-proof-ubl.json",
+    "reports/package-install-proof/transcripts/package-install-proof-xliff.json",
+    "reports/spec-to-code-forensic-audit/feature-proof-register.yaml"
+  ],
+  "tests_run": [
+    "python tools/run_package_install_proof.py --format ora -- RESULT: 1/1 PASS",
+    "python tools/run_package_install_proof.py --format nrrd --format ora --format xliff --format ipynb --format safetensors --format ubl -- RESULT: 6/6 PASS",
+    ".venv/Scripts/pytest tests/python/ora -q -- 349 passed (unchanged)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 program-wide product-goal.yaml completion invariant satisfied for the first time ('all six distributions co-install without namespace or third-party collisions') -- not an obligation-register change, not a certification promotion for any format.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 134,
+    "new_public_api": "none -- packaging-manifest-only change, no src/ code touched"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -21,20 +21,21 @@ Canonical machine-readable source: `proof-manifest.json`. Orchestrator:
 | 12 | nrrd | format-factory-nrrd | 0.2.0.dev0 | PASS | PASS | **PASS** | 20/20 |
 | 13 | ods | format-factory-ods | 0.1.0.dev0 | PASS | PASS | **PASS** | 34/35 |
 | 14 | odt | format-factory-odt | 0.1.0.dev0 | PASS | PASS | **PASS** | 31/32 |
-| 15 | pbm | format-factory-pbm | 0.1.0.dev0 | PASS | PASS | **PASS** | 18/18 |
-| 16 | pgm | format-factory-pgm | 0.1.0.dev0 | PASS | PASS | **PASS** | 16/16 |
-| 17 | ppm | format-factory-ppm | 0.1.0.dev0 | PASS | PASS | **PASS** | 17/17 |
-| 18 | qoi | format-factory-qoi | 0.1.0.dev0 | PASS | PASS | **PASS** | 18/18 |
-| 19 | safetensors | format-factory-safetensors | 0.2.0.dev0 | PASS | PASS | **PASS** | 21/21 |
-| 20 | sylk | format-factory-sylk | 0.1.0.dev0 | PASS | PASS | **PASS** | 31/32 |
-| 21 | toml | format-factory-toml | 0.1.0.dev0 | PASS | PASS | **PASS** | 29/30 |
-| 22 | tsv | format-factory-tsv | 0.1.0.dev0 | PASS | PASS | **PASS** | 31/32 |
-| 23 | ubl | format-factory-ubl | 0.1.0.dev0 | PASS | PASS | **PASS** | 16/18 |
-| 24 | xcf | format-factory-xcf | 0.1.0.dev0 | PASS | PASS | **PASS** | 19/19 |
-| 25 | xliff | format-factory-xliff | 0.2.0.dev0 | PASS | PASS | **PASS** | 24/24 |
-| 26 | zst | format-factory-zst | 0.1.0.dev0 | PASS | PASS | **PASS** | 18/18 |
+| 15 | ora | format-factory-ora | 0.1.0.dev0 | PASS | PASS | **PASS** | 13/13 |
+| 16 | pbm | format-factory-pbm | 0.1.0.dev0 | PASS | PASS | **PASS** | 18/18 |
+| 17 | pgm | format-factory-pgm | 0.1.0.dev0 | PASS | PASS | **PASS** | 16/16 |
+| 18 | ppm | format-factory-ppm | 0.1.0.dev0 | PASS | PASS | **PASS** | 17/17 |
+| 19 | qoi | format-factory-qoi | 0.1.0.dev0 | PASS | PASS | **PASS** | 18/18 |
+| 20 | safetensors | format-factory-safetensors | 0.2.0.dev0 | PASS | PASS | **PASS** | 21/21 |
+| 21 | sylk | format-factory-sylk | 0.1.0.dev0 | PASS | PASS | **PASS** | 31/32 |
+| 22 | toml | format-factory-toml | 0.1.0.dev0 | PASS | PASS | **PASS** | 29/30 |
+| 23 | tsv | format-factory-tsv | 0.1.0.dev0 | PASS | PASS | **PASS** | 31/32 |
+| 24 | ubl | format-factory-ubl | 0.1.0.dev0 | PASS | PASS | **PASS** | 16/18 |
+| 25 | xcf | format-factory-xcf | 0.1.0.dev0 | PASS | PASS | **PASS** | 19/19 |
+| 26 | xliff | format-factory-xliff | 0.2.0.dev0 | PASS | PASS | **PASS** | 24/24 |
+| 27 | zst | format-factory-zst | 0.1.0.dev0 | PASS | PASS | **PASS** | 18/18 |
 
-**26/26 PASS**
+**27/27 PASS**
 
 ## Deep-import findings (non-verdict; converter modules assuming repo layout)
 

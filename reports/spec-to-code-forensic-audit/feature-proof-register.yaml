@@ -356,6 +356,17 @@ python_format_proofs:
     evidence_paths:
       - reports/package-install-proof/proof-manifest.json
 
+  # Onboarded by GAP-FORENSIC-001 heal (2026-07-15): install proof exists;
+  # no oracle verdict yet, so proof_level honestly capped at 2.
+  - format_id: ora
+    proof_level: 2
+    proof_level_name: UNIT_TESTS
+    oracle_verdict: null
+    packaging_proof: "wheel install + API smoke PASS 2026-08-08 (proof-manifest.json); oracle verification pending"
+    evidence_paths:
+      - reports/package-install-proof/proof-manifest.json
+
+
 
 # =====================================================================
 # .NET FORMAT PROOFS

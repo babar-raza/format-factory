@@ -1,38 +1,38 @@
 {
-  "invocation_id": "PACKAGE-PROOF-C3173BCBF86DACC16887B733FF75E63D428764F9E5DE7728DBF2EEF9E9EAB70D-ipynb",
+  "invocation_id": "PACKAGE-PROOF-3475019A79AEA5DFCBB08C6C0A4724EDAF7444BF559CBFEE0FE383C30BC4A20C-ora",
   "skill_id": "package-install-proof",
   "skill_version": "3.0",
   "mode": "live",
   "inputs": {
-    "format_id": "ipynb",
-    "package_name": "format-factory-ipynb"
+    "format_id": "ora",
+    "package_name": "format-factory-ora"
   },
   "allowed_files": [
     "reports/package-install-proof/proof-manifest.json",
     "reports/package-install-proof/proof-report.md",
-    "reports/package-install-proof/transcripts/package-install-proof-ipynb.json"
+    "reports/package-install-proof/transcripts/package-install-proof-ora.json"
   ],
   "actual_files_changed": [
     "reports/package-install-proof/proof-manifest.json",
     "reports/package-install-proof/proof-report.md",
-    "reports/package-install-proof/transcripts/package-install-proof-ipynb.json"
+    "reports/package-install-proof/transcripts/package-install-proof-ora.json"
   ],
   "tests_run": [
     "wheel-origin import assertion",
-    "format_factory.ipynb.load_ipynb on samples/by-format/ipynb/valid/minimal.ipynb",
+    "format_factory.ora.load on samples/by-format/ora/valid/minimal.ora",
     "deep installed-submodule import scan"
   ],
   "ledger_entry_id": null,
   "result": "PASS",
   "timestamp": "2026-08-08T07:44:55+00:00",
-  "format_id": "ipynb",
-  "package_name": "format-factory-ipynb",
-  "package_version": "0.2.0.dev0",
-  "wheel_path": "format_factory_ipynb-0.2.0.dev0-py3-none-any.whl",
-  "wheel_sha256": "daa1093d325230c32f35fd96aa2a2088f2a1eab6c71a65ec32daaf86ac7db67b",
-  "proof_id": "PACKAGE-PROOF-C3173BCBF86DACC16887B733FF75E63D428764F9E5DE7728DBF2EEF9E9EAB70D",
-  "source_digest": "2cb73256e9024578adfde4d1e2d28474a04ff61fca39722873aec492ccfbd3df",
-  "proof_input_digest": "038fd27c55de4be162ec9c892f26f19bdfb12b4c17272906968182cbd5bee355",
+  "format_id": "ora",
+  "package_name": "format-factory-ora",
+  "package_version": "0.1.0.dev0",
+  "wheel_path": "format_factory_ora-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "4ee77c317a402212037e063d1e488d3f05e45555e2bfffb1b3434f71c7112755",
+  "proof_id": "PACKAGE-PROOF-3475019A79AEA5DFCBB08C6C0A4724EDAF7444BF559CBFEE0FE383C30BC4A20C",
+  "source_digest": "ccdd7e88e4b32829b05cfefff6fccb81b43fcb731e32f99dd565cbbfa7962f42",
+  "proof_input_digest": "7bcf14fac7cfc9eef3f02b87bb1478868c11ca31fd04b62af556465c37dfad46",
   "local_dependencies": [
     {
       "package_name": "format-factory-core",
@@ -44,9 +44,9 @@
   "install_method": "pip install --no-deps <wheel> (ephemeral venv)",
   "install_result": "PASS",
   "import_result": "PASS",
-  "import_statement": "import format_factory.ipynb",
+  "import_statement": "import format_factory.ora",
   "smoke_result": "PASS",
-  "smoke_test": "format_factory.ipynb.load_ipynb on samples/by-format/ipynb/valid/minimal.ipynb",
+  "smoke_test": "format_factory.ora.load on samples/by-format/ora/valid/minimal.ora",
   "verdict": "PASS",
   "proof_report": "reports/package-install-proof/proof-report.md",
   "notes": "B9 proof via tools/run_package_install_proof.py (GAP-FORENSIC-001)",
