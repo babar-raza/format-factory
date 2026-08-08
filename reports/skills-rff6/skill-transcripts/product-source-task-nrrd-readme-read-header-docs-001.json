@@ -1,0 +1,52 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-readme-read-header-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-738071efd62fc366",
+  "mode": "live",
+  "timestamp": "2026-08-08T14:22:09Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_READ_HEADER_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-found-via-a-fresh-capability-survey",
+    "root_cause": "Event 342's own exact_next_action offered two directions: extend the __all__-vs-README diff technique (proven 3/3 productive for safetensors/ipynb/xliff, Events 340-342) to nrrd/ora/ubl, or return to their obligations already investigated exhaustively this session without further reducible sub-slices. Chose to extend the diff technique to nrrd first. Extracted nrrd's full __all__ list (58 symbols) and compared it against the README's own ~20 documented/named symbols. read_header() stood out as the most consequential finding: a real, standalone, header-only parse entry point (never touches payload bytes) that open_lazy_payload() itself calls internally -- directly paralleling safetensors' own already-documented read_header/safe_open split -- but nrrd's README only ever documented the combined open_lazy_payload() path.",
+    "obligation_targeted": "No specific obligation-register status change (nrrd remains at 10/65 unresolved, unaffected by this tick) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage.",
+    "acceptance_evidence": "Read codec/lazy.py's read_header() and open_lazy_payload() in full: confirmed open_lazy_payload() calls read_header() internally then additionally opens a lazy payload view, so read_header() is a genuinely useful standalone capability for callers who want header-only metadata (dimensions, type, space fields, access eligibility) without opening any payload file handle at all -- e.g. batch-scanning many large files' shapes without touching payload bytes. Verified directly against two real corpus samples with contrasting encodings: samples/by-format/nrrd/valid/2d-float32.nrrd (raw) reports access.mode='memory_mapped'/zero_copy=True, while samples/by-format/nrrd/valid/gzip-encoded.nrrd reports access.mode='streaming_decode'/zero_copy=False -- confirming the documented eligibility distinction against real, differently-encoded files."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 342 commit (19f244df); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Extracted nrrd's full __all__ export list from src/python/nrrd/src/format_factory/nrrd/__init__.py (58 symbols) via the same script-based extraction technique used for ipynb/xliff.",
+    "3. Read src/python/nrrd/README.md in full (144 lines, 10 sections) and compiled every symbol referenced by a `from format_factory.nrrd import ...` statement across its 7 code blocks plus the 'Current scope' section's own explicit prose mentions (~20 distinct names total).",
+    "4. Diffed the two lists. Grepped for definitions of the most promising-looking standalone candidates (read_header, convert_endian, axis_order_report, flatten_nrrd_array, RoundingPolicy) to investigate directly rather than guessing from names alone.",
+    "5. Read codec/lazy.py's read_header() (parses only the header, never opens or reads payload bytes, returns a typed NrrdHeader with an access-eligibility report) and open_lazy_payload() (calls read_header() internally, then additionally opens a lazy payload view per header.access.mode) in full. Confirmed via direct source reading that read_header() is a genuinely distinct, standalone, already-implemented capability -- not merely an internal helper -- and that it directly parallels the already-documented safetensors read_header()/safe_open() split (Event 340) that this same session already established as a documented pattern in a sibling format.",
+    "6. Verified the exact example before writing it, against two real corpus samples with deliberately contrasting encodings to make the access.mode distinction concrete rather than abstract: samples/by-format/nrrd/valid/2d-float32.nrrd (raw encoding) returned access.mode='memory_mapped', zero_copy=True; samples/by-format/nrrd/valid/gzip-encoded.nrrd returned access.mode='streaming_decode', zero_copy=False -- both confirmed via direct interactive execution, not assumed from docstrings.",
+    "7. Added a new 'Header-only inspection' README section directly before 'Lazy payload access' (the section whose own function, open_lazy_payload, read_header is the entry point beneath), with a runnable example and a prose paragraph explaining the eligibility-reporting relationship between the two functions -- grounded directly in the source's own control flow, not invented. Lightly reworded the existing 'Lazy payload access' paragraph to name the new relationship (open_lazy_payload calls read_header internally) rather than leaving the two sections disconnected.",
+    "8. Regenerated reports/certification/nrrd/documentation-gate.json to reflect the new section and code block, following the exact same rigor structure the file's own prior entry already established (symbol_existence via hasattr, example_execution against real corpus data) -- updated readme_line_count (144 -> 164), readme_sections (added 'Header-only inspection'), checks_performed_this_tick (19 distinct names, 8 code blocks now), and added a new incidental_finding disclosing both the gap closed and the remaining surveyed-but-undocumented candidates (convert_endian, RoundingPolicy, axis_order_report/AxisOrderReport and flatten_nrrd_array -- both added this same session at Events 328-331 without a README update at the time -- reshape_nrrd_array, dump_detached, decode_nrrd_data/encode_nrrd_data, load_nrrd/probe_nrrd/write_nrrd) for a future tick.",
+    "9. Did not modify any production source code -- read_header already existed, fully correct and already tested by the existing test suite; this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration. Did not re-run the full nrrd suite since no production/test source changed (matching the safetensors/ipynb/xliff documentation-only tick precedent); regression figures already on file (675 passed, 1 skipped) remain accurate."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/README.md",
+    "reports/certification/nrrd/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/README.md",
+    "reports/certification/nrrd/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: read_header against two real corpus samples with contrasting encodings (samples/by-format/nrrd/valid/2d-float32.nrrd raw, samples/by-format/nrrd/valid/gzip-encoded.nrrd gzip) -- confirmed the documented memory_mapped/zero_copy=True vs streaming_decode/zero_copy=False distinction against real files",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap for an already-implemented, already-exported capability (read_header) -- no obligation status change (nrrd remains at 10/65 unresolved, unaffected), but a real developer-discoverability improvement to an already-PASS-ing documentation gate.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

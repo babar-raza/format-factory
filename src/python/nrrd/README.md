@@ -68,6 +68,25 @@ decoded array values are unchanged); `convert_dtype()` changes the
 values themselves and requires an explicit `OverflowPolicy` (clip, wrap,
 or refuse) since narrowing a numeric type can lose information.
 
+## Header-only inspection
+
+```python
+from format_factory.nrrd import read_header
+
+header = read_header("large-volume.nrrd")
+print(header.header["sizes"], header.header["type"])
+print(header.access.mode, header.access.zero_copy)
+```
+
+`read_header()` parses only the header and never opens or reads the
+payload -- useful for inspecting dimensions, type, and space metadata
+across many large files without touching any payload bytes.
+`header.access` reports how the payload *would* be read if requested: a
+raw, unskipped, single-file payload reports `memory_mapped`/`zero_copy=True`
+(eligible for `open_lazy_payload()` below), while a compressed payload
+reports `streaming_decode`/`zero_copy=False` (decoded incrementally, never
+memory-mapped).
+
 ## Lazy payload access
 
 ```python
@@ -77,10 +96,11 @@ header, payload = open_lazy_payload("large-volume.nrrd")
 region = payload.read_region(offset=1024, length=4096, mode=PayloadAccessMode.STRICT)
 ```
 
-`open_lazy_payload()` is a distinct, explicitly-invoked entry point --
-never called implicitly by `load()`/`loads()`/`validate()`/`dumps()` --
-for reading just the header (and, where eligible, bounded payload
-regions) of a large file without materializing the whole array.
+`open_lazy_payload()` calls `read_header()` internally and additionally
+opens a lazy view of the payload itself (memory-mapped or a streaming
+decompressor, per `header.access.mode`). Like `read_header()`, it is a
+distinct, explicitly-invoked entry point -- never called implicitly by
+`load()`/`loads()`/`validate()`/`dumps()`.
 
 ## Space transforms
 
