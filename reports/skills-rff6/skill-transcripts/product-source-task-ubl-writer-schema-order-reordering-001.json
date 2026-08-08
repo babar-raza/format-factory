@@ -1,0 +1,69 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-writer-schema-order-reordering-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T02:15:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_WRITER_SCHEMA_ORDER_REORDERING_001",
+    "task_kind": "large-architecture-item-closed-real-new-capability",
+    "root_cause": "SAL-UBL-OBL-4BD9BBC9F974C175 (UBL-WRITE-001)'s own rule_text asks for dumps() to 'write elements in schema-valid order INDEPENDENT of mutation order' -- but dumps() previously only enforced this by REFUSING (raising UblWriteError) when validate() found an order violation, never by actually reordering. This session's own prior triage (Event 274, 278, 285) had repeatedly classified this as requiring 'a higher-level typed builder API this package does not currently have,' deferring it as large-architecture, multi-tick work.",
+    "obligation_targeted": "1 obligation promoted partial->implemented: SAL-UBL-OBL-4BD9BBC9F974C175 (UBL-WRITE-001).",
+    "acceptance_evidence": "5 new tests (tests/python/ubl/test_obligation_writer_schema_order_reordering.py) plus 4 pre-existing tests updated from asserting refusal to asserting successful reordered output.",
+    "regression_tier": "full ubl package suite plus combined 6-format regression"
+  },
+  "execution_steps": [
+    "1. Re-examined the 'typed builder API' framing that had deferred this obligation 3 times this session. Found validator.py already has _ORDER_CHECKED_COMPONENTS, a dict mapping each order-checked complexType's qname to its schema-declared field sequence, 'programmatically derived from the pinned schema, not transcribed by hand' -- exactly the ground truth needed to reorder, already present, already used by the READ-side check (_order_diagnostics). No typed builder API was actually required: the fix operates on the existing generic XmlNode tree.",
+    "2. Designed a minimal, narrowly-scoped transform: for each node whose qname is in _ORDER_CHECKED_COMPONENTS, permute ONLY the positions its own children currently occupy that ARE known-order fields into their schema-declared relative sequence -- every other child (any component outside this scope) stays exactly where it was, matching _order_diagnostics' own documented scope boundary exactly (mirroring it as a writer-side counterpart, not inventing a broader guarantee).",
+    "3. Implemented reorder_for_schema_order() (validator.py) recursively, using a stable sort keyed by expected_order index, verified interactively before writing any test: a Party with Contact before PostalAddress reordered correctly and the reordered document validated cleanly where the original did not.",
+    "4. Wired reorder_for_schema_order() into codec/writer/writer.py's dumps(), running before validate() for both LOSSLESS and CANONICAL modes.",
+    "5. Ran the full ubl suite and found 4 pre-existing tests failing -- all 4 had explicitly asserted the OLD 'refuses out-of-order input' behavior this obligation's own rule_text says should not exist. Updated all 4 to assert the NEW 'reorders and succeeds' behavior instead, and updated the stale module docstring in test_obligation_writer_canonical_order_and_prefix.py that had explicitly (and, with this fix, incorrectly) argued refusal was the correct interpretation.",
+    "6. Wrote 5 new dedicated tests: a no-op case proving the transform returns the identical object when no reorder is needed (not merely an equal one), idempotence, an unmodeled sibling correctly staying untouched between two reordered fields, nested reordering (LegalMonetaryTotal), and reordered output validating cleanly. One test initially failed on a child-indexing mistake (assumed AccountingSupplierParty was children[0] when cbc:ID is), caught immediately by the test run and fixed.",
+    "7. Ran the full ubl suite (1013 -> 1018 passed), ruff (clean), and mypy --strict (36 source files, clean).",
+    "8. Ran the combined 6-format regression suite (3621 -> 3626 passed, 4 skipped, 0 failed -- the fifth consecutive zero-failure regression result this session)."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "src/python/ubl/src/format_factory/ubl/validation/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py",
+    "tests/python/ubl/test_obligation_writer_schema_order_reordering.py",
+    "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py",
+    "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py",
+    "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py",
+    "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+    "src/python/ubl/src/format_factory/ubl/validation/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py",
+    "tests/python/ubl/test_obligation_writer_schema_order_reordering.py",
+    "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py",
+    "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py",
+    "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py",
+    "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_writer_schema_order_reordering.py -v -- 5 passed",
+    ".venv/Scripts/pytest tests/python/ubl -q -- 1018 passed (was 1013 before)",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/ -- Success: no issues found in 36 source files",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3626 passed, 4 skipped, 0 failed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation promoted partial->implemented",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_total_for_format": 194,
+    "oracle": "The reordering ground truth (_ORDER_CHECKED_COMPONENTS) is programmatically derived from the pinned OASIS UBL 2.3 schema, already independently verified by this session's own prior element-order validation work."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

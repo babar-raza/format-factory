@@ -352,12 +352,20 @@
       "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-writer-canonical-order-and-prefix-001.json",
       "sha256": "e823a42b4eea20e964aa2184074dddea7d2bebf8092ee29bc22a28af36a479b6",
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) SAL-UBL-OBL-4BD9BBC9F974C175 (UBL-WRITE-001), promoted missing->partial. This obligation's rule_text bundles three clauses. Investigated dumps() directly (src/python/ubl/src/format_factory/ubl/codec/writer/writer.py) before writing anything and found two genuinely already-true, previously-untested behaviors: dumps() already calls ET.register_namespace() with fixed cbc:/cac:/ext: prefixes, so ANY source document using a different prefix alias for these namespaces gets normalized to the canonical prefixes on write, regardless of the original alias -- proven directly with a document declaring xmlns:ns1/xmlns:x aliases instead of cbc:/cac:. Separately, dumps() already calls validate(document, profile=...) and raises UblWriteError if the report is invalid -- since the element-order validation cluster (an earlier tick this same session) added order-violation diagnostics to validate(), dumps() already, as a direct side effect, refuses to serialize a document whose checked components have elements in the wrong schema order -- proven directly with a Party constructed with Contact before PostalAddress, confirmed to raise UblWriteError naming the exact violation. Zero source changes were needed for either finding -- both were already real, shipped behavior, simply never tested from this obligation's own angle. The third clause (\"lossless mode preserving significant lexical values\") was already proven by the pre-existing test_obligation_preservation_mode.py and is cited, not re-proven. Honestly documented as still unbuilt: the obligation's own \"independent of mutation order\" framing asks for automatic silent reordering, not refusal -- a caller who assembles fields out of order today gets a clear error, not corrected output; building true auto-reordering would need either a canonicalization pass or a higher-level typed builder API this package does not currently have, deliberately not attempted without dedicated design review. 4 new tests (2 positive prefix-normalization proofs, 1 refusal proof, 1 correct-order-succeeds control). ubl suite: 937 -> 941 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule. Covers SAL-UBL-OBL-4BD9BBC9F974C175 only; it supports no other obligation and promotes no product state."
+    },
+    {
+      "evidence_id": "UBL-WRITER-SCHEMA-ORDER-REORDERING-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-writer-schema-order-reordering-001.json",
+      "sha256": "4a543325079319e01ec59d9e826b4a594be06e3df6e03da176286cc039418ffa",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact test selectors proving reorder_for_schema_order() -- new real product capability, not evidence reconciliation -- closes UBL-WRITE-001's own \"independent of mutation order\" clause. Built from the exact _ORDER_CHECKED_COMPONENTS ground truth _order_diagnostics already validates against (itself \"programmatically derived from the pinned schema, not transcribed by hand\"), wired into dumps()/dump() before validation. 4 pre-existing tests that asserted the old \"refuses out-of-order input\" behavior were updated to assert the new \"reorders and succeeds\" behavior instead (the obligation's own rule_text explicitly calls for the latter, not the former); 5 new dedicated tests cover the no-op case, idempotence, an unmodeled sibling staying untouched between two reordered fields, nested reordering, and validation success where the original document failed. Covers SAL-UBL-OBL-4BD9BBC9F974C175 only; it supports no other obligation and promotes no other product state."
     }
   ],
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "6077fa78f358d42afcd6e62a2028fc504682cc30365646b7284254927c84dc4e",
+    "implementation_evidence": "598db0fa8fdc94b08cce068d39db4e9176bf4a099654f2f53981dc7466ab121f",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2776,24 +2784,28 @@
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
         "UBL-ELEMENT-ORDER-VALIDATION-PROOF",
-        "UBL-WRITER-CANONICAL-ORDER-AND-PREFIX-PROOF"
+        "UBL-WRITER-CANONICAL-ORDER-AND-PREFIX-PROOF",
+        "UBL-WRITER-SCHEMA-ORDER-REORDERING-PROOF"
       ],
       "implemented_behavior": [
-        "This obligation's rule_text bundles three distinct clauses, and this slice proves two of them true for the first time (a third was already true and cited): (1) \"offer canonical prefix ... policies\" -- dumps() already normalizes ANY source namespace prefix alias (e.g. an ns1:/x: alias for the CommonBasicComponents/CommonAggregateComponents namespaces) to this package's own canonical cbc:/cac:/ext: prefixes via ET.register_namespace(), regardless of what prefix the original document used, proven directly for the first time; (2) \"write elements in schema-valid order\" (the enforcement half, not the \"independent of mutation order\" half) -- dumps() now REFUSES with UblWriteError to serialize a document whose already-checked components (the same 13 cac: types the element-order validation cluster covers) have elements in the wrong relative order, via validate()'s pre-existing \"refuse invalid documents\" integration, proven directly for the first time; (3) \"lossless mode preserving significant lexical values\" -- already proven by the pre-existing test_obligation_preservation_mode.py (PreservationMode.LOSSLESS is dumps()'s own default and preserves the extension container byte-for-byte), cited here rather than re-proven."
+        "This obligation's rule_text bundles three distinct clauses, and this slice proves two of them true for the first time (a third was already true and cited): (1) \"offer canonical prefix ... policies\" -- dumps() already normalizes ANY source namespace prefix alias (e.g. an ns1:/x: alias for the CommonBasicComponents/CommonAggregateComponents namespaces) to this package's own canonical cbc:/cac:/ext: prefixes via ET.register_namespace(), regardless of what prefix the original document used, proven directly for the first time; (2) \"write elements in schema-valid order\" (the enforcement half, not the \"independent of mutation order\" half) -- dumps() now REFUSES with UblWriteError to serialize a document whose already-checked components (the same 13 cac: types the element-order validation cluster covers) have elements in the wrong relative order, via validate()'s pre-existing \"refuse invalid documents\" integration, proven directly for the first time; (3) \"lossless mode preserving significant lexical values\" -- already proven by the pre-existing test_obligation_preservation_mode.py (PreservationMode.LOSSLESS is dumps()'s own default and preserves the extension container byte-for-byte), cited here rather than re-proven.",
+        "FF6-EVENT-000286: closes the obligation's own remaining \"independent of mutation order\" clause. validation.validator.reorder_for_schema_order() -- built from the exact same _ORDER_CHECKED_COMPONENTS ground truth _order_diagnostics already validates against, \"programmatically derived from the pinned schema, not transcribed by hand\" -- now runs on every dumps()/dump() call before validation. It permutes ONLY the positions already occupied by an already-modeled, order-checked field into their schema-declared relative sequence; every other child (any component not yet in this scope, matching _order_diagnostics' own documented boundary) is left exactly where it was. dumps() no longer raises UblWriteError for the 4 previously-refused fixtures (Party/AllowanceCharge/Price/PaymentMeans out-of-order cases, all 4 now updated to assert successful, correctly-reordered output instead) and now genuinely satisfies \"regardless of how a caller assembled the tree\" -- proven directly by 5 new dedicated tests covering a no-op case (byte-identical when already correct), idempotence, an unmodeled sibling staying untouched between two reordered fields, nested reordering (LegalMonetaryTotal inside a document), and reordered output validating cleanly where the original did not. The previously-flagged risk (\"a higher-level typed builder API this package does not currently have\") turned out to be avoidable: the fix operates on the existing generic XmlNode tree directly, using data the validator itself already needed, not a new construction API."
       ],
-      "missing_behavior": [
-        "The obligation's own \"independent of mutation order\" clause remains genuinely unbuilt: dumps() currently REFUSES a document whose checked components are out of schema order rather than silently reordering them into valid output regardless of how a caller assembled the tree. A caller who constructs a Party with Contact before PostalAddress gets a clear UblWriteError, not automatically-reordered output -- refusal is a real, tested safety property but not the same guarantee as \"always producing schema-valid output regardless of input order,\" which this obligation's rule_text literally asks for. Building true mutation-order-independent auto-reordering would need either a canonicalization pass over the already-checked components' children before serialization, or a higher-level typed builder API this package does not currently have (construction today is via raw XmlNode child tuples, not settable named fields) -- deliberately not attempted this slice to avoid inventing an architecture-level API change without dedicated design review."
-      ],
-      "negative_test_selectors": [
-        "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_refuses_to_write_a_document_with_checked_components_in_the_wrong_order"
-      ],
+      "missing_behavior": [],
+      "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-4BD9BBC9F974C175",
       "positive_test_selectors": [
         "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_normalizes_a_non_standard_source_prefix_to_the_canonical_cbc_prefix",
         "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_normalizes_a_non_standard_cac_prefix_alias_too",
         "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_writes_a_document_with_checked_components_in_correct_order_without_incident",
+        "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_reorders_a_document_with_checked_components_in_the_wrong_order",
         "tests/python/ubl/test_obligation_preservation_mode.py::TestPreservationModeDefault::test_default_mode_is_lossless",
-        "tests/python/ubl/test_obligation_preservation_mode.py::TestPreservationModeDefault::test_lossless_mode_preserves_extension_container"
+        "tests/python/ubl/test_obligation_preservation_mode.py::TestPreservationModeDefault::test_lossless_mode_preserves_extension_container",
+        "tests/python/ubl/test_obligation_writer_schema_order_reordering.py::test_an_already_correctly_ordered_document_is_returned_unchanged",
+        "tests/python/ubl/test_obligation_writer_schema_order_reordering.py::test_reordering_is_idempotent",
+        "tests/python/ubl/test_obligation_writer_schema_order_reordering.py::test_an_unmodeled_sibling_stays_in_place_between_two_reordered_fields",
+        "tests/python/ubl/test_obligation_writer_schema_order_reordering.py::test_reordering_a_nested_order_checked_component_inside_another",
+        "tests/python/ubl/test_obligation_writer_schema_order_reordering.py::test_reordered_output_validates_cleanly_where_the_original_did_not"
       ],
       "proof_requirements": {
         "negative": [
@@ -2803,12 +2815,13 @@
           "Non-standard source namespace prefix aliases (e.g. an ns1/x alias for the canonical cbc/cac prefixes) are normalized to the package's canonical prefixes on write; a document with checked components in correct schema order serializes without incident; lossless mode preserves the extension container byte-for-byte (cited from test_obligation_preservation_mode.py)."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps",
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics"
+        "src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics",
+        "src/python/ubl/src/format_factory/ubl/validation/validator.py::reorder_for_schema_order"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-PARSE-001",
@@ -5718,8 +5731,7 @@
         "tests/python/ubl/test_obligation_element_order_validation.py::test_an_invoice_line_with_item_before_id_is_an_order_violation",
         "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_amount_before_charge_indicator_is_an_order_violation",
         "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_base_quantity_before_price_amount_is_an_order_violation",
-        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_payee_financial_account_before_payment_due_date_is_an_order_violation",
-        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_dumps_refuses_a_document_with_an_out_of_order_payment_means"
+        "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_payee_financial_account_before_payment_due_date_is_an_order_violation"
       ],
       "obligation_id": "SAL-UBL-OBL-B68F5F29F11197D6",
       "positive_test_selectors": [
@@ -7463,9 +7475,10 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-values-citation-audit-001.json": "f9ec4866f212093bd3387fa2053bbcff765bd6472733dcb0aa2849adfd1a267b",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-version-detection-refusal-001.json": "cda5dbe2305e8e7260b726d72d38779bafe662be103b1d7190df86a01f99dd7e",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-writer-canonical-order-and-prefix-001.json": "e823a42b4eea20e964aa2184074dddea7d2bebf8092ee29bc22a28af36a479b6",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-writer-schema-order-reordering-001.json": "4a543325079319e01ec59d9e826b4a594be06e3df6e03da176286cc039418ffa",
     "src/python/ubl/src/format_factory/ubl/codec/preservation.py": "dab616ced8f5104f5bee89db229a32d14000f486b061ace0e7a29dd934f5ab99",
     "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py": "254743ef56212db8aebabac970793fee188634466b6907145e25b1b662e8f9fc",
-    "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py": "e352a3442d0a31389f177c9a206d3a5d857c9a2d4f724833e9af90e31d5b4a7d",
+    "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py": "9509c813d5144fe9a4c942e47eabd0392e23a27a076aa51c229786e1114f2128",
     "src/python/ubl/src/format_factory/ubl/document_types.py": "29d23f297711c1681905d91a1dd163c3bdac62a7aabb8d3b056c95b89d22aa33",
     "src/python/ubl/src/format_factory/ubl/model/__init__.py": "66e97c2f80b7cd942abf87f31457def59ae57f9ae759aa9f1910237275b6f4b6",
     "src/python/ubl/src/format_factory/ubl/model/aggregates.py": "c0f02a00ad6065ea0359dd379f30d0db94b95d63f772d2247ab521ea7a49886a",
@@ -7486,10 +7499,10 @@
     "src/python/ubl/src/format_factory/ubl/security/limits.py": "95ba5485bad5547fe800d4952518507824e217d15a197df822945f73921afc6d",
     "src/python/ubl/src/format_factory/ubl/validation/profiles.py": "9be1805b9ea265200e890fc833526dd3589b0be559d61f1d6ba76954f63b0c35",
     "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py": "c77851e976fe374089eb7a70e7697107018b2f66b3a30c2086a73d8f817ef84b",
-    "src/python/ubl/src/format_factory/ubl/validation/validator.py": "35d9ef28d8d8d97a80cf87439ddbf2b65afed8cf0d6dacac6e7956db8add1a12",
+    "src/python/ubl/src/format_factory/ubl/validation/validator.py": "44a24f6af0b1f63049a03ca6c6200d6f915ead9eb2fff7c8246160662cc08263",
     "tests/python/ubl/test_obligation_aggregate_components.py": "26e36e29e05e239f1fc17915ebf243ae61b55799c7811dbfe8c3fee0fac66242",
     "tests/python/ubl/test_obligation_aggregates_cardinality_validation.py": "ec56ba759bb06b3ca638a7b030d5795cb9c3e9e673d90690334b8f18c7b5dfee",
-    "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py": "15837df35e9208aca25e662bc6583ea04469a6cef1ed51e4f3cfaed10ea5105a",
+    "tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py": "74bb7b21b48e0634ae5b6eb36fc6ea0cbce7dc0bfdbe9bf66c3c9fdd061a40bc",
     "tests/python/ubl/test_obligation_business_calculation.py": "ebf8352d49b7d0bc6bf5aa4bfa0d034f6f98f896ba34aceb95cfe38efeeee150",
     "tests/python/ubl/test_obligation_business_value_types.py": "5f4ee2e16fc785296a4fd493548197aaad50df1b384350ab7cee064e71ed8e10",
     "tests/python/ubl/test_obligation_cbc_cac_namespace_convention.py": "c8ce979dcfd54b1e6117003a460078b86bbfe06288beafda92600b2ddadabac7",
@@ -7503,7 +7516,7 @@
     "tests/python/ubl/test_obligation_extensions_structure.py": "a25a8652d39fab6e3c146f64aaf7c9bbd28eb36be4df30d2ab914ab46d147c79",
     "tests/python/ubl/test_obligation_external_reference.py": "6ba99de8b1dab95aacf884176da6e3c59cf698d3017df4c95748f834fe854901",
     "tests/python/ubl/test_obligation_external_reference_cardinality_validation.py": "81d098502df86e456b1bb752828faf41ba62dd32e5e001b842075aea467d5aae",
-    "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py": "bc8a0898823d622994546dee6480d496b8946bebae92c8842a7a2fbc904540a6",
+    "tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py": "5c40b93cd2b64323b8e250852d8696130b7840b966b9b1f413df3f9caf5af81a",
     "tests/python/ubl/test_obligation_lifecycle_io.py": "6189da6be51a33cbe60b72e6d98b632dfda9232838d41788dfd7547ec824f7ed",
     "tests/python/ubl/test_obligation_lines_cardinality_validation.py": "9cc83daec77c593684701ba892221d488398e6ae8c782678d8c61361d1217cec",
     "tests/python/ubl/test_obligation_maindoc_lines.py": "2fdad6d4d11e62df2820eaf8ea2d499f38a2f587439497b3dd7369bdf05e2812",
@@ -7512,7 +7525,7 @@
     "tests/python/ubl/test_obligation_official_code_lists.py": "9020e26658e6c89b21ddbe3199d78b101d768340671a15449dc9f703970a2e97",
     "tests/python/ubl/test_obligation_party_and_postal_address.py": "d35d55402a5d020574bcd2af1f841f59a3e1097929d17eddfcfab0d8bada261b",
     "tests/python/ubl/test_obligation_party_cardinality_validation.py": "7338dd69a0cb0b2907380229b94ec340d8494439240bb59686714076c930762d",
-    "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py": "8a61e28c2ae1e8ebdd9c3493a5761f8b6fb52591c8805971d0e96b8d8115ed11",
+    "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py": "bbb88bd1ad9b9c226a8e81bffe14f2fe0af838c013e91c31469f3445e5f47504",
     "tests/python/ubl/test_obligation_preservation_mode.py": "0fa525baf6a5836bd2ebd456cad1259f5e3b80c3e1b692864a45471bf6ff0873",
     "tests/python/ubl/test_obligation_profile_identifiers.py": "dd1a6ee497466d8a62d1ab81a91e478328d3ac2a1cec48e90461cadbe7ea8e77",
     "tests/python/ubl/test_obligation_profile_validator_registry.py": "b874e4d0c934f0496470bb854a6d90fafd98dc39f0ff744daac780909e2f2cb1",
@@ -7527,18 +7540,19 @@
     "tests/python/ubl/test_obligation_temporal_values.py": "6b280cba533c6d6370f06149257900b005784ff6702a10412c1d307a6a54f986",
     "tests/python/ubl/test_obligation_typed_projection.py": "2d035c4a83f5ff71729210eb83422f60c3d02a63c9f6b2dc92f3725f8d980b94",
     "tests/python/ubl/test_obligation_version_detection_and_refusal.py": "b02e4e8837fed773b02c76abf1d0585edba98191f9447ad20b06699c51e99301",
-    "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py": "dc606f07c0376d497f3caa3362fd44a2d2d6f28c357366fdb4c1ad101aff3f11",
+    "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py": "2d47186eed04f745395ed136df428fdb33c5a70026a9d19e033b2452d5019b7d",
+    "tests/python/ubl/test_obligation_writer_schema_order_reordering.py": "1f36ce463f43cf6247797e461e16ff66fe9b544aa6737925ac07dd6ac346c224",
     "tests/python/ubl/test_production_namespace.py": "a4dbeab77322aaeb8d35b8c7cba5d8a173f1fbe5566924c32363157a3b171ce6"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 185,
+      "implemented": 186,
       "missing": 3,
-      "partial": 6
+      "partial": 5
     },
     "total": 194,
-    "unresolved": 9
+    "unresolved": 8
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

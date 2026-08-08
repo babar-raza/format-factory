@@ -121,15 +121,18 @@ def test_base_quantity_before_price_amount_is_an_order_violation() -> None:
     assert any(item.code == "ubl.order.violation" for item in report.diagnostics)
 
 
-def test_dumps_refuses_a_document_with_an_out_of_order_price() -> None:
+def test_dumps_reorders_a_document_with_an_out_of_order_price() -> None:
+    """FF6-EVENT-000286: dumps() no longer refuses -- it reorders
+    PriceAmount before BaseQuantity (the schema-declared sequence) instead."""
     body = (
         '<cac:Price><cbc:BaseQuantity unitCode="EA">1</cbc:BaseQuantity>'
         '<cbc:PriceAmount currencyID="EUR">1.00</cbc:PriceAmount></cac:Price>'
     )
     document = loads(_invoice_with(body))
 
-    with pytest.raises(UblWriteError, match="PriceAmount"):
-        dumps(document)
+    out = dumps(document)
+
+    assert out.index(b"PriceAmount") < out.index(b"BaseQuantity")
 
 
 def test_dumps_writes_a_well_formed_item_and_price_without_incident() -> None:

@@ -135,7 +135,10 @@ def test_payee_financial_account_before_payment_due_date_is_an_order_violation()
     assert any(item.code == "ubl.order.violation" for item in report.diagnostics)
 
 
-def test_dumps_refuses_a_document_with_an_out_of_order_payment_means() -> None:
+def test_dumps_reorders_a_document_with_an_out_of_order_payment_means() -> None:
+    """FF6-EVENT-000286: dumps() no longer refuses -- it reorders
+    PaymentDueDate before PayeeFinancialAccount (the schema-declared
+    sequence) instead."""
     body = (
         "<cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>"
         '<cac:PayeeFinancialAccount><cbc:ID>ACC1</cbc:ID></cac:PayeeFinancialAccount>'
@@ -143,8 +146,9 @@ def test_dumps_refuses_a_document_with_an_out_of_order_payment_means() -> None:
     )
     document = loads(_invoice_with_payment_means(body))
 
-    with pytest.raises(UblWriteError, match="PaymentDueDate"):
-        dumps(document)
+    out = dumps(document)
+
+    assert out.index(b"PaymentDueDate") < out.index(b"PayeeFinancialAccount")
 
 
 def test_dumps_writes_a_well_formed_payment_means_without_incident() -> None:

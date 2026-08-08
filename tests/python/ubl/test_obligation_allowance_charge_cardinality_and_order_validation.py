@@ -23,9 +23,7 @@ and Response.Description elsewhere in this cluster.
 
 from __future__ import annotations
 
-import pytest
-
-from format_factory.ubl import UblWriteError, dumps, loads, validate
+from format_factory.ubl import dumps, loads, validate
 
 _CBC = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
 _CAC = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
@@ -125,12 +123,15 @@ def test_a_repeated_allowance_charge_reason_is_not_flagged_as_a_duplicate() -> N
     assert report.is_valid is True
 
 
-def test_dumps_refuses_a_document_with_an_out_of_order_allowance_charge() -> None:
+def test_dumps_reorders_a_document_with_an_out_of_order_allowance_charge() -> None:
+    """FF6-EVENT-000286: dumps() no longer refuses -- it reorders
+    ChargeIndicator before Amount (the schema-declared sequence) instead."""
     body = '<cbc:Amount currencyID="EUR">1.00</cbc:Amount><cbc:ChargeIndicator>true</cbc:ChargeIndicator>'
     document = loads(_invoice_with(body))
 
-    with pytest.raises(UblWriteError, match="ChargeIndicator"):
-        dumps(document)
+    out = dumps(document)
+
+    assert out.index(b"ChargeIndicator") < out.index(b"cbc:Amount")
 
 
 def test_dumps_writes_a_well_formed_allowance_charge_without_incident() -> None:

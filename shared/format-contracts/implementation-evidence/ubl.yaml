@@ -519,6 +519,27 @@ execution_evidence:
     the same pinned src-ubl-002.bin ZIP. Covers the three obligations
     named in this slice's transcript only; it supports no other
     obligation and promotes no other product state.
+- evidence_id: UBL-WRITER-SCHEMA-ORDER-REORDERING-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-writer-schema-order-reordering-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE: it names the exact test
+    selectors proving reorder_for_schema_order() -- new real product
+    capability, not evidence reconciliation -- closes UBL-WRITE-001's own
+    "independent of mutation order" clause. Built from the exact
+    _ORDER_CHECKED_COMPONENTS ground truth _order_diagnostics already
+    validates against (itself "programmatically derived from the pinned
+    schema, not transcribed by hand"), wired into dumps()/dump() before
+    validation. 4 pre-existing tests that asserted the old "refuses
+    out-of-order input" behavior were updated to assert the new
+    "reorders and succeeds" behavior instead (the obligation's own
+    rule_text explicitly calls for the latter, not the former); 5 new
+    dedicated tests cover the no-op case, idempotence, an unmodeled
+    sibling staying untouched between two reordered fields, nested
+    reordering, and validation success where the original document
+    failed. Covers SAL-UBL-OBL-4BD9BBC9F974C175 only; it supports no
+    other obligation and promotes no other product state.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -2288,26 +2309,33 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-4BD9BBC9F974C175
   capability_id: UBL-WRITE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/codec/writer/writer.py::dumps
   - src/python/ubl/src/format_factory/ubl/validation/validator.py::_order_diagnostics
+  - src/python/ubl/src/format_factory/ubl/validation/validator.py::reorder_for_schema_order
   positive_test_selectors:
   - tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_normalizes_a_non_standard_source_prefix_to_the_canonical_cbc_prefix
   - tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_normalizes_a_non_standard_cac_prefix_alias_too
   - tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_writes_a_document_with_checked_components_in_correct_order_without_incident
+  - tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_reorders_a_document_with_checked_components_in_the_wrong_order
   - tests/python/ubl/test_obligation_preservation_mode.py::TestPreservationModeDefault::test_default_mode_is_lossless
   - tests/python/ubl/test_obligation_preservation_mode.py::TestPreservationModeDefault::test_lossless_mode_preserves_extension_container
-  negative_test_selectors:
-  - tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py::test_dumps_refuses_to_write_a_document_with_checked_components_in_the_wrong_order
+  - tests/python/ubl/test_obligation_writer_schema_order_reordering.py::test_an_already_correctly_ordered_document_is_returned_unchanged
+  - tests/python/ubl/test_obligation_writer_schema_order_reordering.py::test_reordering_is_idempotent
+  - tests/python/ubl/test_obligation_writer_schema_order_reordering.py::test_an_unmodeled_sibling_stays_in_place_between_two_reordered_fields
+  - tests/python/ubl/test_obligation_writer_schema_order_reordering.py::test_reordering_a_nested_order_checked_component_inside_another
+  - tests/python/ubl/test_obligation_writer_schema_order_reordering.py::test_reordered_output_validates_cleanly_where_the_original_did_not
+  negative_test_selectors: []
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-ELEMENT-ORDER-VALIDATION-PROOF
   - UBL-WRITER-CANONICAL-ORDER-AND-PREFIX-PROOF
+  - UBL-WRITER-SCHEMA-ORDER-REORDERING-PROOF
   implemented_behavior:
   - 'This obligation''s rule_text bundles three distinct clauses, and this slice proves two of them true for the first time (a third was already true and cited): (1) "offer canonical prefix ... policies" -- dumps() already normalizes ANY source namespace prefix alias (e.g. an ns1:/x: alias for the CommonBasicComponents/CommonAggregateComponents namespaces) to this package''s own canonical cbc:/cac:/ext: prefixes via ET.register_namespace(), regardless of what prefix the original document used, proven directly for the first time; (2) "write elements in schema-valid order" (the enforcement half, not the "independent of mutation order" half) -- dumps() now REFUSES with UblWriteError to serialize a document whose already-checked components (the same 13 cac: types the element-order validation cluster covers) have elements in the wrong relative order, via validate()''s pre-existing "refuse invalid documents" integration, proven directly for the first time; (3) "lossless mode preserving significant lexical values" -- already proven by the pre-existing test_obligation_preservation_mode.py (PreservationMode.LOSSLESS is dumps()''s own default and preserves the extension container byte-for-byte), cited here rather than re-proven.'
-  missing_behavior:
-  - 'The obligation''s own "independent of mutation order" clause remains genuinely unbuilt: dumps() currently REFUSES a document whose checked components are out of schema order rather than silently reordering them into valid output regardless of how a caller assembled the tree. A caller who constructs a Party with Contact before PostalAddress gets a clear UblWriteError, not automatically-reordered output -- refusal is a real, tested safety property but not the same guarantee as "always producing schema-valid output regardless of input order," which this obligation''s rule_text literally asks for. Building true mutation-order-independent auto-reordering would need either a canonicalization pass over the already-checked components'' children before serialization, or a higher-level typed builder API this package does not currently have (construction today is via raw XmlNode child tuples, not settable named fields) -- deliberately not attempted this slice to avoid inventing an architecture-level API change without dedicated design review.'
+  - 'FF6-EVENT-000286: closes the obligation''s own remaining "independent of mutation order" clause. validation.validator.reorder_for_schema_order() -- built from the exact same _ORDER_CHECKED_COMPONENTS ground truth _order_diagnostics already validates against, "programmatically derived from the pinned schema, not transcribed by hand" -- now runs on every dumps()/dump() call before validation. It permutes ONLY the positions already occupied by an already-modeled, order-checked field into their schema-declared relative sequence; every other child (any component not yet in this scope, matching _order_diagnostics'' own documented boundary) is left exactly where it was. dumps() no longer raises UblWriteError for the 4 previously-refused fixtures (Party/AllowanceCharge/Price/PaymentMeans out-of-order cases, all 4 now updated to assert successful, correctly-reordered output instead) and now genuinely satisfies "regardless of how a caller assembled the tree" -- proven directly by 5 new dedicated tests covering a no-op case (byte-identical when already correct), idempotence, an unmodeled sibling staying untouched between two reordered fields, nested reordering (LegalMonetaryTotal inside a document), and reordered output validating cleanly where the original did not. The previously-flagged risk ("a higher-level typed builder API this package does not currently have") turned out to be avoidable: the fix operates on the existing generic XmlNode tree directly, using data the validator itself already needed, not a new construction API.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - 'Non-standard source namespace prefix aliases (e.g. an ns1/x alias for the canonical cbc/cac
@@ -4522,7 +4550,6 @@ obligations:
   - tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py::test_amount_before_charge_indicator_is_an_order_violation
   - tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py::test_base_quantity_before_price_amount_is_an_order_violation
   - tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_payee_financial_account_before_payment_due_date_is_an_order_violation
-  - tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_dumps_refuses_a_document_with_an_out_of_order_payment_means
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-MODEL-CITATION-AUDIT-SELECTOR-PROOF

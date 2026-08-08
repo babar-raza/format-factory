@@ -14,7 +14,7 @@ from ..._generated import ROOT_NAMESPACES
 from ...errors import UblWriteError
 from ...model import UblDocument, XmlNode
 from ...security import effective_limits
-from ...validation import validate
+from ...validation import reorder_for_schema_order, validate
 from ..preservation import PreservationMode, canonicalize
 
 
@@ -40,8 +40,16 @@ def dumps(
     historical behavior) or CANONICAL (a root-level ``ext:UBLExtensions``
     container is dropped before validating and serializing -- see
     ``codec.preservation`` for what is and is not eligible to drop).
+
+    Every already-modeled, order-checked field (``reorder_for_schema_order``)
+    is moved into its schema-declared relative sequence before validation,
+    in both modes -- a caller who assembled a component's fields out of
+    order gets schema-valid output regardless, rather than a raised
+    ``UblWriteError``. See ``validation.validator.reorder_for_schema_order``
+    for the exact, deliberately narrow scope this covers.
     """
 
+    document = reorder_for_schema_order(document)
     if mode == PreservationMode.CANONICAL:
         document, _dropped = canonicalize(document)
     elif mode != PreservationMode.LOSSLESS:

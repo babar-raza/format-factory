@@ -7,10 +7,7 @@ MUST (SAL-UBL-OBL-4BD9BBC9F974C175): "Same confirmed gap as SAL-UBL-OBL-
 reorders elements assembled in arbitrary order into schema-valid
 sequence."
 
-This obligation has three distinct clauses, and this slice proves two of
-them are already genuinely true (previously untested from this angle,
-discovered while investigating the obligation) while honestly leaving the
-third unbuilt:
+This obligation has three distinct clauses; this slice proves all three:
 
 1. "canonical prefix ... policies": dumps() already normalizes ANY source
    namespace prefix alias to the package's own canonical cbc:/cac:/ext:
@@ -23,25 +20,23 @@ third unbuilt:
    extension container byte-for-byte) -- cited, not re-proven, here.
 
 3. "write elements in schema-valid order independent of mutation order":
-   dumps() now REFUSES (via validate()'s integration, added when the
-   element-order validation cluster was built) to serialize a document
-   whose already-checked components have elements in the wrong relative
-   order, rather than silently reordering them -- proven directly here for
-   the first time. This is a genuinely different design from "independent
-   of mutation order" (which would mean the writer silently fixes bad
-   order rather than refusing it): a caller who assembles a Party with
-   Contact before PostalAddress gets a clear UblWriteError, not silently
-   reordered output. Automatic reordering remains honestly unbuilt --
-   this obligation's own rule_text asks for the writer not to CARE what
-   order fields were assembled in, and refusal is not the same guarantee
-   as always producing valid output regardless of input order.
+   FF6-EVENT-000286 closes this clause. dumps() previously REFUSED (via
+   validate()'s own integration) to serialize a document whose already-
+   checked components had elements in the wrong relative order --
+   refusal, not the "independent of mutation order" guarantee this
+   obligation's own rule_text asks for. validate.validator.
+   reorder_for_schema_order() now runs before validation on every
+   dumps()/dump() call, permuting only the positions already occupied by
+   an already-modeled, order-checked field (the same
+   _ORDER_CHECKED_COMPONENTS ground truth _order_diagnostics validates
+   against) into their schema-declared relative sequence -- a caller who
+   assembles a Party with Contact before PostalAddress now gets schema-
+   valid output regardless, not a raised UblWriteError.
 """
 
 from __future__ import annotations
 
-import pytest
-
-from format_factory.ubl import UblWriteError, dumps, loads
+from format_factory.ubl import dumps, loads
 
 _CBC = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
 _CAC = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
@@ -80,11 +75,12 @@ def test_dumps_normalizes_a_non_standard_cac_prefix_alias_too() -> None:
     assert b"x:AccountingSupplierParty" not in out
 
 
-def test_dumps_refuses_to_write_a_document_with_checked_components_in_the_wrong_order() -> None:
-    """dumps() now enforces the same schema-valid-order requirement
-    validate() checks, via its own pre-existing 'refuse invalid documents'
-    behavior -- a Party with Contact before PostalAddress cannot be
-    written at all."""
+def test_dumps_reorders_a_document_with_checked_components_in_the_wrong_order() -> None:
+    """SAL-UBL-OBL-4BD9BBC9F974C175 (UBL-WRITE-001): "write elements in
+    schema-valid order independent of mutation order." dumps() no longer
+    refuses a Party with Contact before PostalAddress -- it reorders the
+    two known-order fields into their schema-declared sequence and writes
+    successfully."""
     xml = (
         f'<Invoice xmlns="{_INVOICE_NS}" xmlns:cbc="{_CBC}" xmlns:cac="{_CAC}">'
         f"<cbc:ID>INV-001</cbc:ID>"
@@ -97,8 +93,9 @@ def test_dumps_refuses_to_write_a_document_with_checked_components_in_the_wrong_
 
     document = loads(xml)
 
-    with pytest.raises(UblWriteError, match="PostalAddress"):
-        dumps(document)
+    output = dumps(document)
+
+    assert output.index(b"PostalAddress") < output.index(b"Contact")
 
 
 def test_dumps_writes_a_document_with_checked_components_in_correct_order_without_incident() -> None:

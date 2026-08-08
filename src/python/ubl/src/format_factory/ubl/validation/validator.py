@@ -391,6 +391,62 @@ def _order_diagnostics(value: UblDocument) -> list[Diagnostic]:
     return diagnostics
 
 
+def _reordered_known_children(
+    children: tuple[XmlNode, ...], expected_order: tuple[str, ...]
+) -> tuple[XmlNode, ...]:
+    """Permute only the positions already occupied by a known-order field
+    into their schema-declared relative sequence; every other child stays
+    exactly where it is. Mirrors `_order_violations`'s own scope exactly:
+    the same `expected_order` ground truth, the same "only among these
+    already-modeled fields" discipline -- this is that check's writer-side
+    counterpart, not a broader reordering of the whole element."""
+    expected_index = {name: index for index, name in enumerate(expected_order)}
+    known_positions = [
+        index for index, child in enumerate(children) if _local(child.qname) in expected_index
+    ]
+    if len(known_positions) < 2:
+        return children
+    known_children = [children[index] for index in known_positions]
+    sorted_known = sorted(known_children, key=lambda child: expected_index[_local(child.qname)])
+    if sorted_known == known_children:
+        return children
+    reordered = list(children)
+    for position, child in zip(known_positions, sorted_known):
+        reordered[position] = child
+    return tuple(reordered)
+
+
+def _reorder_node(node: XmlNode) -> XmlNode:
+    new_children = tuple(_reorder_node(child) for child in node.children)
+    expected_order = _ORDER_CHECKED_COMPONENTS.get(node.qname)
+    if expected_order is not None:
+        new_children = _reordered_known_children(new_children, expected_order)
+    if new_children != node.children:
+        return node.with_children(new_children)
+    return node
+
+
+def reorder_for_schema_order(document: UblDocument) -> UblDocument:
+    """SAL-UBL-OBL-4BD9BBC9F974C175 (UBL-WRITE-001): "write elements in
+    schema-valid order independent of mutation order." Returns `document`
+    with every already-modeled, order-checked field (`_ORDER_CHECKED_COMPONENTS`
+    -- the same ground truth `_order_diagnostics` validates against) moved
+    into its declared relative sequence, wherever in the tree that
+    component type appears. A caller who constructs a Party's Contact
+    before its PostalAddress, for example, gets schema-valid output
+    regardless -- `validate()` never sees the out-of-order state this
+    function runs before it. Every other child (any component this
+    package does not yet model as order-checked) is left exactly where it
+    was; this is a strict subset reorder, not a full schema-sequence
+    regeneration, matching the same scope boundary `_order_diagnostics`
+    itself declares.
+    """
+    new_root = _reorder_node(document.root)
+    if new_root is document.root:
+        return document
+    return document.with_root(new_root)
+
+
 def _namespace(qname: str) -> str:
     return qname[1:].split("}", 1)[0] if qname.startswith("{") else ""
 
