@@ -1,0 +1,53 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-readme-effective-attrs-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-6c44e26af9598ec3",
+  "mode": "live",
+  "timestamp": "2026-08-08T14:15:25Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_EFFECTIVE_ATTRS_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-found-via-a-fresh-capability-survey",
+    "root_cause": "Event 341's own exact_next_action named xliff as the last of the three zero-unresolved formats not yet surveyed with the __all__-vs-README diff technique used for safetensors (Event 340) and ipynb (Event 341). Extracted xliff's full __all__ list (81 symbols) and compared it against every `from format_factory.xliff import ...` statement plus the 'Public namespace' section's own prose-named symbols in the README (~44 documented). Investigated the most consequential-looking candidates directly rather than assuming: canonicalize() and check_drift() are real but are lower-level counterparts of already-documented higher-level capabilities (check_preservation()/dumps(mode=CANONICAL) and merge_with_drift_check() respectively); effective_attributes_by_unit(), by contrast, is a complete, obligation-linked (XLIFF-MODEL-001 / SAL-XLIFF-OBL-7DA078717EA60881, SAL-XLIFF-OBL-867500AA0AC3D2C1), one-call whole-document xml:space/xml:lang resolver with no documented analog at all -- the README's only other cascade example (length_violations) resolves a structurally different attribute (size restrictions, not xml:space/xml:lang inheritance).",
+    "obligation_targeted": "No specific obligation-register status change (xliff already reconciles at 0/142 unresolved) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage of a capability directly tied to XLIFF-MODEL-001.",
+    "acceptance_evidence": "Read model/document.py's effective_xml_space/effective_xml_lang/effective_attributes_by_unit in full and the format's own dedicated test file (tests/python/xliff/test_obligation_effective_attributes_by_unit.py, 7 tests) to confirm exact expected cascade semantics before writing anything. Verified end-to-end through the REAL XML parser (not synthetic in-memory model construction): built a real, parseable XLIFF 2.0 document with xml:space='preserve' on <file> and xml:lang='fr' on a nested <group>, loaded it via load(), then called effective_attributes_by_unit() -- confirmed u1 (inside the group) resolves to ('preserve', 'fr') and its sibling u2 (outside the group, same file) resolves to ('preserve', None), matching the documented file-level xml:space cascade and group-scoped xml:lang cascade exactly."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 341 commit (6c5c7f53); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Extracted xliff's full __all__ export list from src/python/xliff/src/format_factory/xliff/__init__.py (81 symbols) via the same script-based extraction technique used for ipynb, avoiding a truncated manual grep.",
+    "3. Read src/python/xliff/README.md in full (175 lines, 12 sections) and compiled every symbol referenced by a `from format_factory.xliff import ...` statement across its 9 code blocks plus the 'Public namespace' section's own explicit prose list (~44 distinct names total).",
+    "4. Diffed the two lists. Investigated the most promising-looking standalone, non-supporting-type candidates directly rather than guessing from names alone: read codec/preservation.py's canonicalize() (confirmed it is the shared internal primitive check_preservation()/dumps(mode=CANONICAL) already document, exposed publicly for advanced callers -- a real but lower-priority gap since both its main use cases are already documented) and merge.py's check_drift() (confirmed it is the 'detection half' of the already-documented merge_with_drift_check(), likewise a real but lower-priority variant).",
+    "5. Read model/document.py's effective_xml_space()/effective_xml_lang()/effective_attributes_by_unit() in full. Confirmed via their own docstrings and the obligation reference in effective_attributes_by_unit()'s docstring (SAL-XLIFF-OBL-7DA078717EA60881 / SAL-XLIFF-OBL-867500AA0AC3D2C1, XLIFF-MODEL-001) that this is a complete, ready-to-call, whole-document convenience function with no documented entry point anywhere in the README -- the closest documented analog (length_violations' file->group->unit size-restriction cascade) resolves a structurally different pair of attributes, so this is a genuinely distinct, undocumented capability rather than a variant of something already shown.",
+    "6. Read the format's own dedicated test file, tests/python/xliff/test_obligation_effective_attributes_by_unit.py (7 tests), to confirm exact expected cascade semantics (root defaults, file-level inheritance, group-level inheritance, local override, nested-group composition, sibling-file independence, multi-unit coverage) before writing any documentation.",
+    "7. Verified the exact example before writing it, end-to-end through the real XML parser rather than synthetic in-memory model construction: built a real, parseable XLIFF 2.0 XML document (file-level xml:space='preserve', a nested group with xml:lang='fr' containing one unit, plus a sibling unit outside the group), loaded it via load(), then called effective_attributes_by_unit() -- confirmed {'u1': ('preserve', 'fr'), 'u2': ('preserve', None)}, exactly matching the documented file-level xml:space cascade and group-scoped xml:lang cascade.",
+    "8. Added a new 'Effective xml:space / xml:lang resolution' README section directly after 'Segment QA checks' (the README's only other already-documented cascade concept, size restrictions) and before 'Translation state transitions', with a runnable example and a prose paragraph grounded directly in the source's own documented semantics (file/group cascade, <data>'s own fixed default, <source>/<target> root-anchored xml:lang default, the primitive-vs-convenience-function relationship) -- not invented, not assumed.",
+    "9. Regenerated reports/certification/xliff/documentation-gate.json to reflect the new section and code block, following the exact same rigor structure the file's own prior entry already established (symbol_existence via hasattr, example_execution against real parsed data) -- updated readme_line_count (175 -> 199), readme_sections (added 'Effective xml:space / xml:lang resolution'), checks_performed_this_tick (20 distinct names, 10 code blocks now), and added a new incidental_finding disclosing the gap closed plus the remaining candidates surveyed but deliberately not combined into this slice (canonicalize, check_drift, the 6 individual check_* QA functions, load_xliff/write_xliff/probe_xliff, xliff_installed_workflow, the exception hierarchy, bundled_*_paths) -- named explicitly so a future tick does not repeat the same __all__ extraction from scratch.",
+    "10. Did not modify any production source code -- effective_attributes_by_unit and its supporting primitives already existed, fully correct and already tested by the existing test suite; this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration. Did not re-run the full xliff suite since no production/test source changed (matching the safetensors/ipynb documentation-only tick precedent); regression figures already on file (591 passed) remain accurate."
+  ],
+  "allowed_files": [
+    "src/python/xliff/README.md",
+    "reports/certification/xliff/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/xliff/README.md",
+    "reports/certification/xliff/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: effective_attributes_by_unit against a real, hand-built but genuinely parseable XLIFF 2.0 document, loaded through the real XML parser via load() -- confirmed file-level xml:space cascade and group-scoped xml:lang cascade resolve correctly for both an in-group and a sibling out-of-group unit",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing, including the format's own 7-test effective_attributes_by_unit obligation file) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap for an already-implemented, already-exported, obligation-linked capability (effective_attributes_by_unit) -- no obligation status change (xliff already at 0/142 unresolved), but a real developer-discoverability improvement to an already-PASS-ing documentation gate.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 142,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

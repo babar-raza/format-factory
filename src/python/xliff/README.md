@@ -53,6 +53,30 @@ ancestor wins) against the 4 standard profiles the XLIFF 2.1 Size and
 Length Restriction module defines (`xliff:codepoints`, `xliff:utf8`,
 `xliff:utf16`, `xliff:utf32`).
 
+## Effective xml:space / xml:lang resolution
+
+`xml:space` and `xml:lang` inherit down the document tree per the XLIFF 2.1
+spec's own default-value table (`<source>`/`<target>` resolve `xml:lang`
+from the root `srcLang`/`trgLang` rather than their immediate parent).
+`effective_attributes_by_unit()` resolves both attributes for every unit in
+one pass:
+
+```python
+from format_factory.xliff import effective_attributes_by_unit
+
+resolved = effective_attributes_by_unit(document)
+space, lang = resolved["u1"]
+```
+
+Returns `{unit_id: (effective_xml_space, effective_xml_lang)}`. A file- or
+group-level `xml:space`/`xml:lang` cascades to every unit beneath it unless
+overridden closer to the unit; a `<data>` element's own fixed `preserve`
+default and the `<source>`/`<target>` root-anchored `xml:lang` default are
+both modeled explicitly, not folded into the generic parent-inheritance
+case. `effective_xml_space()`/`effective_xml_lang()` are the same resolution
+rules exposed as reusable primitives for callers who already walk the tree
+themselves rather than calling the whole-document convenience function.
+
 ## Translation state transitions
 
 ```python
