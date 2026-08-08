@@ -1,0 +1,53 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-readme-execute-notebook-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-6e9bd707fce91316",
+  "mode": "live",
+  "timestamp": "2026-08-08T14:06:43Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_EXECUTE_NOTEBOOK_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-found-via-a-fresh-capability-survey",
+    "root_cause": "Event 340's own exact_next_action named ipynb and xliff as the two remaining candidates for the __all__-vs-README diff technique that found safetensors' load/dump gap. Extracted ipynb's full __all__ list (125 symbols) and compared it against every `from format_factory.ipynb import ...` statement in the README (17 distinct names across 8 code blocks). Most of the ~108-symbol gap is legitimate supporting types (report/change/error dataclasses returned by already-documented functions), but one finding was consequential rather than cosmetic: execute_notebook, ExecutionReport, CellExecutionResult, and ExecutionError -- a real, fully implemented, opt-in notebook code-execution adapter -- were entirely undocumented, directly beneath the README's own prior sentence 'the library parses notebook structure only and never executes code.'",
+    "obligation_targeted": "No specific obligation-register entry (ipynb already reconciles at 0/68 unresolved) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage of a security-relevant capability.",
+    "acceptance_evidence": "Read adapters/execute.py in full: execute_notebook launches one isolated OS subprocess (not the ZMQ-based Jupyter kernel wire protocol), shares one namespace across all code cells in execution order, refuses a notebook declaring a non-Python language_info/kernelspec with IpynbExecutionError rather than silently running it as Python, and is proven (per the module's own docstring, backed by a separate CPython-audit-hook test) to never be called by load/validate/diff/save. Verified execute_notebook directly against real corpus data (samples/by-format/ipynb/valid/code-and-markdown.ipynb) with on_error='stop': cell 0 (print(\"hello\")) succeeded with stdout 'hello\\n', cell 1 raised a real ModuleNotFoundError for a missing IPython import and the run stopped there, report.completed=True (a policy stop is not an incompletion) and report.all_cells_ran=False (only 2 of 4 cells ran) -- confirming the documented completed-vs-all_cells_ran distinction against real behavior rather than assuming it from the source text."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since Event 340's own controller-state commit (fa73a41d); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Extracted ipynb's full __all__ export list from src/python/ipynb/src/format_factory/ipynb/__init__.py (125 symbols) via a script parsing the __all__ literal directly, avoiding a truncated manual grep.",
+    "3. Read src/python/ipynb/README.md in full (246 lines, 14 sections) and listed every symbol referenced by a `from format_factory.ipynb import ...` statement across its 8 code blocks (17 distinct names: dump, load, probe, validate, downgrade, plan_downgrade, SanitizationMode, SanitizationPolicy, sanitize, HmacNotebookNotary, manage_attachments, DiffPolicy, diff_notebooks, CellQuery, edit_cells, cell_metadata, notebook_metadata).",
+    "4. Diffed the two lists. Most of the ~108-symbol gap is legitimate supporting types already implied by documented functions (e.g. DowngradePlan is the return type of the documented plan_downgrade). Scanned the remainder for anything that looked like an independent, undocumented CAPABILITY rather than a supporting type -- found several candidates (merge_notebooks, cleanup/RecoveryAction, roundtrip, ExportAdapter/MarkdownExporter/PythonScriptExporter, ipynb_* analytics functions, load_ipynb/write_ipynb/probe_ipynb/validate_notebook alternate entry points) but one stood out as uniquely consequential: execute_notebook, because the README's own existing prose makes an explicit, unqualified claim ('never executes code') that this exported, working capability sits directly beneath.",
+    "5. Read src/python/ipynb/src/format_factory/ipynb/adapters/execute.py in full (228 lines) to verify the capability's real behavior and safety boundary before documenting anything -- confirmed via its own docstring and implementation: isolated OS subprocess per run (not the ZMQ Jupyter protocol), one shared namespace across all cells in order, explicit Python-kernel-only enforcement with IpynbExecutionError on a declared non-Python kernel, one wall-clock timeout (default 30s) for the whole run, and a documented proof (a separate CPython audit-hook test named in the module docstring) that this adapter is never reachable from load/validate/diff/save.",
+    "6. Confirmed execute_notebook is re-exported at the package's own top level (from format_factory.ipynb import execute_notebook) via a direct grep of __init__.py, and confirmed hasattr(format_factory.ipynb, 'execute_notebook') is True.",
+    "7. Verified the exact example before writing it, against real corpus data: ran execute_notebook(load('samples/by-format/ipynb/valid/code-and-markdown.ipynb'), on_error='continue') first (4 results: 1 succeeded printing 'hello', 3 failed with real ModuleNotFoundError/SyntaxError from IPython-display and %%javascript-magic cells that are not valid plain Python -- expected, since this adapter only ever runs bare Python source, never IPython special syntax), then re-ran with on_error='stop' for the README's own cleaner example: 2 results only (cell 0 succeeded, cell 1 failed and the run stopped), report.completed=True, report.all_cells_ran=False, first_error is the ModuleNotFoundError -- exactly matching the documented completed-vs-all_cells_ran distinction.",
+    "8. Added a new 'Opt-in notebook execution' README section directly after the 'Common lifecycle' section's closing sentence (the exact sentence this finding clarifies), with a runnable example and a prose paragraph grounded directly in the source's own documented behavior (isolation boundary, kernel selection/refusal, timeout semantics, completed-vs-policy-stop distinction) -- not invented, not assumed.",
+    "9. Regenerated reports/certification/ipynb/documentation-gate.json to reflect the new section and code block, following the exact same rigor structure the file's own prior entry already established (symbol_existence via hasattr, example_execution against real corpus data) -- updated readme_line_count (246 -> 273), readme_sections (added 'Opt-in notebook execution'), checks_performed_this_tick (18 distinct names, 9 code blocks now), and added a new incidental_finding disclosing both the execute_notebook gap closed and the ~100 remaining undocumented symbols surveyed-but-deliberately-not-combined-into-one-slice this tick, named explicitly so a future tick does not repeat the same __all__ extraction from scratch.",
+    "10. Did not modify any production source code -- execute_notebook and its supporting types already existed, fully correct and already tested by the existing test suite; this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/README.md",
+    "reports/certification/ipynb/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/README.md",
+    "reports/certification/ipynb/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: execute_notebook against real corpus sample samples/by-format/ipynb/valid/code-and-markdown.ipynb with on_error='continue' (4 results, 1 succeeded/3 failed with real errors) and on_error='stop' (2 results, matching the documented completed=True/all_cells_ran=False distinction)",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine, security-relevant documentation-completeness gap for an already-implemented, already-exported capability (execute_notebook) -- no obligation status change (ipynb already at 0/68 unresolved), but a real developer-discoverability and documentation-accuracy improvement to an already-PASS-ing documentation gate, directly clarifying a README sentence that could otherwise read as an absolute claim.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 68,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -38,6 +38,33 @@ dump(document, "notebook-edited.ipynb")
 JSON members. The library parses notebook structure only and never executes
 code.
 
+## Opt-in notebook execution
+
+Parsing, validation, diffing, and saving never execute cell code. A separate,
+explicitly opt-in adapter exists for callers who want to actually run a
+notebook's code cells:
+
+```python
+from format_factory.ipynb import execute_notebook
+
+report = execute_notebook(document, on_error="stop")
+print(report.completed, report.all_cells_ran)
+for result in report.results:
+    print(result.index, result.succeeded, result.stdout)
+```
+
+Each run launches one isolated OS subprocess -- not the ZMQ-based Jupyter
+kernel wire protocol -- and shares one namespace across all code cells in
+execution order, matching real notebook semantics. `kernel=` selects the
+interpreter explicitly; a notebook declaring a non-Python
+`language_info`/`kernelspec` is refused with `IpynbExecutionError` naming the
+declared language rather than silently run as Python. `timeout=` bounds the
+whole run's wall-clock budget (default 30 seconds); a timeout or a failed
+launch marks `report.completed=False`, while `on_error="stop"` ending the run
+early on a cell error is a policy outcome, not an incompletion.
+`on_error="continue"` runs every remaining cell regardless of earlier
+failures.
+
 ## Validation profiles
 
 Strict loading and `validate()` use the exact official nbformat 4.0–4.5 JSON
