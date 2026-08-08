@@ -75,6 +75,52 @@ component vocabulary uses) rather than an exhaustive per-root-type enum
 -- a query that works identically across all 91 supported document
 roots.
 
+## Editing core business components
+
+Lines and other repeating root-level components support real CRUD
+operations that stay schema-order-safe by construction and refuse any
+edit that would make `validate()` report something the source document
+did not already have:
+
+```python
+from format_factory.ubl import add_line, move_line, remove_line, renumber_lines
+
+document = remove_line(document, line_id="3")
+document = move_line(document, line_id="1", to_index=0)
+document, id_map = renumber_lines(document, {"1": "INV-1"})
+```
+
+```python
+from format_factory.ubl import add_component, remove_component, replace_party, update_component
+
+document = replace_party(document, role="AccountingSupplierParty", new_party=new_party)
+document = update_component(document, component_name="PaymentMeans", index=0, new_component=new_means)
+document = add_component(document, component_name="TaxTotal", new_component=extra_tax_total)
+document = remove_component(document, component_name="AllowanceCharge", index=0)
+```
+
+`add_line`/`add_component` insert immediately after the last existing
+occurrence of the same element -- always schema-position-correct, since
+every repeating component in the pinned UBL 2.3 schema appears as one
+contiguous run at its own declared sequence position, not only lines.
+`replace_party`/`update_component` replace an *already-present*
+occurrence in place; `remove_line`/`remove_component` delete one.
+`renumber_lines` rewrites line identifiers and returns the applied
+old-ID-to-new-ID map, since this package's generic model has no closed
+set of "fields that reference a line" to rewrite on the caller's behalf.
+Every operation raises `UblValidationError` rather than silently
+producing a worse document.
+
+**What is not built:** inserting the *first* occurrence of a component
+type a document does not already have at all, and creating a brand-new
+`AccountingSupplierParty`/`AccountingCustomerParty` wrapper, both need
+header-position knowledge this package does not yet have. `remove_component`'s
+refusal is exactly as strong as `validate()` itself: `validate()` does not
+currently check for missing mandatory top-level elements, so removing a
+document's only mandatory party wrapper is not refused today -- a
+disclosed limitation of the validator this function composes, not of the
+CRUD operation itself.
+
 ## Digital signatures (opt-in)
 
 ```python
@@ -128,7 +174,9 @@ address helpers: `Party`, `PostalAddress`, `Contact`, `Country`,
 `TaxScheme`, and their `*_of()` extraction functions. Line-item helpers:
 `LineItem`, `OrderLine`, `CreditNoteLine`, `DespatchLine`,
 `DocumentReference`, `DocumentResponse`, `Response`, and their `*_of()`
-extraction functions. Analytics: `element_count`, `qname_histogram`,
+extraction functions. Editing: `add_line`, `remove_line`, `move_line`,
+`renumber_lines`, `replace_party`, `update_component`, `add_component`,
+`remove_component`. Analytics: `element_count`, `qname_histogram`,
 `semantic_sha256`.
 
 ## License

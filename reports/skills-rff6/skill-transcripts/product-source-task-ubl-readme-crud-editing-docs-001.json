@@ -1,0 +1,52 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-readme-crud-editing-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-757c212e5617d549",
+  "mode": "live",
+  "timestamp": "2026-08-08T14:36:47Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_CRUD_EDITING_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-found-via-a-fresh-capability-survey",
+    "root_cause": "Event 344's own exact_next_action named ubl as the last of the six formats not yet surveyed with the __all__-vs-README diff technique (proven 5/5 productive across safetensors/ipynb/xliff/nrrd/ora, Events 340-344), specifically flagging ubl's own extensive mid-session capability additions (Events 335-339: replace_party, update_component, add_component, remove_component in a new components.py module, alongside the pre-existing lines.py CRUD module) as a strong prior for the same class of finding ora's replace_baseline_asset represented. Extracted ubl's full __all__ list (146 symbols, the largest of all six formats) and grepped the README directly for each of the 8 CRUD function names (add_line, remove_line, move_line, renumber_lines, replace_party, update_component, add_component, remove_component) -- zero matches for all 8, confirming the entire CRUD editing capability was completely undocumented.",
+    "obligation_targeted": "No specific obligation-register status change (ubl remains at 6/194 unresolved, unaffected by this tick) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage of the CRUD capability tied to SAL-UBL-OBL-237188D47391391E (UBL-EDIT-001) and its sibling SAL-UBL-OBL-AF5263F0FC7036B9.",
+    "acceptance_evidence": "Read both lines.py and components.py in full, including their own module-level docstrings, which honestly document the exact scope boundary of what each function does and does not cover (arbitrary-position-insertion of a brand-new component type remains unbuilt; remove_component's refusal is only as strong as validate() itself, which does not check for missing mandatory top-level elements). Verified all 8 functions end-to-end against a real official OASIS corpus document (samples/by-format/ubl/official/Invoice.xml, which has 5 real InvoiceLine elements, 1 real AccountingSupplierParty wrapper, and 1 real PaymentMeans element): remove_line then add_line round-tripped a real line node back in (5->4->5 lines); move_line and renumber_lines succeeded against the document's own real line IDs; replace_party and update_component succeeded replacing a wrapper's real child with itself; add_component and remove_component correctly grew (1->2) and shrank (1->0) the real PaymentMeans count."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 344 commit (4cb0180c); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Extracted ubl's full __all__ export list from src/python/ubl/src/format_factory/ubl/__init__.py (146 symbols, by far the largest of the six formats) via the same script-based extraction technique used for nrrd/ora/ipynb/xliff.",
+    "3. Read src/python/ubl/README.md in full (136 lines, 10 sections including a substantial 'Public API' prose section already listing ~43 symbols) and grepped it directly for the 8 CRUD function names this session's own earlier Events 335-339 added -- zero matches for all 8, confirming a complete, not partial, gap for this entire capability area.",
+    "4. Read src/python/ubl/src/format_factory/ubl/lines.py in full (module docstring plus add_line/remove_line/move_line/renumber_lines), and src/python/ubl/src/format_factory/ubl/components.py in full (module docstring plus replace_party/update_component/add_component/remove_component) -- both modules' own docstrings already document precise, honest scope boundaries (schema-position-correctness reasoning for add_line/add_component, the arbitrary-position-insertion gap that remains genuinely unbuilt, and remove_component's disclosed dependency on validate()'s own incomplete mandatory-field coverage) that this tick's documentation needed to carry forward accurately, not invent or blur.",
+    "5. Verified all 8 functions end-to-end against a single real official OASIS corpus document, samples/by-format/ubl/official/Invoice.xml, rather than synthetic test fixtures: confirmed 5 real InvoiceLine elements via DocumentIndex.by_business_role('line'); remove_line(document, line_id) followed by add_line(removed, original_line_node) round-tripped the real line node back in (5 lines -> 4 -> 5); move_line and renumber_lines succeeded against the document's own real line ID ('1'); for components, confirmed 1 real AccountingSupplierParty wrapper and 1 real PaymentMeans element, then verified replace_party(document, role='AccountingSupplierParty', new_party=<the document's own real Party node>) and update_component(document, component_name='PaymentMeans', index=0, new_component=<the document's own real PaymentMeans node>) both succeed (self-replace, proving the validation-preserving replace path works against real content), and add_component/remove_component correctly grow (1->2) and shrink (1->0) the real PaymentMeans count.",
+    "6. Added a new 'Editing core business components' README section (positioned between 'Document indexing and business-role queries' and 'Digital signatures') covering all 8 functions across two runnable code blocks (lines.py's 4 functions, then components.py's 4 functions), a shared explanatory paragraph grounded directly in both modules' own docstrings (schema-position-correctness reasoning, renumber_lines' explicit ID-map return contract), and a dedicated 'What is not built' paragraph carrying forward the exact same two disclosed scope boundaries the source already establishes (arbitrary-position first-occurrence insertion; remove_component's refusal being only as strong as validate() itself) rather than allowing the new documentation to imply broader coverage than what is real.",
+    "7. Updated the existing 'Public API' prose section to add a new 'Editing:' category listing all 8 symbols, alongside the pre-existing Lifecycle/Model/Query/Code lists/Signatures/Party helpers/Line-item helpers/Analytics categories -- consistent with that section's own existing structure rather than inventing a new format.",
+    "8. Regenerated reports/certification/ubl/documentation-gate.json to reflect the new section and 2 new code blocks, following the exact same rigor structure the file's own prior entry already established (symbol_existence via hasattr for both code-block imports and Public-API prose mentions, example_execution against real corpus data) -- updated readme_line_count (136 -> 184), readme_sections (added 'Editing core business components'), checks_performed_this_tick (18 code-block symbols/51 prose symbols now), and added a new incidental_finding explicitly noting this is the largest gap found across the entire six-format sweep and that it completes the survey (safetensors, ipynb, xliff, nrrd, ora, ubl all now surveyed).",
+    "9. Did not modify any production source code -- all 8 CRUD functions already existed, fully correct and already tested by the existing test suite (lines.py and components.py each have their own dedicated obligation test files from this session's earlier Events); this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration. Did not re-run the full ubl suite since no production/test source changed (matching the safetensors/ipynb/xliff/nrrd/ora documentation-only tick precedent); regression figures already on file (1216 passed, last measured at Event 339) remain accurate."
+  ],
+  "allowed_files": [
+    "src/python/ubl/README.md",
+    "reports/certification/ubl/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/README.md",
+    "reports/certification/ubl/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: all 8 CRUD functions (add_line, remove_line, move_line, renumber_lines, replace_party, update_component, add_component, remove_component) against a single real official OASIS corpus document (samples/by-format/ubl/official/Invoice.xml) -- confirmed correct line count changes, successful ID-based move/renumber, and successful component replace/grow/shrink against real content",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed the largest documentation-completeness gap found across this session's entire six-format survey (safetensors, ipynb, xliff, nrrd, ora, ubl): an entire 8-function CRUD editing capability, already implemented, exported, and tested, that had no README coverage at all -- no obligation status change (ubl remains at 6/194 unresolved, unaffected), but a major real developer-discoverability improvement to an already-PASS-ing documentation gate.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 194,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
