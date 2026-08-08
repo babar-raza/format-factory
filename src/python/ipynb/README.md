@@ -205,6 +205,32 @@ base. They reject concurrent visible edits. Fields ignored by policy are
 preserved from existing cells when a patch is applied; new cells retain their
 complete target representation.
 
+## Three-way merge
+
+Built on the same stable-ID diff `diff_notebooks` uses, `merge_notebooks`
+reconciles two independently edited copies against their common ancestor:
+
+```python
+from format_factory.ipynb import merge_notebooks
+
+result = merge_notebooks(base, ours, theirs)
+if result.report.has_conflicts:
+    for conflict in result.report.conflicts:
+        print(conflict.cell_id, conflict.kind, conflict.description)
+merged = result.merged  # always a complete document, conflicts or not
+```
+
+A cell changed identically on both sides, or on only one side, merges
+without a conflict. A cell changed *differently* on both sides is classified
+into one of four conflict kinds (move/edit, delete/edit, edit/edit, or an
+output/metadata-only conflict) and its `base` value is kept pending manual
+resolution -- never a guess at either side's value, and never a `<<<<<<<`
+-style marker spliced into a code cell's `source`, which would silently turn
+a conflict into a syntax error or a foreign string literal. `merged` always
+exists; callers must check `report.has_conflicts` before treating it as
+final. Only cell-level fields are reconciled -- notebook-level metadata
+(`kernelspec`, `language_info`, `nbformat`) is taken from `base` unchanged.
+
 ## Stable-ID cell collection editing
 
 The governed editor keeps existing index-based methods compatible while

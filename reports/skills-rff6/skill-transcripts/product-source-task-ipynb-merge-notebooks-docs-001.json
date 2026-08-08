@@ -1,0 +1,52 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ipynb-merge-notebooks-docs-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-0964e2eafa30f90d",
+  "mode": "live",
+  "timestamp": "2026-08-08T15:50:42Z",
+  "inputs": {
+    "format_id": "ipynb",
+    "task_id": "TC_FF6_IPYNB_MERGE_NOTEBOOKS_DOCS_001",
+    "task_kind": "close-a-documentation-completeness-gap-a-second-lower-priority-pass-on-previously-named-candidates",
+    "root_cause": "Event 355's own exact_next_action named ipynb's own much larger remaining candidate list (~100 symbols, deliberately deferred at Event 341 given its size) as the last format for the second documentation pass, and specifically flagged merge_notebooks and the Export adapters as the most promising candidates by name alone. Investigated merge_notebooks first: a real, substantial three-way merge capability (base/ours/theirs reconciliation, built directly on the already-documented diff_notebooks) with explicit conflict detection across 4 named categories and a deliberate, safety-motivated refusal to splice textual conflict markers into code cell source -- entirely undocumented despite being a genuinely large, independent capability, not a supporting type.",
+    "obligation_targeted": "No specific obligation-register status change (ipynb remains at 0/68 unresolved, unaffected by this tick) -- this closes a real gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4), which stayed PASS both before and after but now has genuinely fuller, more accurate coverage of a substantial capability.",
+    "acceptance_evidence": "Read model/merge.py in full (module docstring, ConflictKind, CellConflict, MergeReport, MergeResult, merge_notebooks itself): confirmed it performs a genuine three-way merge (two two-way diffs against a common base, reconciled cell by cell), classifies genuine divergences into 4 named conflict kinds, and keeps the base value for unresolved fields rather than guessing or splicing markers -- an explicit, documented safety property (embedding conflict markers into source would silently create a syntax error or foreign string literal). Verified end-to-end against real corpus data in two scenarios: two independently edited copies of samples/by-format/ipynb/valid/code-and-markdown.ipynb (loaded fresh, edited via the already-documented edit_cells() API) merged cleanly when editing DIFFERENT cells (has_conflicts=False, both edits present in the result); merged with exactly one reported EDIT_EDIT conflict when editing the SAME cell's source differently on each side (has_conflicts=True, conflict names the correct cell id and field)."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 355 commit (5492bda9); 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Reviewed Event 341's own named list of ipynb's ~100 remaining undocumented __all__ candidates and Event 355's own exact_next_action, which specifically flagged merge_notebooks and the Export adapters (MarkdownExporter/PythonScriptExporter) as the most promising by name alone -- real, distinct capabilities rather than aliases or supporting types.",
+    "3. Read model/merge.py in full: the module's own docstring cites IPYNB-MERGE-001 ('merge by stable cell identity and structure; detect move/edit, delete/edit, output, and metadata conflicts; produce an explicit conflict report and never hide conflicts inside executable source') and explains the design directly -- built on diff_notebooks' own stable-ID cell matching, two two-way diffs (base-to-ours, base-to-theirs) reconciled cell by cell, with an explicit, deliberate prohibition on splicing textual conflict markers into code cell source.",
+    "4. Read ConflictKind (5 named kinds), CellConflict, MergeReport (has_conflicts, conflicts_of), and MergeResult (merged always exists; a caller must check report.has_conflicts before treating it as final) in full to get the exact contract right before writing anything.",
+    "5. Verified the exact example before writing it, against real corpus data in two deliberately contrasting scenarios: (a) loaded samples/by-format/ipynb/valid/code-and-markdown.ipynb three times (base, ours, theirs), edited ours' code cell (38f37a24) and theirs' markdown cell (bb687f78) -- two DIFFERENT cells -- via the already-documented edit_cells().replace() API, merged, and confirmed has_conflicts=False with both edits present in the merged result; (b) repeated with ours and theirs both editing the SAME cell (38f37a24) with different new source text, merged, and confirmed has_conflicts=True with exactly one CellConflict of kind EDIT_EDIT naming the correct cell id and field.",
+    "6. During verification, discovered a real implementation detail worth noting: CellEditor.replace() (edit_cells()'s own return value) mutates its document argument's own .raw dict in place rather than returning a new document object -- an initial test script incorrectly called edit_cells(base).replace(...) twice against the same loaded base object, silently compounding edits onto one shared object instead of producing independent ours/theirs copies. Fixed by loading three fresh, independent copies. Not a documentation defect (the existing README prose for edit_cells already says mutations are 'committed', consistent with in-place mutation), but disclosed directly in the documentation-gate.json's own evidence so a future tick's own verification work does not repeat the same mistake.",
+    "7. Added a new, dedicated 'Three-way merge' README section (not folded into the existing 'Structure-aware diff and guarded patches' section, given merge_notebooks' own size and independence as a capability) directly after the diff/patch section it builds on, with a runnable example and a prose paragraph explaining the 4 conflict kinds, the base-value-kept-pending-resolution safety property, the explicit conflict-marker-splicing prohibition, and the cell-scoped-only boundary (notebook-level metadata is taken from base unchanged) -- all grounded directly in the source's own docstrings, not invented.",
+    "8. Regenerated reports/certification/ipynb/documentation-gate.json to reflect the addition -- updated readme_line_count (273 -> 299), readme_sections (added 'Three-way merge'), symbol_existence count (19 distinct names/10 code blocks now, +merge_notebooks), a new example_execution entry documenting both verification scenarios and the discovered in-place-mutation detail, and extended the incidental_finding to note this closes the single most consequential remaining ipynb candidate while cleanup/RecoveryAction, roundtrip, the Export adapters, ipynb_* analytics, and alternate entry points remain for a future tick.",
+    "9. Did not modify any production source code -- merge_notebooks already existed, fully correct and already tested by the existing test suite; this slice is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration. Did not re-run the ipynb test suite since no production/test source changed."
+  ],
+  "allowed_files": [
+    "src/python/ipynb/README.md",
+    "reports/certification/ipynb/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ipynb/README.md",
+    "reports/certification/ipynb/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: merge_notebooks against real corpus sample samples/by-format/ipynb/valid/code-and-markdown.ipynb in two scenarios (non-conflicting different-cell edits; conflicting same-cell edits), confirming has_conflicts and the reported conflict's kind/cell_id/field match expectations",
+    "No pytest suite changes -- no production source code was modified; the existing test suite (already passing) is unaffected by a documentation-only change"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed the single most consequential remaining documentation gap in ipynb's own large ~100-symbol candidate list (Event 341) -- no obligation status change (ipynb remains at 0/68 unresolved, unaffected), but a real, substantial developer-discoverability improvement to an already-PASS-ing documentation gate.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 68,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
