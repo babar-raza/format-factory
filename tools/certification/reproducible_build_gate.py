@@ -47,6 +47,19 @@ def build_once(package_dir: Path, out_dir: Path, epoch: str) -> dict:
         shutil.rmtree(out_dir)
     out_dir.mkdir(parents=True)
 
+    # setuptools' legacy build_py incrementally reuses an existing build/lib/
+    # directory under package_dir rather than clearing it first. Across two
+    # builds within one invocation this cannot make them disagree (both see
+    # the same carried-over state), so it would not break this gate's own
+    # comparison -- but it can still make BOTH builds silently agree on a
+    # wheel containing a file src/ no longer declares. Cleared for the same
+    # reason independent_repository_extraction_gate.py clears it: every
+    # build should start from exactly what src/ currently says, matching a
+    # fresh checkout with no build/ cache.
+    stale_build_dir = package_dir / "build"
+    if stale_build_dir.exists():
+        shutil.rmtree(stale_build_dir)
+
     environment = dict(os.environ)
     environment["SOURCE_DATE_EPOCH"] = epoch
     environment["PYTHONHASHSEED"] = "0"

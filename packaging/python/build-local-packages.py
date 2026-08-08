@@ -83,6 +83,19 @@ def _build_source(source_dir: Path, package_name: str, version: str) -> dict:
         shutil.rmtree(dist_dir)
     dist_dir.mkdir(parents=True, exist_ok=True)
 
+    # setuptools' legacy build_py incrementally reuses an existing build/lib/
+    # directory under source_dir rather than clearing it first. A stale
+    # build/ left over from an earlier source layout can silently ship a
+    # file the current src/ tree no longer has (found directly via
+    # tools/certification/independent_repository_extraction_gate.py: xliff's
+    # own build/lib/.../validation/xliff_core_2.0.xsd, an orphaned duplicate
+    # from before that file moved under validation/schemas/). Clearing it
+    # first makes every build start from exactly what src/ currently
+    # declares, matching what a fresh checkout with no build/ cache sees.
+    stale_build_dir = source_dir / "build"
+    if stale_build_dir.exists():
+        shutil.rmtree(stale_build_dir)
+
     result = {
         "package_name": package_name,
         "version": version,

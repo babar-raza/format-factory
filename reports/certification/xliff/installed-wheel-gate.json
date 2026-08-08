@@ -5,7 +5,7 @@
   "canonical_manifest": "reports/package-install-proof/proof-manifest.json",
   "status": "PASS",
   "verdict": "PASS",
-  "proof_id": "PACKAGE-PROOF-9F3552BCDD6E85211C10469CC4FF907FC6952897973B5FFE65F159EAC6ECFF96",
+  "proof_id": "PACKAGE-PROOF-5BD91A47C5300B2BBF3DBE28E5C189AAED2447866AD0B78C7515AF62A0B8625E",
   "checks": {
     "build_mode": "native_pyproject",
     "install_result": "PASS -- installed from a freshly built wheel into an isolated ephemeral venv, not the dev checkout",
@@ -15,7 +15,7 @@
     "smoke_result": "PASS -- format_factory.xliff.load on samples/by-format/xliff/valid/minimal.xliff",
     "pytest_in_proof_venv": "2 passed, 1 skipped"
   },
-  "re_run_this_tick": "Ran fresh (source_digest bound to current HEAD, commit e4d8bb2c and earlier) rather than trusting any stale manifest entry, since this session modified xliff's own source (length-violations QA check, Event 319) after any prior recorded proof_id/source_digest.",
+  "re_run_this_tick": "Ran fresh (source_digest bound to current HEAD, commit e4d8bb2c and earlier) rather than trusting any stale manifest entry, since this session modified xliff's own source (length-violations QA check, Event 319) after any prior recorded proof_id/source_digest. Re-ran AGAIN at FF6-EVENT-000323 after fixing a genuine build-hygiene bug found via the new independent-repository-extraction-gate.py: src/python/xliff/build/ (setuptools' local, gitignored build cache) had a stale build/lib/.../validation/xliff_core_2.0.xsd left over from before that file moved to validation/schemas/, and build-local-packages.py never cleared source_dir/build before invoking `python -m build` -- so it was silently included in every wheel built from this checkout. Fixed build-local-packages.py to clear it first; wheel_sha256 changed as a direct, verified result (884a7aadde... now, was 9f3552bcdd... before the fix) and the wheel no longer contains the orphaned file.",
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the installed-wheel invariant only, not a certification claim for the format as a whole.",
   "commit": "pending"
 }

@@ -1,0 +1,73 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-independent-repository-extraction-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-89902b9248686105",
+  "mode": "live",
+  "timestamp": "2026-08-08T08:08:17Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_INDEPENDENT_REPOSITORY_EXTRACTION_001",
+    "task_kind": "new-certification-gate-tool-plus-real-build-hygiene-bug-fix",
+    "root_cause": "Event 322's own exact_next_action named product-goal.yaml's own last fully-unaddressed completion invariant -- 'every distribution extracts to an independent repository with preserved canonical source and package digests' -- as untouched for all six formats since Event 315's own self-correction first flagged it. No prior tool in this repository ever copied a format's own source tree OUT of the monorepo and built it there; reproducible_build_gate.py proves two IN-PLACE builds agree, run_package_install_proof.py always builds from src/python/{format}/ inside the monorepo.",
+    "obligation_targeted": "Not a SAL-derived obligation -- product-goal.yaml's own separate 'completion_invariants' list, specifically the independent-repository-extraction clause.",
+    "acceptance_evidence": "Built tools/certification/independent_repository_extraction_gate.py: copies src/python/{format}/ verbatim into a fresh OS-temp directory with no ancestor relationship to this repository, verifies byte-identical preservation, builds a wheel+sdist from the isolated copy (cwd never REPO_ROOT) and a second from the in-place source at the same pinned epoch, and compares digests. First run for xliff found a genuine DIGEST_MISMATCH -- investigated and found a real build-hygiene bug (a stale setuptools build/ cache silently shipping an orphaned file), fixed the two shared build tools that had the same latent issue, and re-ran to EXTRACTS_INDEPENDENTLY.",
+    "regression_tier": "xliff suite plus 6-format regression, mypy --strict, ruff, plus the package-install-proof/reproducible-build tools' own pass/fail verdicts"
+  },
+  "execution_steps": [
+    "1. Re-read product-goal.yaml's own completion_invariants list directly rather than trusting paraphrase: 'Every distribution extracts to an independent repository with preserved canonical source and package digests.' Grepped the whole repo for this exact phrase and related concepts (canonical_source, package_digest) -- found zero dedicated implementation anywhere, confirming this invariant is genuinely, completely untouched.",
+    "2. Read the existing reproducible_build_gate.py and build-local-packages.py directly to understand exactly how a format's wheel is built today -- both invoke `python -m build --wheel --sdist --outdir <dist> <source_dir>` where source_dir is src/python/{format}/ INSIDE the monorepo, and neither ever copies that directory elsewhere first. Confirmed each format's own [build-system] backend-path = ['.'] is self-relative (its own _build_backend.py lives inside its own source_dir), meaning the source tree SHOULD be self-contained enough to copy and build in true isolation -- but nothing had ever tested that claim.",
+    "3. Wrote tools/certification/independent_repository_extraction_gate.py: copies src/python/{format}/ (excluding build/dist/__pycache__/etc., matching the exact ignore pattern build-local-packages.py already uses) into tempfile.mkdtemp() -- genuinely outside this repository, not merely a subdirectory of .local/ -- computes a full sha256 manifest of both the original and copied tree and asserts they match exactly (the 'preserved canonical source' half), then builds a wheel+sdist from the isolated copy with cwd set to the isolated root (never REPO_ROOT) and a second wheel+sdist from the in-place source at the identical pinned SOURCE_DATE_EPOCH, and compares artifact digests (the 'preserved... package digests' half).",
+    "4. First run against xliff: source_preserved_byte_identical=true (73/73 files matched exactly) but package_digests_preserved=false -- verdict DIGEST_MISMATCH on exactly one artifact, the wheel (the sdist matched). This was a genuine, unexpected finding, not assumed away.",
+    "5. Investigated directly rather than accepting the mismatch as an inherent limitation: extracted both wheels and diffed their contents file-by-file. Found the in-place-built wheel contained ONE extra file the isolated build did not: format_factory/xliff/validation/xliff_core_2.0.xsd. Checked the current src/ tree directly -- that file only exists at validation/schemas/xliff_core_2.0.xsd today, not at the bare validation/ path. Checked src/python/xliff/build/ (setuptools' own local, gitignored build cache) directly and found build/lib/.../validation/xliff_core_2.0.xsd sitting there as an orphaned leftover from before that file moved under schemas/.",
+    "6. Root-caused this precisely: setuptools' legacy build_py command incrementally reuses an existing build/lib/ directory rather than clearing it before copying source files in, so a file removed or moved in src/ can survive indefinitely in build/lib/ and get silently bundled into every subsequent wheel built from that checkout, until build/ is manually cleared. Confirmed src/python/*/build/ is gitignored (not tracked, not committed) via git check-ignore, and confirmed every OTHER FF6 format's own build/ directory also has files (ipynb 39, nrrd 22, ora 15, safetensors 23, ubl 155) -- a portfolio-wide risk class, not xliff-specific, though only xliff's own instance was directly confirmed to have caused an actual digest divergence this tick.",
+    "7. Fixed the root cause in the two shared tools that build in-place, not just worked around it in the new gate: added a `shutil.rmtree(source_dir / 'build')` guard before the `python -m build` subprocess call in both packaging/python/build-local-packages.py::_build_source() (the real release-build path run_package_install_proof.py uses) and tools/certification/reproducible_build_gate.py::build_once() (which could carry the same staleness across separate script invocations, even though it could not have made ITS OWN two-builds-in-one-run comparison disagree). Applied the identical fix inline in the new gate's own _build() too.",
+    "8. Re-ran independent_repository_extraction_gate.py --format xliff: EXTRACTS_INDEPENDENTLY, wheel digest now agrees between isolated and in-place builds (884a7aadde... for both, was a01b50f7d9... contaminated before the fix).",
+    "9. Re-ran reproducible_build_gate.py --package-dir src/python/xliff to keep that gate's own recorded digest consistent with the now-corrected wheel content -- still REPRODUCIBLE, new wheel_sha256 884a7aadde... (matches the independent-extraction gate's own digest exactly, cross-confirming both tools agree).",
+    "10. Re-ran tools/run_package_install_proof.py --format xliff for the same reason (build-local-packages.py's own output changed) -- still 1/1 PASS, new proof_id/wheel_sha256 recorded, updated installed-wheel-gate.json's own proof_id and added a note documenting why it changed.",
+    "11. Fixed 2 mypy --strict errors in the new gate script's own return-type annotations (bare `dict` -> `dict[str, Any]`, needed because the result dict genuinely holds heterogeneous value types read back with .items()/.get()) -- clean, zero ignores. Left the two EXISTING tools' own pre-existing, unrelated mypy issues untouched (tools/ and packaging/ scripts are not in scope for the typing completion-invariant gate, which targets src/python/{format}/ only -- same precedent already established this session for performance_benchmark.py).",
+    "12. Ran the full xliff suite (591 passed, unchanged) and the full 6-format regression (3930 passed, 4 skipped, 0 failed, unchanged) to confirm none of this tick's tooling fixes altered any product behavior."
+  ],
+  "allowed_files": [
+    "tools/certification/independent_repository_extraction_gate.py",
+    "packaging/python/build-local-packages.py",
+    "tools/certification/reproducible_build_gate.py",
+    "reports/certification/xliff/independent-repository-extraction-gate.json",
+    "reports/certification/xliff/reproducible-build.json",
+    "reports/certification/xliff/installed-wheel-gate.json",
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/transcripts/package-install-proof-xliff.json"
+  ],
+  "actual_files_changed": [
+    "tools/certification/independent_repository_extraction_gate.py",
+    "packaging/python/build-local-packages.py",
+    "tools/certification/reproducible_build_gate.py",
+    "reports/certification/xliff/independent-repository-extraction-gate.json",
+    "reports/certification/xliff/reproducible-build.json",
+    "reports/certification/xliff/installed-wheel-gate.json",
+    "reports/package-install-proof/proof-manifest.json",
+    "reports/package-install-proof/transcripts/package-install-proof-xliff.json"
+  ],
+  "tests_run": [
+    "python tools/certification/independent_repository_extraction_gate.py --format xliff --output reports/certification/xliff/independent-repository-extraction-gate.json -- EXTRACTS_INDEPENDENTLY",
+    "python tools/certification/reproducible_build_gate.py --package-dir src/python/xliff --output reports/certification/xliff/reproducible-build.json -- REPRODUCIBLE",
+    "python tools/run_package_install_proof.py --format xliff -- RESULT: 1/1 PASS",
+    ".venv/Scripts/python -m mypy --strict tools/certification/independent_repository_extraction_gate.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check tools/certification/independent_repository_extraction_gate.py packaging/python/build-local-packages.py tools/certification/reproducible_build_gate.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/xliff -q -- 591 passed (unchanged)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3930 passed, 4 skipped, 0 failed (unchanged)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 new certification-gate tool built, satisfying 1 of product-goal.yaml's own remaining completion invariants for xliff specifically -- the first of any FF6 format to have direct evidence for the independent-repository-extraction invariant. A real, latent build-hygiene bug (stale setuptools build/ cache silently contaminating wheel content) was found and fixed in the shared build tooling used by ALL SIX formats, not just xliff.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 142,
+    "new_public_api": "none -- tooling/evidence work only, no src/ runtime API added"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
