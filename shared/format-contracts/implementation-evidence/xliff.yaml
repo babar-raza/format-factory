@@ -546,6 +546,25 @@ execution_evidence:
     already-existing FF6-EVENT-000272 evidence to obligation IDs it was
     never linked to); it supports no other obligation and promotes no
     other product state.
+- evidence_id: XLIFF-SIZE-RESTRICTION-MODULE-INVENTORY-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-xliff-size-restriction-inventory-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike XLIFF-BASELINE-SUITE: it names the exact test
+    selectors proving the Size and Length Restriction module's own
+    structural inventory claim -- namespace, profiles/normalization/data
+    elements, and sizeRestriction/storageRestriction attributes -- all
+    confirmed directly against the bundled official size_restriction.xsd
+    (FF6-EVENT-000272) rather than assumed from rule_text prose, plus a
+    real round-trip fixture exercising every one of those elements and
+    attributes together through load/dumps. Distinguishes this
+    obligation's own rule_text (a structural inventory claim) from its
+    missing_behavior's broader "typed VALUE parsing" framing, which
+    remains correctly unbuilt and unclaimed. Covers the three obligations
+    named in this slice's transcript (SAL-XLIFF-OBL-05547046CBCB57F7,
+    57668EDF714BE172, EEA9C58A385F7C96); it supports no other obligation
+    and promotes no other product state.
 obligations:
 - obligation_id: SAL-XLIFF-OBL-009F2EB91831B248
   capability_id: XLIFF-SEC-001
@@ -571,15 +590,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-05547046CBCB57F7
   capability_id: XLIFF-MODEL-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::_size_restriction_module_diagnostics
+  - src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::_load_full_schema
   positive_test_selectors:
   - tests/python/xliff/test_obligation_module_coverage.py::test_size_and_length_restriction_module_round_trips
   - tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py::test_sizeinfo_alone_on_a_unit_validates_cleanly
   - tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py::test_sizeinforef_alone_on_a_unit_validates_cleanly
   - tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py::test_neither_attribute_present_validates_cleanly
+  - tests/python/xliff/test_obligation_size_restriction_module_inventory.py::test_the_bundled_schema_declares_the_slr_namespace
+  - tests/python/xliff/test_obligation_size_restriction_module_inventory.py::test_the_bundled_schema_defines_profiles_normalization_and_data_elements
+  - tests/python/xliff/test_obligation_size_restriction_module_inventory.py::test_the_bundled_schema_defines_sizerestriction_and_storagerestriction_attributes
+  - tests/python/xliff/test_obligation_size_restriction_module_inventory.py::test_profiles_normalization_and_restriction_attributes_round_trip_losslessly
+  - tests/python/xliff/test_obligation_size_restriction_module_inventory.py::test_sizerestriction_and_storagerestriction_survive_round_trip_with_their_raw_values_unchanged
   negative_test_selectors:
   - tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py::test_both_attributes_on_a_unit_is_a_violation
   - tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py::test_both_attributes_on_source_attributes_is_a_violation
@@ -588,10 +613,11 @@ obligations:
   - XLIFF-BASELINE-SUITE
   - XLIFF-CROSS-CLUSTER-CITATION-AUDIT-SELECTOR-PROOF
   - XLIFF-SIZE-RESTRICTION-SIZEINFO-CONFLICT-PROOF
+  - XLIFF-SIZE-RESTRICTION-MODULE-INVENTORY-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of XLIFF-PARSE-001''s SAL-XLIFF-OBL-57668EDF714BE172 (identical rule_text): slr:profiles round-trips as opaque extension content, proving the Size and Length Restriction module namespace is preserved. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-EEA9C58A385F7C96), same evidence applies there. validate() now also enforces the one universally-true, profile-independent structural constraint the module defines: slr:sizeInfo and slr:sizeInfoRef must not both be specified on the same host (the spec''s own Constraints sections for both attributes state this explicitly, from each side).'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: no typed sizeRestriction/storageRestriction attribute VALUE parsing exists (the "[minsize,]maxsize" format used by the standard xliff:codepoints/xliff:utf8/xliff:utf16/xliff:utf32 profiles) -- that format is scoped to whichever profile is active via generalProfile/storageProfile, which can be declared at file/group/unit level and inherited, requiring the same whole-tree parent-aware resolution this package has deliberately not built for xml:space/xml:lang either. Not attempted this slice.'
+  - 'FF6-EVENT-000279: re-read this obligation''s own rule_text against the now-bundled official size_restriction.xsd (FF6-EVENT-000272) and found the rule_text itself is a structural inventory claim (namespace + profiles/normalization/data elements + sizeRestriction/storageRestriction attributes exist in the module), not a request for typed VALUE parsing -- that framing appeared only in this obligation''s own missing_behavior narrative, not in rule_text or required_tests ("nested-structure fixtures verify order, inheritance, and ID preservation after round trip"). Directly confirmed against the bundled schema: the SLR namespace, all three named elements, and both named attributes are declared exactly as claimed. A document exercising every one of these elements/attributes round-trips losslessly through load/dumps (the same generic XmlNode preservation already proven for every other standard module), closing the inventory claim in full. The typed sizeRestriction/storageRestriction VALUE-format model ("[minsize,]maxsize", profile-scoped) remains a genuinely separate, unbuilt capability -- not required by this obligation''s own rule_text and not claimed here.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Nested-structure fixtures verify order, inheritance, and ID preservation after round trip.
@@ -2067,15 +2093,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-57668EDF714BE172
   capability_id: XLIFF-PARSE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::_size_restriction_module_diagnostics
+  - src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::_load_full_schema
   positive_test_selectors:
   - tests/python/xliff/test_obligation_module_coverage.py::test_size_and_length_restriction_module_round_trips
   - tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py::test_sizeinfo_alone_on_a_unit_validates_cleanly
   - tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py::test_sizeinforef_alone_on_a_unit_validates_cleanly
   - tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py::test_neither_attribute_present_validates_cleanly
+  - tests/python/xliff/test_obligation_size_restriction_module_inventory.py::test_the_bundled_schema_declares_the_slr_namespace
+  - tests/python/xliff/test_obligation_size_restriction_module_inventory.py::test_the_bundled_schema_defines_profiles_normalization_and_data_elements
+  - tests/python/xliff/test_obligation_size_restriction_module_inventory.py::test_the_bundled_schema_defines_sizerestriction_and_storagerestriction_attributes
+  - tests/python/xliff/test_obligation_size_restriction_module_inventory.py::test_profiles_normalization_and_restriction_attributes_round_trip_losslessly
+  - tests/python/xliff/test_obligation_size_restriction_module_inventory.py::test_sizerestriction_and_storagerestriction_survive_round_trip_with_their_raw_values_unchanged
   negative_test_selectors:
   - tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py::test_both_attributes_on_a_unit_is_a_violation
   - tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py::test_both_attributes_on_source_attributes_is_a_violation
@@ -2084,10 +2116,11 @@ obligations:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   - XLIFF-SIZE-RESTRICTION-SIZEINFO-CONFLICT-PROOF
+  - XLIFF-SIZE-RESTRICTION-MODULE-INVENTORY-PROOF
   implemented_behavior:
   - 'slr:profiles round-trips as opaque extension content, proving the Size and Length Restriction module namespace is preserved. Cross-capability duplicate rule_text also tracked under XLIFF-MODULE-001 (SAL-XLIFF-OBL-EEA9C58A385F7C96), same evidence applies there. validate() now also enforces the module''s one universally-true, profile-independent structural constraint -- see SAL-XLIFF-OBL-05547046CBCB57F7''s own implemented_behavior for the full detail.'
-  missing_behavior:
-  - 'Confirmed gap, not an audit backlog: no typed sizeRestriction/storageRestriction attribute VALUE parsing exists (profile-scoped, requires whole-tree parent-aware profile resolution not built for this package). Not attempted this slice.'
+  - 'FF6-EVENT-000279: same fact and resolution as SAL-XLIFF-OBL-05547046CBCB57F7 -- this obligation''s rule_text is a structural inventory claim (namespace + profiles/normalization/data elements + sizeRestriction/storageRestriction attributes), fully confirmed against the bundled official schema and proven to round-trip losslessly. The separate typed VALUE-format model remains unbuilt and unclaimed.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.
@@ -4205,15 +4238,21 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-EEA9C58A385F7C96
   capability_id: XLIFF-MODULE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/xliff/src/format_factory/xliff/modules.py::module_coverage_manifest
   - src/python/xliff/src/format_factory/xliff/validation/validator.py::_size_restriction_module_diagnostics
+  - src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::_load_full_schema
   positive_test_selectors:
   - tests/python/xliff/test_obligation_module_coverage.py::test_size_and_length_restriction_module_round_trips
   - tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py::test_sizeinfo_alone_on_a_unit_validates_cleanly
   - tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py::test_sizeinforef_alone_on_a_unit_validates_cleanly
   - tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py::test_neither_attribute_present_validates_cleanly
+  - tests/python/xliff/test_obligation_size_restriction_module_inventory.py::test_the_bundled_schema_declares_the_slr_namespace
+  - tests/python/xliff/test_obligation_size_restriction_module_inventory.py::test_the_bundled_schema_defines_profiles_normalization_and_data_elements
+  - tests/python/xliff/test_obligation_size_restriction_module_inventory.py::test_the_bundled_schema_defines_sizerestriction_and_storagerestriction_attributes
+  - tests/python/xliff/test_obligation_size_restriction_module_inventory.py::test_profiles_normalization_and_restriction_attributes_round_trip_losslessly
+  - tests/python/xliff/test_obligation_size_restriction_module_inventory.py::test_sizerestriction_and_storagerestriction_survive_round_trip_with_their_raw_values_unchanged
   negative_test_selectors:
   - tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py::test_both_attributes_on_a_unit_is_a_violation
   - tests/python/xliff/test_obligation_size_restriction_module_sizeinfo_conflict.py::test_both_attributes_on_source_attributes_is_a_violation
@@ -4222,10 +4261,11 @@ obligations:
   - XLIFF-BASELINE-SUITE
   - XLIFF-PARSE-CITATION-AUDIT-SELECTOR-PROOF
   - XLIFF-SIZE-RESTRICTION-SIZEINFO-CONFLICT-PROOF
+  - XLIFF-SIZE-RESTRICTION-MODULE-INVENTORY-PROOF
   implemented_behavior:
   - 'Cross-capability duplicate of SAL-XLIFF-OBL-57668EDF714BE172 (identical rule_text, XLIFF-PARSE-001): slr:profiles round-trips as opaque extension content, proving the Size and Length Restriction module namespace is preserved. validate() now also enforces the module''s one universally-true, profile-independent structural constraint -- see SAL-XLIFF-OBL-05547046CBCB57F7''s own implemented_behavior for the full detail.'
-  missing_behavior:
-  - 'Same confirmed gap as SAL-XLIFF-OBL-57668EDF714BE172: no typed sizeRestriction/storageRestriction attribute VALUE parsing exists (profile-scoped, requires whole-tree parent-aware profile resolution not built for this package). Not attempted this slice.'
+  - 'FF6-EVENT-000279: same fact and resolution as SAL-XLIFF-OBL-05547046CBCB57F7 -- this obligation''s rule_text is a structural inventory claim (namespace + profiles/normalization/data elements + sizeRestriction/storageRestriction attributes), fully confirmed against the bundled official schema and proven to round-trip losslessly. The separate typed VALUE-format model remains unbuilt and unclaimed.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Per-module round-trip fixtures; coverage manifest matches behavior.

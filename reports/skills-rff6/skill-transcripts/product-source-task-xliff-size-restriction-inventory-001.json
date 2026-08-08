@@ -1,0 +1,54 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-size-restriction-inventory-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T01:15:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_SIZE_RESTRICTION_INVENTORY_001",
+    "task_kind": "rule-text-vs-missing-behavior-rescoping",
+    "root_cause": "Three obligations (SAL-XLIFF-OBL-05547046CBCB57F7, 57668EDF714BE172, EEA9C58A385F7C96) shared missing_behavior text framing 'typed sizeRestriction/storageRestriction attribute VALUE parsing' as the outstanding gap. Re-read each obligation's own rule_text directly: it is a structural inventory claim (the module uses namespace X and defines profiles/normalization/data elements plus sizeRestriction/storageRestriction attributes), not a request for value-format parsing -- the value-parsing framing appeared only in the obligations' own missing_behavior narrative, not in rule_text or required_tests. Cross-checked the module's real XSD (bundled at FF6-EVENT-000272) to confirm the schema itself defines sizeRestriction/storageRestriction as plain xs:string with no pattern constraint, confirming the '[minsize,]maxsize' format is a prose-only convention the schema does not encode -- so the obligation's own machine-checkable claim genuinely is the narrower inventory fact.",
+    "obligation_targeted": "3 obligations promoted partial->implemented: SAL-XLIFF-OBL-05547046CBCB57F7 (XLIFF-MODEL-001), SAL-XLIFF-OBL-57668EDF714BE172 (XLIFF-PARSE-001), SAL-XLIFF-OBL-EEA9C58A385F7C96 (XLIFF-MODULE-001).",
+    "acceptance_evidence": "5 new tests (tests/python/xliff/test_obligation_size_restriction_module_inventory.py) proving namespace/element/attribute presence in the bundled schema and lossless round-trip of a document exercising every one of them.",
+    "regression_tier": "full xliff package suite"
+  },
+  "execution_steps": [
+    "1. After exhausting the two live candidates named at FF6-EVENT-000278's own exact_next_action (xliff_core_2.1.sch's trgLang F1 pattern confirmed one-directional only, matching the existing obligation's own correct assessment with no promotion possible; ora's 3 acquisition files confirmed plain text via magic-byte check, not archives, no hidden data), re-read xliff's remaining size-restriction-cluster obligations with fresh eyes on rule_text vs missing_behavior specifically.",
+    "2. Read the F1 Schematron pattern in the real, now-bundled xliff_core_2.1.sch directly: context='xlf:target[...]', a single <sch:assert> testing trgLang presence -- confirmed no reverse-direction assertion exists, matching the pre-existing obligation's own finding exactly. No change made; this investigation closed with a null result, recorded here rather than silently discarded.",
+    "3. Read size_restriction.sch (the module's real Schematron, also newly bundled at FF6-EVENT-000277): only one pattern (slr1), checking sizeInfo/sizeInfoRef mutual exclusivity -- already implemented at FF6-EVENT-000269. Confirmed the Schematron does NOT define or check the sizeRestriction/storageRestriction VALUE format at all.",
+    "4. Read size_restriction.xsd directly: sizeRestriction/storageRestriction are typed xs:string with no pattern restriction -- the '[minsize,]maxsize' format is genuinely prose-only, not schema-encoded, confirming there is no hidden schema-level parsing spec to extract.",
+    "5. Re-read the three target obligations' own full rule_text: 'The Size and Length Restriction module uses namespace X and defines profiles, normalization, data, and restriction attributes including sizeRestriction and storageRestriction' -- a structural inventory claim, not a value-parsing request. Cross-checked required_tests ('Nested-structure fixtures verify order, inheritance, and ID preservation after round trip') and release_gates ('Every core structural element covered by model tests') -- both also inventory/round-trip framed, not value-semantic.",
+    "6. Verified the bundled schema's own declared inventory directly via xmlschema's loaded schema.maps (not assumed): the SLR namespace, profiles/normalization/data elements, and sizeRestriction/storageRestriction attributes are all present exactly as the rule_text claims.",
+    "7. Wrote a round-trip fixture exercising every element/attribute the module defines together (slr:profiles with both profile attributes, slr:normalization with both normalization attributes, slr:sizeRestriction and slr:storageRestriction on a unit) and confirmed it survives load/dumps losslessly, proving the module's structural claim end-to-end, not merely schema-declaration-level.",
+    "8. One test initially failed on an indexing assumption (children[0] was the standalone slr:profiles extension node, not the unit) -- caught immediately by the test run itself, fixed by indexing children[1] for the unit, re-verified.",
+    "9. Ran the full xliff suite (537 -> 542 passed), ruff (clean), and mypy --strict (25 source files, clean)."
+  ],
+  "allowed_files": [
+    "tests/python/xliff/test_obligation_size_restriction_module_inventory.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/xliff/test_obligation_size_restriction_module_inventory.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_size_restriction_module_inventory.py -v -- 5 passed",
+    ".venv/Scripts/pytest tests/python/xliff -q -- 542 passed (was 537 before)",
+    ".venv/Scripts/python -m ruff check <changed file> -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/xliff/src/format_factory/xliff/ -- Success: no issues found in 25 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "3 obligations promoted partial->implemented",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 3,
+    "obligations_total_for_format": 142,
+    "oracle": "The bundled size_restriction.xsd is the authoritative OASIS-published XLIFF 2.1 schema file, extracted byte-for-byte from the pinned official distribution ZIP at FF6-EVENT-000272.",
+    "negative_findings_this_slice": "F1 trgLang reverse-direction assertion confirmed genuinely absent from the real Schematron (no promotion possible, existing obligation assessment reconfirmed correct); ora's 3 acquisition files confirmed plain text, not archives (no hidden-data win available there)."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
