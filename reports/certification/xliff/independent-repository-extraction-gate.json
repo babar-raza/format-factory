@@ -2,24 +2,24 @@
   "format_id": "xliff",
   "gate": "independent-repository-extraction",
   "source_dir": "src/python/xliff",
-  "isolated_location": "C:\\Users\\prora\\AppData\\Local\\Temp\\ff6-independent-repo-xliff-g068v14k\\xliff",
+  "isolated_location": "C:\\Users\\prora\\AppData\\Local\\Temp\\ff6-independent-repo-xliff-cgpbun4z\\xliff",
   "source_file_count": 73,
   "source_preserved_byte_identical": true,
   "build_epoch": "315532800",
   "isolated_build": {
     "ok": true,
-    "seconds": 17.6,
+    "seconds": 12.9,
     "artifacts": {
-      "format_factory_xliff-0.2.0.dev0-py3-none-any.whl": "884a7aadde55c2c095359be7954d84916343895bd04d2f04bb2a6f56a5d10569",
-      "format_factory_xliff-0.2.0.dev0.tar.gz": "8adea86210bbc90513b1e60ba63134bbddbc385f7d9c3ed1dd156ff185dec792"
+      "format_factory_xliff-0.2.0.dev0-py3-none-any.whl": "e405e7580c299432d9f1c6c69809c419b1c38129979105436352b54876f6ae3e",
+      "format_factory_xliff-0.2.0.dev0.tar.gz": "9ce7545e9ca26a959855edc0cf7c262ab37e017664b71ab22c3e03b0cc420a1d"
     }
   },
   "in_place_build": {
     "ok": true,
-    "seconds": 17.0,
+    "seconds": 12.8,
     "artifacts": {
-      "format_factory_xliff-0.2.0.dev0-py3-none-any.whl": "884a7aadde55c2c095359be7954d84916343895bd04d2f04bb2a6f56a5d10569",
-      "format_factory_xliff-0.2.0.dev0.tar.gz": "8adea86210bbc90513b1e60ba63134bbddbc385f7d9c3ed1dd156ff185dec792"
+      "format_factory_xliff-0.2.0.dev0-py3-none-any.whl": "e405e7580c299432d9f1c6c69809c419b1c38129979105436352b54876f6ae3e",
+      "format_factory_xliff-0.2.0.dev0.tar.gz": "9ce7545e9ca26a959855edc0cf7c262ab37e017664b71ab22c3e03b0cc420a1d"
     }
   },
   "package_digests_preserved": true,
@@ -32,5 +32,6 @@
   "bug_found_and_fixed_this_tick": "The first run of this gate (before the fix below) reported DIGEST_MISMATCH -- the wheels differed by exactly one file. Investigated directly: src/python/xliff/build/ (setuptools' own local, gitignored build cache) contained a stale build/lib/.../validation/xliff_core_2.0.xsd left over from before that file moved to validation/schemas/xliff_core_2.0.xsd. setuptools' legacy build_py incrementally reuses an existing build/lib/ directory rather than clearing it first, so this orphaned file was silently bundled into every in-place-built wheel from this checkout, while the isolated copy (which never had a build/ dir to begin with) correctly excluded it. Fixed packaging/python/build-local-packages.py and tools/certification/reproducible_build_gate.py to clear source_dir/build before invoking `python -m build`, matching what this gate's own isolated build already does implicitly. Re-ran with the fix: EXTRACTS_INDEPENDENTLY, digests now agree (wheel sha256 884a7aadde... for both sides, was a01b50f7d9... contaminated before the fix). Re-ran reproducible-build.json and the installed-wheel-gate.json's own package-install-proof afterward to keep those two gates' own recorded digests consistent with the now-corrected wheel content.",
   "portfolio_wide_risk_not_yet_swept": "This exact class of build/-directory staleness is a portfolio-wide risk, not xliff-specific: every other FF6 format's own src/python/{format}/build/ directory also has files (ipynb 39, nrrd 22, ora 15, safetensors 23, ubl 155, all counted this tick). The underlying tools are now fixed for all future builds, but the OTHER five formats' own currently-recorded reproducible-build.json/installed-wheel-gate.json evidence was NOT re-verified this tick for the same contamination -- an honest, disclosed gap, not silently assumed clean. Worth a fresh independent-repository-extraction-gate.py run per remaining format in a future tick.",
   "note": "This is one of product-goal.yaml's own completion invariants, separate from the 10-item gate list (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build). This is the first time ANY of the six FF6 formats has direct evidence for this specific invariant. Not a certification claim for xliff as a whole -- the other outstanding program-wide invariant and this same check for the remaining five formats are still open.",
+  "re_run_this_tick": "FF6-EVENT-000415: independently re-ran this gate fresh (this gate type had not been touched anywhere in the extended certification gate-freshening rotation, Events 379-412, which scoped itself to the 10-item gate list only; ipynb's own equivalent was freshened at Event 414). Verdict unchanged: EXTRACTS_INDEPENDENTLY, isolated and in-place builds still agree (no DIGEST_MISMATCH regression -- the build-hygiene fix documented in bug_found_and_fixed_this_tick above still holds). The fresh wheel_sha256 (e405e7580c299432d9f1c6c69809c419b1c38129979105436352b54876f6ae3e) is byte-for-byte IDENTICAL to the wheel independently built by BOTH the installed-wheel gate (Event 384) and the reproducible-build gate (Event 389) -- the third format this rotation to reach this same 3-tool cross-confirmation (after ipynb at Event 414). Merged the fresh technical data into this file's own existing structure by hand rather than letting the tool overwrite it directly, deliberately preserving every pre-existing narrative field (bug_found_and_fixed_this_tick, portfolio_wide_risk_not_yet_swept, method, note) -- the exact mistake self-caught and corrected for ipynb at Event 414 was avoided here from the start.",
   "commit": "pending"
 }
