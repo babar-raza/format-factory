@@ -16,10 +16,13 @@ separate destinations, round-tripping correctly through the existing
 detached-read path (reader.py's _safe_detached_payload).
 
 Scope, stated plainly: this writes the single-file detached form only
-(matching the reader's most common detached case), not the multi-file
-LIST/printf sequence forms -- those remain a genuinely separate, larger
-feature (splitting one array's encoded bytes across multiple files),
-correctly out of scope for this slice.
+(matching the reader's most common detached case). The multi-file LIST
+form now has its own writer too (dump_multifile(), FF6-EVENT-000303, see
+test_obligation_multifile_writer.py) -- it turned out to need no new
+architecture, just splitting the encoded payload into N equal chunks
+matching the reader's own no-per-file-logic concatenation contract. The
+printf numbered-sequence writer form remains genuinely absent (its own
+naming-pattern generation is a separate, smaller follow-up).
 """
 
 from __future__ import annotations

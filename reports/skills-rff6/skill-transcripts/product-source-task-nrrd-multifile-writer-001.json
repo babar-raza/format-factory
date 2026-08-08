@@ -1,0 +1,66 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-multifile-writer-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T04:11:41Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_MULTIFILE_WRITER_001",
+    "task_kind": "ninth-item-this-session-found-smaller-than-framed",
+    "root_cause": "Continued the fresh systematic pass over nrrd's remaining obligations. Both SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD (NRRD-MULTIFILE-001) name 'No multifile writer' / 'writer support remain absent' as their gap. Checked the reader's own _safe_detached_payload (codec/reader/reader.py): it concatenates every listed file's raw bytes in declared order via a single `b''.join(...)`, with no per-file splitting logic of its own -- subdim is parsed and range-validated but, per the function's own inline comment, 'not otherwise used to alter which files are read or how their bytes are concatenated.' This meant the writer's own correct byte distribution was fully determined already: an equal-N-chunk split, nothing more.",
+    "obligation_targeted": "Both SAL-NRRD-OBL-807586E5B4D0EDB2 and SAL-NRRD-OBL-EBE5230D5204B4AD (NRRD-MULTIFILE-001) narrowed, not closed -- the LIST form's writer gap resolved; the printf numbered-sequence writer form remains a genuinely separate, smaller follow-up.",
+    "acceptance_evidence": "dump_multifile() (codec/writer/writer.py) reuses dump_detached()'s own confinement-checking pattern and _encode_payload/_header_bytes helpers. Verified end-to-end with a standalone repro before any test was written: a full round trip through the EXISTING, unmodified reader (load()) correctly reassembles a 3D volume split across 2 files, including a gzip-compressed payload split post-compression. 9 new tests plus 1 corrected stale docstring claim in a sibling test file.",
+    "regression_tier": "full nrrd package suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Read _safe_detached_payload's own LIST/printf parsing and concatenation logic in full: `payload = b''.join(read_relative(name) for name in names)` -- confirmed no dimension-aware or subdim-aware splitting exists on the read side at all, only a flat ordered concatenation.",
+    "2. Checked dump_detached()'s own existing pattern (single-file detached writer, already shipped): computes the full encoded payload via the existing _encode_payload() helper, resolves the payload path relative to the header's own directory (refusing escapes), and writes a header via _header_bytes() with a `data file:` field.",
+    "3. Designed dump_multifile(document, header_destination, payload_destinations, *, profile=None, limits=None): computes the full encoded payload once, verifies it divides evenly by len(payload_destinations) (refusing with a clear reason otherwise -- no attempt to guess an uneven split), resolves and confines every destination path the same way dump_detached() does, builds a `data file: LIST\\n<name>\\n<name>...` value and passes it directly to the EXISTING, unmodified _header_bytes() (its own f-string embedding of `detached_name` already preserves embedded newlines correctly, confirmed by inspection -- no change needed to that function at all), then writes each equal-size chunk to its own destination file in order.",
+    "4. Added an explicit NRRD0004+ profile check (matching the reader's own read-time version gate for multi-file declarations) -- refuses writing a LIST form under an older explicit or auto-selected profile rather than producing a file the reader would then reject.",
+    "5. Verified directly with a standalone repro before writing any test: a 3D 2x2x2 uint8 volume round-trips correctly split across 2 files; the written header's own text contains the expected `data file: LIST` block; payload bytes are split into exact, ordered, equal chunks; a single-entry LIST (degenerate case) works; a gzip-compressed document's payload (computed post-compression, since _encode_payload already applies encoding) splits and reassembles correctly through decompression; an uneven split, a path escaping the header's own directory, and an older profile are each correctly refused with clear messages.",
+    "6. Fixed 4 mypy --strict errors while touching this file: 2 pre-existing in dump_detached()'s own signature (bare `PathLike` instead of `PathLike[str]`) plus 2 new instances of the same issue in dump_multifile()'s own signature -- fixed all 4 for consistency rather than duplicating the pre-existing gap.",
+    "7. Added 9 tests (test_obligation_multifile_writer.py): round-trip correctness, header content, exact chunk boundaries, single-entry degenerate case, compressed-payload round trip, and all 4 refusal paths.",
+    "8. Corrected a stale docstring claim in the sibling test_obligation_detached_writer.py, which explicitly stated multi-file forms were 'correctly out of scope' -- updated to point at the new writer and test file rather than leaving a now-inaccurate claim for a future tick to rediscover.",
+    "9. Ran mypy --strict (clean), ruff (clean), the full nrrd suite (642 -> 651 passed, 1 skipped), and the 6-format regression (3705 -> 3714 passed, +9, 0 failed).",
+    "10. Narrowed both target obligations (not closed): missing_behavior updated to name only the printf writer form and the vague 'comprehensive sequence grammar edge cases' phrase (left un-attempted since no concrete, spec-grounded target for it exists in the obligation's own authority references)."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_multifile_writer.py",
+    "tests/python/nrrd/test_obligation_detached_writer.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/writer/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_multifile_writer.py",
+    "tests/python/nrrd/test_obligation_detached_writer.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_multifile_writer.py -v -- 9 passed (all new)",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py -- Success: no issues found (4 errors fixed, 2 pre-existing)",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd -q -- 651 passed, 1 skipped (was 642)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3714 passed, 4 skipped, 0 failed (was 3705)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations narrowed (not closed)",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 2,
+    "obligations_total_for_format": 65,
+    "new_public_api": "format_factory.nrrd.dump_multifile"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

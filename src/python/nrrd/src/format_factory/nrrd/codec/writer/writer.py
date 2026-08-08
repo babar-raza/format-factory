@@ -188,8 +188,8 @@ def dump(
 
 def dump_detached(
     document: NrrdDocument | Mapping[str, Any],
-    header_destination: str | PathLike,
-    payload_destination: str | PathLike,
+    header_destination: str | PathLike[str],
+    payload_destination: str | PathLike[str],
     *,
     profile: str | None = None,
     limits: ResourceLimits | None = None,
@@ -233,3 +233,83 @@ def dump_detached(
         payload_path.write_bytes(payload)
     except OSError as exc:
         raise NrrdWriteError(f"cannot write {payload_path}: {exc}") from exc
+
+
+def dump_multifile(
+    document: NrrdDocument | Mapping[str, Any],
+    header_destination: str | PathLike[str],
+    payload_destinations: list[str | PathLike[str]],
+    *,
+    profile: str | None = None,
+    limits: ResourceLimits | None = None,
+) -> None:
+    """Write a multi-file detached NRRD: the header (with a `data file:
+    LIST` declaration naming every entry in `payload_destinations`, in
+    order) to `header_destination`, and the encoded payload split evenly
+    across those files.
+
+    Byte distribution: the reader's own `_safe_detached_payload` (codec/
+    reader/reader.py) concatenates every listed file's raw bytes in
+    declared order with no per-file splitting logic of its own -- `subdim`
+    is parsed and range-validated but, per that function's own comment,
+    "not otherwise used to alter which files are read or how their bytes
+    are concatenated." Writing the exact mirror of that -- the full
+    encoded payload split into `len(payload_destinations)` equal
+    consecutive chunks, written in the same order the header lists them --
+    is therefore both correct and the only byte distribution the reader's
+    own contract requires. `payload_destinations` count must therefore
+    evenly divide the encoded payload's own byte length; refused otherwise
+    with a clear reason rather than guessing an uneven split.
+
+    Multi-file `data file: LIST` declarations require NRRD0004 or newer
+    (matching `_safe_detached_payload`'s own read-time version gate) --
+    refused for an older explicit or auto-selected profile rather than
+    silently writing a file the reader's own load() would then reject.
+    """
+
+    if not payload_destinations:
+        raise NrrdWriteError("at least one payload destination is required")
+    active_limits = effective_limits(limits)
+    value = _coerce_document(document)
+    header_path = Path(header_destination)
+    selected = _select_profile(value, profile)
+    if int(selected[-1]) < 4:
+        raise NrrdWriteError(
+            f"multi-file data file declarations require NRRD0004 or newer, "
+            f"selected profile is {selected!r}"
+        )
+    payload = _encode_payload(value, active_limits)
+    file_count = len(payload_destinations)
+    if len(payload) % file_count != 0:
+        raise NrrdWriteError(
+            f"encoded payload of {len(payload)} bytes does not split evenly "
+            f"across {file_count} files"
+        )
+    chunk_size = len(payload) // file_count
+    header_parent = header_path.resolve().parent
+    relative_names: list[str] = []
+    for destination in payload_destinations:
+        payload_path = Path(destination)
+        try:
+            relative_name = payload_path.resolve().relative_to(header_parent)
+        except ValueError as exc:
+            raise NrrdWriteError(
+                "every multi-file payload destination must be inside the header "
+                "destination's own directory, matching this reader's own "
+                "confinement rules for reading it back"
+            ) from exc
+        relative_names.append(relative_name.as_posix())
+    header_bytes = _header_bytes(
+        value, selected, detached_name="LIST\n" + "\n".join(relative_names)
+    )
+    active_limits.enforce("max_output_bytes", len(header_bytes) + len(payload))
+    try:
+        header_path.write_bytes(header_bytes)
+    except OSError as exc:
+        raise NrrdWriteError(f"cannot write {header_path}: {exc}") from exc
+    for index, destination in enumerate(payload_destinations):
+        chunk = payload[index * chunk_size : (index + 1) * chunk_size]
+        try:
+            Path(destination).write_bytes(chunk)
+        except OSError as exc:
+            raise NrrdWriteError(f"cannot write {destination}: {exc}") from exc
