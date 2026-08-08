@@ -192,6 +192,21 @@ def _parse_sizes(header: dict[str, str]) -> list[int]:
     return sizes
 
 
+def _read_relative_to(name: str, *, base: Path, what: str) -> bytes:
+    relative = Path(name)
+    if relative.is_absolute() or ".." in relative.parts:
+        raise NrrdParseError("unsafe detached data path")
+    resolved = (base / relative).resolve()
+    try:
+        resolved.relative_to(base)
+    except ValueError as exc:
+        raise NrrdParseError(f"detached data path escapes its {what}") from exc
+    try:
+        return resolved.read_bytes()
+    except OSError as exc:
+        raise NrrdParseError(f"cannot read detached payload {resolved}: {exc}") from exc
+
+
 def _safe_detached_payload(
     value: str,
     *,
@@ -199,40 +214,34 @@ def _safe_detached_payload(
     limits: ResourceLimits,
     version: int,
     dimension: int,
+    cwd_relative_base: Path | None = None,
 ) -> bytes:
     if source_path is None:
         raise NrrdParseError("detached data requires a filesystem header source")
     def read_relative(name: str) -> bytes:
-        if version < 4:
+        if version < 4 and not name.startswith("./") and not name.startswith("/"):
             # "as of NRRD0004, the signifier of a header-relative file
             # changed from the presence (at the beginning of the filename)
             # of './', to the absence of '/'." Pre-NRRD0004, a name without
             # the explicit './' prefix is spec-defined as relative to the
             # reader's current working directory rather than the header's
-            # directory -- an unconfined resolution base this reader does
-            # not support automatically (no caller-supplied resolver policy
-            # exists yet to opt into it), so it is refused rather than
-            # silently mishandled.
-            if name.startswith("./"):
-                name = name[2:]
-            elif not name.startswith("/"):
+            # directory -- an unconfined resolution base this reader
+            # refuses by default. `cwd_relative_base` is the explicit,
+            # caller-supplied opt-in: when given, it names the directory
+            # "cwd-relative" means for this call, and the same
+            # traversal-safety checks below apply relative to it instead of
+            # refusing outright.
+            if cwd_relative_base is None:
                 raise NrrdParseError(
                     "pre-NRRD0004 detached data file names must start with "
                     "'./' to be resolved relative to the header; this reader "
-                    "does not support cwd-relative resolution"
+                    "does not support cwd-relative resolution unless "
+                    "cwd_relative_base is explicitly supplied"
                 )
-        relative = Path(name)
-        if relative.is_absolute() or ".." in relative.parts:
-            raise NrrdParseError("unsafe detached data path")
-        resolved = (base / relative).resolve()
-        try:
-            resolved.relative_to(base)
-        except ValueError as exc:
-            raise NrrdParseError("detached data path escapes its header directory") from exc
-        try:
-            return resolved.read_bytes()
-        except OSError as exc:
-            raise NrrdParseError(f"cannot read detached payload {resolved}: {exc}") from exc
+            return _read_relative_to(name, base=cwd_relative_base.resolve(), what="cwd_relative_base")
+        if name.startswith("./"):
+            name = name[2:]
+        return _read_relative_to(name, base=base, what="header directory")
 
     base = source_path.resolve().parent
     is_multi_file = value.upper().startswith("LIST") or "%" in value
@@ -365,10 +374,11 @@ def loads(
     *,
     mode: str = "strict",
     limits: ResourceLimits | None = None,
+    cwd_relative_base: Path | None = None,
 ) -> NrrdDocument:
     if mode not in {"strict", "preservation", "recovery"}:
         raise ValueError("mode must be 'strict', 'preservation', or 'recovery'")
-    return _load(data, limits=effective_limits(limits))
+    return _load(data, limits=effective_limits(limits), cwd_relative_base=cwd_relative_base)
 
 
 def load(
@@ -376,13 +386,20 @@ def load(
     *,
     mode: str = "strict",
     limits: ResourceLimits | None = None,
+    cwd_relative_base: Path | None = None,
 ) -> NrrdDocument:
     if mode not in {"strict", "preservation", "recovery"}:
         raise ValueError("mode must be 'strict', 'preservation', or 'recovery'")
-    return _load(source, limits=effective_limits(limits))
+    return _load(source, limits=effective_limits(limits), cwd_relative_base=cwd_relative_base)
 
 
-def _load(source: BinarySource, *, limits: ResourceLimits, recovery_actions: tuple[str, ...] = ()) -> NrrdDocument:
+def _load(
+    source: BinarySource,
+    *,
+    limits: ResourceLimits,
+    recovery_actions: tuple[str, ...] = (),
+    cwd_relative_base: Path | None = None,
+) -> NrrdDocument:
     data, source_path = _read_source(source, limits)
     raw_header, attached, data_offset = _split_header(data, limits)
     version, header, comments, key_values = _parse_header(raw_header)
@@ -404,6 +421,7 @@ def _load(source: BinarySource, *, limits: ResourceLimits, recovery_actions: tup
             limits=limits,
             version=version,
             dimension=len(sizes),
+            cwd_relative_base=cwd_relative_base,
         )
         if "data file" in header
         else attached

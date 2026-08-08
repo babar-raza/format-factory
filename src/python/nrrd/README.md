@@ -93,14 +93,32 @@ memory-mapped).
 from format_factory.nrrd import open_lazy_payload, PayloadAccessMode
 
 header, payload = open_lazy_payload("large-volume.nrrd")
-region = payload.read_region(offset=1024, length=4096, mode=PayloadAccessMode.STRICT)
+if header.access.mode is PayloadAccessMode.MEMORY_MAPPED:
+    region = payload.region(0, 4096)  # zero-copy memoryview
+    region.release()  # release before payload.close()
+elif header.access.mode is PayloadAccessMode.STREAMING_DECODE:
+    chunk = payload.read_stream(4096)  # sequential decoded bytes
+payload.close()
 ```
 
 `open_lazy_payload()` calls `read_header()` internally and additionally
 opens a lazy view of the payload itself (memory-mapped or a streaming
 decompressor, per `header.access.mode`). Like `read_header()`, it is a
 distinct, explicitly-invoked entry point -- never called implicitly by
-`load()`/`loads()`/`validate()`/`dumps()`.
+`load()`/`loads()`/`validate()`/`dumps()`. `region()` (zero-copy,
+`MEMORY_MAPPED` only) and `read_stream()` (sequential, `STREAMING_DECODE`
+only) are the two access methods; each raises if called in the other
+mode. Any `region()` view must be released before `close()`, the same
+borrowed-view discipline used elsewhere in this product line.
+
+Pre-NRRD0004 detached payloads with a bare-relative filename (no leading
+`./`) are refused by default -- the spec defines that case as resolved
+against the reader's own current working directory, an unconfined base
+this reader will not assume silently. `load()`/`loads()`/
+`open_lazy_payload()` all accept an explicit `cwd_relative_base=` opt-in
+(a caller-supplied directory) to resolve that case instead, with the same
+traversal-safety checks (no absolute paths, no escaping the supplied
+directory) applied relative to it.
 
 ## Space transforms
 

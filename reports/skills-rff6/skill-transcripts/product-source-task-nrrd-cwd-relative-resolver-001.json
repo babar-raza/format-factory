@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-cwd-relative-resolver-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-d33e469a7831bc35",
+  "mode": "live",
+  "timestamp": "2026-08-08T16:29:36Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_CWD_RELATIVE_RESOLVER_001",
+    "task_kind": "close-a-real-unresolved-obligation-with-verified-product-code",
+    "root_cause": "Event 359's own exact_next_action asked to return to the 23 remaining unresolved obligations across nrrd/ora/ubl, re-verifying rather than assuming the earlier exhaustive investigation still held, by running the contract reconciler fresh for each format first. Ran it for nrrd/ora/ubl (10/65, 7/134, 6/194 unchanged) and read nrrd's own current unresolved obligation list fresh: SAL-NRRD-OBL-09CDF5A28C011CD7's own missing_behavior named a precise, well-scoped, genuinely tractable gap -- 'an explicit opt-in policy parameter would be needed to support [pre-NRRD0004 cwd-relative detached-payload resolution] safely, and does not exist yet' -- distinct from the other 9 unresolved nrrd obligations, which are all either genuinely large unbuilt features (NRRD0005 measurement-frame/typed-space-vector support, a full dtype/stride/slicing array-view API) or deliberately-unsettled spec ambiguities already investigated twice this session.",
+    "obligation_targeted": "SAL-NRRD-OBL-09CDF5A28C011CD7 (NRRD-PAYLOAD-001, MUST, STABLE_REQUIRED) -- closed in full, status partial -> implemented, missing_behavior now empty.",
+    "acceptance_evidence": "Read reader.py's _safe_detached_payload and lazy.py's _resolve_detached_path in full (both already-proven-independent, deliberately duplicated code paths per the obligation's own prior evidence note) before designing the change. Added an explicit, opt-in `cwd_relative_base: Path | None = None` parameter to load()/loads() and open_lazy_payload(), threaded through the exact same call chains the obligation's own evidence already names. Verified against real files on disk (not mocks) for every code path: load() with the opt-in resolves a real detached payload from a caller-supplied directory; open_lazy_payload() does the same for both MEMORY_MAPPED (mmap, region()) and STREAMING_DECODE (gzip, read_stream()) access modes; a directory-escape attempt and an absolute-path attempt are both still refused with the opt-in active, proving traversal safety is not weakened; the opt-in is a no-op for already-working './'-prefixed names and for NRRD0004+; and the default (no opt-in) refusal behavior is completely unchanged, confirmed by the pre-existing test suite passing unmodified (709 passed both before and after, plus 9 new tests)."
+  },
+  "execution_steps": [
+    "1. Checked git log/status for concurrent-worker conflicts -- clean, no new commits since this session's own Event 359 commit; 52 pre-existing unrelated dirty files confirmed untouched throughout this tick.",
+    "2. Ran the contract reconciler fresh for nrrd, ora, and ubl per Event 359's own explicit instruction not to assume stale state -- confirmed all three unchanged (10/65, 7/134, 6/194) from every prior tick this session.",
+    "3. Read nrrd's own current unresolved obligation list directly from the freshly-regenerated reconciliation JSON (not from memory or a prior summary) -- 10 entries. Investigated the full obligation-register entry (rule_text, missing_behavior, proof_requirements) for the one that looked most tractable by its own missing_behavior wording: SAL-NRRD-OBL-09CDF5A28C011CD7, an explicit, well-scoped, deliberately-deferred 'opt-in policy parameter' gap, distinct from the large unbuilt-feature and settled-ambiguity gaps making up the other 9.",
+    "4. Read codec/reader/reader.py's _safe_detached_payload (the eager read path) and codec/lazy.py's _resolve_detached_path (the independently-duplicated lazy read path, per the obligation's own prior evidence proving the two cannot silently diverge) in full to design the change precisely: extracted the shared 'resolve + traversal-safety-check + read/return' logic each already inlined into a small helper (_read_relative_to in reader.py, _resolve_relative_to in lazy.py) to avoid duplicating the new branch logic, then added the version<4-and-bare-relative special case as an explicit branch checking a new cwd_relative_base parameter: None (default) refuses exactly as before; a supplied Path resolves against it with the identical absolute-path/parent-traversal/escape-the-directory checks already enforced for header-relative resolution.",
+    "5. Threaded cwd_relative_base through load()/loads() (via _load) in reader.py and open_lazy_payload() (both its MEMORY_MAPPED and STREAMING_DECODE _resolve_detached_path call sites) in lazy.py -- confirmed via grep that both are re-exported directly (not wrapped) from the top-level format_factory.nrrd module, so no further __init__.py changes were needed.",
+    "6. Verified the feature end-to-end against real files on disk before writing any test: load() with cwd_relative_base against a real detached payload in a real separate directory (succeeded, correct bytes); load() without it against the identical scenario (refused with the expected message, confirming the default is unchanged); open_lazy_payload() with cwd_relative_base for both a raw-encoded (memory-mapped) and a gzip-encoded (streaming-decode) real payload (both succeeded, correct bytes via region()/read_stream() respectively); a directory-escape attempt (data file: ../outside/secret.raw) and an absolute-path attempt, both with the opt-in active, still correctly refused as 'unsafe detached data path'.",
+    "7. While manually verifying the neighboring 'Lazy payload access' README section (already existing, not part of this obligation) to place the new documentation correctly, discovered its own example was genuinely broken: it called `payload.read_region(offset=..., length=..., mode=PayloadAccessMode.STRICT)`, but NrrdLazyPayload has no read_region method (only region(start, end) and read_stream(size)) and PayloadAccessMode has no STRICT member at all (only HEADER_ONLY/MEMORY_MAPPED/STREAMING_DECODE/IN_MEMORY) -- a real, pre-existing documentation bug unrelated to this tick's own feature but directly adjacent and now fixed with a verified, corrected example (both access-mode branches run against real corpus samples, samples/by-format/nrrd/valid/2d-float32.nrrd and gzip-encoded.nrrd) plus the new cwd_relative_base documentation.",
+    "8. Wrote 9 new tests (tests/python/nrrd/test_obligation_cwd_relative_resolver.py) covering: default refusal preserved; load() success with the opt-in; loads() correctly still refuses (bytes input has no filesystem source regardless of the opt-in -- a pre-existing, unrelated constraint, confirmed not broken); open_lazy_payload() success for both access modes; directory-escape refused with the opt-in active; absolute-path refused with the opt-in active; the opt-in being a no-op for './'-prefixed names; the opt-in being a no-op at NRRD0004+. Ran the full nrrd suite: 709 -> 718 passed, 1 skipped, 0 regressions. mypy --ignore-missing-imports and ruff both clean on the two modified source files and the new test file.",
+    "9. Updated shared/format-contracts/implementation-evidence/nrrd.yaml's SAL-NRRD-OBL-09CDF5A28C011CD7 entry: status partial -> implemented, missing_behavior emptied, source_symbols expanded with the 4 new/changed symbols, positive/negative_test_selectors extended with the 9 new test names, execution_evidence_ids gained NRRD-CWD-RELATIVE-RESOLVER-PROOF, implemented_behavior extended with a precise account of what changed. This obligation's own source_symbols field defines a shared YAML anchor (&PAYLOAD) aliased by 4 OTHER unrelated obligations (9AB0A32906D88688, 9FFEE6E206F405F4, A1F37BAEE4586823, DD537F7E8C81FDE6) -- de-aliased the target entry into its own explicit list and moved the anchor definition (unchanged 3-symbol content) to the first remaining alias consumer, verified via a direct YAML parse that all 4 sibling obligations still resolve to the exact original, unmodified content before and after the edit. Added the new NRRD-CWD-RELATIVE-RESOLVER-PROOF execution_evidence entry at the top of the file's own execution_evidence list, matching the file's own established structure and rigor.",
+    "10. Ran the contract reconciler fresh a final time after all evidence-YAML edits -- confirmed 9/65 unresolved (was 10/65), the obligation-register-verified closure of this specific obligation, with 6-format regression unaffected (no other format's obligation-evidence touched)."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py",
+    "tests/python/nrrd/test_obligation_cwd_relative_resolver.py",
+    "src/python/nrrd/README.md",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py",
+    "tests/python/nrrd/test_obligation_cwd_relative_resolver.py",
+    "src/python/nrrd/README.md",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    "tests/python/nrrd (full suite): 718 passed, 1 skipped (was 709 passed, 1 skipped; +9 new tests, 0 regressions)",
+    "mypy --ignore-missing-imports on reader.py and lazy.py: no issues found",
+    "ruff check on reader.py, lazy.py, and the new test file: all checks passed",
+    "Direct interactive verification: real-file round trips for load()/open_lazy_payload() with and without cwd_relative_base, including a genuine directory-escape attempt and an absolute-path attempt, both correctly refused with the opt-in active"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closes SAL-NRRD-OBL-09CDF5A28C011CD7 (NRRD-PAYLOAD-001) in full -- nrrd's unresolved obligation count moves 10/65 -> 9/65, the first obligation-count movement across nrrd/ora/ubl since this session's own investigation of the 23 remaining obligations began.",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 1,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "cwd_relative_base: Path | None = None parameter added to load(), loads(), and open_lazy_payload() in format_factory.nrrd -- backward-compatible, default preserves all existing behavior exactly."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

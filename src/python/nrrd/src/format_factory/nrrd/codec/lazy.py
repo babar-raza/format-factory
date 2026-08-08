@@ -139,29 +139,44 @@ def _single_detached_filename(value: str) -> str | None:
     return stripped
 
 
-def _resolve_detached_path(name: str, *, source_path: Path, version: int) -> Path:
-    """Resolve a detached filename the same way reader.py's eager path does:
-    no absolute paths, no traversal outside the header's own directory, and
-    the same pre-NRRD0004-vs-NRRD0004+ './' signifier distinction."""
-    if version < 4:
-        if name.startswith("./"):
-            name = name[2:]
-        elif not name.startswith("/"):
-            raise NrrdParseError(
-                "pre-NRRD0004 detached data file names must start with "
-                "'./' to be resolved relative to the header; this reader "
-                "does not support cwd-relative resolution"
-            )
+def _resolve_relative_to(name: str, *, base: Path, what: str) -> Path:
     relative = Path(name)
     if relative.is_absolute() or ".." in relative.parts:
         raise NrrdParseError("unsafe detached data path")
-    base = source_path.resolve().parent
     resolved = (base / relative).resolve()
     try:
         resolved.relative_to(base)
     except ValueError as exc:
-        raise NrrdParseError("detached data path escapes its header directory") from exc
+        raise NrrdParseError(f"detached data path escapes its {what}") from exc
     return resolved
+
+
+def _resolve_detached_path(
+    name: str,
+    *,
+    source_path: Path,
+    version: int,
+    cwd_relative_base: Path | None = None,
+) -> Path:
+    """Resolve a detached filename the same way reader.py's eager path does:
+    no absolute paths, no traversal outside the header's own directory, and
+    the same pre-NRRD0004-vs-NRRD0004+ './' signifier distinction.
+    `cwd_relative_base` is the same explicit, caller-supplied opt-in
+    reader.py's own _safe_detached_payload() accepts, for the bare-relative
+    pre-NRRD0004 case this function otherwise refuses."""
+    base = source_path.resolve().parent
+    if version < 4 and not name.startswith("./") and not name.startswith("/"):
+        if cwd_relative_base is None:
+            raise NrrdParseError(
+                "pre-NRRD0004 detached data file names must start with "
+                "'./' to be resolved relative to the header; this reader "
+                "does not support cwd-relative resolution unless "
+                "cwd_relative_base is explicitly supplied"
+            )
+        return _resolve_relative_to(name, base=cwd_relative_base.resolve(), what="cwd_relative_base")
+    if name.startswith("./"):
+        name = name[2:]
+    return _resolve_relative_to(name, base=base, what="header directory")
 
 
 def _describe_access(
@@ -306,12 +321,18 @@ class NrrdLazyPayload:
 
 
 def open_lazy_payload(
-    source: BinarySource, *, limits: ResourceLimits | None = None
+    source: BinarySource,
+    *,
+    limits: ResourceLimits | None = None,
+    cwd_relative_base: Path | None = None,
 ) -> tuple[NrrdHeader, NrrdLazyPayload]:
     """Open the header and, where eligible, a lazy view of the payload.
 
     Never called by load()/loads()/validate()/dumps() -- this is a distinct,
-    explicitly-invoked entry point.
+    explicitly-invoked entry point. `cwd_relative_base` is the same
+    explicit, caller-supplied opt-in `load()`/`loads()` accept for the
+    bare-relative pre-NRRD0004 detached-payload case this reader otherwise
+    refuses.
     """
     active_limits = effective_limits(limits)
     header = read_header(source, limits=active_limits)
@@ -327,7 +348,10 @@ def open_lazy_payload(
             name = _single_detached_filename(data_file)
             assert name is not None
             payload_path = _resolve_detached_path(
-                name, source_path=Path(header.source_path), version=header.version
+                name,
+                source_path=Path(header.source_path),
+                version=header.version,
+                cwd_relative_base=cwd_relative_base,
             )
             start = 0
         file_obj = payload_path.open("rb")
@@ -354,7 +378,10 @@ def open_lazy_payload(
             name = _single_detached_filename(data_file)
             assert name is not None
             payload_path = _resolve_detached_path(
-                name, source_path=Path(header.source_path), version=header.version
+                name,
+                source_path=Path(header.source_path),
+                version=header.version,
+                cwd_relative_base=cwd_relative_base,
             )
             file_obj = payload_path.open("rb")
         stream: gzip.GzipFile | bz2.BZ2File
