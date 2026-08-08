@@ -1,0 +1,50 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-xliff-missed-duplicates-reconciliation-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T02:25:00Z",
+  "inputs": {
+    "format_id": "xliff",
+    "task_id": "TC_FF6_XLIFF_MISSED_DUPLICATES_RECONCILIATION_001",
+    "task_kind": "missed-duplicate-obligation-sweep",
+    "root_cause": "Re-read xliff's 9 remaining unresolved obligations applying Event 286's own recommendation to re-examine deferred items with fresh skepticism. Found 2 obligations still carrying the exact stale 'no schema/Schematron/NVDL files vendored' claim that Events 270/277 had already disproven for their sibling duplicates -- these 2 specific IDs were simply not swept in those earlier edit passes.",
+    "obligation_targeted": "2 obligations promoted missing->implemented: SAL-XLIFF-OBL-0ACBD19A4F183811 (XLIFF-VALIDATE-001, a third duplicate of the 'layered validation artifacts' cluster closed at FF6-EVENT-000277) and SAL-XLIFF-OBL-194616F7A49381E8 (XLIFF-PARSE-001, a distinct claim about the core schema's own target namespace, resolvable via the schema bundled at FF6-EVENT-000270).",
+    "acceptance_evidence": "1 new test (test_the_bundled_core_schema_targets_the_core_document_namespace) plus 5 already-existing, already-passing tests cited across both obligations.",
+    "regression_tier": "full xliff package suite"
+  },
+  "execution_steps": [
+    "1. Re-read xliff's remaining 9 unresolved obligations (per Event 286's own exact_next_action) looking specifically for stale missing_behavior text this session's own earlier fixes had already invalidated, rather than assuming the prior triage was complete.",
+    "2. Found SAL-XLIFF-OBL-0ACBD19A4F183811's own missing_behavior text cites SAL-XLIFF-OBL-191B67AD2A05CA4E by name as the obligation it copies status from -- but 191B67AD2A05CA4E was itself closed at FF6-EVENT-000277 alongside sibling 56B240550D37E1BA. This third sibling was missed in that sweep. Confirmed identical rule_text, promoted using the exact same already-existing evidence (XLIFF-SCHEMATRON-NVDL-BUNDLE-INVENTORY-PROOF), zero new source or test code needed for this one.",
+    "3. Found SAL-XLIFF-OBL-194616F7A49381E8's own rule_text is DIFFERENT from the layered-artifacts cluster (a distinct claim about the core XSD's own target namespace: urn:oasis:names:tc:xliff:document:2.0), previously grouped under the same stale missing_behavior prose by mistake. Verified directly: _load_core_schema().target_namespace equals exactly that URI, and existing core-schema-validation tests already exercise real core-vocabulary elements qualified in it.",
+    "4. Added one dedicated test naming this specific claim explicitly (test_the_bundled_core_schema_targets_the_core_document_namespace) rather than relying on it being merely implicit in the existing validation tests.",
+    "5. Ran the full xliff suite (543 passed, was 542 before this slice's 1 new test), ruff (clean), and the reconciler (confirmed 7/142 unresolved, was 9, -2 exactly matching the 2 promotions).",
+    "6. Ran the combined 6-format regression suite (3626 -> 3627 passed, 4 skipped, 0 failed -- the sixth consecutive zero-failure regression result this session)."
+  ],
+  "allowed_files": [
+    "tests/python/xliff/test_obligation_core_schema_validation.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/xliff/test_obligation_core_schema_validation.py",
+    "shared/format-contracts/implementation-evidence/xliff.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/xliff/test_obligation_core_schema_validation.py -v -- 7 passed (1 new)",
+    ".venv/Scripts/pytest tests/python/xliff -q -- 543 passed (was 542)",
+    ".venv/Scripts/python -m ruff check <changed file> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3627 passed, 4 skipped, 0 failed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations promoted missing->implemented",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 2,
+    "obligations_total_for_format": 142,
+    "oracle": "The bundled core XSD schema (FF6-EVENT-000270) and Schematron/NVDL artifacts (FF6-EVENT-000277) are the authoritative OASIS-published XLIFF 2.1 files already independently verified this session."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

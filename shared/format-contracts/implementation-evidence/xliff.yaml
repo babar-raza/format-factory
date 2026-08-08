@@ -745,14 +745,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-0ACBD19A4F183811
   capability_id: XLIFF-VALIDATE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: implemented
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::bundled_schematron_paths
+  - src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::bundled_nvdl_path
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_exactly_nine_schematron_rule_sets_are_bundled
+  - tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_nvdl_advanced_validation_dispatch_artifact_is_bundled
+  - tests/python/xliff/test_obligation_schematron_and_nvdl_bundle_inventory.py::test_exactly_nine_module_xsds_are_bundled_covering_every_standard_module
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Same confirmed status as XLIFF-PARSE-001''s SAL-XLIFF-OBL-191B67AD2A05CA4E (identical rule_text). Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff''s own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick.'
+  execution_evidence_ids:
+  - XLIFF-SCHEMATRON-NVDL-BUNDLE-INVENTORY-PROOF
+  implemented_behavior:
+  - 'FF6-EVENT-000287: missed duplicate of the "layered validation artifacts" cluster closed at FF6-EVENT-000277 (SAL-XLIFF-OBL-191B67AD2A05CA4E, 56B240550D37E1BA -- identical rule_text, this obligation''s own missing_behavior even names 191B67AD2A05CA4E as the sibling it copies status from). Every layer this obligation names (core XSD, core Schematron, module XSDs, module Schematrons, NVDL) is bundled and directly verified present, exactly as for its two siblings; this duplicate was simply not swept in that event''s own edit pass.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Positive/negative fixtures per layer and scope; diagnostics carry paths and codes.
@@ -1010,14 +1016,20 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-XLIFF-OBL-194616F7A49381E8
   capability_id: XLIFF-PARSE-001
-  status: missing
-  source_symbols: []
-  positive_test_selectors: []
+  status: implemented
+  source_symbols:
+  - src/python/xliff/src/format_factory/xliff/validation/schema_validator.py::_load_core_schema
+  positive_test_selectors:
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_the_bundled_core_schema_targets_the_core_document_namespace
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_a_schema_valid_document_reports_no_diagnostics
+  - tests/python/xliff/test_obligation_core_schema_validation.py::test_a_valid_document_with_a_target_and_multiple_units_validates_cleanly
   negative_test_selectors: []
-  execution_evidence_ids: []
-  implemented_behavior: []
-  missing_behavior:
-  - 'Confirmed not testable as product runtime behavior, not an audit backlog item: this obligation describes the contents of the OFFICIAL XLIFF 2.1 SPEC DISTRIBUTION package itself (bundled schema/Schematron/NVDL artifact files), not something format_factory.xliff''s own runtime does. No such schema, Schematron, or NVDL files are vendored anywhere in this repository -- there is nothing in this package for a test to inspect. Not attempted this slice; would require sourcing and vendoring the official XLIFF 2.1 schema bundle first, which is a scope decision beyond a single tick.'
+  execution_evidence_ids:
+  - XLIFF-BASELINE-SUITE
+  - XLIFF-CORE-SCHEMA-VALIDATION-PROOF
+  implemented_behavior:
+  - 'FF6-EVENT-000287: this obligation''s own missing_behavior text was stale, predating FF6-EVENT-000270''s own bundling of the real core schema -- unlike the "layered validation artifacts" inventory cluster this obligation was previously grouped with by its own missing_behavior prose, its actual claim (the core XSD defines namespace-qualified element syntax for urn:oasis:names:tc:xliff:document:2.0) is directly, trivially provable: _load_core_schema().target_namespace equals exactly that URI, and the pre-existing core-schema validation tests already exercise real core-vocabulary elements (unit/segment/source/target) qualified in it. Added one dedicated test naming the claim explicitly; zero new source code.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Version/namespace consistency fixtures per supported version; legacy-version refusal fixture.

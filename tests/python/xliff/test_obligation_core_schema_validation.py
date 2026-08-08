@@ -119,3 +119,19 @@ def test_schema_validation_unavailable_when_xmlschema_cannot_be_imported(
             schema_validate(b"<x/>")
     finally:
         _load_core_schema.cache_clear()
+
+
+def test_the_bundled_core_schema_targets_the_core_document_namespace() -> None:
+    """SAL-XLIFF-OBL-194616F7A49381E8: "The XLIFF 2.1 core XSD defines
+    namespace-qualified XML element syntax for the core document
+    vocabulary in urn:oasis:names:tc:xliff:document:2.0." A structural
+    inventory claim about the bundled schema itself, distinct from (and
+    narrower than) the runtime validation the rest of this file proves --
+    but the runtime tests above already exercise real core-vocabulary
+    elements (unit/segment/source/target) qualified in exactly this
+    namespace, so this test names the claim explicitly rather than
+    leaving it implicit."""
+    schema = _load_core_schema()
+
+    assert schema.target_namespace == _XLIFF_NS
+    assert _XLIFF_NS in schema.maps.namespaces
