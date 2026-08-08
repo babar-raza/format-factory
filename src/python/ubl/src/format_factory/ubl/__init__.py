@@ -154,6 +154,7 @@ from .validation import (
     reorder_for_schema_order,
     schema_validate,
     validate,
+    validate_all,
     validate_profile,
 )
 
@@ -292,6 +293,7 @@ __all__ = [
     "semantic_sha256",
     "ubl_installed_workflow",
     "validate",
+    "validate_all",
     "validate_profile",
     "ProfileValidator",
     "ProfileValidatorRegistry",

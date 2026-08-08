@@ -3214,6 +3214,7 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/codelist.py::CodeListRegistry
   - src/python/ubl/src/format_factory/ubl/validation/profiles.py::ProfileValidatorRegistry
   - src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate
+  - src/python/ubl/src/format_factory/ubl/validation/combined.py::validate_all
   positive_test_selectors:
   - tests/python/ubl/test_obligation_lifecycle_io.py::test_validate_returns_a_structured_report_not_an_exception
   - tests/python/ubl/test_obligation_lifecycle_io.py::test_validate_reports_a_diagnostic_rather_than_raising_for_a_semantic_issue
@@ -3223,12 +3224,20 @@ obligations:
   - tests/python/ubl/test_obligation_lines_cardinality_validation.py::test_a_credit_note_line_with_a_single_id_validates_cleanly
   - tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_one_of_each_field_validates_cleanly
   - tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_one_of_each_field_validates_cleanly
+  - tests/python/ubl/test_obligation_unified_validation.py::test_a_fully_valid_document_passes_every_layer_with_zero_diagnostics
+  - tests/python/ubl/test_obligation_unified_validation.py::test_an_in_list_code_produces_no_code_list_diagnostic
+  - tests/python/ubl/test_obligation_unified_validation.py::test_no_profile_validator_runs_when_the_document_declares_no_customization_id
   negative_test_selectors:
   - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation
   - tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_means_codes_is_a_cardinality_violation
   - tests/python/ubl/test_obligation_lines_cardinality_validation.py::test_a_credit_note_line_with_two_ids_is_a_cardinality_violation
   - tests/python/ubl/test_obligation_aggregates_cardinality_validation.py::test_a_legal_monetary_total_with_two_payable_amounts_is_a_cardinality_violation
   - tests/python/ubl/test_obligation_external_reference_cardinality_validation.py::test_an_external_reference_with_two_uris_is_a_cardinality_violation
+  - tests/python/ubl/test_obligation_unified_validation.py::test_a_duplicate_line_id_is_reported_by_the_referential_layer
+  - tests/python/ubl/test_obligation_unified_validation.py::test_a_schema_violation_is_reported_by_the_schema_layer
+  - tests/python/ubl/test_obligation_unified_validation.py::test_an_out_of_list_code_is_reported_by_the_code_list_layer_when_supplied
+  - tests/python/ubl/test_obligation_unified_validation.py::test_a_registered_profile_validator_runs_when_the_customization_id_matches
+  - tests/python/ubl/test_obligation_unified_validation.py::test_multiple_layer_violations_are_all_reported_together_not_just_the_first
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
@@ -3240,8 +3249,9 @@ obligations:
   - UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF
   implemented_behavior:
   - '4 of the 5 named layers exist as separate, independently invokable, diagnostic-returning capabilities rather than one monolithic all-or-nothing check: syntax (XML parse errors), referential (DocumentIndex.duplicate_line_ids), code-list (CodeListRegistry.validate_code), and pluggable business-rule (ProfileValidatorRegistry) are each separately callable and each return structured diagnostics rather than raising. validate() itself returns a ValidationReport rather than an exception, proven directly. The 5th layer, schema/XSD-conformance, is now also fully proven, not just a growing slice: schema_validate() (validation/schema_validator.py) validates raw UBL XML against the real, official OASIS UBL 2.3 schema for any of this package''s 91 supported root document types, auto-detecting the type from the document''s own root element -- grounded directly in the pinned raw acquisition cache''s own official schema distribution (.local/format-contracts/acquired/ubl/src-ubl-002.bin), not the package''s own narrower 16-complexType typed-model cardinality checker.'
+  - 'FF6-EVENT-000296: the "not unified into one combined call" half of this obligation''s own missing_behavior is now closed. validate_all() (validation/combined.py) runs all 5 layers from one source (bytes/path/stream), returning every layer''s diagnostics together in one ValidationReport, never stopping at the first error -- exactly the obligation''s own wording. The earlier missing_behavior''s claim that unifying "would additionally require a pluggable business-rule mechanism... neither of which exists yet" was investigated and found wrong: ProfileValidatorRegistry (UBL-PROFILE-001''s own already-implemented, already-tested capability) IS the pluggable mechanism the rule_text asks for -- "pluggable" describes the mechanism''s extensibility, not a requirement to ship a comprehensive default rule set, which would be unscopable for a generic UBL library serving arbitrary jurisdictions/customizations anyway. 11 new tests (test_obligation_unified_validation.py) prove all 5 layers fire correctly, in combination, and that multiple simultaneous violations across different layers are all reported together.'
   missing_behavior:
-  - 'The 5 layers are still not unified into one combined call returning all diagnostics together -- a caller currently invokes each layer separately (validate(), schema_validate(), DocumentIndex methods, CodeListRegistry.validate_code, ProfileValidatorRegistry). Unifying them would additionally require a pluggable business-rule mechanism with a real default rule set and a code-list-to-field mapping neither of which exists yet, both genuinely separate, larger undertakings.'
+  - 'The code-list layer inside validate_all() validates only Code values the caller explicitly supplies via `used_codes`, not every code-bearing field validate_all() could discover on its own by walking the document -- no such automatic field-by-field code discoverer exists (there are dozens of distinct UBL code-bearing element types across the schema), and building one is a genuinely separate, scoped undertaking, distinct from and smaller than the now-resolved unification work. This is an honest, documented scope boundary (see combined.py''s own module docstring), not a silent gap: a caller who wants document-wide code-list coverage must currently enumerate the codes themselves.'
   proof_requirements:
     positive:
     - Per-layer positive/negative fixtures; layered report structure asserted machine-readable.

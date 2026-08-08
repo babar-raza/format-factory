@@ -1,0 +1,63 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-unified-validation-001",
+  "skill_id": "add-python-api",
+  "mode": "live",
+  "timestamp": "2026-08-08T02:53:22Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_UNIFIED_VALIDATION_001",
+    "task_kind": "genuine-multi-tick-scoped-architecture-item-attempted-and-largely-closed",
+    "root_cause": "SAL-UBL-OBL-788B2748204338B8's (UBL-VALIDATE-001) own missing_behavior said unifying the 5 validation layers into one call 'would additionally require a pluggable business-rule mechanism with a real default rule set... genuinely separate, larger undertaking.' Re-read the rule_text precisely: 'Run syntax, schema, referential, code-list, and pluggable business-rule validation as separately reportable layers' -- 'pluggable' describes an already-required property of the mechanism, and format_factory.ubl.validation.profiles.ProfileValidatorRegistry (UBL-PROFILE-001's own already-implemented, already-tested capability) already IS that pluggable mechanism. The missing_behavior's claim was investigated and found wrong for that half of the compound gap.",
+    "obligation_targeted": "1 obligation narrowed (not closed): SAL-UBL-OBL-788B2748204338B8. The unification half is now resolved; the code-list layer's own automatic document-wide field discovery remains a real, separately-scoped, honestly-documented gap.",
+    "acceptance_evidence": "New module validate_all() (validation/combined.py) exercising all 5 layers end-to-end; 11 new tests proving each layer fires independently and in combination, that multiple simultaneous cross-layer violations are all reported together (per the obligation's own 'not stopping at the first error' wording), and that the honestly-scoped code-list layer neither fabricates a pass nor silently skips when a registry IS supplied.",
+    "regression_tier": "full ubl package suite plus 6-format regression, mypy --strict, ruff"
+  },
+  "execution_steps": [
+    "1. Re-read the obligation's own precise rule_text (not just its missing_behavior) and checked ProfileValidatorRegistry directly -- confirmed it is a real, frozen, immutable, caller-registerable pluggable validator registry, already fully built for a DIFFERENT obligation (UBL-PROFILE-001) earlier in this project's history, not something needing to be invented.",
+    "2. Checked CodeListRegistry.validate_code()'s own signature: operates on one Code value at a time, with no existing document-wide code-field walker (confirmed by grep -- none exists). Decided this piece genuinely remains a separate, larger undertaking (dozens of distinct UBL code-bearing element types would need enumeration), distinct from the unification work itself, and scoped validate_all()'s own code-list layer honestly to caller-supplied codes only rather than fabricating exhaustive coverage.",
+    "3. Designed validate_all(source, *, code_registry=None, used_codes=(), profile_registry=None, limits=None) in a new module (validation/combined.py) rather than bloating validator.py: reads raw bytes once (via the same _read_source() load() itself uses, avoiding a double-read on stream sources), attempts loads() for the syntax layer, then runs validate() (chassis/referential via DocumentIndex), schema_validate() (schema layer, gracefully skipped if the optional xmlschema dependency is unavailable), the code-list layer, and validate_profile() (business-rule layer, correctly a no-op when no customization ID matches, per that function's own documented contract) -- collecting every layer's diagnostics into one combined ValidationReport.",
+    "4. First end-to-end test run against samples/by-format/ubl/valid/minimal-invoice.xml unexpectedly failed schema validation ('Unexpected child with tag cac:InvoiceLine... Tag cac:LegalMonetaryTotal expected') -- verified independently via schema_validate() directly (not my new code) that this is a real, PRE-EXISTING defect in that specific sample fixture (likely predating FF6-EVENT-000286's own reorder_for_schema_order() fix), unrelated to validate_all() itself. Used a hand-built, schema-conformant Invoice fixture (matching an existing test file's own established _invoice() pattern) for validate_all()'s own tests instead of chasing an unrelated fixture-repair task out of scope for this slice.",
+    "5. Found and fixed one real bug in my own first draft: schema_validate() can raise UblParseError (not just SchemaValidationUnavailable) when the raw source can't even be parsed to detect its root element -- added that catch, reporting it as an ubl.schema.unreadable diagnostic rather than letting it propagate.",
+    "6. Verified all 5 layers independently: a fully valid document passes with zero diagnostics; malformed XML is caught by the syntax layer; a nonexistent source is caught before any layer runs; an out-of-schema-order element is caught by the schema layer; a duplicate line ID is caught by the referential layer; an out-of-list code is caught by the code-list layer when supplied (and silently skipped, not fabricated, when not supplied); a registered profile validator fires only when its own customization ID matches the document; multiple simultaneous cross-layer violations are all reported together.",
+    "7. Exported validate_all from validation/__init__.py and the top-level ubl/__init__.py, alongside the package's other public validation entry points.",
+    "8. Wrote 11 tests (test_obligation_unified_validation.py). Ran mypy --strict (clean), ruff (clean), the full ubl suite (1033 passed), and the 6-format regression (3655 -> 3666 passed, +11, 0 failed).",
+    "9. Narrowed (not closed) SAL-UBL-OBL-788B2748204338B8 in the ledger: the unification half of its compound missing_behavior is resolved and cited with evidence; the code-list-layer-automatic-discovery half is re-stated precisely and honestly as the one genuinely remaining, separately-scoped gap."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/combined.py",
+    "src/python/ubl/src/format_factory/ubl/validation/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_unified_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/combined.py",
+    "src/python/ubl/src/format_factory/ubl/validation/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_unified_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_unified_validation.py -v -- 11 passed (all new)",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/validation/combined.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check <changed files> -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ubl -q -- 1033 passed",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ipynb tests/python/safetensors tests/python/ubl -q -- 3666 passed, 4 skipped, 0 failed (was 3655)",
+    "python -m tools.format_contract.contract_reconciler --format-id ubl -- 8/194 unresolved (unchanged, correct for a narrow not a close)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation narrowed (not fully closed) -- the larger of its two compound halves resolved",
+    "controller_event_effect": "pending",
+    "certification_state": "0/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "format_factory.ubl.validate_all",
+    "unrelated_finding_not_fixed_in_scope": "samples/by-format/ubl/valid/minimal-invoice.xml independently fails real XSD schema validation (element order) -- confirmed pre-existing and unrelated to this slice, not addressed here, worth a dedicated follow-up"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
