@@ -45,9 +45,21 @@ element's own declared position (the same fact `lines.py`'s own "lines
 are always the trailing group" reasoning is a special case of) -- so
 inserting immediately after the last existing same-name sibling is always
 schema-position-correct, for any repeating component, not only lines.
-Inserting the FIRST occurrence of a component type a document does not
-already have at all remains out of scope -- that genuinely needs full
-header-position knowledge this module does not attempt to build.
+
+FF6-UBL-EDIT-FIRST-OCCURRENCE-001: inserting the FIRST occurrence of a
+component type a document does not already have at all -- previously out
+of scope here, described as needing "full header-position knowledge"
+this module did not attempt to build -- is now built.
+`validation.schema_validator.schema_root_order()` reads that exact
+knowledge directly from the same bundled, official UBL 2.3 maindoc XSDs
+`schema_validate()` already loads for conformance checking (via
+`xmlschema`'s own `XsdGroup.iter_elements()`, which flattens a
+complexType's declared sequence into document order), so `add_component`
+can now place a genuinely new component type at its real schema position
+instead of refusing unconditionally. Only reachable when the optional
+`xmlschema` dependency is installed -- when it is not, `add_component`
+falls back to the original unconditional refusal rather than guessing a
+position, so behavior for a caller without that extra is unchanged.
 
 ``remove_component`` closes the Delete quarter of this obligation's own
 "CRUD" rule_text for any already-present occurrence: no position-aware
@@ -60,20 +72,23 @@ every function in this module already shares -- not hardcoded per
 component type here.
 
 With this, every CRUD operation this module attempts is now covered for
-any already-present occurrence of any core business component. The
-single remaining gap, for every component type without exception, is
-inserting the FIRST occurrence of a type a document does not already
-have at all.
+both already-present occurrences of any core business component AND
+first occurrences of a genuinely new one, when schema data is available.
+Remaining, disclosed scope: `component_name` values this package's own
+typed model does not otherwise represent at all (this module has no
+opinion on what `new_component`'s own internal structure should be,
+only where it belongs), and the `xmlschema`-unavailable fallback case.
 """
 
 from __future__ import annotations
 
 from format_factory.core import Diagnostic, Severity
 
-from .errors import UblValidationError
+from .errors import SchemaValidationUnavailable, UblValidationError
 from .model import UblDocument, XmlNode
 from .model.query import DocumentIndex
 from .model.typed import local_name
+from .validation.schema_validator import schema_root_order
 from .validation.validator import reorder_for_schema_order, validate
 
 _PARTY_ROLE_WRAPPERS = ("AccountingSupplierParty", "AccountingCustomerParty")
@@ -218,24 +233,73 @@ def update_component(
     return edited
 
 
-def add_component(document: UblDocument, *, component_name: str, new_component: XmlNode) -> UblDocument:
-    """Insert an ADDITIONAL occurrence of `component_name` immediately
-    after the LAST existing occurrence of the same name among the
-    document root's own children.
+def _first_occurrence_insertion_index(
+    document: UblDocument, *, component_name: str
+) -> int:
+    """Where `component_name`'s FIRST occurrence belongs among
+    `document.root.children`, per the bundled official schema's own
+    declared sequence order for `document.root_name` -- the "full
+    header-position knowledge" this function's own callers previously
+    lacked entirely (FF6-UBL-EDIT-FIRST-OCCURRENCE-001).
 
-    Grounded in the same XSD sequence-model fact `lines.py`'s own "lines
-    are always the trailing repeating group" reasoning is a special case
-    of: every element declared with `maxOccurs > 1` inside one
-    `xsd:sequence` must appear as ONE contiguous run at that element's own
-    declared position -- confirmed directly (not assumed) for
+    Finds the position right after the LAST existing child whose own
+    declared-order index is smaller than `component_name`'s -- the
+    standard "insertion point in a sequence ordered by a key" placement,
+    applied to the real schema order rather than a hand-authored table.
+    A child whose own local name is not one of `document.root_name`'s
+    declared children at all (should not occur for a document built
+    through this package's own model, but not assumed impossible) is
+    skipped rather than treated as a position boundary, so an unexpected
+    element never forces an otherwise-correct insertion point earlier.
+
+    Raises `UblValidationError` if `component_name` is not a valid child
+    of `document.root_name` at all per the bundled schema, or
+    `SchemaValidationUnavailable` if the optional `xmlschema` dependency
+    is not installed -- propagated to the caller, which decides how to
+    react (see `add_component`'s own fallback).
+    """
+    order = schema_root_order(document.root_name)
+    if component_name not in order:
+        raise UblValidationError(
+            f"{component_name!r} is not a declared child of "
+            f"{document.root_name} per its bundled UBL 2.3 schema"
+        )
+    target_position = order.index(component_name)
+    order_index = {name: index for index, name in enumerate(order)}
+
+    insert_at = 0
+    for position, child in enumerate(document.root.children):
+        child_position = order_index.get(local_name(child.qname))
+        if child_position is not None and child_position < target_position:
+            insert_at = position + 1
+    return insert_at
+
+
+def add_component(document: UblDocument, *, component_name: str, new_component: XmlNode) -> UblDocument:
+    """Insert an occurrence of `component_name` at its schema-correct
+    position among the document root's own children.
+
+    If the document already has at least one `component_name` occurrence,
+    the new one is inserted immediately after the LAST existing one:
+    every element declared with `maxOccurs > 1` inside one `xsd:sequence`
+    must appear as ONE contiguous run at that element's own declared
+    position -- confirmed directly, not assumed, for
     cac:PaymentMeans/cac:TaxTotal/cac:AllowanceCharge via the pinned UBL
     2.3 Invoice maindoc XSD, each declared by a single `<xsd:element
     ref="cac:X" maxOccurs="unbounded">` line, never split across two
-    non-adjacent positions. Inserting immediately after the last existing
-    same-name sibling is therefore ALWAYS schema-position-correct for any
-    repeating component that already has at least one occurrence,
-    regardless of whether that component happens to be lines-only trailing
-    or (like PaymentMeans) appears somewhere in the middle of the header.
+    non-adjacent positions -- so this is always schema-position-correct
+    for any repeating component with at least one existing occurrence.
+
+    Otherwise (the document has NO existing `component_name` occurrence
+    at all -- previously refused unconditionally, this function's own
+    prior "still-unbuilt" gap), the correct position is now determined
+    from the bundled official UBL 2.3 schema's own declared child order
+    for `document.root_name` (`schema_root_order`,
+    FF6-UBL-EDIT-FIRST-OCCURRENCE-001) -- real header-position knowledge,
+    not a guess. If the optional `xmlschema` dependency is not installed,
+    this falls back to the original refusal (`UblValidationError`)
+    rather than silently guessing a position or requiring the dependency
+    unconditionally.
 
     Runs `reorder_for_schema_order()` afterward, same as `add_line`, so
     `new_component`'s own internal field order is corrected regardless of
@@ -244,13 +308,12 @@ def add_component(document: UblDocument, *, component_name: str, new_component: 
     all are).
 
     Raises `UblValidationError` if `new_component`'s own local name does
-    not match `component_name`, if the document has NO existing occurrence
-    of `component_name` at all (inserting the FIRST occurrence of a type a
-    document does not already have needs full header-position knowledge
-    this function does not have -- the still-unbuilt, genuinely harder
-    half of the arbitrary-position insertion problem), or if the edit
-    would introduce a validation failure the source document did not
-    already have.
+    not match `component_name`, if the document has no existing occurrence
+    AND `component_name` is not a valid child of `document.root_name` at
+    all per the bundled schema, if the optional `xmlschema` dependency is
+    unavailable and the document has no existing occurrence to place a
+    new one adjacent to, or if the edit would introduce a validation
+    failure the source document did not already have.
     """
     if local_name(new_component.qname) != component_name:
         raise UblValidationError(
@@ -263,13 +326,20 @@ def add_component(document: UblDocument, *, component_name: str, new_component: 
         for position, child in enumerate(document.root.children)
         if local_name(child.qname) == component_name
     ]
-    if not matches:
-        raise UblValidationError(
-            f"document has no existing {component_name} element -- inserting "
-            "the first occurrence of a component type a document does not "
-            "already have is not supported"
-        )
-    insert_at = matches[-1] + 1
+    if matches:
+        insert_at = matches[-1] + 1
+    else:
+        try:
+            insert_at = _first_occurrence_insertion_index(
+                document, component_name=component_name
+            )
+        except SchemaValidationUnavailable as exc:
+            raise UblValidationError(
+                f"document has no existing {component_name} element, and "
+                "determining the correct position for a first occurrence "
+                f"requires the optional 'xmlschema' dependency: {exc}"
+            ) from exc
+
     new_root_children = (
         document.root.children[:insert_at]
         + (new_component,)

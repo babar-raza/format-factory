@@ -106,6 +106,49 @@ def bundled_maindoc_schema_paths() -> tuple[Path, ...]:
     return tuple(_MAINDOC_DIR / f"UBL-{name}-2.3.xsd" for name in sorted(ROOT_NAME_SET))
 
 
+@lru_cache(maxsize=None)
+def schema_root_order(root_name: str) -> tuple[str, ...]:
+    """The declared local names of `root_name`'s own maindoc root element's
+    direct children, in schema-declared sequence order (e.g. for
+    "Invoice": "UBLExtensions", "UBLVersionID", ..., "AccountingSupplierParty",
+    ..., "TaxTotal", "LegalMonetaryTotal", "InvoiceLine").
+
+    This is the "full header-position knowledge" `components.add_component`'s
+    own docstring names as the missing piece for inserting the FIRST
+    occurrence of a component type a document does not already have --
+    read directly from the same bundled, official OASIS maindoc XSD
+    `schema_validate` already loads for conformance checking, via
+    `xmlschema`'s own `XsdGroup.iter_elements()`, which flattens any
+    nested `xsd:sequence`/`xsd:choice` structure into the single document
+    -order list a real instance document's own children must respect.
+
+    Raises `SchemaValidationUnavailable` if the optional `xmlschema`
+    dependency is not installed (the same failure mode `schema_validate`
+    has), or `UblParseError` if `root_name` is not one of this package's
+    91 supported document types.
+    """
+    if root_name not in ROOT_NAME_SET:
+        raise UblParseError(
+            f"{root_name!r} is not a supported UBL 2.3 root document type "
+            f"(no bundled schema for it)"
+        )
+    xmlschema = _require_xmlschema()
+    schema = _load_schema(root_name)
+    (root_element,) = schema.root_elements
+    root_type = root_element.type
+    if not isinstance(root_type, xmlschema.validators.XsdComplexType):
+        raise UblParseError(
+            f"{root_name!r}'s root element type is not a complex type with "
+            "child elements, which every UBL maindoc root is expected to be"
+        )
+    content = root_type.content
+    return tuple(
+        str(child.local_name)
+        for child in content.iter_elements()
+        if child.local_name is not None
+    )
+
+
 def schema_validate(source: bytes | str, *, root_name: str | None = None) -> ValidationReport:
     """Validate raw UBL XML `source` against the bundled official schema
     matching its own root document type.
@@ -148,4 +191,4 @@ def schema_validate(source: bytes | str, *, root_name: str | None = None) -> Val
     return ValidationReport(diagnostics)
 
 
-__all__ = ["bundled_maindoc_schema_paths", "schema_validate"]
+__all__ = ["bundled_maindoc_schema_paths", "schema_root_order", "schema_validate"]

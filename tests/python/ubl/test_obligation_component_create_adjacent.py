@@ -11,7 +11,11 @@ cac:AllowanceCharge, ...) immediately after the last existing same-name
 occurrence, which is always schema-position-correct per XSD sequence
 semantics for repeating elements (see components.py's own module
 docstring). Inserting the FIRST occurrence of a component type a
-document has none of remains the still-unbuilt, genuinely harder half.
+document has none of was, at the time this file was first written, the
+still-unbuilt, genuinely harder half -- now closed (when the optional
+xmlschema dependency is installed) by
+`test_obligation_component_first_occurrence_insertion.py`; this file
+keeps only the additional-occurrence scope its own name describes.
 """
 
 from __future__ import annotations
@@ -171,13 +175,21 @@ def test_add_component_refuses_a_type_mismatched_new_component() -> None:
         add_component(document, component_name="PaymentMeans", new_component=wrong_type)
 
 
-def test_add_component_refuses_when_no_occurrence_exists_yet() -> None:
-    """Inserting the FIRST occurrence of a type the document has none of
-    needs full header-position knowledge this function does not have --
-    correctly refused, not silently inserted at a guessed position."""
+def test_add_component_no_longer_unconditionally_refuses_a_first_occurrence() -> None:
+    """Superseded by test_obligation_component_first_occurrence_insertion.py:
+    inserting the FIRST occurrence of a type the document has none of is
+    now supported (real schema-position knowledge, not a guess) when the
+    optional xmlschema dependency is installed. Kept here, narrowly, only
+    to prove this file's own additional-occurrence scope note above is
+    accurate -- not a positive test of the new capability itself."""
+    pytest.importorskip("xmlschema")
     document = load(_invoice_bytes(payment_means_codes=()))
 
-    with pytest.raises(UblValidationError, match="no existing PaymentMeans"):
-        add_component(
-            document, component_name="PaymentMeans", new_component=_payment_means_node(code="10")
-        )
+    edited = add_component(
+        document, component_name="PaymentMeans", new_component=_payment_means_node(code="10")
+    )
+
+    payment_means = [
+        child for child in edited.root.children if child.qname == f"{_CAC_NS}PaymentMeans"
+    ]
+    assert len(payment_means) == 1

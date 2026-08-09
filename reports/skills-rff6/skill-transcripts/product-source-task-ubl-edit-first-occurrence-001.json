@@ -1,0 +1,69 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-edit-first-occurrence-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-6fbebeae5d25a037",
+  "mode": "live",
+  "timestamp": "2026-08-09T08:49:03Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC-FF6-UBL-EDIT-FIRST-OCCURRENCE-001",
+    "task_kind": "separate-a-compound-obligation-clause-and-build-the-separable-half",
+    "root_cause": "After completing the ora and nrrd slices, a fresh contract_reconciler run confirmed ubl at 6/65 unresolved obligations. A dedicated research agent verified (rather than assumed) which of the six was most tractable for a focused session: UBL-REF-001 was already correctly confirmed unbuildable without inventing spec content; UBL-PARSE-001's find()/find-all namespace-audit gap is a real ~79-87-call-site refactor with genuine blast radius, already deliberately deferred with a documented mitigation in place; UBL-UPGRADE-001 needs real external version-history research; UBL-WRITE-001 needs 36 official OASIS examples this session cannot acquire; UBL-VALIDATE-001's code-bearing-field walker spans dozens of element types across all 91 roots, broader than a single session's own 'build X, close one gap' story. UBL-EDIT-001's own add_component() had one pinned, narrow, already-documented gap: 'inserting the FIRST occurrence of a component type a document does not already have at all... needs full header-position knowledge this function does not have.'",
+    "obligation_targeted": "SAL-UBL-OBL-237188D47391391E (UBL-EDIT-001) narrowed -- stays partial (metadata targets and validate()'s own mandatory-element-presence gap are separately disclosed, unrelated boundaries), but this tick delivered real new product code, not evidence remapping.",
+    "acceptance_evidence": "Added schema_root_order(root_name) to validation/schema_validator.py: reads the bundled, official UBL 2.3 maindoc XSD's own declared child sequence for a root document type via xmlschema's XsdGroup.iter_elements(), the exact 'full header-position knowledge' add_component()'s own docstring named as missing -- verified directly against the real bundled Invoice schema before writing any product code (spike matched known real UBL Invoice element order exactly: UBLExtensions first, AccountingSupplierParty before AccountingCustomerParty, PaymentMeans before TaxTotal before LegalMonetaryTotal, InvoiceLine last). add_component() now uses this for the first-occurrence case: when no existing occurrence exists, computes the correct insertion index via the standard 'insertion point in a sequence ordered by a key' algorithm against schema_root_order(), falling back to the original unconditional refusal only when the optional xmlschema dependency is unavailable (unchanged behavior for a caller without that extra) or the component name is not a declared child of the root type at all. No new dependency added -- xmlschema was already an integrated optional extra (used by schema_validate()) and the maindoc XSDs were already bundled package data."
+  },
+  "execution_steps": [
+    "1. After committing and eventing the nrrd array-view slice (FF6-EVENT-000469), ran python -m tools.ff6.goal_driver resume: 3/6 certified unchanged, ora/nrrd/ubl remain UNASSESSED. Selected ubl next per the user's explicit scope instruction this session.",
+    "2. Delegated a read-only research pass (Explore agent) explicitly instructed to VERIFY, not assume, an initial impression (formed earlier this session from obligation text alone) that all 6 remaining ubl obligations were large, externally-blocked undertakings. The agent read the actual package source, obligation register, existing test coverage, and dependency state, and corrected the impression's file-attribution details (the '~78 call sites' figure for PARSE-001 was itself already computed and shipped by a prior session, not a stale guess; document.py has zero find() call sites despite being named in the obligation text; lines.py/party.py, not named, hold the largest share) while confirming the overall difficulty ranking, and independently recommended UBL-EDIT-001's first-occurrence gap as the most tractable target with a concrete reason: the xmlschema dependency and bundled maindoc XSDs already used by schema_validate() are the right tool, already proven to load in this exact codebase, only the introspection (walking the loaded schema for declared child order) was new.",
+    "3. Read components.py, validation/schema_validator.py, validation/validator.py's _ORDER_CHECKED_COMPONENTS/reorder_for_schema_order, and model/document.py's UblDocument/XmlNode in full to identify exactly what to reuse.",
+    "4. Checked coordination state for conflicts on the ubl files to be touched: none found (no active leases).",
+    "5. Ran a live spike (read-only at this point, no product code written yet) loading the real bundled UBL-Invoice-2.3.xsd via the existing _load_schema() helper and walking schema.root_elements[0].type.content.iter_elements() -- confirmed this returns exactly the real UBL 2.3 Invoice schema's own declared child order (54 children, verified against known real schema structure) before committing to the design.",
+    "6. Ran tools.governance.skills_first.resolve --operation add_python_api, which selected skill_id add-python-api (route product_backfill, score 9) -- the same governed route as the ora and nrrd slices.",
+    "7. Implemented schema_root_order() in validation/schema_validator.py, reusing _load_schema()'s existing lru_cache and _require_xmlschema() lazy-import pattern; fixed 3 mypy --strict errors from xmlschema's own XsdSimpleType|XsdComplexType union return type via an explicit isinstance narrowing (verified the narrowing doesn't change behavior by re-running the spike after the fix).",
+    "8. Rewrote add_component() in components.py: extracted a new _first_occurrence_insertion_index() helper implementing the standard sequence-insertion-point algorithm against schema_root_order(), wired it into the existing no-matches branch with a SchemaValidationUnavailable-to-UblValidationError fallback, and updated both the function's own docstring and the module's top-level docstring (both previously stated the gap as unconditionally unbuilt).",
+    "9. Smoke-tested interactively before writing formal tests: inserting TaxTotal into a document with none placed it correctly between AccountingCustomerParty and LegalMonetaryTotal; inserting PaymentMeans (earlier in schema order) placed it correctly before AccountingSupplierParty's siblings; an invalid component name raised the expected clear error. All correct on first run.",
+    "10. Found and fixed ONE pre-existing test that pinned the now-superseded unconditional-refusal behavior (test_obligation_component_create_adjacent.py::test_add_component_refuses_when_no_occurrence_exists_yet) -- repo-wide grep confirmed no other test asserted the old behavior. Renamed and rewrote it to prove the new behavior instead, added a scope note to the file's own module docstring pointing to the new dedicated test file, and left every other pre-existing test in that file untouched.",
+    "11. Wrote tests/python/ubl/test_obligation_component_first_occurrence_insertion.py (9 tests): schema_root_order() correctness against known real Invoice/CreditNote schema facts (including that the two root types' orders genuinely differ), caching, first-occurrence insertion at its real position relative to both an earlier-position and a later-position already-present sibling (proving real order is used, not 'always append' or 'always prepend'), schema-validity of the result, non-mutation, and refusal for a component name that is not a declared child of the root type at all.",
+    "12. First test run: 9/9 passed on the new file; 8/8 passed on the fixed pre-existing file. Ran the full tests/python/ubl/ suite (1225 passed, no regressions), then the 6-format FF6 regression (nrrd/ora/xliff/ubl/ipynb/safetensors: 4102 passed, 4 skipped, up from 4093).",
+    "13. Ran ruff check and mypy --strict against every changed file: both clean. Ran pyright: found 2 'xmlschema import could not be resolved' errors on lines this session did not touch; confirmed via git stash that the identical 2 errors exist in the committed pre-change version of the same file, so this is a pre-existing pyright/environment limitation (xmlschema is genuinely installed and used correctly at runtime, confirmed by mypy --strict and live execution), not a regression introduced here.",
+    "14. Built and installed the ubl wheel via tools/run_package_install_proof.py --format ubl (1/1 PASS). The ephemeral proof venv does not install the optional 'schema' extra by default -- confirmed the fallback path (SchemaValidationUnavailable -> clean refusal) works correctly from the installed wheel in that state, then installed xmlschema==4.1.0 into the same proof venv and confirmed the main success path (schema_root_order('Invoice') returning the correct real order, TaxTotal at index 50) also works correctly from the installed, non-editable wheel location -- both branches of the new code independently verified outside the source tree."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/components.py",
+    "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py",
+    "tests/python/ubl/test_obligation_component_first_occurrence_insertion.py",
+    "tests/python/ubl/test_obligation_component_create_adjacent.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/components.py",
+    "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py",
+    "tests/python/ubl/test_obligation_component_first_occurrence_insertion.py",
+    "tests/python/ubl/test_obligation_component_create_adjacent.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_component_first_occurrence_insertion.py -v -- 9 passed",
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_component_create_adjacent.py -v -- 8 passed (1 test rewritten from a now-superseded refusal assertion)",
+    ".venv/Scripts/pytest tests/python/ubl/ -q --timeout=120 -- 1225 passed",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4102 passed, 4 skipped (was 4093)",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/components.py src/python/ubl/src/format_factory/ubl/validation/schema_validator.py tests/python/ubl/test_obligation_component_first_occurrence_insertion.py tests/python/ubl/test_obligation_component_create_adjacent.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/components.py src/python/ubl/src/format_factory/ubl/validation/schema_validator.py -- Success: no issues found in 2 source files",
+    ".venv/Scripts/python -m pyright src/python/ubl/src/format_factory/ubl/components.py src/python/ubl/src/format_factory/ubl/validation/schema_validator.py -- 2 pre-existing errors (xmlschema import resolution), confirmed identical via git stash on the unmodified committed file -- not introduced by this change",
+    "python tools/run_package_install_proof.py --format ubl -- RESULT: 1/1 PASS; schema_root_order() independently exercised from the installed wheel's site-packages path both with and without the optional xmlschema extra installed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (UBL-EDIT-001) narrows further -- real new capability (first-occurrence component insertion at a schema-verified position) added, not evidence remapping. Not promoted to implemented: this module still has no opinion on component-internal structure for a type the typed model doesn't otherwise represent, and behavior is unchanged (still refuses) when the optional xmlschema dependency is unavailable.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); ubl remains UNASSESSED",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "format_factory.ubl.validation.schema_validator.schema_root_order(root_name) -> tuple[str, ...]; add_component() behavior extended (same signature)"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
