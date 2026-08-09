@@ -512,6 +512,35 @@ execution_evidence:
   expected_result: PASS
   granularity: suite
   truth_boundary: 'Builds format_factory.ora.render, the package''s first pixel-level rendering/compositing engine, closing the single shared root cause 6 of ora''s 7 unresolved obligations named ("no pixel buffer, no blend-mode implementation, no rendering adapter anywhere in the package"). A dependency-free PNG codec (decode_png/encode_png: colour types 0/2/3/4/6, bit depths 1/2/4/8/16, PLTE/tRNS, CRC-verified, bounded decompression, interlacing refused rather than misdecoded) plus a compositor implementing every blend function and Porter-Duff operator COMPOSITE_OP_REGISTRY (model/composite_ops.py) already declared but nothing previously executed: all 15 named blend functions (Normal, Multiply, Screen, Overlay, Darken, Lighten, Color Dodge, Color Burn, Hard Light, Soft Light, Difference, Hue, Saturation, Color, Luminosity, the last 4 via the W3C Compositing and Blending Level 1 section 8.2 non-separable formulas) and all 6 Porter-Duff operators (Source Over, Lighter, Destination In/Out, Source/Destination Atop). Isolated-vs-non-isolated group compositing, subtree rendering, layer offset/clipping, and resource-limit-bounded allocation were implemented directly from the pinned Layer Stack Specification source (.local/format-contracts/acquired/ora/src-ora-003.bin), grepped for its own "Compositing the image" section rather than assumed from general layered-format convention -- this is what established that non-root stack x/y are spec-defined to be ignored entirely (only individual layers'' own x/y matter), encoded as its own dedicated test. generate_thumbnail/generate_baseline_assets close ORA-BASELINEASSET-001''s "generate" half (previously the sole remaining named gap after ORA-BASELINEASSET-REPLACE-PROOF), composing directly with the already-existing replace_baseline_asset(). 29 new tests (tests/python/ora/test_obligation_render_and_compositing.py), every compositing/blend claim proven against independent hand-computed arithmetic (not merely compared against the code''s own prior output), plus PNG codec round-trip, corruption/interlace/truncation rejection, isolation-vs-non-isolation equivalence proofs, subtree rendering, adapter-version (declared-profile) independence, and resource-exhaustion rejection. Comparing rendered output against samples/by-format/ora/valid/*.ora''s own embedded mergedimage.png surfaced and fixed a real, independent defect in valid/multi-layer.ora (its committed merged image ignored both the declared layer opacity and the background layer entirely; diagnosed by hand-verified arithmetic, corrected via this same renderer, documented in samples/by-format/ora/_provenance.yaml''s correction_note) -- with-groups.ora and minimal.ora needed no correction since both use opacity 1.0 throughout. ora suite: 370 -> 399 passed, 0 failed. mypy --strict, ruff, and pyright clean. Installed-wheel behavior independently verified (tools/run_package_install_proof.py --format ora, then render() exercised from the installed site-packages path, not the source tree). 6-format FF6 regression (nrrd/ora/xliff/ubl/ipynb/safetensors): 4065 passed, 4 skipped. Full tests/python/ run: 30130 passed before stopping at one pre-existing, unrelated failure (skill-registry status drift in tests/python/supervisor/test_r104_promoted_skill_commands.py, untouched by this change). NOT claimed as independent-producer interoperability proof -- every sample in this corpus is project-owned synthetic content (_provenance.yaml), not output from a second OpenRaster application; that release-gate requirement ("agrees with at least two independent producers") remains explicitly open and is disclosed as such in both render.py''s and the test file''s own module docstrings. Directly narrows SAL-ORA-OBL-A979A77370914BCA (ORA-RENDER-001, missing -> partial) and SAL-ORA-OBL-2CC875865800D528 (ORA-COMPOSITE-001), SAL-ORA-OBL-52746ABC41B3E790 (ORA-BASELINEASSET-001), SAL-ORA-OBL-ABDDB437C86DC22F (ORA-ISOLATION-001), SAL-ORA-OBL-EC8D65524EB96820 (ORA-EDIT-001), SAL-ORA-OBL-F8A3777A56AA6121 (ORA-STREAM-001), all of which cited the identical rendering-engine gap as their own sole or primary remaining blocker. None promoted to implemented: each retains a disclosed remaining scope item of its own beyond rendering (see each obligation''s own missing_behavior). Does not touch SAL-ORA-OBL-96DAD1AD6C297273 (ORA-MASK-001), which stays correctly missing -- the pinned spec defines no mask concept, independent of rendering.'
+- evidence_id: ORA-RENDERER-ADAPTER-AUTOINVALIDATION-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-adapter-autoinvalidation-001.json
+  expected_result: PASS
+  granularity: suite
+  truth_boundary: >-
+    Closes the two precisely-scoped remaining items ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF's own
+    truth_boundary disclosed rather than claimed closed. Renderer (render.py) is a structural
+    typing.Protocol -- the "replaceable rendering adapter" ORA-COMPOSITE-001's own rule_text names,
+    previously absent entirely. W3CCompositingRenderer wraps the existing free render() function as
+    the default (DEFAULT_RENDERER); render_document()/generate_baseline_assets() both gained an
+    optional renderer: Renderer parameter, defaulting to DEFAULT_RENDERER so every existing caller
+    is unaffected. Proven substitutable with three different shapes: a stateful class, a minimal
+    ad-hoc class requiring no inheritance (confirming genuine structural typing, not a base class
+    contract), and confirming the default itself resolves to W3CCompositingRenderer.
+    apply_transaction_and_refresh_baseline_assets() (transaction.py) closes ORA-EDIT-001's own
+    "stale-derived-view invalidation" clause fully: composes apply_transaction() with
+    generate_baseline_assets()/replace_baseline_asset(), refreshing the thumbnail/merged-image
+    members automatically on a successful commit only -- proven both that it DOES refresh (value
+    correctness: the regenerated image reflects the edit) and that plain apply_transaction() (kept
+    unchanged, not given a hidden flag) does NOT, so the two remain genuinely separate guarantees.
+    10 new tests (tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py). ora
+    suite: 400 -> 410 passed. 6-format FF6 regression: 4102 -> 4112 passed, 4 skipped. ruff, mypy
+    --strict, and pyright all clean on the first run. Installed-wheel behavior independently
+    verified (the new symbols import correctly from the installed, non-editable site-packages
+    path). Narrows SAL-ORA-OBL-2CC875865800D528 (ORA-COMPOSITE-001) and SAL-ORA-OBL-EC8D65524EB96820
+    (ORA-EDIT-001) further; neither promoted to implemented -- ORA-COMPOSITE-001's own release gate
+    (independent-producer proof) and its own disclosed "only one real Renderer implementation
+    exists yet" boundary remain open, and ORA-EDIT-001's confirmed-ungrounded metadata/reference
+    clauses remain correctly unbuilt.
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -1282,6 +1311,8 @@ obligations:
   source_symbols:
   - src/python/ora/src/format_factory/ora/model/composite_ops.py::composite_op_info
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
+  - src/python/ora/src/format_factory/ora/render.py::Renderer
+  - src/python/ora/src/format_factory/ora/render.py::W3CCompositingRenderer
   positive_test_selectors:
   - tests/python/ora/test_obligation_composite_op_registry.py::test_the_registry_covers_every_value_in_the_pinned_spec_table
   - tests/python/ora/test_obligation_composite_op_registry.py::test_the_default_value_maps_to_normal_blending_and_source_over
@@ -1291,10 +1322,17 @@ obligations:
   - tests/python/ora/test_obligation_composite_inventory_profile_independence.py::test_every_registry_value_resolves_the_same_way_on_a_root_and_non_root_stack
   - tests/python/ora/test_obligation_composite_inventory_profile_independence.py::test_validation_accepts_every_value_the_spec_defines_plus_forward_compatible_unknowns
   - tests/python/ora/test_obligation_composite_inventory_profile_independence.py::test_the_default_composite_op_constant_matches_the_registrys_own_default_entry
+  - tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py::test_default_renderer_is_the_w3c_compositor
+  - tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py::test_w3c_compositing_renderer_satisfies_the_renderer_protocol
+  - tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py::test_render_document_uses_the_default_renderer_when_none_is_supplied
+  - tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py::test_render_document_accepts_a_substituted_renderer
+  - tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py::test_generate_baseline_assets_accepts_a_substituted_renderer
+  - tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py::test_a_minimal_custom_renderer_class_is_usable_without_inheriting_anything
   negative_test_selectors: []
   execution_evidence_ids:
   - ORA-COMPOSITE-INVENTORY-PROFILE-INDEPENDENCE-PROOF
   - ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF
+  - ORA-RENDERER-ADAPTER-AUTOINVALIDATION-PROOF
   implemented_behavior:
   - 'FF6-EVENT-000332: three of this obligation''s own four named clauses are implemented and now cross-mapped
     onto this specific obligation ID for the first time. "The selected profile''s... inventory": investigated
@@ -1311,12 +1349,22 @@ obligations:
     fully-opaque multiply/screen case and an already-semi-transparent opacity case (matching, and
     correcting, this project''s own samples/by-format/ora/valid/multi-layer.ora fixture -- see
     ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF).'
+  - 'FF6-ORA-ADAPTER-AUTOINVALIDATION-001: "...through a replaceable rendering adapter" is now
+    built. Renderer (render.py) is a structural typing.Protocol with one render() method matching
+    the free render() function''s own signature; W3CCompositingRenderer wraps that free function as
+    the default implementation (DEFAULT_RENDERER). render_document()/generate_baseline_assets()
+    both accept an optional renderer: Renderer parameter, defaulting to DEFAULT_RENDERER --
+    existing callers are unaffected, and a caller can now substitute any object with a matching
+    render() method (proven with a stateful class and a minimal ad-hoc class requiring no
+    inheritance, confirming Renderer is a genuine structural protocol, not a base class a caller
+    must extend).'
   missing_behavior:
-  - '"...through a replaceable rendering adapter" remains genuinely absent: render.py provides one
-    concrete, non-pluggable compositor, not an adapter abstraction a caller could substitute a
-    different rendering backend into. Narrowed, not resolved -- pixel semantics computation, the
-    obligation''s own larger remaining gap, is now built and tested; the adapter-abstraction half of
-    this specific clause is what remains.'
+  - 'The adapter abstraction itself is built and proven substitutable, but only one real
+    implementation exists (W3CCompositingRenderer) -- no second, genuinely different rendering
+    backend (e.g. a GPU-accelerated one, or one delegating to an external library) has been built
+    to prove the abstraction holds up against a second real implementation, only against test
+    doubles. The obligation''s own release gate (independent-producer proof, shared with
+    ORA-RENDER-001) also remains open, unrelated to this clause.'
   proof_requirements:
     positive:
     - Golden pixel vectors, alpha edge cases, unsupported-operation preservation, and adapter differential
@@ -3836,6 +3884,7 @@ obligations:
   source_symbols:
   - src/python/ora/src/format_factory/ora/transaction.py::TransactionResult
   - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction
+  - src/python/ora/src/format_factory/ora/transaction.py::apply_transaction_and_refresh_baseline_assets
   positive_test_selectors:
   - 'tests/python/ora/test_obligation_transactional_edit.py::test_all_steps_succeeding_commits_the_final_result'
   - 'tests/python/ora/test_obligation_transactional_edit.py::test_asset_and_layer_edits_commit_together'
@@ -3844,16 +3893,31 @@ obligations:
   - 'tests/python/ora/test_obligation_transactional_edit.py::test_move_relocates_a_layer_from_the_root_into_a_group'
   - 'tests/python/ora/test_obligation_transactional_edit.py::test_remove_deletes_a_layer_target'
   - 'tests/python/ora/test_obligation_transactional_edit.py::test_remove_deletes_a_group_target_and_its_children_with_it'
+  - 'tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py::test_committed_transaction_automatically_refreshes_baseline_assets'
+  - 'tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py::test_plain_apply_transaction_still_does_not_refresh_baseline_assets'
+  - 'tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py::test_refreshed_baseline_assets_pass_validation'
   negative_test_selectors:
   - 'tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image'
   - 'tests/python/ora/test_obligation_transactional_edit.py::test_a_validation_error_from_an_invalid_edit_also_rolls_back'
   - 'tests/python/ora/test_obligation_transactional_edit.py::test_replace_and_remove_group_roll_back_together_on_a_later_failure'
+  - 'tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py::test_rolled_back_transaction_does_not_refresh_anything'
   execution_evidence_ids:
   - ORA-BASELINE-SUITE
   - ORA-EDIT-OPS-PROOF
   - ORA-EDIT-METADATA-REFERENCE-GROUNDING-AUDIT-PROOF
   - ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF
+  - ORA-RENDERER-ADAPTER-AUTOINVALIDATION-PROOF
   implemented_behavior:
+  - 'FF6-ORA-ADAPTER-AUTOINVALIDATION-001: stale-derived-view invalidation is now genuinely
+    automatic, closing this obligation''s own last remaining wiring gap.
+    apply_transaction_and_refresh_baseline_assets() (transaction.py) composes apply_transaction()
+    with generate_baseline_assets()/replace_baseline_asset(), regenerating and replacing the
+    thumbnail and merged-image members ONLY on a successful commit -- proven both that it DOES
+    refresh (the regenerated merged image reflects the committed edit, not the pre-edit view) and
+    that plain apply_transaction() (kept unchanged, not given a hidden flag) does NOT, confirming
+    the two are genuinely separate guarantees rather than one silently absorbing the other''s
+    behavior. On rollback, behaves identically to apply_transaction (no render performed, original
+    image returned).'
   - 'FF6-ORA-RENDER-ENGINE-001: stale-derived-view invalidation, this obligation''s own sole
     remaining grounded gap (metadata and reference-maintenance were already confirmed ungrounded
     -- see the FF6-EVENT-000318 entry below), now has a real regeneration path.
@@ -3867,7 +3931,7 @@ obligations:
   - 'apply_transaction genuinely provides atomic multi-step commit/rollback (proven: all-succeed commits, any failure rolls back completely, layer and asset-member edits commit or roll back together as one unit). This slice closes the ''replace'', ''move'', and ''remove'' half of the obligation''s own confirmed gap: apply_transaction is fully generic (any OraImage -> OraImage callable built from dataclasses.replace() on the model is a valid step), so these were not a new feature to build, only new step helpers to exercise through the existing machinery. All five named operations (add, replace, move, rename, remove) are now proven against both a layer target and a group target (OraStack nests other stacks/layers/text, so a ''group'' is simply a non-root OraStack) -- including a group removal that carries its own children with it, and a rollback proof combining a replace and a group-remove that both revert together on a later failure. ''Metadata'' remains untested: no metadata concept exists anywhere in the ora model, so there is nothing to build a step against without inventing one (GAP-008). Reference maintenance and stale-derived-view invalidation remain out of scope, unchanged from before this slice: no cross-element reference type exists yet to repair against, and no rendering engine exists to make a stale view fresh again (ORA-RENDER-001/ORA-COMPOSITE-001 are still missing).'
   - 'FF6-EVENT-000318: investigated whether ''metadata'' and ''maintain references'' -- 2 of this obligation''s own 3 remaining rule_text clauses -- are genuinely grounded in the pinned OpenRaster spec, applying the identical discipline already validated for this obligation''s own ORA-MASK-001 sibling (same authority_fact_ids cluster, SAL-ORA-00008 among them). Full-text-searched all 3 pinned acquired spec sources (.local/format-contracts/acquired/ora/src-ora-00{1,2,3}.bin) for "metadata": 0 hits in all 3 -- the OpenRaster format has no dedicated metadata element or schema the way ODF has meta.xml; it is a ZIP of mimetype + stack.xml + raster assets only. Searched for "reference": 4 hits, all in src-ora-002.bin, all describing the src attribute pointing to an ARCHIVE MEMBER FILE ("image data files referenced by stack.xml", "files must be referenced in stack.xml by their full path") -- zero hits describing a cross-ELEMENT reference within the model tree (no id-based pointer from one layer/stack/text to another exists anywhere in the spec). src (already fully validated by validate_src in model/stack.py, confirmed unaffected by rename/move/remove since it is a static archive path, not derived from tree position) is the ONLY reference-shaped concept OpenRaster defines, and it needs no "maintenance" on edit -- renaming, moving, or removing a layer does not change what its own src value means. Both clauses are therefore ungrounded authoring artifacts, the same finding already established for ORA-MASK-001''s own "mask extension model" clause -- not force-built, matching this obligation''s own established discipline of citing rather than inventing. The 3rd remaining clause, stale-derived-view invalidation, is NOT ungrounded -- it is genuinely blocked on ORA-RENDER-001/ORA-COMPOSITE-001''s own still-unbuilt rendering engine (confirmed: no pixel-compositing infrastructure exists anywhere in this package). Zero source or test changes -- pure evidence-grounding correction, matching the identical evidentiary weight and non-promoting scope of ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF and ORA-COMPOSITE-OP-REJECTION-SCOPE-CORRECTION-PROOF earlier this session. ora suite unchanged (349 passed).'
   missing_behavior:
-  - '''Metadata'' as an edit target and ''maintain references'' are confirmed ungrounded, not merely untested (see FF6-EVENT-000318 above): the OpenRaster spec defines no metadata concept and no cross-element reference concept, so neither clause can be honestly built without inventing content the format does not define. Stale-derived-view invalidation now has a real regeneration path (generate_baseline_assets, FF6-ORA-RENDER-ENGINE-001) but is not automatic: apply_transaction does not call it, so a caller must remember to regenerate baseline assets themselves after a commit. That remaining wiring gap, not a missing rendering capability, is this obligation''s own last real item.'
+  - '''Metadata'' as an edit target and ''maintain references'' are confirmed ungrounded, not merely untested (see FF6-EVENT-000318 above): the OpenRaster spec defines no metadata concept and no cross-element reference concept, so neither clause can be honestly built without inventing content the format does not define. Stale-derived-view invalidation is now fully automatic (apply_transaction_and_refresh_baseline_assets, FF6-ORA-ADAPTER-AUTOINVALIDATION-001) -- this obligation''s own only remaining item is the two ungrounded clauses above, which are correctly not built rather than force-built.'
   proof_requirements:
     positive:
     - Each named operation (add, replace, move, rename, remove) against each named target kind

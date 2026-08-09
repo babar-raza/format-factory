@@ -54,6 +54,7 @@ import zlib
 from array import array
 from collections.abc import Callable, Iterator, Mapping
 from dataclasses import dataclass
+from typing import Protocol
 
 from format_factory.core import (
     DEFAULT_LIMITS,
@@ -788,15 +789,71 @@ def render(
     return DecodedRaster(width=width, height=height, pixels=pixels)
 
 
+class Renderer(Protocol):
+    """A pluggable rendering backend: given a stack/document subtree and
+    its archive members, produce a composited RGBA8 image.
+
+    ORA-COMPOSITE-001: "pixel semantics through a replaceable rendering
+    adapter" -- this protocol IS that adapter boundary, previously absent
+    (this module had "no adapter abstraction of any kind", per that
+    obligation's own prior missing_behavior text). `render_document` and
+    `generate_baseline_assets` both accept a `renderer:` parameter typed
+    against this protocol, defaulting to `DEFAULT_RENDERER`
+    (`W3CCompositingRenderer`, this module's own dependency-free W3C
+    Compositing-and-Blending-Level-1 implementation). A caller may
+    substitute any other object satisfying this same protocol -- a
+    GPU-accelerated backend, one delegating to an external library, or a
+    test double -- without any other function in this module changing.
+    """
+
+    def render(
+        self,
+        root: OraStack,
+        members: Mapping[str, bytes],
+        *,
+        width: int,
+        height: int,
+        limits: ResourceLimits = DEFAULT_LIMITS,
+    ) -> DecodedRaster: ...
+
+
+@dataclass(frozen=True, slots=True)
+class W3CCompositingRenderer:
+    """The default `Renderer`: this module's own `render()` function,
+    wrapped as an adapter instance. Stateless -- one instance
+    (`DEFAULT_RENDERER`) is shared by every caller that does not supply
+    its own renderer."""
+
+    def render(
+        self,
+        root: OraStack,
+        members: Mapping[str, bytes],
+        *,
+        width: int,
+        height: int,
+        limits: ResourceLimits = DEFAULT_LIMITS,
+    ) -> DecodedRaster:
+        return render(root, members, width=width, height=height, limits=limits)
+
+
+#: The rendering adapter every caller gets unless it supplies its own.
+DEFAULT_RENDERER: Renderer = W3CCompositingRenderer()
+
+
 def render_document(
     document: OraDocument,
     members: Mapping[str, bytes],
     *,
     limits: ResourceLimits = DEFAULT_LIMITS,
+    renderer: Renderer = DEFAULT_RENDERER,
 ) -> DecodedRaster:
     """Render `document`'s full root stack at its own declared canvas
-    size (`document.width` x `document.height`)."""
-    return render(document.root, members, width=document.width, height=document.height, limits=limits)
+    size (`document.width` x `document.height`), via `renderer`
+    (ORA-COMPOSITE-001's replaceable rendering adapter; defaults to this
+    module's own W3C compositor, `DEFAULT_RENDERER`)."""
+    return renderer.render(
+        document.root, members, width=document.width, height=document.height, limits=limits
+    )
 
 
 def generate_baseline_assets(
@@ -804,6 +861,7 @@ def generate_baseline_assets(
     members: Mapping[str, bytes],
     *,
     limits: ResourceLimits = DEFAULT_LIMITS,
+    renderer: Renderer = DEFAULT_RENDERER,
 ) -> tuple[bytes, bytes]:
     """Render `document` and return `(thumbnail_bytes, merged_image_bytes)`,
     ready for `lifecycle.replace_baseline_asset`.
@@ -812,15 +870,21 @@ def generate_baseline_assets(
     generate, and replace required thumbnail and flattened-view assets"),
     previously unbuilt because no renderer existed -- see that obligation's
     prior note in `lifecycle.replace_baseline_asset`'s own docstring.
+
+    `renderer` is the same replaceable rendering adapter `render_document`
+    accepts (ORA-COMPOSITE-001).
     """
-    rendered = render_document(document, members, limits=limits)
+    rendered = render_document(document, members, limits=limits, renderer=renderer)
     merged_image = encode_png(rendered)
     thumbnail = generate_thumbnail(rendered)
     return thumbnail, merged_image
 
 
 __all__ = [
+    "DEFAULT_RENDERER",
     "DecodedRaster",
+    "Renderer",
+    "W3CCompositingRenderer",
     "decode_png",
     "encode_png",
     "generate_baseline_assets",

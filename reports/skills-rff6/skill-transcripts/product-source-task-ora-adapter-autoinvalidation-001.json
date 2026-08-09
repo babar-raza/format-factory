@@ -1,0 +1,65 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-adapter-autoinvalidation-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-478e6d9b8f23a97d",
+  "mode": "live",
+  "timestamp": "2026-08-09T09:10:35Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC-FF6-ORA-ADAPTER-AND-AUTOINVALIDATION-001",
+    "task_kind": "close-remaining-precisely-scoped-clauses-disclosed-by-a-prior-slice",
+    "root_cause": "This session's own earlier ORA-RENDER-ENGINE-001 evidence (FF6-EVENT-000468) explicitly disclosed two narrow remaining items rather than treating the render-engine build as fully closing their obligations: ORA-COMPOSITE-001's missing_behavior named 'no adapter abstraction of any kind' as distinct from the now-built pixel-semantics computation; ORA-EDIT-001's transaction.py module docstring stated apply_transaction 'still does not call [generate_baseline_assets] automatically.' The user's follow-up instruction ('work autonomously until the goals are achieved, do not stop for anything') prompted re-examining the 'harder' remaining ora/nrrd/ubl obligations more carefully rather than accepting the first pass's conclusion that only external-data-blocked items remained -- these two were genuinely buildable and had already been precisely scoped in this session's own prior evidence text.",
+    "obligation_targeted": "SAL-ORA-OBL-2CC875865800D528 (ORA-COMPOSITE-001) and SAL-ORA-OBL-EC8D65524EB96820 (ORA-EDIT-001), both narrowed further -- neither promoted to implemented.",
+    "acceptance_evidence": "Added Renderer (typing.Protocol) to render.py: a structural interface with one render() method matching render()'s own free-function signature. W3CCompositingRenderer wraps the existing free function as the default implementation (DEFAULT_RENDERER). render_document()/generate_baseline_assets() both gained an optional renderer: Renderer = DEFAULT_RENDERER parameter -- existing callers unaffected (same default behavior), new callers can substitute any object with a matching render() method, proven with three different substitution shapes (a stateful class, a minimal ad-hoc class with no inheritance, and confirming the default itself resolves to W3CCompositingRenderer). Added apply_transaction_and_refresh_baseline_assets() to transaction.py: composes apply_transaction() + generate_baseline_assets() + replace_baseline_asset(), calling the latter two ONLY on a successful commit, so a caller no longer has to remember to regenerate baseline assets after an edit -- proven both that it DOES refresh on commit and that plain apply_transaction() (kept unchanged, not given a hidden flag) does NOT, confirming the two functions are genuinely separate guarantees, matching this package's own established 'separate function per distinct guarantee' style."
+  },
+  "execution_steps": [
+    "1. After completing three format-spanning obligation slices this session (ora Event 468, nrrd Event 469, ubl Event 470) and reporting a summary, the user instructed continued autonomous work with no stopping. Re-examined the 'remaining, harder' items flagged in that summary rather than treating them as uniformly blocked.",
+    "2. Re-read this session's own ORA-COMPOSITE-001 and ORA-EDIT-001 evidence text (already written during the render-engine slice) and found both named a small, precisely-scoped, buildable remaining item -- not an external-data or large-refactor blocker like ora's other disclosed gaps (independent-producer interoperability proof).",
+    "3. Registered a fresh coordination agent identity and confirmed no active leases on the ora files to be touched.",
+    "4. Read render.py's existing render()/render_document()/generate_baseline_assets() and transaction.py's existing apply_transaction()/TransactionResult in full to place the new code consistently with established patterns (e.g. dataclasses.replace() for immutable updates, the same DEFAULT_LIMITS-parameter convention).",
+    "5. Implemented Renderer/W3CCompositingRenderer/DEFAULT_RENDERER in render.py, threading an optional renderer parameter through render_document()/generate_baseline_assets(); implemented apply_transaction_and_refresh_baseline_assets() in transaction.py, importing generate_baseline_assets from .render and replace_baseline_asset from .lifecycle (confirmed no import cycle: neither module imports transaction.py).",
+    "6. Smoke-tested interactively before writing formal tests: a custom solid-color Renderer substituted into render_document() correctly overrode the default compositor's own output; the automatic-refresh wrapper correctly regenerated baseline assets reflecting a committed hide-a-layer-group edit, and correctly left the original image untouched on a rollback. Both correct on first run.",
+    "7. Ran tools.governance.skills_first.resolve --operation add_python_api, which selected skill_id add-python-api (route product_backfill, score 9) -- the same governed route as every prior slice this session.",
+    "8. Wrote tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py (10 tests): default-renderer identity, protocol satisfaction, substitution into both render_document() and generate_baseline_assets(), a minimal ad-hoc class proving Renderer is a genuine structural Protocol (no inheritance required), automatic refresh on commit (value correctness: the regenerated image matches the edited state, not the pre-edit one), no refresh on rollback (image identity preserved), plain apply_transaction() proven to NOT auto-refresh (guarding against the two functions silently converging), and schema-validity of the refreshed result.",
+    "9. First test run: 10/10 passed. Ran the full tests/python/ora/ suite (410 passed, up from 400, no regressions), then the 6-format FF6 regression (nrrd/ora/xliff/ubl/ipynb/safetensors: 4112 passed, 4 skipped, up from 4102).",
+    "10. Ran ruff check, mypy --strict, and pyright against every changed file: all clean on the first run, no fixes needed.",
+    "11. Built and installed the ora wheel via tools/run_package_install_proof.py --format ora (1/1 PASS), confirmed the new symbols (Renderer, DEFAULT_RENDERER, apply_transaction_and_refresh_baseline_assets) import correctly from the installed, non-editable wheel location."
+  ],
+  "allowed_files": [
+    "src/python/ora/src/format_factory/ora/render.py",
+    "src/python/ora/src/format_factory/ora/transaction.py",
+    "src/python/ora/src/format_factory/ora/__init__.py",
+    "tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/src/format_factory/ora/render.py",
+    "src/python/ora/src/format_factory/ora/transaction.py",
+    "src/python/ora/src/format_factory/ora/__init__.py",
+    "tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py -v -- 10 passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 410 passed (was 400)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4112 passed, 4 skipped (was 4102)",
+    ".venv/Scripts/python -m ruff check src/python/ora/src/format_factory/ora/render.py src/python/ora/src/format_factory/ora/transaction.py src/python/ora/src/format_factory/ora/__init__.py tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/ora/src/format_factory/ora/render.py src/python/ora/src/format_factory/ora/transaction.py src/python/ora/src/format_factory/ora/__init__.py -- Success: no issues found in 3 source files",
+    ".venv/Scripts/python -m pyright src/python/ora/src/format_factory/ora/render.py src/python/ora/src/format_factory/ora/transaction.py -- 0 errors, 0 warnings, 0 informations",
+    "python tools/run_package_install_proof.py --format ora -- RESULT: 1/1 PASS; Renderer/DEFAULT_RENDERER/apply_transaction_and_refresh_baseline_assets independently imported from the installed wheel's site-packages path"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations (ORA-COMPOSITE-001, ORA-EDIT-001) narrow further with real new capability -- a genuine Protocol-based adapter boundary and a genuinely automatic post-commit refresh, not evidence remapping. Neither promoted to implemented: ORA-COMPOSITE-001's own release gate (independent-producer proof) and ORA-EDIT-001's metadata/reference-maintenance boundaries remain open, unrelated to this slice.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); ora remains UNASSESSED",
+    "obligations_moved": 0,
+    "obligations_narrowed": 2,
+    "obligations_total_for_format": 134,
+    "new_public_api": "format_factory.ora's Renderer, W3CCompositingRenderer, DEFAULT_RENDERER, apply_transaction_and_refresh_baseline_assets; render_document()/generate_baseline_assets() gain an optional renderer= parameter (backward-compatible default)"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

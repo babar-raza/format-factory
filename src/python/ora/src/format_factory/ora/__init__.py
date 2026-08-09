@@ -45,9 +45,11 @@ from .lifecycle import (
     validate,
 )
 from .preservation import LossItem, LossReport, check_preservation
-from .transaction import EditStep, TransactionResult, apply_transaction
 from .render import (
+    DEFAULT_RENDERER,
     DecodedRaster,
+    Renderer,
+    W3CCompositingRenderer,
     decode_png,
     encode_png,
     generate_baseline_assets,
@@ -55,12 +57,19 @@ from .render import (
     render,
     render_document,
 )
+from .transaction import (
+    EditStep,
+    TransactionResult,
+    apply_transaction,
+    apply_transaction_and_refresh_baseline_assets,
+)
 from .errors import OraArchiveError, OraError, OraLimitError, OraValidationError
 
 __version__ = "0.1.0.dev0"
 
 __all__ = [
     "COMPOSITE_OP_REGISTRY",
+    "DEFAULT_RENDERER",
     "OPENRASTER_MEDIA_TYPE",
     "CompositeOpInfo",
     "DecodedRaster",
@@ -79,12 +88,15 @@ __all__ = [
     "PreservationMode",
     "RasterMetadata",
     "ReadMode",
+    "Renderer",
     "ResolvedAsset",
     "OraLimitError",
     "OraValidationError",
     "TransactionResult",
+    "W3CCompositingRenderer",
     "__version__",
     "apply_transaction",
+    "apply_transaction_and_refresh_baseline_assets",
     "check_preservation",
     "composite_op_info",
     "decode_png",
