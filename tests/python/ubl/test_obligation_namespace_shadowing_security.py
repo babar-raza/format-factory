@@ -23,13 +23,25 @@ safety net: a spoofed sibling fails validation before any find()-derived
 value is trusted downstream. find() itself remains unchanged and is
 still naively vulnerable if a caller reads a value without validating
 the document first -- that caveat is proven directly below, not hidden.
+
+FF6-EVENT-000481 adds the complementary fix at the lookup site itself:
+find_qname()/find_all_qname() (model/typed.py), matching BOTH namespace
+and local name exactly (a full QName match), generalizing the pattern
+document.py's own _first_child_text() already used internally for
+UBLVersionID/CustomizationID/ProfileID rather than inventing a new
+matching convention. This is purely additive -- none of the ~78 existing
+find()/find_all() call sites are touched or migrated here, so there is
+no regression risk to existing behavior; a caller wanting namespace
+-precise resolution now has a real, tested primitive to migrate to, one
+call site at a time, in future work. The 78-site migration itself
+remains a separate, larger, disclosed task.
 """
 
 from __future__ import annotations
 
 from format_factory.ubl import XmlNode, validate
 from format_factory.ubl.model.root_types import Invoice
-from format_factory.ubl.model.typed import find
+from format_factory.ubl.model.typed import find, find_all_qname, find_qname
 
 _CBC = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
 _EXT_NS = "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
@@ -139,3 +151,53 @@ def test_the_check_does_not_recurse_into_opaque_extension_content() -> None:
     assert not any(
         item.code == "ubl.namespace.shadowed_element" for item in report.diagnostics
     )
+
+
+# ── find_qname()/find_all_qname(): the namespace-precise lookup primitive ──
+
+
+def test_find_qname_correctly_disambiguates_a_spoofed_sibling() -> None:
+    """The exact scenario find() gets wrong (test_find_itself_is_still_
+    naively_vulnerable_a_known_documented_caveat above), resolved
+    correctly by the namespace-precise primitive instead."""
+    spoofed = XmlNode.create(f"{{{_EVIL}}}ID", text="SPOOFED-VALUE")
+    real = XmlNode.create(f"{{{_CBC}}}ID", text="INV-001")
+    document = Invoice.build(children=(spoofed, real))
+
+    assert find_qname(document.root, _CBC, "ID").text == "INV-001"
+    assert find_qname(document.root, _EVIL, "ID").text == "SPOOFED-VALUE"
+
+
+def test_find_qname_returns_none_for_a_namespace_with_no_matching_child() -> None:
+    document = Invoice.build(children=(XmlNode.create(f"{{{_CBC}}}ID", text="INV-001"),))
+
+    assert find_qname(document.root, _EVIL, "ID") is None
+
+
+def test_find_qname_matches_finds_own_result_when_there_is_no_collision() -> None:
+    """Not a behavior change for the common, unambiguous case -- both
+    primitives agree when there is nothing to disambiguate."""
+    document = Invoice.build(children=(XmlNode.create(f"{{{_CBC}}}ID", text="INV-001"),))
+
+    assert find_qname(document.root, _CBC, "ID").text == find(document.root, "ID").text
+
+
+def test_find_all_qname_excludes_a_same_local_name_sibling_from_another_namespace() -> None:
+    spoofed = XmlNode.create(f"{{{_EVIL}}}Amount", text="999999")
+    real = XmlNode.create(f"{{{_CBC}}}Amount", text="42")
+    document = Invoice.build(children=(spoofed, real))
+
+    matches = find_all_qname(document.root, _CBC, "Amount")
+
+    assert [node.text for node in matches] == ["42"]
+
+
+def test_find_all_qname_preserves_document_order_among_genuine_matches() -> None:
+    first = XmlNode.create(f"{{{_CBC}}}Line", text="1")
+    second = XmlNode.create(f"{{{_CBC}}}Line", text="2")
+    third = XmlNode.create(f"{{{_CBC}}}Line", text="3")
+    document = Invoice.build(children=(first, second, third))
+
+    matches = find_all_qname(document.root, _CBC, "Line")
+
+    assert [node.text for node in matches] == ["1", "2", "3"]

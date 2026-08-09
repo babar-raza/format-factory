@@ -93,6 +93,46 @@ execution_evidence:
   expected_result: PASS
   granularity: selector
   truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) SAL-UBL-OBL-0996E6D7B91D544F (UBL-PARSE-001). find()/find_all() match children by local name only, confirmed exploitable via a spoofed same-local-name element in an attacker-controlled namespace -- the obligation''s own finding explicitly declined a full fix (auditing ~78 call sites across the typed-projection layer) as too large a blast radius for a citation-audit tick, and this slice does not attempt that rewrite either. Instead added a detection-only defense in validate(): flags the one structural signature every such spoofing attempt must share (two or more same-local-name children in different namespaces under one parent), which no conformant UBL document produces. Verified against the exact reproduction case from the original finding; verified to produce zero false positives across the entire pre-existing 878-test suite before any new test was written; deliberately excludes ext:ExtensionContent (opaque vendor content) to avoid false positives there. find() itself remains documented as still vulnerable when called without validating first -- proven directly, not hidden, so this obligation stays partial rather than implemented. 7 new tests. ubl suite: 878 -> 885 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule. Covers SAL-UBL-OBL-0996E6D7B91D544F only; it supports no other obligation and promotes no product state.'
+- evidence_id: UBL-QNAME-PRECISE-LOOKUP-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-qname-precise-lookup-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close)
+    SAL-UBL-OBL-0996E6D7B91D544F (UBL-PARSE-001) further -- the complementary
+    fix at the lookup site itself, alongside UBL-NAMESPACE-SHADOWING-SECURITY-
+    PROOF's own validator-level detection. Confirmed the ~78-call-site estimate
+    directly (84 sites across 8 files via grep) and confirmed UBL-UPGRADE-001/
+    UBL-WRITE-001 (ubl's other 2 remaining unresolved obligations) are each
+    independently non-tractable for a single tick (new multi-version transform
+    research; official OASIS examples that do not exist in the pinned source
+    data) before committing to this PARSE-001 sub-slice. Rather than migrating
+    any of the 84 call sites (real regression risk in a security-sensitive
+    area, for low marginal benefit since the existing validator-level check
+    already blocks the exploit signature globally before any find()-derived
+    value is trusted), found and generalized an already-existing, already
+    -correct pattern instead: document.py's own private _first_child_text()
+    helper (used internally for UBLVersionID/CustomizationID/ProfileID) already
+    does exact full-QName matching -- generalized into public
+    find_qname()/find_all_qname() (model/typed.py), not a new, invented
+    convention. Purely additive: zero existing find()/find_all() call sites
+    touched, zero regression risk. Proven directly against the exact
+    reproduction case from this obligation's own original finding (the same
+    spoofed {urn:evil:attacker:namespace}ID sibling of a real cbc:ID):
+    find_qname() correctly returns each element by its own namespace where
+    find() returns only whichever comes first. 5 new tests
+    (tests/python/ubl/test_obligation_namespace_shadowing_security.py, the
+    same file documenting this obligation's own validator-level mitigation and
+    78-site disclosure). ubl suite: 1244 -> 1249 passed. 6-format FF6
+    regression: 4345 -> 4350 passed, 4 skipped. mypy --strict and ruff clean.
+    Installed-wheel behavior independently re-verified: find_qname's own
+    namespace-disambiguation was exercised directly from the installed,
+    non-editable site-packages path. NOT backed by an independent reference
+    UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the
+    execution-recovery directive's GAP-008 rule. Covers
+    SAL-UBL-OBL-0996E6D7B91D544F only; does not promote it to implemented --
+    the 84 existing find()/find_all() call sites remain unmigrated, a
+    separate, larger, disclosed task this slice deliberately does not attempt.
 - evidence_id: UBL-DOCUMENT-TYPE-COVERAGE-VOCABULARY-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-document-type-coverage-001.json
   expected_result: PASS
@@ -1142,22 +1182,31 @@ obligations:
   status: partial
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/validation/validator.py::_namespace_shadowing_diagnostics
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_qname
+  - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all_qname
   positive_test_selectors:
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_a_document_with_no_namespace_collision_is_unaffected
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_the_check_does_not_recurse_into_opaque_extension_content
+  - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_qname_returns_none_for_a_namespace_with_no_matching_child
+  - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_qname_matches_finds_own_result_when_there_is_no_collision
+  - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_all_qname_preserves_document_order_among_genuine_matches
   negative_test_selectors:
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_itself_is_still_naively_vulnerable_a_known_documented_caveat
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_a_spoofed_sibling_from_an_unrelated_namespace_fails_validation
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_the_spoofing_order_does_not_matter_real_element_first_is_also_caught
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_the_diagnostic_names_the_shadowed_local_name_and_both_namespaces
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_nested_shadowing_deeper_in_the_tree_is_also_detected
+  - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_qname_correctly_disambiguates_a_spoofed_sibling
+  - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_all_qname_excludes_a_same_local_name_sibling_from_another_namespace
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-NAMESPACE-SHADOWING-SECURITY-PROOF
+  - UBL-QNAME-PRECISE-LOOKUP-PROOF
   implemented_behavior:
   - 'Root-level namespace mismatches were already rejected (test_wrong_namespace_and_preview_profile_fail_closed). A genuine defense-in-depth mitigation is now also in place: validate() detects the one structural signature every find()/find_all() namespace-spoofing attempt must produce -- two or more same-local-name children, in different namespaces, under one parent -- and rejects the whole document as invalid before any find()-derived value could be trusted downstream. Proven directly against the exact reproduction case from this obligation''s own original finding (a spoofed {urn:evil:attacker:namespace}ID sibling of the real cbc:ID), at both the document root and nested deeper in the tree, regardless of spoofed-vs-real ordering. Verified to produce zero false positives against the entire pre-existing 878-test ubl suite before any new test was written, and deliberately does not recurse into ext:ExtensionContent (opaque vendor content this package never queries by field name, where the check would be a false-positive risk rather than a real protection).'
+  - 'FF6-EVENT-000481: the complementary fix at the lookup site itself now exists. find_qname()/find_all_qname() (model/typed.py) match children by full QName (namespace AND local name), generalizing document.py''s own already-correct private _first_child_text() pattern (used for UBLVersionID/CustomizationID/ProfileID) into a public, reusable primitive rather than a new convention. Proven directly against this obligation''s own original spoofed-sibling reproduction case: find_qname() correctly returns each element by its own namespace where find() returns only whichever comes first. Purely additive -- none of the ~78-84 existing find()/find_all() call sites were touched, so this carries zero regression risk to existing behavior.'
   missing_behavior:
-  - 'find()/find_all() themselves (model/typed.py) remain unfixed at the primitive level -- confirmed directly, not merely assumed: find() still returns a spoofed element''s value when called directly without validating the document first, proven as its own dedicated test rather than hidden. This obligation''s own rule_text (unambiguous resolution, never best-effort local-name guessing) is therefore not fully satisfied by the new detection-only mitigation alone. Fixing find()/find_all() properly still requires auditing and updating roughly 78 call sites across typed.py/aggregates.py/charges.py/reference.py/document.py to verify the expected namespace, not just the local name -- a cross-cutting change with real blast radius, still out of scope for a single tick and left for a dedicated future taskcard with proper regression coverage.'
+  - 'find()/find_all() themselves (model/typed.py) remain unfixed at the primitive level -- confirmed directly, not merely assumed: find() still returns a spoofed element''s value when called directly without validating the document first, proven as its own dedicated test rather than hidden. This obligation''s own rule_text (unambiguous resolution, never best-effort local-name guessing) is therefore not fully satisfied by the detection-only validator mitigation plus the new opt-in find_qname()/find_all_qname() primitive alone. Fixing find()/find_all() properly still requires auditing and migrating roughly 84 call sites across typed.py/aggregates.py/charges.py/reference.py (confirmed by direct count) to the new namespace-precise primitives -- a cross-cutting change with real blast radius, still out of scope for a single tick and left for a dedicated future taskcard with proper regression coverage. UBL-UPGRADE-001 and UBL-WRITE-001, ubl''s other 2 remaining unresolved obligations, were also freshly scoped this tick and confirmed independently non-tractable for a single tick (new multi-version transform research; official OASIS examples absent from the pinned source data).'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;

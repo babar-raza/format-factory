@@ -66,6 +66,39 @@ def find_all(node: XmlNode, name: str) -> tuple[XmlNode, ...]:
     return tuple(child for child in node.children if local_name(child.qname) == name)
 
 
+def find_qname(node: XmlNode, namespace: str, name: str) -> XmlNode | None:
+    """The first child matching BOTH `namespace` and local `name` exactly
+    (a full QName match), or `None`.
+
+    UBL-PARSE-001: "Reject namespace spoofing and ambiguous QName
+    resolution... rather than best-effort guessing." `find()` matches by
+    local name alone and can be confused by a same-local-name sibling
+    from an unrelated namespace -- this is the namespace-precise
+    counterpart, generalizing the exact-QName matching pattern
+    `document.py`'s own `_first_child_text` already uses for
+    `UBLVersionID`/`CustomizationID`/`ProfileID`, rather than introducing
+    a second, different matching convention. `validate()`'s own
+    `_namespace_shadowing_diagnostics` already rejects the structural
+    signature every spoofing attempt must produce before any caller-level
+    lookup runs; this primitive is the complementary fix at the lookup
+    site itself, for callers migrating away from `find()`'s own
+    local-name-only behavior. Existing `find()`/`find_all()` call sites
+    are unchanged by this addition -- migrating them is a separate,
+    larger, disclosed task, not attempted here."""
+    qname = f"{{{namespace}}}{name}"
+    for child in node.children:
+        if child.qname == qname:
+            return child
+    return None
+
+
+def find_all_qname(node: XmlNode, namespace: str, name: str) -> tuple[XmlNode, ...]:
+    """Every child matching BOTH `namespace` and local `name` exactly, in
+    document order -- the `find_all()` counterpart to `find_qname()`."""
+    qname = f"{{{namespace}}}{name}"
+    return tuple(child for child in node.children if child.qname == qname)
+
+
 def _require_node(node: XmlNode | None, expected: str) -> XmlNode:
     if node is None:
         raise UblValidationError(
