@@ -82,6 +82,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-E2B0331E7D4F6AD8 (NRRD-CONVERT-001), promoted partial->implemented -- the fourth and last quarter of the obligation's own compound rule_text (dtype/encoding/attached-detached/ endian conversion, each with explicit overflow/clipping/scaling/rounding policies), following NRRD-DTYPE-SCALE-CONVERSION-PROOF's own three predecessor entries (NRRD-R1-SOURCE-TESTS for dtype/endian, the encoding-conversion proof at FF6-EVENT-000300, and NRRD-ATTACHMENT-CONVERSION-PROOF for attached/detached form at FF6-EVENT-000316, which explicitly and honestly left \"the obligation's own remaining 'scaling' policy for dtype conversion... NOT claimed resolved\"). Added an optional `scale: float | None = None` parameter to convert_dtype(), applied to every value before overflow/rounding, matching the common medical-imaging case of remapping a normalized float range (e.g. [0.0, 1.0]) onto an integer type's own representable range (e.g. scale=255 for uint8) -- the exact worked example this package's own module docstring and POL-SCR-CONVERT-01's own rule_text already named (\"overflow/clipping/scaling/rounding policies\") before this slice built it. A non-integer scale factor can introduce fractional values even from an integer source (10 * 0.5 = 5.0), so the existing \"float source requires explicit RoundingPolicy\" guard was widened to a `may_be_non_integral = source_is_float or scale is not None` precondition, covering that case too -- confirmed by a dedicated negative test (an integer source scaled by 0.5 into an integer target without rounding is refused, the same as a float source would be). `scale` defaults to None (its absence is byte-for-byte identical to convert_dtype()'s own pre-existing behavior, confirmed by a dedicated regression test), so this is a purely additive, backward-compatible change -- no existing caller's behavior changes. ConversionReport gained a `scale: float | None = None` field so a conversion's own applied scale factor is always visible, matching this module's own \"never silent\" ethos for every other policy field it already carries. 5 new tests (tests/python/nrrd/test_obligation_dtype_conversion.py): a normalized [0,1]->[0,255] remap (with an honestly-reasoned is_lossless=False assertion, since 0.5*255=127.5 is genuinely fractional and gets rounded, not an exact match), an out-of-range-after-scaling clip case, the integer-source-non-integer-scale refusal, a working integer-source-scaled-and-rounded case, and the no-scale-given-is-unchanged regression proof. Verified zero regressions against the entire pre-existing 675-test nrrd suite before writing a single new test. nrrd suite: 675 -> 680 passed, 1 skipped (unchanged). mypy --strict and ruff clean. Combined 6-format run: pending final tick regeneration. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the scaling semantics themselves are a direct, literal reading of the obligation's own named policy set, not a new spec interpretation. Covers SAL-NRRD-OBL-E2B0331E7D4F6AD8 only; it supports no other obligation and promotes no other product state."
     },
     {
+      "evidence_id": "NRRD-ENCODING-MATRIX-HOSTILE-FIXTURES-PROOF",
+      "expected_result": "PASS",
+      "granularity": "suite",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-encoding-matrix-001.json",
+      "sha256": "894a00db204ee97a6fe453a9e3a2737400d29a6e32191d0d777f9f045a5199ab",
+      "truth_boundary": "Closes the exhaustive cross-product half of NRRD-ENC-001's own rule_text (\"test every magic version, every type alias, every encoding, endian combinations, attached plus all detached data-file forms, and hostile fixtures\"), using only pre-existing public API -- no product source changed. Before this: every dimension had SOME coverage, but almost always in isolation (every scalar type alias was tested but only with `encoding: raw`; every encoding was tested but only with one fixed type; every magic version was tested but only for version-gating rules, never crossed with encodings; every detached form was tested but every fixture hardcoded `encoding: raw`) -- verified directly by a dedicated research pass before any test was written, not assumed from the obligation text alone. Adds a representative type-byte-width x encoding x endian matrix, a magic-version x encoding cross product, and a detached-form x encoding cross product. Also closes 2 hostile-fixture branches independently confirmed to have zero prior coverage by grepping for their own exact error strings (codec/payload.py's \"truncated gzip payload\", \"truncated or oversized bzip2 payload\", \"invalid hexadecimal payload\"), plus a bzip2-bomb test mirroring the existing gzip one and LIST/printf-entry path-traversal tests (existing traversal coverage targeted only single-file declarations). 107 new tests (tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py); 21 initial failures were diagnosed as the test fixtures' own bugs (hex wrongly treated as a no-endian-required textual encoding; a fixed multi-file split count that doesn't evenly divide compressed/hex payload byte counts), not product bugs, and fixed before re-running clean. nrrd suite: 745 -> 852 passed. 6-format FF6 regression: 4112 -> 4219 passed. ruff clean. Installed-wheel proof PASS (no new product API to independently verify, since zero lines were added to src/). NOT claimed: \"independent oracle runs\" (Teem/pynrrd comparisons), this obligation's own other required proof half, remains genuinely unbuilt -- investigated directly and found a real, previously-undiagnosed blocker: this package's own top-level `nrrd` distribution shares its exact import name with real `pynrrd` (already declared as the `reference` optional extra), so installing it would shadow this project's own legacy `nrrd.*` shim that ~17 other test files already import, breaking them. The identical collision affects `safetensors`'s own `reference` extra against this repo's own top-level `safetensors` package. Disclosed as real, separate architectural work (subprocess isolation, a renamed shim, or an aliased import loader are the candidate fixes, none implemented), not force-built into this test-matrix expansion. Narrows SAL-NRRD-OBL-5A7992A6D1561C1D (NRRD-ENC-001) further; does not promote it to implemented."
+    },
+    {
       "evidence_id": "NRRD-ENDIAN-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -253,7 +261,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "2e771d67d534d81a8224a1d57aff0afc90b3ba55f8f3c12a6145b1cd22e07d23",
+    "implementation_evidence": "cd18e5fb08a4b4b92f83388761d834ddfc9d6caadc46bdbaa8f12b22e808cb84",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1118,21 +1126,35 @@
     {
       "capability_id": "NRRD-ENC-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-ENCODING-MATRIX-HOSTILE-FIXTURES-PROOF"
       ],
       "implemented_behavior": [
-        "Scalar aliases, main encodings, endian, attached/single/list/pattern reads, traversal, truncation, and some limits have tests."
+        "Scalar aliases, main encodings, endian, attached/single/list/pattern reads, traversal, truncation, and some limits have tests.",
+        "FF6-NRRD-ENCODING-MATRIX-001: the exhaustive cross-product this obligation's own rule_text names is now built -- a representative type-byte-width x encoding x endian matrix (previously each dimension was tested only in isolation), a magic-version (NRRD0001-0005) x encoding cross product (previously every encoding test hardcoded NRRD0004/0005), and a detached-form (single-file/LIST/printf) x encoding cross product (previously every detached-form test hardcoded encoding: raw). Also closes 2 previously zero-coverage hostile-fixture branches identified by direct source inspection before writing any test: mid-stream-truncated gzip/bzip2 payloads and malformed hex text, plus a bzip2-bomb test (previously only gzip had one) and LIST-entry/printf-expanded path traversal tests (previously only single-file traversal was tested). 107 new tests, 100% through pre-existing public API -- no product source changed."
       ],
       "missing_behavior": [
-        "The required exhaustive cross-product and hostile bomb/overflow matrix is incomplete and lacks independent oracle runs."
+        "\"Independent oracle runs\" (Teem/pynrrd comparisons) remain genuinely unbuilt -- investigated directly and found a real, previously-undiagnosed blocker, not merely unwritten test cases: this package's own top-level `nrrd` distribution shares its exact import name with the real `pynrrd` package (already declared as the `reference` optional extra), so installing pynrrd would shadow this project's own legacy `nrrd.*` compatibility shim that ~17 other test files already import, breaking them. The identical collision affects `safetensors`'s own `reference` extra (`safetensors==0.8.0`) against this repo's own top-level `safetensors` package. Resolving it (subprocess-isolated oracle execution, renaming the legacy shim, or an aliased import loader) is real, separate architectural work spanning at least two format families -- correctly left open, not force-built into a test-matrix expansion. Teem CLI (`unu`) comparisons are a second, currently entirely unbuilt integration with no existing subprocess-invocation pattern anywhere in this suite."
       ],
       "negative_test_selectors": [
         "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed",
-        "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable"
+        "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable",
+        "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_mid_stream_truncated_gzip_payload_is_rejected",
+        "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_mid_stream_truncated_bzip2_payload_is_rejected",
+        "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_malformed_hex_payload_is_rejected",
+        "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_a_bzip2_bomb_disproportionate_to_the_declared_shape_fails_cheaply",
+        "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_list_entry_path_traversal_is_rejected",
+        "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_printf_expanded_path_traversal_is_rejected"
       ],
       "obligation_id": "SAL-NRRD-OBL-5A7992A6D1561C1D",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip",
+        "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_representative_type_encoding_matrix_round_trips",
+        "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_representative_type_encoding_matrix_round_trips_big_endian",
+        "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_every_magic_version_round_trips_across_every_encoding",
+        "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_single_file_detached_form_across_every_encoding",
+        "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_list_detached_form_across_every_encoding",
+        "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_printf_detached_form_across_every_encoding"
       ],
       "proof_requirements": {
         "negative": [
@@ -2883,6 +2905,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-path-version-gate-001.json": "0ddb74585effd11d8f31db536d8242dbcf347f14dba381a36faffab0b40a3add",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-writer-001.json": "459aee29fa15ac2f6d632f1d4d863923866957e8086da79dd6dde1ab6374d01f",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-dtype-scale-conversion-001.json": "c672397a7b44a6c658d2993ee85f163bd9e168fb8f117b910209f074a3e12b04",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-encoding-matrix-001.json": "894a00db204ee97a6fe453a9e3a2737400d29a6e32191d0d777f9f045a5199ab",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-field-presence-001.json": "e0d43cc4dbaed0a38705d722b5c26cdcfdb4a94a50b4519aca841a1d54a6d638",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-field-name-aliases-001.json": "83d73c735f92aadc0240da321facedf152658ac2fd3144ee4a38aecddea9e547",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-field-ordering-001.json": "69bf3bede20abc9f6cbe94440cd555ce406139e19f65bfad48d30002edcd5a21",
@@ -2930,6 +2953,7 @@
     "tests/python/nrrd/test_obligation_detached_writer.py": "f947213e761a9424118e4d6dbf7bf00193b72ec6f773b25d23492c143b711297",
     "tests/python/nrrd/test_obligation_dtype_conversion.py": "52a58a8e66d2bb715894ec3c09197b16145ed1aa23a9f95aa2a1a7aedf355377",
     "tests/python/nrrd/test_obligation_encoding_conversion.py": "5d51c4b0b8628ff250327cd326d41415bc545e3a7d12c9dd9556e124e7b5a7c8",
+    "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py": "97c33d1a5401d1c927b1d2da558350b22f5c9424e0bb5675f65f1e68df702a38",
     "tests/python/nrrd/test_obligation_field_presence.py": "1c1d956087bdf9f6f2e25e5620861bc3e139c7854255fc79904b91ef83a37261",
     "tests/python/nrrd/test_obligation_header_field_grammar.py": "e70dc004b9be05c2828ba1b1fa99de76484c1190d1abf0ac59d1bd320e89fdee",
     "tests/python/nrrd/test_obligation_header_field_name_aliases.py": "15499477f5c13e5777318e559e55628905055b5f903d430f448c4fd67a7cb9b8",

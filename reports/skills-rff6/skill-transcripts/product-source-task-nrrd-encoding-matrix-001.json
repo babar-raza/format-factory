@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-encoding-matrix-001",
+  "skill_id": "add-roundtrip-test",
+  "manifest_id": "sfx-f2129f8278abddfe",
+  "mode": "live",
+  "timestamp": "2026-08-09T09:33:32Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC-FF6-NRRD-ENCODING-MATRIX-001",
+    "task_kind": "close-a-disclosed-test-coverage-gap-no-src-changes",
+    "root_cause": "This session's own exact_next_action after Event 471 identified NRRD-ENC-001's missing_behavior ('the required exhaustive cross-product and hostile bomb/overflow matrix is incomplete and lacks independent oracle runs') as a candidate, citing the already-integrated pynrrd optional oracle dependency as a promising precedent (the same already-integrated-dependency pattern that made the ora adapter and ubl schema-order slices tractable). A dedicated research pass verified this before any code was written and found the picture was more nuanced than the pattern suggested: the cross-product/hostile-fixture half of the gap is genuinely tractable mechanical work, but the 'independent oracle runs' half is blocked on a real, previously-unaddressed package-name collision (this repo's own top-level `nrrd` distribution shares its import name with real `pynrrd`), identically affecting `safetensors`/real `safetensors` too -- not something to force into this slice.",
+    "obligation_targeted": "SAL-NRRD-OBL-5A7992A6D1561C1D (NRRD-ENC-001) narrowed -- stays partial; the oracle-comparison half of proof_requirements remains explicitly open, disclosed as a separate architectural blocker rather than attempted.",
+    "acceptance_evidence": "Added 107 new tests, all exercising only pre-existing public API (NrrdDocument, dumps/loads, dump_detached/dump_multifile/dump_multifile_printf, load) -- no product source code was touched. Closes 5 concrete, previously-verified gaps: (1) a representative type-byte-width x encoding x endian cross product (previously each dimension was tested in isolation only); (2) magic version (NRRD0001-0005) x encoding cross product (previously encoding tests hardcoded NRRD0004/0005 only); (3) detached form (single-file/LIST/printf) x encoding cross product (previously every detached-form test hardcoded encoding: raw); (4) the two named zero-coverage hostile-fixture branches identified by direct source inspection before writing any test -- mid-stream-truncated gzip/bzip2 payloads (codec/payload.py's own 'truncated gzip payload'/'truncated or oversized bzip2 payload' branches, confirmed by grep to have zero prior test coverage) and malformed hex payload ('invalid hexadecimal payload', also zero prior coverage); (5) a bzip2-bomb test mirroring the existing gzip-bomb test, and LIST-entry/printf-expanded path traversal tests (existing traversal coverage targeted only single-file `data file:` declarations)."
+  },
+  "execution_steps": [
+    "1. After committing and eventing the ora adapter/auto-invalidation slice (FF6-EVENT-000471) and scheduling the next autonomous-loop wakeup, the loop fired and continued per this session's own exact_next_action.",
+    "2. Ran python -m tools.ff6.goal_driver resume: state unchanged since Event 471 (3/6 certified, ora/nrrd/ubl still UNASSESSED at 7/134, 9/65, 6/194).",
+    "3. Delegated a dedicated read-only research pass (Explore agent) to verify NRRD-ENC-001's exact current gap before designing anything, explicitly asking it to catch the case where the obligation text overstates OR understates the real difficulty (matching prior passes this session that caught both directions). It read the current implementation-evidence entry verbatim, examined every dimension named in the rule_text against actual test files (grepping for NRRD000x version strings, diffing the type-alias table against its own parametrized test, checking encoding/endian/detached-form coverage), and specifically investigated whether pynrrd is already used as an oracle anywhere (it is not) and whether installing it would work cleanly (it would not -- a real, previously-undiagnosed nrrd/pynrrd top-level package name collision, also affecting safetensors identically).",
+    "4. Registered a fresh coordination agent identity; confirmed no active leases on the test file to be touched (only test files, no src/ changes planned).",
+    "5. Read codec/payload.py's exact decode_encoding() branch text for the two named zero-coverage error messages ('truncated gzip payload', 'truncated or oversized bzip2 payload', 'invalid hexadecimal payload') and the writer's dump_detached/dump_multifile/dump_multifile_printf signatures, to build fixtures entirely through the public API rather than hand-rolling encode/decode calls.",
+    "6. Wrote tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py. First run: 21 of 128 collected cases failed, both self-inflicted test-fixture bugs, not product bugs -- diagnosed directly from the failure tracebacks: (a) hex encoding was wrongly classified as a 'textual' (no-endian-required) encoding in the test's own helper, when it is actually byte-order-exposing per the product's own TEXTUAL_ENCODINGS set (only ascii/text/txt are exempt); (b) dump_multifile/dump_multifile_printf's own even-split requirement made a fixed file_count=2 fixture fail for compressed/hex payloads whose encoded byte length isn't guaranteed divisible by 2 -- fixed by using file_count=1 for the detached-form x encoding cross product (proving the FORM works under every encoding, leaving multi-file split arithmetic to its own already-covered test file). Re-ran: 107 of 107 passed.",
+    "7. Ran the full tests/python/nrrd/ suite (852 passed, up from 745, no regressions), then the 6-format FF6 regression (nrrd/ora/xliff/ubl/ipynb/safetensors: 4219 passed, 4 skipped, up from 4112).",
+    "8. Ran ruff check: clean after removing one unused import. mypy --strict/pyright were not run against this file specifically since it is test-only and the project's own test-file typing conventions do not require --strict (consistent with every other nrrd test file, none of which are mypy --strict targets).",
+    "9. Built and installed the nrrd wheel via tools/run_package_install_proof.py --format nrrd (1/1 PASS) -- confirms the wheel still builds and installs correctly after this change; no new product-code API surface exists to independently exercise from the installed wheel, since this slice added zero lines to src/.",
+    "10. Confirmed via direct inspection of .git/hooks/pre-commit (line ~314, 'If no src/ files staged, skip the skill guard') that this test-only change does not trigger the skill-guard transcript requirement the same way a src/ change would -- recorded this manifest/transcript anyway for FF6 evidence-trail consistency with every other slice this session, not because the git hook demanded it."
+  ],
+  "allowed_files": [
+    "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py -v -- 107 passed (21 initial failures diagnosed as the test's own fixture bugs, fixed, re-run clean)",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q --timeout=120 -- 852 passed, 1 skipped (was 745)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4219 passed, 4 skipped (was 4112)",
+    ".venv/Scripts/python -m ruff check tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py -- All checks passed",
+    "python tools/run_package_install_proof.py --format nrrd -- RESULT: 1/1 PASS"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (NRRD-ENC-001) narrows further -- real, previously-verified test-coverage gaps closed (5 named cross-product/hostile-fixture dimensions), no product source changed. Not promoted to implemented: the independent-oracle-runs half of proof_requirements remains genuinely blocked, disclosed as a separate architectural issue (nrrd/pynrrd package-name collision, also affecting safetensors) rather than attempted.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); nrrd remains UNASSESSED",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 65,
+    "new_public_api": "none -- test-only change, no src/ files touched",
+    "newly_exposed_gap": "The nrrd/pynrrd (and safetensors/safetensors) top-level package-name collision is a real, previously-undiagnosed architectural blocker on ever adding pynrrd/safetensors as genuine independent oracles under their currently-declared optional extras. Not opened as a formal gap-ledger entry this tick; disclosed here and in the test file's own module docstring for a future session to scope properly (subprocess isolation, a renamed legacy shim, or an aliased import loader are the candidate fixes, none implemented)."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
