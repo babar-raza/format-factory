@@ -3,14 +3,15 @@
   "gate": "typing",
   "tool": "mypy --strict",
   "target": "src/python/ora/src/format_factory/ora",
-  "source_files_checked": 14,
+  "source_files_checked": 15,
   "errors_found": 0,
   "status": "PASS",
   "verdict": "PASS",
-  "note": "1 pre-existing error fixed as part of this run (lifecycle.py::_read_source used getattr(source, 'read', None) + callable() to detect a readable stream, which erased mypy's own narrowing of Source's IO[bytes] member and made read() return Any instead of bytes. After the isinstance checks for bytes/bytearray/str/PathLike rule out every other Source union member, the only remaining possibility is IO[bytes], so a plain hasattr(source, 'read') check lets mypy narrow correctly and read() is properly typed as () -> bytes -- zero behavior change, same runtime check). Zero errors remain across all 14 source files. This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the typing invariant only, not a certification claim for the format as a whole.",
+  "note": "1 pre-existing error fixed as part of an earlier run (lifecycle.py::_read_source used getattr(source, 'read', None) + callable() to detect a readable stream, which erased mypy's own narrowing of Source's IO[bytes] member and made read() return Any instead of bytes. After the isinstance checks for bytes/bytearray/str/PathLike rule out every other Source union member, the only remaining possibility is IO[bytes], so a plain hasattr(source, 'read') check lets mypy narrow correctly and read() is properly typed as () -> bytes -- zero behavior change, same runtime check). This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the typing invariant only, not a certification claim for the format as a whole.",
+  "re_run_this_tick": "Re-ran fresh against current HEAD (post this session's own render-engine/transaction/StraightAlphaReferenceRenderer growth, Events 468-504): source_files_checked rose from 14 to 15 (transaction.py, added earlier this session for ORA-EDIT-001, is now counted), zero errors. The new render_straight_alpha_reference()/StraightAlphaReferenceRenderer/_straight_over()/_render_node_straight_alpha_reference() additions all typecheck cleanly under --strict on first attempt, including the Renderer Protocol's own structural-typing conformance for the new class.",
   "regression": {
-    "ora_suite": "349 passed, 0 failed (unchanged by this fix)",
-    "six_format_suite": "3936 passed, 4 skipped, 0 failed"
+    "ora_suite": "427 passed, 0 failed (unchanged by this gate's own re-verification -- no source touched by this specific check)",
+    "six_format_suite": "4854 passed, 4 skipped, 0 failed"
   },
   "commit": "pending"
 }

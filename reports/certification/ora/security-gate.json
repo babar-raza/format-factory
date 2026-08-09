@@ -15,9 +15,10 @@
   "new_tests": "tests/python/ora/test_obligation_security_static_sweep.py (4 tests, all new -- a separate file from the pre-existing test_obligation_security_baseline.py, not a replacement of it)",
   "correction_this_tick": "A first draft of this gate's own new test file was mistakenly WRITTEN OVER the pre-existing test_obligation_security_baseline.py (a real, substantial 17-test ORA-SEC-001 proof committed earlier this session, commits 8c7600da/8f8a7fcc) instead of being added as a new file. Caught via a full-suite test-count check (349 expected, 332 observed after the mistaken overwrite) before any commit -- git checkout -- restored the original file intact, and the new checks were placed in a distinctly-named test_obligation_security_static_sweep.py instead. No test coverage was lost; this is disclosed for the record, not silently corrected.",
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the security invariant only, not a certification claim for the format as a whole.",
+  "re_run_this_tick": "Re-verified fresh against current HEAD (post this session's own render-engine/transaction/StraightAlphaReferenceRenderer growth, Events 468-504): both this gate's own test files (test_obligation_security_baseline.py, test_obligation_security_static_sweep.py) still pass unchanged (25 passed). Directly grepped the two largest new source additions this session (render.py's own render_straight_alpha_reference/StraightAlphaReferenceRenderer, transaction.py's own apply_transaction_and_refresh_baseline_assets) for every forbidden import name: zero matches, confirming the new code introduces no new attack surface.",
   "regression": {
-    "ora_suite": "355 passed (was 349, +4 static-sweep +2 max_output_bytes tests recorded separately under the resource gate)",
-    "six_format_suite": "3936 passed, 4 skipped, 0 failed"
+    "ora_suite": "427 passed (was 355; +72 net from this session's own obligation-closure work -- reference-preservation, adapter-differential-test, and version-detection proofs, all test-only or additive)",
+    "six_format_suite": "4854 passed, 4 skipped, 0 failed"
   },
   "commit": "pending"
 }

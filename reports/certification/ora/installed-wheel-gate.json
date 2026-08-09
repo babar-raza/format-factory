@@ -5,17 +5,18 @@
   "canonical_manifest": "reports/package-install-proof/proof-manifest.json",
   "status": "PASS",
   "verdict": "PASS",
-  "proof_id": "PACKAGE-PROOF-04F8C405DD6253A49FB9E575BDB06907F7F913E68AB764463C6F02509E13A021",
+  "proof_id": "PACKAGE-PROOF-056A6DFB2F7130B0626B969F52FE265EFF2C44A950851710494F2E73977B3A58",
+  "wheel_sha256": "353f3cca0c63f95a419dcec759488db74c04b432ef8a34fb3c61ca2b4fc0327d",
   "checks": {
     "build_mode": "native_pyproject",
     "install_result": "PASS -- installed from a freshly built wheel into an isolated ephemeral venv, not the dev checkout",
     "local_dependency": "format-factory-core wheel installed first, PASS",
     "import_result": "PASS",
-    "deep_import": "PASS -- 13/13 submodules import cleanly, 0 failing",
+    "deep_import": "PASS -- 14/14 submodules import cleanly, 0 failing",
     "smoke_result": "PASS -- format_factory.ora.load on samples/by-format/ora/valid/minimal.ora",
     "pytest_in_proof_venv": "2 passed, 1 skipped"
   },
-  "re_run_this_tick": "FF6-EVENT-000466 (via /product-source-task): wheel_sha256 changed to fcbaca8b6c0525ded80826429dc404b1e82f06d42e19fc2e5ed3109f576e6605 because 8 public functions/properties across lifecycle.py/preservation.py/codec/assets.py/codec/container.py/codec/png_metadata.py/model/stack.py gained docstrings, resolving 8 of ora's 11 V102 (missing-docstring) governance violations. Content-only change -- submodule count stays 13/13 (no new file added, unlike nrrd's Event 457 refactor). Pure documentation addition, zero behavior change: confirmed by ora's full test suite (370 passed, 1 warning, identical to the pre-change baseline) and mypy --strict (clean, 14 source files).",
+  "re_run_this_tick": "Re-verified fresh against current HEAD (post this session's own render-engine/transaction/StraightAlphaReferenceRenderer growth, Events 468-504): deep_import rose from 13/13 to 14/14 submodules (transaction.py, added earlier this session for ORA-EDIT-001, is now counted), 0 failing. wheel_sha256/proof_id refreshed to match the current source tree. Full ora suite: 427 passed (was 370 at Event 466, +57 net from this session's own obligation-closure and narrowing work).",
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the installed-wheel invariant only, not a certification claim for the format as a whole.",
   "commit": "pending"
 }
