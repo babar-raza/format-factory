@@ -541,6 +541,33 @@ execution_evidence:
     (independent-producer proof) and its own disclosed "only one real Renderer implementation
     exists yet" boundary remain open, and ORA-EDIT-001's confirmed-ungrounded metadata/reference
     clauses remain correctly unbuilt.
+- evidence_id: ORA-STREAM-COMBINED-BUDGET-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ora-stream-combined-budget-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Closes the specific combined-scenario gap ORA-STREAM-BUDGETS-CANCELLATION-PROOF's own
+    truth_boundary and this obligation's own missing_behavior both named: the render budget
+    (canvas allocation, per-layer decompression, both already implemented per
+    ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF) had only ever been proven one dimension at a time.
+    One document combines an opaque top layer sized to within 0.1% of a deliberately tight
+    ResourceLimits.max_decompressed_bytes budget, a 20-level-deep chain of isolated groups, and
+    42 small covered layers (40+, genuinely "many") -- proven both to render the correct result
+    within budget (the top layer's own pixels, since visual stacking order makes it uppermost and
+    fully opaque, covering everything nested beneath it regardless of how much the renderer had
+    to walk and decode to get there) and to still be correctly refused when only the canvas
+    dimension is pushed over budget, proving the check is not bypassed or miscounted when many
+    other dimensions are simultaneously near their own limits. Building these tests corrected a
+    real inaccuracy in this obligation's own prior implemented_behavior text: render()'s actual
+    canvas-budget formula is width * height * channels(4) * bit_depth(8) against
+    max_decompressed_bytes, not width * height * 4 alone -- caught directly by a failing first
+    test run against the real formula in render.py, not assumed from the prior prose description.
+    2 new tests (tests/python/ora/test_obligation_render_and_compositing.py). ora suite: 410 -> 412
+    passed. 6-format FF6 regression: 4290 -> 4292 passed, 4 skipped. ruff clean. No product source
+    changed -- zero lines added to src/python/ora, confirmed via git status, so no installed-wheel
+    re-verification was needed. Narrows SAL-ORA-OBL-F8A3777A56AA6121 (ORA-STREAM-001) further; does
+    not promote it to implemented -- this tick closed exactly the named combined-scenario gap, not
+    a fresh exhaustive re-audit of the obligation's every other named requirement.
 obligations:
 - obligation_id: SAL-ORA-OBL-022F37EEA74EC1BB
   capability_id: ORA-EDIT-001
@@ -4054,12 +4081,15 @@ obligations:
   - tests/python/ora/test_obligation_security_baseline.py::test_deeply_nested_stacks_are_refused_by_a_bounded_recursion_walk
   - tests/python/ora/test_obligation_stream_budgets_and_cancellation.py::test_resolving_one_asset_never_reads_a_sibling_layers_own_archive_member
   - tests/python/ora/test_obligation_stream_budgets_and_cancellation.py::test_the_granular_api_lets_a_caller_stop_before_an_unresolvable_layer_resolve_all_does_not
+  - tests/python/ora/test_obligation_render_and_compositing.py::test_a_large_sparse_archive_with_deep_nesting_and_near_limit_canvas_renders_correctly_within_budget
   negative_test_selectors:
   - tests/python/ora/test_obligation_container_and_mimetype.py::test_too_many_members_is_a_limit_error
   - tests/python/ora/test_obligation_raster_assets.py::test_an_asset_declaring_an_enormous_surface_is_refused
+  - tests/python/ora/test_obligation_render_and_compositing.py::test_the_same_combined_scenario_over_the_canvas_budget_is_still_correctly_refused
   execution_evidence_ids:
   - ORA-STREAM-BUDGETS-CANCELLATION-PROOF
   - ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF
+  - ORA-STREAM-COMBINED-BUDGET-PROOF
   implemented_behavior:
   - 'FF6-ORA-RENDER-ENGINE-001: the "render" budget this obligation''s own missing_behavior named
     is now bounded, not absent -- render.py checks the canvas dimensions (width * height * 4
@@ -4086,13 +4116,25 @@ obligations:
     calling the resolver after any layer without cost -- proven by contrasting the eager, all-or-nothing resolve_all_assets()
     (fails outright, yielding nothing) with the granular iter_layers()/resolve_asset() combination (yields each
     result as it goes, so a caller can stop before reaching a layer they no longer want).'
+  - 'FF6-EVENT-000476: the combined "large sparse archive" render-budget stress case this obligation''s
+    own missing_behavior named is now built. One document combines an opaque top layer sized to within
+    0.1% of a deliberately tight canvas budget, a 20-level-deep chain of isolated groups, and 42 small
+    covered layers (40+, genuinely "many"), proven both to render the correct result within budget
+    (test_a_large_sparse_archive_with_deep_nesting_and_near_limit_canvas_renders_correctly_within_budget)
+    and to still be correctly refused when only the canvas dimension is pushed over budget
+    (test_the_same_combined_scenario_over_the_canvas_budget_is_still_correctly_refused) -- proving the
+    resource-limit check is not bypassed or miscounted when many other dimensions are simultaneously
+    near their own limits. Building these tests also corrected this obligation''s own prior
+    implemented_behavior text above: render()''s real canvas-budget formula is width * height *
+    channels(4) * bit_depth(8) against max_decompressed_bytes, not width * height * 4 alone -- caught
+    directly by a failing first test run, not assumed.'
   missing_behavior:
-  - 'The render budget is now bounded for canvas allocation and per-layer decompression (see
-    implemented_behavior above), but a full end-to-end "large sparse archive" render-budget
-    stress case (many layers, deep isolation nesting, near-limit canvas dimensions all at once)
-    is not yet exercised as its own dedicated scenario -- the two focused resource-limit tests
-    each isolate one dimension (canvas size, one layer''s declared size) rather than a combined
-    worst case.'
+  - 'This tick closed exactly the combined-scenario gap named above; it did not perform a fresh,
+    exhaustive re-audit of this obligation''s every other named requirement ("lazy-read
+    instrumentation," "flat-memory checks," "cancellation," "every resource limit") against the
+    SAL register''s own literal wording, so `status` is left at `partial` rather than promoted to
+    `implemented` on this pass -- promotion would need that fuller audit first, not merely the
+    absence of a currently-known gap.'
   proof_requirements:
     positive:
     - Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource

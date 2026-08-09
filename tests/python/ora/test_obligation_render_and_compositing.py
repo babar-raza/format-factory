@@ -35,6 +35,17 @@ every sample in this corpus is project-owned synthetic content (see
 remains open scope, consistent with this obligation's own release gate
 ("agrees with at least two independent producers/consumers") not being
 attempted here.
+
+ORA-STREAM-001's own missing_behavior named one further gap this file now
+closes: the render budget (canvas allocation, per-layer decompression) had
+only ever been exercised one dimension at a time. The "Combined 'large
+sparse archive' render-budget stress case" section below builds one
+document combining many layers (40+), deep isolation nesting (20 levels),
+and a canvas sized to within 0.1% of its own resource-limit budget, and
+proves the budget holds correctly under that combined load -- both that a
+within-budget combined scenario still renders the correct result, and that
+an over-budget combined scenario is still correctly refused, not silently
+bypassed because other dimensions were also near their own limits.
 """
 
 from __future__ import annotations
@@ -520,6 +531,86 @@ def test_truncated_idat_stream_is_rejected_not_zero_padded() -> None:
 
     with pytest.raises(OraValidationError, match="decompressed"):
         decode_png(payload)
+
+
+# ── Combined "large sparse archive" render-budget stress case ───────────
+#
+# ORA-STREAM-001's own missing_behavior: the two tests above each isolate
+# a single resource-limit dimension (canvas size, one layer's declared
+# size). These two prove the render budget holds under a combined worst
+# case -- many layers, deep isolation nesting, and a near-limit canvas,
+# all at once -- rather than three dimensions that have only ever been
+# exercised apart from each other.
+
+
+def _small_opaque_layer(index: int) -> tuple[str, bytes]:
+    name = f"deep-{index}.png"
+    colour = (index % 256, (index * 7) % 256, (index * 13) % 256, 255)
+    return name, solid_rgba_png(4, 4, colour)
+
+
+def _deep_sparse_subtree(
+    depth: int, layers_per_level: int, members: dict[str, bytes], counter: list[int]
+) -> OraStack:
+    """A stack `depth` levels deep, each level isolated and holding
+    `layers_per_level` small opaque layers plus (except at the bottom) one
+    nested child stack -- entirely covered by a real opaque layer stacked
+    above it elsewhere in the document, so it contributes nothing to the
+    final composited result but is still fully walked, decoded, and
+    isolated-group-composited by the renderer, exactly like a real archive
+    with far more structure than visible content."""
+    leaves = []
+    for _ in range(layers_per_level):
+        name, payload = _small_opaque_layer(counter[0])
+        counter[0] += 1
+        members[name] = payload
+        leaves.append(OraLayer(src=name))
+    if depth <= 0:
+        return OraStack(isolation="isolate", children=tuple(leaves))
+    nested = _deep_sparse_subtree(depth - 1, layers_per_level, members, counter)
+    return OraStack(isolation="isolate", children=(nested, *leaves))
+
+
+def test_a_large_sparse_archive_with_deep_nesting_and_near_limit_canvas_renders_correctly_within_budget() -> None:
+    tiny_limits = ResourceLimits(max_decompressed_bytes=200_000)
+    # render()'s own canvas check is width * height * channels(4) *
+    # bit_depth(8) against max_decompressed_bytes (confirmed directly
+    # against render.py's own `_checked((width, height, 4, 8), ...)`
+    # call, not assumed from its prose description) -- 71*88*4*8 =
+    # 199,936 bytes, 99.97% of this budget.
+    width, height = 71, 88
+    top_layer_bytes = solid_rgba_png(width, height, (5, 100, 200, 255))
+    members: dict[str, bytes] = {"top.png": top_layer_bytes}
+    counter = [0]
+    sparse_subtree = _deep_sparse_subtree(depth=20, layers_per_level=2, members=members, counter=counter)
+    root = OraStack(children=(OraLayer(src="top.png"), sparse_subtree))
+    assert len(members) >= 40  # genuinely "many layers", not a token few
+
+    result = render(root, members, width=width, height=height, limits=tiny_limits)
+
+    # The topmost layer is opaque and covers the full canvas -- per visual
+    # stacking order (first child = uppermost), the entire deeply nested,
+    # many-layered subtree beneath it is fully covered and must not change
+    # the result, regardless of how much of it the renderer had to walk
+    # and decode, within budget, to get there.
+    assert result.pixels == decode_png(top_layer_bytes).pixels
+
+
+def test_the_same_combined_scenario_over_the_canvas_budget_is_still_correctly_refused() -> None:
+    """Proves the canvas budget check still fires correctly when layer
+    count and nesting depth are simultaneously near their own limits --
+    not only in isolation, where nothing else competes for the same
+    resource-limit machinery's attention."""
+    tiny_limits = ResourceLimits(max_decompressed_bytes=200_000)
+    width, height = 71, 89  # 71*89*4*8 = 202,208 bytes -- just over the same budget
+    members: dict[str, bytes] = {"top.png": solid_rgba_png(4, 4, (5, 100, 200, 255))}
+    counter = [0]
+    sparse_subtree = _deep_sparse_subtree(depth=20, layers_per_level=2, members=members, counter=counter)
+    root = OraStack(children=(OraLayer(src="top.png"), sparse_subtree))
+    assert len(members) >= 40
+
+    with pytest.raises(OraLimitError):
+        render(root, members, width=width, height=height, limits=tiny_limits)
 
 
 # ── Baseline asset generation (ORA-BASELINEASSET-001's "generate" half) ──

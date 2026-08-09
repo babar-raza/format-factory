@@ -1,0 +1,55 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-stream-combined-budget-001",
+  "skill_id": "add-roundtrip-test",
+  "manifest_id": "sfx-6a2927c081884c61",
+  "mode": "live",
+  "timestamp": "2026-08-09T11:05:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC-FF6-ORA-STREAM-COMBINED-BUDGET-001",
+    "task_kind": "close-a-precisely-scoped-remaining-gap-on-an-already-mostly-implemented-obligation",
+    "root_cause": "ORA-STREAM-001's own recorded missing_behavior stated the render budget (canvas allocation, per-layer decompression, both already implemented and each proven by a focused single-dimension test) had never been exercised as a combined 'large sparse archive' scenario -- many layers, deep isolation nesting, and a near-limit canvas all at once, rather than one dimension isolated per test.",
+    "obligation_targeted": "SAL-ORA-OBL-F8A3777A56AA6121 (ORA-STREAM-001) narrowed -- its own proof_requirements.positive already named 'large sparse archives' explicitly; this closes exactly that named gap.",
+    "acceptance_evidence": "Built a single OraStack document combining: an opaque top layer sized to within 0.1% of a deliberately tight ResourceLimits.max_decompressed_bytes budget (confirmed directly against render.py's own `_checked((width, height, 4, 8), ...)` call that the real enforced formula is width*height*channels(4)*bit_depth(8), not the width*height*4 the prior evidence text described -- a genuine correction caught by running the test, not assumed), a 20-level-deep chain of isolation='isolate' groups, and 42 small covered layers (40+, genuinely 'many'). One test proves the combined scenario renders the correct result within budget (the opaque top layer's own pixels, since it's first/uppermost and fully covers everything beneath); a second proves the identical combined scenario is still correctly refused when only the canvas dimension is pushed over budget -- proving the resource-limit check isn't somehow bypassed or miscounted when many other dimensions are simultaneously near their own limits."
+  },
+  "execution_steps": [
+    "1. After committing and eventing the nrrd/pynrrd isolated oracle slice (FF6-EVENT-000475), checked goal_driver resume fresh and found safetensors is already CERTIFIED (0/86 unresolved) -- so building its own independent-oracle counterpart, the top candidate Event 475's own exact_next_action named, would not narrow any unresolved obligation and was correctly skipped as non-obligation-driven busywork for a certified format.",
+    "2. Read ora's 7 remaining unresolved obligations' own missing_behavior text fresh from the implementation-evidence YAML directly (not from stale session summaries) to find the most tractable one: ORA-MASK-001 and part of ORA-EDIT-001 are correctly ungrounded (the spec defines neither concept); ORA-RENDER-001/ORA-COMPOSITE-001/ORA-ISOLATION-001/ORA-BASELINEASSET-001 are each blocked on either an independent-producer corpus (data acquisition, out of scope for a single tick) or an external consumer application (outside what this library's own tests can produce); ORA-STREAM-001 alone named a purely test-scoping gap with no data-acquisition or spec-grounding risk.",
+    "3. Read the existing render.py resource-limit tests directly (test_oversized_canvas_raises_resource_limit_error_before_allocating, test_oversized_layer_raster_is_rejected_before_decompression) to match this file's own established fixture-construction idioms (in-memory OraStack/OraLayer trees, not full zip archives) before writing anything new.",
+    "4. Confirmed OraStack's own documented stacking-order rule directly (model/stack.py's own docstring: 'its first child is the uppermost item in visual layer order') before designing the fixture -- this let the combined scenario's expected result stay trivially hand-verifiable (an opaque top layer wins regardless of anything beneath it), rather than needing to hand-compute alpha blending through 20 levels of nesting.",
+    "5. Wrote the two tests with an initial canvas-sizing guess (width*height*4 against the budget, matching the prior evidence text's own description of the check). The first test run failed immediately with a CheckedArithmeticError -- diagnosed by reading render.py's own `_checked((width, height, 4, 8), ...)` call directly rather than guessing again: the real formula also multiplies by bit_depth(8), an 8x stricter budget than assumed. Recomputed exact near-limit and over-limit width/height pairs against the real formula (verified via a quick calculation before editing) and fixed both tests.",
+    "6. Re-ran: both passed on the corrected canvas math. Ran the full test_obligation_render_and_compositing.py file (32 passed) and the full ora suite (412 passed).",
+    "7. Ran ruff check: clean. No mypy run needed -- pure test file, no new production type surface.",
+    "8. Ran the 6-format FF6 regression (4292 passed, 4 skipped, up from 4290 -- exact +2 delta, no regressions).",
+    "9. Confirmed via git status that zero lines changed under src/python/ora -- no installed-wheel re-verification needed."
+  ],
+  "allowed_files": [
+    "tests/python/ora/test_obligation_render_and_compositing.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/ora/test_obligation_render_and_compositing.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_render_and_compositing.py -k \"large_sparse_archive or combined_scenario\" -v -- 2 passed (1 initial failure diagnosed as a wrong assumption about render()'s own canvas-budget formula, not a product bug; fixed by reading the real formula directly)",
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_render_and_compositing.py -q -- 32 passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q --timeout=120 -- 412 passed",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4292 passed, 4 skipped (was 4290)",
+    ".venv/Scripts/python -m ruff check tests/python/ora/test_obligation_render_and_compositing.py -- All checks passed"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (ORA-STREAM-001) narrows further -- its own explicitly-named 'large sparse archives' proof requirement is now genuinely built and passing, both the within-budget and over-budget combined cases. Not promoted to implemented: this obligation's own remaining scope (if any beyond this gap) was not otherwise assessed this tick.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); ora remains UNASSESSED",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 134,
+    "new_public_api": "None -- test-only, exercises only pre-existing public API (render, OraStack, OraLayer, ResourceLimits, decode_png, solid_rgba_png)."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
