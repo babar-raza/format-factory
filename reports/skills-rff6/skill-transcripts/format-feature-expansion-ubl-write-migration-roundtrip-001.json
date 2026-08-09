@@ -1,0 +1,73 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "format-feature-expansion-ubl-write-migration-roundtrip-001",
+  "skill_id": "format-feature-expansion",
+  "manifest_id": "sfx-d29b7f2f4551a6ba",
+  "mode": "live",
+  "timestamp": "2026-08-10T00:00:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "profile_id": "UBL-2.3",
+    "obligation_id": "SAL-UBL-OBL-F9D5251F2302AE3A",
+    "capability_id": "UBL-WRITE-001",
+    "task_id": "TC_FF6_UBL_WRITE_MIGRATION_ROUNDTRIP_001",
+    "contract_digest": "sha256:2199e2856511091e3c08bc071991bce0268d96178cc8e275cd50f312121a3df8",
+    "authority_digests": {"SRC-UBL-002": "sha256:623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970", "SRC-UBL-004": "sha256:60b80d76394a8a2add90723ecb8e0e2e9d826775de9749df37a72d60703f86ed"},
+    "affected_layer": "L07-Tests",
+    "planned_paths": ["tests/python/ubl/test_obligation_official_sample_migration_round_trip.py", "shared/format-contracts/implementation-evidence/ubl.yaml"],
+    "proof_inputs": ["SAL-UBL-OBL-F9D5251F2302AE3A", "SAL-UBL-7546731B76606EC0"],
+    "root_cause": "Per Event 501's own exact_next_action, re-checked UBL-WRITE-001 with fresh eyes despite expecting it to remain blocked on external data acquisition. Its own evidence disclosed 45 of 55 vendored official OASIS samples as 'load-only + correct-refusal, not a round trip' because they declare a pre-2.3 UBLVersionID this writer's own stable-2.3 profile gate refuses to serialize directly. That framing was accurate when written, but this SAME session (Events 498-499) built migrate_document() (UBL-UPGRADE-001), grounded in a real, committed structural-compatibility fact (SAL-UBL-7546731B76606EC0) covering 65 of 91 root types for the 2.1-to-2.3 direction specifically -- a capability that did not exist when UBL-WRITE-001's own evidence was last written.",
+    "acceptance_evidence": "Cross-referenced samples/by-format/ubl/official/_official-corpus-manifest.yaml's own per-sample declared_ubl_version/root_name fields against MIGRATABLE_2_1_ROOT_NAMES programmatically: found exactly 32 of the 45 load-only samples declare '2.1' (not '2.0'/'2.2', which this package does not support migrating) AND have a root type within the 65-type migratable set. Verified this EMPIRICALLY against all 32 real OASIS documents before writing any formal test (not merely computed from the manifest and assumed): loaded each, called migrate_document(), dumps()'d the result, reloaded, called validate() -- zero exceptions, zero validation failures, and a determinism check (dumps(reloaded) == dumps(load(dumps(reloaded)))) also passed for all 32. Wrote test_obligation_official_sample_migration_round_trip.py (97 tests: 1 fixed-count sanity check + 32 samples x 3 checks) proving migrate-dump-reload-validate, semantic-XML-equality against the original (with only the intentionally-relabeled cbc:UBLVersionID text differing, verified by patching the original tree's own version text to '2.3' before comparison), and second-round-trip determinism. All 97 passed on first execution."
+  },
+  "execution_steps": [
+    "1. Confirmed the FF6 mission head (Event 501) matched the prior tick's own hand-off before starting, per goal_driver resume.",
+    "2. Pulled fresh register text for UBL-REF-001 first (the obligation Event 501 named first): confirmed the prior citation-level audit (checking all 16 cited SAL facts directly, finding none describe a cross-element reference concept, comparing to ora's own mask-obligation precedent) is thorough and durable, not a simple oversight -- declined to re-litigate without a genuinely new angle.",
+    "3. Pulled fresh register text and evidence for UBL-VALIDATE-001: confirmed its own remaining gap (262/273 discoverable code-bearing element types have no bundled OASIS genericode data) is a real, disclosed external-data-acquisition limitation, not an oversight -- declined to re-litigate.",
+    "4. Pulled fresh register text and evidence for UBL-WRITE-001 (the one Event 501 explicitly flagged as 'worth a quick re-check before assuming still blocked'): read the full missing_behavior text and recognized that migrate_document() -- built THIS SAME SESSION, after UBL-WRITE-001's own evidence was last written -- directly changes the picture for some of the 45 'load-only' samples.",
+    "5. Loaded the official corpus manifest and MIGRATABLE_2_1_ROOT_NAMES programmatically, cross-referenced declared_ubl_version=='2.1' AND root_name in the migratable set: found exactly 32 candidate samples (of 45 non-round-tripping, 33 declare '2.1' total, 1 of those 33 -- CommonTransportationReport -- has a root type outside the 65-type migratable set).",
+    "6. Ran an empirical probe against 4 samples (Invoice, CreditNote, Order, OrderResponse) via direct interactive execution before committing to the full 32: all 4 migrated, dumped, reloaded, and validated cleanly.",
+    "7. Ran the full empirical check against all 32 real OASIS documents programmatically (migrate, dumps, reload, validate, plus a second-round-trip determinism check): zero failures across all 32 -- confirmed BEFORE writing any formal test, not assumed from the successful 4-sample probe alone.",
+    "8. Read the existing test_obligation_official_sample_roundtrip.py's own _semantic_xml_equal helper in full to match its exact comparison semantics (namespace-URI-based structural equality, not literal C14N byte comparison) for the new file.",
+    "9. Attempted to import _semantic_xml_equal directly from the sibling test module; found no precedent anywhere in this codebase for cross-test-file imports (no __init__.py in tests/python/ubl/, every other obligation test file is self-contained with its own private fixtures) -- duplicated the small helper into the new file instead, matching the established convention rather than introducing a fragile new import pattern.",
+    "10. Wrote test_obligation_official_sample_migration_round_trip.py: a fixed-count sanity check (asserting exactly 32 migratable samples, so a future corpus or migratable-root-type-table change fails loudly rather than silently covering a different set) plus 3 parametrized checks per sample (migrate-dump-reload-validate; semantic-XML-equality against the original with the version text patched to '2.3' before comparing; second-round-trip determinism).",
+    "11. Ran the new test file: 97 passed on first execution (1 + 32x3).",
+    "12. Ran ruff check and mypy --strict on the new test file: both clean on first attempt.",
+    "13. Ran the full ubl suite: 1733 passed (was 1636, +97 new, zero regressions).",
+    "14. Ran the six-FF6-format regression suite directly: 4841 passed, 4 skipped (was 4744, +97 new, zero cross-format regression).",
+    "15. Updated shared/format-contracts/implementation-evidence/ubl.yaml's own SAL-UBL-OBL-F9D5251F2302AE3A entry: added migrate_document as a new source_symbol, added the 4 new positive test selectors and a new execution_evidence_id, added a full implemented_behavior entry, and rewrote missing_behavior to the new, narrower, precise state (42/55 samples now round-trip, up from 10/55; the remaining 13 are genuinely non-migratable -- 12 declare 2.0/2.2 which this package has not acquired, 1 has a root type outside the 65-type migratable set). Status stays partial, not implemented -- 36/91 types still have zero official example at all, a separate, unaddressed data-acquisition gap this task did not attempt.",
+    "16. Ran the obligation reconciler (contract_reconciler --format-id ubl --exact-obligations) after the evidence edit: confirmed clean, ubl still 4/194 unresolved (unchanged -- this is a narrowing, not a closure, since the obligation's own 'every supported maindoc type' clause is still not fully met).",
+    "17. Recompiled the format contract (contract_compiler.py --format-id ubl) and verified idempotency -- byte-identical to before, expected since no SAL fact or research finding changed, only test coverage and evidence tracking."
+  ],
+  "allowed_files": [
+    "tests/python/ubl/test_obligation_official_sample_migration_round_trip.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml",
+    "reports/format-contract-layer/ubl-obligation-reconciliation.json"
+  ],
+  "actual_files_changed": [
+    "tests/python/ubl/test_obligation_official_sample_migration_round_trip.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml",
+    "reports/format-contract-layer/ubl-obligation-reconciliation.json"
+  ],
+  "tests_run": [
+    "tests/python/ubl/test_obligation_official_sample_migration_round_trip.py -- 97 passed (1 fixed-count sanity check + 32 real OASIS documents x 3 checks, all first-execution passes, no implementation change needed)",
+    "ruff check tests/python/ubl/test_obligation_official_sample_migration_round_trip.py -- all checks passed",
+    "mypy --strict tests/python/ubl/test_obligation_official_sample_migration_round_trip.py -- success, no issues",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 1733 passed (was 1636, +97 new)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 4841 passed, 4 skipped (was 4744, +97 new, zero regression)",
+    "contract_reconciler --format-id ubl --exact-obligations -- clean, 4/194 unresolved (unchanged, correctly a narrowing not a closure)",
+    "contract_compiler.py --format-id ubl --verify-idempotency -- OK, byte-identical output"
+  ],
+  "ledger_entry_id": "FF6-UBL-WRITE-MIGRATION-ROUNDTRIP-001",
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Narrows (does not close) SAL-UBL-OBL-F9D5251F2302AE3A (UBL-WRITE-001): official-sample round-trip coverage rises from 10/55 to 42/55, using UBL-UPGRADE-001's own migrate_document() capability built earlier this session. Status stays partial -- 36/91 types still have zero official example in the pinned package, and 13 samples remain genuinely non-migratable (12 undo 2.0/2.2, unacquired; 1 structurally incompatible). No production source code was changed -- this closes a proof gap for an already-correct combination of existing capabilities, not an implementation gap.",
+    "controller_event_effect": "pending",
+    "certification_state": "3/6 (ipynb, xliff, safetensors CERTIFIED per Event 467; ora/nrrd/ubl remain uncertified -- promotion.* untouched by this task, no fresh explicit user authorization exists this session)",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "none -- test-only closure combining two already-existing, already-correct capabilities (migrate_document, dumps/load) against real official documents"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

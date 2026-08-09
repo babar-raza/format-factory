@@ -44894,6 +44894,40 @@
       "validation_command": ".venv/Scripts/pytest tests/python/ubl/ -q",
       "result": "1636 passed (was 1627, +9 new)",
       "rollback": "Remove the new test file, revert UBL-EDIT-001 own evidence entry status to partial, and this ledger entry."
+    },
+    {
+      "entry_id": "FF6-UBL-WRITE-MIGRATION-ROUNDTRIP-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "ubl-write-migration-roundtrip",
+      "capability": "UBL-WRITE-001",
+      "capability_refs": [
+        "UBL-WRITE-001",
+        "UBL-UPGRADE-001"
+      ],
+      "api_symbols": [
+        "format_factory.ubl.migrate_document",
+        "format_factory.ubl.dumps",
+        "format_factory.ubl.load"
+      ],
+      "product": "UBL Python production package",
+      "format": "UBL",
+      "test_delta": "Test-only narrowing of UBL-WRITE-001 own release gate (official-sample round trips). No production source changed -- migrate_document()/dumps()/load() were already correct; this proves the combination against 32 real official OASIS UBL 2.1 documents, taking round-trip coverage from 10/55 to 42/55. 97 new tests (test_obligation_official_sample_migration_round_trip.py), all passing on first execution.",
+      "git_head": "636f7971b",
+      "skill": "format-feature-expansion",
+      "task_id": "TC_FF6_UBL_WRITE_MIGRATION_ROUNDTRIP_001",
+      "source_files": [
+        {
+          "path": "tests/python/ubl/test_obligation_official_sample_migration_round_trip.py",
+          "state": "present",
+          "sha256": "15c48f2c068f050f6c67cd117baf4e9d03ddec0fdc8b1832abe3888a1a7448c9"
+        }
+      ],
+      "test_files": [
+        "tests/python/ubl/test_obligation_official_sample_migration_round_trip.py"
+      ],
+      "validation_command": ".venv/Scripts/pytest tests/python/ubl/ -q",
+      "result": "1733 passed (was 1636, +97 new)",
+      "rollback": "Remove the new test file, revert UBL-WRITE-001 own evidence entry missing_behavior to the pre-migration state, and this ledger entry."
     }
   ],
   "total_entries": 2782,
