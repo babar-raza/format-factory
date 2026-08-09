@@ -8,11 +8,17 @@ required_tests: "Transaction rollback, reference repair, stale-view
 invalidation, and independent application reopen tests."
 
 Scope of this file: `apply_transaction`'s rollback guarantee only. See
-transaction.py's module docstring for exactly what "reference repair",
-"invalidate stale derived views", and "independent application reopen"
-are NOT attempted and why (no reference type exists yet to repair against,
-no rendering engine exists to make a stale view fresh again, and reopen
-round-tripping is already covered by test_obligation_lifecycle_and_write.py).
+transaction.py's module docstring for exactly what "reference repair" and
+"independent application reopen" are NOT attempted and why (no reference
+type exists yet to repair against, and reopen round-tripping is already
+covered by test_obligation_lifecycle_and_write.py). "Invalidate stale
+derived views" now has a real regeneration path
+(`format_factory.ora.generate_baseline_assets`, FF6-ORA-RENDER-ENGINE-001)
+proven in
+`tests/python/ora/test_obligation_render_and_compositing.py::
+test_regenerated_baseline_assets_reflect_a_committed_transaction_edit`,
+not re-proven here -- `apply_transaction` itself still does not call it
+automatically (see transaction.py's own module docstring).
 
 Before this slice, only "add" (via `_add_layer`/`_add_member`) and "rename"
 (via `_rename_root`) were exercised as named operations, against layer and

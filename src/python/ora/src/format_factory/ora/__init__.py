@@ -46,6 +46,15 @@ from .lifecycle import (
 )
 from .preservation import LossItem, LossReport, check_preservation
 from .transaction import EditStep, TransactionResult, apply_transaction
+from .render import (
+    DecodedRaster,
+    decode_png,
+    encode_png,
+    generate_baseline_assets,
+    generate_thumbnail,
+    render,
+    render_document,
+)
 from .errors import OraArchiveError, OraError, OraLimitError, OraValidationError
 
 __version__ = "0.1.0.dev0"
@@ -54,6 +63,7 @@ __all__ = [
     "COMPOSITE_OP_REGISTRY",
     "OPENRASTER_MEDIA_TYPE",
     "CompositeOpInfo",
+    "DecodedRaster",
     "EditStep",
     "LossItem",
     "LossReport",
@@ -77,12 +87,18 @@ __all__ = [
     "apply_transaction",
     "check_preservation",
     "composite_op_info",
+    "decode_png",
     "dump",
     "dumps",
+    "encode_png",
+    "generate_baseline_assets",
+    "generate_thumbnail",
     "load",
     "loads",
     "parse_stack",
     "read_png_metadata",
+    "render",
+    "render_document",
     "replace_baseline_asset",
     "resolve_all_assets",
     "resolve_asset",

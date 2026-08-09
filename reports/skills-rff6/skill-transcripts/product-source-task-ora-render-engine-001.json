@@ -1,0 +1,71 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-render-engine-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-f23c07109f2b025d",
+  "mode": "live",
+  "timestamp": "2026-08-09T07:55:44Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC-FF6-ORA-RENDER-ENGINE-001",
+    "task_kind": "build-a-genuinely-unbuilt-capability",
+    "root_cause": "goal_driver's Event-467 next action and a fresh contract_reconciler run (this session) both confirmed ora at 7/134 unresolved obligations, 6 of which (SAL-ORA-OBL-A979A77370914BCA/ORA-RENDER-001, 2CC875865800D528/ORA-COMPOSITE-001, 52746ABC41B3E790/ORA-BASELINEASSET-001, ABDDB437C86DC22F/ORA-ISOLATION-001, EC8D65524EB96820/ORA-EDIT-001, F8A3777A56AA6121/ORA-STREAM-001) each independently cite the identical missing_behavior: no pixel buffer, no blend-mode implementation, no rendering adapter anywhere in the package. The 7th (ORA-MASK-001) was previously investigated and correctly left missing -- the pinned spec sources define no mask concept -- so it is out of scope here, not overlooked.",
+    "obligation_targeted": "SAL-ORA-OBL-A979A77370914BCA (ORA-RENDER-001) primary; SAL-ORA-OBL-2CC875865800D528, 52746ABC41B3E790, ABDDB437C86DC22F, EC8D65524EB96820, F8A3777A56AA6121 narrowed as a direct consequence of the same new capability.",
+    "acceptance_evidence": "Built format_factory.ora.render: a dependency-free PNG pixel codec (decode_png/encode_png, colour types 0/2/3/4/6, bit depths 1/2/4/8/16, PLTE/tRNS, CRC-verified, interlace refused rather than misdecoded, bounded decompression against ResourceLimits) plus a W3C Compositing-and-Blending-Level-1 compositor (render/render_document) implementing all 15 blend functions and 6 Porter-Duff operators COMPOSITE_OP_REGISTRY declares, isolated-vs-non-isolated group semantics per the Layer Stack Specification's own compositing section (grepped directly from the pinned spec source, not assumed), and subtree rendering. generate_thumbnail/generate_baseline_assets close ORA-BASELINEASSET-001's 'generate' half, composing with the already-existing replace_baseline_asset(). Every formula was hand-verified against independent arithmetic in the test suite, not merely asserted against the code's own output -- see test_obligation_render_and_compositing.py's module docstring for the two-legged proof structure. Comparing rendered output against samples/by-format/ora/valid/multi-layer.ora's own embedded mergedimage.png surfaced a real, independent defect in that committed fixture (its merged image was a raw uncorrected copy of the foreground layer, opacity and background compositing both absent) -- diagnosed via hand-computed arithmetic, then corrected using this same new renderer; see samples/by-format/ora/_provenance.yaml's correction_note."
+  },
+  "execution_steps": [
+    "1. Ran python -m tools.ff6.goal_driver resume and a fresh python -m tools.format_contract.contract_reconciler --format-id ora --exact-obligations pass (implementation-evidence and register digests confirmed current) to identify ora's live unresolved obligations independent of the stale Event-98 narrative still embedded in plans/strategic/ff6/controller-state.yaml's next_task.unlock_condition field.",
+    "2. Read all 7 unresolved ora obligation records in full (reports/format-contract-layer/ora-obligation-reconciliation.json and plans/strategic/ff6/obligations/ora.yaml) and confirmed 6 share one literal root cause via their own missing_behavior text.",
+    "3. Ran tools.supervisor.coordination status, found a 4-day-stale ACTIVE lease from agent-claude-code-20260805T225325-bbe40e on exactly the ora source files needed (heartbeat 2026-08-05T22:53, matching a plan lock already TERMINAL_CLOSED for the same session), verified zero uncommitted changes on those paths via git status, and performed a governed takeover (tools.supervisor.coordination takeover) rather than assuming staleness from age alone.",
+    "4. Ran tools.governance.skills_first.resolve --operation add_python_api, which independently selected skill_id add-python-api (route product_backfill, score 9) -- confirms the governed-skill routing this transcript's own skill_id records, rather than asserting it.",
+    "5. Read the existing ora package in full (model/stack.py, model/composite_ops.py, codec/assets.py, codec/container.py, codec/png_metadata.py, lifecycle.py) to confirm no pixel decode existed anywhere (png_metadata.py reads only the IHDR header) and that the package has zero external dependencies beyond format-factory-core -- ruled out adding Pillow/numpy as inconsistent with the package's existing zero-dependency, bounded-reader design; wrote a stdlib-only PNG codec instead (zlib for DEFLATE, no image library).",
+    "6. Grepped the pinned Layer Stack Specification source (.local/format-contracts/acquired/ora/src-ora-003.bin) directly for the isolation/compositing/x-y-offset rules rather than assuming standard-layered-format conventions -- this is what established that non-root stack x/y are spec-defined to be ignored entirely (only individual layers' own x/y matter), which the implementation and a dedicated test both encode.",
+    "7. Implemented src/python/ora/src/format_factory/ora/render.py: decode_png/encode_png (PNG codec), the 15 named blend functions plus non-separable Hue/Saturation/Color/Luminosity per W3C Compositing and Blending Level 1 section 8.2, Porter-Duff coefficients for all 6 operators COMPOSITE_OP_REGISTRY declares, isolated/non-isolated group recursion matching the grepped spec rule, subtree rendering, resource-limit-bounded canvas/scanline allocation reusing format_factory.core.checked_product, generate_thumbnail (box-average downscale) and generate_baseline_assets.",
+    "8. Wrote tests/python/ora/test_obligation_render_and_compositing.py (29 tests): PNG codec round-trip and corruption/interlace/truncation rejection; single-layer placement/visibility/offset/clipping; hand-computed opacity-compositing and multiply/screen blend math (independent arithmetic, not compared against the code's own prior output); isolated-vs-non-isolated group equivalence and group-opacity-applied-once proof; stack x/y-ignored proof; subtree rendering; declared-profile-version independence (adapter-version differential); resource-exhaustion rejection; and baseline-asset generation accepted end-to-end by the existing replace_baseline_asset + validate().",
+    "9. Ran the new suite (29/29 passed on first execution) then the full ora suite (399/399 passed, no regressions) via .venv/Scripts/pytest.",
+    "10. Compared render_document() output against every valid sample fixture's own embedded mergedimage.png. with-groups.ora and minimal.ora matched exactly. multi-layer.ora did not; investigated by hand-decoding its Foreground/Background layer PNGs and independently computing the correct 0.8-opacity source-over composite (RGBA 95,95,255,255), which confirmed the fixture's own mergedimage.png (a raw, uncomposited, unmodified copy of the Foreground layer) was wrong, not the renderer. Regenerated that one fixture's mergedimage.png via generate_baseline_assets and rewrote the archive through the existing lossless load/replace_baseline_asset/dumps path (stack.xml and layer members byte-identical; only mergedimage.png and the archive's sha256 changed), updated the sha256 and added a correction_note in samples/by-format/ora/_provenance.yaml, then added a dedicated regression test pinning the corrected pixel values.",
+    "11. Ran ruff check, mypy --strict, and pyright against render.py and the new test file: all clean (two mypy --strict findings -- a missing return annotation on a private generator and a bytes/bytearray reassignment -- were fixed, then reverified clean).",
+    "12. Built and installed the ora wheel via tools/run_package_install_proof.py --format ora (1/1 PASS), confirmed render.py shipped in the wheel's site-packages tree, and independently exercised render() from that installed, non-editable location (not the source tree) to satisfy the installed-wheel behavior check.",
+    "13. Ran the full tests/python/ suite in the background for the cross-format affected-regression tier (see tests_run for the recorded result)."
+  ],
+  "allowed_files": [
+    "src/python/ora/src/format_factory/ora/render.py",
+    "src/python/ora/src/format_factory/ora/__init__.py",
+    "tests/python/ora/test_obligation_render_and_compositing.py",
+    "samples/by-format/ora/valid/multi-layer.ora",
+    "samples/by-format/ora/_provenance.yaml",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/src/format_factory/ora/render.py",
+    "src/python/ora/src/format_factory/ora/__init__.py",
+    "tests/python/ora/test_obligation_render_and_compositing.py",
+    "samples/by-format/ora/valid/multi-layer.ora",
+    "samples/by-format/ora/_provenance.yaml",
+    "shared/format-contracts/implementation-evidence/ora.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ora/test_obligation_render_and_compositing.py -v -- 29 passed",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 399 passed (was 370)",
+    ".venv/Scripts/python -m ruff check src/python/ora/src/format_factory/ora/render.py tests/python/ora/test_obligation_render_and_compositing.py src/python/ora/src/format_factory/ora/__init__.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/ora/src/format_factory/ora/render.py -- Success: no issues found",
+    ".venv/Scripts/python -m pyright src/python/ora/src/format_factory/ora/render.py -- 0 errors, 0 warnings, 0 informations",
+    "python tools/run_package_install_proof.py --format ora -- RESULT: 1/1 PASS; render() independently exercised from the installed wheel's site-packages path (not the source tree)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4065 passed, 4 skipped (6-format FF6 regression)",
+    ".venv/Scripts/pytest tests/python/ -q -x --timeout=300 -- 30130 passed, 45 skipped before stopping at 1 failure in tests/python/supervisor/test_r104_promoted_skill_commands.py::TestPromotedSkillRegistryConsistency::test_deferred_skills_remain_non_active; unrelated to this change (asserts the 'check-mcp-status' skill's registry status is draft/deferred, found 'deprecated' -- a pre-existing skill-registry state drift, no ora/render.py/PNG/compositing content involved; not investigated or fixed here as out of this obligation's scope)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (ORA-RENDER-001) moves missing -> partial with real, tested pixel-level rendering; 5 further obligations (ORA-COMPOSITE-001, ORA-BASELINEASSET-001, ORA-ISOLATION-001, ORA-EDIT-001, ORA-STREAM-001) narrow on the same shared new capability. None claimed as fully implemented/certified: the release gate requiring agreement with at least two independent producers is explicitly out of scope this tick (no independent OpenRaster-producer corpus was acquired) and is disclosed as such in both render.py's module docstring and the test file's module docstring.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); ora remains UNASSESSED, now with substantially stronger obligation coverage",
+    "obligations_moved": 0,
+    "obligations_narrowed": 6,
+    "obligations_total_for_format": 134,
+    "new_public_api": "format_factory.ora's DecodedRaster, decode_png, encode_png, render, render_document, generate_thumbnail, generate_baseline_assets",
+    "independently_discovered_defect": "samples/by-format/ora/valid/multi-layer.ora's own committed mergedimage.png did not reflect its own stack.xml (opacity and compositing both absent); corrected in this same change with a disclosed provenance note, not silently."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

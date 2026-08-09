@@ -24,14 +24,23 @@ ORIGINAL, unmodified image plus the failure for diagnosis.
 Deliberately NOT attempted here, and not claimed: "reference repair" (no
 cross-element reference type exists in this package yet beyond a layer's
 own `src` archive-member path -- ORA-MASK-001 and other reference-bearing
-capabilities remain unbuilt, so there is nothing to repair against),
-"invalidate stale derived views" (mergedimage.png/thumbnail.png have no
-regeneration path at all -- this package has no rendering engine
-(ORA-RENDER-001/ORA-COMPOSITE-001 are `missing`) -- inventing a "staleness"
-flag with no way to ever clear it would be a hollow gesture, not a real
-capability), and "independent application reopen" (covered, to the extent
-this package can cover it, by the existing round-trip tests in
+capabilities remain unbuilt, so there is nothing to repair against), and
+"independent application reopen" (covered, to the extent this package can
+cover it, by the existing round-trip tests in
 test_obligation_lifecycle_and_write.py; not re-proven here).
+
+"Invalidate stale derived views" no longer has the blocker this docstring
+used to name: `render.py` (FF6-ORA-RENDER-ENGINE-001) now provides a real
+regeneration path -- `generate_baseline_assets(document, members)` re-
+renders the current layer stack into a fresh, conforming merged image and
+thumbnail, proven to reflect a committed edit rather than the pre-edit view
+(`tests/python/ora/test_obligation_render_and_compositing.py::
+test_regenerated_baseline_assets_reflect_a_committed_transaction_edit`).
+`apply_transaction` itself still does not call it automatically -- a
+caller who wants the baseline assets refreshed after a transaction commits
+must call `generate_baseline_assets` themselves on the committed result.
+Making that automatic (and thus genuinely "invalidating" a view rather
+than requiring the caller to remember to regenerate it) remains unbuilt.
 """
 
 from __future__ import annotations
