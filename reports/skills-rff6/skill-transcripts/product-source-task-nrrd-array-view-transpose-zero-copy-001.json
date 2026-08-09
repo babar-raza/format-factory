@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-array-view-transpose-zero-copy-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-e07df4bcb0d8ee6a",
+  "mode": "live",
+  "timestamp": "2026-08-09T14:34:13Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC-FF6-NRRD-ARRAY-VIEW-TRANSPOSE-ZERO-COPY-001",
+    "task_kind": "fresh-literal-audit-of-nrrd-array-001-against-its-own-rule-text-per-established-session-discipline",
+    "root_cause": "Applied the same fresh-literal-audit discipline that closed ORA-STREAM-001 earlier this session to NRRD-ARRAY-001's two obligations (SAL-NRRD-OBL-E4B3D1A206784660, SAL-NRRD-OBL-FEF73EC95DF631C3), whose own disclosed missing_behavior (a numpy/pynrrd adapter) was already confirmed NOT actually required by either obligation's own rule_text. Re-read array_view.py's own docstring claim ('Slicing, .transpose()/.permute(), .flip() and .crop() are all zero-copy') against the actual test file line by line and found slicing/crop/flip each have a direct `.data is view.data` identity proof, but transpose/permute do not -- an explicit clause of SAL-NRRD-OBL-FEF73EC95DF631C3's own rule_text ('zero-copy views where safe, explicit copies otherwise') left unproven for one of its four named operations.",
+    "obligation_targeted": "SAL-NRRD-OBL-E4B3D1A206784660 and SAL-NRRD-OBL-FEF73EC95DF631C3 (both NRRD-ARRAY-001) -- both promoted from partial to implemented after closing the last unproven per-operation clause.",
+    "acceptance_evidence": "Read array_view.py's own transpose() implementation directly before writing any test: `replace(self, shape=..., strides=..., axes=..., copied=False)` never includes `data` in its override set, so dataclasses.replace necessarily keeps the SAME `data` tuple reference from `self` -- confirming the implementation was already correct, and this was a testing gap, not a behavior gap. Added test_transpose_is_zero_copy_sharing_the_same_backing_data, mirroring the exact style and rigor of the existing test_slicing_is_zero_copy_sharing_the_same_backing_data/test_crop_selects_the_declared_sub_region/test_flip_reverses_axis_order_of_values proofs (`.data is view.data` identity assertion plus `.copied is False`). Also strengthened test_permute_is_an_alias_for_transpose_taking_one_sequence, which previously checked only `.shape` equality between `.permute()` and `.transpose()`, to additionally check `.strides`, `.axes` equality, and `.data is view.data` -- proving `.permute()` is a genuine full proxy for `.transpose()`, not merely shape-equivalent by coincidence."
+  },
+  "execution_steps": [
+    "1. After committing and eventing ORA-STREAM-001's closure (FF6-EVENT-000487), pulled the full rule_text/required_tests/release_gates for nrrd's 6 remaining unresolved obligations directly from plans/strategic/ff6/obligations/nrrd.yaml (the authoritative source), then cross-referenced each against its own current missing_behavior in the implementation-evidence file.",
+    "2. Identified NRRD-ARRAY-001's own two obligations as the most promising target: both obligations' own sole disclosed remaining item (a numpy/pynrrd adapter) was ALREADY explicitly confirmed in a prior tick's own evidence text to not be required by either obligation's own literal rule_text -- meaning if that confirmation holds and nothing else is missing, these obligations could already be eligible for promotion, pending a fresh audit to confirm.",
+    "3. Read array_view.py's own full source (494 lines) end to end, comparing every operation's own implementation against both obligations' combined rule_text clauses: shape, strides, dtype, slicing, permutation, flip, crop, element access, orientation/per-axis-metadata propagation, and 'zero-copy views where safe, explicit copies otherwise'.",
+    "4. Cross-referenced every clause against the existing test file (test_obligation_array_view.py, 31 tests before this tick) to find which, if any, lacked a direct, literal proof rather than an inferred one -- found that slicing, crop, and flip each had their own explicit `.data is view.data` identity assertion, but transpose (and its .permute() alias) did not, despite the module's own docstring claiming all four operations are zero-copy.",
+    "5. Read transpose()'s own implementation directly to confirm the claim was actually true in behavior before writing any test: `replace(self, shape=..., strides=..., axes=..., copied=False)` never overrides `data`, so the same tuple object is necessarily retained -- this is a testing gap, not a behavior gap.",
+    "6. Added one new test (test_transpose_is_zero_copy_sharing_the_same_backing_data) matching the exact style and assertion pattern of the three existing sibling proofs.",
+    "7. Strengthened the existing, under-specified permute alias test to also verify strides/axes equality and zero-copy identity, not merely shape equality, since a permute() that happened to match transpose()'s shape by coincidence would not actually prove it is a correct, full alias.",
+    "8. Ran the full array-view test file (32 tests, up from 31) -- all passed on the first run, confirming the implementation needed no source change.",
+    "9. Ran ruff check on the changed test file: clean. No production source file was modified, so no mypy re-run against source code was needed.",
+    "10. Ran the full nrrd suite (958 passed, up from 957) and the 6-format FF6 regression (4358 passed, 4 skipped, up from 4357) -- exact +1 delta in both, confirming zero regressions.",
+    "11. Ran the installed-wheel proof (tools/run_package_install_proof.py --format nrrd, 1/1 PASS) as a sanity check confirming the package still builds and installs cleanly, even though no production source changed."
+  ],
+  "allowed_files": [
+    "tests/python/nrrd/test_obligation_array_view.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/nrrd/test_obligation_array_view.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_array_view.py -v -- 32 passed (30 pre-existing unchanged, 1 strengthened, 1 new)",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q --timeout=120 -- 958 passed, 1 skipped (was 957)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4358 passed, 4 skipped (was 4357)",
+    ".venv/Scripts/python -m ruff check tests/python/nrrd/test_obligation_array_view.py -- All checks passed",
+    "python tools/run_package_install_proof.py --format nrrd -- RESULT: 1/1 PASS"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations (SAL-NRRD-OBL-E4B3D1A206784660, SAL-NRRD-OBL-FEF73EC95DF631C3, both NRRD-ARRAY-001) PROMOTED from partial to implemented -- the last unproven per-operation clause (transpose/permute zero-copy status) now has direct, literal proof matching the rigor already applied to slicing/crop/flip, and the sole other disclosed item (a numpy adapter) was already correctly confirmed out of scope in a prior tick.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); nrrd remains UNASSESSED",
+    "obligations_moved": 2,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "None -- no production source was changed; this closes a test-coverage gap only, since the implementation was already correct."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

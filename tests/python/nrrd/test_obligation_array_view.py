@@ -369,6 +369,24 @@ def test_transpose_reorders_shape_strides_and_axis_metadata() -> None:
     assert transposed[1, 0, 0] == view[0, 0, 1]
 
 
+def test_transpose_is_zero_copy_sharing_the_same_backing_data() -> None:
+    """slice/crop/flip each have their own direct `.data is` proof
+    (test_slicing_is_zero_copy_sharing_the_same_backing_data,
+    test_crop_selects_the_declared_sub_region, test_flip_reverses_axis_order_of_values)
+    -- transpose/permute did not, despite the module's own docstring
+    claiming all four are zero-copy. `.transpose()`'s own implementation
+    (`replace(self, shape=..., strides=..., axes=..., copied=False)`)
+    never touches `data`, so this was already true in behavior; it was
+    only unproven."""
+    document = _document(sizes="2 3", array=[0, 1, 2, 3, 4, 5])
+    view = array_view(document)
+
+    transposed = view.transpose(1, 0)
+
+    assert transposed.data is view.data
+    assert transposed.copied is False
+
+
 def test_transpose_with_no_arguments_reverses_axis_order() -> None:
     document = _document(sizes="2 3", array=[0, 1, 2, 3, 4, 5])
     view = array_view(document)
@@ -387,10 +405,18 @@ def test_transpose_rejects_a_non_permutation_order() -> None:
 
 
 def test_permute_is_an_alias_for_transpose_taking_one_sequence() -> None:
-    document = _document(sizes="2 3 4", array=list(range(24)))
+    document = _document(
+        sizes="2 3 4", array=list(range(24)), extra_header={"labels": '"x" "y" "z"'}
+    )
     view = array_view(document)
 
-    assert view.permute((2, 0, 1)).shape == view.transpose(2, 0, 1).shape
+    permuted = view.permute((2, 0, 1))
+    transposed = view.transpose(2, 0, 1)
+
+    assert permuted.shape == transposed.shape
+    assert permuted.strides == transposed.strides
+    assert permuted.axes == transposed.axes
+    assert permuted.data is view.data  # zero-copy, same as .transpose() itself
 
 
 # ── flip() ────────────────────────────────────────────────────────────────

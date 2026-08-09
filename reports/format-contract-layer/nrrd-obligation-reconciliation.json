@@ -10,6 +10,14 @@
       "truth_boundary": "Builds format_factory.nrrd.array_view (NrrdArrayView/NrrdDtype/AxisMetadata), the package's first typed N-dimensional array view: shape/strides/dtype as first-class objects (previously only a flat/nested Python list existed, no dtype/stride object, no operations -- confirmed by a full repository search before implementing), element access, zero-copy slicing/transpose/permute/ flip/crop, and explicit .copy(). No numpy dependency added -- the package's own adapters/ directory already exists empty specifically for \"optional NRRD ecosystem adapters\", so a numpy layer, if ever built, belongs there as additive work, not a hard dependency; this stays consistent with format-factory-core's and format-factory-ora's own zero-dependency, bounded-reader design. Per-axis metadata (kind, label, unit, spacing, axis min/max, center, thickness, space direction) follows every operation: transpose reorders it; flip swaps axis_min/axis_max, negates space_direction, and shifts space_origin by (size-1)*old_direction to keep the view's own first element pinned at its pre-flip world-space position; slice/crop shift axis_min/axis_max by start*spacing when spacing is known, else clear them (None) rather than carry a stale bound forward -- a disclosed simplification (cell-vs-node centers nuance is not modelled). A \"range\" kind axis (SAL-NRRD-00022, KIND_REQUIRED_SIZE not None -- e.g. a 3-color channel axis) refuses a slice/crop that would change its own element count, since that would change what the sample means, not resample it. Grounded directly against SAL-NRRD-00010/00011/00012/00015/00016/00019/00022, read from shared/sal-facts/nrrd.yaml directly since neither target obligation's own authority_fact_ids cites any SAL fact (both are empty lists in the raw register -- the only cited authority is a policy id and a reference- implementation pointer). 27 new tests (tests/python/nrrd/test_obligation_array_view.py): shape/strides/dtype (including block type), element access (negative index, out-of-range, too-many-indices), zero-copy proof (data-identity assertion, not merely value equality), stepped-slice rejection, metadata propagation under slicing with and without spacing, crop (including the range-kind guard and its full-size-permitted counterpart), transpose/permute (value correctness under permutation, non-permutation rejection), flip (value reversal, min/max swap, space-direction/origin propagation, double-flip identity), copy (independent-data proof), resource-limit bounding (reusing codec/payload.py's existing checked_element_count), and an end-to-end dumps()/loads() round trip matching NrrdDocument.to_array(). nrrd suite: 718 -> 745 passed, 1 skipped, 0 failed. 6-format FF6 regression (nrrd/ora/xliff/ubl/ipynb/safetensors): 4093 passed, 4 skipped. mypy --strict, ruff, and pyright all clean on the first run. Installed-wheel behavior independently verified (tools/run_package_install_proof.py --format nrrd, then array_view()/flip() exercised from the installed site-packages path, not the source tree). Directly narrows SAL-NRRD-OBL-E4B3D1A206784660 and SAL-NRRD-OBL-FEF73EC95DF631C3 (both NRRD-ARRAY-001, missing -> partial); neither promoted to implemented -- cell/node-centering nuance in axis-min/max recomputation and any numpy/pynrrd interoperability adapter remain open, disclosed scope."
     },
     {
+      "evidence_id": "NRRD-ARRAY-VIEW-TRANSPOSE-ZERO-COPY-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-array-view-transpose-zero-copy-001.json",
+      "sha256": "ef52b6f342db48a3b2ed4cbf19b30edd06c210c1a681971c5fdcc1e4af3b0b6f",
+      "truth_boundary": "CLOSES SAL-NRRD-OBL-E4B3D1A206784660 and SAL-NRRD-OBL-FEF73EC95DF631C3 (both NRRD-ARRAY-001): promoted partial -> implemented. A fresh, literal re-read of both obligations' own rule_text against array_view.py found that \"zero-copy views where safe, explicit copies otherwise\" -- an explicit clause of SAL-NRRD-OBL-FEF73EC95DF631C3's own wording -- had a direct, dedicated test proof (`.data is view.data` identity assertion) for slicing, crop, and flip, but NOT for transpose/permute, despite the module's own docstring claiming all four operations are zero-copy. Confirmed the implementation itself was already correct before writing any test: `.transpose()`'s own `replace(self, shape=..., strides=..., axes=..., copied=False)` never touches `data`, so the same backing tuple is necessarily shared already -- this closes a genuine testing gap, not a behavior gap, matching the same \"prove it directly, don't infer it from a docstring claim\" discipline already applied to slicing/ crop/flip. Added test_transpose_is_zero_copy_sharing_the_same_backing_data (mirroring the existing slice/crop/flip proofs exactly) and strengthened test_permute_is_an_alias_for_transpose_taking_one_sequence, which previously checked only `.shape` equality between `.permute()` and `.transpose()`, to also check `.strides`, `.axes`, and `.data is view.data` -- proving `.permute()` is a genuine full proxy, not merely shape-equivalent. With this closed, every one of NRRD-ARRAY-001's named operations (element access, slicing, permutation/transpose, flip, crop) now has direct, dedicated proof of BOTH clauses named in the two obligations' combined rule_text: metadata/orientation propagation (already proven per-operation before this tick) and zero-copy-vs-explicit-copy status (now proven per-operation, this tick). The two obligations' own sole remaining disclosed item -- a numpy/pynrrd interoperability adapter -- was already correctly confirmed NOT required by either obligation's own rule_text/ required_tests/release_gates in NRRD-CELL-NODE-CROP-CENTERS-PROOF, not re-litigated here. 1 new test, 1 strengthened existing test (no source code changed -- array_view.py's own behavior was already correct). nrrd suite: 957 -> 958 passed (1 pre-existing unrelated skip). 6-format FF6 regression: 4357 -> 4358 passed, 4 skipped. ruff clean (no source file changed, so no mypy re-run was needed for production code). Installed-wheel proof re-run (tools/run_package_install_proof.py --format nrrd, 1/1 PASS) to confirm the package still builds and installs cleanly after the test-file-only change. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the zero-copy claim is verified directly against this package's own implementation, not assumed from its docstring text."
+    },
+    {
       "evidence_id": "NRRD-ATTACHMENT-CONVERSION-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -301,7 +309,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "8ccf8d8a584f0dd3430ca6973c13b73e0155a835abf44d3801cfd234ffa84eb7",
+    "implementation_evidence": "829cba8caa29d732fde8d8d987a8cbcf69e792e3e543062e85a29dec745caa10",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2594,16 +2602,16 @@
       "execution_evidence_ids": [
         "NRRD-R1-SOURCE-TESTS",
         "NRRD-ARRAY-VIEW-PROOF",
-        "NRRD-CELL-NODE-CROP-CENTERS-PROOF"
+        "NRRD-CELL-NODE-CROP-CENTERS-PROOF",
+        "NRRD-ARRAY-VIEW-TRANSPOSE-ZERO-COPY-PROOF"
       ],
       "implemented_behavior": [
         "Flat values expose shape and can be reshaped in fastest-first order.",
         "FF6-NRRD-ARRAY-VIEW-001: dtype (NrrdDtype, reusing codec/payload.py's dtype_info/is_block_type/parse_block_size), strides (element-unit, fastest-first), element access, and slicing (zero-copy, proven via data-identity) are now built and proven -- see NRRD-ARRAY-VIEW-PROOF for the full account, including the range-kind-axis guard and the space-direction/origin propagation this obligation's own \"orientation... follow every operation\" clause names.",
-        "FF6-EVENT-000477: cell-vs-node `centers` semantics under crop are now modelled, grounded directly in the pinned NRRD spec's own worked example (5 samples, axis min 0.0, axis max 1.0: node samples at 0.00/0.25/.../1.00; cell samples at 0.10/0.30/.../0.90). _sliced_axis_metadata (array_view.py) keeps its original formula for a node-centered (or unspecified-center, the conservative default) axis; a cell-centered axis now spans the retained region's own outer edges, one full cell wider than the node case for the same sample count. Also confirmed, and disclosed rather than force-built: the numpy/pynrrd interoperability adapter this obligation's own prior missing_behavior named is NOT actually required by this obligation's own literal rule_text/required_tests/release_gates -- that was scope a prior evidence entry added beyond the obligation's own wording, not a real gap."
+        "FF6-EVENT-000477: cell-vs-node `centers` semantics under crop are now modelled, grounded directly in the pinned NRRD spec's own worked example (5 samples, axis min 0.0, axis max 1.0: node samples at 0.00/0.25/.../1.00; cell samples at 0.10/0.30/.../0.90). _sliced_axis_metadata (array_view.py) keeps its original formula for a node-centered (or unspecified-center, the conservative default) axis; a cell-centered axis now spans the retained region's own outer edges, one full cell wider than the node case for the same sample count. Also confirmed, and disclosed rather than force-built: the numpy/pynrrd interoperability adapter this obligation's own prior missing_behavior named is NOT actually required by this obligation's own literal rule_text/required_tests/release_gates -- that was scope a prior evidence entry added beyond the obligation's own wording, not a real gap.",
+        "FF6-EVENT-000488: transpose/permute's own zero-copy status -- an explicit clause of this capability's sibling obligation's rule_text -- now has the same direct `.data is` proof slicing/crop/flip already had, closing the last unproven per-operation clause. Every named operation now has both metadata-propagation and zero-copy-vs-copy proof individually; the numpy-adapter disclosure remains correctly out of scope. See NRRD-ARRAY-VIEW-TRANSPOSE-ZERO-COPY-PROOF."
       ],
-      "missing_behavior": [
-        "No numpy/pynrrd interoperability adapter exists (the package's own empty `adapters/` directory is the intended home for one) -- disclosed for completeness, but confirmed NOT to be a requirement of this obligation's own rule_text/required_tests/release_gates, which name shape/strides/dtype/slicing/permutation/flip/crop/metadata-propagation only. Building one anyway would be unrequested scope, not this obligation's own gap."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/nrrd/test_obligation_array_view.py::test_out_of_range_index_raises",
         "tests/python/nrrd/test_obligation_array_view.py::test_too_many_indices_raises",
@@ -2627,6 +2635,7 @@
         "tests/python/nrrd/test_obligation_array_view.py::test_crop_selects_the_declared_sub_region",
         "tests/python/nrrd/test_obligation_array_view.py::test_full_size_slice_on_a_range_kind_axis_is_permitted",
         "tests/python/nrrd/test_obligation_array_view.py::test_transpose_reorders_shape_strides_and_axis_metadata",
+        "tests/python/nrrd/test_obligation_array_view.py::test_transpose_is_zero_copy_sharing_the_same_backing_data",
         "tests/python/nrrd/test_obligation_array_view.py::test_transpose_with_no_arguments_reverses_axis_order",
         "tests/python/nrrd/test_obligation_array_view.py::test_permute_is_an_alias_for_transpose_taking_one_sequence",
         "tests/python/nrrd/test_obligation_array_view.py::test_flip_reverses_axis_order_of_values",
@@ -2649,7 +2658,7 @@
           "Each array operation with metadata/orientation propagation and view/copy assertion."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::to_array",
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::reshape_nrrd_array",
@@ -2658,7 +2667,7 @@
         "src/python/nrrd/src/format_factory/nrrd/model/array_view.py::NrrdDtype",
         "src/python/nrrd/src/format_factory/nrrd/model/array_view.py::AxisMetadata"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-PRESERVE-001",
@@ -2929,16 +2938,16 @@
       "execution_evidence_ids": [
         "NRRD-R1-SOURCE-TESTS",
         "NRRD-ARRAY-VIEW-PROOF",
-        "NRRD-CELL-NODE-CROP-CENTERS-PROOF"
+        "NRRD-CELL-NODE-CROP-CENTERS-PROOF",
+        "NRRD-ARRAY-VIEW-TRANSPOSE-ZERO-COPY-PROOF"
       ],
       "implemented_behavior": [
         "Shape and fastest-first nested value access exist.",
         "FF6-NRRD-ARRAY-VIEW-001: stride/dtype metadata (NrrdDtype), slicing, permutation, flip, crop, orientation propagation (space_direction/space_origin under flip, axis metadata under transpose/slice), and zero-copy-vs-copy signaling (the `copied` field, proven by data-identity assertions) are all now built and proven -- see NRRD-ARRAY-VIEW-PROOF.",
-        "FF6-EVENT-000477: cell-vs-node `centers` semantics under crop are now modelled -- see the sibling obligation SAL-NRRD-OBL-E4B3D1A206784660's own implemented_behavior entry for the full account (same capability, same fix, same NRRD-CELL-NODE-CROP-CENTERS-PROOF evidence). The numpy/pynrrd interoperability adapter this obligation's own prior missing_behavior named is confirmed NOT actually required by this obligation's own rule_text/required_tests/release_gates -- disclosed rather than force-built."
+        "FF6-EVENT-000477: cell-vs-node `centers` semantics under crop are now modelled -- see the sibling obligation SAL-NRRD-OBL-E4B3D1A206784660's own implemented_behavior entry for the full account (same capability, same fix, same NRRD-CELL-NODE-CROP-CENTERS-PROOF evidence). The numpy/pynrrd interoperability adapter this obligation's own prior missing_behavior named is confirmed NOT actually required by this obligation's own rule_text/required_tests/release_gates -- disclosed rather than force-built.",
+        "FF6-EVENT-000488: transpose/permute's own zero-copy status -- this obligation's own explicit \"zero-copy views where safe, explicit copies otherwise\" clause -- now has the same direct `.data is` identity proof slicing/crop/flip already had, closing the last unproven per-operation clause of this obligation's own rule_text. See NRRD-ARRAY-VIEW-TRANSPOSE-ZERO-COPY-PROOF."
       ],
-      "missing_behavior": [
-        "No numpy/pynrrd interoperability adapter exists (the package's own empty `adapters/` directory is the intended home for one) -- disclosed for completeness, but confirmed NOT to be a requirement of this obligation's own rule_text/required_tests/release_gates. Building one anyway would be unrequested scope, not this obligation's own gap."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/nrrd/test_obligation_array_view.py::test_out_of_range_index_raises",
         "tests/python/nrrd/test_obligation_array_view.py::test_too_many_indices_raises",
@@ -2962,6 +2971,7 @@
         "tests/python/nrrd/test_obligation_array_view.py::test_crop_selects_the_declared_sub_region",
         "tests/python/nrrd/test_obligation_array_view.py::test_full_size_slice_on_a_range_kind_axis_is_permitted",
         "tests/python/nrrd/test_obligation_array_view.py::test_transpose_reorders_shape_strides_and_axis_metadata",
+        "tests/python/nrrd/test_obligation_array_view.py::test_transpose_is_zero_copy_sharing_the_same_backing_data",
         "tests/python/nrrd/test_obligation_array_view.py::test_transpose_with_no_arguments_reverses_axis_order",
         "tests/python/nrrd/test_obligation_array_view.py::test_permute_is_an_alias_for_transpose_taking_one_sequence",
         "tests/python/nrrd/test_obligation_array_view.py::test_flip_reverses_axis_order_of_values",
@@ -2984,7 +2994,7 @@
           "Operation-by-operation array and metadata consistency matrix."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::to_array",
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::reshape_nrrd_array",
@@ -2993,13 +3003,14 @@
         "src/python/nrrd/src/format_factory/nrrd/model/array_view.py::NrrdDtype",
         "src/python/nrrd/src/format_factory/nrrd/model/array_view.py::AxisMetadata"
       ],
-      "status": "partial"
+      "status": "implemented"
     }
   ],
   "promotion_effect": "none",
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-array-view-001.json": "c2a255bc2935f1dd903e7e898d10700c79c762c42ebf723708597b00f2374556",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-array-view-transpose-zero-copy-001.json": "ef52b6f342db48a3b2ed4cbf19b30edd06c210c1a681971c5fdcc1e4af3b0b6f",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-attachment-conversion-001.json": "b5ce2947e6b853a1bd21cde3bb41e33f8a8daaab04c0b49c2d45cf49edd65ae4",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
@@ -3050,7 +3061,7 @@
     "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "82b06e8160941efd42e95c9d698e81a3c2697dbe1edceaa47efa4154b4476ded",
     "tests/python/nrrd/test_ascii_encoding_endian.py": "70aaff339ed8a91183ead5c3b87164d5d1542c393746125c95fb63e5f3f17c04",
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
-    "tests/python/nrrd/test_obligation_array_view.py": "4b39041bfa5bbba4e1bcea72b516ca3e522b915d8420b83fc49615a02623f3c4",
+    "tests/python/nrrd/test_obligation_array_view.py": "e7191ec3c9dcb1bd0ba39fd87e7b0b1e16db24e5d1c161bcd98e3c559daa9cb3",
     "tests/python/nrrd/test_obligation_attachment_conversion.py": "9735c86c534b2bec55338882d3c6049571a7184b3a25d24e450f9146f29b3a55",
     "tests/python/nrrd/test_obligation_axis_field_arity.py": "3528ed42454f8e5f9c3640f3b005ee3f7f3a0972081d0a2b81ce9d3dcd6751e0",
     "tests/python/nrrd/test_obligation_axis_order.py": "926a045509b2395f326340b792bd739bbe85c4da8a02c958bc390d70650d5207",
@@ -3095,11 +3106,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 59,
-      "partial": 6
+      "implemented": 61,
+      "partial": 4
     },
     "total": 65,
-    "unresolved": 6
+    "unresolved": 4
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
