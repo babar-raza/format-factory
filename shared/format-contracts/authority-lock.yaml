@@ -299,6 +299,32 @@ sources:
   fetch:
     kind: LOCAL_FILE
     source_path: shared/format-contracts/product-requirements/ubl.yaml
+- source_id: SRC-UBL-004
+  format_id: ubl
+  title: OASIS UBL 2.1 Standard release package
+  organization: OASIS
+  version: UBL 2.1 OASIS Standard
+  authority_class: AUTHORITATIVE
+  materialized_path: .local/format-contracts/acquired/ubl/src-ubl-004.bin
+  expected_sha256: 60b80d76394a8a2add90723ecb8e0e2e9d826775de9749df37a72d60703f86ed
+  media_type: application/zip
+  legal:
+    license_id: LicenseRef-OASIS-Specification-Notice
+    redistribution: ALLOWED_WITH_NOTICE
+    use_status: APPROVED_FOR_LOCAL_USE
+    evidence: 'Copyright and permission notice distributed with the official OASIS UBL 2.1 Standard package (UBL-2.1.html''s own Notices section: "Copyright (c) OASIS Open 2001-2013. All Rights Reserved." plus the standard OASIS document-copying permission grant) -- confirmed directly against the same notice text, not assumed from the UBL 2.3 sibling entry above.'
+    notes: External package bytes remain in the ignored local CAS. Acquired to research UBL-UPGRADE-001's own version-migration-transform requirement (SAL-UBL-OBL-7B16479ACBBC8EFC), which needs a real older-version schema to diff against -- only UBL 2.3 was previously pinned for this format.
+  limits:
+    max_bytes: 268435456
+    timeout_seconds: 180
+    max_redirects: 3
+  fetch:
+    kind: URL
+    locators:
+    - url: https://docs.oasis-open.org/ubl/os-UBL-2.1/UBL-2.1.zip
+      immutable: true
+    allowed_hosts:
+    - docs.oasis-open.org
 - source_id: SRC-XLF-001
   format_id: xliff
   title: OASIS XLIFF 2.0 Standard release package

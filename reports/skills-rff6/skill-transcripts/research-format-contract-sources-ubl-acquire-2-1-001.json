@@ -1,0 +1,60 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "research-format-contract-sources-ubl-acquire-2-1-001",
+  "skill_id": "research-format-contract-sources",
+  "manifest_id": "sfx-adfa63572fce41e0",
+  "mode": "live",
+  "timestamp": "2026-08-09T00:00:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_ACQUIRE_2_1_SOURCE_001",
+    "task_kind": "acquire-new-authority-source",
+    "root_cause": "UBL-UPGRADE-001's own missing_behavior (SAL-UBL-OBL-7B16479ACBBC8EFC, confirmed via the register-vs-evidence-text discipline this tick) states 'no transform infrastructure exists for any UBL version pair... building one honestly would require deep spec knowledge of what changed between each UBL schema revision.' Checked shared/format-contracts/authority-lock.yaml directly and confirmed only SRC-UBL-001 (UBL 2.3 prose spec HTML) and SRC-UBL-002 (UBL 2.3 release ZIP) were ever pinned for this format -- no older-version UBL schema (2.0/2.1/2.2) is acquired to diff against, so migration-transform research was genuinely blocked on missing source material, not merely unresearched.",
+    "acceptance_evidence": "Used authority_materializer's own probe-url subcommand (read-only, host-allowlisted, byte/timeout/redirect-bounded) to fetch https://docs.oasis-open.org/ubl/os-UBL-2.1/UBL-2.1.zip and obtain its real sha256 (60b80d76394a8a2add90723ecb8e0e2e9d826775de9749df37a72d60703f86ed, 57,926,016 bytes, HTTP 200) BEFORE writing any lock entry -- never guessed a hash. Directly fetched and read UBL-2.1.html's own Notices section to confirm the exact same OASIS Specification Notice license text already approved for UBL 2.3 applies ('Copyright (c) OASIS Open 2001-2013. All Rights Reserved.' plus the standard OASIS document-copying permission grant) -- not assumed from the 2.3 sibling entry. Added SRC-UBL-004 to authority-lock.yaml matching the exact schema (schemas/format-contracts/authority-lock.schema.json) and the exact style of the existing SRC-UBL-002/SRC-XLF-001 entries. Ran `authority_materializer audit --format ubl` immediately after adding the entry (before materializing) and confirmed it parsed as schema-valid and correctly reported MISSING (not yet materialized) rather than erroring. Ran `authority_materializer materialize --format ubl --online` and confirmed all 4 ubl sources (including the new one) report MATCH with the network fetch returning the exact same bytes/hash the probe already found. Re-ran `audit --format ubl` (offline) afterward and confirmed 4/4 MATCH persists via CAS replay, proving the acquisition is reproducible without re-fetching. Ran `audit --format ubl --contracts` and confirmed the 3 pre-existing contract-declared sources are unaffected (still 3/3 MATCH) -- this acquisition is additive only, does not touch or break any existing contract declaration."
+  },
+  "execution_steps": [
+    "1. Confirmed via the register-vs-evidence-text discipline that UBL-UPGRADE-001's own missing_behavior genuinely cites a missing-source blocker, not a researched-and-rejected one: read shared/format-contracts/authority-lock.yaml directly and confirmed only UBL 2.3 sources exist for this format.",
+    "2. Checked github.com/openraster/ora-spec (a candidate corpus source for ora's own separate blocker) via the GitHub contents API through WebFetch and confirmed it contains only a README.md -- a genuine dead end for that unrelated investigation, not pursued further.",
+    "3. Considered Krita/MyPaint as ora's own independent-producer-corpus candidates and identified they ship under GPL, raising a license-compatibility question for this commercial-track product's own test corpus -- classified as a legal/business judgment call outside unilateral agent authority, disclosed rather than resolved by guessing, and NOT acted on.",
+    "4. Pivoted to the more tractable ubl acquisition: read research-format-contract-sources.md's own steps in full (audit, sync-product-requirements --check, materialize, audit --contracts, source_researcher.py, draft findings, intake) to understand the full new-source-enrollment procedure before attempting anything, since a rushed hash-pinning error would violate this skill's own atomic_concurrent_materialization/authority_digest_exact guarantees.",
+    "5. Used WebSearch to locate the OASIS UBL 2.1 standard's own landing page (docs.oasis-open.org/ubl/os-UBL-2.1/), then WebFetch to enumerate its downloadable files and identify UBL-2.1.zip as the comprehensive release package, directly analogous to SRC-UBL-002's own UBL-2.3.zip.",
+    "6. Ran `authority_materializer probe-url --url https://docs.oasis-open.org/ubl/os-UBL-2.1/ --allowed-host docs.oasis-open.org ...` first as a low-risk connectivity check (confirmed HTTP 200, real bytes/hash returned) before probing the much larger actual package.",
+    "7. Ran `authority_materializer probe-url` against the real UBL-2.1.zip URL and obtained its real, verified sha256 (60b80d76394a8a2add90723ecb8e0e2e9d826775de9749df37a72d60703f86ed) and byte count (57,926,016) -- read-only, no bytes committed to the repository at this step.",
+    "8. Used WebFetch on UBL-2.1.html to directly read and quote its own Notices section, confirming the identical OASIS Specification Notice terms already approved for SRC-UBL-002 (UBL 2.3) apply here too -- not assumed by analogy alone.",
+    "9. Read the authority-lock JSON schema (schemas/format-contracts/authority-lock.schema.json) in full and the complete existing SRC-UBL-002 entry (not a truncated excerpt) to match every required field exactly.",
+    "10. Added SRC-UBL-004 to shared/format-contracts/authority-lock.yaml with the real probed hash, the directly-confirmed legal evidence text, and a `notes` field disclosing the exact reason for acquisition (UBL-UPGRADE-001 research).",
+    "11. Ran `authority_materializer audit --format ubl` (offline, no network) immediately after adding the entry: confirmed schema-valid parse and correct MISSING status for the not-yet-materialized new source, with the 3 pre-existing sources unaffected (still MATCH).",
+    "12. Ran `authority_materializer materialize --format ubl --online`: fetched the real bytes from the exact locked URL, confirmed the observed hash matched the locked expected_sha256 exactly, and all 4 ubl sources reported MATCH.",
+    "13. Re-ran `audit --format ubl` (offline) to confirm the materialized bytes replay cleanly from the local CAS without re-fetching -- 4/4 MATCH persists.",
+    "14. Ran `audit --format ubl --contracts` to confirm the 3 pre-existing contract-declared sources remain unaffected (3/3 MATCH, same as before this task) -- this acquisition is additive-only and does not touch or break the existing format contract's own declarations.",
+    "15. Did NOT attempt the remaining research-format-contract-sources steps (source_researcher.py skeleton generation, authoring draft findings, review, research_intake.py commit) or any UBL 2.0/2.1-vs-2.3 schema diffing or migration-transform code -- those are substantial, separate follow-on tasks, explicitly left for a future tick, not force-completed this tick.",
+    "16. Confirmed .local/format-contracts/acquired/ubl/src-ubl-004.bin is gitignored (matching every other acquired-source pattern in this repository) -- only the lock file itself (shared/format-contracts/authority-lock.yaml) needs to be committed; the acquired bytes remain in the local, ignored CAS, reproducible on any fresh checkout via `materialize --online`."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/authority-lock.yaml",
+    ".local/format-contracts/acquired/ubl/src-ubl-004.bin"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/authority-lock.yaml",
+    ".local/format-contracts/acquired/ubl/src-ubl-004.bin"
+  ],
+  "tests_run": [
+    "authority_materializer audit --format ubl (offline, before materialization) -- schema-valid, correct MISSING status for the new source, 3 pre-existing sources unaffected",
+    "authority_materializer materialize --format ubl --online -- 4/4 MATCH, network fetch hash matches the pre-probed hash exactly",
+    "authority_materializer audit --format ubl (offline, after materialization) -- 4/4 MATCH via CAS replay, no network required",
+    "authority_materializer audit --format ubl --contracts -- 3/3 pre-existing contract-declared sources unaffected, acquisition is additive-only"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Acquires and pins a new, real, license-verified authority source (OASIS UBL 2.1 release package) that was the genuine, confirmed blocker for UBL-UPGRADE-001's own version-migration-transform research. Does not itself close UBL-UPGRADE-001 or build any transform code -- that remains substantial follow-on work for a future tick. No obligation-register status change this tick.",
+    "controller_event_effect": "pending",
+    "certification_state": "3/6 (ipynb, xliff, safetensors CERTIFIED per Event 467; ora/nrrd/ubl remain uncertified -- promotion.* untouched by this task, no fresh explicit user authorization exists this session)",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 194,
+    "new_public_api": "none -- source acquisition only, no product source code touched"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
