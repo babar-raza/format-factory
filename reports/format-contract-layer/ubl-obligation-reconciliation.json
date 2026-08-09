@@ -186,6 +186,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) SAL-UBL-OBL-0996E6D7B91D544F (UBL-PARSE-001) further -- wave 1 of the disclosed 84-site find()/find_all()-to-find_qname()/find_all_qname() migration (UBL-QNAME-PRECISE-LOOKUP-PROOF built the primitive; this entry is the first real migration against it). Deliberately chose model/ reference.py as the smallest, fully self-contained first wave: 5 call sites, one function (external_reference_of), every field's own expected namespace already confirmed unambiguous and CBC-only by this module's own pre-existing test fixtures before any migration code was written, so no fresh schema research was needed and no namespace was guessed. Migrated all 5 call sites to a local _find() wrapper around find_qname(node, _CBC_NAMESPACE, name) (a local constant, matching this codebase's own established per-module-constant convention rather than introducing shared coupling), keeping the call sites themselves visually unchanged so the diff stays minimal. Ran the file's own full existing downstream test coverage (28 tests across 4 files: construction, projection, cardinality validation, element ordering, security baseline) BEFORE writing any new test, confirming zero behavioral change for every non-adversarial case already covered. Added one new test proving the migration's own actual security value directly (not merely inferred from the primitive's own proof): a spoofed same-local-name URI sibling from an attacker-controlled namespace is now correctly ignored by external_reference_of() itself, not only by the separate, document-wide validator check -- where it previously would have silently won via find()'s own local-name-only matching. ubl suite: 1249 -> 1250 passed. 6-format FF6 regression: 4350 -> 4351 passed, 4 skipped. mypy --strict and ruff clean. Installed-wheel behavior independently re-verified: the spoofed-sibling scenario was exercised directly from the installed, non-editable site-packages path. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule. Covers SAL-UBL-OBL-0996E6D7B91D544F only; does not promote it to implemented -- 79 call sites across 7 more files (aggregates.py, charges.py, genericode.py, lines.py, party.py, validation/validator.py) remain unmigrated, a smaller but still real remainder of the same disclosed task."
     },
     {
+      "evidence_id": "UBL-FIND-QNAME-MIGRATION-WAVE2-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-find-qname-migration-wave2-001.json",
+      "sha256": "58b1fbc2eca628270c0223c157042a677b570b6956929741cebd6998a358dcac",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) SAL-UBL-OBL-0996E6D7B91D544F (UBL-PARSE-001) further -- wave 2 of the disclosed find()/find_all()-to-find_qname()/find_all_qname() migration (wave 1: reference.py, UBL-FIND-QNAME-MIGRATION-WAVE1-PROOF). First corrected the prior wave's own call-site estimate: genericode.py's own 6 apparent find()/findtext() matches turned out to be Python's stdlib xml.etree.ElementTree API (that file imports ET directly, not this package's own model.typed.find), not this obligation's own concern at all -- the real remaining set is aggregates.py (21), charges.py (13), lines.py (18), party.py (22), 74 sites, not the 79 previously estimated. Selected model/charges.py (13 sites, 4 functions: allowance_charge_of, price_of, financial_account_of, payment_means_of) as the smallest real remainder. Unlike wave 1's uniformly-CBC reference.py, this file has a genuine mixed-namespace case: confirmed directly via a live xmlschema introspection against the real pinned OASIS schema (AllowanceChargeType/ PriceType/PaymentMeansType/FinancialAccountType) before migrating any call site that every leaf field is CommonBasicComponents EXCEPT PayeeFinancialAccount, itself a CommonAggregateComponents aggregate. Added both _cbc()/_cac() wrappers around find_qname() so each call site documents its own expected namespace directly. Ran the file's own full existing 25-test downstream coverage (temporal projection plus all 4 charges functions, including dedicated PayeeFinancialAccount tests) BEFORE writing any new test, confirming zero regression for the mixed-namespace path specifically, not only the uniform-namespace functions. Added one new test proving the migration's own actual security value directly: a spoofed same-local-name PaymentMeansCode sibling from an attacker namespace is now correctly ignored by payment_means_of() itself. ubl suite: 1250 -> 1251 passed. 6-format FF6 regression: 4351 -> 4352 passed, 4 skipped. mypy --strict and ruff clean. Installed-wheel behavior independently re-verified: the spoofed PaymentMeansCode scenario was exercised directly from the installed, non-editable site-packages path. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule. Covers SAL-UBL-OBL-0996E6D7B91D544F only; does not promote it to implemented -- aggregates.py (21), lines.py (18), and party.py (22), 61 call sites across 3 files, remain unmigrated."
+    },
+    {
       "evidence_id": "UBL-ITEM-PRICE-CARDINALITY-ORDER-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -469,7 +477,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "d046e0a673755048dfe114527d8e233434b26d4358c2184b6e6f21623e52c060",
+    "implementation_evidence": "366495e6a8397fd6abfa7c686be7df8d49bba1418d7fb31e55317025d79ed6cf",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -686,15 +694,17 @@
         "UBL-BASELINE-SUITE",
         "UBL-NAMESPACE-SHADOWING-SECURITY-PROOF",
         "UBL-QNAME-PRECISE-LOOKUP-PROOF",
-        "UBL-FIND-QNAME-MIGRATION-WAVE1-PROOF"
+        "UBL-FIND-QNAME-MIGRATION-WAVE1-PROOF",
+        "UBL-FIND-QNAME-MIGRATION-WAVE2-PROOF"
       ],
       "implemented_behavior": [
         "Root-level namespace mismatches were already rejected (test_wrong_namespace_and_preview_profile_fail_closed). A genuine defense-in-depth mitigation is now also in place: validate() detects the one structural signature every find()/find_all() namespace-spoofing attempt must produce -- two or more same-local-name children, in different namespaces, under one parent -- and rejects the whole document as invalid before any find()-derived value could be trusted downstream. Proven directly against the exact reproduction case from this obligation's own original finding (a spoofed {urn:evil:attacker:namespace}ID sibling of the real cbc:ID), at both the document root and nested deeper in the tree, regardless of spoofed-vs-real ordering. Verified to produce zero false positives against the entire pre-existing 878-test ubl suite before any new test was written, and deliberately does not recurse into ext:ExtensionContent (opaque vendor content this package never queries by field name, where the check would be a false-positive risk rather than a real protection).",
         "FF6-EVENT-000481: the complementary fix at the lookup site itself now exists. find_qname()/find_all_qname() (model/typed.py) match children by full QName (namespace AND local name), generalizing document.py's own already-correct private _first_child_text() pattern (used for UBLVersionID/CustomizationID/ProfileID) into a public, reusable primitive rather than a new convention. Proven directly against this obligation's own original spoofed-sibling reproduction case: find_qname() correctly returns each element by its own namespace where find() returns only whichever comes first. Purely additive -- none of the ~78-84 existing find()/find_all() call sites were touched, so this carries zero regression risk to existing behavior.",
-        "FF6-EVENT-000482: wave 1 of the disclosed call-site migration is complete. model/reference.py's own 5 find() calls (external_reference_of, cac:ExternalReference's projector) now use find_qname() internally, chosen as the smallest fully self-contained file with every field's own namespace already confirmed unambiguous by pre-existing tests. Proven directly, not only inferred from the primitive's own proof: a spoofed same-local-name URI sibling is now correctly ignored by external_reference_of() itself. Zero regressions across the file's own full existing 28-test downstream coverage."
+        "FF6-EVENT-000482: wave 1 of the disclosed call-site migration is complete. model/reference.py's own 5 find() calls (external_reference_of, cac:ExternalReference's projector) now use find_qname() internally, chosen as the smallest fully self-contained file with every field's own namespace already confirmed unambiguous by pre-existing tests. Proven directly, not only inferred from the primitive's own proof: a spoofed same-local-name URI sibling is now correctly ignored by external_reference_of() itself. Zero regressions across the file's own full existing 28-test downstream coverage.",
+        "FF6-EVENT-000483: wave 2 is complete. model/charges.py's own 13 find() calls (allowance_charge_of, price_of, financial_account_of, payment_means_of) now use find_qname() internally via _cbc()/_cac() wrappers -- the first genuinely mixed-namespace wave (every field CommonBasicComponents except PayeeFinancialAccount, a CommonAggregateComponents aggregate, confirmed directly via a live xmlschema introspection against the real pinned OASIS schema before migrating). Proven directly: a spoofed same-local-name PaymentMeansCode sibling is now correctly ignored by payment_means_of() itself. Zero regressions across the file's own full existing 25-test downstream coverage, including the mixed-namespace PayeeFinancialAccount path specifically. Also corrected the prior tick's own call-site estimate: genericode.py's own apparent matches were Python stdlib ElementTree API, unrelated to this obligation -- the real remaining total after both waves is 61 call sites across 3 files (aggregates.py 21, lines.py 18, party.py 22), not 79."
       ],
       "missing_behavior": [
-        "find()/find_all() remain unfixed at the primitive level for 79 of the confirmed 84 call sites, across aggregates.py (20), charges.py (13), genericode.py, lines.py, party.py, and validation/validator.py -- reference.py's own 5 sites are now migrated (see implemented_behavior above), a smaller but still real remainder of the same disclosed, cross-cutting task. This obligation's own rule_text (unambiguous resolution, never best-effort local-name guessing) is therefore still not fully satisfied program-wide. UBL-UPGRADE-001 and UBL-WRITE-001, ubl's other 2 remaining unresolved obligations, were also freshly scoped this session and confirmed independently non-tractable for a single tick (new multi-version transform research; official OASIS examples absent from the pinned source data)."
+        "find()/find_all() remain unfixed at the primitive level for 61 confirmed remaining call sites, across aggregates.py (21), lines.py (18), and party.py (22) -- reference.py's own 5 sites and charges.py's own 13 sites are now migrated (see implemented_behavior above), 18 of the real 79-site total (not 84; genericode.py and validator.py were confirmed to have no real find()/find_all() call sites of this package's own primitive, an earlier miscount). This obligation's own rule_text (unambiguous resolution, never best-effort local-name guessing) is therefore still not fully satisfied program-wide. UBL-UPGRADE-001 and UBL-WRITE-001, ubl's other 2 remaining unresolved obligations, were also freshly scoped this session and confirmed independently non-tractable for a single tick (new multi-version transform research; official OASIS examples absent from the pinned source data)."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_itself_is_still_naively_vulnerable_a_known_documented_caveat",
@@ -704,7 +714,8 @@
         "tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_nested_shadowing_deeper_in_the_tree_is_also_detected",
         "tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_qname_correctly_disambiguates_a_spoofed_sibling",
         "tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_all_qname_excludes_a_same_local_name_sibling_from_another_namespace",
-        "tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceProjection::test_a_spoofed_sibling_from_an_unrelated_namespace_is_not_projected"
+        "tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceProjection::test_a_spoofed_sibling_from_an_unrelated_namespace_is_not_projected",
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_spoofed_payment_means_code_sibling_is_not_projected"
       ],
       "obligation_id": "SAL-UBL-OBL-0996E6D7B91D544F",
       "positive_test_selectors": [
@@ -713,7 +724,9 @@
         "tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_qname_returns_none_for_a_namespace_with_no_matching_child",
         "tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_qname_matches_finds_own_result_when_there_is_no_collision",
         "tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_all_qname_preserves_document_order_among_genuine_matches",
-        "tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceProjection::test_projecting_a_full_element"
+        "tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceProjection::test_projecting_a_full_element",
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_well_formed_document_projects_all_three_aggregates",
+        "tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_projects_with_its_leaf_fields"
       ],
       "proof_requirements": {
         "negative": [
@@ -728,7 +741,11 @@
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::_namespace_shadowing_diagnostics",
         "src/python/ubl/src/format_factory/ubl/model/typed.py::find_qname",
         "src/python/ubl/src/format_factory/ubl/model/typed.py::find_all_qname",
-        "src/python/ubl/src/format_factory/ubl/model/reference.py::external_reference_of"
+        "src/python/ubl/src/format_factory/ubl/model/reference.py::external_reference_of",
+        "src/python/ubl/src/format_factory/ubl/model/charges.py::allowance_charge_of",
+        "src/python/ubl/src/format_factory/ubl/model/charges.py::price_of",
+        "src/python/ubl/src/format_factory/ubl/model/charges.py::financial_account_of",
+        "src/python/ubl/src/format_factory/ubl/model/charges.py::payment_means_of"
       ],
       "status": "partial"
     },
@@ -7731,6 +7748,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-extensions-structure-001.json": "bd4536de6158761bca11217c812e3272cb91f9621c4a6539378daaadeb11d5d2",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-external-reference-cardinality-001.json": "bb622b06442b7cdc03dd0718c9d519c47aec054d9790ff26eb8b1af5ff8cdf0b",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-find-qname-migration-wave1-001.json": "4a93b4ba233e548f9d0e00626d16c9145ecd691634316786a47320a821e36852",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-find-qname-migration-wave2-001.json": "58b1fbc2eca628270c0223c157042a677b570b6956929741cebd6998a358dcac",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-item-price-cardinality-order-001.json": "2536fe081ddf4fdd5359614b3283a6352431a13813fe076a6ca560b62c8cff51",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-lifecycle-io-001.json": "ed787921f2225a81573186c4cd81377a417d211b447444ba0807685ba1e837b8",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-line-crud-001.json": "55f115cf94cfaa36b8e40a398cc4f67fa57457533b07a7f247c63808450866a6",
@@ -7774,7 +7792,7 @@
     "src/python/ubl/src/format_factory/ubl/lines.py": "50ca920c459ff1aea139790df52d1e1ab1790ebc16786f134c9e8994e3517c19",
     "src/python/ubl/src/format_factory/ubl/model/__init__.py": "de78fc7fc2e2407b4b9c5dc9178431180c49ae16813c0fdf47da29cef5f99e26",
     "src/python/ubl/src/format_factory/ubl/model/aggregates.py": "c0f02a00ad6065ea0359dd379f30d0db94b95d63f772d2247ab521ea7a49886a",
-    "src/python/ubl/src/format_factory/ubl/model/charges.py": "f72762e8f2fe1f95f967b6842321265d1815dfcacf6e0c49aa83cda617069277",
+    "src/python/ubl/src/format_factory/ubl/model/charges.py": "4fbe9b0c00cf56603d514c90ca70eb1db9f2ac08241f4dc3f4e0f5e69f95e6a8",
     "src/python/ubl/src/format_factory/ubl/model/codelist.py": "ae1ca02a99bbc9aceab6bfa7513ef47e6b194aabbd2f6a3e7828c59455ac03db",
     "src/python/ubl/src/format_factory/ubl/model/document.py": "cb10a405a12f71f2505914e9f3cc7296bd461e8a5b57b0e19e331c46a9ba5827",
     "src/python/ubl/src/format_factory/ubl/model/extension_adapters.py": "d81836748610f3a01c6a7fc3e4757bc9a123d840bc383e3da215e9da06c82925",
@@ -7837,7 +7855,7 @@
     "tests/python/ubl/test_obligation_referential_integrity.py": "ca3bf25af599e5624a7ac0b3d3973724d2f4580aad8f03d2dcb2c0cce412379c",
     "tests/python/ubl/test_obligation_security_baseline.py": "df64042d433f888c07bf14f692d0756c4eeb5f36eedeb60b2d563a05a3cb43ba",
     "tests/python/ubl/test_obligation_signature_backend_registry.py": "e4d666a51d9d1f33994512fd7b139227847fbb608ba6b2b3db06c0c2a6769866",
-    "tests/python/ubl/test_obligation_temporal_projection_and_charges.py": "a01a376f4606a7278cb6d7b83f6d91ad5694e387b4e6d7dc6070c45c841796a4",
+    "tests/python/ubl/test_obligation_temporal_projection_and_charges.py": "3c763855d47c023387ac69edfd3edcdfb4c50946edc87073e25657d64a0cd909",
     "tests/python/ubl/test_obligation_temporal_values.py": "6b280cba533c6d6370f06149257900b005784ff6702a10412c1d307a6a54f986",
     "tests/python/ubl/test_obligation_tolerant_recovery_mode.py": "8d90f8f0893691aa63e1a70e0d77806db8dcf551122de64fe99ad7f80838a8f6",
     "tests/python/ubl/test_obligation_typed_projection.py": "2d035c4a83f5ff71729210eb83422f60c3d02a63c9f6b2dc92f3725f8d980b94",

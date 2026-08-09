@@ -232,6 +232,27 @@ def test_a_malformed_due_date_is_refused() -> None:
         payment_means_of(node)
 
 
+def test_a_spoofed_payment_means_code_sibling_is_not_projected() -> None:
+    """FF6-EVENT-000483: payment_means_of() now uses find_qname() internally
+    (UBL-PARSE-001's own namespace-precise primitive, wave 2 of the ~84
+    disclosed find()/find_all() call sites) -- proven directly, not just
+    asserted, that a same-local-name PaymentMeansCode sibling from an
+    attacker-controlled namespace is correctly ignored rather than
+    shadowing the real cbc:PaymentMeansCode value."""
+    evil = "urn:evil:attacker:namespace"
+    node = XmlNode.create(
+        "{" + CAC + "}PaymentMeans",
+        children=(
+            XmlNode.create(f"{{{evil}}}PaymentMeansCode", text="1"),
+            XmlNode.create("{" + CBC + "}PaymentMeansCode", text="30"),
+        ),
+    )
+
+    means = payment_means_of(node)
+
+    assert means.payment_means_code == Code("30")
+
+
 def test_a_well_formed_document_projects_all_three_aggregates(doc) -> None:
     """Control: the rejection tests above must not be passing because the
     projections reject everything."""

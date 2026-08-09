@@ -13,6 +13,17 @@ The charge indicator deserves its own note: a charge adds and an allowance
 subtracts, so misreading that boolean inverts the sign of a line on the invoice.
 Both spellings XSD permits for `xsd:boolean` are accepted and anything else is
 refused rather than guessed.
+
+UBL-PARSE-001 (FF6-EVENT-000483): every lookup here is namespace-precise via
+`find_qname`, not `find`'s own local-name-only matching -- wave 2 of the ~84
+disclosed `find()`/`find_all()` call sites (wave 1: reference.py,
+FF6-EVENT-000482). Each field's own namespace was confirmed directly against
+the pinned OASIS UBL 2.3 schema (AllowanceChargeType/PriceType/
+PaymentMeansType/FinancialAccountType, via a live xmlschema introspection)
+before migrating, not assumed from convention: every leaf field used here is
+CommonBasicComponents, EXCEPT `PayeeFinancialAccount`
+(CommonAggregateComponents -- confirmed a genuine exception, not an oversight,
+since it is itself an aggregate, not a simple value).
 """
 
 from __future__ import annotations
@@ -23,12 +34,23 @@ from ..errors import UblValidationError
 from .aggregates import _require
 from .document import XmlNode
 from .temporal import UblDate
-from .typed import amount_of, code_of, find, identifier_of, local_name, quantity_of
+from .typed import amount_of, code_of, find_qname, identifier_of, local_name, quantity_of
 from .values import Amount, Code, Identifier, Quantity
 
 #: xsd:boolean has exactly four lexical forms. "yes"/"no" are not among them.
 _TRUE = frozenset({"true", "1"})
 _FALSE = frozenset({"false", "0"})
+
+_CBC_NAMESPACE = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+_CAC_NAMESPACE = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+
+
+def _cbc(node: XmlNode, name: str) -> XmlNode | None:
+    return find_qname(node, _CBC_NAMESPACE, name)
+
+
+def _cac(node: XmlNode, name: str) -> XmlNode | None:
+    return find_qname(node, _CAC_NAMESPACE, name)
 
 
 def _boolean(node: XmlNode | None, owner: str) -> bool:
@@ -117,11 +139,11 @@ def allowance_charge_of(node: XmlNode | None) -> AllowanceCharge:
         raise UblValidationError(
             "cannot project a missing element into a cac:AllowanceCharge"
         )
-    reason_code = find(node, "AllowanceChargeReasonCode")
-    reason = find(node, "AllowanceChargeReason")
+    reason_code = _cbc(node, "AllowanceChargeReasonCode")
+    reason = _cbc(node, "AllowanceChargeReason")
     return AllowanceCharge(
-        charge_indicator=_boolean(find(node, "ChargeIndicator"), "cac:AllowanceCharge"),
-        amount=amount_of(find(node, "Amount")),
+        charge_indicator=_boolean(_cbc(node, "ChargeIndicator"), "cac:AllowanceCharge"),
+        amount=amount_of(_cbc(node, "Amount")),
         reason_code=code_of(reason_code) if reason_code is not None else None,
         reason=reason.text if reason is not None else None,
     )
@@ -130,9 +152,9 @@ def allowance_charge_of(node: XmlNode | None) -> AllowanceCharge:
 def price_of(node: XmlNode | None) -> Price:
     if node is None:
         raise UblValidationError("cannot project a missing element into a cac:Price")
-    basis = find(node, "BaseQuantity")
+    basis = _cbc(node, "BaseQuantity")
     return Price(
-        price_amount=amount_of(find(node, "PriceAmount")),
+        price_amount=amount_of(_cbc(node, "PriceAmount")),
         base_quantity=quantity_of(basis) if basis is not None else None,
     )
 
@@ -141,9 +163,9 @@ def financial_account_of(node: XmlNode | None) -> FinancialAccount | None:
     """Absent per its own optional cardinality (`minOccurs="0"`), not an error."""
     if node is None:
         return None
-    identifier = find(node, "ID")
-    name = find(node, "Name")
-    currency = find(node, "CurrencyCode")
+    identifier = _cbc(node, "ID")
+    name = _cbc(node, "Name")
+    currency = _cbc(node, "CurrencyCode")
     return FinancialAccount(
         id=identifier_of(identifier) if identifier is not None else None,
         name=name.text.strip() if name is not None else None,
@@ -156,9 +178,9 @@ def payment_means_of(node: XmlNode | None) -> PaymentMeans:
         raise UblValidationError(
             "cannot project a missing element into a cac:PaymentMeans"
         )
-    due = find(node, "PaymentDueDate")
-    identifier = find(node, "PaymentID")
-    code = find(node, "PaymentMeansCode")
+    due = _cbc(node, "PaymentDueDate")
+    identifier = _cbc(node, "PaymentID")
+    code = _cbc(node, "PaymentMeansCode")
     if code is None:
         raise UblValidationError(
             f"<{local_name(node.qname)}> has no cbc:PaymentMeansCode"
@@ -167,7 +189,7 @@ def payment_means_of(node: XmlNode | None) -> PaymentMeans:
         payment_means_code=code_of(code),
         payment_due_date=UblDate(due.text.strip()) if due is not None else None,
         payment_id=code_of(identifier) if identifier is not None else None,
-        payee_financial_account=financial_account_of(find(node, "PayeeFinancialAccount")),
+        payee_financial_account=financial_account_of(_cac(node, "PayeeFinancialAccount")),
     )
 
 

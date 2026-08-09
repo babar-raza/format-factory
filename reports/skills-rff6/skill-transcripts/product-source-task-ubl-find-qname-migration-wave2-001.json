@@ -1,0 +1,59 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-find-qname-migration-wave2-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-c5d74522e2f65e78",
+  "mode": "live",
+  "timestamp": "2026-08-09T12:52:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC-FF6-UBL-FIND-QNAME-MIGRATION-WAVE2-001",
+    "task_kind": "continue-the-established-multi-wave-find-qname-migration-pattern-wave-2-of-n",
+    "root_cause": "Continuing UBL-PARSE-001's own disclosed 84-site migration per the prior tick's own exact_next_action. Recomputed the exact remaining call-site counts per file first (grep had been imprecise the prior tick: genericode.py's own 6 matches turned out to be ElementTree's unrelated .find()/.findtext() API, not this package's own find()/find_all(); the real remaining files are aggregates.py 21, charges.py 13, lines.py 18, party.py 22 -- 74 real sites, not the 79 estimated the prior tick).",
+    "obligation_targeted": "SAL-UBL-OBL-0996E6D7B91D544F (UBL-PARSE-001) narrowed further -- 13 more of the confirmed 74 remaining find()/find_all() call sites are now migrated (18 of ~84 total across both waves).",
+    "acceptance_evidence": "Selected model/charges.py as wave 2: the smallest of the 4 real remaining files (13 call sites across 4 functions: allowance_charge_of, price_of, financial_account_of, payment_means_of). Unlike wave 1's reference.py (uniformly CBC), this file has a genuine mixed-namespace case: every leaf field is CommonBasicComponents EXCEPT PayeeFinancialAccount, which is itself a CommonAggregateComponents aggregate -- confirmed directly via a live xmlschema introspection against the real pinned OASIS schema (AllowanceChargeType/PriceType/PaymentMeansType/FinancialAccountType) before migrating any call site, not assumed from convention. Added both a _cbc() and a _cac() wrapper around find_qname() to keep the two families of call sites visually distinct and self-documenting. Ran the file's own full existing 25-test downstream coverage before writing any new test, confirming zero regression including for the mixed-namespace PayeeFinancialAccount path specifically. Added one new test proving the migration's own actual value: a spoofed PaymentMeansCode sibling from an attacker namespace is now correctly ignored by payment_means_of() itself."
+  },
+  "execution_steps": [
+    "1. After committing and eventing wave 1 (FF6-EVENT-000482), recomputed the real remaining call-site counts precisely before picking wave 2, since the prior tick's own grep-based estimate had a false positive: genericode.py's own 6 apparent matches are ElementTree's own unrelated .find()/.findtext()/.findall() API (the file imports xml.etree.ElementTree, not this package's own model.typed.find), confirmed by checking each file's own import statement first this time, not just grepping for the literal substring 'find('.",
+    "2. Found the corrected real remaining set: aggregates.py (21), charges.py (13), lines.py (18), party.py (22) -- 74 sites, not the 79 previously estimated. Picked charges.py as the smallest.",
+    "3. Read charges.py in full before migrating anything: 4 functions (allowance_charge_of, price_of, financial_account_of, payment_means_of), most fields textually suggesting CBC by convention, but payment_means_of's own PayeeFinancialAccount lookup looked like it could plausibly be CAC (it is itself passed to a separate _of() projector, the pattern this package uses for aggregate types, not leaf values) -- did not assume, verified directly.",
+    "4. Spiked a live xmlschema introspection against the real pinned OASIS UBL 2.3 schema for all 4 relevant complex types (AllowanceChargeType, PriceType, PaymentMeansType, FinancialAccountType) before writing any migration code, confirming exactly: every field this package's model uses is CommonBasicComponents except PayeeFinancialAccount (CommonAggregateComponents, confirmed a genuine, deliberate exception).",
+    "5. Migrated all 13 call sites, adding a _cbc()/_cac() wrapper pair around find_qname() (rather than one generic wrapper needing a namespace argument at every call site) so the code itself documents which namespace each lookup expects, matching the file's own existing terse style.",
+    "6. Ran the file's own full existing downstream test coverage (25 tests: temporal projection plus all 4 charges functions, including dedicated PayeeFinancialAccount tests) before writing any new test -- all 25 passed unchanged, specifically confirming the mixed CBC/CAC migration is correct end-to-end, not just for the uniform-namespace functions.",
+    "7. Added one new test (test_a_spoofed_payment_means_code_sibling_is_not_projected) proving the migration's own actual security value directly: a spoofed same-local-name PaymentMeansCode sibling from an attacker namespace is now correctly ignored by payment_means_of() itself -- passed on the first run.",
+    "8. Ran ruff check and mypy --strict against charges.py: both clean.",
+    "9. Ran the full ubl suite (1251 passed, up from 1250) and the 6-format FF6 regression (4352 passed, 4 skipped, up from 4351) -- exact +1 delta in both, confirming zero regressions from the migration itself.",
+    "10. Ran the installed-wheel proof (tools/run_package_install_proof.py --format ubl, 1/1 PASS) and independently re-verified the spoofed PaymentMeansCode scenario directly from the installed, non-editable site-packages path."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/model/charges.py",
+    "tests/python/ubl/test_obligation_temporal_projection_and_charges.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/model/charges.py",
+    "tests/python/ubl/test_obligation_temporal_projection_and_charges.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_temporal_projection_and_charges.py -v -- 26 passed (25 pre-existing unchanged, 1 new)",
+    ".venv/Scripts/pytest tests/python/ubl/ -q --timeout=120 -- 1251 passed (was 1250)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4352 passed, 4 skipped (was 4351)",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/model/charges.py tests/python/ubl/test_obligation_temporal_projection_and_charges.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/model/charges.py -- Success: no issues found in 1 source file",
+    "python tools/run_package_install_proof.py --format ubl -- RESULT: 1/1 PASS; the spoofed PaymentMeansCode scenario independently re-exercised from the installed, non-editable wheel's own site-packages path"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (UBL-PARSE-001) narrows further -- 13 more call sites migrated (18 of ~84 total across 2 waves), including this package's first genuinely mixed-namespace migration (CBC + one CAC field), proving the pattern generalizes beyond the uniformly-CBC first wave. Not promoted to implemented: aggregates.py (21), lines.py (18), party.py (22) remain, 61 sites across 3 files.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); ubl remains UNASSESSED",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "None -- allowance_charge_of/price_of/financial_account_of/payment_means_of's own signatures and return types are unchanged; the migration is entirely internal to charges.py."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
