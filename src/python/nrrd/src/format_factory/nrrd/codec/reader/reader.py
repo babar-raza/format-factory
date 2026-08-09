@@ -31,6 +31,13 @@ from ..payload import (
 
 _REQUIRED_FIELDS = frozenset({"type", "dimension", "sizes", "encoding"})
 
+#: "Starting with NRRD0004, space, space dimension, space units, space
+#: origin, and per-axis space directions describe array orientation in a
+#: surrounding space" (SAL-NRRD-00019) -- these 5 fields, read-time gated
+#: below the same way the LIST/printf multi-file form and the NRRD0005
+#: "measurement frame" field already are.
+_NRRD0004_SPACE_FIELDS = ("space", "space dimension", "space units", "space origin", "space directions")
+
 #: "Field specifications with alternate equivalent forms are listed together
 #: (for example, 'block size' is the same as 'blocksize')." Confirmed
 #: programmatically against the pinned spec text (every "<spaced>: <...>
@@ -403,6 +410,17 @@ def _load(
     data, source_path = _read_source(source, limits)
     raw_header, attached, data_offset = _split_header(data, limits)
     version, header, comments, key_values = _parse_header(raw_header)
+    declared_space_fields = [name for name in _NRRD0004_SPACE_FIELDS if name in header]
+    if declared_space_fields and version < 4:
+        # "Starting with NRRD0004, space, space dimension, space units,
+        # space origin, and per-axis space directions describe array
+        # orientation" -- a declaration under an older magic is refused
+        # at read time rather than silently accepted, the same
+        # read-time-vs-validate()-only distinction as the measurement
+        # frame and LIST/printf gates in this same function.
+        raise NrrdParseError(
+            f"{declared_space_fields!r} require NRRD0004 or newer, got NRRD000{version}"
+        )
     if "measurement frame" in header and version < 5:
         # "measurement frame... is not available until NRRD0005" -- a
         # declaration under an older magic is refused at read time rather

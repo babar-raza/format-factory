@@ -1,0 +1,65 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-space-field-typing-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-9efb6f82b619d7f1",
+  "mode": "live",
+  "timestamp": "2026-08-09T11:55:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC-FF6-NRRD-SPACE-FIELD-TYPING-001",
+    "task_kind": "close-the-remaining-half-of-a-preservation_only-obligation-following-the-just-closed-sibling-pattern",
+    "root_cause": "Following the prior tick's own exact_next_action, scoped NRRD-SPACE-001's own preservation_only obligation (SAL-NRRD-OBL-C853EB5591524EF9), whose missing_behavior (narrowed one tick earlier when the measurement-frame-separation item closed) reads: 'No typed space dimension, units, origin, directions, or version gates for the NRRD0004 space fields themselves.' Confirmed directly: NrrdDocument had a typed `.space` accessor but no `.space_dimension`/`.space_units`/`.space_origin`/`.space_directions`, and reader.py had no read-time NRRD0004 gate for any of the five space fields (only the separate, opt-in `version_requirements()`/`validate()` path flagged it) -- the exact same shape of gap the immediately prior tick closed for the NRRD0005 `measurement frame` field.",
+    "obligation_targeted": "SAL-NRRD-OBL-C853EB5591524EF9 (NRRD-SPACE-001, preservation_only) -- every item its own missing_behavior named is now built and tested.",
+    "acceptance_evidence": "Added 4 typed properties to NrrdDocument (model/document.py), matching the existing `.space`/`.labels`/`.units`/`.centers` accessor convention exactly: `space_dimension` (int | None), `space_units` (list[str], reusing the existing `_parse_quoted_list` helper), `space_origin` and `space_directions` (reusing `space.py`'s own `parse_space_origin`/`parse_space_directions`, already imported into `model/array_view.py` for the identical purpose, confirmed no new dependency or circular-import risk). Added a read-time NRRD0004 version gate to reader.py's own `_load()`, placed before the existing measurement-frame gate, mirroring its exact style and the LIST/printf precedent from NRRD-MULTIFILE-001 -- confirmed genuinely unenforced at read time before this fix."
+  },
+  "execution_steps": [
+    "1. After committing and eventing the measurement-frame slice (FF6-EVENT-000478), read nrrd's now-7 remaining unresolved obligations fresh, per that event's own exact_next_action naming SAL-NRRD-OBL-C853EB5591524EF9 as the next candidate given its structural similarity to the just-closed measurement-frame pattern.",
+    "2. Confirmed directly, by grepping document.py, that only `.space` had a typed accessor -- `space_dimension`/`space_units`/`space_origin`/`space_directions` were all raw-header-only. Confirmed directly, by grepping reader.py, that there was no read-time version gate for any NRRD0004 space field at all (zero matches for 'space' anywhere in reader.py before this change).",
+    "3. Checked for circular-import risk before writing any code: `model/array_view.py` already imports `from ..space import parse_space_directions, parse_space_origin` for its own internal use (building per-axis metadata) -- confirmed the identical import is safe to add to `model/document.py` too, since `space.py` itself imports nothing from `model/`.",
+    "4. Implemented the 4 typed properties, reusing `space.py`'s own parser functions directly (no duplicated parsing logic) and the file's own existing `_parse_quoted_list` helper for `space_units`, matching every sibling property's own lazy-on-access style (parsing happens when the property is read, not at `loads()` time -- same as `labels`/`units`/`centers`).",
+    "5. Added the read-time NRRD0004 gate as a module-level constant (`_NRRD0004_SPACE_FIELDS`, matching this file's own existing `_REQUIRED_FIELDS`/`_UNSPACED_FIELD_ALIASES` naming convention) plus a check in `_load()`, placed immediately before the existing measurement-frame gate.",
+    "6. Smoke-tested interactively before writing any formal test: typed accessors return correct values when present and None/empty when absent, and the read-time gate rejects all 5 field names correctly under NRRD0001-NRRD0003. First smoke-test attempt hit a self-inflicted fixture bug (a doubled blank-line separator shifting the payload by one byte) -- diagnosed and fixed in the smoke script itself before writing any product code assertion, not a product bug.",
+    "7. Wrote 27 tests (tests/python/nrrd/test_obligation_space_field_typing.py): typed-accessor presence/absence for all 4 new properties, a malformed-value negative (parsed lazily, confirmed by testing the raise happens on property access, not at loads() time), and a parametrized cross-product of 3 older magics x 5 space fields for the read-time gate (15 cases), plus a successful-load-under-NRRD0004 positive and a multiple-fields-named-in-one-error case.",
+    "8. First formal test run found 2 failures, both self-inflicted test-fixture bugs, not product bugs: a duplicate 'dimension' header field from redundantly re-declaring it in one test's own extra text (fixed by building that one fixture's header directly rather than reusing the shared helper), and a wrong expectation that `loads()` itself validates `space_origin`'s own vector syntax eagerly (it doesn't -- parsing is lazy, matching every other typed accessor; fixed the test to assert the raise happens on property access).",
+    "9. Ran the full nrrd suite and found 3 further failures -- a genuine cross-file fixture interaction, not a bug in the new code: test_obligation_measurement_frame.py's own `_header()` helper (written the prior tick) unconditionally included a `space dimension: 3` line that was never actually read by any test in that file, but now also trips the new NRRD0004 space-field gate under an older magic, changing which gate's error message fires first for 3 of that file's own parametrized cases. Fixed by removing the unused `space dimension` line from that file's own fixture (confirmed via inspection that no test in that file reads `space_dimension` at all), with a comment explaining why, rather than weakening either gate's own behavior.",
+    "10. Re-ran the full nrrd suite (950 passed, 1 pre-existing unrelated skip, clean) and the 6-format FF6 regression (4338 passed, 4 skipped, up from 4311) -- exact +27 delta in both, no regressions.",
+    "11. Ran ruff check and mypy --strict against every changed source file: both clean.",
+    "12. Ran the installed-wheel proof (tools/run_package_install_proof.py --format nrrd, 1/1 PASS) and independently re-verified both a typed accessor and the read-time gate directly from the installed, non-editable site-packages path."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_space_field_typing.py",
+    "tests/python/nrrd/test_obligation_measurement_frame.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_space_field_typing.py",
+    "tests/python/nrrd/test_obligation_measurement_frame.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_space_field_typing.py -v -- 27 passed (2 initial failures, both self-inflicted test-fixture bugs, diagnosed and fixed before finalizing)",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q --timeout=120 -- 950 passed, 1 skipped (3 initial failures in a sibling test file's own fixture, diagnosed as a genuine cross-file interaction and fixed; clean on re-run)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4338 passed, 4 skipped (was 4311)",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/model/document.py src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py tests/python/nrrd/test_obligation_space_field_typing.py tests/python/nrrd/test_obligation_measurement_frame.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/model/document.py src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py -- Success: no issues found in 2 source files",
+    "python tools/run_package_install_proof.py --format nrrd -- RESULT: 1/1 PASS; a typed accessor and the read-time gate both independently re-exercised from the installed, non-editable wheel's own site-packages path"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (SAL-NRRD-OBL-C853EB5591524EF9, NRRD-SPACE-001) closes -- every item its own missing_behavior named (typed space dimension/units/origin/directions, version gates) is now built and tested. Promoted from preservation_only to implemented.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); nrrd remains UNASSESSED",
+    "obligations_moved": 1,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "format_factory.nrrd's NrrdDocument gains 4 new properties: space_dimension, space_units, space_origin, space_directions."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

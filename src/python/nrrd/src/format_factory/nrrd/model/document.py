@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field, replace
 from typing import Any, ClassVar, Mapping
 
+from ..space import parse_space_directions, parse_space_origin
+
 
 DOMAIN_KINDS = frozenset({"domain", "space", "time"})
 
@@ -186,6 +188,40 @@ class NrrdDocument:
     @property
     def space(self) -> str:
         return self.header.get("space", "")
+
+    @property
+    def space_dimension(self) -> int | None:
+        """The "space dimension" header field, typed as `int`, or `None`
+        when absent -- NRRD0004+ (SAL-NRRD-00019). Distinct from
+        `dimension` (the array's own rank): this counts world-space
+        components, not array axes."""
+        value = self.header.get("space dimension")
+        return int(value) if value is not None else None
+
+    @property
+    def space_units(self) -> list[str]:
+        """The "space units" header field, one quoted string per
+        world-space component -- NRRD0004+, always optional. Distinct
+        from `units` (per-axis, SAL-NRRD-00023's own cited boundary)."""
+        value = self.header.get("space units", "")
+        return _parse_quoted_list(value) if value else []
+
+    @property
+    def space_origin(self) -> tuple[float, ...] | None:
+        """The "space origin" header field, typed as a coordinate vector
+        via `space.parse_space_origin`, or `None` when absent --
+        NRRD0004+."""
+        value = self.header.get("space origin")
+        return parse_space_origin(value) if value is not None else None
+
+    @property
+    def space_directions(self) -> tuple[tuple[float, ...] | None, ...] | None:
+        """The "space directions" header field, typed as one entry per
+        axis (a vector, or `None` for a non-spatial axis) via
+        `space.parse_space_directions`, or `None` when the field itself
+        is absent -- NRRD0004+."""
+        value = self.header.get("space directions")
+        return parse_space_directions(value) if value is not None else None
 
     @property
     def labels(self) -> list[str]:

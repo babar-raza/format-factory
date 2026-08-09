@@ -41,9 +41,16 @@ from format_factory.nrrd import (
 
 
 def _header(measurement_frame: str, *, magic: str = "NRRD0005") -> bytes:
+    # Deliberately no "space dimension" field: this file tests the
+    # "measurement frame" version gate in isolation. A real NRRD0005 file
+    # would normally also declare space dimension (the spec requires it
+    # to precede other orientation fields), but nothing in this test
+    # file's own assertions reads it, and including it would also trip
+    # the separate NRRD0004 space-field gate under an older magic --
+    # test_obligation_space_field_typing.py covers that gate on its own.
     return (
         f"{magic}\ntype: uint8\ndimension: 1\nsizes: 4\nencoding: raw\n"
-        f"space dimension: 3\nmeasurement frame: {measurement_frame}\n\n"
+        f"measurement frame: {measurement_frame}\n\n"
     ).encode() + bytes((1, 2, 3, 4))
 
 

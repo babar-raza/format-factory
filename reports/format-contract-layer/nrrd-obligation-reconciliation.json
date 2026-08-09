@@ -258,6 +258,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS: it names the exact test selectors proving validate() now calls build_space_transform() (built at FF6-EVENT-000273 for the separate named-space cross-check obligation, never wired into validate() itself until this event) whenever both \"space directions\" and \"space origin\" are present in a document's header, reporting NrrdParseError as a non-fatal nrrd.space.inconsistent diagnostic rather than raising. Covers three distinct disagreement shapes (origin/directions length mismatch, declared space-dimension mismatch, named-space cross-check mismatch), confirms documents with neither or only one of the two required fields are unaffected, and includes a dedicated regression test proving the check compares declared lengths/dimensions only and never infers or alters axis order. Narrows SAL-NRRD-OBL-2085AD256AFE6E96 (NRRD-VALIDATE-001); does not promote it to implemented, since its separate trailing-payload-policy clause remains open."
     },
     {
+      "evidence_id": "NRRD-SPACE-FIELD-TYPING-PROOF",
+      "expected_result": "PASS",
+      "granularity": "suite",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-space-field-typing-001.json",
+      "sha256": "e520444d46bd59ddd807fe6811eb9f9fba1ff80163271647c0bcbcab2607cefb",
+      "truth_boundary": "Closes the remaining half of SAL-NRRD-OBL-C853EB5591524EF9's own missing_behavior, narrowed the prior tick to exactly \"typed space dimension/units/origin/directions/version gates for the NRRD0004 space fields themselves.\" Added 4 typed properties to NrrdDocument (space_dimension, space_units, space_origin, space_directions), matching the existing `.space`/`.labels`/`.units`/`.centers` accessor convention (lazy, on-access parsing, None/empty when absent) and reusing space.py's own parse_space_origin/parse_space_directions directly -- confirmed safe via model/array_view.py's own identical existing import, no new dependency or circular-import risk. Added a read-time NRRD0004 version gate to reader.py's own _load(), mirroring the exact precedent already established for the NRRD0005 measurement-frame field and the NRRD0004 LIST/printf multi-file form (NRRD-MULTIFILE-001) -- confirmed genuinely unenforced at read time before this fix (only the separate, opt-in version_requirements()/validate() path caught it). 27 new tests (tests/python/nrrd/test_obligation_space_field_typing.py): typed-accessor presence/absence for all 4 properties, a lazy-parse-error negative, and a parametrized 3-older-magics x 5-space-fields read-time-rejection matrix (15 cases). Two self-inflicted test-fixture bugs were caught and fixed before finalizing (a duplicate header field; a wrong assumption that loads() validates space_origin eagerly rather than lazily), plus a genuine cross-file fixture interaction: test_obligation_measurement_ frame.py's own _header() helper unconditionally declared \"space dimension: 3\" (never actually read by any test in that file) which now also trips this new gate under an older magic -- fixed by removing that unused line from the sibling file's own fixture, with a comment explaining why. nrrd suite: 923 -> 950 passed (1 pre-existing unrelated skip). 6-format FF6 regression: 4311 -> 4338 passed, 4 skipped. mypy --strict and ruff clean. Installed-wheel behavior independently re-verified: a typed accessor and the read-time gate were both exercised directly from the installed, non-editable site-packages path. Closes SAL-NRRD-OBL-C853EB5591524EF9 (NRRD-SPACE-001) in full -- every item its own missing_behavior named is now built and tested; promoted from preservation_only to implemented."
+    },
+    {
       "evidence_id": "NRRD-VERSION-SELECTION-RECONCILIATION-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -285,7 +293,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "d5441a29606471fac97f39c6690ec57d06437dd1f1811a0b2ede5f42a8e265e1",
+    "implementation_evidence": "35c253b722416b91ff350a377d53589a3e3a299eddf7546f6c4594c315b310c0",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2259,19 +2267,28 @@
       "capability_id": "NRRD-SPACE-001",
       "execution_evidence_ids": [
         "NRRD-R1-SOURCE-TESTS",
-        "NRRD-MEASUREMENT-FRAME-PROOF"
+        "NRRD-MEASUREMENT-FRAME-PROOF",
+        "NRRD-SPACE-FIELD-TYPING-PROOF"
       ],
       "implemented_behavior": [
         "Space-related fields are retained as raw header values.",
-        "FF6-EVENT-000478: the \"measurement-frame separation\" item this obligation's own missing_behavior named is now satisfied -- measurement_frame.py is a genuinely separate module and API from space.py's own NRRD0004+ transform (see SAL-NRRD-OBL-818E52E28F996024's own implemented_behavior for the full account). This obligation's own remaining items (typed space dimension/units/origin/directions/version gates for the NRRD0004 space fields themselves) are untouched by this slice and stay open."
+        "FF6-EVENT-000478: the \"measurement-frame separation\" item this obligation's own missing_behavior named is now satisfied -- measurement_frame.py is a genuinely separate module and API from space.py's own NRRD0004+ transform (see SAL-NRRD-OBL-818E52E28F996024's own implemented_behavior for the full account).",
+        "FF6-EVENT-000479: the remaining items this obligation's own missing_behavior named are now built and tested. NrrdDocument gained 4 typed properties (space_dimension, space_units, space_origin, space_directions), matching the existing .space/.labels/.units/.centers accessor convention and reusing space.py's own parse_space_origin/parse_space_directions directly. A read-time NRRD0004 version gate was added to reader.py's own _load(), mirroring the measurement-frame and LIST/printf precedents -- confirmed genuinely unenforced at read time before this fix. 27 new tests prove typed-accessor presence/absence, a lazy parse-error negative, and a parametrized 3-older-magics x 5-space-fields read-time-rejection matrix."
       ],
-      "missing_behavior": [
-        "No typed space dimension, units, origin, directions, or version gates for the NRRD0004 space fields themselves."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_space_field_typing.py::test_a_malformed_space_origin_is_rejected",
+        "tests/python/nrrd/test_obligation_space_field_typing.py::test_a_space_field_under_an_older_magic_is_rejected_at_read_time",
+        "tests/python/nrrd/test_obligation_space_field_typing.py::test_multiple_space_fields_under_an_older_magic_are_all_named_in_the_error"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-C853EB5591524EF9",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_all_standard_chassis_encodings_roundtrip"
+        "tests/python/nrrd/test_obligation_space_field_typing.py::test_space_dimension_is_typed_as_an_int",
+        "tests/python/nrrd/test_obligation_space_field_typing.py::test_space_units_is_typed_as_a_list_of_strings",
+        "tests/python/nrrd/test_obligation_space_field_typing.py::test_space_origin_is_typed_as_a_coordinate_vector",
+        "tests/python/nrrd/test_obligation_space_field_typing.py::test_space_directions_is_typed_as_one_entry_per_axis",
+        "tests/python/nrrd/test_obligation_space_field_typing.py::test_space_directions_marks_a_non_spatial_axis_as_none",
+        "tests/python/nrrd/test_obligation_space_field_typing.py::test_a_space_field_under_nrrd0004_loads_successfully"
       ],
       "proof_requirements": {
         "negative": [
@@ -2281,13 +2298,14 @@
           "NRRD0004-NRRD0005 typed spatial metadata fixtures."
         ]
       },
-      "proof_status": "PRESERVATION_ONLY",
-      "rationale": "Raw field preservation is present without spatial semantics.",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
-        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load",
+        "src/python/nrrd/src/format_factory/nrrd/space.py::parse_space_directions",
+        "src/python/nrrd/src/format_factory/nrrd/space.py::parse_space_origin"
       ],
-      "status": "preservation_only"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-LAZY-001",
@@ -2993,6 +3011,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-sample-units-001.json": "ebdffdda4ad995da88900bc58b415ca7cbb3b42f554d667fb318a012f192b403",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-security-baseline-001.json": "75e80c2707a235afef3f1ab9980697a5e95e32a90fb18e8e1000fd29bbd2ee82",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-space-consistency-validation-001.json": "1d0eb0868c8c67f8960e37d737fd2fcdec5f2dbd2794e9415754230864574b26",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-space-field-typing-001.json": "e520444d46bd59ddd807fe6811eb9f9fba1ff80163271647c0bcbcab2607cefb",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-001.json": "176aa723e7cf62c5e8eede3a629645c3f244c3a3c1601e80a21fe673a8b140aa",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-version-selection-reconciliation-001.json": "e5b54b72b12920fa20b64906a008fb432025569268ab0211532f04a04b2ecff1",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-write-absence-detached-001.json": "853a89951c3d5e0fab07c420618a2b1de049c5b1303d741624536726789d991e",
@@ -3000,12 +3019,12 @@
     "src/python/nrrd/src/format_factory/nrrd/codec/kinds.py": "cf8517da058c0ce753866a46fdc5f1c652ab39b90b66e14b65c39d71891d8808",
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "1efec4207dee2d2d04b4cbabbe4e0abccf66c93cbd11106fcd5538a70b4e910e",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "f40b683110082f666fefd99b096ca4c9e9b78f87d0020541477d7a62587f980a",
-    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "38866721878ec92ffe474c86d8221786890cf135ab32f402d9c42ba0043c600a",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "3049a0429a477ab23e3c476e39da39b137051e4d00181538fb9743b7e60c8e61",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "1c05f5d17614799de2cea369352a67b24a5285fb3d08761e63c787560bfa8fea",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "10984d5ca2c0bc8bf872e94923e41c343dea92c2d98411c429eaa3e79fb624ef",
     "src/python/nrrd/src/format_factory/nrrd/measurement_frame.py": "669db3c387721c1d21af7e12f2eb97fc0ae0b6018abf012d496e977cef1d067d",
     "src/python/nrrd/src/format_factory/nrrd/model/array_view.py": "d0af1ee965b12415efaacdab227b2db9aab52e161bd0d3ec0f3de1b0d9400f04",
-    "src/python/nrrd/src/format_factory/nrrd/model/document.py": "bb13b031c3e3c41e9c5b775047278c68e6c62b036be71c9e73c0205ac1d3be39",
+    "src/python/nrrd/src/format_factory/nrrd/model/document.py": "dd135902db12272bc24849f9d8294b990487c9a32239618bef386b88f9d65d7b",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
     "src/python/nrrd/src/format_factory/nrrd/space.py": "85d5640445d14d653eab2ff6131b4b867be171c16f96fdb943f14e451965afe5",
     "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "82b06e8160941efd42e95c9d698e81a3c2697dbe1edceaa47efa4154b4476ded",
@@ -3035,7 +3054,7 @@
     "tests/python/nrrd/test_obligation_keyvalue_escaping.py": "9511255a07b3ed1b2fe02b2b533baa82f6e1d7181d1ed1f9187fec4be72b3699",
     "tests/python/nrrd/test_obligation_kind_enum_alias.py": "08434fe556d6596490b20468abf7b5f8c491c2a345b7da50876038463b32fe90",
     "tests/python/nrrd/test_obligation_lazy_payload_access.py": "c8337adae10f74da14611b74eda2a4ef12d2edeb9cfb9fdcfc967d1675899a3c",
-    "tests/python/nrrd/test_obligation_measurement_frame.py": "b80c133b68ef934711e96e46c061abb00785d5f308d8bacc3965e2fe2a51a6c9",
+    "tests/python/nrrd/test_obligation_measurement_frame.py": "13e09e3821d87cf86c397c277dd9a4a58523ec5da41c5549f745f6eb4d70d937",
     "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
     "tests/python/nrrd/test_obligation_multifile_list_subdim.py": "9c3b5fa172b712bfdcaa9aba5482b6aec8bc07b02dbe1d7667430c2633c75889",
     "tests/python/nrrd/test_obligation_multifile_printf_subdim.py": "b80baffb901593e1d970fbf3ddc28a85294c282c8199dbd9df9aaa2e531c83f2",
@@ -3046,6 +3065,7 @@
     "tests/python/nrrd/test_obligation_sample_units.py": "5ce898c45cfadddd9b88fe79cc3c7442a155ae789e1642be43df04bf99283957",
     "tests/python/nrrd/test_obligation_security_baseline.py": "13be04537b7e1244c9f110cd3c6629c17e619810ac9a98f4880738eb7c4259ef",
     "tests/python/nrrd/test_obligation_shape_production.py": "17ebb172b6e8f2ac861d2ff907dbe19794d327a6e20b5f915b20a9704be9dce5",
+    "tests/python/nrrd/test_obligation_space_field_typing.py": "3dd801f21c758c024e759d4bf2057c1152ca8377bceb0d2d72d39cc575ac1003",
     "tests/python/nrrd/test_obligation_space_transform.py": "16a41ea2b13a0252be31e10a82409e5ed0a9b908e7242a286a2178e14c20f761",
     "tests/python/nrrd/test_obligation_version_selection.py": "32e80107f2ef9b67bae0eb7f743e6ece726b98d3f6e54e352ead35312fbfccc6",
     "tests/python/nrrd/test_obligation_write_absence_and_detached_policy.py": "e1bd3477c368a5d8c87c247139b5830e8f50830eeb1b2ae6793d961540f2210b",
@@ -3054,12 +3074,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 58,
-      "partial": 6,
-      "preservation_only": 1
+      "implemented": 59,
+      "partial": 6
     },
     "total": 65,
-    "unresolved": 7
+    "unresolved": 6
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
