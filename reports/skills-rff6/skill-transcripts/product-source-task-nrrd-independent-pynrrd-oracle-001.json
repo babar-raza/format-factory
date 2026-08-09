@@ -1,0 +1,66 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-independent-pynrrd-oracle-001",
+  "skill_id": "capability-compiler",
+  "manifest_id": "sfx-98166243049523ba",
+  "mode": "live",
+  "timestamp": "2026-08-09T10:45:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC-FF6-NRRD-INDEPENDENT-PYNRRD-ORACLE-001",
+    "task_kind": "resolve-a-disclosed-architectural-blocker-named-across-3-prior-events",
+    "root_cause": "This session's own encoding-matrix slice (Event 472) investigated 'independent oracle runs' for NRRD-ENC-001 and found a genuine blocker, not merely unwritten tests: this repo's own top-level `nrrd` package (src/python/nrrd/__init__.py, a legacy compat shim still imported by several test files) shares its exact import name with the real `pynrrd` reference implementation (already declared as this package's own `reference` extra, pynrrd==1.1.3). Installing pynrrd into the main project venv would shadow that shim. Events 473 and 474 both re-flagged this same gap as the top candidate without acting on it. This slice finally investigates and resolves it.",
+    "obligation_targeted": "SAL-NRRD-OBL-5A7992A6D1561C1D (NRRD-ENC-001) narrowed -- its own recorded proof_requirements.positive ('Generated complete cross-product with Teem/pynrrd comparisons') is now half-real: pynrrd comparisons are genuinely built and passing for the representative matrix; Teem CLI (unu) comparisons remain unbuilt (no PyPI distribution, unavailable in this environment).",
+    "acceptance_evidence": "Built a dedicated, gitignored isolated venv (.local/oracle/nrrd/pynrrd-venv/, reproducible via tools/oracle/independent/setup_nrrd_pynrrd_venv.py, pinned to the exact reference-extra version) containing ONLY pynrrd -- confirmed directly (nrrd.__version__ == '1.1.3', nrrd.__file__ inside the isolated venv, not this repo's shim) that it resolves the real package with zero collision. A standalone probe script (tools/oracle/independent/nrrd_pynrrd_probe.py, zero project imports) runs inside that venv and reports pynrrd's own parse as JSON; a generic bridge (tools/oracle/independent/isolated_venv_oracle.py::run_probe) invokes it with PYTHONPATH stripped. 52 new tests (tests/python/nrrd/test_obligation_independent_pynrrd_oracle.py) cross-check format_factory.nrrd against pynrrd for the representative 9-type x 4-encoding matrix, a big-endian slice, and the 3 pre-existing static corpus samples -- all pass; all gracefully skip (pytest.mark.skipif) when the isolated venv is not built, matching this suite's existing soffice/LibreOffice SKIPPED_MISSING_PROVIDER pattern. hex is confirmed (not assumed) unsupported by pynrrd 1.1.3 itself and excluded, proven via a dedicated test."
+  },
+  "execution_steps": [
+    "1. After committing and eventing the UBL attribute-code-discovery slice (FF6-EVENT-000474), continued the loop per that event's own exact_next_action, which named this collision as candidate (1) across 3 consecutive events without action.",
+    "2. Read the actual obligation register entry (SAL-NRRD-OBL-5A7992A6D1561C1D) and the implementation-evidence YAML's own proof_requirements field directly rather than trusting the prior test file's docstring paraphrase -- confirmed the obligation genuinely names 'Teem/pynrrd comparisons' as required proof, and separately confirmed the '~17 other test files' collision claim by grepping tests/python/nrrd/ directly (found 7 files importing the legacy top-level `nrrd` package, not 17 -- an overcount in the prior session's own docstring, noted but not load-bearing to this slice's scope).",
+    "3. Investigated the collision's real shape directly: found src/python/nrrd/__init__.py (sibling to nrrd_codec.py, models.py, exceptions.py, Compat/) is itself an importable top-level `nrrd` package via this repo's own editable install, confirmed live (`import nrrd; nrrd.__file__` resolves to that path, pynrrd not installed).",
+    "4. Checked the existing oracle infrastructure (tools/oracle/execute_oracle.py) for a precedent pattern before inventing one: found execute_fods_libreoffice_case, which gracefully SKIPPED_MISSING_PROVIDERs when `soffice` is not on PATH rather than failing -- adopted the identical graceful-degradation shape for this pynrrd venv.",
+    "5. Built the isolated venv manually first (`python -m venv .local/oracle/nrrd/pynrrd-venv` + pip install pynrrd==1.1.3) to prove the approach before writing any committed script, confirmed zero collision and inspected pynrrd's own real API (nrrd.read returns (data, header), not (header, data) as first assumed -- caught immediately via a TypeError on the first spike attempt, not shipped incorrectly).",
+    "6. Spiked pynrrd's own supported encodings directly against its reader.py/writer.py source (grep for 'hex') before writing any test, confirming zero hex support -- this became a disclosed, proven exclusion rather than a silent gap.",
+    "7. Wrote the 3 committed tool files (nrrd_pynrrd_probe.py, setup_nrrd_pynrrd_venv.py, isolated_venv_oracle.py). Found and fixed a REPO_ROOT path-depth bug in setup_nrrd_pynrrd_venv.py (parents[2] instead of parents[3]) via direct verification before it was ever run for real -- would have silently created a second, wrong venv under tools/.local/ if left uncaught.",
+    "8. Spiked the full representative 9x4 type/encoding matrix through the real mechanism (36 combos) before writing the formal pytest file: zero failures on the first full pass.",
+    "9. Wrote tests/python/nrrd/test_obligation_independent_pynrrd_oracle.py (52 tests: 36 matrix + 12 big-endian + 3 static-corpus + 1 hex-exclusion). First run: 1 failure (2d-float32 corpus test) -- diagnosed as pynrrd's own default index_order='F' (Fortran/column-major) nesting the opposite way from format_factory.nrrd's own to_array() convention, not a data-correctness bug; fixed by passing index_order='C' in the probe script (verified directly which order matches before applying the fix, not by trial and error) and re-ran clean, 52/52.",
+    "10. Ran mypy --strict: 2 findings, both fixed -- a genuine Any-return issue in isolated_venv_oracle.py's run_probe (fixed with an explicit local annotation), and a real, informative false-positive in nrrd_pynrrd_probe.py where mypy resolves `nrrd` against the main venv's own legacy shim (not pynrrd) -- exactly the collision this file exists to sidestep -- handled with a cited # type: ignore[attr-defined], not suppressed blindly; also caught and fixed a mypy 'Invalid type: ignore comment' syntax error from an explanatory comment that accidentally started with the literal text 'type: ignore'.",
+    "11. Ran ruff check: clean on the first attempt after the mypy fixes.",
+    "12. Ran the full tests/python/nrrd/ suite (904 passed, 1 pre-existing unrelated skip, up from 852) and the 6-format FF6 regression (4290 passed, 4 skipped, up from 4238) -- exact +52 delta in both, confirming no regressions and no double-counting.",
+    "13. No installed-wheel re-verification: zero lines added to src/, confirmed via git status before finalizing evidence."
+  ],
+  "allowed_files": [
+    "tools/oracle/independent/nrrd_pynrrd_probe.py",
+    "tools/oracle/independent/setup_nrrd_pynrrd_venv.py",
+    "tools/oracle/independent/isolated_venv_oracle.py",
+    "tests/python/nrrd/test_obligation_independent_pynrrd_oracle.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "tools/oracle/independent/nrrd_pynrrd_probe.py",
+    "tools/oracle/independent/setup_nrrd_pynrrd_venv.py",
+    "tools/oracle/independent/isolated_venv_oracle.py",
+    "tests/python/nrrd/test_obligation_independent_pynrrd_oracle.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_independent_pynrrd_oracle.py -q -- 52 passed (1 initial failure, index_order mismatch, diagnosed and fixed as a probe-script convention bug, not a product bug)",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q --timeout=120 -- 904 passed, 1 skipped (was 852)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4290 passed, 4 skipped (was 4238)",
+    ".venv/Scripts/python -m ruff check tools/oracle/independent/ tests/python/nrrd/test_obligation_independent_pynrrd_oracle.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict tools/oracle/independent/isolated_venv_oracle.py tools/oracle/independent/setup_nrrd_pynrrd_venv.py tools/oracle/independent/nrrd_pynrrd_probe.py -- Success: no issues found in 3 source files"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (NRRD-ENC-001) narrows further -- real, tested, isolated-venv-verified pynrrd cross-checks for the representative type/encoding matrix, resolving a real architectural blocker disclosed across 3 prior FF6 events without action. Not promoted to implemented: Teem CLI (unu) comparisons remain unbuilt (no PyPI distribution, unavailable in this environment), and pynrrd coverage is representative, not every scalar type alias.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); nrrd remains UNASSESSED",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 65,
+    "new_public_api": "None in format_factory.nrrd itself -- new committed tooling under tools/oracle/independent/ (nrrd_pynrrd_probe.py, setup_nrrd_pynrrd_venv.py, isolated_venv_oracle.py), reusable by safetensors's own identical import-name collision later.",
+    "cross_format_leverage": "isolated_venv_oracle.py::run_probe is generic (venv_python, probe_script, *args) -- safetensors's own reference extra (safetensors==0.8.0) against this repo's own top-level safetensors package has the identical collision shape and can reuse this exact bridge with its own setup script and probe script, not yet built."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
