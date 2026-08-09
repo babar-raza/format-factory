@@ -840,6 +840,172 @@ class W3CCompositingRenderer:
 DEFAULT_RENDERER: Renderer = W3CCompositingRenderer()
 
 
+def _straight_over(
+    src: tuple[float, float, float],
+    alpha_s: float,
+    dst: tuple[float, float, float],
+    alpha_d: float,
+) -> tuple[tuple[float, float, float], float]:
+    """Porter-Duff "source over", derived independently in STRAIGHT-alpha
+    space -- the classic textbook formula (out_a = a_s + a_d*(1-a_s);
+    out_c = (a_s*c_s + a_d*(1-a_s)*c_d) / out_a) -- rather than
+    `_composite_layer_onto`'s own premultiplied-canvas formulation
+    (`new_r = alpha_s*blended + (1-alpha_s)*rb`, backdrop already carried
+    premultiplied). Both are correct, standard formulations of the same
+    Porter-Duff operator; deliberately re-derived from the definition
+    rather than copied, so `ORA-COMPOSITE-001`'s own "adapter differential
+    test" exercises a genuinely different arithmetic path, not the same
+    code renamed."""
+    out_a = alpha_s + alpha_d * (1.0 - alpha_s)
+    if out_a <= 0.0:
+        return (0.0, 0.0, 0.0), 0.0
+    out = tuple(
+        (alpha_s * src[i] + alpha_d * (1.0 - alpha_s) * dst[i]) / out_a for i in range(3)
+    )
+    return (out[0], out[1], out[2]), out_a
+
+
+def _render_node_straight_alpha_reference(
+    node: OraChild,
+    canvas: dict[tuple[int, int], tuple[tuple[float, float, float], float]],
+    *,
+    width: int,
+    height: int,
+    resolve: Callable[[str], bytes],
+    limits: ResourceLimits,
+) -> None:
+    """Independent recursive tree walker -- does not call `_render_node`
+    or share any code with it -- for `render_straight_alpha_reference`'s
+    own bounded differential-test scope (Normal blend, Source Over
+    compositing only; see that function's own docstring)."""
+    if not node.is_visible:
+        return
+    if isinstance(node, OraText):
+        return
+    info = composite_op_info(node.composite_op) or composite_op_info(DEFAULT_COMPOSITE_OP)
+    assert info is not None
+    if info.blending_function != "Normal" or info.compositing_operator != _SOURCE_OVER:
+        raise OraValidationError(
+            f"render_straight_alpha_reference only supports Normal/Source-Over; "
+            f"{node.composite_op!r} resolves to blend={info.blending_function!r}, "
+            f"operator={info.compositing_operator!r}"
+        )
+    if isinstance(node, OraLayer):
+        raster = decode_png(resolve(node.src), limits=limits)
+        x0, y0 = max(0, node.x), max(0, node.y)
+        x1 = min(width, node.x + raster.width)
+        y1 = min(height, node.y + raster.height)
+        for cy in range(y0, y1):
+            ry = cy - node.y
+            raster_row = ry * raster.width * 4
+            for cx in range(x0, x1):
+                rx = cx - node.x
+                o = raster_row + rx * 4
+                alpha_s = (raster.pixels[o + 3] / 255.0) * node.opacity
+                src = (
+                    raster.pixels[o] / 255.0,
+                    raster.pixels[o + 1] / 255.0,
+                    raster.pixels[o + 2] / 255.0,
+                )
+                dst_colour, dst_alpha = canvas.get((cx, cy), ((0.0, 0.0, 0.0), 0.0))
+                canvas[(cx, cy)] = _straight_over(src, alpha_s, dst_colour, dst_alpha)
+        return
+    # OraStack
+    if node.is_isolated_group:
+        sub_canvas: dict[tuple[int, int], tuple[tuple[float, float, float], float]] = {}
+        for child in reversed(node.children):
+            _render_node_straight_alpha_reference(
+                child, sub_canvas, width=width, height=height, resolve=resolve, limits=limits
+            )
+        for (cx, cy), (colour, alpha) in sub_canvas.items():
+            group_alpha = alpha * node.opacity
+            dst_colour, dst_alpha = canvas.get((cx, cy), ((0.0, 0.0, 0.0), 0.0))
+            canvas[(cx, cy)] = _straight_over(colour, group_alpha, dst_colour, dst_alpha)
+    else:
+        for child in reversed(node.children):
+            _render_node_straight_alpha_reference(
+                child, canvas, width=width, height=height, resolve=resolve, limits=limits
+            )
+
+
+def render_straight_alpha_reference(
+    root: OraStack,
+    members: Mapping[str, bytes],
+    *,
+    width: int,
+    height: int,
+    limits: ResourceLimits = DEFAULT_LIMITS,
+) -> DecodedRaster:
+    """A second, genuinely independent `Renderer` implementation --
+    `ORA-COMPOSITE-001`'s own "adapter differential test" requirement,
+    previously unmet because only test-double renderers existed (a
+    minimal class and a stateful class, neither doing real pixel
+    arithmetic of its own).
+
+    Deliberately, honestly BOUNDED: this function raises
+    `OraValidationError` for any node whose composite-op does not resolve
+    to Normal blend + Source Over (the default, and the only combination
+    every real sample in this package's own corpus uses) -- it does not
+    attempt the other 14 blend functions or 5 other Porter-Duff operators
+    `render()` supports. Building a second, independent implementation of
+    the FULL blend-mode/operator matrix is a substantially larger
+    undertaking, not attempted here; this function proves the adapter
+    abstraction and the core Normal/Source-Over compositing math (the
+    path every real corpus sample and the large majority of real-world
+    OpenRaster documents actually use) against a genuinely different
+    arithmetic derivation, not a full differential proof of every
+    documented pixel semantic.
+
+    Uses a sparse `{(x, y): (straight_rgb, straight_alpha)}` dict canvas
+    (only touched pixels are stored) and explicit straight-alpha
+    Porter-Duff "over" math (`_straight_over`) throughout -- `render()`'s
+    own dense premultiplied-float array is never called or imported by
+    this function; the two share no compositing code, only the already
+    separately-tested `decode_png`/`composite_op_info` primitives.
+    """
+    _checked(
+        (width, height, 4, 8),
+        ceiling=limits.max_decompressed_bytes,
+        label="ORA render canvas (straight-alpha reference)",
+    )
+    canvas: dict[tuple[int, int], tuple[tuple[float, float, float], float]] = {}
+    for child in reversed(root.children):
+        _render_node_straight_alpha_reference(
+            child,
+            canvas,
+            width=width,
+            height=height,
+            resolve=lambda src: _resolve_member(members, src),
+            limits=limits,
+        )
+    out = bytearray(width * height * 4)
+    for (cx, cy), (colour, alpha) in canvas.items():
+        i = (cy * width + cx) * 4
+        out[i] = _clamp255(colour[0])
+        out[i + 1] = _clamp255(colour[1])
+        out[i + 2] = _clamp255(colour[2])
+        out[i + 3] = _clamp255(alpha)
+    return DecodedRaster(width=width, height=height, pixels=bytes(out))
+
+
+@dataclass(frozen=True, slots=True)
+class StraightAlphaReferenceRenderer:
+    """`render_straight_alpha_reference()`, wrapped as a `Renderer`
+    adapter instance -- the second, genuinely independent implementation
+    `ORA-COMPOSITE-001`'s own "adapter differential test" exercises."""
+
+    def render(
+        self,
+        root: OraStack,
+        members: Mapping[str, bytes],
+        *,
+        width: int,
+        height: int,
+        limits: ResourceLimits = DEFAULT_LIMITS,
+    ) -> DecodedRaster:
+        return render_straight_alpha_reference(root, members, width=width, height=height, limits=limits)
+
+
 def render_document(
     document: OraDocument,
     members: Mapping[str, bytes],
@@ -884,6 +1050,7 @@ __all__ = [
     "DEFAULT_RENDERER",
     "DecodedRaster",
     "Renderer",
+    "StraightAlphaReferenceRenderer",
     "W3CCompositingRenderer",
     "decode_png",
     "encode_png",
@@ -891,4 +1058,5 @@ __all__ = [
     "generate_thumbnail",
     "render",
     "render_document",
+    "render_straight_alpha_reference",
 ]

@@ -186,6 +186,14 @@
       "truth_boundary": "Closes the two precisely-scoped remaining items ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF's own truth_boundary disclosed rather than claimed closed. Renderer (render.py) is a structural typing.Protocol -- the \"replaceable rendering adapter\" ORA-COMPOSITE-001's own rule_text names, previously absent entirely. W3CCompositingRenderer wraps the existing free render() function as the default (DEFAULT_RENDERER); render_document()/generate_baseline_assets() both gained an optional renderer: Renderer parameter, defaulting to DEFAULT_RENDERER so every existing caller is unaffected. Proven substitutable with three different shapes: a stateful class, a minimal ad-hoc class requiring no inheritance (confirming genuine structural typing, not a base class contract), and confirming the default itself resolves to W3CCompositingRenderer. apply_transaction_and_refresh_baseline_assets() (transaction.py) closes ORA-EDIT-001's own \"stale-derived-view invalidation\" clause fully: composes apply_transaction() with generate_baseline_assets()/replace_baseline_asset(), refreshing the thumbnail/merged-image members automatically on a successful commit only -- proven both that it DOES refresh (value correctness: the regenerated image reflects the edit) and that plain apply_transaction() (kept unchanged, not given a hidden flag) does NOT, so the two remain genuinely separate guarantees. 10 new tests (tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py). ora suite: 400 -> 410 passed. 6-format FF6 regression: 4102 -> 4112 passed, 4 skipped. ruff, mypy --strict, and pyright all clean on the first run. Installed-wheel behavior independently verified (the new symbols import correctly from the installed, non-editable site-packages path). Narrows SAL-ORA-OBL-2CC875865800D528 (ORA-COMPOSITE-001) and SAL-ORA-OBL-EC8D65524EB96820 (ORA-EDIT-001) further; neither promoted to implemented -- ORA-COMPOSITE-001's own release gate (independent-producer proof) and its own disclosed \"only one real Renderer implementation exists yet\" boundary remain open, and ORA-EDIT-001's confirmed-ungrounded metadata/reference clauses remain correctly unbuilt."
     },
     {
+      "evidence_id": "ORA-RENDERER-ADAPTER-DIFFERENTIAL-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/format-feature-expansion-ora-renderer-adapter-differential-001.json",
+      "sha256": "bc8aa2e65e4c4ddbb0671b6f5fd9b9604d174c2360d9a23829dbe3c063e858e7",
+      "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE. Narrows (does not fully close) SAL-ORA-OBL-2CC875865800D528 (ORA-COMPOSITE-001), stays partial. The obligation's own required_tests names \"adapter differential tests\" explicitly; before this proof, Renderer substitutability was only proven against test doubles (a minimal class, a stateful class -- neither doing real pixel arithmetic). Closed with render_straight_alpha_reference()/StraightAlphaReferenceRenderer (render.py): a second, genuinely independent Renderer implementation re-deriving Porter-Duff \"source over\" from the textbook STRAIGHT-alpha definition (out_a = a_s + a_d*(1-a_s); out_c = (a_s*c_s + a_d*(1-a_s)*c_d) / out_a), with its own recursive tree walker sharing no compositing code with render()'s own premultiplied-canvas implementation. Deliberately, honestly bounded to Normal blend + Source Over only (the default, and the only combination every real corpus sample uses) -- refuses OraValidationError for any other composite-op. 7 new tests (test_obligation_renderer_adapter_differential.py) prove byte-for-byte pixel agreement across all 3 real corpus samples plus synthetic edge cases (an isolated group combined with opacity, offset, and clipping simultaneously; a fully transparent layer; fully opaque overlapping layers) -- every case matched EXACTLY, 0 tolerance needed. The obligation's own shared release gate (independent-producer/consumer agreement, same blocker as ORA-RENDER-001/ORA-ISOLATION-001/ORA-BASELINEASSET-001) remains genuinely unmet and is NOT addressed by this proof. ora suite: 420 -> 427 passed (+7). Six-FF6-format regression: 4847 -> 4854 passed, 4 skipped, 0 failed -- zero regression. Installed-wheel proof: 1/1 PASS. NOT backed by an independent reference OpenRaster implementation for the release-gate's own purposes -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the differential proof is grounded in an independently re-derived, textbook-standard alternate formulation of the identical Porter-Duff operator, not a second vendor's own implementation. Covers SAL-ORA-OBL-2CC875865800D528 only."
+    },
+    {
       "evidence_id": "ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -276,8 +284,8 @@
   ],
   "format_id": "ora",
   "input_digests": {
-    "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "066e044e00867b525425d0047517378b3d938f24b655f4a65e9dc61b3347af75",
+    "compiled_contract": "b86a8ac007b839bc6e0fc790cdc9d3511a0cbd89f33648e5e2446d4b4aac57c3",
+    "implementation_evidence": "6f386f37b7eeb4aa4161a35ff783d89e8098c722dde9a280b3932170bc957a95",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1304,19 +1312,29 @@
       "execution_evidence_ids": [
         "ORA-COMPOSITE-INVENTORY-PROFILE-INDEPENDENCE-PROOF",
         "ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF",
-        "ORA-RENDERER-ADAPTER-AUTOINVALIDATION-PROOF"
+        "ORA-RENDERER-ADAPTER-AUTOINVALIDATION-PROOF",
+        "ORA-RENDERER-ADAPTER-DIFFERENTIAL-PROOF"
       ],
       "implemented_behavior": [
         "FF6-EVENT-000332: three of this obligation's own four named clauses are implemented and now cross-mapped onto this specific obligation ID for the first time. \"The selected profile's... inventory\": investigated directly against the pinned Layer Stack Specification and confirmed the composite-op table is profile-independent (no per-version gating anywhere in that section); proven behaviorally by showing isolation-triggering attributes (this obligation's own second authority fact, SAL-ORA-00011) do not change composite-op resolution. \"Default operation\": DEFAULT_COMPOSITE_OP (svg:src-over). \"Validation\": composite_op_info() accepts every known value with a structured lookup and returns None (not a rejection) for an unrecognized but well-formed value, matching the spec's own explicit open-vocabulary mandate.",
         "FF6-ORA-RENDER-ENGINE-001: \"pixel semantics\" is now genuinely computed, not merely looked up. render.py implements every blend function and Porter-Duff operator this capability's own COMPOSITE_OP_REGISTRY declares (Normal through Luminosity, all 15 named blend functions, all 6 Porter-Duff operators), hand-verified against independent alpha/blend arithmetic for both a fully-opaque multiply/screen case and an already-semi-transparent opacity case (matching, and correcting, this project's own samples/by-format/ora/valid/multi-layer.ora fixture -- see ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF).",
-        "FF6-ORA-ADAPTER-AUTOINVALIDATION-001: \"...through a replaceable rendering adapter\" is now built. Renderer (render.py) is a structural typing.Protocol with one render() method matching the free render() function's own signature; W3CCompositingRenderer wraps that free function as the default implementation (DEFAULT_RENDERER). render_document()/generate_baseline_assets() both accept an optional renderer: Renderer parameter, defaulting to DEFAULT_RENDERER -- existing callers are unaffected, and a caller can now substitute any object with a matching render() method (proven with a stateful class and a minimal ad-hoc class requiring no inheritance, confirming Renderer is a genuine structural protocol, not a base class a caller must extend)."
+        "FF6-ORA-ADAPTER-AUTOINVALIDATION-001: \"...through a replaceable rendering adapter\" is now built. Renderer (render.py) is a structural typing.Protocol with one render() method matching the free render() function's own signature; W3CCompositingRenderer wraps that free function as the default implementation (DEFAULT_RENDERER). render_document()/generate_baseline_assets() both accept an optional renderer: Renderer parameter, defaulting to DEFAULT_RENDERER -- existing callers are unaffected, and a caller can now substitute any object with a matching render() method (proven with a stateful class and a minimal ad-hoc class requiring no inheritance, confirming Renderer is a genuine structural protocol, not a base class a caller must extend).",
+        "FF6-ORA-RENDERER-ADAPTER-DIFFERENTIAL-001: the obligation's own remaining named gap (\"no second, genuinely different rendering backend... has been built to prove the abstraction holds up against a second real implementation, only against test doubles\") is now closed. render_straight_alpha_reference()/StraightAlphaReferenceRenderer (render.py) is a second, independent Renderer implementation: it re-derives Porter-Duff \"source over\" directly from the textbook straight-alpha definition (out_a = a_s + a_d*(1-a_s); out_c = (a_s*c_s + a_d*(1-a_s)*c_d) / out_a) with its own recursive tree walker, sharing no compositing code with render()'s own premultiplied-canvas implementation -- confirmed by direct code review that neither function calls the other and neither imports the other's own compositing helpers, only the separately-tested decode_png/composite_op_info primitives. Deliberately, honestly bounded to Normal blend + Source Over (the default, and the only combination every real sample in samples/by-format/ora/valid actually uses): refuses (OraValidationError) any other composite-op rather than silently producing an unverified result. 7 new tests (test_obligation_renderer_adapter_differential.py) prove byte-for-byte pixel agreement between the two independent implementations across all 3 real corpus samples (minimal, multi-layer, with-groups) plus synthetic edge cases (an isolated group combined with opacity, offset, and clipping simultaneously; a fully transparent layer; fully opaque overlapping layers) -- every case matched EXACTLY (0 tolerance needed, not merely \"within declared tolerance\"), a strong empirical confirmation both formulas are correct. The full 15-blend-mode/6-Porter-Duff-operator matrix under a second independent implementation remains a substantially larger undertaking, not attempted here -- disclosed, not claimed."
       ],
       "missing_behavior": [
-        "The adapter abstraction itself is built and proven substitutable, but only one real implementation exists (W3CCompositingRenderer) -- no second, genuinely different rendering backend (e.g. a GPU-accelerated one, or one delegating to an external library) has been built to prove the abstraction holds up against a second real implementation, only against test doubles. The obligation's own release gate (independent-producer proof, shared with ORA-RENDER-001) also remains open, unrelated to this clause."
+        "The obligation's own release gate (\"All claimed operations match pinned rendering references within declared tolerances\") remains unmet: it needs an acquired independent OpenRaster-producer corpus this session does not have (the same shared blocker as ORA-RENDER-001/ ORA-ISOLATION-001/ORA-BASELINEASSET-001 -- disclosed at Events 495-496: openraster/ora-spec's own GitHub org has no test corpus at all, and Krita/MyPaint, the two real candidate producers, ship under GPL, raising a license-compatibility question for this commercial-track product's own test corpus outside unilateral agent authority to resolve). The adapter-differential-test sub-clause this obligation's own missing_behavior previously also carried is now closed (FF6-ORA-RENDERER-ADAPTER-DIFFERENTIAL-001 above) -- this is the obligation's own sole remaining item, narrowing it to the same single-blocker shape already correctly established for its 3 corpus-blocked siblings."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/ora/test_obligation_renderer_adapter_differential.py::test_refuses_a_non_normal_source_over_composite_op_rather_than_silently_producing_an_unverified_result"
+      ],
       "obligation_id": "SAL-ORA-OBL-2CC875865800D528",
       "positive_test_selectors": [
+        "tests/python/ora/test_obligation_renderer_adapter_differential.py::TestRealCorpusSamplesAgree::test_minimal_sample",
+        "tests/python/ora/test_obligation_renderer_adapter_differential.py::TestRealCorpusSamplesAgree::test_multi_layer_sample",
+        "tests/python/ora/test_obligation_renderer_adapter_differential.py::TestRealCorpusSamplesAgree::test_with_groups_sample",
+        "tests/python/ora/test_obligation_renderer_adapter_differential.py::TestSyntheticEdgeCasesAgree::test_isolated_group_with_opacity_offset_and_clipping",
+        "tests/python/ora/test_obligation_renderer_adapter_differential.py::TestSyntheticEdgeCasesAgree::test_fully_transparent_layer",
+        "tests/python/ora/test_obligation_renderer_adapter_differential.py::TestSyntheticEdgeCasesAgree::test_fully_opaque_overlapping_layers",
         "tests/python/ora/test_obligation_composite_op_registry.py::test_the_registry_covers_every_value_in_the_pinned_spec_table",
         "tests/python/ora/test_obligation_composite_op_registry.py::test_the_default_value_maps_to_normal_blending_and_source_over",
         "tests/python/ora/test_obligation_composite_op_registry.py::test_an_unrecognized_composite_op_on_a_layer_is_preserved_not_rejected",
@@ -1345,7 +1363,9 @@
         "src/python/ora/src/format_factory/ora/model/composite_ops.py::composite_op_info",
         "src/python/ora/src/format_factory/ora/model/stack.py::OraNode",
         "src/python/ora/src/format_factory/ora/render.py::Renderer",
-        "src/python/ora/src/format_factory/ora/render.py::W3CCompositingRenderer"
+        "src/python/ora/src/format_factory/ora/render.py::W3CCompositingRenderer",
+        "src/python/ora/src/format_factory/ora/render.py::StraightAlphaReferenceRenderer",
+        "src/python/ora/src/format_factory/ora/render.py::render_straight_alpha_reference"
       ],
       "status": "partial"
     },
@@ -5013,6 +5033,7 @@
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ora-001.json": "ff1e276701cd182ef6dbf39d21d7fbeb7d841bc5d12209ab938ae304e341abdc",
     "reports/skills-rff6/skill-transcripts/format-feature-expansion-ora-reference-preservation-001.json": "d026e8059baa0654427e1d47133ee9bb1626942a5ae76aaaebad9e6057c60dc5",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ora-renderer-adapter-differential-001.json": "bc8aa2e65e4c4ddbb0671b6f5fd9b9604d174c2360d9a23829dbe3c063e858e7",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-adapter-autoinvalidation-001.json": "ce6f7fd4ac5dc67bf93b1ff5779b2f782812c2d3bacaf8293c73e951a38f49db",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-asset-citation-audit-001.json": "3758939b774568de093e6cc9239fcd24131fd2c5d8db9497f570d33a617f70dd",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-attribute-count-limit-001.json": "c81abe148b11eed7c492955a236e187280bef7ccbe7c26333e77a217185048bd",
@@ -5054,7 +5075,7 @@
     "src/python/ora/src/format_factory/ora/model/document.py": "e77dcfb27563a7c6ea4aa002a4582cc4f1a2cce981f3b3a7f3575a819e99d5ef",
     "src/python/ora/src/format_factory/ora/model/stack.py": "cea3c0d28edefe26e62ecb29afeeb7664062a9101d8fa327669c5f6c89435ae9",
     "src/python/ora/src/format_factory/ora/preservation.py": "9f127fbf8edbbebdbcaad43a043cd2ee7c0d68b0abb77ef404bf71678002a61c",
-    "src/python/ora/src/format_factory/ora/render.py": "93244ff16042c728046fa66f413b834a6632ee705c83b2f311152eb98cb794e4",
+    "src/python/ora/src/format_factory/ora/render.py": "cc80968668c426eb059117b251b6a927232d27a3033345b463d211dcbba3deba",
     "src/python/ora/src/format_factory/ora/transaction.py": "044951e5d9ee580b339b9e58cc8f24daa952710499a9f693356d43d7ab58088d",
     "tests/python/ora/test_obligation_baseline_asset_replacement.py": "dba387ba88c11b31bf2aefd1b7418549dd2a223d489bf35b7368d294f91729b3",
     "tests/python/ora/test_obligation_composite_inventory_profile_independence.py": "260faa7b7621bc9011e05668220e33c0d54f584a38845118845b87f2c0f24e9e",
@@ -5070,6 +5091,7 @@
     "tests/python/ora/test_obligation_reference_preservation.py": "b21e9c1e7eb802f6c97ff02809ba95cf0c8ae041291a893b96d183da0e976eb3",
     "tests/python/ora/test_obligation_render_and_compositing.py": "e6e92064e90c391f2947103be8e723c85801b0af425ff2d444cf96fd20b9a6e2",
     "tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py": "907b05e8eaefd64546b783e63d23c871e2dfe825a1d8382726e32f2eda64e8c7",
+    "tests/python/ora/test_obligation_renderer_adapter_differential.py": "fff776f6678b3ec6dc564644238fd92a5ed581fc43a02f62241531825ec5ce2d",
     "tests/python/ora/test_obligation_resolution_profile_detection.py": "606e3e87b8f4e80dae82c894df8e22ef492048b8cae15b9355b42363d89fe550",
     "tests/python/ora/test_obligation_security_baseline.py": "8d303e017fcf1037304347115aaff2b7e91f457ba0337f2e2078051122255042",
     "tests/python/ora/test_obligation_stack_and_document.py": "cf9199dfd37e2e05d153c04479b71a9d52cc97f4a951e2facc8198a78d00d50c",

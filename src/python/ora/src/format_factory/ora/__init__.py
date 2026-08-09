@@ -49,6 +49,7 @@ from .render import (
     DEFAULT_RENDERER,
     DecodedRaster,
     Renderer,
+    StraightAlphaReferenceRenderer,
     W3CCompositingRenderer,
     decode_png,
     encode_png,
@@ -56,6 +57,7 @@ from .render import (
     generate_thumbnail,
     render,
     render_document,
+    render_straight_alpha_reference,
 )
 from .transaction import (
     EditStep,
@@ -92,6 +94,7 @@ __all__ = [
     "ResolvedAsset",
     "OraLimitError",
     "OraValidationError",
+    "StraightAlphaReferenceRenderer",
     "TransactionResult",
     "W3CCompositingRenderer",
     "__version__",
@@ -111,6 +114,7 @@ __all__ = [
     "read_png_metadata",
     "render",
     "render_document",
+    "render_straight_alpha_reference",
     "replace_baseline_asset",
     "resolve_all_assets",
     "resolve_asset",

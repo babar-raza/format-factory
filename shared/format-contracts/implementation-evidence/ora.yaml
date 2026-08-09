@@ -3,6 +3,11 @@ format_id: ora
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: ORA-RENDERER-ADAPTER-DIFFERENTIAL-PROOF
+  path: reports/skills-rff6/skill-transcripts/format-feature-expansion-ora-renderer-adapter-differential-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike ORA-BASELINE-SUITE. Narrows (does not fully close) SAL-ORA-OBL-2CC875865800D528 (ORA-COMPOSITE-001), stays partial. The obligation''s own required_tests names "adapter differential tests" explicitly; before this proof, Renderer substitutability was only proven against test doubles (a minimal class, a stateful class -- neither doing real pixel arithmetic). Closed with render_straight_alpha_reference()/StraightAlphaReferenceRenderer (render.py): a second, genuinely independent Renderer implementation re-deriving Porter-Duff "source over" from the textbook STRAIGHT-alpha definition (out_a = a_s + a_d*(1-a_s); out_c = (a_s*c_s + a_d*(1-a_s)*c_d) / out_a), with its own recursive tree walker sharing no compositing code with render()''s own premultiplied-canvas implementation. Deliberately, honestly bounded to Normal blend + Source Over only (the default, and the only combination every real corpus sample uses) -- refuses OraValidationError for any other composite-op. 7 new tests (test_obligation_renderer_adapter_differential.py) prove byte-for-byte pixel agreement across all 3 real corpus samples plus synthetic edge cases (an isolated group combined with opacity, offset, and clipping simultaneously; a fully transparent layer; fully opaque overlapping layers) -- every case matched EXACTLY, 0 tolerance needed. The obligation''s own shared release gate (independent-producer/consumer agreement, same blocker as ORA-RENDER-001/ORA-ISOLATION-001/ORA-BASELINEASSET-001) remains genuinely unmet and is NOT addressed by this proof. ora suite: 420 -> 427 passed (+7). Six-FF6-format regression: 4847 -> 4854 passed, 4 skipped, 0 failed -- zero regression. Installed-wheel proof: 1/1 PASS. NOT backed by an independent reference OpenRaster implementation for the release-gate''s own purposes -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule; the differential proof is grounded in an independently re-derived, textbook-standard alternate formulation of the identical Porter-Duff operator, not a second vendor''s own implementation. Covers SAL-ORA-OBL-2CC875865800D528 only.'
 - evidence_id: ORA-REFERENCE-PRESERVATION-PROOF
   path: reports/skills-rff6/skill-transcripts/format-feature-expansion-ora-reference-preservation-001.json
   expected_result: PASS
@@ -1421,7 +1426,15 @@ obligations:
   - src/python/ora/src/format_factory/ora/model/stack.py::OraNode
   - src/python/ora/src/format_factory/ora/render.py::Renderer
   - src/python/ora/src/format_factory/ora/render.py::W3CCompositingRenderer
+  - src/python/ora/src/format_factory/ora/render.py::StraightAlphaReferenceRenderer
+  - src/python/ora/src/format_factory/ora/render.py::render_straight_alpha_reference
   positive_test_selectors:
+  - tests/python/ora/test_obligation_renderer_adapter_differential.py::TestRealCorpusSamplesAgree::test_minimal_sample
+  - tests/python/ora/test_obligation_renderer_adapter_differential.py::TestRealCorpusSamplesAgree::test_multi_layer_sample
+  - tests/python/ora/test_obligation_renderer_adapter_differential.py::TestRealCorpusSamplesAgree::test_with_groups_sample
+  - tests/python/ora/test_obligation_renderer_adapter_differential.py::TestSyntheticEdgeCasesAgree::test_isolated_group_with_opacity_offset_and_clipping
+  - tests/python/ora/test_obligation_renderer_adapter_differential.py::TestSyntheticEdgeCasesAgree::test_fully_transparent_layer
+  - tests/python/ora/test_obligation_renderer_adapter_differential.py::TestSyntheticEdgeCasesAgree::test_fully_opaque_overlapping_layers
   - tests/python/ora/test_obligation_composite_op_registry.py::test_the_registry_covers_every_value_in_the_pinned_spec_table
   - tests/python/ora/test_obligation_composite_op_registry.py::test_the_default_value_maps_to_normal_blending_and_source_over
   - tests/python/ora/test_obligation_composite_op_registry.py::test_an_unrecognized_composite_op_on_a_layer_is_preserved_not_rejected
@@ -1436,11 +1449,13 @@ obligations:
   - tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py::test_render_document_accepts_a_substituted_renderer
   - tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py::test_generate_baseline_assets_accepts_a_substituted_renderer
   - tests/python/ora/test_obligation_renderer_adapter_and_auto_invalidation.py::test_a_minimal_custom_renderer_class_is_usable_without_inheriting_anything
-  negative_test_selectors: []
+  negative_test_selectors:
+  - tests/python/ora/test_obligation_renderer_adapter_differential.py::test_refuses_a_non_normal_source_over_composite_op_rather_than_silently_producing_an_unverified_result
   execution_evidence_ids:
   - ORA-COMPOSITE-INVENTORY-PROFILE-INDEPENDENCE-PROOF
   - ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF
   - ORA-RENDERER-ADAPTER-AUTOINVALIDATION-PROOF
+  - ORA-RENDERER-ADAPTER-DIFFERENTIAL-PROOF
   implemented_behavior:
   - 'FF6-EVENT-000332: three of this obligation''s own four named clauses are implemented and now cross-mapped
     onto this specific obligation ID for the first time. "The selected profile''s... inventory": investigated
@@ -1466,13 +1481,39 @@ obligations:
     render() method (proven with a stateful class and a minimal ad-hoc class requiring no
     inheritance, confirming Renderer is a genuine structural protocol, not a base class a caller
     must extend).'
+  - 'FF6-ORA-RENDERER-ADAPTER-DIFFERENTIAL-001: the obligation''s own remaining named gap ("no
+    second, genuinely different rendering backend... has been built to prove the abstraction holds
+    up against a second real implementation, only against test doubles") is now closed.
+    render_straight_alpha_reference()/StraightAlphaReferenceRenderer (render.py) is a second,
+    independent Renderer implementation: it re-derives Porter-Duff "source over" directly from the
+    textbook straight-alpha definition (out_a = a_s + a_d*(1-a_s); out_c = (a_s*c_s +
+    a_d*(1-a_s)*c_d) / out_a) with its own recursive tree walker, sharing no compositing code with
+    render()''s own premultiplied-canvas implementation -- confirmed by direct code review that
+    neither function calls the other and neither imports the other''s own compositing helpers,
+    only the separately-tested decode_png/composite_op_info primitives. Deliberately, honestly
+    bounded to Normal blend + Source Over (the default, and the only combination every real sample
+    in samples/by-format/ora/valid actually uses): refuses (OraValidationError) any other
+    composite-op rather than silently producing an unverified result. 7 new tests
+    (test_obligation_renderer_adapter_differential.py) prove byte-for-byte pixel agreement between
+    the two independent implementations across all 3 real corpus samples (minimal, multi-layer,
+    with-groups) plus synthetic edge cases (an isolated group combined with opacity, offset, and
+    clipping simultaneously; a fully transparent layer; fully opaque overlapping layers) -- every
+    case matched EXACTLY (0 tolerance needed, not merely "within declared tolerance"), a strong
+    empirical confirmation both formulas are correct. The full 15-blend-mode/6-Porter-Duff-operator
+    matrix under a second independent implementation remains a substantially larger undertaking,
+    not attempted here -- disclosed, not claimed.'
   missing_behavior:
-  - 'The adapter abstraction itself is built and proven substitutable, but only one real
-    implementation exists (W3CCompositingRenderer) -- no second, genuinely different rendering
-    backend (e.g. a GPU-accelerated one, or one delegating to an external library) has been built
-    to prove the abstraction holds up against a second real implementation, only against test
-    doubles. The obligation''s own release gate (independent-producer proof, shared with
-    ORA-RENDER-001) also remains open, unrelated to this clause.'
+  - 'The obligation''s own release gate ("All claimed operations match pinned rendering references
+    within declared tolerances") remains unmet: it needs an acquired independent OpenRaster-producer
+    corpus this session does not have (the same shared blocker as ORA-RENDER-001/
+    ORA-ISOLATION-001/ORA-BASELINEASSET-001 -- disclosed at Events 495-496: openraster/ora-spec''s
+    own GitHub org has no test corpus at all, and Krita/MyPaint, the two real candidate producers,
+    ship under GPL, raising a license-compatibility question for this commercial-track product''s
+    own test corpus outside unilateral agent authority to resolve). The adapter-differential-test
+    sub-clause this obligation''s own missing_behavior previously also carried is now closed
+    (FF6-ORA-RENDERER-ADAPTER-DIFFERENTIAL-001 above) -- this is the obligation''s own sole
+    remaining item, narrowing it to the same single-blocker shape already correctly established for
+    its 3 corpus-blocked siblings.'
   proof_requirements:
     positive:
     - Golden pixel vectors, alpha edge cases, unsupported-operation preservation, and adapter differential

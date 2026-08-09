@@ -1,0 +1,79 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "format-feature-expansion-ora-renderer-adapter-differential-001",
+  "skill_id": "format-feature-expansion",
+  "manifest_id": "sfx-c7f090c25a30eb1f",
+  "mode": "live",
+  "timestamp": "2026-08-10T00:00:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "profile_id": "OpenRaster-0.0.5",
+    "obligation_id": "SAL-ORA-OBL-2CC875865800D528",
+    "capability_id": "ORA-COMPOSITE-001",
+    "task_id": "TC_FF6_ORA_RENDERER_ADAPTER_DIFFERENTIAL_001",
+    "contract_digest": "sha256:8e3ad5d9893bd413c6887be8661de1563c94074104df03ba8defcf766a438cd7",
+    "authority_digests": {"authority_lock_sha256": "sha256:2199e2856511091e3c08bc071991bce0268d96178cc8e275cd50f312121a3df8"},
+    "affected_layer": "L06-ProductSource",
+    "planned_paths": ["src/python/ora/src/format_factory/ora/render.py", "src/python/ora/src/format_factory/ora/__init__.py", "tests/python/ora/test_obligation_renderer_adapter_differential.py", "shared/format-contracts/implementation-evidence/ora.yaml"],
+    "proof_inputs": ["SAL-ORA-OBL-2CC875865800D528"],
+    "root_cause": "Per Event 503's own exact_next_action, checked whether ORA-COMPOSITE-001/BASELINEASSET-001/RENDER-001/ISOLATION-001 each carry any separable clause beyond their own shared independent-producer-corpus release gate, matching how EDIT-001 turned out to have 2 genuinely separable clauses. BASELINEASSET-001/RENDER-001/ISOLATION-001's own current missing_behavior each name ONLY the shared release gate -- confirmed no separable item exists for those 3. COMPOSITE-001's own missing_behavior named a genuinely separate, second item: 'no second, genuinely different rendering backend... has been built to prove the abstraction holds up against a second real implementation, only against test doubles' -- directly matching the obligation's own required_tests text ('adapter differential tests'), unmet.",
+    "acceptance_evidence": "Read render.py's own existing render()/_composite_layer_onto() implementation in full to confirm its own internal representation (a premultiplied-float canvas, W3C Compositing-and-Blending-Level-1 formulation) before designing a genuinely independent second implementation. Implemented render_straight_alpha_reference()/StraightAlphaReferenceRenderer: an independent recursive tree walker (shares no code with _render_node/_render_children) using the classic textbook STRAIGHT-alpha Porter-Duff 'source over' formula (out_a = a_s + a_d*(1-a_s); out_c = (a_s*c_s + a_d*(1-a_s)*c_d) / out_a), re-derived from the definition rather than copied from the existing implementation's own premultiplied formulation. Deliberately, honestly bounded to Normal blend + Source Over only (the default, and the only combination every real corpus sample uses) -- refuses OraValidationError for any other composite-op rather than silently producing an unverified result. Verified empirically against all 3 real corpus samples plus synthetic edge cases (isolated group + opacity + offset + clipping combined; fully transparent layer; fully opaque overlapping layers) BEFORE writing any formal test: every case produced byte-for-byte IDENTICAL pixel output between the two independently-derived implementations (0 tolerance needed), a strong empirical confirmation both formulas are correct. 7 new tests all passed on first execution."
+  },
+  "execution_steps": [
+    "1. Confirmed the FF6 mission head (Event 503) matched the prior tick's own hand-off before starting, per goal_driver resume.",
+    "2. Pulled fresh register text and current evidence for all 4 remaining independent-producer-corpus-blocked ora obligations (COMPOSITE-001, BASELINEASSET-001, RENDER-001, ISOLATION-001) to check for a separable sub-clause like EDIT-001 turned out to have.",
+    "3. Confirmed BASELINEASSET-001/RENDER-001/ISOLATION-001 each carry ONLY the shared release gate in their own current missing_behavior -- no separable item found for these 3, consistent with the release-gate text itself ('at least two independent producers/consumers') being the sole named requirement for each.",
+    "4. Found COMPOSITE-001's own missing_behavior explicitly names a SEPARATE, second item beyond the shared release gate: 'no second, genuinely different rendering backend... only against test doubles' -- directly matching required_tests' own 'adapter differential tests' phrase, confirmed genuinely unmet by checking the existing test doubles (a minimal class, a stateful class in test_obligation_renderer_adapter_and_auto_invalidation.py) do no real pixel arithmetic of their own.",
+    "5. Read render.py's own render()/_composite_layer_onto()/_porter_duff_coeffs() in full to understand the EXISTING implementation's own internal representation (a dense premultiplied-float32 array canvas) before designing a genuinely independent second implementation -- confirmed the existing formula, for Normal blend + Source Over specifically, reduces to the standard premultiplied 'over' operator.",
+    "6. Independently re-derived the classic STRAIGHT-alpha Porter-Duff 'over' formula from first principles (out_a = a_s + a_d*(1-a_s); out_c = (a_s*c_s + a_d*(1-a_s)*c_d) / out_a) -- a well-known, textbook-standard alternate formulation, deliberately NOT copied or algebraically transformed from the existing premultiplied code.",
+    "7. Implemented _straight_over()/_render_node_straight_alpha_reference()/render_straight_alpha_reference()/StraightAlphaReferenceRenderer in render.py: a fully separate recursive tree walker (does not call or share code with _render_node/_render_children), a sparse dict-based canvas (vs. the existing dense array), refusing any non-Normal/non-Source-Over composite-op explicitly rather than silently falling back.",
+    "8. Verified empirically against all 3 real corpus samples (minimal.ora, multi-layer.ora, with-groups.ora) via direct interactive execution BEFORE writing any formal test: all 3 produced byte-for-byte identical pixel output between render_document() and render_straight_alpha_reference().",
+    "9. Verified empirically against a hand-built synthetic isolated-group fixture combining opacity, layer offset, and clipping simultaneously (the hardest combination to get right): byte-for-byte identical.",
+    "10. Verified the refusal path empirically: a layer with composite-op='svg:multiply' correctly raises OraValidationError naming the exact unsupported combination.",
+    "11. Wrote test_obligation_renderer_adapter_differential.py: 7 tests (3 real-corpus-sample differential checks, 3 synthetic edge-case differential checks including the isolated-group combination, 1 refusal-path check), reusing the exact same PNG/archive fixture-construction helpers already established in test_obligation_transactional_edit.py for consistency.",
+    "12. Ran the new test file: all 7 passed on first execution, matching the pre-formalization empirical checks exactly.",
+    "13. Ran ruff check on the new test file and both modified source files: all clean. Ran mypy --strict on the full ora source package: success, 15 source files, zero issues.",
+    "14. Ran the full ora suite: 427 passed (was 420, +7 new, zero regressions). Ran the ora security baseline test file specifically (test_obligation_security_baseline.py): 21 passed, confirming the new module introduces no forbidden imports.",
+    "15. Ran the six-FF6-format regression suite directly: 4854 passed, 4 skipped (was 4847, +7 new, zero cross-format regression).",
+    "16. Ran the installed-wheel proof (tools.run_package_install_proof --format ora): 1/1 PASS, confirming the new module imports and behaves correctly from a real installed wheel, not merely the source tree.",
+    "17. Updated shared/format-contracts/implementation-evidence/ora.yaml's own SAL-ORA-OBL-2CC875865800D528 entry: added the 2 new source_symbols, replaced positive_test_selectors to lead with the 6 new differential-agreement tests, added the 1 new negative_test_selector (the refusal-path test), added a new execution_evidence_id, added a full implemented_behavior entry, and narrowed missing_behavior from 2 items (adapter-differential-gap, shared release gate) to 1 (the shared release gate only) -- matching the same single-blocker shape already correctly established for its 3 corpus-blocked siblings. Status stays partial, not implemented -- the release gate itself remains genuinely unmet.",
+    "18. Ran the obligation reconciler (contract_reconciler --format-id ora --exact-obligations) after the evidence edit: confirmed clean, ora still 6/134 unresolved (unchanged -- correctly a narrowing, not a closure, since the release gate itself is still unmet)."
+  ],
+  "allowed_files": [
+    "src/python/ora/src/format_factory/ora/render.py",
+    "src/python/ora/src/format_factory/ora/__init__.py",
+    "tests/python/ora/test_obligation_renderer_adapter_differential.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml",
+    "reports/format-contract-layer/ora-obligation-reconciliation.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/src/format_factory/ora/render.py",
+    "src/python/ora/src/format_factory/ora/__init__.py",
+    "tests/python/ora/test_obligation_renderer_adapter_differential.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml",
+    "reports/format-contract-layer/ora-obligation-reconciliation.json"
+  ],
+  "tests_run": [
+    "tests/python/ora/test_obligation_renderer_adapter_differential.py -- 7 passed (3 real-corpus differential checks, 3 synthetic edge-case differential checks, 1 refusal-path check, all first-execution passes)",
+    "ruff check -- all checks passed on new test file and both modified source files",
+    "mypy --strict src/python/ora/src/format_factory/ora -- success, 15 source files, zero issues",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 427 passed (was 420, +7 new)",
+    "tests/python/ora/test_obligation_security_baseline.py -- 21 passed (confirms no forbidden imports introduced)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 4854 passed, 4 skipped (was 4847, +7 new, zero regression)",
+    "tools.run_package_install_proof --format ora -- 1/1 PASS",
+    "contract_reconciler --format-id ora --exact-obligations -- clean, 6/134 unresolved (unchanged, correctly a narrowing not a closure)"
+  ],
+  "ledger_entry_id": "FF6-ORA-RENDERER-ADAPTER-DIFFERENTIAL-001",
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Narrows (does not close) SAL-ORA-OBL-2CC875865800D528 (ORA-COMPOSITE-001): the adapter-differential-test gap is now fully closed with a real, independent second Renderer implementation proven pixel-identical to the existing one across real corpus samples and synthetic edge cases. Status stays partial -- the obligation's own shared release gate (independent-producer/consumer agreement) remains genuinely unmet, narrowing this obligation to the same single-blocker shape as its 3 corpus-blocked siblings.",
+    "controller_event_effect": "pending",
+    "certification_state": "3/6 (ipynb, xliff, safetensors CERTIFIED per Event 467; ora/nrrd/ubl remain uncertified -- promotion.* untouched by this task, no fresh explicit user authorization exists this session)",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 134,
+    "new_public_api": "format_factory.ora.render_straight_alpha_reference, format_factory.ora.StraightAlphaReferenceRenderer"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

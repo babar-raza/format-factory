@@ -44959,6 +44959,43 @@
       "validation_command": ".venv/Scripts/pytest tests/python/ora/ -q",
       "result": "420 passed (was 414, +6 new)",
       "rollback": "Remove the new test file, revert ORA-EDIT-001 own evidence entry missing_behavior to the pre-narrowing state, and this ledger entry."
+    },
+    {
+      "entry_id": "FF6-ORA-RENDERER-ADAPTER-DIFFERENTIAL-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "ora-renderer-adapter-differential",
+      "capability": "ORA-COMPOSITE-001",
+      "capability_refs": [
+        "ORA-COMPOSITE-001"
+      ],
+      "api_symbols": [
+        "format_factory.ora.render_straight_alpha_reference",
+        "format_factory.ora.StraightAlphaReferenceRenderer"
+      ],
+      "product": "ORA Python production package",
+      "format": "ORA",
+      "test_delta": "New module additions to render.py: render_straight_alpha_reference()/StraightAlphaReferenceRenderer, a second, genuinely independent Renderer implementation (textbook straight-alpha Porter-Duff over, own recursive tree walker, no shared compositing code with render()). 7 new tests (test_obligation_renderer_adapter_differential.py) proving byte-for-byte pixel agreement against the existing implementation across real corpus samples and synthetic edge cases.",
+      "git_head": "6d7ad2cb4",
+      "skill": "format-feature-expansion",
+      "task_id": "TC_FF6_ORA_RENDERER_ADAPTER_DIFFERENTIAL_001",
+      "source_files": [
+        {
+          "path": "src/python/ora/src/format_factory/ora/render.py",
+          "state": "present",
+          "sha256": "cc80968668c426eb059117b251b6a927232d27a3033345b463d211dcbba3deba"
+        },
+        {
+          "path": "src/python/ora/src/format_factory/ora/__init__.py",
+          "state": "present",
+          "sha256": "f99d24c507b7169b2893a9bb237232ff002fcf37099e938f1e835eaba17277ae"
+        }
+      ],
+      "test_files": [
+        "tests/python/ora/test_obligation_renderer_adapter_differential.py"
+      ],
+      "validation_command": ".venv/Scripts/pytest tests/python/ora/ -q",
+      "result": "427 passed (was 420, +7 new)",
+      "rollback": "Remove render_straight_alpha_reference/StraightAlphaReferenceRenderer and their __init__.py exports, the new test file, revert ORA-COMPOSITE-001 own evidence entry missing_behavior to the pre-narrowing state, and this ledger entry."
     }
   ],
   "total_entries": 2782,
