@@ -237,7 +237,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "6625458713d0e702a61d774c692193d6119608c3d4379bf6d86548b072832a39",
+    "implementation_evidence": "f3f28d8cad28ba382f748a740cb393d20fa510e79be34aeee9f944111d7b06ef",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -3677,8 +3677,7 @@
       "execution_evidence_ids": [],
       "implemented_behavior": [],
       "missing_behavior": [
-        "Not yet audited against this obligation's declared proof requirements: Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential tests.",
-        "NO SHIPPED-NAMESPACE TEST COVERAGE. No test file is mapped to this capability."
+        "This is a genuinely unbuilt capability, not an audit or test-coverage gap on existing functionality -- already correctly classified as such by ORA-RENDER-STREAM-MASK-CITATION-AUDIT-SELECTOR-PROOF (evidence_id above, lines 112-129 of this file): \"actual pixel-level rendering/compositing\" is one of 5 obligations across ORA-RENDER-001/ORA-STREAM-001/ORA-MASK-001 confirmed genuinely new, not a near-duplicate of an obligation already resolved elsewhere in ora. Independently re-confirmed by direct source inspection this tick: grepping ora's own source for render/compositing turns up only two false leads -- lifecycle.py's private render() helper inside _canonical_stack_xml() serializes the layer-stack tree to XML text (indentation and attribute strings), not pixel output; and composite_ops.py's composite_op/compositing_operator fields store the DECLARED operator name read from stack.xml, they do not perform blend/compositing computation on pixel data. There is no pixel buffer, no blend-mode implementation, and no rendering adapter anywhere in the package -- this is the identical foundational gap already named as the blocker for 4 of ora's other 5 unresolved obligations (SAL-ORA-OBL-2CC875865800D528, 52746ABC41B3E790, ABDDB437C86DC22F, F8A3777A56AA6121, each citing \"the same rendering-engine work already correctly deferred for ORA-RENDER-001\"). \"NO SHIPPED-NAMESPACE TEST COVERAGE\" in the prior text was accurate but framed this as an audit omission; the precise reason no test exists is that there is nothing to test yet."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-A979A77370914BCA",
