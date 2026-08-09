@@ -210,6 +210,14 @@
       "truth_boundary": "Selector-bound, unlike ORA-BASELINE-SUITE. Closes SAL-ORA-OBL-8EDD775BF1715438 (ORA-STREAM-001). This obligation's own rule_text is narrow -- \"The required stack.xml archive member is a UTF-8 encoded XML document conforming to the OpenRaster Layer Stack format\" -- distinct from its capability sibling SAL-ORA-OBL-F8A3777A56AA6121's much larger streaming/lazy-access/resource-budget rule_text; the two share a proof_requirements template but not a rule_text, and this slice closes only the former. Before this slice, parse_stack fed raw archive bytes straight to ElementTree.fromstring with no encoding check at all, confirmed via direct interactive probing before writing any test: a stack.xml declaring encoding=\"ISO-8859-1\" (with correspondingly-encoded bytes) parsed successfully, and a stack.xml with genuinely non-UTF-8 bytes and NO declaration at all also parsed successfully (mojibake silently produced instead of a refusal) -- both real, previously-unenforced spec violations, not just untested behavior. Added _require_utf8() to codec/stack_xml.py: rejects any XML declaration whose encoding pseudo-attribute is not case-insensitively \"utf-8\", then independently rejects payload bytes that fail to decode as UTF-8 even with no declaration present (catching the undeclared-mojibake case the declaration check alone would miss). Wired immediately after the existing reject_unsafe_xml() call in parse_stack. 5 new tests prove: a declared non-UTF-8 encoding is refused; genuinely non-UTF-8 bytes are refused even with no declaration; an explicit UTF-8 declaration parses normally; a case-insensitive \"utf-8\" declaration parses normally; and undeclared genuine UTF-8 bytes (including non-ASCII content) parse normally. The \"conforming to the OpenRaster Layer Stack format\" half of this obligation's rule_text was already extensively covered by test_obligation_stack_and_document.py's pre-existing 33 tests (root/stack/layer/text element structure, required attributes, opacity/visibility/composite-op parsing) -- cited here rather than re-proven. ora suite: 311 -> 316 passed. NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, with the UTF-8 requirement grounded directly in the pinned spec's own text (quoted verbatim in container.py's module docstring from an earlier tick). Covers SAL-ORA-OBL-8EDD775BF1715438 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "ORA-STREAM-BOUNDED-DECOMPRESSION-PROOF",
+      "expected_result": "PASS",
+      "granularity": "suite",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ora-stream-bounded-decompression-001.json",
+      "sha256": "6e98f95bf334c7236bc46a6bed25fb25660c7d220c856ff7100a59bf12f0d603",
+      "truth_boundary": "CLOSES SAL-ORA-OBL-F8A3777A56AA6121 (ORA-STREAM-001): promoted partial -> implemented. Performs the fresh, exhaustive re-audit ORA-STREAM-COMBINED-BUDGET-PROOF's own truth_boundary explicitly deferred, reading container.py's own decompression call chain line by line against the obligation's own literal rule_text rather than trusting prior evidence text. Discovered a genuine, previously-undocumented gap: `_check_limits` (from_bytes's own upfront gate) inspects only the ZIP central directory's own declared metadata (file_size, compress_size) -- attacker-controlled fields never cross-checked against the member's real compressed stream -- and OraContainer.read() (called unconditionally by both load() and validate(), this package's two most common entry points, not only the opt-in resolve_asset() path) delegated fully to zipfile.ZipFile's own eager .read(), which decompresses however much the real stream actually produces before any size check can matter. Reproduced empirically against Python's own zipfile module before writing any fix, in the cleanest, most dangerous form: a member whose declared size AND crc32 are forged to match only a small prefix of a much larger real payload passes every existing check and reads back SILENTLY successful (no exception at all) -- but internally costs memory proportional to the real payload, not the declared one, proven directly via tracemalloc (2.06MB peak for a 10MB real payload scaling to 323.5MB peak for a 150MB real payload, using the unfixed zipfile.ZipFile.read() code path). Fixed with `_bounded_read()`: decompresses through zipfile.ZipFile.open() in fixed 1MB chunks instead of the module's own unbounded `.read()`, raising OraLimitError if cumulative real output exceeds the container's own validated max_decompressed_bytes budget -- decoupling peak memory from the real (attacker-controlled) payload size rather than the declared one. After the fix, the identical attack scenario measures 2.06MB peak regardless of whether the real payload is 10MB or 150MB (independently reverified at both sizes), a dramatic, direct improvement proven by literal memory measurement, not inferred from the absence of an observed side effect. Separately confirmed (via a dedicated spike, not committed as a test) that read()'s own OraLimitError accumulator correctly refuses an HONEST, non-lying member whose real content genuinely exceeds a tightened budget, with peak memory still bounded near that budget rather than the full real content. Audited every zipfile/ZipFile usage across the entire ora package (not only container.py): lifecycle.py's own usage is write-side only (dumps/serialization), never reading untrusted input, so no vulnerability there; no other module bypasses OraContainer to read archive members directly. Confirmed _check_mimetype's own archive.read(MIMETYPE_MEMBER) call remains safe unmodified: it is gated by a prior check requiring STORED (uncompressed) compression, where compress_size == file_size inherently and no declared-vs-real mismatch is structurally possible -- no fix needed there. One pre-existing test (test_resolving_one_asset_never_reads_a_sibling_layers_own_archive_member, spying on zipfile.ZipFile.read to prove lazy-read instrumentation) needed its own spy point moved to zipfile.ZipFile.open, the new place a member's content is actually touched under the fixed code path -- updated, preserving the test's own diagnostic intent unchanged, still proving resolving one asset never touches a sibling's own archive member. Added a new test measuring this obligation's own required_tests wording (\"flat-memory checks\") literally with tracemalloc (peak stays under 5MB for a 10MB real payload, using the pre-fix code's own measured 2.06MB-to-323.5MB scaling as the honest baseline the threshold is chosen against) plus a control test (declared size matches real size, well within budget, still reads correctly -- the bounded reader does not simply refuse or truncate every read). This directly satisfies the obligation's own release_gate (\"Large-file tests prove bounded behavior rather than only successful completion\") for the first time with a literal memory measurement rather than an architectural read-call-count proof. Every one of the obligation's own six named requirements (bounded-memory archive/XML inspection, lazy asset access, and the compressed/expanded/raster/nesting/render budgets) now has direct, literal proof: large sparse archives (ORA-STREAM-COMBINED-BUDGET-PROOF), lazy-read instrumentation (this entry, spy point corrected), flat-memory checks (this entry, new), cancellation (ORA-STREAM-BUDGETS-CANCELLATION-PROOF), and every resource limit including the newly discovered and closed real-vs-declared-size gap (this entry). ora suite: 412 -> 414 passed. 6-format FF6 regression: 4355 -> 4357 passed, 4 skipped. ruff and mypy --strict clean on both changed source and test files. Installed-wheel behavior independently re-verified: the flat-memory property was exercised directly from the installed, non-editable site-packages path (2.1MB peak for a 10MB real payload). NOT backed by an independent reference OpenRaster implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the vulnerability reproduction and fix are grounded in direct experimentation against Python's own zipfile module, not assumed. DISCLOSED, non-blocking nuance: `_bounded_read()`'s own chunk_size (1MB) is a hardcoded implementation floor, not itself derived from ResourceLimits -- a caller who configures max_decompressed_bytes below 1MB would still see up to ~1MB transient peak memory per read() call before their own smaller budget is enforced by the read-time accumulator check. This does not violate the obligation's own rule_text (memory IS bounded, just not to arbitrary sub-megabyte granularity), and DEFAULT_LIMITS.max_decompressed_bytes is 2GB, so this is a non-issue for realistic default usage."
+    },
+    {
       "evidence_id": "ORA-STREAM-BUDGETS-CANCELLATION-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -261,7 +269,7 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "b18759606ff94b21fbd451f3e46cd98c48350b62cfae44abc4bacd6ccf9a7e60",
-    "implementation_evidence": "e4092c9660cafb3bf37a69ce0e684efad3d63771b48494adc2bef8ee64c131a8",
+    "implementation_evidence": "0b4d7c135569a89f101d05771b0dfbc61cacf6584765c14c1228d24abca852d2",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -4754,20 +4762,21 @@
       "execution_evidence_ids": [
         "ORA-STREAM-BUDGETS-CANCELLATION-PROOF",
         "ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF",
-        "ORA-STREAM-COMBINED-BUDGET-PROOF"
+        "ORA-STREAM-COMBINED-BUDGET-PROOF",
+        "ORA-STREAM-BOUNDED-DECOMPRESSION-PROOF"
       ],
       "implemented_behavior": [
         "FF6-ORA-RENDER-ENGINE-001: the \"render\" budget this obligation's own missing_behavior named is now bounded, not absent -- render.py checks the canvas dimensions (width * height * 4 channels, at the working-buffer's own byte cost) against ResourceLimits.max_decompressed_bytes via format_factory.core.checked_product BEFORE allocating any canvas, and decode_png separately bounds each layer's own scanline buffer the same way before a single byte is inflated -- both refuse via OraLimitError on a hostile declaration, proven by two dedicated tests (test_oversized_canvas_raises_resource_limit_error_before_allocating, test_oversized_layer_raster_is_rejected_before_decompression). A truncated/short IDAT stream is likewise rejected rather than zero-padded to the declared size (test_truncated_idat_stream_is_rejected_not_zero_padded).",
         "FF6-EVENT-000333: five of this obligation's own six named requirements are implemented and now cross-mapped onto this specific obligation ID for the first time, built earlier this session for other obligations but never linked here. Bounded-memory archive/XML inspection and the compressed/expanded budgets: OraContainer.from_bytes checks entry count, declared uncompressed size, and compression ratio from the ZIP central directory alone, refusing before a single byte is decompressed (\"Members are read on demand; nothing is decompressed during validation\"). Lazy asset access and the raster budget: read_png_metadata parses only the 25-byte IHDR chunk and never inflates pixel data, proven available even when the pixel payload itself is corrupt; declared surface size is checked via checked arithmetic before decode. The nesting budget: codec/stack_xml.py's bounded recursion walk refuses depth beyond the configured limit. \"Lazy-read instrumentation\" (this obligation's own required_tests wording, taken literally): proven fresh by spying on the underlying archive's own read calls -- resolving one layer's asset never reads a sibling layer's own archive member. \"Cancellation\": this library is synchronous with no interrupt-mid-flight primitive anywhere, so cancellation means the API's own shape lets a caller stop calling the resolver after any layer without cost -- proven by contrasting the eager, all-or-nothing resolve_all_assets() (fails outright, yielding nothing) with the granular iter_layers()/resolve_asset() combination (yields each result as it goes, so a caller can stop before reaching a layer they no longer want).",
-        "FF6-EVENT-000476: the combined \"large sparse archive\" render-budget stress case this obligation's own missing_behavior named is now built. One document combines an opaque top layer sized to within 0.1% of a deliberately tight canvas budget, a 20-level-deep chain of isolated groups, and 42 small covered layers (40+, genuinely \"many\"), proven both to render the correct result within budget (test_a_large_sparse_archive_with_deep_nesting_and_near_limit_canvas_renders_correctly_within_budget) and to still be correctly refused when only the canvas dimension is pushed over budget (test_the_same_combined_scenario_over_the_canvas_budget_is_still_correctly_refused) -- proving the resource-limit check is not bypassed or miscounted when many other dimensions are simultaneously near their own limits. Building these tests also corrected this obligation's own prior implemented_behavior text above: render()'s real canvas-budget formula is width * height * channels(4) * bit_depth(8) against max_decompressed_bytes, not width * height * 4 alone -- caught directly by a failing first test run, not assumed."
+        "FF6-EVENT-000476: the combined \"large sparse archive\" render-budget stress case this obligation's own missing_behavior named is now built. One document combines an opaque top layer sized to within 0.1% of a deliberately tight canvas budget, a 20-level-deep chain of isolated groups, and 42 small covered layers (40+, genuinely \"many\"), proven both to render the correct result within budget (test_a_large_sparse_archive_with_deep_nesting_and_near_limit_canvas_renders_correctly_within_budget) and to still be correctly refused when only the canvas dimension is pushed over budget (test_the_same_combined_scenario_over_the_canvas_budget_is_still_correctly_refused) -- proving the resource-limit check is not bypassed or miscounted when many other dimensions are simultaneously near their own limits. Building these tests also corrected this obligation's own prior implemented_behavior text above: render()'s real canvas-budget formula is width * height * channels(4) * bit_depth(8) against max_decompressed_bytes, not width * height * 4 alone -- caught directly by a failing first test run, not assumed.",
+        "FF6-EVENT-000487: the fresh, exhaustive re-audit the prior tick's own missing_behavior called for is now complete, and it found a genuine, previously-undocumented gap rather than merely confirming one's absence: `_check_limits` (from_bytes's own upfront gate) inspects only the ZIP central directory's own declared metadata, never the member's real compressed stream, and OraContainer.read() (called unconditionally by both load() and validate(), not only the opt-in resolve_asset() path) delegated fully to zipfile.ZipFile's own eager, unbounded .read(). Proven directly via tracemalloc against a member whose declared size and crc32 are forged to describe only a small prefix of a much larger real payload: the pre-fix code succeeds silently (no exception at all) while peak memory scales with the REAL payload's own size (2.06MB for a 10MB real payload, 323.5MB for a 150MB real payload), not the declared one. Fixed with `_bounded_read()`: decompresses through zipfile.ZipFile.open() in fixed 1MB chunks instead of the module's own unbounded `.read()`, raising OraLimitError once cumulative real output exceeds the container's own validated budget. After the fix, the identical attack measures a flat ~2.1MB peak regardless of whether the real payload is 10MB or 150MB -- independently reverified at both sizes and again from the installed, non-editable wheel. Every one of this obligation's own six named requirements now has direct, literal proof: large sparse archives (ORA-STREAM-COMBINED-BUDGET-PROOF), lazy-read instrumentation (spy point corrected to zipfile.ZipFile.open, the new place a member is actually touched), flat-memory checks (new, literal tracemalloc measurement, directly satisfying this obligation's own release_gate for the first time), cancellation (ORA-STREAM-BUDGETS-CANCELLATION-PROOF), and every resource limit including this newly discovered and closed gap. Audited every zipfile/ZipFile usage across the entire ora package: lifecycle.py's own usage is write-side only, no vulnerability there; _check_mimetype's own unmodified archive.read() call remains safe because it is gated by a prior STORED-compression-only check, where no declared-vs-real mismatch is structurally possible. DISCLOSED, non-blocking nuance: `_bounded_read()`'s own chunk_size (1MB) is a hardcoded implementation floor, not derived from ResourceLimits -- a caller configuring max_decompressed_bytes below 1MB would still see up to ~1MB transient peak memory per read() call before their own smaller budget is enforced. This does not violate the obligation's own rule_text (memory is bounded, just not to arbitrary sub-megabyte granularity), and DEFAULT_LIMITS.max_decompressed_bytes is 2GB, so this is a non-issue for realistic default usage."
       ],
-      "missing_behavior": [
-        "This tick closed exactly the combined-scenario gap named above; it did not perform a fresh, exhaustive re-audit of this obligation's every other named requirement (\"lazy-read instrumentation,\" \"flat-memory checks,\" \"cancellation,\" \"every resource limit\") against the SAL register's own literal wording, so `status` is left at `partial` rather than promoted to `implemented` on this pass -- promotion would need that fuller audit first, not merely the absence of a currently-known gap."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ora/test_obligation_container_and_mimetype.py::test_too_many_members_is_a_limit_error",
         "tests/python/ora/test_obligation_raster_assets.py::test_an_asset_declaring_an_enormous_surface_is_refused",
-        "tests/python/ora/test_obligation_render_and_compositing.py::test_the_same_combined_scenario_over_the_canvas_budget_is_still_correctly_refused"
+        "tests/python/ora/test_obligation_render_and_compositing.py::test_the_same_combined_scenario_over_the_canvas_budget_is_still_correctly_refused",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_a_lied_declared_size_still_costs_flat_memory_not_the_real_payload_size"
       ],
       "obligation_id": "SAL-ORA-OBL-F8A3777A56AA6121",
       "positive_test_selectors": [
@@ -4781,7 +4790,8 @@
         "tests/python/ora/test_obligation_security_baseline.py::test_deeply_nested_stacks_are_refused_by_a_bounded_recursion_walk",
         "tests/python/ora/test_obligation_stream_budgets_and_cancellation.py::test_resolving_one_asset_never_reads_a_sibling_layers_own_archive_member",
         "tests/python/ora/test_obligation_stream_budgets_and_cancellation.py::test_the_granular_api_lets_a_caller_stop_before_an_unresolvable_layer_resolve_all_does_not",
-        "tests/python/ora/test_obligation_render_and_compositing.py::test_a_large_sparse_archive_with_deep_nesting_and_near_limit_canvas_renders_correctly_within_budget"
+        "tests/python/ora/test_obligation_render_and_compositing.py::test_a_large_sparse_archive_with_deep_nesting_and_near_limit_canvas_renders_correctly_within_budget",
+        "tests/python/ora/test_obligation_container_and_mimetype.py::test_reading_a_member_within_its_declared_and_real_size_still_succeeds"
       ],
       "proof_requirements": {
         "negative": [
@@ -4791,15 +4801,16 @@
           "Large sparse archives, lazy-read instrumentation, flat-memory checks, cancellation, and every resource limit."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ora/src/format_factory/ora/codec/container.py::OraContainer",
+        "src/python/ora/src/format_factory/ora/codec/container.py::_bounded_read",
         "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_asset",
         "src/python/ora/src/format_factory/ora/codec/assets.py::resolve_all_assets",
         "src/python/ora/src/format_factory/ora/codec/assets.py::iter_layers",
         "src/python/ora/src/format_factory/ora/codec/png_metadata.py::read_png_metadata"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "ORA-LIFECYCLE-001",
@@ -5010,6 +5021,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-security-baseline-001.json": "3c679aa993c7146ac43c33f5ca132b0a7d88c643e4aa8b0756c285e16ca3f011",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-stack-citation-audit-001.json": "e2198be09d7d47d2fbadd516d37c0e101963b81426439c5d1e279337a51c0126",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-stack-xml-utf8-enforcement-001.json": "084173bb4f514d4455ad68143feb1e132e3c8f9d85f89b1d84f3e6d3b7a9e995",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ora-stream-bounded-decompression-001.json": "6e98f95bf334c7236bc46a6bed25fb25660c7d220c856ff7100a59bf12f0d603",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-stream-budgets-cancellation-001.json": "bb19b27197b57b96b34c670c7e5b9f615b9146b6b273f4e07e3e2d4332edd0d4",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-stream-combined-budget-001.json": "1b7a051f83b5e2978d795b9343381a75ba432d68671f2756c4b6ebeb23c7989c",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-utf8-baseline-citation-audit-001.json": "e1fbdf4d897140b53aba9713ab841640b185deddc8b89c68e1022e26f4baf551",
@@ -5017,7 +5029,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-version-drift-warning-001.json": "0c63a7f08d49b0722687e1b5788a11b4301d779df435772ca85d8b7e1c536a7c",
     "reports/skills-rff6/skill-transcripts/product-source-task-ora-write-citation-audit-001.json": "c07ab089aecf636747ad28b21ba76d6662fff47d2731eb22013bb715a144ce8b",
     "src/python/ora/src/format_factory/ora/codec/assets.py": "b4baa09a885f675b0dbbc2758649f09d0218b95eecd1f9d76ab919dfaa405b35",
-    "src/python/ora/src/format_factory/ora/codec/container.py": "2313a743f8026d6bd8b350d1942f6e857be2d924336c9a6863f437cc8c970062",
+    "src/python/ora/src/format_factory/ora/codec/container.py": "62f730e53f5277d00f5c7a660465c87beb9c056a50ec220e0335bb1f5c3989ba",
     "src/python/ora/src/format_factory/ora/codec/png_metadata.py": "549e8b6f6edd3f495e12a19af2738d67bddc4c7881df88800f1e064c04ebe785",
     "src/python/ora/src/format_factory/ora/codec/stack_xml.py": "b01ed986b9fb086533e1892c7827b7c3d28a1afd307057c8bb0f16e7643193a7",
     "src/python/ora/src/format_factory/ora/lifecycle.py": "92e1becbaf2023c75c61f456bab04bc2c6facc90d7d4fef682bf848f1844b467",
@@ -5030,7 +5042,7 @@
     "tests/python/ora/test_obligation_baseline_asset_replacement.py": "dba387ba88c11b31bf2aefd1b7418549dd2a223d489bf35b7368d294f91729b3",
     "tests/python/ora/test_obligation_composite_inventory_profile_independence.py": "260faa7b7621bc9011e05668220e33c0d54f584a38845118845b87f2c0f24e9e",
     "tests/python/ora/test_obligation_composite_op_registry.py": "107536a6213188ff05a31cd499b338fb159951000dae32d30d192916064fb2d2",
-    "tests/python/ora/test_obligation_container_and_mimetype.py": "b99bd7c244b2fcb3ba43c017d91bdea2c651227526799b608c15337059e3b2e2",
+    "tests/python/ora/test_obligation_container_and_mimetype.py": "5a8b2ce97f182131aedadfc8eca862b509e74710f357353e5b58cd84eb513a97",
     "tests/python/ora/test_obligation_document_model_construction.py": "478139c90d4beeda8b8c4759b42bee88f29cc769fbbd1f1e9d70adf436224987",
     "tests/python/ora/test_obligation_explicit_attribute_preservation.py": "cb67648fe068cab965ad46599693b4872788bf5f718c140c2f687ea3a413f76a",
     "tests/python/ora/test_obligation_isolation_semantics.py": "1d41a5f6f432a48cc8cb46967ed1287f186bea87f302de1c7b89cf42bdbf9b6f",
@@ -5043,19 +5055,19 @@
     "tests/python/ora/test_obligation_resolution_profile_detection.py": "606e3e87b8f4e80dae82c894df8e22ef492048b8cae15b9355b42363d89fe550",
     "tests/python/ora/test_obligation_security_baseline.py": "8d303e017fcf1037304347115aaff2b7e91f457ba0337f2e2078051122255042",
     "tests/python/ora/test_obligation_stack_and_document.py": "cf9199dfd37e2e05d153c04479b71a9d52cc97f4a951e2facc8198a78d00d50c",
-    "tests/python/ora/test_obligation_stream_budgets_and_cancellation.py": "f989a6bb15f99a9300aade47aea7c950fa78e3d245afdc1be1fb2e1a05eb0ea5",
+    "tests/python/ora/test_obligation_stream_budgets_and_cancellation.py": "e8aafa54fcabb9711bb22b95a30ff0e380bb57eb26e0d6fe455dd1f49bc24f7a",
     "tests/python/ora/test_obligation_transactional_edit.py": "5df5c2d080cc3a20ff624d738aac5f909e3b7017a9022bd2059c80d2ca45cf87",
     "tests/python/ora/test_obligation_version_drift_warning.py": "5f237bb40df32472268862d76ff868de8e6e919f0e8a67796df2e485b5072ec0"
   },
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 127,
+      "implemented": 128,
       "missing": 1,
-      "partial": 6
+      "partial": 5
     },
     "total": 134,
-    "unresolved": 7
+    "unresolved": 6
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

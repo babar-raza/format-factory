@@ -21,6 +21,18 @@ Validation is eager and total: `from_bytes` either returns a container whose
 every member has already been checked, or raises. There is deliberately no
 lazy or permissive mode -- a half-validated archive is the state in which
 callers write the bugs this module exists to prevent.
+
+ORA-STREAM-001 (FF6-EVENT-000487): `_check_limits`'s declared-size and
+compression-ratio checks only ever inspect the ZIP central directory's own
+metadata -- attacker-controlled fields, not independently verified against
+the member's real compressed stream. Proven directly: a member whose
+declared size (and matching crc32) describe only a small prefix of a much
+larger real payload passes every check here, and `zipfile.ZipFile.read()`
+decompresses the ENTIRE real payload internally before returning that small
+prefix, so peak memory scales with the real payload's own size regardless
+of what was declared. `read()` now decompresses through `_bounded_read`
+instead, in fixed-size chunks via `ZipFile.open()`, decoupling peak memory
+from the real payload's size.
 """
 
 from __future__ import annotations
@@ -125,6 +137,47 @@ def _check_mimetype(archive: zipfile.ZipFile, infos: list[zipfile.ZipInfo]) -> s
     return OPENRASTER_MEDIA_TYPE.decode("ascii")
 
 
+def _bounded_read(archive: zipfile.ZipFile, name: str, *, limit: int) -> bytes:
+    """Decompress one member, refusing before more than `limit` decompressed
+    bytes accumulate.
+
+    `zipfile.ZipFile.read()` decompresses however many bytes the member's
+    real compressed stream actually produces, then checks the result's CRC-32
+    against the central directory's own declared value -- a mismatch raises
+    `BadZipFile`, but only AFTER the full content is already resident in
+    memory. The central directory's declared uncompressed size (what
+    `_check_limits` sums to reject an oversized archive up front) does not
+    bound that decompression either: it is attacker-controlled metadata, not
+    a cap `zipfile` itself enforces against the real stream. A member whose
+    declared size is a small lie and whose real DEFLATE stream expands to
+    gigabytes defeats every check in `_check_limits` and forces a full,
+    unbounded expansion into memory before the lie is ever discovered.
+
+    Reading through `ZipFile.open()` in fixed-size chunks, instead of the
+    module's own eager `.read()`, decouples the memory bound from the
+    declared metadata: decompression is refused mid-stream, the moment the
+    real output exceeds `limit`, rather than after an arbitrary amount of it
+    is already sitting in memory.
+    """
+    chunk_size = 1024 * 1024
+    chunks: list[bytes] = []
+    total = 0
+    with archive.open(name) as member:
+        while True:
+            chunk = member.read(chunk_size)
+            if not chunk:
+                break
+            total += len(chunk)
+            if total > limit:
+                raise OraLimitError(
+                    f"member {name!r} decompressed to over {limit} bytes, "
+                    "exceeding the configured limit before its declared size "
+                    "could be trusted"
+                )
+            chunks.append(chunk)
+    return b"".join(chunks)
+
+
 def _check_limits(infos: list[zipfile.ZipInfo], limits: ResourceLimits) -> None:
     """Refuse oversized or bomb-shaped archives from the central directory alone.
 
@@ -160,12 +213,16 @@ class OraContainer:
     an extraction root, no member uses a forbidden compression method, no name
     is duplicated, stack.xml is present, and the declared sizes are within the
     supplied limits. Members are read on demand; nothing is decompressed during
-    validation.
+    validation. `read()` itself enforces the same `max_decompressed_bytes`
+    budget against each member's real decompressed output, not merely its
+    declared (attacker-controlled) size -- see `_bounded_read`'s own
+    docstring for why the declared-size check alone is not sufficient.
     """
 
     mimetype: str
     names: tuple[str, ...]
     _archive: zipfile.ZipFile = field(repr=False, compare=False)
+    _limits: ResourceLimits = field(repr=False, compare=False)
 
     @classmethod
     def from_bytes(
@@ -229,7 +286,9 @@ class OraContainer:
         if STACK_MEMBER not in seen:
             raise OraArchiveError(f"archive has no required {STACK_MEMBER} member")
 
-        return cls(mimetype=mimetype, names=tuple(member_names), _archive=archive)
+        return cls(
+            mimetype=mimetype, names=tuple(member_names), _archive=archive, _limits=limits
+        )
 
     def read(self, name: str) -> bytes:
         """Return one member's bytes.
@@ -237,10 +296,15 @@ class OraContainer:
         Names are matched exactly: "Member names ... are case-sensitive", so
         `data/Layer.png` and `data/layer.png` are different members and a
         case-folding lookup would silently collapse them.
+
+        Decompression itself is bounded by this container's own
+        `max_decompressed_bytes` limit (the same one `from_bytes` validated
+        declared sizes against), refusing a member whose real content
+        exceeds it -- not only one whose declared metadata says so.
         """
         if name not in self.names:
             raise OraArchiveError(f"archive has no member named {name!r}")
-        return self._archive.read(name)
+        return _bounded_read(self._archive, name, limit=self._limits.max_decompressed_bytes)
 
 
 __all__ = [

@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import io
 import struct
+import tracemalloc
 import zipfile
 import zlib
 
@@ -377,3 +378,113 @@ def test_opening_an_archive_never_executes_member_content() -> None:
     )
 
     assert container.read("evil.py") == hostile
+
+
+# ── read() bounds real decompressed output, not only declared metadata ─────
+
+
+def _archive_with_a_lied_declared_size(
+    *, real_payload: bytes, forged_size: int, forged_crc: int
+) -> bytes:
+    """A structurally valid, normally-written .ora archive whose one data
+    member's declared uncompressed size AND crc32 (both the local file
+    header and the central directory record carry each) are patched after
+    the fact -- the real compressed bytes are left exactly as `zipfile`
+    wrote them for `real_payload`, so this is not a corrupt or malformed
+    archive, only one whose declared metadata lies. `_check_limits` only
+    ever inspects that declared metadata, never the real content, so this
+    reproduces exactly what an adversary controls: `file_size`/`CRC-32` are
+    their own header fields to write however they like, independent of what
+    the member's real compressed stream actually decompresses to. Forging
+    the crc to match only the first `forged_size` bytes of the real payload
+    (rather than leaving it correct for the full payload) means `read()`
+    does not merely fail late with a CRC mismatch -- it succeeds, returning
+    exactly the declared `forged_size` bytes, silently: the only outward
+    difference between an honest small member and this one is how much
+    memory decompressing it costs.
+    """
+    raw = bytearray(build_archive(members={"data/big.png": real_payload}))
+    target = b"data/big.png"
+
+    def _patch(
+        signature: bytes, crc_offset: int, size_offset: int, namelen_offset: int, name_offset: int
+    ) -> None:
+        index = 0
+        while True:
+            index = raw.find(signature, index)
+            if index == -1:
+                raise AssertionError(f"{signature!r} record for {target!r} not found")
+            name_len = struct.unpack(
+                "<H", raw[index + namelen_offset : index + namelen_offset + 2]
+            )[0]
+            candidate = bytes(raw[index + name_offset : index + name_offset + name_len])
+            if candidate == target:
+                struct.pack_into("<I", raw, index + crc_offset, forged_crc)
+                struct.pack_into("<I", raw, index + size_offset, forged_size)
+                return
+            index += 1
+
+    # Local file header: sig(4) verneeded(2) flags(2) method(2) time(2)
+    # date(2) crc(4) compsize(4) uncompsize(4) namelen(2) extralen(2) name.
+    _patch(b"PK\x03\x04", crc_offset=14, size_offset=22, namelen_offset=26, name_offset=30)
+    # Central directory record: sig(4) vermadeby(2) verneeded(2) flags(2)
+    # method(2) time(2) date(2) crc(4) compsize(4) uncompsize(4) namelen(2)
+    # extralen(2) commentlen(2) disknum(2) intattr(2) extattr(4) lhoffset(4) name.
+    _patch(b"PK\x01\x02", crc_offset=16, size_offset=24, namelen_offset=28, name_offset=46)
+
+    return bytes(raw)
+
+
+def test_a_lied_declared_size_still_costs_flat_memory_not_the_real_payload_size() -> None:
+    """FF6-EVENT-000487: this obligation's own required_tests wording
+    ("flat-memory checks") taken literally, with a direct memory
+    measurement rather than an architectural read-call-count proof.
+    `_check_limits` (proven above) refuses an archive whose DECLARED sizes
+    exceed the budget before decompressing anything -- but declared size is
+    exactly the field an adversary controls. A member whose declared size
+    (and matching crc) describe only a small prefix of a much larger real
+    payload sails through `_check_limits` untouched and, both before and
+    after this fix, `read()` returns that same small, correct-looking
+    prefix -- but before this fix, producing it required decompressing the
+    ENTIRE real payload internally first (proven directly: peak memory
+    scaled with the real payload's own size, not the declared one). After
+    this fix, `read()` decompresses in bounded chunks, so peak memory stays
+    close to one chunk's worth regardless of how large the real payload
+    actually is -- proven by using a real payload dramatically larger than
+    any bound this test itself asserts."""
+    real_payload = b"\0" * (10 * 1024 * 1024)  # 10MB: compresses to a few KB
+    forged_size = 100
+    forged_crc = zlib.crc32(real_payload[:forged_size]) & 0xFFFFFFFF
+    payload = _archive_with_a_lied_declared_size(
+        real_payload=real_payload, forged_size=forged_size, forged_crc=forged_crc
+    )
+    limits = ResourceLimits(max_decompressed_bytes=1024)
+
+    container = OraContainer.from_bytes(payload, limits=limits)  # the lie sails through
+
+    tracemalloc.start()
+    try:
+        result = container.read("data/big.png")
+        current, peak = tracemalloc.get_traced_memory()
+    finally:
+        tracemalloc.stop()
+
+    assert result == real_payload[:forged_size]
+    # The real payload is 10MB; a naive full decompression peaks in the tens
+    # of MB (proven directly against the unfixed code path: see this
+    # obligation's own execution evidence). 5MB is comfortably above one
+    # bounded chunk's own overhead and comfortably below "decompressed the
+    # whole real payload" -- the only threshold this test needs to prove.
+    assert peak < 5 * 1024 * 1024, f"peak traced memory was {peak} bytes, not flat"
+
+
+def test_reading_a_member_within_its_declared_and_real_size_still_succeeds() -> None:
+    """The control for the flat-memory test above: a member whose declared
+    size is honest and within budget still reads correctly -- the bounded
+    reader is not simply refusing or truncating every read."""
+    payload = build_archive(members={"data/small.png": b"x" * 4096})
+    limits = ResourceLimits(max_decompressed_bytes=1_000_000)
+
+    container = OraContainer.from_bytes(payload, limits=limits)
+
+    assert container.read("data/small.png") == b"x" * 4096

@@ -101,6 +101,12 @@ _TWO_LAYER_STACK = (
 
 
 def test_resolving_one_asset_never_reads_a_sibling_layers_own_archive_member() -> None:
+    """FF6-EVENT-000487: OraContainer.read() now decompresses through
+    ZipFile.open() in bounded chunks rather than ZipFile.read()'s own eager,
+    unbounded call (see container._bounded_read's own docstring -- the
+    declared central-directory size does not itself bound a member's real
+    decompressed output), so the spy point moves from `.read` to `.open`,
+    the new place a member's content actually gets touched."""
     payload = _archive_with(
         {"data/ok.png": _png(), "data/bad.png": _png(width=8, height=8)},
         _TWO_LAYER_STACK,
@@ -108,18 +114,18 @@ def test_resolving_one_asset_never_reads_a_sibling_layers_own_archive_member() -
     container = OraContainer.from_bytes(payload)
     document = parse_stack(container.read("stack.xml"))
 
-    read_calls: list[str] = []
-    original_read = zipfile.ZipFile.read
+    open_calls: list[str] = []
+    original_open = zipfile.ZipFile.open
 
-    def spy(self: zipfile.ZipFile, name: object, *args: object, **kwargs: object) -> bytes:
-        read_calls.append(name if isinstance(name, str) else name.filename)  # type: ignore[attr-defined]
-        return original_read(self, name, *args, **kwargs)  # type: ignore[arg-type]
+    def spy(self: zipfile.ZipFile, name: object, *args: object, **kwargs: object) -> object:
+        open_calls.append(name if isinstance(name, str) else name.filename)  # type: ignore[attr-defined]
+        return original_open(self, name, *args, **kwargs)  # type: ignore[arg-type]
 
-    with patch.object(zipfile.ZipFile, "read", spy):
+    with patch.object(zipfile.ZipFile, "open", spy):
         resolve_asset(container, document.root.children[0])  # layer "ok" only
 
-    assert "data/ok.png" in read_calls
-    assert "data/bad.png" not in read_calls
+    assert "data/ok.png" in open_calls
+    assert "data/bad.png" not in open_calls
 
 
 # -- Cancellation: the granular API lets a caller stop early ------------
