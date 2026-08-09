@@ -44726,6 +44726,40 @@
       "validation_command": ".venv/Scripts/pytest tests/python/nrrd/ -q",
       "result": "962 passed, 1 skipped (unchanged from pre-task baseline)",
       "rollback": "Revert the three new README sections (Measurement frame transforms, Typed array view, Recovery mode) and this ledger entry."
+    },
+    {
+      "entry_id": "FF6-ORA-RENDER-DOCS-BUGFIX-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "ora-readme-render-docs-bugfix",
+      "capability": "ORA-RENDER-001",
+      "capability_refs": [
+        "ORA-RENDER-001",
+        "ORA-COMPOSITE-001",
+        "ORA-BASELINEASSET-001",
+        "ORA-EDIT-001"
+      ],
+      "api_symbols": [
+        "format_factory.ora.render_document",
+        "format_factory.ora.generate_baseline_assets",
+        "format_factory.ora.apply_transaction"
+      ],
+      "product": "ORA Python production package",
+      "format": "ORA",
+      "test_delta": "Documentation-only change (README.md) closing a genuine gap (render_document/generate_baseline_assets/Renderer/W3CCompositingRenderer had zero README coverage; two affirmatively false not-yet-built claims corrected) and fixing a real bug in a previously-published, never-executed example (TransactionResult.error does not exist; the real field is .failure). No production or test source modified; existing suite unaffected.",
+      "git_head": "3432d7fa5",
+      "skill": "product-source-task",
+      "task_id": "TC_FF6_ORA_RENDER_DOCS_BUGFIX_001",
+      "source_files": [
+        {
+          "path": "src/python/ora/README.md",
+          "state": "present",
+          "sha256": "2f71aa539f15a447f6046f80c886614d43ca2d4f59cc627b69336c7f481137c0"
+        }
+      ],
+      "test_files": [],
+      "validation_command": ".venv/Scripts/pytest tests/python/ora/ -q",
+      "result": "414 passed, 0 failed (unchanged from pre-task baseline)",
+      "rollback": "Revert the new Rendering and compositing README section, the Baseline asset replacement/Current scope corrections, the result.error->result.failure fix, and this ledger entry."
     }
   ],
   "total_entries": 2782,

@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ora-render-docs-bugfix-001",
+  "skill_id": "product-source-task",
+  "manifest_id": "sfx-d2df99678a37dd8d",
+  "mode": "live",
+  "timestamp": "2026-08-09T00:00:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "task_id": "TC_FF6_ORA_RENDER_DOCS_BUGFIX_001",
+    "task_kind": "defect",
+    "root_cause": "Applying the same README-freshness check just used for nrrd's documentation-gate.json to ora surfaced two independent real defects: (1) render_document()/generate_baseline_assets()/Renderer/W3CCompositingRenderer (render.py, 894 lines, built earlier this session for ORA-RENDER-001/ORA-COMPOSITE-001/ORA-ISOLATION-001/ORA-BASELINEASSET-001) had zero README mentions, and the README's own 'Baseline asset replacement' and 'Current scope' sections contained AFFIRMATIVELY FALSE claims ('no image-generation capability... generate remains genuinely unbuilt', 'Rendering/compositing pixel data... not yet built') that post-dated that work; (2) executing the README's own published 'Transactional editing' example verbatim (with a raising step, to exercise the documented rollback branch) crashed with AttributeError: 'TransactionResult' object has no attribute 'error' -- the real field is 'failure'. This gate's own prior honest_gap had explicitly disclosed this exact example was never run end-to-end, for exactly this reason.",
+    "obligation_targeted": "No specific obligation-register status change -- this closes a gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4) and fixes a real defect in previously-published, user-facing documentation. Matches the precedent already established this session for the nrrd equivalent (product-source-task-nrrd-array-measurement-recovery-docs-001).",
+    "planned_paths": ["src/python/ora/README.md", "reports/certification/ora/documentation-gate.json"],
+    "input_digests": {"src/python/ora/README.md": "sha256:2f71aa539f15a447f6046f80c886614d43ca2d4f59cc627b69336c7f481137c0"},
+    "regression_tier": "format (ora full suite only -- documentation-only change, no source or test file modified, six-format cross-suite not required)",
+    "acceptance_evidence": "Reproduced the result.error defect by direct execution before touching anything: apply_transaction(image, [add_layer]) where add_layer raises, then printing result.error, raised AttributeError. Confirmed transaction.py's own TransactionResult dataclass has fields image/committed/steps_applied/failure -- no 'error' field anywhere. Fixed the README to result.failure and re-ran the exact corrected example: 'rolled back after 0 step(s): deliberate failure to test the rollback path'. Separately, verified render_document()/generate_baseline_assets()/replace_baseline_asset() end-to-end against samples/by-format/ora/valid/multi-layer.ora: render_document returned a 4x4 DecodedRaster (64 RGBA8 bytes matching width*height*4), generate_baseline_assets returned real thumbnail (75 bytes) and merged-image (75 bytes) PNGs, and replace_baseline_asset accepted them without raising. All referenced symbols (render, render_document, generate_baseline_assets, Renderer, W3CCompositingRenderer, decode_png, encode_png, DecodedRaster, apply_transaction_and_refresh_baseline_assets) confirmed present on the installed format_factory.ora module via the module's own __all__/imports."
+  },
+  "execution_steps": [
+    "1. Applied the same documentation-freshness check just used for nrrd (grep for render/Renderer/W3CCompositingRenderer/generate_baseline_assets/render_document/apply_transaction_and_refresh_baseline_assets across README.md) to ora, since render.py (894 lines) and transaction.py's own automatic-invalidation addition were both built earlier this session but this gate's own state predates them.",
+    "2. Found zero matches, then re-read the 'Baseline asset replacement' and 'Current scope' sections in full and found they contained claims that were TRUE when originally written but are now FALSE: no image-generation capability exists (render.py now provides exactly that) and rendering/compositing is not yet built (it now is, extensively, per render.py's own 894 lines and 10 dedicated test files).",
+    "3. Read render.py's render()/render_document()/generate_baseline_assets()/Renderer/W3CCompositingRenderer signatures and docstrings in full, plus transaction.py's apply_transaction_and_refresh_baseline_assets(), before writing any documentation.",
+    "4. Verified every new example end-to-end against samples/by-format/ora/valid/multi-layer.ora BEFORE publishing: render_document() -> DecodedRaster(width=4, height=4, 64 pixel bytes); generate_baseline_assets() -> (75-byte thumbnail PNG, 75-byte merged-image PNG); replace_baseline_asset(image, thumbnail=..., merged_image=...) accepted both without raising.",
+    "5. While preparing to also verify the EXISTING (unmodified) 'Transactional editing' example as a sanity check before extending that section, executed it verbatim with a step that raises (to exercise the rollback branch the example's own else-clause documents) and hit AttributeError: 'TransactionResult' object has no attribute 'error'. Read transaction.py's own TransactionResult dataclass definition and confirmed the real field is 'failure'. This is a real, pre-existing defect in previously-published documentation, not something this tick introduced.",
+    "6. Fixed the README's own result.error reference to result.failure, added a note about apply_transaction_and_refresh_baseline_assets as a drop-in variant, and re-ran the corrected example end-to-end, confirming the fix.",
+    "7. Added a new 'Rendering and compositing' README section (render_document/render/generate_baseline_assets/Renderer/W3CCompositingRenderer) placed after 'Raster asset resolution' and before 'Baseline asset replacement', since generate_baseline_assets is used by the baseline-asset section immediately after.",
+    "8. Rewrote 'Baseline asset replacement' to show generate_baseline_assets()+replace_baseline_asset() composed together (the real, now-complete 'generate, and replace' path), replacing the stale 'generate remains genuinely unbuilt' claim.",
+    "9. Rewrote 'Current scope' to the honest current boundary (Adam7-interlace refusal, no text-element rendering, no mask model, no version-migration transforms, no independent-producer verification), replacing the stale 'Rendering/compositing pixel data... not yet built' claim.",
+    "10. Updated the 'Public namespace' section to list the render.py exports (render, render_document, generate_baseline_assets, Renderer, W3CCompositingRenderer, decode_png, encode_png, DecodedRaster) and apply_transaction_and_refresh_baseline_assets, which were both missing from that inventory.",
+    "11. Re-executed every final, published code block one more time after writing (not a paraphrase) to confirm byte-for-byte identical results to steps 4-6.",
+    "12. Regenerated reports/certification/ora/documentation-gate.json: readme_line_count 203->253, readme_sections extended to 13 (added 'Rendering and compositing'), new checks_performed_this_tick entries disclosing both the bug fix and the render-engine documentation gap, honest_gap and re_run_this_tick updated, regression numbers refreshed from stale 355 to current 414 passed.",
+    "13. Did not modify any production source code -- render.py/transaction.py already existed, fully implemented and already tested; this task is purely a documentation-completeness and documentation-bug fix plus its own supporting gate-evidence regeneration.",
+    "14. Ran the full ora suite (.venv/Scripts/pytest tests/python/ora/ -q) and ruff check to confirm zero regressions: 414 passed, 0 failed; ruff clean."
+  ],
+  "allowed_files": [
+    "src/python/ora/README.md",
+    "reports/certification/ora/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ora/README.md",
+    "reports/certification/ora/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: render_document()/generate_baseline_assets()/replace_baseline_asset() against real corpus sample samples/by-format/ora/valid/multi-layer.ora; apply_transaction() with a raising step reproducing the result.error defect, then re-verified with the result.failure fix -- all example code blocks re-run verbatim as published, byte-for-byte matching the pre-publication verification run",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 414 passed, 0 failed (unchanged from pre-task baseline; documentation-only change, no production or test source modified)",
+    "ruff check src/python/ora/ -- all checks passed (no source changed, sanity confirmation)"
+  ],
+  "ledger_entry_id": "FF6-ORA-RENDER-DOCS-BUGFIX-001",
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap for the render/compositing subsystem (already implemented, exported, and tested) and fixed a real, pre-existing bug in a previously-published example that would crash for any real caller who copied it verbatim and hit a rollback -- no obligation-register status change, but a real correctness fix to user-facing documentation plus a developer-discoverability improvement.",
+    "controller_event_effect": "pending",
+    "certification_state": "3/6 (ipynb, xliff, safetensors CERTIFIED per Event 467; ora/nrrd/ubl remain uncertified -- promotion.* untouched by this task, no fresh explicit user authorization exists this session for nrrd, ora, or ubl)",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 134,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; fixes a documentation bug; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

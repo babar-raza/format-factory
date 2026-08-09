@@ -49,7 +49,7 @@ result = apply_transaction(image, [add_layer, rename_layer, reorder_layer])
 if result.committed:
     dump(result.image, "edited.ora")
 else:
-    print(f"rolled back after {result.steps_applied} step(s): {result.error}")
+    print(f"rolled back after {result.steps_applied} step(s): {result.failure}")
 ```
 
 Each `EditStep` (a plain `Callable[[OraImage], OraImage]`) receives the
@@ -57,6 +57,13 @@ image the previous step produced. If any step raises, or returns
 something that is not an `OraImage`, the whole sequence rolls back to the
 untouched original -- `result.image` is always a fully valid `OraImage`,
 never a partially-applied document, whichever way the transaction ends.
+
+`apply_transaction_and_refresh_baseline_assets()` is a drop-in variant
+that additionally regenerates and replaces the thumbnail/merged-image
+baseline assets from the committed result on a successful commit (see
+"Rendering and compositing" below) -- the derived views a stale edit
+would otherwise leave behind are refreshed automatically. On rollback it
+behaves identically to `apply_transaction`: no render is performed.
 
 ## Layer stack model and composite operations
 
@@ -113,27 +120,59 @@ It parses only the 25-byte IHDR chunk and never inflates pixel data, so a
 file whose compressed pixel data is corrupt still yields correct metadata
 -- the caller decides whether to spend the decode.
 
+## Rendering and compositing
+
+```python
+from format_factory.ora import render_document, generate_baseline_assets
+
+raster = render_document(image.document, image.members)  # DecodedRaster
+print(raster.width, raster.height, len(raster.pixels))   # RGBA8, host order
+
+thumbnail_png, merged_png = generate_baseline_assets(image.document, image.members)
+```
+
+`render_document()` composites the full layer/group tree deterministically
+into a single RGBA8 `DecodedRaster` at the document's own declared canvas
+size: document order, offsets, clipping, visibility, opacity, every named
+blend function and Porter-Duff compositing operator
+`COMPOSITE_OP_REGISTRY` declares, and isolated-group backdrop compositing
+are all genuinely computed pixel data, not merely metadata. `render()` is
+the lower-level primitive `render_document()` calls, usable directly
+against any subtree (`OraStack`), not only the document root.
+
+Both `render_document()` and `generate_baseline_assets()` accept an
+optional `renderer:` parameter -- a `Renderer` structural `Protocol` with
+one `render()` method -- defaulting to `DEFAULT_RENDERER`
+(`W3CCompositingRenderer`, this module's own dependency-free W3C
+Compositing-and-Blending-Level-1 implementation). A caller may substitute
+any object with a matching `render()` method; no inheritance from
+`Renderer` is required, since it is a structural protocol, not a base
+class.
+
 ## Baseline asset replacement
 
 ```python
-from format_factory.ora import replace_baseline_asset
+from format_factory.ora import generate_baseline_assets, replace_baseline_asset
 
-replaced = replace_baseline_asset(image, thumbnail=new_thumbnail_png_bytes)
+thumbnail_png, merged_png = generate_baseline_assets(image.document, image.members)
+replaced = replace_baseline_asset(image, thumbnail=thumbnail_png, merged_image=merged_png)
 dump(replaced, "updated.ora")
 ```
 
-A caller who has already produced a new thumbnail and/or merged-image PNG
-by some other means (their own renderer, a different tool) can swap it in
-via `thumbnail=`/`merged_image=` (bytes, either or both -- at least one is
-required). The replacement is validated against the exact same constraints
-load-time parsing enforces: the thumbnail must be a non-interlaced PNG with
-8 bits per channel and at most 256x256; the merged image must carry 8 or 16
-bits per channel. A non-conforming replacement is refused with
-`OraValidationError` rather than silently accepted. `image` itself is never
-mutated -- `replace_baseline_asset()` returns a new `OraImage`. This
-package has no image-generation capability of its own (no
-flattening/downscaling renderer exists), so only the *replace* half of
-ORA-BASELINEASSET-001 is built; *generate* remains genuinely unbuilt.
+A caller who already has a new thumbnail and/or merged-image PNG --
+whether produced by `generate_baseline_assets()` above or by some other
+means (a different tool) -- can swap it in via `thumbnail=`/`merged_image=`
+(bytes, either or both -- at least one is required). The replacement is
+validated against the exact same constraints load-time parsing enforces:
+the thumbnail must be a non-interlaced PNG with 8 bits per channel and at
+most 256x256; the merged image must carry 8 or 16 bits per channel. A
+non-conforming replacement is refused with `OraValidationError` rather
+than silently accepted. `image` itself is never mutated --
+`replace_baseline_asset()` returns a new `OraImage`. Together,
+`generate_baseline_assets()` (read the current layer stack and render it)
+and `replace_baseline_asset()` (validate and swap in the result) provide
+the full "generate, and replace" half of ORA-BASELINEASSET-001 through one
+coherent path.
 
 ## Preservation modes
 
@@ -178,11 +217,14 @@ The full public surface lives under `format_factory.ora` -- lifecycle
 (`load`/`loads`/`dump`/`dumps`/`validate`), the typed model
 (`OraDocument`, `OraStack`, `OraLayer`, `OraText`, `OraNode`), the raw
 container (`OraContainer`), transactional editing (`apply_transaction`,
-`EditStep`, `TransactionResult`), asset resolution (`resolve_asset`,
+`apply_transaction_and_refresh_baseline_assets`, `EditStep`,
+`TransactionResult`), asset resolution (`resolve_asset`,
 `resolve_all_assets`, `RasterMetadata`, `ResolvedAsset`), composite
 operations (`composite_op_info`, `COMPOSITE_OP_REGISTRY`,
-`CompositeOpInfo`), and preservation (`PreservationMode`, `LossReport`,
-`LossItem`, `check_preservation`).
+`CompositeOpInfo`), rendering (`render`, `render_document`,
+`generate_baseline_assets`, `Renderer`, `W3CCompositingRenderer`,
+`decode_png`, `encode_png`, `DecodedRaster`), and preservation
+(`PreservationMode`, `LossReport`, `LossItem`, `check_preservation`).
 
 ## Security boundary
 
@@ -194,9 +236,17 @@ policy.
 
 ## Current scope
 
-The package is still `0.1.0.dev0`. Rendering/compositing pixel data (as
-opposed to reading its declared metadata) and streaming decode for very
-large canvases are not yet built.
+The package is still `0.1.0.dev0`. Adam7-interlaced layer rasters are
+refused rather than decoded (a disclosed scope boundary, tested); no
+OpenRaster text-element rendering is performed, consistent with this
+package's existing baseline reading profile, which does not interpret
+`OraText` content; a mask extension model and cross-format version
+migration transforms are not built (the pinned OpenRaster spec sources do
+not define a mask concept to build against); and streaming decode for very
+large canvases is not yet built. Reproducibility against a second,
+independent OpenRaster producer/consumer application remains unverified --
+every sample in this package's own test corpus is project-owned synthetic
+content, not output from a second real application.
 
 ## License
 
