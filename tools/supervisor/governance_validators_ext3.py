@@ -351,6 +351,31 @@ def validate_ungoverned_todo_markers(
     }
 
 
+def _is_stub_return_value(val: "ast.expr | None") -> bool:
+    """True if `val` is a literal scalar constant, or an EMPTY list/dict/tuple literal.
+
+    A non-empty List/Dict/Tuple literal is not flagged even when every element
+    happens to be a constant (e.g. `return [1, 2, 3]`) -- narrowing this further
+    is intentionally out of scope; only the emptiness gate already applied to
+    List is extended to Dict/Tuple for consistency. Without the emptiness gate,
+    a Dict/Tuple literal built from instance state -- e.g. `return {"tag":
+    self.tag, ...}` or `return (self.major, self.minor)`, both extremely common,
+    correct `to_dict`/`as_tuple` patterns -- is a fresh, per-call-varying value,
+    not a constant, and must not be flagged as a semantic stub.
+    """
+    if val is None:
+        return False
+    if isinstance(val, ast.Constant):
+        return True
+    if isinstance(val, ast.List):
+        return len(val.elts) == 0
+    if isinstance(val, ast.Dict):
+        return len(val.keys) == 0
+    if isinstance(val, ast.Tuple):
+        return len(val.elts) == 0
+    return False
+
+
 @validator(rule_id="V_VALIDATE_CONSTANT_RETURN_PUBLIC_METHODS", domain="structural",
            description="Block public Python functions that return only a literal constant",
            skill_ids=["add-python-api", "add-python-object-model-feature", "product-source-task"])
@@ -395,9 +420,7 @@ def validate_constant_return_public_methods(
             body = node.body
             if len(body) == 1 and isinstance(body[0], ast.Return):
                 val = body[0].value
-                if isinstance(val, (ast.Constant, ast.List, ast.Dict, ast.Tuple)) and (
-                    not isinstance(val, ast.List) or len(val.elts) == 0
-                ):
+                if _is_stub_return_value(val):
                     entry = f"{rel}:{node.lineno}:{node.name}"
                     if rel in known:
                         violations_existing.append(entry)
@@ -405,9 +428,7 @@ def validate_constant_return_public_methods(
                         violations_new.append(entry)
             elif len(body) == 2 and isinstance(body[0], ast.Expr) and isinstance(body[1], ast.Return):
                 val = body[1].value
-                if isinstance(val, (ast.Constant,)) or (
-                    isinstance(val, ast.List) and len(val.elts) == 0
-                ):
+                if _is_stub_return_value(val):
                     entry = f"{rel}:{node.lineno}:{node.name}"
                     if rel in known:
                         violations_existing.append(entry)
