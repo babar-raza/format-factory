@@ -49,6 +49,8 @@ def validate_opacity(value: float, *, label: str = "opacity") -> None:
 
 
 def validate_visibility(value: str, *, label: str = "visibility") -> None:
+    """Raise OraValidationError unless `value` is exactly "visible" or
+    "hidden" (VISIBILITY_VALUES); `label` names the field in the message."""
     if value not in VISIBILITY_VALUES:
         raise OraValidationError(
             f"{label} accepts only {sorted(VISIBILITY_VALUES)}, got {value!r}"
@@ -98,6 +100,7 @@ class OraNode:
 
     @property
     def is_visible(self) -> bool:
+        """True if this node's own visibility attribute is "visible"."""
         return self.visibility == "visible"
 
     @property

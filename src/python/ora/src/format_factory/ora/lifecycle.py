@@ -374,6 +374,9 @@ def loads(
     mode: ReadMode = ReadMode.STRICT,
     limits: ResourceLimits = DEFAULT_LIMITS,
 ) -> OraImage:
+    """Load an OpenRaster image from in-memory bytes; narrows `load`'s `Source`
+    parameter (bytes, path, or stream) to bytes only, matching `dumps`'s own
+    counterpart on the write side."""
     return load(payload, mode=mode, limits=limits)
 
 

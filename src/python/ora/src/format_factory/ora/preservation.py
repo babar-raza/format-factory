@@ -54,6 +54,7 @@ class LossItem:
 
     @property
     def message(self) -> str:
+        """Human-readable description of this one dropped construct."""
         return (
             f"<{self.element}> attribute {self.attribute!r}={self.value!r} at "
             f"{'/'.join(self.path)} is not modeled and would be dropped by "
@@ -69,6 +70,7 @@ class LossReport:
 
     @property
     def is_lossless(self) -> bool:
+        """True if CANONICAL regeneration would drop nothing (no LossItems)."""
         return not self.items
 
 

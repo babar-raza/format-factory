@@ -54,6 +54,8 @@ class RasterMetadata:
 
     @property
     def channels(self) -> int:
+        """Number of colour channels implied by this PNG's colour_type
+        (e.g. 4 for truecolour+alpha), looked up from COLOUR_TYPES."""
         return COLOUR_TYPES[self.colour_type][0]
 
     @property

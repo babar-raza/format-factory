@@ -5,28 +5,28 @@
   "build_1": {
     "ok": true,
     "epoch": "315532800",
-    "seconds": 12.4,
+    "seconds": 18.2,
     "artifacts": {
-      "format_factory_ora-0.1.0.dev0-py3-none-any.whl": "fca937fc554627d475e82125d26400a8ac3dfa7397a800a41b83cf8d2a5a8c2a",
-      "format_factory_ora-0.1.0.dev0.tar.gz": "104b86784204102d4ba93c75c5b511d523f82f0b664336adeecf5787fbbaf5fa"
+      "format_factory_ora-0.1.0.dev0-py3-none-any.whl": "fcbaca8b6c0525ded80826429dc404b1e82f06d42e19fc2e5ed3109f576e6605",
+      "format_factory_ora-0.1.0.dev0.tar.gz": "05d6f6486e36a13f4f94d563492563f73d8f5eed5308b41760739a00630d8a1a"
     }
   },
   "build_2": {
     "ok": true,
     "epoch": "315532800",
-    "seconds": 12.5,
+    "seconds": 20.5,
     "artifacts": {
-      "format_factory_ora-0.1.0.dev0-py3-none-any.whl": "fca937fc554627d475e82125d26400a8ac3dfa7397a800a41b83cf8d2a5a8c2a",
-      "format_factory_ora-0.1.0.dev0.tar.gz": "104b86784204102d4ba93c75c5b511d523f82f0b664336adeecf5787fbbaf5fa"
+      "format_factory_ora-0.1.0.dev0-py3-none-any.whl": "fcbaca8b6c0525ded80826429dc404b1e82f06d42e19fc2e5ed3109f576e6605",
+      "format_factory_ora-0.1.0.dev0.tar.gz": "05d6f6486e36a13f4f94d563492563f73d8f5eed5308b41760739a00630d8a1a"
     }
   },
   "build_control": {
     "ok": true,
     "epoch": "1600000000",
-    "seconds": 11.9,
+    "seconds": 18.4,
     "artifacts": {
-      "format_factory_ora-0.1.0.dev0-py3-none-any.whl": "21190fffc93a1485787025153f95dff9fd38093ef2e632a23787428ffb67737e",
-      "format_factory_ora-0.1.0.dev0.tar.gz": "32129d32a4611f9e5fffcaf1d8e27c5f5d4754a11138a0dced3886f6a081e9b7"
+      "format_factory_ora-0.1.0.dev0-py3-none-any.whl": "2798ffd553256b8ccd73ed3083e4472671d339125e0ec7378ccb568471d51c82",
+      "format_factory_ora-0.1.0.dev0.tar.gz": "812eb0baaafdf1f33abf230507efbfa2b4c60c6e4eb7392ef4ff1e1aaf3979da"
     }
   },
   "artifacts_identical_across_two_builds": true,
@@ -36,5 +36,6 @@
   },
   "comparison_proven_sensitive": true,
   "reproducible": true,
-  "verdict": "REPRODUCIBLE"
+  "verdict": "REPRODUCIBLE",
+  "re_run_this_tick": "FF6-EVENT-000466 (via /product-source-task): wheel_sha256 changed to fcbaca8b6c0525ded80826429dc404b1e82f06d42e19fc2e5ed3109f576e6605 because 8 public functions/properties gained docstrings, resolving 8 of ora's 11 V102 governance violations. Matches exactly the fresh installed-wheel-gate.json digest. Reproducibility itself re-confirmed unchanged: build_1 == build_2, both differ from build_control (epoch-sensitivity still proven)."
 }

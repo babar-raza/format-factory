@@ -171,6 +171,10 @@ class OraContainer:
     def from_bytes(
         cls, payload: bytes, *, limits: ResourceLimits = DEFAULT_LIMITS
     ) -> "OraContainer":
+        """Validate `payload` as an OpenRaster archive and return a
+        `OraContainer` over it, enforcing this class's own guarantees (size,
+        ZIP well-formedness, safe/unique member names, allowed compression,
+        declared-size limits) before any member is decompressed."""
         if len(payload) > limits.max_input_bytes:
             raise OraLimitError(
                 f"input is {len(payload)} bytes, over the limit of "

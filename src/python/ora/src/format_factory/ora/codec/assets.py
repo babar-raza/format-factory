@@ -31,6 +31,8 @@ class ResolvedAsset:
 
     @property
     def declared_byte_size(self) -> int:
+        """The raster's byte size as declared by its own PNG metadata,
+        without decoding the pixel data."""
         return self.metadata.declared_byte_size
 
 
