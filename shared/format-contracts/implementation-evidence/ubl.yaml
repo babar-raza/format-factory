@@ -889,6 +889,48 @@ execution_evidence:
     type the typed model does not otherwise represent, and the metadata/
     validate()-mandatory-element-presence boundaries this obligation's own
     entry already discloses, remain open and unclaimed.
+- evidence_id: UBL-DISCOVERED-CODE-VALIDATION-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-discovered-code-validation-001.json
+  expected_result: PASS
+  granularity: suite
+  truth_boundary: >-
+    Closes the specific gap UBL-VALIDATE-001's own prior missing_behavior
+    named: "no such automatic field-by-field code discoverer exists." A new
+    function, code_bearing_element_qnames() (validation/schema_validator.py),
+    walks the bundled official schema graph via xmlschema's own
+    XsdType.is_derived() against the CCTS root code type, discovering every
+    element (273, confirmed root-independent across 4 different document
+    roots) whose own type derives from it -- verified directly against the
+    real bundled schemas, not assumed, and confirmed to correctly exclude the
+    one deliberate same-shaped trap (cbc:CodeValue, which restricts
+    udt:TextType, not the CCTS code type). validate_all() gains an opt-in
+    discover_codes parameter (default False, byte-for-byte unchanged
+    otherwise): walks a document for every discoverable element and validates
+    the ones this package has real bundled OASIS genericode data for. Of the
+    11 bundled genericode lists, 9 are now connected to their element: 7 by
+    the element's own local name matching the list's ShortName directly, 2
+    more (BinaryObjectMimeCode -> cbc:MimeCode, CountryIdentificationCode ->
+    cbc:IdentificationCode) via an explicit, schema-cited override map, after
+    a systematic check across all 11 lists found the initial "matches for all
+    11" assumption was wrong for 4 of them, not just the 1 originally
+    flagged. The remaining 2 (LanguageCode, UnitOfMeasureCode) were found,
+    by direct schema read, to be carried via XML attributes
+    (languageID/unitCode), not separate elements at all -- a genuinely
+    different discovery mechanism, disclosed as out of scope rather than
+    force-mapped. An explicitly document-declared list identity is always
+    honored over any implied default, proven directly; an element with no
+    bundled data and no declared list is proven to be silently skipped, not
+    fabricated as invalid. 12 new tests
+    (tests/python/ubl/test_obligation_discovered_code_validation.py). ubl
+    suite: 1237 passed (no regressions, up from 1225). 6-format FF6
+    regression: 4231 passed, 4 skipped (was 4219). mypy --strict and ruff
+    clean. Installed-wheel behavior independently verified from the
+    non-editable installed location with the optional xmlschema extra
+    present. Narrows SAL-UBL-OBL-788B2748204338B8 (UBL-VALIDATE-001)
+    further; does not promote it to implemented -- 262 of the 273
+    discoverable element types have no bundled value data at all (a separate
+    data-acquisition undertaking), and the 2 attribute-carried lists need a
+    different, unbuilt walker.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -3671,7 +3713,9 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/codelist.py::CodeListRegistry
   - src/python/ubl/src/format_factory/ubl/validation/profiles.py::ProfileValidatorRegistry
   - src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate
+  - src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::code_bearing_element_qnames
   - src/python/ubl/src/format_factory/ubl/validation/combined.py::validate_all
+  - src/python/ubl/src/format_factory/ubl/validation/combined.py::_discovered_code_diagnostics
   positive_test_selectors:
   - tests/python/ubl/test_obligation_lifecycle_io.py::test_validate_returns_a_structured_report_not_an_exception
   - tests/python/ubl/test_obligation_lifecycle_io.py::test_validate_reports_a_diagnostic_rather_than_raising_for_a_semantic_issue
@@ -3684,6 +3728,10 @@ obligations:
   - tests/python/ubl/test_obligation_unified_validation.py::test_a_fully_valid_document_passes_every_layer_with_zero_diagnostics
   - tests/python/ubl/test_obligation_unified_validation.py::test_an_in_list_code_produces_no_code_list_diagnostic
   - tests/python/ubl/test_obligation_unified_validation.py::test_no_profile_validator_runs_when_the_document_declares_no_customization_id
+  - tests/python/ubl/test_obligation_discovered_code_validation.py::test_discover_codes_defaults_to_false_and_changes_nothing
+  - tests/python/ubl/test_obligation_discovered_code_validation.py::test_discover_codes_true_does_not_flag_a_genuinely_valid_code
+  - tests/python/ubl/test_obligation_discovered_code_validation.py::test_an_element_with_no_bundled_data_and_no_declared_list_is_silently_skipped
+  - tests/python/ubl/test_obligation_discovered_code_validation.py::test_an_explicitly_declared_list_identity_is_honored_over_the_implied_default
   negative_test_selectors:
   - tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation
   - tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_means_codes_is_a_cardinality_violation
@@ -3695,6 +3743,9 @@ obligations:
   - tests/python/ubl/test_obligation_unified_validation.py::test_an_out_of_list_code_is_reported_by_the_code_list_layer_when_supplied
   - tests/python/ubl/test_obligation_unified_validation.py::test_a_registered_profile_validator_runs_when_the_customization_id_matches
   - tests/python/ubl/test_obligation_unified_validation.py::test_multiple_layer_violations_are_all_reported_together_not_just_the_first
+  - tests/python/ubl/test_obligation_discovered_code_validation.py::test_discover_codes_true_finds_an_invalid_undeclared_code
+  - tests/python/ubl/test_obligation_discovered_code_validation.py::test_the_mime_code_element_name_override_is_applied_behaviorally
+  - tests/python/ubl/test_obligation_discovered_code_validation.py::test_the_country_identification_code_element_name_override_is_applied_behaviorally
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-SMALL-CLUSTERS-CITATION-AUDIT-SELECTOR-PROOF
@@ -3704,11 +3755,13 @@ obligations:
   - UBL-AGGREGATES-CARDINALITY-PROOF
   - UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF
   - UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF
+  - UBL-DISCOVERED-CODE-VALIDATION-PROOF
   implemented_behavior:
   - '4 of the 5 named layers exist as separate, independently invokable, diagnostic-returning capabilities rather than one monolithic all-or-nothing check: syntax (XML parse errors), referential (DocumentIndex.duplicate_line_ids), code-list (CodeListRegistry.validate_code), and pluggable business-rule (ProfileValidatorRegistry) are each separately callable and each return structured diagnostics rather than raising. validate() itself returns a ValidationReport rather than an exception, proven directly. The 5th layer, schema/XSD-conformance, is now also fully proven, not just a growing slice: schema_validate() (validation/schema_validator.py) validates raw UBL XML against the real, official OASIS UBL 2.3 schema for any of this package''s 91 supported root document types, auto-detecting the type from the document''s own root element -- grounded directly in the pinned raw acquisition cache''s own official schema distribution (.local/format-contracts/acquired/ubl/src-ubl-002.bin), not the package''s own narrower 16-complexType typed-model cardinality checker.'
   - 'FF6-EVENT-000296: the "not unified into one combined call" half of this obligation''s own missing_behavior is now closed. validate_all() (validation/combined.py) runs all 5 layers from one source (bytes/path/stream), returning every layer''s diagnostics together in one ValidationReport, never stopping at the first error -- exactly the obligation''s own wording. The earlier missing_behavior''s claim that unifying "would additionally require a pluggable business-rule mechanism... neither of which exists yet" was investigated and found wrong: ProfileValidatorRegistry (UBL-PROFILE-001''s own already-implemented, already-tested capability) IS the pluggable mechanism the rule_text asks for -- "pluggable" describes the mechanism''s extensibility, not a requirement to ship a comprehensive default rule set, which would be unscopable for a generic UBL library serving arbitrary jurisdictions/customizations anyway. 11 new tests (test_obligation_unified_validation.py) prove all 5 layers fire correctly, in combination, and that multiple simultaneous violations across different layers are all reported together.'
+  - 'FF6-EVENT-000473: the code-list layer''s own "no automatic field-by-field code discoverer exists" gap is now partly closed. code_bearing_element_qnames() (validation/schema_validator.py) mechanically discovers all 273 code-bearing element types across the bundled schema graph via xmlschema type-derivation introspection, confirmed root-independent and confirmed to exclude the one deliberate same-shaped trap (cbc:CodeValue). validate_all(discover_codes=True) (opt-in; default False, unchanged) walks a document for those elements and validates the 9 of 11 this package has real bundled OASIS genericode data for connectable to an element (7 direct element-name matches, 2 via a confirmed, schema-cited element/ShortName override map for MimeCode and IdentificationCode), always honoring an explicitly document-declared list identity over any implied default, and silently skipping elements with no bundled data rather than fabricating a verdict. 12 new tests (test_obligation_discovered_code_validation.py).'
   missing_behavior:
-  - 'The code-list layer inside validate_all() validates only Code values the caller explicitly supplies via `used_codes`, not every code-bearing field validate_all() could discover on its own by walking the document -- no such automatic field-by-field code discoverer exists (there are dozens of distinct UBL code-bearing element types across the schema), and building one is a genuinely separate, scoped undertaking, distinct from and smaller than the now-resolved unification work. This is an honest, documented scope boundary (see combined.py''s own module docstring), not a silent gap: a caller who wants document-wide code-list coverage must currently enumerate the codes themselves.'
+  - 'discover_codes=True validates only the 9 of 273 discoverable code-bearing element types this package has real bundled OASIS genericode data reachable for -- the other 262 discoverable element types have no bundled value data at all; sourcing more official code lists (UNTDID, additional ISO/UN registries) is a separate, larger data-acquisition undertaking, not a schema-introspection gap, and is not attempted here. 2 further bundled lists (LanguageCode, UnitOfMeasureCode) are carried via XML attributes (languageID/unitCode), not elements at all -- a genuinely different discovery mechanism the current element-only catalogue does not and cannot cover; disclosed in combined.py''s own module docstring, not force-mapped. A caller who wants coverage beyond these 9 lists must still supply codes explicitly via `used_codes`.'
   proof_requirements:
     positive:
     - Per-layer positive/negative fixtures; layered report structure asserted machine-readable.

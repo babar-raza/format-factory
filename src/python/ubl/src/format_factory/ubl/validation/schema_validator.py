@@ -149,6 +149,51 @@ def schema_root_order(root_name: str) -> tuple[str, ...]:
     )
 
 
+#: The CCTS root code type every UBL code-bearing element ultimately
+#: derives from, however many restriction/extension steps deep (confirmed
+#: directly against the bundled schemas, not assumed: cct:CodeType ->
+#: udt:CodeType -> cbc:CodeType, and every concrete cbc:XxxCodeType
+#: restricts one of those, some through one further qdt:XxxCodeType step).
+_CCTS_CODE_TYPE_QNAME = (
+    "{urn:un:unece:uncefact:data:specification:CoreComponentTypeSchemaModule:2}CodeType"
+)
+
+
+@lru_cache(maxsize=None)
+def code_bearing_element_qnames() -> frozenset[str]:
+    """Every global element, across the whole bundled schema graph, whose
+    own type derives from the CCTS root code type -- the "full field-by
+    -field catalogue of every UBL code-bearing element" UBL-VALIDATE-001's
+    own missing_behavior named as absent.
+
+    Root-independent: every one of the 91 maindoc schemas imports the
+    identical common-component schemas by the identical relative path
+    (confirmed directly, not assumed, by loading several and comparing),
+    so any one root's schema graph already contains the full catalogue --
+    loading "Invoice" is not a scope limitation. CAC never locally
+    redeclares a code element either; it always `xsd:element ref=`'s the
+    single global CBC declaration, so this catalogue covers every actual
+    occurrence anywhere in any of the 91 document types, at any nesting
+    depth, with no per-context duplication.
+
+    Discovering that an element IS code-bearing is a schema-introspection
+    fact; knowing what VALUES it may legally hold is a separate, much
+    narrower fact this package only has for 11 of these element types
+    (see `model.genericode.load_bundled_code_lists`) -- this function
+    answers only the first question.
+    """
+    xmlschema = _require_xmlschema()
+    schema = _load_schema("Invoice")
+    root_code_type = schema.maps.types[_CCTS_CODE_TYPE_QNAME]
+    return frozenset(
+        qname
+        for qname, element in schema.maps.elements.items()
+        if isinstance(qname, str)
+        and isinstance(element.type, xmlschema.validators.XsdType)
+        and element.type.is_derived(root_code_type)
+    )
+
+
 def schema_validate(source: bytes | str, *, root_name: str | None = None) -> ValidationReport:
     """Validate raw UBL XML `source` against the bundled official schema
     matching its own root document type.
@@ -191,4 +236,9 @@ def schema_validate(source: bytes | str, *, root_name: str | None = None) -> Val
     return ValidationReport(diagnostics)
 
 
-__all__ = ["bundled_maindoc_schema_paths", "schema_root_order", "schema_validate"]
+__all__ = [
+    "bundled_maindoc_schema_paths",
+    "code_bearing_element_qnames",
+    "schema_root_order",
+    "schema_validate",
+]

@@ -1,0 +1,71 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-discovered-code-validation-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-6ca1bb5c2678c8dd",
+  "mode": "live",
+  "timestamp": "2026-08-09T10:08:45Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC-FF6-UBL-DISCOVERED-CODE-VALIDATION-001",
+    "task_kind": "close-a-narrow-honestly-bounded-slice-of-a-larger-gap",
+    "root_cause": "After closing UBL-EDIT-001's first-occurrence-insertion gap (Event 470) via schema_root_order()/xmlschema type introspection, this session's own exact_next_action flagged UBL-VALIDATE-001's code-bearing-field discovery gap as a plausible candidate for reusing the same pattern. A dedicated research pass verified this directly against the bundled schemas before any code was written, confirming the discovery half (which elements are code-bearing) is genuinely mechanical and root-independent (273 elements, one schema load), while the validation half (what values are legal) is bifurcated: only 11 of those 273 element types have real bundled OASIS genericode data, so full 'document-wide code-list coverage' would be an overclaim -- the research explicitly recommended scoping to exactly the intersection of 'discoverable' and 'has real data', disclosed honestly.",
+    "obligation_targeted": "SAL-UBL-OBL-788B2748204338B8 (UBL-VALIDATE-001) narrowed -- stays partial; 262 of 273 discoverable code-bearing element types remain undata'd (a separate data-acquisition gap), and the profile/business-rule layer's own separate scope is untouched.",
+    "acceptance_evidence": "Added code_bearing_element_qnames() to validation/schema_validator.py: walks the bundled Invoice schema (confirmed root-independent -- every one of the 91 maindoc schemas imports the identical common schemas by identical relative path) via xmlschema's own XsdType.is_derived() against the CCTS root CodeType, discovering 273 global elements, all and only ending in literal 'Code', with the one deliberate schema trap (cbc:CodeValue, a same-shaped-but-different type) correctly excluded. Added discover_codes: bool = False (opt-in, default-off, byte-for-byte-unchanged-by-default) to validate_all(): walks the raw document tree for nodes matching the catalogue, and for the 9 of 11 bundled genericode lists this package can actually connect to an element (7 by direct element-name-equals-ShortName match, 2 more via an explicit, schema-cited _ELEMENT_NAME_TO_LIST_ID_OVERRIDES mapping for a confirmed name mismatch), validates an undeclared code against that list as an implied default -- always deferring to an explicitly-declared list identity when the document states one. During implementation, discovered (via a systematic all-11-lists check, not by accident) that 4 of the 11 bundled lists' own ShortName does not literally equal any discoverable element's local name, not just the one the initial research flagged: 2 are genuine element-name mismatches (BinaryObjectMimeCode describes cbc:MimeCode; CountryIdentificationCode describes cbc:IdentificationCode, confirmed to be its schema's only reference and always meaning a country code) fixed via the override map; the other 2 (LanguageCode, UnitOfMeasureCode) are not element-based at all -- their values are carried via the languageID/unitCode XML ATTRIBUTES per CCTS convention, a fundamentally different discovery mechanism this element-only catalogue does not and cannot cover, disclosed rather than force-mapped."
+  },
+  "execution_steps": [
+    "1. After committing and eventing the nrrd encoding-matrix slice (FF6-EVENT-000472), the autonomous loop continued per this session's own exact_next_action toward UBL-VALIDATE-001.",
+    "2. Re-read the obligation's current register entry and delegated a dedicated read-only research pass (Explore agent), explicitly instructed to give an honest tractability verdict rather than assume the schema_root_order() pattern would transfer cleanly. It read combined.py/codelist.py/genericode.py in full, performed a live spike loading a real bundled schema and walking type-derivation chains (finding 273 code-bearing elements, root-independent, confirmed via 4 different root types), checked the raw-tree-vs-typed-layer integration question directly, and delivered a bifurcated verdict: discovery is tractable and closely analogous to schema_root_order(); full document-wide VALUE validation is not, since only 11 of 273 discoverable element types have any bundled genericode data, and most real documents omit explicit list-identity attributes entirely (confirmed against this package's own bundled official Invoice.xml sample).",
+    "3. Registered a fresh coordination agent identity; confirmed no active leases on the ubl files to be touched.",
+    "4. Verified the exact CCTS root CodeType qname by loading a schema directly (cct:CodeType at urn:un:unece:uncefact:data:specification:CoreComponentTypeSchemaModule:2) before writing any product code.",
+    "5. Ran tools.governance.skills_first.resolve --operation add_python_api, which selected skill_id add-python-api (route product_backfill, score 9) -- the same governed route as every prior slice this session.",
+    "6. Implemented code_bearing_element_qnames() (schema_validator.py) and smoke-tested it directly: 273 elements, all ending in 'Code', PaymentMeansCode present, CodeValue correctly excluded -- exact match with the research's own spike.",
+    "7. Implemented _implied_bundled_defaults()/_discovered_code_diagnostics()/the discover_codes parameter in combined.py, using code_of() (already generic over any XmlNode, no new projection logic needed) and validate_code() (already existing). Smoke-tested interactively: default behavior unchanged; discover_codes=True correctly found and flagged an invalid undeclared PaymentMeansCode value; a genuinely valid code was not flagged; an explicitly-declared-but-unregistered list identity was correctly treated as unknown (not invalid), never silently overridden by the implied default.",
+    "8. While writing formal tests, ran a systematic check across all 11 bundled lists (not just the one the interactive smoke test happened to touch) and found the element-name-equals-ShortName assumption held for only 7 of 11, not the 10 of 11 the initial research had estimated. Investigated each of the 4 mismatches directly against the schema source rather than guessing: 2 (MimeCode, IdentificationCode) are genuine element-name-vs-ShortName mismatches, confirmed fixable via an explicit override with a cited schema line reference each; 2 (LanguageCode, UnitOfMeasureCode) are architecturally attribute-carried (languageID/unitCode XML attributes, not separate elements), confirmed by reading the CCTS base-type attribute declarations directly -- a different discovery mechanism entirely, correctly left unattempted rather than force-mapped.",
+    "9. Fixed both genuine mismatches via _ELEMENT_NAME_TO_LIST_ID_OVERRIDES with full schema citations in the code comment; updated combined.py's own module docstring to state the precise 9-of-11 figure and the attribute-carried boundary honestly.",
+    "10. Wrote tests/python/ubl/test_obligation_discovered_code_validation.py (12 tests): the catalogue's own correctness (bundled-list coverage accounting for all 3 categories -- direct match, override, attribute-carried-out-of-scope; the CodeValue exclusion trap; size/naming sanity), discover_codes default-off/opt-in behavior, true-positive and true-negative detection, registry-required guard, silent-skip for undata'd-but-discoverable elements, explicit-declaration-wins-over-implied-default, both override mappings proven behaviorally (not just structurally), and composition with explicit used_codes. Updated test_obligation_unified_validation.py's module docstring and one test's stale comment (the test's own assertion needed no logic change: discover_codes defaults to False so it was already correct).",
+    "11. First test run: 1 failure (the catalogue-coverage test, from step 8's discovery) -- not a product bug, a test assertion that was written before the systematic 11-list check; fixed the test to reflect the accurate 3-category picture and re-ran clean, 12/12.",
+    "12. Ran the full tests/python/ubl/ suite (1237 passed, up from 1225, no regressions), then the 6-format FF6 regression (nrrd/ora/xliff/ubl/ipynb/safetensors: 4231 passed, 4 skipped, up from 4219).",
+    "13. Ran ruff check and mypy --strict against every changed source file: both clean on the first run, no fixes needed.",
+    "14. Built and installed the ubl wheel via tools/run_package_install_proof.py --format ubl (1/1 PASS); the ephemeral proof venv does not install the optional 'schema' extra by default, so installed xmlschema==4.1.0 into it directly and confirmed code_bearing_element_qnames() returns the correct 273-element count from that installed, non-editable location."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/combined.py",
+    "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py",
+    "src/python/ubl/src/format_factory/ubl/validation/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_discovered_code_validation.py",
+    "tests/python/ubl/test_obligation_unified_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/combined.py",
+    "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py",
+    "src/python/ubl/src/format_factory/ubl/validation/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/__init__.py",
+    "tests/python/ubl/test_obligation_discovered_code_validation.py",
+    "tests/python/ubl/test_obligation_unified_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_discovered_code_validation.py -v -- 12 passed (1 initial failure diagnosed as the test's own assertion needing correction after a systematic 11-list check, not a product bug, fixed and re-run clean)",
+    ".venv/Scripts/pytest tests/python/ubl/ -q --timeout=120 -- 1237 passed (was 1225)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4231 passed, 4 skipped (was 4219)",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/validation/combined.py tests/python/ubl/test_obligation_discovered_code_validation.py tests/python/ubl/test_obligation_unified_validation.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/validation/combined.py src/python/ubl/src/format_factory/ubl/validation/schema_validator.py -- Success: no issues found in 2 source files",
+    "python tools/run_package_install_proof.py --format ubl -- RESULT: 1/1 PASS; code_bearing_element_qnames() independently exercised from the installed wheel's site-packages path (with xmlschema installed there directly)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (UBL-VALIDATE-001) narrows further -- real, tested, schema-grounded document-wide code discovery and validation for 9 of 11 lists this package has data for, opt-in and default-unchanged. Not promoted to implemented: 262 of 273 discoverable element types remain undata'd (data-acquisition gap), and 2 bundled lists (LanguageCode, UnitOfMeasureCode) are attribute-carried, a different, unattempted discovery mechanism.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); ubl remains UNASSESSED",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "format_factory.ubl's code_bearing_element_qnames, schema_root_order (both newly exported at the top level -- schema_root_order was built in an earlier slice this session but never propagated past schema_validator.py's own __all__, an oversight corrected here); validate_all() gains an optional discover_codes= parameter (backward-compatible default)"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

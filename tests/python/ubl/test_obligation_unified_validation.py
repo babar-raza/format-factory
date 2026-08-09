@@ -8,11 +8,12 @@ first error."
 Before ``validate_all()``, a caller invoked ``validate()``,
 ``schema_validate()``, ``DocumentIndex`` methods, ``validate_code()``, and
 ``validate_profile()`` separately -- this obligation's own missing_behavior
-named exactly that as the gap. The code-list layer here validates only
-caller-supplied ``Code`` values (see ``combined.py``'s own module docstring
-for why an automatic whole-document code walker is a separate, larger
-undertaking, not attempted here) -- everything else runs automatically from
-one source.
+named exactly that as the gap. The code-list layer here covers only
+caller-supplied ``Code`` values via ``used_codes`` -- automatic, schema
+-driven document-wide code discovery (``discover_codes=True``) is a
+separate, dedicated capability with its own test file,
+``test_obligation_discovered_code_validation.py``; see ``combined.py``'s
+own module docstring for exactly what it does and does not cover.
 """
 
 from __future__ import annotations
@@ -129,9 +130,9 @@ def test_an_in_list_code_produces_no_code_list_diagnostic() -> None:
 
 
 def test_the_code_list_layer_is_silently_skipped_when_no_registry_is_supplied() -> None:
-    # Honest scope: no automatic document-wide code walker exists, so
-    # omitting a registry must not fabricate a pass/fail verdict for codes
-    # this call never looked at.
+    # With no registry at all (even discover_codes=True would have nothing
+    # to validate against), omitting a registry must not fabricate a
+    # pass/fail verdict for codes this call never looked at.
     report = validate_all(_invoice())
 
     codes = [d.code for d in report.diagnostics]
