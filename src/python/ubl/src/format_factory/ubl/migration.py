@@ -10,44 +10,56 @@ SAL-UBL-7546731B76606EC0 (a direct structural diff of the acquired OASIS
 UBL 2.1 and UBL 2.3 release packages, SRC-UBL-002/SRC-UBL-004): for 65 of
 the 91 UBL 2.3 root document types, every root-level schema difference
 between 2.1 and 2.3 is either a newly-added OPTIONAL element or a
-cardinality WIDENING -- never a removal, a reordering, or a tightening. A
-valid UBL 2.1 document of one of these 65 types is therefore ALREADY
-structurally valid content under the 2.3 schema: migration for these types
-needs no content rewriting at all, only relabeling ``cbc:UBLVersionID`` to
-"2.3" -- and even that relabel only happens after this package's own
-``validate()`` confirms the relabeled result genuinely passes the stable
-2.3 profile, per this obligation's own "never label... without...
-validation" clause, enforced here as a hard precondition rather than a
-disclosed caveat.
+cardinality WIDENING -- never a removal, a reordering, or a tightening.
 
-``migrate_document()`` deliberately supports ONLY the 2.1-to-2.3
-direction, the one pair this package has an acquired, diffed authority
-source for. The other 26 UBL 2.3 root types (for example ``BusinessCard``,
-``ImportCustomsDeclaration``) never had a UBL 2.1 schema at all -- every
-one of the 65 root types that DID exist in both versions was independently
-confirmed additive/relaxing-only, with zero exceptions (confirmed directly
-against the acquired package by
-``tools/generate_migratable_2_1_roots.py``, not assumed). The 26
-schema-absent types are refused, not silently attempted. A document
-declaring any OTHER older version (2.0, 2.2) is also refused: this package
-has not acquired or diffed those schema packages, and inventing a
-migration transform without a verified structural basis is exactly what
-this session's own evidence discipline exists to prevent.
+SAL-UBL-F90975267B9AE315 (the analogous direct structural diff of the
+acquired OASIS UBL 2.2 and UBL 2.3 release packages, SRC-UBL-002/SRC-UBL-006):
+the same additive/relaxing-only property holds for 81 of the 91 UBL 2.3
+root document types between 2.2 and 2.3.
+
+A valid document of one of these covered types is therefore ALREADY
+structurally valid content under the 2.3 schema: migration needs no content
+rewriting at all, only relabeling ``cbc:UBLVersionID`` to "2.3" -- and even
+that relabel only happens after this package's own ``validate()`` confirms
+the relabeled result genuinely passes the stable 2.3 profile, per this
+obligation's own "never label... without... validation" clause, enforced
+here as a hard precondition rather than a disclosed caveat.
+
+``migrate_document()`` deliberately supports ONLY the 2.1-to-2.3 and
+2.2-to-2.3 directions, the two pairs this package has an acquired, diffed
+authority source for. The 10 UBL 2.3 root types with no UBL 2.2 schema at
+all (for example ``ImportCustomsDeclaration``) and the 26 with no UBL 2.1
+schema at all (for example ``BusinessCard``) are refused for their
+respective source version, not silently attempted -- every root type that
+DID exist in both a source version and 2.3 was independently confirmed
+additive/relaxing-only for that pair, with zero exceptions (confirmed
+directly against the acquired packages by
+``tools/generate_migratable_2_1_roots.py`` and
+``tools/generate_migratable_2_2_roots.py``, not assumed). A document
+declaring any OTHER older version (2.0) is also refused: this package has
+not acquired or diffed that schema package, and inventing a migration
+transform without a verified structural basis is exactly what this
+session's own evidence discipline exists to prevent.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
+from typing import Final
 
-from ._generated.migratable_2_1_roots import (
-    MIGRATABLE_2_1_ROOT_NAMES,
-    SOURCE_VERSION,
-    TARGET_VERSION,
-)
+from ._generated.migratable_2_1_roots import MIGRATABLE_2_1_ROOT_NAMES
+from ._generated.migratable_2_2_roots import MIGRATABLE_2_2_ROOT_NAMES
 from .errors import UblValidationError
 from .model import UblDocument
 from .model.document import _UBL_VERSION_QNAME
 from .validation.validator import validate
+
+TARGET_VERSION: Final = "2.3"
+
+_MIGRATIONS: Final[dict[str, tuple[frozenset[str], str]]] = {
+    "2.1": (MIGRATABLE_2_1_ROOT_NAMES, "SAL-UBL-7546731B76606EC0"),
+    "2.2": (MIGRATABLE_2_2_ROOT_NAMES, "SAL-UBL-F90975267B9AE315"),
+}
 
 
 @dataclass(frozen=True, slots=True)
@@ -62,19 +74,19 @@ class MigrationReport:
 
 
 def migrate_document(document: UblDocument) -> tuple[UblDocument, MigrationReport]:
-    """Migrate ``document`` from its own declared UBL 2.1 to UBL 2.3.
+    """Migrate ``document`` from its own declared UBL version (2.1 or 2.2) to UBL 2.3.
 
     Returns ``(migrated_document, MigrationReport)`` on success. Raises
     ``UblValidationError`` -- never a silent no-op or a partially-migrated
     result -- when:
 
-    - ``document`` does not declare ``UBLVersionID`` "2.1" at all (nothing
-      to migrate FROM; migrating from any OTHER older version is not
+    - ``document`` does not declare a supported source ``UBLVersionID``
+      ("2.1" or "2.2"; migrating from any OTHER older version is not
       attempted, since this package has not acquired or diffed that
       version's own schema package);
-    - ``document``'s root type is not one of the 65 root types
-      ``SAL-UBL-7546731B76606EC0`` proves are additive/relaxing-only
-      between 2.1 and 2.3;
+    - ``document``'s root type is not one of the root types the matching
+      structural-diff SAL fact proves are additive/relaxing-only for its
+      declared source version;
     - the relabeled result fails ``validate()`` against the stable 2.3
       profile.
 
@@ -82,16 +94,17 @@ def migrate_document(document: UblDocument) -> tuple[UblDocument, MigrationRepor
     migrated result is always a new object.
     """
     declared = document.declared_version
-    if declared != SOURCE_VERSION:
+    if declared is None or declared not in _MIGRATIONS:
+        supported = ", ".join(repr(v) for v in _MIGRATIONS)
         raise UblValidationError(
-            f"migrate_document only supports UBL {SOURCE_VERSION!r} as a source version; "
+            f"migrate_document only supports UBL {{{supported}}} as a source version; "
             f"document declares {declared!r}"
         )
-    if document.root_name not in MIGRATABLE_2_1_ROOT_NAMES:
+    root_names, fact_id = _MIGRATIONS[declared]
+    if document.root_name not in root_names:
         raise UblValidationError(
-            f"{document.root_name!r} has no verified UBL {SOURCE_VERSION} schema to migrate "
-            f"from -- SAL-UBL-7546731B76606EC0 covers only {len(MIGRATABLE_2_1_ROOT_NAMES)} "
-            "of the 91 supported root types"
+            f"{document.root_name!r} has no verified UBL {declared} schema to migrate "
+            f"from -- {fact_id} covers only {len(root_names)} of the 91 supported root types"
         )
 
     new_children = tuple(
@@ -109,14 +122,14 @@ def migrate_document(document: UblDocument) -> tuple[UblDocument, MigrationRepor
 
     return relabeled, MigrationReport(
         root_name=document.root_name,
-        source_version=SOURCE_VERSION,
+        source_version=declared,
         target_version=TARGET_VERSION,
         note=(
-            "No content changes were required: SAL-UBL-7546731B76606EC0 proves this root "
-            "type's own UBL 2.1 schema differs from 2.3 only by optional additions and "
-            "cardinality widenings, so a UBL 2.1-valid document is already 2.3-valid content. "
-            "Only cbc:UBLVersionID was relabeled, and only after the relabeled result was "
-            "confirmed to pass validate() against the stable 2.3 profile."
+            f"No content changes were required: {fact_id} proves this root "
+            f"type's own UBL {declared} schema differs from 2.3 only by optional additions and "
+            "cardinality widenings, so a document valid under its declared source version is "
+            "already 2.3-valid content. Only cbc:UBLVersionID was relabeled, and only after the "
+            "relabeled result was confirmed to pass validate() against the stable 2.3 profile."
         ),
     )
 

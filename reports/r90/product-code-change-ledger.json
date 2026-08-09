@@ -45274,6 +45274,50 @@
       "validation_command": "277 source tests; clean wheel and installed validation test",
       "result": "PASS",
       "rollback": "Revert decoded-payload length validation and this ledger entry."
+    },
+    {
+      "entry_id": "FF6-UBL-VERSION-MIGRATION-2-2-TO-2-3-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "ubl-version-migration-2-2-to-2-3",
+      "capability": "UBL-UPGRADE-001",
+      "capability_refs": [
+        "UBL-UPGRADE-001",
+        "UBL-WRITE-001"
+      ],
+      "api_symbols": [
+        "format_factory.ubl.migrate_document",
+        "format_factory.ubl.MigrationReport"
+      ],
+      "product": "UBL Python production package",
+      "format": "UBL",
+      "test_delta": "Extended migration.py (migrate_document/MigrationReport) to also cover UBL 2.2-to-2.3 version migration for the 81 of 91 root types SAL-UBL-F90975267B9AE315 proves are additive/relaxing-compatible (refactored from a hardcoded 2.1-only function into a per-source-version dispatch table). 4 new tests plus 1 renamed/refixtured test in test_obligation_version_migration.py (12 total, TDD red-then-green for the new tests). New dev-time generator (tools/generate_migratable_2_2_roots.py) producing _generated/migratable_2_2_roots.py. Extended test_obligation_official_sample_migration_round_trip.py from a 2.1-only parametrization to a per-declared-version lookup covering both 2.1 and 2.2 samples (112 tests, was 97, +15).",
+      "git_head": "40a6c6939",
+      "skill": "format-feature-expansion",
+      "task_id": "TC_FF6_UBL_VERSION_MIGRATION_2_2_001",
+      "source_files": [
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/migration.py",
+          "state": "present",
+          "sha256": "63b701e77fd8b8590fa5d714bd89dd7aeb21ad5f432efa7d92783580c1ebbe44"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/_generated/migratable_2_2_roots.py",
+          "state": "present",
+          "sha256": "693e09d825346439f9394b18af0df459e8d8362d07774c15031b61bda22230b5"
+        },
+        {
+          "path": "src/python/ubl/tools/generate_migratable_2_2_roots.py",
+          "state": "present",
+          "sha256": "4b4e2bf74d411158bab27a79956a95bad3abe6d5e32fb21ad40d3783de112611"
+        }
+      ],
+      "test_files": [
+        "tests/python/ubl/test_obligation_version_migration.py",
+        "tests/python/ubl/test_obligation_official_sample_migration_round_trip.py"
+      ],
+      "validation_command": ".venv/Scripts/pytest tests/python/ubl/ -q",
+      "result": "1752 passed (was 1733, +19 new)",
+      "rollback": "Revert migration.py to the 2.1-only dispatch, remove the _generated/migratable_2_2_roots.py module and its generator, revert the 4 new/1 renamed tests in test_obligation_version_migration.py, revert test_obligation_official_sample_migration_round_trip.py to its 2.1-only parametrization, and remove this ledger entry."
     }
   ]
 }
