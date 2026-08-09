@@ -25,8 +25,9 @@
     "key_proof": "test_element_count_multiplication_is_checked_against_the_decompressed_ceiling and test_a_compressed_bomb_disproportionate_to_the_declared_shape_fails_cheaply both prove the shape-aware decompression-bomb guard rejects hostile payloads cheaply, before full inflation; test_a_legitimate_compressed_payload_matching_the_declared_shape_still_loads proves the same guard does not false-positive on real data; test_resource_limits_are_caller_configurable proves a caller-supplied limits object is honored, not silently replaced by the package's own defaults."
   },
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file consolidates already-existing, already-passing resource-limit evidence into a dedicated gate record; not a certification claim for the format as a whole.",
+  "re_run_this_tick": "Stale regression numbers relative to HEAD (the 4 key-proof tests this gate cites are unchanged and re-confirmed PASS). Refreshed to nrrd's own current suite size after this session's own obligation-closure work.",
   "regression": {
-    "nrrd_suite": "675 passed, 1 skipped (unchanged, pure evidence consolidation)"
+    "nrrd_suite": "962 passed, 1 skipped (was 675; unrelated growth from this session's own test-only obligation-closure work, the 4 key-proof tests this gate cites are unchanged)"
   },
   "commit": "pending"
 }

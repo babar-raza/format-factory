@@ -2,34 +2,27 @@
   "format_id": "nrrd",
   "gate": "independent-repository-extraction",
   "source_dir": "src/python/nrrd",
-  "isolated_location": "C:\\Users\\prora\\AppData\\Local\\Temp\\ff6-independent-repo-nrrd-zp_umhsy\\nrrd",
-  "source_file_count": 46,
+  "isolated_location": "C:\\Users\\prora\\AppData\\Local\\Temp\\ff6-independent-repo-nrrd-kcqtf7fb\\nrrd",
+  "source_file_count": 48,
   "source_preserved_byte_identical": true,
   "build_epoch": "315532800",
   "isolated_build": {
     "ok": true,
-    "seconds": 14.3,
+    "seconds": 15.3,
     "artifacts": {
-      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "cab9f615c1212ee1beab72c3b2d0b9843c4ee00762e76f020d962328a086ee99",
-      "format_factory_nrrd-0.2.0.dev0.tar.gz": "9f7f17c32fb33c021e1994bca25db96ec533f28086e6e01cb23ebb7188f925a8"
+      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "fec42a888b8756d9d16363b9b7c8438e45269a02cade4923e11fa445d531a34d",
+      "format_factory_nrrd-0.2.0.dev0.tar.gz": "809cad69e277c3a87737ea444630821e1e59d0c9a2d4a5b3b001d6e899fe4178"
     }
   },
   "in_place_build": {
     "ok": true,
-    "seconds": 15.5,
+    "seconds": 15.2,
     "artifacts": {
-      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "cab9f615c1212ee1beab72c3b2d0b9843c4ee00762e76f020d962328a086ee99",
-      "format_factory_nrrd-0.2.0.dev0.tar.gz": "9f7f17c32fb33c021e1994bca25db96ec533f28086e6e01cb23ebb7188f925a8"
+      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "fec42a888b8756d9d16363b9b7c8438e45269a02cade4923e11fa445d531a34d",
+      "format_factory_nrrd-0.2.0.dev0.tar.gz": "809cad69e277c3a87737ea444630821e1e59d0c9a2d4a5b3b001d6e899fe4178"
     }
   },
   "package_digests_preserved": true,
   "extracts_independently": true,
-  "verdict": "EXTRACTS_INDEPENDENTLY",
-  "invariant_text": "Every distribution extracts to an independent repository with preserved canonical source and package digests.",
-  "invariant_source": "plans/strategic/ff6/product-goal.yaml completion_invariants",
-  "tool": "tools/certification/independent_repository_extraction_gate.py --format nrrd",
-  "method": "Copied src/python/nrrd/ verbatim (46 files, excluding build/.pytest_cache/etc.) into a fresh OS-temp directory with no ancestor relationship to this repository, confirmed byte-identical against the original, built a wheel+sdist from that isolated copy with its own cwd (never this repository root), built a second wheel+sdist from the in-place source at the same pinned SOURCE_DATE_EPOCH, and compared artifact digests.",
-  "note": "Clean on the first run for THIS gate (isolated vs in-place both start from a cleared build/ dir, per the fix already applied to this gate's own _build()). This is one of product-goal.yaml's own completion invariants, separate from the 10-item gate list (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build). Not a certification claim -- the other outstanding program-wide invariant (all-six-co-install, already separately satisfied at FF6-EVENT-000322) and this format's own remaining obligation/gate work are tracked independently.",
-  "re_run_this_tick": "FF6-EVENT-000457 (via /product-source-task): source_file_count grew from 45 to 46 and the wheel digest changed from 87e31b5766... to cab9f615... because src/python/nrrd/src/format_factory/nrrd/_convenience.py was added -- 11 convenience-wrapper functions moved out of __init__.py to resolve a validate_source_architecture RULE-AM-002 STRUCTURAL_GOV_BLOCK (__init__.py 183->96 LOC, now under the 100 LOC cap). Pure relocation, re-exported under identical names -- zero behavior change (nrrd's full test suite: 718 passed, 1 skipped, unchanged from the pre-change baseline; mypy --strict clean). The fresh wheel_sha256 (cab9f615c1212ee1beab72c3b2d0b9843c4ee00762e76f020d962328a086ee99) is byte-for-byte IDENTICAL to the wheel independently built by both the installed-wheel gate and reproducible-build gate this same tick -- nrrd's 3-tool cross-confirmation continues to hold after the refactor. Ran to a scratch path first and merged by hand, preserving all pre-existing narrative fields.",
-  "commit": "pending"
+  "verdict": "EXTRACTS_INDEPENDENTLY"
 }

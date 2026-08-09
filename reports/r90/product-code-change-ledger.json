@@ -42711,36 +42711,156 @@
         "foss_python.ipynb.common_lifecycle",
         "foss_python.ipynb.deterministic_packaging"
       ],
-      "api_symbols": ["probe", "load", "loads", "dump", "dumps", "validate", "IpynbDocument"],
+      "api_symbols": [
+        "probe",
+        "load",
+        "loads",
+        "dump",
+        "dumps",
+        "validate",
+        "IpynbDocument"
+      ],
       "source_files": [
-        {"path": "src/python/ipynb/_build_backend.py", "state": "present", "sha256": "4aaed32d8795bbf6f7571f06dde2fedd60bf3b0ef594cd9803cf5b55d508a0cf"},
-        {"path": "src/python/ipynb/CHANGELOG.md", "state": "present", "sha256": "f6c58a1db906df4e92eb360d2eedfd38763eb2f7dce5b721a7d4738bf2d42b34"},
-        {"path": "src/python/ipynb/MANIFEST.in", "state": "present", "sha256": "7805ed0cbf87b420125a96bf7b4f688c10c4f215b481a92bf4823eff508f9cb1"},
-        {"path": "src/python/ipynb/MIGRATION.md", "state": "present", "sha256": "ef1eb3df76cad32e3b038a07f41f5c280feba26f5ede4ca943047431964924e0"},
-        {"path": "src/python/ipynb/pyproject.toml", "state": "present", "sha256": "0681d9bc176afa27df47d91ac85bbf366d4f6b1d05296f1c4ed07b6ec9420e24"},
-        {"path": "src/python/ipynb/README.md", "state": "present", "sha256": "c9b562bdc29ba31124c6b351c1b33d087d0329febbab41572a81d8860b5e6a61"},
-        {"path": "src/python/ipynb/requirements-build.lock", "state": "present", "sha256": "a88db3e67994613ee602e58be5a17601e1317bbff6bccc07a95dbf14f15731c3"},
-        {"path": "src/python/ipynb/SECURITY.md", "state": "present", "sha256": "7bff5917bdc5ced930719c58b57861d2ace96c69840a65165248cf7f888f3c93"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/__init__.py", "state": "present", "sha256": "588aaf85d59956c197410e2f2ce80f3918e5172ca53620ffb87042b5a937d3ac"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/adapters/__init__.py", "state": "present", "sha256": "d5789676c980530ecb1e9dfc1ccae94c1e3b8041860191cdd36f4f032db5a9de"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/analytics/__init__.py", "state": "present", "sha256": "bde4b3d709eefd0c5ae9d0163cbd783a94f84e927846d00e54613ab7612b38df"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/analytics/notebook.py", "state": "present", "sha256": "4fc92eb0f4667a29b82fa3a90dfd4dcc70e8943db109eaea2df13e8fc8432334"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/cli/__init__.py", "state": "present", "sha256": "b8affe22309562059b94a123ffb53f0131967620f64e1d320431c8fb968d6b31"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/cli/main.py", "state": "present", "sha256": "a40792d575dc04f64c0f481320241eab66415276843f2f8fd23d84b729f58e24"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/codec/__init__.py", "state": "present", "sha256": "37f4433ae6dcd15f85a05763558103bac02a2fefa03c85fb56949007dfaf62cd"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/codec/reader/__init__.py", "state": "present", "sha256": "1d416a7c1ce827edad10249601cb70ab592aa524d4ba85ea18c9c6c7174c8d0a"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py", "state": "present", "sha256": "11182de2d1489788c1a2a096531d5ba0988b45485324426637d80fecd3176557"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/codec/writer/__init__.py", "state": "present", "sha256": "6e6205532c1a07acc6ebb8816bbd2e1fd1fef7de86ab53a7428199bae522f245"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py", "state": "present", "sha256": "e24f0085977e0639eb5af62eba9bb9ace533695dfc12955ef00fc2b37823c902"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/errors.py", "state": "present", "sha256": "8c476a4ca3d25ea37788df0436d0bb968e577d79ef0ccf7f21cd6d6cb2961e84"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py", "state": "present", "sha256": "54ac40dec06f516f84f20d1809709cd0a9bc22a3ba6ba904d24d908b1b937d23"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/model/document.py", "state": "present", "sha256": "5dbdb08649fb7cfe243236f31633184490c12d76b89c700a0170efd7a2fd03da"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/model/output.py", "state": "present", "sha256": "0d480dd69be218031cc857b9602f3e0de1fdbea5466e92a75cae10e49405b878"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/py.typed", "state": "present", "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/security/__init__.py", "state": "present", "sha256": "a2614031de83694f8da8fa0391218cc409410b2d7a516855e2115c27613ccdb0"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/security/limits.py", "state": "present", "sha256": "f2b301ad48b265096f5a3cdfa586f5889ec4c68fd7bfb42c428a3a8d97d6a774"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/validation/__init__.py", "state": "present", "sha256": "45a643c9fa944c04d6045886689b505332024bfffaefcedb798613ed5d4ccd6f"},
-        {"path": "src/python/ipynb/src/format_factory/ipynb/validation/validator.py", "state": "present", "sha256": "24bb5e72a8498241552aa1b3e9016b040d7a4faf2048d21fae1861cb9c34d3c0"}
+        {
+          "path": "src/python/ipynb/_build_backend.py",
+          "state": "present",
+          "sha256": "4aaed32d8795bbf6f7571f06dde2fedd60bf3b0ef594cd9803cf5b55d508a0cf"
+        },
+        {
+          "path": "src/python/ipynb/CHANGELOG.md",
+          "state": "present",
+          "sha256": "f6c58a1db906df4e92eb360d2eedfd38763eb2f7dce5b721a7d4738bf2d42b34"
+        },
+        {
+          "path": "src/python/ipynb/MANIFEST.in",
+          "state": "present",
+          "sha256": "7805ed0cbf87b420125a96bf7b4f688c10c4f215b481a92bf4823eff508f9cb1"
+        },
+        {
+          "path": "src/python/ipynb/MIGRATION.md",
+          "state": "present",
+          "sha256": "ef1eb3df76cad32e3b038a07f41f5c280feba26f5ede4ca943047431964924e0"
+        },
+        {
+          "path": "src/python/ipynb/pyproject.toml",
+          "state": "present",
+          "sha256": "0681d9bc176afa27df47d91ac85bbf366d4f6b1d05296f1c4ed07b6ec9420e24"
+        },
+        {
+          "path": "src/python/ipynb/README.md",
+          "state": "present",
+          "sha256": "c9b562bdc29ba31124c6b351c1b33d087d0329febbab41572a81d8860b5e6a61"
+        },
+        {
+          "path": "src/python/ipynb/requirements-build.lock",
+          "state": "present",
+          "sha256": "a88db3e67994613ee602e58be5a17601e1317bbff6bccc07a95dbf14f15731c3"
+        },
+        {
+          "path": "src/python/ipynb/SECURITY.md",
+          "state": "present",
+          "sha256": "7bff5917bdc5ced930719c58b57861d2ace96c69840a65165248cf7f888f3c93"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/__init__.py",
+          "state": "present",
+          "sha256": "588aaf85d59956c197410e2f2ce80f3918e5172ca53620ffb87042b5a937d3ac"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/adapters/__init__.py",
+          "state": "present",
+          "sha256": "d5789676c980530ecb1e9dfc1ccae94c1e3b8041860191cdd36f4f032db5a9de"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/analytics/__init__.py",
+          "state": "present",
+          "sha256": "bde4b3d709eefd0c5ae9d0163cbd783a94f84e927846d00e54613ab7612b38df"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/analytics/notebook.py",
+          "state": "present",
+          "sha256": "4fc92eb0f4667a29b82fa3a90dfd4dcc70e8943db109eaea2df13e8fc8432334"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/cli/__init__.py",
+          "state": "present",
+          "sha256": "b8affe22309562059b94a123ffb53f0131967620f64e1d320431c8fb968d6b31"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/cli/main.py",
+          "state": "present",
+          "sha256": "a40792d575dc04f64c0f481320241eab66415276843f2f8fd23d84b729f58e24"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/codec/__init__.py",
+          "state": "present",
+          "sha256": "37f4433ae6dcd15f85a05763558103bac02a2fefa03c85fb56949007dfaf62cd"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/codec/reader/__init__.py",
+          "state": "present",
+          "sha256": "1d416a7c1ce827edad10249601cb70ab592aa524d4ba85ea18c9c6c7174c8d0a"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "11182de2d1489788c1a2a096531d5ba0988b45485324426637d80fecd3176557"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/codec/writer/__init__.py",
+          "state": "present",
+          "sha256": "6e6205532c1a07acc6ebb8816bbd2e1fd1fef7de86ab53a7428199bae522f245"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/codec/writer/writer.py",
+          "state": "present",
+          "sha256": "e24f0085977e0639eb5af62eba9bb9ace533695dfc12955ef00fc2b37823c902"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/errors.py",
+          "state": "present",
+          "sha256": "8c476a4ca3d25ea37788df0436d0bb968e577d79ef0ccf7f21cd6d6cb2961e84"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/__init__.py",
+          "state": "present",
+          "sha256": "54ac40dec06f516f84f20d1809709cd0a9bc22a3ba6ba904d24d908b1b937d23"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/document.py",
+          "state": "present",
+          "sha256": "5dbdb08649fb7cfe243236f31633184490c12d76b89c700a0170efd7a2fd03da"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/model/output.py",
+          "state": "present",
+          "sha256": "0d480dd69be218031cc857b9602f3e0de1fdbea5466e92a75cae10e49405b878"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/py.typed",
+          "state": "present",
+          "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/security/__init__.py",
+          "state": "present",
+          "sha256": "a2614031de83694f8da8fa0391218cc409410b2d7a516855e2115c27613ccdb0"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/security/limits.py",
+          "state": "present",
+          "sha256": "f2b301ad48b265096f5a3cdfa586f5889ec4c68fd7bfb42c428a3a8d97d6a774"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/__init__.py",
+          "state": "present",
+          "sha256": "45a643c9fa944c04d6045886689b505332024bfffaefcedb798613ed5d4ccd6f"
+        },
+        {
+          "path": "src/python/ipynb/src/format_factory/ipynb/validation/validator.py",
+          "state": "present",
+          "sha256": "24bb5e72a8498241552aa1b3e9016b040d7a4faf2048d21fae1861cb9c34d3c0"
+        }
       ],
       "tests": "tests/python/ipynb/test_production_namespace.py; tests/python/ipynb/"
     },
@@ -42759,34 +42879,146 @@
         "foss_python.nrrd.deterministic_packaging",
         "foss_python.nrrd.bounded_payload_codec"
       ],
-      "api_symbols": ["probe", "load", "loads", "dump", "dumps", "validate", "NrrdDocument"],
+      "api_symbols": [
+        "probe",
+        "load",
+        "loads",
+        "dump",
+        "dumps",
+        "validate",
+        "NrrdDocument"
+      ],
       "source_files": [
-        {"path": "src/python/nrrd/_build_backend.py", "state": "present", "sha256": "556f7c66c7ea25e77c07dae39ea9a0a9cb0e3394ed03d0179933d2bda178b089"},
-        {"path": "src/python/nrrd/CHANGELOG.md", "state": "present", "sha256": "9f2c143be7d0ed58fe19fe786f5d6e37213a5b84777ca17f3665cb24fe735ed5"},
-        {"path": "src/python/nrrd/MANIFEST.in", "state": "present", "sha256": "7805ed0cbf87b420125a96bf7b4f688c10c4f215b481a92bf4823eff508f9cb1"},
-        {"path": "src/python/nrrd/MIGRATION.md", "state": "present", "sha256": "9ce6e9d656561c9afa28ac341fe2371500bfae8a276e456c45529314e46347dd"},
-        {"path": "src/python/nrrd/pyproject.toml", "state": "present", "sha256": "8a3800ffac55214c487c7e57ae8a0238e88b6927d7478af5a030ce0da682bf3f"},
-        {"path": "src/python/nrrd/README.md", "state": "present", "sha256": "640260a4fa005cb93e31bec1b697ded7cb9d9fd83d642841073f5fe3bd04ebef"},
-        {"path": "src/python/nrrd/requirements-build.lock", "state": "present", "sha256": "a88db3e67994613ee602e58be5a17601e1317bbff6bccc07a95dbf14f15731c3"},
-        {"path": "src/python/nrrd/SECURITY.md", "state": "present", "sha256": "f4c1c7bc2e97e8e20a31eea49d1ba1d1b4b9c97472d0deaff1a6d123da42f24c"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/__init__.py", "state": "present", "sha256": "8a128f4d16ee20cd7dce408b34fb524fbe8b8e260a80f8f830eed7575f2b84a9"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/adapters/__init__.py", "state": "present", "sha256": "63e25dd943e5a7df329f3eb905e855fb11d3721e5c6f61169af50eb6aa08b463"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/analytics/__init__.py", "state": "present", "sha256": "44a632455029f6cad40dec6b64f9dc02fd67b8ceae612c54ac7f9f709aa90d9f"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/cli/__init__.py", "state": "present", "sha256": "b8622a0fb1b2e53d72d27896dc6393e50befeaaebfc579046a5b24f5e11a143b"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/__init__.py", "state": "present", "sha256": "47e6051440ece5078321e3ee408aebfbeba0818eead4ecb6b3903dc6fdac826c"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/payload.py", "state": "present", "sha256": "1576bb1e00aa59df0749533e5ebc05d76a39163ac04bca3c404cd31ee9e3e358"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/reader/__init__.py", "state": "present", "sha256": "96df0909daed0603589f5ae370260b4fa25eaa957b12c941e88111eb019181a1"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py", "state": "present", "sha256": "d25c83629bae84032a959096a6898bbdf2f29517c86b63a06588807e419c3f0d"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/writer/__init__.py", "state": "present", "sha256": "54c2923a4542064acca5c25f536fbdec92710e77cd56042d8a49bbe66b8d4dd5"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py", "state": "present", "sha256": "1486503a236597102a852c1af5ac9ea216cda09f1a0733c3ac7d5b98e265b09b"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/errors.py", "state": "present", "sha256": "378d96acbb5ed9cda305c5ec4a7ceb8e4835cd75854a5e2e5de08f714f186e72"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/model/__init__.py", "state": "present", "sha256": "fb5dd762e55949dc11393e9355be97164b3aa3c7f45d24a75068d30dbaea1fc4"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/model/document.py", "state": "present", "sha256": "017f1111dc18dd4ee70c084ee0dd6917c1639c95cf16374956624d64c18a1f4e"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/py.typed", "state": "present", "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/security/__init__.py", "state": "present", "sha256": "3f7365506d122f76531158c2f5e879bb5d5d0c3264d85b2faa9420e077e3be3e"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/security/limits.py", "state": "present", "sha256": "afa621520111d994765c102f1003cc1116edee4b257fea67aa2d97286464c146"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/validation/__init__.py", "state": "present", "sha256": "4885748c6bb4bcfbd2a42b675f626277a56782ecef29c53da68a21913860cfb4"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/validation/validator.py", "state": "present", "sha256": "5cf3ea4c4fcc3534b523f561e381c97b23922ff9b906dd23801d0a44327a14a8"}
+        {
+          "path": "src/python/nrrd/_build_backend.py",
+          "state": "present",
+          "sha256": "556f7c66c7ea25e77c07dae39ea9a0a9cb0e3394ed03d0179933d2bda178b089"
+        },
+        {
+          "path": "src/python/nrrd/CHANGELOG.md",
+          "state": "present",
+          "sha256": "9f2c143be7d0ed58fe19fe786f5d6e37213a5b84777ca17f3665cb24fe735ed5"
+        },
+        {
+          "path": "src/python/nrrd/MANIFEST.in",
+          "state": "present",
+          "sha256": "7805ed0cbf87b420125a96bf7b4f688c10c4f215b481a92bf4823eff508f9cb1"
+        },
+        {
+          "path": "src/python/nrrd/MIGRATION.md",
+          "state": "present",
+          "sha256": "9ce6e9d656561c9afa28ac341fe2371500bfae8a276e456c45529314e46347dd"
+        },
+        {
+          "path": "src/python/nrrd/pyproject.toml",
+          "state": "present",
+          "sha256": "8a3800ffac55214c487c7e57ae8a0238e88b6927d7478af5a030ce0da682bf3f"
+        },
+        {
+          "path": "src/python/nrrd/README.md",
+          "state": "present",
+          "sha256": "640260a4fa005cb93e31bec1b697ded7cb9d9fd83d642841073f5fe3bd04ebef"
+        },
+        {
+          "path": "src/python/nrrd/requirements-build.lock",
+          "state": "present",
+          "sha256": "a88db3e67994613ee602e58be5a17601e1317bbff6bccc07a95dbf14f15731c3"
+        },
+        {
+          "path": "src/python/nrrd/SECURITY.md",
+          "state": "present",
+          "sha256": "f4c1c7bc2e97e8e20a31eea49d1ba1d1b4b9c97472d0deaff1a6d123da42f24c"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+          "state": "present",
+          "sha256": "8a128f4d16ee20cd7dce408b34fb524fbe8b8e260a80f8f830eed7575f2b84a9"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/adapters/__init__.py",
+          "state": "present",
+          "sha256": "63e25dd943e5a7df329f3eb905e855fb11d3721e5c6f61169af50eb6aa08b463"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/analytics/__init__.py",
+          "state": "present",
+          "sha256": "44a632455029f6cad40dec6b64f9dc02fd67b8ceae612c54ac7f9f709aa90d9f"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/cli/__init__.py",
+          "state": "present",
+          "sha256": "b8622a0fb1b2e53d72d27896dc6393e50befeaaebfc579046a5b24f5e11a143b"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/codec/__init__.py",
+          "state": "present",
+          "sha256": "47e6051440ece5078321e3ee408aebfbeba0818eead4ecb6b3903dc6fdac826c"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+          "state": "present",
+          "sha256": "1576bb1e00aa59df0749533e5ebc05d76a39163ac04bca3c404cd31ee9e3e358"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/codec/reader/__init__.py",
+          "state": "present",
+          "sha256": "96df0909daed0603589f5ae370260b4fa25eaa957b12c941e88111eb019181a1"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "d25c83629bae84032a959096a6898bbdf2f29517c86b63a06588807e419c3f0d"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/codec/writer/__init__.py",
+          "state": "present",
+          "sha256": "54c2923a4542064acca5c25f536fbdec92710e77cd56042d8a49bbe66b8d4dd5"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+          "state": "present",
+          "sha256": "1486503a236597102a852c1af5ac9ea216cda09f1a0733c3ac7d5b98e265b09b"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/errors.py",
+          "state": "present",
+          "sha256": "378d96acbb5ed9cda305c5ec4a7ceb8e4835cd75854a5e2e5de08f714f186e72"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/model/__init__.py",
+          "state": "present",
+          "sha256": "fb5dd762e55949dc11393e9355be97164b3aa3c7f45d24a75068d30dbaea1fc4"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/model/document.py",
+          "state": "present",
+          "sha256": "017f1111dc18dd4ee70c084ee0dd6917c1639c95cf16374956624d64c18a1f4e"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/py.typed",
+          "state": "present",
+          "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/security/__init__.py",
+          "state": "present",
+          "sha256": "3f7365506d122f76531158c2f5e879bb5d5d0c3264d85b2faa9420e077e3be3e"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/security/limits.py",
+          "state": "present",
+          "sha256": "afa621520111d994765c102f1003cc1116edee4b257fea67aa2d97286464c146"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/validation/__init__.py",
+          "state": "present",
+          "sha256": "4885748c6bb4bcfbd2a42b675f626277a56782ecef29c53da68a21913860cfb4"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+          "state": "present",
+          "sha256": "5cf3ea4c4fcc3534b523f561e381c97b23922ff9b906dd23801d0a44327a14a8"
+        }
       ],
       "tests": "tests/python/nrrd/test_production_namespace.py; tests/python/nrrd/"
     },
@@ -42805,34 +43037,146 @@
         "foss_python.xliff.deterministic_packaging",
         "foss_python.xliff.structured_inline_preservation"
       ],
-      "api_symbols": ["probe", "load", "loads", "dump", "dumps", "validate", "XliffDocument"],
+      "api_symbols": [
+        "probe",
+        "load",
+        "loads",
+        "dump",
+        "dumps",
+        "validate",
+        "XliffDocument"
+      ],
       "source_files": [
-        {"path": "src/python/xliff/_build_backend.py", "state": "present", "sha256": "9be029ef3fe448853d03d990124a3deeb7bb4df276f586d13d539ab5d1c5fd38"},
-        {"path": "src/python/xliff/CHANGELOG.md", "state": "present", "sha256": "e6a93588b83e4f71858dbdcdf404d1f3514203edf8132f0df5be13d5b88646d5"},
-        {"path": "src/python/xliff/MANIFEST.in", "state": "present", "sha256": "2623550da83e971a5e5572306bca05b0576dc9fdc27cc16f28b2a7cb1fa955dd"},
-        {"path": "src/python/xliff/MIGRATION.md", "state": "present", "sha256": "60de12843d43aefbde46531fb5f20db08347605a42501215fbf1e5e0d3fb6cab"},
-        {"path": "src/python/xliff/pyproject.toml", "state": "present", "sha256": "16d05df7b7f26c7af597f7e23a4b066cdf510ed20d143205b154cc755459c18b"},
-        {"path": "src/python/xliff/README.md", "state": "present", "sha256": "a9b2aa11590fc0877e758aef1631555803f6c00866704c404945f65248d74beb"},
-        {"path": "src/python/xliff/requirements-build.lock", "state": "present", "sha256": "2e9f08e76551e50d1a85d46d7f5821e7ab5af9b778604bfaab14d8ba4d4cf9fe"},
-        {"path": "src/python/xliff/SECURITY.md", "state": "present", "sha256": "51e5fd8c66962126e8fa0baec6bbc65201c415044a7701ae726817b7eb81cd15"},
-        {"path": "src/python/xliff/src/format_factory/xliff/__init__.py", "state": "present", "sha256": "6b3b7c107bb7c445eab04d28bef49d48f33bf6265b9b20845c9712f90877ea7f"},
-        {"path": "src/python/xliff/src/format_factory/xliff/adapters/__init__.py", "state": "present", "sha256": "ace06eee844e7ed633de06f6b1058816dd864c4b950cdc3b7947ca9a9ae37121"},
-        {"path": "src/python/xliff/src/format_factory/xliff/analytics/__init__.py", "state": "present", "sha256": "ad376c089f7886a8b932c88553751d40b8e6ff3934c685107704dd39a48d62bd"},
-        {"path": "src/python/xliff/src/format_factory/xliff/cli/__init__.py", "state": "present", "sha256": "4c4b4290478e3b137515bb3d5e1583fe9f22f5a12bd5090c32a4d625c518cf60"},
-        {"path": "src/python/xliff/src/format_factory/xliff/codec/__init__.py", "state": "present", "sha256": "8cd8a0f6924127c57a7f99292779eb145f09a0c45f4a632fdacbcda1fa48c332"},
-        {"path": "src/python/xliff/src/format_factory/xliff/codec/reader/__init__.py", "state": "present", "sha256": "438497db5c6aabdb09767e3cd618c8193a2199640d71b40facf2b19bb52fefcd"},
-        {"path": "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py", "state": "present", "sha256": "3094abca6d55309db19297f22b297f7caa552466254685864cf98d44b641d4a5"},
-        {"path": "src/python/xliff/src/format_factory/xliff/codec/writer/__init__.py", "state": "present", "sha256": "a9fe4d6515d826e9788317ff86a9d7dbfff0bae815c42bdd6889b2bd92b0c2c3"},
-        {"path": "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py", "state": "present", "sha256": "05f32643c959238008aa3c8372ed54b07a14a340af50e8951043aa2a5d3d966a"},
-        {"path": "src/python/xliff/src/format_factory/xliff/errors.py", "state": "present", "sha256": "c58d4c76fac41d0d9ffef98a5a86dc10c786fe55e0c018c0a654136c90850d9b"},
-        {"path": "src/python/xliff/src/format_factory/xliff/model/__init__.py", "state": "present", "sha256": "72b041da6c444c4c14c99a393857d39a9f97f82d80e4fc04fa2427f91c853328"},
-        {"path": "src/python/xliff/src/format_factory/xliff/model/document.py", "state": "present", "sha256": "481087a840d3c7800e79cc861085bfc4289f2c8e3c6d1fb7247973d20b43df33"},
-        {"path": "src/python/xliff/src/format_factory/xliff/model/inline.py", "state": "present", "sha256": "cc493b8fad529f88b5252948324279bb0c1dfc4c925eceeba08626a635232935"},
-        {"path": "src/python/xliff/src/format_factory/xliff/py.typed", "state": "present", "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"},
-        {"path": "src/python/xliff/src/format_factory/xliff/security/__init__.py", "state": "present", "sha256": "5a166f6efd6ef0e83285289922667d521124a6efafc2f54895b0c040ffe6561d"},
-        {"path": "src/python/xliff/src/format_factory/xliff/security/limits.py", "state": "present", "sha256": "3afd5a3755844998b6b5304c019ebb79ede25d0890320afa4ac287e2f9acb07c"},
-        {"path": "src/python/xliff/src/format_factory/xliff/validation/__init__.py", "state": "present", "sha256": "e4d6a2802d7956d5043bbc0cf63fd50a46d83fba0a4e089cc84ba1a0c890f23e"},
-        {"path": "src/python/xliff/src/format_factory/xliff/validation/validator.py", "state": "present", "sha256": "ecf3a1c584d41602b8a4d429fa48155b7fe31e9918c73338b3c1c40111d96589"}
+        {
+          "path": "src/python/xliff/_build_backend.py",
+          "state": "present",
+          "sha256": "9be029ef3fe448853d03d990124a3deeb7bb4df276f586d13d539ab5d1c5fd38"
+        },
+        {
+          "path": "src/python/xliff/CHANGELOG.md",
+          "state": "present",
+          "sha256": "e6a93588b83e4f71858dbdcdf404d1f3514203edf8132f0df5be13d5b88646d5"
+        },
+        {
+          "path": "src/python/xliff/MANIFEST.in",
+          "state": "present",
+          "sha256": "2623550da83e971a5e5572306bca05b0576dc9fdc27cc16f28b2a7cb1fa955dd"
+        },
+        {
+          "path": "src/python/xliff/MIGRATION.md",
+          "state": "present",
+          "sha256": "60de12843d43aefbde46531fb5f20db08347605a42501215fbf1e5e0d3fb6cab"
+        },
+        {
+          "path": "src/python/xliff/pyproject.toml",
+          "state": "present",
+          "sha256": "16d05df7b7f26c7af597f7e23a4b066cdf510ed20d143205b154cc755459c18b"
+        },
+        {
+          "path": "src/python/xliff/README.md",
+          "state": "present",
+          "sha256": "a9b2aa11590fc0877e758aef1631555803f6c00866704c404945f65248d74beb"
+        },
+        {
+          "path": "src/python/xliff/requirements-build.lock",
+          "state": "present",
+          "sha256": "2e9f08e76551e50d1a85d46d7f5821e7ab5af9b778604bfaab14d8ba4d4cf9fe"
+        },
+        {
+          "path": "src/python/xliff/SECURITY.md",
+          "state": "present",
+          "sha256": "51e5fd8c66962126e8fa0baec6bbc65201c415044a7701ae726817b7eb81cd15"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/__init__.py",
+          "state": "present",
+          "sha256": "6b3b7c107bb7c445eab04d28bef49d48f33bf6265b9b20845c9712f90877ea7f"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/adapters/__init__.py",
+          "state": "present",
+          "sha256": "ace06eee844e7ed633de06f6b1058816dd864c4b950cdc3b7947ca9a9ae37121"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/analytics/__init__.py",
+          "state": "present",
+          "sha256": "ad376c089f7886a8b932c88553751d40b8e6ff3934c685107704dd39a48d62bd"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/cli/__init__.py",
+          "state": "present",
+          "sha256": "4c4b4290478e3b137515bb3d5e1583fe9f22f5a12bd5090c32a4d625c518cf60"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/codec/__init__.py",
+          "state": "present",
+          "sha256": "8cd8a0f6924127c57a7f99292779eb145f09a0c45f4a632fdacbcda1fa48c332"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/codec/reader/__init__.py",
+          "state": "present",
+          "sha256": "438497db5c6aabdb09767e3cd618c8193a2199640d71b40facf2b19bb52fefcd"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "3094abca6d55309db19297f22b297f7caa552466254685864cf98d44b641d4a5"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/codec/writer/__init__.py",
+          "state": "present",
+          "sha256": "a9fe4d6515d826e9788317ff86a9d7dbfff0bae815c42bdd6889b2bd92b0c2c3"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/codec/writer/writer.py",
+          "state": "present",
+          "sha256": "05f32643c959238008aa3c8372ed54b07a14a340af50e8951043aa2a5d3d966a"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/errors.py",
+          "state": "present",
+          "sha256": "c58d4c76fac41d0d9ffef98a5a86dc10c786fe55e0c018c0a654136c90850d9b"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/model/__init__.py",
+          "state": "present",
+          "sha256": "72b041da6c444c4c14c99a393857d39a9f97f82d80e4fc04fa2427f91c853328"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/model/document.py",
+          "state": "present",
+          "sha256": "481087a840d3c7800e79cc861085bfc4289f2c8e3c6d1fb7247973d20b43df33"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/model/inline.py",
+          "state": "present",
+          "sha256": "cc493b8fad529f88b5252948324279bb0c1dfc4c925eceeba08626a635232935"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/py.typed",
+          "state": "present",
+          "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/security/__init__.py",
+          "state": "present",
+          "sha256": "5a166f6efd6ef0e83285289922667d521124a6efafc2f54895b0c040ffe6561d"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/security/limits.py",
+          "state": "present",
+          "sha256": "3afd5a3755844998b6b5304c019ebb79ede25d0890320afa4ac287e2f9acb07c"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/validation/__init__.py",
+          "state": "present",
+          "sha256": "e4d6a2802d7956d5043bbc0cf63fd50a46d83fba0a4e089cc84ba1a0c890f23e"
+        },
+        {
+          "path": "src/python/xliff/src/format_factory/xliff/validation/validator.py",
+          "state": "present",
+          "sha256": "ecf3a1c584d41602b8a4d429fa48155b7fe31e9918c73338b3c1c40111d96589"
+        }
       ],
       "tests": "tests/python/xliff/test_production_namespace.py; tests/python/xliff/"
     },
@@ -42852,41 +43196,183 @@
         "foss_python.ubl.generated_91_root_inventory",
         "foss_python.ubl.bounded_xml_security"
       ],
-      "api_symbols": ["probe", "load", "loads", "dump", "dumps", "validate", "UblDocument", "XmlNode", "ROOT_CLASSES"],
+      "api_symbols": [
+        "probe",
+        "load",
+        "loads",
+        "dump",
+        "dumps",
+        "validate",
+        "UblDocument",
+        "XmlNode",
+        "ROOT_CLASSES"
+      ],
       "source_files": [
-        {"path": "src/python/ubl/_build_backend.py", "state": "present", "sha256": "9be029ef3fe448853d03d990124a3deeb7bb4df276f586d13d539ab5d1c5fd38"},
-        {"path": "src/python/ubl/CHANGELOG.md", "state": "present", "sha256": "cab04221c1f5d84921645fd543b1d9209b97004de70ab96af691a5f4a297372d"},
-        {"path": "src/python/ubl/LICENSE", "state": "present", "sha256": "eb9cff60986eee59c8b9ea5ee5d2a91edab6b9cd432bda18e26722ec47b1176c"},
-        {"path": "src/python/ubl/MANIFEST.in", "state": "present", "sha256": "0d66169d2f5223b751b499f4e34fe38c2ca3e90485262dcc32be187f7e862da0"},
-        {"path": "src/python/ubl/MIGRATION.md", "state": "present", "sha256": "04e16355447139c7560c6b24f1a32942707267d5dbd6388acd013100181b5d6b"},
-        {"path": "src/python/ubl/pyproject.toml", "state": "present", "sha256": "81dd831d016263f416c2ab502544be4f197229597ef86984879968d9a1aadd4f"},
-        {"path": "src/python/ubl/README.md", "state": "present", "sha256": "db6100f089ef9762566e133024db485b9c1a07f6ddd2b71f3e90c16b19c36b6d"},
-        {"path": "src/python/ubl/requirements-build.lock", "state": "present", "sha256": "99000b4540bf1e67248ac234b9f0bd39d6b13118ac16d903da20e06c8bb9e2c1"},
-        {"path": "src/python/ubl/SECURITY.md", "state": "present", "sha256": "257301c82b395bae6f8338e32ad9b40f635b6922f04dd70a9a25ef1204e3a6d1"},
-        {"path": "src/python/ubl/src/format_factory/ubl/__init__.py", "state": "present", "sha256": "2640d425e64da1f939e6c4cd13c51333d3b84d7b6e194a38786f031ba55bb611"},
-        {"path": "src/python/ubl/src/format_factory/ubl/_generated/__init__.py", "state": "present", "sha256": "2cd800aecf05c034da9e32b62008ce4568f81f8be286a02575656008ff9e5f95"},
-        {"path": "src/python/ubl/src/format_factory/ubl/_generated/root_catalog.py", "state": "present", "sha256": "cc987e4bfbe14b6fa18e6b3b9ee15b719c5a1bc3a1cf04b0546272e9aa380020"},
-        {"path": "src/python/ubl/src/format_factory/ubl/_generated/root_manifest.json", "state": "present", "sha256": "39c8aa9639a4594b0cb7463aab125f909616ddac5bca320d01a7981608707887"},
-        {"path": "src/python/ubl/src/format_factory/ubl/adapters/__init__.py", "state": "present", "sha256": "6e2f44e0d8306eeca6201de29d64e22a96f70e1033a5b337442533a7855b1ab1"},
-        {"path": "src/python/ubl/src/format_factory/ubl/analytics/__init__.py", "state": "present", "sha256": "1fa1b99529eb07a345f3b29fa8eacafb28ef9be6b3d64e00a42a6509a3bb3668"},
-        {"path": "src/python/ubl/src/format_factory/ubl/cli/__init__.py", "state": "present", "sha256": "01e31810a2913b48bb66fcf8853426a81a6669fe0a60af623e31b31b329cb20b"},
-        {"path": "src/python/ubl/src/format_factory/ubl/codec/__init__.py", "state": "present", "sha256": "e959222238d4650601e035149e55ba485b98ea2dc2e4cff609fd82e83dba5e8c"},
-        {"path": "src/python/ubl/src/format_factory/ubl/codec/reader/__init__.py", "state": "present", "sha256": "61a2d2fe1d9b620aa21766d5e5f96773232e4d18b8fb06973ca62bf96c7c6c21"},
-        {"path": "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py", "state": "present", "sha256": "b9ef3615ad9b1ef79c9ead0b4c50aa742399571738484355f48c54f409aacb8f"},
-        {"path": "src/python/ubl/src/format_factory/ubl/codec/writer/__init__.py", "state": "present", "sha256": "eda0ff7cef8e1ff279030ec7e4e8f9cff2377848fd2dda599aedad3c343de03a"},
-        {"path": "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py", "state": "present", "sha256": "c097192f33ef828def784410d54dc0f6392c43ddfdf44f6b8776e56625e67344"},
-        {"path": "src/python/ubl/src/format_factory/ubl/errors.py", "state": "present", "sha256": "794c1af5b850bee18d373817d7a576af99e774b85b528048e130dc6eb01d204c"},
-        {"path": "src/python/ubl/src/format_factory/ubl/model/__init__.py", "state": "present", "sha256": "12d9e296962bcf2fcc88948f4a507f77d25cbc166ab8a10579d8810192a9f8e0"},
-        {"path": "src/python/ubl/src/format_factory/ubl/model/document.py", "state": "present", "sha256": "bf0a9d740817ba58a8e1c08cfe921f6bb28201f60269b20670abf1fd2f0bf27f"},
-        {"path": "src/python/ubl/src/format_factory/ubl/model/root_types.py", "state": "present", "sha256": "6c9b8c43546cfc8d41edee023129e821f0a83277c2ea1c3019537d3d975a87a2"},
-        {"path": "src/python/ubl/src/format_factory/ubl/py.typed", "state": "present", "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"},
-        {"path": "src/python/ubl/src/format_factory/ubl/security/__init__.py", "state": "present", "sha256": "37ef937913af738f29761a33fe0878565564fb0c7c267ff0dc02ae7571b3a7ca"},
-        {"path": "src/python/ubl/src/format_factory/ubl/security/limits.py", "state": "present", "sha256": "eacfe7121ddee37e7b6df7ee5af4af00ca513c40b91fc14add56f0c60a7dd6d7"},
-        {"path": "src/python/ubl/src/format_factory/ubl/validation/__init__.py", "state": "present", "sha256": "c9076e87ce3b3acffc7dd64945646d6c2a5c9f1eda034402995a6b5ea3e996a2"},
-        {"path": "src/python/ubl/src/format_factory/ubl/validation/validator.py", "state": "present", "sha256": "59c976ce6752f6c7d4bd310de85c0b31038748ca6661560a4be862e2acd0bbb6"},
-        {"path": "src/python/ubl/tools/generate_roots.py", "state": "present", "sha256": "4a033e56b77241287610316b0a14cbaf961e3797980c4608666b04e70e599658"},
-        {"path": "tests/python/ubl/fixtures/hostile-extension-entity.xml", "state": "present", "sha256": "6d8b92cff5ed00dd994c7222c1fd92eeda7071f97f22ec913de84d554a88aacd"},
-        {"path": "tests/python/ubl/test_production_namespace.py", "state": "present", "sha256": "518c7558bdc67ee1122d34e664b318926267ea03b88830439ef7b7f5236a9a4f"}
+        {
+          "path": "src/python/ubl/_build_backend.py",
+          "state": "present",
+          "sha256": "9be029ef3fe448853d03d990124a3deeb7bb4df276f586d13d539ab5d1c5fd38"
+        },
+        {
+          "path": "src/python/ubl/CHANGELOG.md",
+          "state": "present",
+          "sha256": "cab04221c1f5d84921645fd543b1d9209b97004de70ab96af691a5f4a297372d"
+        },
+        {
+          "path": "src/python/ubl/LICENSE",
+          "state": "present",
+          "sha256": "eb9cff60986eee59c8b9ea5ee5d2a91edab6b9cd432bda18e26722ec47b1176c"
+        },
+        {
+          "path": "src/python/ubl/MANIFEST.in",
+          "state": "present",
+          "sha256": "0d66169d2f5223b751b499f4e34fe38c2ca3e90485262dcc32be187f7e862da0"
+        },
+        {
+          "path": "src/python/ubl/MIGRATION.md",
+          "state": "present",
+          "sha256": "04e16355447139c7560c6b24f1a32942707267d5dbd6388acd013100181b5d6b"
+        },
+        {
+          "path": "src/python/ubl/pyproject.toml",
+          "state": "present",
+          "sha256": "81dd831d016263f416c2ab502544be4f197229597ef86984879968d9a1aadd4f"
+        },
+        {
+          "path": "src/python/ubl/README.md",
+          "state": "present",
+          "sha256": "db6100f089ef9762566e133024db485b9c1a07f6ddd2b71f3e90c16b19c36b6d"
+        },
+        {
+          "path": "src/python/ubl/requirements-build.lock",
+          "state": "present",
+          "sha256": "99000b4540bf1e67248ac234b9f0bd39d6b13118ac16d903da20e06c8bb9e2c1"
+        },
+        {
+          "path": "src/python/ubl/SECURITY.md",
+          "state": "present",
+          "sha256": "257301c82b395bae6f8338e32ad9b40f635b6922f04dd70a9a25ef1204e3a6d1"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/__init__.py",
+          "state": "present",
+          "sha256": "2640d425e64da1f939e6c4cd13c51333d3b84d7b6e194a38786f031ba55bb611"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/_generated/__init__.py",
+          "state": "present",
+          "sha256": "2cd800aecf05c034da9e32b62008ce4568f81f8be286a02575656008ff9e5f95"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/_generated/root_catalog.py",
+          "state": "present",
+          "sha256": "cc987e4bfbe14b6fa18e6b3b9ee15b719c5a1bc3a1cf04b0546272e9aa380020"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/_generated/root_manifest.json",
+          "state": "present",
+          "sha256": "39c8aa9639a4594b0cb7463aab125f909616ddac5bca320d01a7981608707887"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/adapters/__init__.py",
+          "state": "present",
+          "sha256": "6e2f44e0d8306eeca6201de29d64e22a96f70e1033a5b337442533a7855b1ab1"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/analytics/__init__.py",
+          "state": "present",
+          "sha256": "1fa1b99529eb07a345f3b29fa8eacafb28ef9be6b3d64e00a42a6509a3bb3668"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/cli/__init__.py",
+          "state": "present",
+          "sha256": "01e31810a2913b48bb66fcf8853426a81a6669fe0a60af623e31b31b329cb20b"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/codec/__init__.py",
+          "state": "present",
+          "sha256": "e959222238d4650601e035149e55ba485b98ea2dc2e4cff609fd82e83dba5e8c"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/codec/reader/__init__.py",
+          "state": "present",
+          "sha256": "61a2d2fe1d9b620aa21766d5e5f96773232e4d18b8fb06973ca62bf96c7c6c21"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "b9ef3615ad9b1ef79c9ead0b4c50aa742399571738484355f48c54f409aacb8f"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/codec/writer/__init__.py",
+          "state": "present",
+          "sha256": "eda0ff7cef8e1ff279030ec7e4e8f9cff2377848fd2dda599aedad3c343de03a"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/codec/writer/writer.py",
+          "state": "present",
+          "sha256": "c097192f33ef828def784410d54dc0f6392c43ddfdf44f6b8776e56625e67344"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/errors.py",
+          "state": "present",
+          "sha256": "794c1af5b850bee18d373817d7a576af99e774b85b528048e130dc6eb01d204c"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/model/__init__.py",
+          "state": "present",
+          "sha256": "12d9e296962bcf2fcc88948f4a507f77d25cbc166ab8a10579d8810192a9f8e0"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/model/document.py",
+          "state": "present",
+          "sha256": "bf0a9d740817ba58a8e1c08cfe921f6bb28201f60269b20670abf1fd2f0bf27f"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/model/root_types.py",
+          "state": "present",
+          "sha256": "6c9b8c43546cfc8d41edee023129e821f0a83277c2ea1c3019537d3d975a87a2"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/py.typed",
+          "state": "present",
+          "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/security/__init__.py",
+          "state": "present",
+          "sha256": "37ef937913af738f29761a33fe0878565564fb0c7c267ff0dc02ae7571b3a7ca"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/security/limits.py",
+          "state": "present",
+          "sha256": "eacfe7121ddee37e7b6df7ee5af4af00ca513c40b91fc14add56f0c60a7dd6d7"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/validation/__init__.py",
+          "state": "present",
+          "sha256": "c9076e87ce3b3acffc7dd64945646d6c2a5c9f1eda034402995a6b5ea3e996a2"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/validation/validator.py",
+          "state": "present",
+          "sha256": "59c976ce6752f6c7d4bd310de85c0b31038748ca6661560a4be862e2acd0bbb6"
+        },
+        {
+          "path": "src/python/ubl/tools/generate_roots.py",
+          "state": "present",
+          "sha256": "4a033e56b77241287610316b0a14cbaf961e3797980c4608666b04e70e599658"
+        },
+        {
+          "path": "tests/python/ubl/fixtures/hostile-extension-entity.xml",
+          "state": "present",
+          "sha256": "6d8b92cff5ed00dd994c7222c1fd92eeda7071f97f22ec913de84d554a88aacd"
+        },
+        {
+          "path": "tests/python/ubl/test_production_namespace.py",
+          "state": "present",
+          "sha256": "518c7558bdc67ee1122d34e664b318926267ea03b88830439ef7b7f5236a9a4f"
+        }
       ],
       "tests": "tests/python/ubl/test_production_namespace.py; tests/python/ubl/"
     },
@@ -42904,9 +43390,18 @@
         "foss_python.safetensors.lazy_path_payload",
         "foss_python.safetensors.borrowed_view_lifetime"
       ],
-      "api_symbols": ["load", "loads", "dumps", "SafeTensorsDocument.tensor_bytes"],
+      "api_symbols": [
+        "load",
+        "loads",
+        "dumps",
+        "SafeTensorsDocument.tensor_bytes"
+      ],
       "source_files": [
-        {"path": "tests/python/safetensors/test_production_namespace.py", "state": "present", "sha256": "360eea9e7abb85bcc2e5c86bdf93d7be3620cc22a12ea6c8936d4c7beb0d2aa1"}
+        {
+          "path": "tests/python/safetensors/test_production_namespace.py",
+          "state": "present",
+          "sha256": "360eea9e7abb85bcc2e5c86bdf93d7be3620cc22a12ea6c8936d4c7beb0d2aa1"
+        }
       ],
       "tests": "tests/python/safetensors/test_production_namespace.py::test_string_metadata_and_path_backed_payload_contract"
     },
@@ -42933,14 +43428,46 @@
         "SafeTensorsDocument.tensor_region"
       ],
       "source_files": [
-        {"path": "src/python/safetensors/README.md", "state": "present", "sha256": "07569a4f582388c3574c8048a301797e23ca02a80c6126eabba6e9ce55c8104c"},
-        {"path": "src/python/safetensors/src/format_factory/safetensors/__init__.py", "state": "present", "sha256": "6c21fb7b921703e92e7194ac89edec3ea820a30992eaabdb5422eb266ada3aea"},
-        {"path": "src/python/safetensors/src/format_factory/safetensors/codec/__init__.py", "state": "present", "sha256": "5277c9508b5a5e1b395c16d8d31e8233c8e386a674b6779711ad25a43a0c249e"},
-        {"path": "src/python/safetensors/src/format_factory/safetensors/codec/reader/__init__.py", "state": "present", "sha256": "20eee1419b47e125dadcff13aa0c2ab0006f2f7aeca0b2ba49ab271f94723006"},
-        {"path": "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py", "state": "present", "sha256": "b82fe1789e221d342af05a82b56ac1e6392e9131a72f1667841fba74f72a3480"},
-        {"path": "src/python/safetensors/src/format_factory/safetensors/model/__init__.py", "state": "present", "sha256": "0b83c45ba09fda6fbf269f83a1818fc2bbc1d96511f1a8003ac685256b233778"},
-        {"path": "src/python/safetensors/src/format_factory/safetensors/model/document.py", "state": "present", "sha256": "dcd8a183d79e8edcf239b1554887ad17599d4ce9805a7780e52c9ccf3de5961f"},
-        {"path": "tests/python/safetensors/test_lazy_io.py", "state": "present", "sha256": "a99394a20847ce1a166241b01dc3fbd9d1de9ee48f7e41064e3cc43f9160be04"}
+        {
+          "path": "src/python/safetensors/README.md",
+          "state": "present",
+          "sha256": "07569a4f582388c3574c8048a301797e23ca02a80c6126eabba6e9ce55c8104c"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/__init__.py",
+          "state": "present",
+          "sha256": "6c21fb7b921703e92e7194ac89edec3ea820a30992eaabdb5422eb266ada3aea"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/codec/__init__.py",
+          "state": "present",
+          "sha256": "5277c9508b5a5e1b395c16d8d31e8233c8e386a674b6779711ad25a43a0c249e"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/codec/reader/__init__.py",
+          "state": "present",
+          "sha256": "20eee1419b47e125dadcff13aa0c2ab0006f2f7aeca0b2ba49ab271f94723006"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "b82fe1789e221d342af05a82b56ac1e6392e9131a72f1667841fba74f72a3480"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/model/__init__.py",
+          "state": "present",
+          "sha256": "0b83c45ba09fda6fbf269f83a1818fc2bbc1d96511f1a8003ac685256b233778"
+        },
+        {
+          "path": "src/python/safetensors/src/format_factory/safetensors/model/document.py",
+          "state": "present",
+          "sha256": "dcd8a183d79e8edcf239b1554887ad17599d4ce9805a7780e52c9ccf3de5961f"
+        },
+        {
+          "path": "tests/python/safetensors/test_lazy_io.py",
+          "state": "present",
+          "sha256": "a99394a20847ce1a166241b01dc3fbd9d1de9ee48f7e41064e3cc43f9160be04"
+        }
       ],
       "tests": "tests/python/safetensors/test_lazy_io.py; tests/python/safetensors/"
     },
@@ -44167,6 +44694,38 @@
       "validation_command": "PYTHONPATH=src/python/core/src;src/python/xliff/src .venv/Scripts/python.exe -m pytest tests/python/xliff -q",
       "result": "190 passed",
       "rollback": "Remove the advanced-state target diagnostic and its focused tests, then remove this ledger entry."
+    },
+    {
+      "entry_id": "FF6-NRRD-ARRAY-MEASUREMENT-RECOVERY-DOCS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "nrrd-certification-gate-freshening-phase-4",
+      "capability": "NRRD-ARRAY-001",
+      "capability_refs": [
+        "NRRD-ARRAY-001",
+        "NRRD-FRAME-001"
+      ],
+      "api_symbols": [
+        "format_factory.nrrd.array_view",
+        "format_factory.nrrd.build_measurement_frame_transform",
+        "format_factory.nrrd.load"
+      ],
+      "product": "NRRD Python production package",
+      "format": "NRRD",
+      "test_delta": "Documentation-only change (README.md) closing a genuine gap: array_view/measurement_frame/recovery-mode public API (all already implemented and tested earlier this session) had zero prior README coverage. No production or test source modified; existing suite unaffected.",
+      "git_head": "393f4580b",
+      "skill": "product-source-task",
+      "task_id": "TC_FF6_NRRD_ARRAY_MEASUREMENT_RECOVERY_DOCS_001",
+      "source_files": [
+        {
+          "path": "src/python/nrrd/README.md",
+          "state": "present",
+          "sha256": "6f215dfc88f6268ec296b8fe1ef9096909dd61611c0d80883fbb1c9adafc9623"
+        }
+      ],
+      "test_files": [],
+      "validation_command": ".venv/Scripts/pytest tests/python/nrrd/ -q",
+      "result": "962 passed, 1 skipped (unchanged from pre-task baseline)",
+      "rollback": "Revert the three new README sections (Measurement frame transforms, Typed array view, Recovery mode) and this ledger entry."
     }
   ],
   "total_entries": 2782,
@@ -44380,15 +44939,40 @@
       "task_id": "AUTO-NRRD-IMPLEMENT-NRRD-TYPES-001",
       "product": "Nearly Raw Raster Data Python production package",
       "format": "NRRD",
-      "capability_refs": ["NRRD-TYPES-001"],
-      "api_symbols": ["parse_block_size", "is_block_type", "encode_binary", "decode_binary"],
-      "source_files": [
-        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/payload.py", "state": "present", "sha256": "68a0b92c89982ba7ff04ddd804d80a7df1068c919c4069fc0e4e18570eb54ff8"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py", "state": "present", "sha256": "dadd98a328bf3cfa1b3e8cff39e6ed9eadacb1d8ba61a8a1c0de3376536d4455"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py", "state": "present", "sha256": "9e0ab540e46dd0117c98f52de7540a5ab0cf6dda24f5c56a49bede43f8af5bf4"},
-        {"path": "src/python/nrrd/src/format_factory/nrrd/validation/validator.py", "state": "present", "sha256": "3f564315c16236801347f40b38eb0e3681135039cfb8ae76903c0a19a6372ec1"}
+      "capability_refs": [
+        "NRRD-TYPES-001"
       ],
-      "test_files": ["tests/python/nrrd/test_production_namespace.py"],
+      "api_symbols": [
+        "parse_block_size",
+        "is_block_type",
+        "encode_binary",
+        "decode_binary"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/codec/payload.py",
+          "state": "present",
+          "sha256": "68a0b92c89982ba7ff04ddd804d80a7df1068c919c4069fc0e4e18570eb54ff8"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+          "state": "present",
+          "sha256": "dadd98a328bf3cfa1b3e8cff39e6ed9eadacb1d8ba61a8a1c0de3376536d4455"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py",
+          "state": "present",
+          "sha256": "9e0ab540e46dd0117c98f52de7540a5ab0cf6dda24f5c56a49bede43f8af5bf4"
+        },
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+          "state": "present",
+          "sha256": "3f564315c16236801347f40b38eb0e3681135039cfb8ae76903c0a19a6372ec1"
+        }
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_production_namespace.py"
+      ],
       "validation_command": "package-install-proof plus installed-wheel type/block tests",
       "result": "276 source tests; 41 installed-wheel targeted tests; package proof PASS",
       "rollback": "Revert this bounded NRRD type implementation and remove this ledger entry."
@@ -44401,10 +44985,22 @@
       "task_id": "AUTO-NRRD-IMPLEMENT-NRRD-VALIDATE-001",
       "product": "Nearly Raw Raster Data Python production package",
       "format": "NRRD",
-      "capability_refs": ["NRRD-VALIDATE-001"],
-      "api_symbols": ["validate"],
-      "source_files": [{"path": "src/python/nrrd/src/format_factory/nrrd/validation/validator.py", "state": "present", "sha256": "8185f66164905d7a10d679be52ddcc79ef375f1d4ef8391b21ec44fb5491684f"}],
-      "test_files": ["tests/python/nrrd/test_production_namespace.py"],
+      "capability_refs": [
+        "NRRD-VALIDATE-001"
+      ],
+      "api_symbols": [
+        "validate"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/nrrd/src/format_factory/nrrd/validation/validator.py",
+          "state": "present",
+          "sha256": "8185f66164905d7a10d679be52ddcc79ef375f1d4ef8391b21ec44fb5491684f"
+        }
+      ],
+      "test_files": [
+        "tests/python/nrrd/test_production_namespace.py"
+      ],
       "validation_command": "277 source tests; clean wheel and installed validation test",
       "result": "PASS",
       "rollback": "Revert decoded-payload length validation and this ledger entry."

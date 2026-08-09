@@ -13,9 +13,10 @@
   "prior_art": "NRRD-SEC-001's own 4 obligations (resolver policy confinement, hostile-content opacity, configurable limits with checked arithmetic) already have a substantial, pre-existing dedicated test file: tests/python/nrrd/test_obligation_security_baseline.py. That file's own forbidden-module sweep is already broader than the minimal set used for xliff/ora (it also blocks importlib entirely, not just a dynamic-import CALL). This gate adds the one narrow gap that sweep cannot see: bare eval/exec/compile/__import__ builtin calls, which import-based AST scanning does not detect.",
   "new_tests": "tests/python/nrrd/test_obligation_security_eval_exec_sweep.py (2 tests, all new -- a separate file from the pre-existing test_obligation_security_baseline.py, not a modification of it, following the exact recovery discipline established during ora's own security-gate tick)",
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the security invariant only, not a certification claim for the format as a whole.",
+  "re_run_this_tick": "Stale regression numbers relative to HEAD (source itself unaffected -- both this gate's own test files still pass unchanged). Re-ran all 10 tests across both files fresh: identical PASS result. Regression numbers below refreshed to reflect nrrd's own current suite size after this session's own obligation-closure work (all test-only; array_view.py/measurement_frame.py/space.py's own new typed accessors and the recovery-mode feature grew the suite further).",
   "regression": {
-    "nrrd_suite": "675 passed (was 673, +2)",
-    "six_format_suite": "3938 passed, 4 skipped, 0 failed"
+    "nrrd_suite": "962 passed, 1 skipped (was 675; +287 net across this session's own work, unrelated to this gate's own 10 tests, which are unchanged)",
+    "six_format_suite": "4363 passed, 4 skipped, 0 failed"
   },
   "commit": "pending"
 }

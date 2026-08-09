@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-array-measurement-recovery-docs-001",
+  "skill_id": "product-source-task",
+  "manifest_id": "sfx-f6deefe5c1163e34",
+  "mode": "live",
+  "timestamp": "2026-08-09T00:00:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC_FF6_NRRD_ARRAY_MEASUREMENT_RECOVERY_DOCS_001",
+    "task_kind": "defect",
+    "root_cause": "While freshening nrrd's certification gates (Phase 4 of this session's own gate-freshening sweep, distinct from the earlier obligation-closure work), documentation-gate.json was found to predate three modules added earlier this same session: model/array_view.py (NRRD-ARRAY-001), measurement_frame.py (NRRD-FRAME-001), and the recovery-mode load()/loads() parameter. grep -n \"^#|array_view|measurement_frame|MeasurementFrame|recovery_actions|mode=.recovery\" src/python/nrrd/README.md returned zero matches for any of these symbols -- a real, complete documentation gap for three shipped, tested, exported public capabilities, not merely a thin or stale mention.",
+    "obligation_targeted": "No specific obligation-register status change (this closes a gap in the documentation completion-invariant gate itself, product-goal.yaml invariant #4) -- matches the precedent already established this session for product-source-task-nrrd-with-array-axis-order-docs-001, product-source-task-nrrd-readme-read-header-docs-001, and product-source-task-nrrd-dump-detached-docs-001.",
+    "planned_paths": ["src/python/nrrd/README.md", "reports/certification/nrrd/documentation-gate.json"],
+    "input_digests": {"src/python/nrrd/README.md": "sha256:6f215dfc88f6268ec296b8fe1ef9096909dd61611c0d80883fbb1c9adafc9623"},
+    "regression_tier": "format (nrrd full suite only -- documentation-only change, no source or test file modified, six-format cross-suite not required)",
+    "acceptance_evidence": "Read array_view.py, measurement_frame.py, and reader.py's load()/loads() mode parameter in full before writing any documentation. Verified every new README code example end-to-end against real, freshly constructed NRRD data (not merely signature-inspected): (1) a NRRD0005 document with a real 'measurement frame' header field, loaded via load(), then build_measurement_frame_transform(measurement_frame=document.header['measurement frame'], space_dimension=3).measurement_to_world((1.0,0.0,0.0)) correctly returned (1.0,0.0,0.0) for an identity frame; (2) array_view()/.crop()/.flip()/.permute()/.copy() run against a real 2x3 int8 view -- confirmed shape=(2,3), strides=(1,2), flip negates strides, and only .copy() sets copied=True; (3) load(data, mode='recovery') against a raw payload with 3 excess trailing bytes beyond its declared 6-byte shape correctly reported recovery_actions=('raw payload had 3 extra trailing byte(s) beyond the declared 6-byte shape; discarded',), and the identical data under mode='strict' correctly raised ResourceLimitError instead of silently recovering. All referenced symbols (array_view, NrrdArrayView, AxisMetadata, NrrdDtype, build_measurement_frame_transform, MeasurementFrameTransform, load, get_array) confirmed present on the installed format_factory.nrrd module via hasattr."
+  },
+  "execution_steps": [
+    "1. Read the full existing documentation-gate.json to understand this gate's own established discipline (verify end-to-end against real corpus/API, disclose honest gaps rather than claim blanket PASS) before touching anything.",
+    "2. Confirmed README.md's 11 existing section headers and grepped for array_view/measurement_frame/MeasurementFrame/recovery_actions/mode=\"recovery\": zero matches anywhere in the file.",
+    "3. Read model/array_view.py in full (NrrdArrayView, AxisMetadata, NrrdDtype, array_view()) -- confirmed zero-copy semantics for slicing/.transpose()/.permute()/.flip()/.crop(), with .copy() the sole materializing operation, and per-axis metadata (kind/label/unit/spacing/axis min-max/center/thickness/space_direction) following every operation.",
+    "4. Read measurement_frame.py in full -- confirmed MeasurementFrameTransform is deliberately a pure linear map (no origin term), distinct from space.py's own affine SpaceTransform, per SAL-NRRD-OBL-666DA3540EE4E38D's own explicit separation instruction.",
+    "5. Read codec/reader/reader.py's load()/loads() mode parameter and the recovery_actions field on NrrdDocument -- confirmed 'recovery' mode's only current behavior is truncating excess trailing bytes on a raw-encoded payload beyond its declared shape, always reported on recovery_actions, never silent; a payload SHORTER than declared stays rejected in every mode.",
+    "6. Wrote and executed a standalone verification script (not committed) constructing real NRRD0004/NRRD0005 byte payloads by hand and calling load()/array_view()/build_measurement_frame_transform() against them -- all three new capabilities behaved exactly as the source code and its own docstrings describe; no discrepancy found.",
+    "7. Added three new README sections grounded directly in the verified behavior: 'Measurement frame transforms' (after 'Space transforms', since it is the closely related but distinct NRRD0005 concept), 'Typed array view' (after 'Measurement frame transforms', before 'Preservation and array access' which covers the older untyped get_array()/with_array() path), and 'Recovery mode' (before 'Security and resource limits', since it is a load()-time tolerance option).",
+    "8. Re-executed the exact, final README code blocks (not a paraphrase) end-to-end one more time after writing them, confirming byte-for-byte identical results to step 6.",
+    "9. Confirmed all new imports (array_view, build_measurement_frame_transform, NrrdArrayView, AxisMetadata, NrrdDtype, MeasurementFrameTransform) resolve on the installed format_factory.nrrd namespace via hasattr.",
+    "10. Regenerated reports/certification/nrrd/documentation-gate.json: readme_line_count 229->303, readme_sections list extended to 14, new checks_performed_this_tick entry disclosing the confirmed gap and its fix, honest_gap and re_run_this_tick updated, regression numbers refreshed from stale 675 to current 962 passed/1 skipped.",
+    "11. Did not modify any production source code -- array_view.py/measurement_frame.py/the recovery-mode parameter already existed, fully implemented and already tested by the existing suite; this task is purely a documentation-completeness fix plus its own supporting gate-evidence regeneration.",
+    "12. Ran the full nrrd suite (.venv/Scripts/pytest tests/python/nrrd/ -q) to confirm the README-only change caused zero regressions: 962 passed, 1 skipped, matching the pre-change baseline exactly."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/README.md",
+    "reports/certification/nrrd/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/README.md",
+    "reports/certification/nrrd/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: build_measurement_frame_transform/measurement_to_world against a real identity measurement frame; array_view()/.crop()/.flip()/.permute()/.copy() against a real 2x3 int8 view; load(mode='recovery') vs load(mode='strict') against a raw payload with 3 excess trailing bytes -- all three example code blocks re-run verbatim as published, byte-for-byte matching the pre-publication verification run",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q -- 962 passed, 1 skipped (unchanged from pre-task baseline; documentation-only change, no production or test source modified)"
+  ],
+  "ledger_entry_id": "FF6-NRRD-ARRAY-MEASUREMENT-RECOVERY-DOCS-001",
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Closed a genuine documentation-completeness gap for three already-implemented, already-exported, real capabilities (array_view/NrrdArrayView, MeasurementFrameTransform/build_measurement_frame_transform, recovery-mode load()) that had zero prior README coverage -- no obligation-register status change (nrrd remains at 0/65 unresolved from Event 493, unaffected by this documentation-only task), but a real developer-discoverability improvement to the documentation completion-invariant gate.",
+    "controller_event_effect": "pending",
+    "certification_state": "3/6 (ipynb, xliff, safetensors CERTIFIED per Event 467; ora/nrrd/ubl remain uncertified -- promotion.* untouched by this task, no fresh explicit user authorization exists this session for nrrd or any other format)",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "none -- documents existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

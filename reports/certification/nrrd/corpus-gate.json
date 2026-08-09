@@ -16,5 +16,6 @@
   },
   "corpus_composition": "Entirely project-owned-synthetic -- no official upstream NRRD test corpus was sourced. This is an honest scope note, not a hidden gap: the NRRD reference ecosystem (teem/Slicer) does not ship a small, redistributable test-fixture corpus in a form this repository has acquired, so self-generated deterministic fixtures are the practical alternative, the same choice already disclosed in this format's own provenance file.",
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file consolidates already-existing, independently re-verified corpus provenance into a dedicated gate record; not a certification claim for the format as a whole.",
+  "re_run_this_tick": "Re-verified fresh against the current reader (post this session's own array_view.py/measurement_frame.py/space.py/recovery-mode source growth, all unrelated to corpus loading): all 3 valid samples (1D int8, 2D float32, gzip-encoded) load cleanly via format_factory.nrrd.load(); the invalid sample is still correctly refused with NrrdParseError('invalid NRRD magic'). No change in corpus composition or hashes.",
   "commit": "pending"
 }

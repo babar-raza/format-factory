@@ -158,6 +158,56 @@ Parses NRRD's own `space directions`/`space origin` header fields (the
 axis-to-physical-space mapping used by medical imaging tools) into a
 typed `SpaceTransform`.
 
+## Measurement frame transforms
+
+```python
+from format_factory.nrrd import build_measurement_frame_transform
+
+transform = build_measurement_frame_transform(
+    measurement_frame=document.header["measurement frame"],
+    space_dimension=3,
+)
+world_vector = transform.measurement_to_world((1.0, 0.0, 0.0))
+```
+
+A NRRD0005+ `measurement frame` is a separate, distinct concept from the
+`space directions`/`space origin` transform above: it maps the
+*coefficients* of a vector or tensor quantity (for example, a diffusion
+gradient direction) into world space, not array-index positions. It is
+therefore a pure linear map -- `MeasurementFrameTransform` carries no
+origin term at all, unlike `SpaceTransform`. `build_measurement_frame_transform()`
+requires exactly `space_dimension` column vectors, each with exactly
+`space_dimension` components, and rejects a `"none"` entry (there is no
+per-axis concept for this field).
+
+## Typed array view
+
+```python
+from format_factory.nrrd import array_view, get_array
+
+view = array_view(document)  # NrrdArrayView -- shape/strides/dtype, zero-copy
+print(view.shape, view.strides, view.dtype)
+
+cropped = view.crop((0, 1), (0, 2))    # zero-copy, shares the same backing data
+flipped = view.flip(axis=0)            # zero-copy; strides negate, axis metadata updates
+permuted = view.permute((1, 0))        # zero-copy axis reorder
+materialized = cropped.copy()          # the only operation that copies data
+```
+
+`array_view()` returns a lightweight, dependency-free (no numpy) typed
+view over a document's decoded elements, distinct from the untyped
+`get_array()` nested-list result above. Slicing (`view[...]`),
+`.transpose()`/`.permute()`, `.flip()`, and `.crop()` are all zero-copy:
+each returns a new `NrrdArrayView` sharing the same immutable backing
+data, recomputing only shape/strides/offset and per-axis metadata
+(`view.axes` -- kind, label, unit, spacing, axis min/max, center,
+thickness, and any per-axis space direction). Per-axis metadata follows
+every operation: a flipped axis has its min/max swapped and its space
+direction (if any) negated; a "range"-kind axis (for example, a
+fixed-width 3-color channel axis) refuses a slice or crop that would
+change its own declared size. Only `.copy()` materializes an independent
+copy of the data.
+
 ## Preservation and array access
 
 ```python
@@ -196,6 +246,30 @@ print(report.strides, report.nesting_order)
 `with_array()` use, callable independently of any array's own values --
 useful for a caller who wants to know which NRRD axis a given nesting
 depth corresponds to without performing a conversion.
+
+## Recovery mode
+
+```python
+from format_factory.nrrd import load
+
+document = load("volume.nrrd", mode="recovery")
+if document.recovery_actions:
+    for action in document.recovery_actions:
+        print(action)
+```
+
+`load()`/`loads()` accept a `mode` of `"strict"` (default), `"preservation"`,
+or `"recovery"`. `"recovery"` is a tolerant read that recovers where the
+format genuinely permits it -- for example, a raw-encoded payload with
+extra trailing bytes beyond its declared shape is truncated to the
+declared size rather than rejected, since excess trailing bytes can never
+be part of any declared element. Every recovery action taken is reported
+on the returned document's own `recovery_actions` tuple (empty when
+nothing needed recovering), never silently applied. A payload SHORTER
+than declared is still rejected in every mode -- there is no safe way to
+invent missing bytes -- and every other resource-limit and
+structural-validity check still applies unchanged; `"recovery"` only
+widens the one specific, spec-safe case above.
 
 ## Security and resource limits
 
