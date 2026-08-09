@@ -1,0 +1,66 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-measurement-frame-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-2150973bbec2cca6",
+  "mode": "live",
+  "timestamp": "2026-08-09T11:38:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC-FF6-NRRD-MEASUREMENT-FRAME-001",
+    "task_kind": "build-a-genuine-shared-root-cause-capability-cited-by-4-obligations",
+    "root_cause": "Following the prior tick's own exact_next_action, did a dedicated scoping pass over nrrd's 7 remaining unresolved obligations. Found 4 of them (2 NRRD-FRAME-001, 1 NRRD-SPACE-001 partial, 1 NRRD-SPACE-001 preservation_only) all cite the same missing capability: the NRRD0005 'measurement frame' field had no typed parser, no cardinality validation, no measurement-to-world transform, and no read-time version gate -- only a version-requirement trigger existed (NrrdDocument.version_requirements() bumping to NRRD0005 when the field is present). Confirmed directly against the pinned spec's own Section 4 text before writing any code (not assumed from general NRRD/DICOM knowledge).",
+    "obligation_targeted": "SAL-NRRD-OBL-818E52E28F996024 and SAL-NRRD-OBL-BAAE59FC398A9D6C (both NRRD-FRAME-001) closed for the capability itself; SAL-NRRD-OBL-666DA3540EE4E38D and SAL-NRRD-OBL-C853EB5591524EF9 (both NRRD-SPACE-001) narrowed, since their own missing_behavior named this same gap alongside other, still-open items.",
+    "acceptance_evidence": "Built measurement_frame.py as a deliberately SEPARATE module from space.py (a sibling obligation's own explicit 'keep NRRD0005 measurement-frame transforms in a separate model and API' instruction, confirmed directly in the SAL register, not assumed): MeasurementFrameTransform (space_dimension, columns, .measurement_to_world()) and build_measurement_frame_transform(), reusing space.py's own parse_space_directions() for the identical (v0,v1,...) vector syntax rather than duplicating a parser, but enforcing EXACTLY space_dimension vectors (the obligation's own literal wording) and rejecting 'none' entries (measurement frame has no per-axis concept, unlike space directions). The transform is a pure linear map with no origin term, confirmed directly against the spec text ('the matrix transforms... coordinates in the measurement frame to coordinates in world space', no translation mentioned), distinct from SpaceTransform.index_to_world's own affine map. Added the read-time NRRD0005 version gate to reader.py's own _load(), mirroring the exact precedent already established for LIST/printf multi-file declarations under a pre-NRRD0004 magic (NRRD-MULTIFILE-001, this same session) -- confirmed the field was genuinely unenforced at read time before this fix (only the separate, opt-in validate() call caught it)."
+  },
+  "execution_steps": [
+    "1. After committing and eventing the cell-node-crop-centers fix (FF6-EVENT-000477), read all 7 of nrrd's remaining unresolved obligations' own missing_behavior text fresh, per that event's own exact_next_action.",
+    "2. Noticed 4 of the 7 obligations named the same underlying gap (measurement frame) in different words; pulled each one's own SAL register rule_text/required_tests/release_gates directly (not the implementation-evidence paraphrase) to confirm this was a real, shared, spec-grounded root cause rather than a coincidental phrasing overlap -- confirmed: all 4 point at the same NRRD0005 'measurement frame' field and its transform.",
+    "3. Located and read the pinned NRRD spec's own 'measurement frame' section directly from the raw acquisition cache (.local/format-contracts/acquired/nrrd/src-nrrd-001.bin) before writing any code: confirmed it is a basic (per-array, not per-axis) field, a spaceDim-by-spaceDim matrix given one column per vector, transforming measurement-frame coordinates to world-space coordinates with NO origin/translation term -- a genuinely different transform shape from SpaceTransform.index_to_world's own affine map.",
+    "4. Read space.py's own existing SpaceTransform/build_space_transform implementation in full to understand the established parsing/validation/transform conventions (parse_space_directions' own (v0,v1,...) syntax, the NrrdParseError refusal style, frozen dataclass shape) before designing measurement_frame.py, so the new module matches the codebase's own established idiom rather than inventing a new one.",
+    "5. Confirmed directly, by reading reader.py, that build_space_transform-style functions are caller-facing utilities operating on raw header-field strings, never automatically wired into _load() -- mirrored this exactly for build_measurement_frame_transform, keeping the change additive and minimal.",
+    "6. Implemented measurement_frame.py, reusing parse_space_directions() directly (no duplicated parser) but adding the obligation's own literal cardinality requirement (exactly space_dimension vectors) and rejecting 'none' entries, which space_directions permits but measurement frame's own per-array (not per-axis) nature forbids.",
+    "7. Smoke-tested interactively before writing any formal test: an identity matrix, a hand-verified 90-degree rotation (two independent coordinate checks), a cardinality-mismatch refusal, and a none-entry refusal -- all matched expectations on the first attempt.",
+    "8. Added the read-time NRRD0005 version gate to reader.py's own _load(), placed immediately after header parsing (before any other processing), matching the exact placement and prose style already used for the LIST/printf pre-NRRD0004 gate elsewhere in the same function.",
+    "9. Wired measurement_frame.py's two public symbols into the top-level __init__.py, in the same import-block/__all__-list style already used for space.py's own exports (which live at the same package-root level, not under model/).",
+    "10. Wrote 15 tests (tests/python/nrrd/test_obligation_measurement_frame.py): identity/rotated/non-orthogonal frame fixtures (this obligation's own required_tests wording, taken literally), a no-origin-field structural check, 4 cardinality/shape negative cases, and a parametrized NRRD0001-NRRD0004 read-time-rejection negative (also this obligation's own required_tests wording). All 15 passed on the first formal test run.",
+    "11. Ran ruff check and mypy --strict against every changed source file: both clean on the first run.",
+    "12. Ran the full nrrd suite (923 passed, 1 pre-existing unrelated skip, up from 908) and the 6-format FF6 regression (4311 passed, 4 skipped, up from 4296) -- exact +15 delta in both, no regressions.",
+    "13. Ran the installed-wheel proof (tools/run_package_install_proof.py --format nrrd, 1/1 PASS) and independently re-verified both the rotated-frame transform and the read-time version-gate rejection directly from the installed, non-editable site-packages path."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/measurement_frame.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_measurement_frame.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/measurement_frame.py",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "tests/python/nrrd/test_obligation_measurement_frame.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_measurement_frame.py -v -- 15 passed (0 failures, correct on the first formal test run after the interactive spike)",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q --timeout=120 -- 923 passed, 1 skipped (was 908)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4311 passed, 4 skipped (was 4296)",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/measurement_frame.py src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py src/python/nrrd/src/format_factory/nrrd/__init__.py tests/python/nrrd/test_obligation_measurement_frame.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/measurement_frame.py src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py src/python/nrrd/src/format_factory/nrrd/__init__.py -- Success: no issues found in 3 source files",
+    "python tools/run_package_install_proof.py --format nrrd -- RESULT: 1/1 PASS; measurement-to-world transform and the read-time version gate both independently re-exercised from the installed, non-editable wheel's own site-packages path"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations (SAL-NRRD-OBL-818E52E28F996024, SAL-NRRD-OBL-BAAE59FC398A9D6C, both NRRD-FRAME-001) close for the capability this slice built. 2 further obligations (SAL-NRRD-OBL-666DA3540EE4E38D, SAL-NRRD-OBL-C853EB5591524EF9, both NRRD-SPACE-001) narrow, since their own missing_behavior named this gap alongside other still-open items (a real DICOM-derived fixture, and other typed space-dimension/units/origin/directions modeling for the preservation_only sibling).",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); nrrd remains UNASSESSED",
+    "obligations_moved": 2,
+    "obligations_narrowed": 2,
+    "obligations_total_for_format": 65,
+    "new_public_api": "format_factory.nrrd.MeasurementFrameTransform, format_factory.nrrd.build_measurement_frame_transform"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

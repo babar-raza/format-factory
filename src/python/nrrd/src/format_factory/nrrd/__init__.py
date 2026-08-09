@@ -47,6 +47,10 @@ from .convert import (
     convert_to_detached_printf,
 )
 from .errors import NrrdArrayError, NrrdError, NrrdParseError, NrrdWriteError
+from .measurement_frame import (
+    MeasurementFrameTransform,
+    build_measurement_frame_transform,
+)
 from .space import (
     SpaceTransform,
     build_space_transform,
@@ -76,6 +80,7 @@ __all__ = [
     "AxisMetadata",
     "AxisOrderReport",
     "ConversionReport", "DOMAIN_KINDS", "EncodingConversionReport",
+    "MeasurementFrameTransform",
     "NRRD_DEFAULT_LIMITS", "NrrdArrayError", "NrrdArrayView", "NrrdDocument", "NrrdDtype",
     "NrrdError", "NrrdHeader", "NrrdLazyPayload", "NrrdParseError",
     "NrrdWriteError", "OverflowPolicy", "PayloadAccess", "PayloadAccessMode",
@@ -84,7 +89,8 @@ __all__ = [
     "array_view",
     "available_encodings",
     "axis_order_report",
-    "axis_sizes", "build_space_transform", "convert_dtype", "convert_encoding",
+    "axis_sizes", "build_measurement_frame_transform", "build_space_transform",
+    "convert_dtype", "convert_encoding",
     "convert_endian", "convert_to_attached", "convert_to_detached_list",
     "convert_to_detached_printf",
     "decode_nrrd_data", "dump", "dump_detached", "dump_multifile", "dump_multifile_printf",

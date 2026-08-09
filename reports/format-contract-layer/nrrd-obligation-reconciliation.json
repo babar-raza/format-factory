@@ -178,6 +178,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Narrows (strengthens, does not change the already-partial status of) SAL-NRRD-OBL-807586E5B4D0EDB2 (NRRD-MULTIFILE-001). Found by applying the same cross-format resource-limit comparison technique that closed the equivalent xliff and ora obligations at events 247-248: this obligation's own rule_text explicitly requires \"file count... before allocation\" validated for both numbered sequences and LIST payloads, and _safe_detached_payload's printf branch already checked file_count against limits.max_entries -- but the LIST branch, which builds its own names list from the header text with no equivalent check, did not. Confirmed as a genuine, exploitable gap by direct probing before any fix: a header declaring 200 LIST file names loaded successfully even with max_entries=64 explicitly configured. Fixed by adding the identical len(names) > limits.max_entries check to the LIST branch, matching the printf branch's exact message style and its check-before-any-file-is-opened discipline. Verified zero false positives against the entire pre-existing 569-test nrrd suite before writing a single new test. 2 new tests (tests/python/nrrd/test_obligation_detached_forms_production.py) prove: a LIST declaring more names than max_entries is refused before any file is opened, and a LIST safely within the limit still loads correctly. nrrd suite: 569 -> 571 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, the fix grounded directly in this obligation's own rule_text and its already-proven printf-branch sibling check. Covers SAL-NRRD-OBL-807586E5B4D0EDB2 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-MEASUREMENT-FRAME-PROOF",
+      "expected_result": "PASS",
+      "granularity": "suite",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-measurement-frame-001.json",
+      "sha256": "dc2a75b370cc786b55048fce4a912d51b12ae86de61e7e89f8fca38f7c4310a8",
+      "truth_boundary": "Builds measurement_frame.py, the NRRD0005 \"measurement frame\" transform 4 unresolved obligations (2 NRRD-FRAME-001, 2 NRRD-SPACE-001) each named as a missing capability in different words -- confirmed to be the same genuine shared root cause by reading each one's own SAL register rule_text directly, not assumed from the implementation-evidence paraphrase. Deliberately a SEPARATE module from space.py (SAL-NRRD-OBL-666DA3540EE4E38D's own explicit \"keep NRRD0005 measurement-frame transforms in a separate model and API\" instruction), grounded directly in the pinned spec's own Section 4 text: a measurement frame is a basic (per-array) field identifying a spaceDim-by -spaceDim matrix, one column per vector, transforming measurement-frame coordinates to world-space coordinates with NO origin term -- a genuinely different transform shape from SpaceTransform.index_to_world's own affine map. build_measurement_frame_transform() reuses space.py's own parse_space_directions() directly (no duplicated parser) but enforces EXACTLY space_dimension vectors (this obligation's own literal wording) and rejects \"none\" entries, which space_directions permits but a measurement frame's own per-array (not per-axis) nature forbids. A read-time NRRD0005 version gate was added to reader.py's own _load(), mirroring the exact precedent already established for LIST/printf multi-file declarations under a pre-NRRD0004 magic (NRRD-MULTIFILE-001, this same session) -- confirmed genuinely unenforced at read time before this fix, the same way that prior gap was. 15 new tests (tests/python/nrrd/test_obligation_measurement_frame.py): identity/rotated/non-orthogonal frame fixtures (rotated hand-verified independently via two separate coordinate checks), a no-origin-field structural check, cardinality/component-count/malformed-vector/none-entry negative cases, a wrong-arity call-site negative, and a parametrized NRRD0001-NRRD0004 read-time-rejection negative across all 4 older magics -- this obligation's own required_tests wording (\"Identity, rotated, and non-orthogonal frame fixtures; cardinality and NRRD0001-NRRD0004 rejection negatives\") matched literally, not approximated. nrrd suite: 908 -> 923 passed (1 pre-existing unrelated skip). 6-format FF6 regression: 4296 -> 4311 passed, 4 skipped. mypy --strict and ruff clean. Installed-wheel behavior independently re-verified: the rotated-frame transform and the read-time version-gate rejection were both exercised directly from the installed, non-editable site-packages path. Closes SAL-NRRD-OBL-818E52E28F996024 and SAL-NRRD-OBL-BAAE59FC398A9D6C (both NRRD-FRAME-001) in full -- every item each obligation's own missing_behavior named (typed vectors, arity validation, profile gate, transform API) is now built and tested, matching each obligation's own release_gates (\"Measurement-frame math and NRRD0005-only applicability are independently proven\"); both promoted to implemented. Narrows SAL-NRRD-OBL-666DA3540EE4E38D and SAL-NRRD-OBL-C853EB5591524EF9 (both NRRD-SPACE-001) further; NEITHER promoted -- the first still lacks a real DICOM-derived fixture (only synthetic fixtures used here), and the second still lacks typed space dimension/units/origin/directions/version gates for the NRRD0004 space fields themselves, which this slice did not attempt."
+    },
+    {
       "evidence_id": "NRRD-MULTIFILE-LIST-SUBDIM-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -277,7 +285,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "cb7e3427c05f30aa3be9f8af0061bef735493511626b206293aa6b0506554a92",
+    "implementation_evidence": "d5441a29606471fac97f39c6690ec57d06437dd1f1811a0b2ede5f42a8e265e1",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1424,13 +1432,15 @@
     {
       "capability_id": "NRRD-SPACE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-MEASUREMENT-FRAME-PROOF"
       ],
       "implemented_behavior": [
-        "build_space_transform() validates space directions/origin/dimension for mutual consistency and builds a working index-to-world affine transform (SpaceTransform.index_to_world). Non-spatial axes (marked \"none\") are excluded from the spatial-axis set and contribute nothing to the transform. Space dimension is always derived only from explicit data present (space dimension field, origin length, or spatial direction-vector lengths) -- the optional \"space\" field name, when given, is used only to cross-CHECK Teem's own fixed dimension for a recognized standard name against that already-derived result; it never supplies or overrides the dimension, and axis order is never inferred from it (see SAL-NRRD-OBL-D7B962F3981120A7's own implemented_behavior for the cross-check detail)."
+        "build_space_transform() validates space directions/origin/dimension for mutual consistency and builds a working index-to-world affine transform (SpaceTransform.index_to_world). Non-spatial axes (marked \"none\") are excluded from the spatial-axis set and contribute nothing to the transform. Space dimension is always derived only from explicit data present (space dimension field, origin length, or spatial direction-vector lengths) -- the optional \"space\" field name, when given, is used only to cross-CHECK Teem's own fixed dimension for a recognized standard name against that already-derived result; it never supplies or overrides the dimension, and axis order is never inferred from it (see SAL-NRRD-OBL-D7B962F3981120A7's own implemented_behavior for the cross-check detail).",
+        "FF6-EVENT-000478: the measurement-to-world transform this obligation's own missing_behavior named is now built, in a deliberately SEPARATE module (measurement_frame.py) per this obligation's own explicit instruction -- see SAL-NRRD-OBL-818E52E28F996024's own implemented_behavior for the full account."
       ],
       "missing_behavior": [
-        "Measurement-to-world (NRRD0005 measurement frame) transforms remain unimplemented -- deliberately kept as a separate, unbuilt capability per the obligation's own instruction to keep it distinct from the NRRD0004 index-to-world transform. No test fixture derived from an actual known medical-orientation dataset (e.g. a real DICOM-derived NRRD) has been run against this transform; all fixtures here are synthetic."
+        "No test fixture derived from an actual known medical-orientation dataset (e.g. a real DICOM-derived NRRD) has been run against the now-built measurement-to-world transform; all fixtures used to prove it remain synthetic."
       ],
       "negative_test_selectors": [
         "tests/python/nrrd/test_obligation_space_transform.py::test_origin_length_inconsistent_with_direction_vectors_is_rejected",
@@ -1778,18 +1788,29 @@
     {
       "capability_id": "NRRD-FRAME-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-MEASUREMENT-FRAME-PROOF"
       ],
       "implemented_behavior": [
-        "Measurement-frame text can survive as an unknown/raw header field."
+        "FF6-EVENT-000478: measurement_frame.py (a deliberately separate module from space.py, per NRRD-SPACE-001's own explicit instruction) builds MeasurementFrameTransform/build_measurement_frame_transform, grounded directly in the pinned spec's Section 4 text: a spaceDim-by-spaceDim matrix, one column per vector, a pure linear map from measurement-frame coordinates to world-space coordinates (no origin term), reusing space.py's own parse_space_directions() directly rather than duplicating a parser, but enforcing exactly space_dimension vectors and rejecting any 'none' entry (measurement frame has no per-axis concept). A read-time NRRD0005 version gate was added to reader.py's own _load(), mirroring the LIST/printf pre-NRRD0004 precedent (NRRD-MULTIFILE-001) -- confirmed genuinely unenforced at read time before this fix. All four items this obligation's own missing_behavior named (typed vectors, space-dimension arity validation, profile gate, transform API) are now built and tested: 15 tests cover identity/rotated/non-orthogonal frame fixtures (rotated hand-verified via two independent coordinate checks), cardinality/component-count/malformed-vector/none-entry/wrong-call-arity negatives, and a parametrized NRRD0001-NRRD0004 read-time rejection across all 4 older magics -- matching this obligation's own required_tests wording literally."
       ],
-      "missing_behavior": [
-        "No typed vectors, space-dimension arity validation, profile gate, or transform API."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_too_few_vectors_is_a_cardinality_error",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_too_many_vectors_is_a_cardinality_error",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_a_vector_with_the_wrong_component_count_is_rejected",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_a_malformed_vector_with_non_numeric_content_is_rejected",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_a_none_entry_is_rejected_there_is_no_per_axis_concept",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_calling_measurement_to_world_with_the_wrong_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_a_measurement_frame_under_an_older_magic_is_rejected_at_read_time"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-818E52E28F996024",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_identity_frame_maps_coordinates_unchanged",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_rotated_frame_maps_coordinates_through_a_90_degree_rotation",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_non_orthogonal_frame_is_a_real_linear_combination",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_measurement_frame_transform_carries_no_origin",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_a_measurement_frame_under_nrrd0005_loads_successfully"
       ],
       "proof_requirements": {
         "negative": [
@@ -1799,13 +1820,13 @@
           "Typed NRRD0005 frame fixtures and transforms."
         ]
       },
-      "proof_status": "PRESERVATION_ONLY",
-      "rationale": "Current behavior preserves text but does not implement measurement-frame semantics.",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
-        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+        "src/python/nrrd/src/format_factory/nrrd/measurement_frame.py::MeasurementFrameTransform",
+        "src/python/nrrd/src/format_factory/nrrd/measurement_frame.py::build_measurement_frame_transform",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
       ],
-      "status": "preservation_only"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-SHAPE-001",
@@ -2160,18 +2181,29 @@
     {
       "capability_id": "NRRD-FRAME-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-MEASUREMENT-FRAME-PROOF"
       ],
       "implemented_behavior": [
-        "Raw measurement-frame content can be carried through canonical serialization."
+        "FF6-EVENT-000478: same capability as sibling obligation SAL-NRRD-OBL-818E52E28F996024 -- see its own implemented_behavior entry for the full account. All four items this obligation's own missing_behavior named (NRRD0005 gate, typed vectors, arity validation, separate measurement-to-world transform) are now built and tested; the transform lives in its own dedicated module (measurement_frame.py), separate from space.py's own index-to-world transform, exactly as this obligation's own wording requires."
       ],
-      "missing_behavior": [
-        "No NRRD0005 gate, typed vectors, arity validation, or separate measurement-to-world transform."
+      "missing_behavior": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_too_few_vectors_is_a_cardinality_error",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_too_many_vectors_is_a_cardinality_error",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_a_vector_with_the_wrong_component_count_is_rejected",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_a_malformed_vector_with_non_numeric_content_is_rejected",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_a_none_entry_is_rejected_there_is_no_per_axis_concept",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_calling_measurement_to_world_with_the_wrong_arity_is_rejected",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_a_measurement_frame_under_an_older_magic_is_rejected_at_read_time"
       ],
-      "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-BAAE59FC398A9D6C",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_obligation_metadata_production.py::test_quoted_explicit_and_unknown_metadata_survive_semantic_roundtrip"
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_identity_frame_maps_coordinates_unchanged",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_rotated_frame_maps_coordinates_through_a_90_degree_rotation",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_non_orthogonal_frame_is_a_real_linear_combination",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_measurement_frame_transform_carries_no_origin",
+        "tests/python/nrrd/test_obligation_measurement_frame.py::test_a_measurement_frame_under_nrrd0005_loads_successfully"
       ],
       "proof_requirements": {
         "negative": [
@@ -2181,13 +2213,13 @@
           "Typed frame and transform reference fixtures."
         ]
       },
-      "proof_status": "PRESERVATION_ONLY",
-      "rationale": "Lexical carry-through is safe but is not semantic frame support.",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
-        "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument",
-        "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
+        "src/python/nrrd/src/format_factory/nrrd/measurement_frame.py::MeasurementFrameTransform",
+        "src/python/nrrd/src/format_factory/nrrd/measurement_frame.py::build_measurement_frame_transform",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load"
       ],
-      "status": "preservation_only"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-HEADER-001",
@@ -2226,13 +2258,15 @@
     {
       "capability_id": "NRRD-SPACE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-MEASUREMENT-FRAME-PROOF"
       ],
       "implemented_behavior": [
-        "Space-related fields are retained as raw header values."
+        "Space-related fields are retained as raw header values.",
+        "FF6-EVENT-000478: the \"measurement-frame separation\" item this obligation's own missing_behavior named is now satisfied -- measurement_frame.py is a genuinely separate module and API from space.py's own NRRD0004+ transform (see SAL-NRRD-OBL-818E52E28F996024's own implemented_behavior for the full account). This obligation's own remaining items (typed space dimension/units/origin/directions/version gates for the NRRD0004 space fields themselves) are untouched by this slice and stay open."
       ],
       "missing_behavior": [
-        "No typed space dimension, units, origin, directions, version gates, or measurement-frame separation."
+        "No typed space dimension, units, origin, directions, or version gates for the NRRD0004 space fields themselves."
       ],
       "negative_test_selectors": [],
       "obligation_id": "SAL-NRRD-OBL-C853EB5591524EF9",
@@ -2950,6 +2984,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-kind-enum-alias-001.json": "af90cbb0d43424c792cfca31fb6c1ad2122840037389e339e69321a1eece78a4",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-lazy-payload-001.json": "ee783f0c983b7f4fba3cdcd565c9f09d4fe16dc3fd1799bfd881969d266d3e09",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-list-file-count-limit-001.json": "a85d8ff931a5bf35895b68e5bc1b1a3c53d3650c761ca9db674dde09ab08c729",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-measurement-frame-001.json": "dc2a75b370cc786b55048fce4a912d51b12ae86de61e7e89f8fca38f7c4310a8",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-multifile-list-subdim-001.json": "e2a079219af007aa96311b721934d59a766d15b8c6d1c4781ac802b3b8c206cd",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-multifile-printf-subdim-001.json": "3c6f8a744be2fa7a5e4ef8f18210931e3796bb8331140fa8139bf315c808bdb4",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-multifile-printf-writer-001.json": "d18c5d0ca4e8db3cf28c20e12836cbac341fa0300e4cb1b62e96b11a834c7321",
@@ -2965,9 +3000,10 @@
     "src/python/nrrd/src/format_factory/nrrd/codec/kinds.py": "cf8517da058c0ce753866a46fdc5f1c652ab39b90b66e14b65c39d71891d8808",
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "1efec4207dee2d2d04b4cbabbe4e0abccf66c93cbd11106fcd5538a70b4e910e",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "f40b683110082f666fefd99b096ca4c9e9b78f87d0020541477d7a62587f980a",
-    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "fc03e93585295b46b4b0cd3e5c21c1d1e82fafb57299450d2758185880af639b",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "38866721878ec92ffe474c86d8221786890cf135ab32f402d9c42ba0043c600a",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "1c05f5d17614799de2cea369352a67b24a5285fb3d08761e63c787560bfa8fea",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "10984d5ca2c0bc8bf872e94923e41c343dea92c2d98411c429eaa3e79fb624ef",
+    "src/python/nrrd/src/format_factory/nrrd/measurement_frame.py": "669db3c387721c1d21af7e12f2eb97fc0ae0b6018abf012d496e977cef1d067d",
     "src/python/nrrd/src/format_factory/nrrd/model/array_view.py": "d0af1ee965b12415efaacdab227b2db9aab52e161bd0d3ec0f3de1b0d9400f04",
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "bb13b031c3e3c41e9c5b775047278c68e6c62b036be71c9e73c0205ac1d3be39",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
@@ -2999,6 +3035,7 @@
     "tests/python/nrrd/test_obligation_keyvalue_escaping.py": "9511255a07b3ed1b2fe02b2b533baa82f6e1d7181d1ed1f9187fec4be72b3699",
     "tests/python/nrrd/test_obligation_kind_enum_alias.py": "08434fe556d6596490b20468abf7b5f8c491c2a345b7da50876038463b32fe90",
     "tests/python/nrrd/test_obligation_lazy_payload_access.py": "c8337adae10f74da14611b74eda2a4ef12d2edeb9cfb9fdcfc967d1675899a3c",
+    "tests/python/nrrd/test_obligation_measurement_frame.py": "b80c133b68ef934711e96e46c061abb00785d5f308d8bacc3965e2fe2a51a6c9",
     "tests/python/nrrd/test_obligation_metadata_production.py": "5c928de8b704e53560d8e845bd02f33a549a61f3c8d3c5ef492c9dee1ceebd40",
     "tests/python/nrrd/test_obligation_multifile_list_subdim.py": "9c3b5fa172b712bfdcaa9aba5482b6aec8bc07b02dbe1d7667430c2633c75889",
     "tests/python/nrrd/test_obligation_multifile_printf_subdim.py": "b80baffb901593e1d970fbf3ddc28a85294c282c8199dbd9df9aaa2e531c83f2",
@@ -3017,12 +3054,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 56,
+      "implemented": 58,
       "partial": 6,
-      "preservation_only": 3
+      "preservation_only": 1
     },
     "total": 65,
-    "unresolved": 9
+    "unresolved": 7
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

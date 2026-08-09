@@ -403,6 +403,17 @@ def _load(
     data, source_path = _read_source(source, limits)
     raw_header, attached, data_offset = _split_header(data, limits)
     version, header, comments, key_values = _parse_header(raw_header)
+    if "measurement frame" in header and version < 5:
+        # "measurement frame... is not available until NRRD0005" -- a
+        # declaration under an older magic is refused at read time rather
+        # than silently accepted (same read-time-vs-validate()-only
+        # distinction as the LIST/printf multi-file gate below:
+        # version_requirements()/validate() already flag this as
+        # nrrd.version.insufficient, but a caller who only calls load()
+        # never sees that diagnostic).
+        raise NrrdParseError(
+            f"'measurement frame' requires NRRD0005 or newer, got NRRD000{version}"
+        )
     sizes = _parse_sizes(header)
     encoding = header["encoding"].lower()
     if encoding not in SUPPORTED_ENCODINGS:
