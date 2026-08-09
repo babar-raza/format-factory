@@ -3,6 +3,11 @@ format_id: ubl
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: UBL-VERSION-MIGRATION-2-1-TO-2-3-PROOF
+  path: reports/skills-rff6/skill-transcripts/format-feature-expansion-ubl-version-migration-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: 'Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) SAL-UBL-OBL-7B16479ACBBC8EFC (UBL-UPGRADE-001), stays partial. Grounded directly in SAL-UBL-7546731B76606EC0 (a committed SAL fact from a direct structural diff of the acquired OASIS UBL 2.1 and UBL 2.3 release packages): migrate_document()/MigrationReport (new module migration.py) relabel cbc:UBLVersionID from "2.1" to "2.3" for any of the 65 (of 91) root document types that fact proves differ from 2.3 only by newly-added optional elements and cardinality widenings -- no content rewriting needed by construction. Refuses (UblValidationError, never a silent no-op) a wrong/absent source version, a root type outside the 65 (proven with BusinessCard, confirmed absent from the UBL 2.1 package directly, not assumed), or a relabeled result that would fail validate() against the stable 2.3 profile (proven with a genuinely constructed failing case: a document with a duplicate cbc:UBLVersionID, which validate() flags independent of the relabel''s own text). The eligibility table (_generated/migratable_2_1_roots.py) is generated (tools/generate_migratable_2_1_roots.py) from both acquired authority packages directly, matching the exact provenance-hashed pattern already established for root_catalog.py/schema_root_order.py. The generator''s own first draft had a real off-by-one indexing bug (checked the wrong tuple element for a newly-added element''s own minOccurs) that silently misclassified 13 real, additive-only-compatible types as ineligible (52 instead of 65); caught by cross-checking the generated count against this session''s own independently-verified prior count before trusting it, not merely because it ran without error. A migration.py docstring draft also briefly asserted an unverified claim about those same 13 types based on stale pre-fix debug output; caught and corrected before finalizing by re-querying the actual final generated module directly. Migration from UBL 2.0 or 2.2 remains genuinely unbuilt -- this package has not acquired or diffed either version''s own OASIS release package -- so status stays partial, not implemented; this is a real, substantial narrowing (from "no transform infrastructure exists for any UBL version pair" to "built and proven for one real, common version pair covering 65/91 document types"), not a close. 8 new tests (test_obligation_version_migration.py), written FIRST and confirmed to fail for the right reason (ModuleNotFoundError) before any implementation existed. ubl suite: 1255 -> 1263 passed. ruff and mypy --strict clean. Installed-wheel proof: 1/1 PASS. Six-FF6-format regression: 4363 -> 4371 passed, 4 skipped, 0 failed -- zero regression. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive''s GAP-008 rule; the migration''s own safety is grounded directly in the two acquired, digest-pinned OASIS authority packages'' own real schema content, cross-diffed independently by this task''s own generator rather than trusting the committed SAL fact''s prose alone. Covers SAL-UBL-OBL-7B16479ACBBC8EFC only; it supports no other obligation and promotes no product state.'
 - evidence_id: UBL-TOLERANT-RECOVERY-MODE-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-tolerant-recovery-mode-001.json
   expected_result: PASS
@@ -4286,24 +4291,36 @@ obligations:
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/model/document.py::ubl_version_id
   - src/python/ubl/src/format_factory/ubl/validation/validator.py::validate
+  - src/python/ubl/src/format_factory/ubl/migration.py::migrate_document
+  - src/python/ubl/src/format_factory/ubl/migration.py::MigrationReport
   positive_test_selectors:
   - tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_an_older_declared_version_is_detected_not_silently_accepted_as_current
   - tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_validate_accepts_the_current_target_version
   - tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_a_different_older_version_is_also_detected_and_refused
+  - tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_relabels_a_valid_2_1_invoice_and_produces_a_report
+  - tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_result_passes_stable_2_3_validation
+  - tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_does_not_mutate_the_original_document
   negative_test_selectors:
   - tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_validate_refuses_an_older_version_with_a_clear_diagnostic
+  - tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_refuses_a_document_not_declaring_2_1
+  - tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_refuses_a_document_with_no_declared_version
+  - tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_refuses_a_root_type_not_covered_by_the_structural_diff
+  - tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_refuses_rather_than_silently_relabels_when_the_result_would_fail_validation
+  - tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_never_labels_the_original_input_document_object_itself
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-VERSION-DETECTION-REFUSAL-PROOF
+  - UBL-VERSION-MIGRATION-2-1-TO-2-3-PROOF
   implemented_behavior:
   - '"Detect older specification versions where practical" and "never label a document as the target version without structural migration and validation" are now both proven: UblDocument.declared_version (model/document.py) reads whatever cbc:UBLVersionID a source file actually declares, with no coercion (proven for "2.0" and "2.1"), and validator.py''s existing version check refuses any document declaring a version other than "2.3" with a clear ubl.version.unsupported diagnostic, proven directly through validate() (a distinct, previously-uncited proof from UBL-LIFECYCLE-001''s existing test of dumps()''s separate write-time refusal). Cross-capability duplicate of the same underlying detection fact already proven under UBL-LIFECYCLE-001''s test_obligation_detected_declared_version.py.'
+  - 'FF6-UBL-UPGRADE-MIGRATION-001: "migrate via explicit transforms producing a migration report" is now built and proven for the 2.1-to-2.3 pair, grounded directly in SAL-UBL-7546731B76606EC0 (a committed SAL fact from a direct structural diff of the acquired OASIS UBL 2.1 and UBL 2.3 release packages, SRC-UBL-002/SRC-UBL-004): migrate_document() relabels cbc:UBLVersionID from "2.1" to "2.3" for any of the 65 (of 91) root document types SAL-UBL-7546731B76606EC0 proves differ only additively/relaxingly between versions -- no content rewriting is needed for these types by construction. Refuses (UblValidationError) rather than silently no-ops or partially migrates when: the document does not declare "2.1" (proven for "2.2" and absent-version cases); the root type is one of the 26 types with no UBL 2.1 schema at all (proven with BusinessCard, confirmed via direct acquired-package inspection, not assumed); or the relabeled result would fail validate() against the stable 2.3 profile (proven with a genuinely-constructed failing case -- a document with a duplicate cbc:UBLVersionID, which validate() flags regardless of the relabel, correctly refusing rather than relabeling anyway). The eligibility table (_generated/migratable_2_1_roots.py, MIGRATABLE_2_1_ROOT_NAMES) is generated (tools/generate_migratable_2_1_roots.py), matching the exact provenance-hashed pattern already established for root_catalog.py/schema_root_order.py -- not hand-maintained, and independently regenerable from the two acquired authority packages. The generator''s own first draft had a real off-by-one indexing bug (checking the wrong tuple element for a newly-added element''s own minOccurs) that silently mis-classified 13 real, additive-only-compatible types as ineligible; caught by cross-checking the generated count (52) against this session''s own independently-verified prior count (65) before trusting it, not merely by execution succeeding without error.'
   missing_behavior:
-  - '"Migrate via explicit transforms producing a migration report" remains genuinely unbuilt: no transform infrastructure exists for any UBL version pair (2.0->2.3, 2.1->2.3, etc.), and building one honestly would require deep spec knowledge of what changed between each UBL schema revision -- a substantial, separate investigation not attempted this slice. Older-version documents are correctly detected and refused, never migrated.'
+  - 'Migration from UBL 2.0 or UBL 2.2 remains genuinely unbuilt: this package has not acquired or diffed either version''s own OASIS release package, and inventing a migration transform without a verified structural basis is exactly what this session''s own evidence discipline exists to prevent. The 26 UBL 2.3 root types with no UBL 2.1 schema at all (BusinessCard, ImportCustomsDeclaration, TenderContract, and 23 others) are correctly, permanently refused for 2.1-to-2.3 migration too -- there is no older-version document of these types to migrate FROM, not merely an unimplemented case.'
   proof_requirements:
     positive:
     - 'Older-version fixtures: migrate-with-report and unsupported-refusal paths.'
     negative:
-    - Selector-bound negative cases are not yet identified.
+    - 'Selector-bound negative cases are now identified: wrong/absent source version, root type not covered, and relabeled-result-fails-validation are all directly tested (see negative_test_selectors above).'
 - obligation_id: SAL-UBL-OBL-7D0855CD163E1EFD
   capability_id: UBL-PROFILE-001
   status: implemented

@@ -44789,6 +44789,48 @@
       "validation_command": ".venv/Scripts/pytest tests/python/ubl/ -q",
       "result": "1255 passed (unchanged from pre-task baseline)",
       "rollback": "Revert the corrected \"What is not built\" paragraph and this ledger entry."
+    },
+    {
+      "entry_id": "FF6-UBL-VERSION-MIGRATION-2-1-TO-2-3-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "ubl-version-migration-2-1-to-2-3",
+      "capability": "UBL-UPGRADE-001",
+      "capability_refs": [
+        "UBL-UPGRADE-001"
+      ],
+      "api_symbols": [
+        "format_factory.ubl.migrate_document",
+        "format_factory.ubl.MigrationReport"
+      ],
+      "product": "UBL Python production package",
+      "format": "UBL",
+      "test_delta": "New module migration.py (migrate_document/MigrationReport) implementing UBL 2.1-to-2.3 version migration for the 65 of 91 root types SAL-UBL-7546731B76606EC0 proves are additive/relaxing-compatible. 8 new tests (test_obligation_version_migration.py), TDD red-then-green. New dev-time generator (tools/generate_migratable_2_1_roots.py) producing _generated/migratable_2_1_roots.py.",
+      "git_head": "0640d563e",
+      "skill": "format-feature-expansion",
+      "task_id": "TC_FF6_UBL_VERSION_MIGRATION_001",
+      "source_files": [
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/migration.py",
+          "state": "present",
+          "sha256": "6ce1958c98813fd88c79258e284a46dc5e75a1799d3a502e56ba14ef788adf07"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/__init__.py",
+          "state": "present",
+          "sha256": "fb5a2b96b325e1517a322672380e2195dd308376ff590de6f8c142ffe368f044"
+        },
+        {
+          "path": "src/python/ubl/src/format_factory/ubl/_generated/migratable_2_1_roots.py",
+          "state": "present",
+          "sha256": "673ee0120e1761aaec22f0efbb4f364edf1d87e12d7dc4e43375ded8ccdd9cf0"
+        }
+      ],
+      "test_files": [
+        "tests/python/ubl/test_obligation_version_migration.py"
+      ],
+      "validation_command": ".venv/Scripts/pytest tests/python/ubl/ -q",
+      "result": "1263 passed (was 1255, +8 new)",
+      "rollback": "Remove migration.py, its __init__.py exports, the _generated/migratable_2_1_roots.py module and its generator, the new test file, and this ledger entry."
     }
   ],
   "total_entries": 2782,

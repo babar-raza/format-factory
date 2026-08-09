@@ -44,6 +44,7 @@ from .errors import (
 )
 from .components import add_component, remove_component, replace_party, update_component
 from .lines import add_line, move_line, remove_line, renumber_lines
+from .migration import MigrationReport, migrate_document
 from .model import (
     ROOT_CLASSES,
     AllowanceCharge,
@@ -315,6 +316,8 @@ __all__ = [
     "update_component",
     "add_component",
     "remove_component",
+    "migrate_document",
+    "MigrationReport",
 ]
 
 __version__ = "0.2.0.dev0"

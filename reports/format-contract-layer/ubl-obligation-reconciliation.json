@@ -490,6 +490,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) SAL-UBL-OBL-7B16479ACBBC8EFC (UBL-UPGRADE-001), promoted missing->partial. This obligation had zero shipped-namespace test coverage mapped to it at all, but the \"detect older specification versions\" and \"never label a document as the target version without structural migration\" halves of its rule_text were already real, correct, and separately proven under a different obligation (UBL-LIFECYCLE-001's test_obligation_detected_declared_version.py, which exercises dumps()'s write-time refusal). This slice proves validate()'s own, separate refusal path directly (a ubl.version.unsupported diagnostic for any non-\"2.3\" declared version), confirmed via an interactive probe before writing formal tests. \"Migrate via explicit transforms producing a migration report\" remains genuinely unbuilt -- no transform infrastructure exists for any UBL version pair, and building one honestly would need deep knowledge of inter-version schema changes not attempted here -- so status stays partial, not implemented. 4 new tests. ubl suite: 779 -> 783 passed. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule. Covers SAL-UBL-OBL-7B16479ACBBC8EFC only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "UBL-VERSION-MIGRATION-2-1-TO-2-3-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/format-feature-expansion-ubl-version-migration-001.json",
+      "sha256": "3cc84010db02db302684c261cba2125dc2f21d0fb48c24eaf24fb08a1ffd3411",
+      "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) SAL-UBL-OBL-7B16479ACBBC8EFC (UBL-UPGRADE-001), stays partial. Grounded directly in SAL-UBL-7546731B76606EC0 (a committed SAL fact from a direct structural diff of the acquired OASIS UBL 2.1 and UBL 2.3 release packages): migrate_document()/MigrationReport (new module migration.py) relabel cbc:UBLVersionID from \"2.1\" to \"2.3\" for any of the 65 (of 91) root document types that fact proves differ from 2.3 only by newly-added optional elements and cardinality widenings -- no content rewriting needed by construction. Refuses (UblValidationError, never a silent no-op) a wrong/absent source version, a root type outside the 65 (proven with BusinessCard, confirmed absent from the UBL 2.1 package directly, not assumed), or a relabeled result that would fail validate() against the stable 2.3 profile (proven with a genuinely constructed failing case: a document with a duplicate cbc:UBLVersionID, which validate() flags independent of the relabel's own text). The eligibility table (_generated/migratable_2_1_roots.py) is generated (tools/generate_migratable_2_1_roots.py) from both acquired authority packages directly, matching the exact provenance-hashed pattern already established for root_catalog.py/schema_root_order.py. The generator's own first draft had a real off-by-one indexing bug (checked the wrong tuple element for a newly-added element's own minOccurs) that silently misclassified 13 real, additive-only-compatible types as ineligible (52 instead of 65); caught by cross-checking the generated count against this session's own independently-verified prior count before trusting it, not merely because it ran without error. A migration.py docstring draft also briefly asserted an unverified claim about those same 13 types based on stale pre-fix debug output; caught and corrected before finalizing by re-querying the actual final generated module directly. Migration from UBL 2.0 or 2.2 remains genuinely unbuilt -- this package has not acquired or diffed either version's own OASIS release package -- so status stays partial, not implemented; this is a real, substantial narrowing (from \"no transform infrastructure exists for any UBL version pair\" to \"built and proven for one real, common version pair covering 65/91 document types\"), not a close. 8 new tests (test_obligation_version_migration.py), written FIRST and confirmed to fail for the right reason (ModuleNotFoundError) before any implementation existed. ubl suite: 1255 -> 1263 passed. ruff and mypy --strict clean. Installed-wheel proof: 1/1 PASS. Six-FF6-format regression: 4363 -> 4371 passed, 4 skipped, 0 failed -- zero regression. NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the migration's own safety is grounded directly in the two acquired, digest-pinned OASIS authority packages' own real schema content, cross-diffed independently by this task's own generator rather than trusting the committed SAL fact's prose alone. Covers SAL-UBL-OBL-7B16479ACBBC8EFC only; it supports no other obligation and promotes no product state."
+    },
+    {
       "evidence_id": "UBL-WRITER-CANONICAL-ORDER-AND-PREFIX-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -509,7 +517,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "d58ac15c91dc7758cf5454311c15274256756b798c353866752dbc05796fd344",
-    "implementation_evidence": "9f6bf2345da8970e202311e710be9b3fa9c00864baa35e92e6b82d4f1636243a",
+    "implementation_evidence": "8c7a15e0444d28c64398848dbcc82419932908e1a928e86b6184b0fa13f4f678",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -4465,26 +4473,36 @@
       "capability_id": "UBL-UPGRADE-001",
       "execution_evidence_ids": [
         "UBL-BASELINE-SUITE",
-        "UBL-VERSION-DETECTION-REFUSAL-PROOF"
+        "UBL-VERSION-DETECTION-REFUSAL-PROOF",
+        "UBL-VERSION-MIGRATION-2-1-TO-2-3-PROOF"
       ],
       "implemented_behavior": [
-        "\"Detect older specification versions where practical\" and \"never label a document as the target version without structural migration and validation\" are now both proven: UblDocument.declared_version (model/document.py) reads whatever cbc:UBLVersionID a source file actually declares, with no coercion (proven for \"2.0\" and \"2.1\"), and validator.py's existing version check refuses any document declaring a version other than \"2.3\" with a clear ubl.version.unsupported diagnostic, proven directly through validate() (a distinct, previously-uncited proof from UBL-LIFECYCLE-001's existing test of dumps()'s separate write-time refusal). Cross-capability duplicate of the same underlying detection fact already proven under UBL-LIFECYCLE-001's test_obligation_detected_declared_version.py."
+        "\"Detect older specification versions where practical\" and \"never label a document as the target version without structural migration and validation\" are now both proven: UblDocument.declared_version (model/document.py) reads whatever cbc:UBLVersionID a source file actually declares, with no coercion (proven for \"2.0\" and \"2.1\"), and validator.py's existing version check refuses any document declaring a version other than \"2.3\" with a clear ubl.version.unsupported diagnostic, proven directly through validate() (a distinct, previously-uncited proof from UBL-LIFECYCLE-001's existing test of dumps()'s separate write-time refusal). Cross-capability duplicate of the same underlying detection fact already proven under UBL-LIFECYCLE-001's test_obligation_detected_declared_version.py.",
+        "FF6-UBL-UPGRADE-MIGRATION-001: \"migrate via explicit transforms producing a migration report\" is now built and proven for the 2.1-to-2.3 pair, grounded directly in SAL-UBL-7546731B76606EC0 (a committed SAL fact from a direct structural diff of the acquired OASIS UBL 2.1 and UBL 2.3 release packages, SRC-UBL-002/SRC-UBL-004): migrate_document() relabels cbc:UBLVersionID from \"2.1\" to \"2.3\" for any of the 65 (of 91) root document types SAL-UBL-7546731B76606EC0 proves differ only additively/relaxingly between versions -- no content rewriting is needed for these types by construction. Refuses (UblValidationError) rather than silently no-ops or partially migrates when: the document does not declare \"2.1\" (proven for \"2.2\" and absent-version cases); the root type is one of the 26 types with no UBL 2.1 schema at all (proven with BusinessCard, confirmed via direct acquired-package inspection, not assumed); or the relabeled result would fail validate() against the stable 2.3 profile (proven with a genuinely-constructed failing case -- a document with a duplicate cbc:UBLVersionID, which validate() flags regardless of the relabel, correctly refusing rather than relabeling anyway). The eligibility table (_generated/migratable_2_1_roots.py, MIGRATABLE_2_1_ROOT_NAMES) is generated (tools/generate_migratable_2_1_roots.py), matching the exact provenance-hashed pattern already established for root_catalog.py/schema_root_order.py -- not hand-maintained, and independently regenerable from the two acquired authority packages. The generator's own first draft had a real off-by-one indexing bug (checking the wrong tuple element for a newly-added element's own minOccurs) that silently mis-classified 13 real, additive-only-compatible types as ineligible; caught by cross-checking the generated count (52) against this session's own independently-verified prior count (65) before trusting it, not merely by execution succeeding without error."
       ],
       "missing_behavior": [
-        "\"Migrate via explicit transforms producing a migration report\" remains genuinely unbuilt: no transform infrastructure exists for any UBL version pair (2.0->2.3, 2.1->2.3, etc.), and building one honestly would require deep spec knowledge of what changed between each UBL schema revision -- a substantial, separate investigation not attempted this slice. Older-version documents are correctly detected and refused, never migrated."
+        "Migration from UBL 2.0 or UBL 2.2 remains genuinely unbuilt: this package has not acquired or diffed either version's own OASIS release package, and inventing a migration transform without a verified structural basis is exactly what this session's own evidence discipline exists to prevent. The 26 UBL 2.3 root types with no UBL 2.1 schema at all (BusinessCard, ImportCustomsDeclaration, TenderContract, and 23 others) are correctly, permanently refused for 2.1-to-2.3 migration too -- there is no older-version document of these types to migrate FROM, not merely an unimplemented case."
       ],
       "negative_test_selectors": [
-        "tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_validate_refuses_an_older_version_with_a_clear_diagnostic"
+        "tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_validate_refuses_an_older_version_with_a_clear_diagnostic",
+        "tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_refuses_a_document_not_declaring_2_1",
+        "tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_refuses_a_document_with_no_declared_version",
+        "tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_refuses_a_root_type_not_covered_by_the_structural_diff",
+        "tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_refuses_rather_than_silently_relabels_when_the_result_would_fail_validation",
+        "tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_never_labels_the_original_input_document_object_itself"
       ],
       "obligation_id": "SAL-UBL-OBL-7B16479ACBBC8EFC",
       "positive_test_selectors": [
         "tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_an_older_declared_version_is_detected_not_silently_accepted_as_current",
         "tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_validate_accepts_the_current_target_version",
-        "tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_a_different_older_version_is_also_detected_and_refused"
+        "tests/python/ubl/test_obligation_version_detection_and_refusal.py::test_a_different_older_version_is_also_detected_and_refused",
+        "tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_relabels_a_valid_2_1_invoice_and_produces_a_report",
+        "tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_result_passes_stable_2_3_validation",
+        "tests/python/ubl/test_obligation_version_migration.py::test_migrate_document_does_not_mutate_the_original_document"
       ],
       "proof_requirements": {
         "negative": [
-          "Selector-bound negative cases are not yet identified."
+          "Selector-bound negative cases are now identified: wrong/absent source version, root type not covered, and relabeled-result-fails-validation are all directly tested (see negative_test_selectors above)."
         ],
         "positive": [
           "Older-version fixtures: migrate-with-report and unsupported-refusal paths."
@@ -4493,7 +4511,9 @@
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/model/document.py::ubl_version_id",
-        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate"
+        "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
+        "src/python/ubl/src/format_factory/ubl/migration.py::migrate_document",
+        "src/python/ubl/src/format_factory/ubl/migration.py::MigrationReport"
       ],
       "status": "partial"
     },
@@ -7801,6 +7821,7 @@
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ubl-001.json": "1e7b783cd545d3fcc56de100cfbd37c2d62ad9bf226093f940808de488756200",
+    "reports/skills-rff6/skill-transcripts/format-feature-expansion-ubl-version-migration-001.json": "3cc84010db02db302684c261cba2125dc2f21d0fb48c24eaf24fb08a1ffd3411",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-aggregates-cardinality-001.json": "1f526f72c961cbfc6a3a8e2448e9b89f6bda23fad34dc3fa5a100751293cc9be",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-allowance-charge-cardinality-order-001.json": "be3be3c8ddcf5e2bb4c8ba7982e8e93b6c24c1ab788d773b153503dbc7d783e6",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-attribute-code-discovery-001.json": "b014c510271fa3bbb6f5028c7d1a10b6dbf96f0ef773fa19b3167001bb3aeaa0",
@@ -7867,6 +7888,7 @@
     "src/python/ubl/src/format_factory/ubl/components.py": "2e7142067bd311f4cb644570f7b48c21249f9c4b56fdcac1392aca815591f60b",
     "src/python/ubl/src/format_factory/ubl/document_types.py": "29d23f297711c1681905d91a1dd163c3bdac62a7aabb8d3b056c95b89d22aa33",
     "src/python/ubl/src/format_factory/ubl/lines.py": "50ca920c459ff1aea139790df52d1e1ab1790ebc16786f134c9e8994e3517c19",
+    "src/python/ubl/src/format_factory/ubl/migration.py": "6ce1958c98813fd88c79258e284a46dc5e75a1799d3a502e56ba14ef788adf07",
     "src/python/ubl/src/format_factory/ubl/model/__init__.py": "de78fc7fc2e2407b4b9c5dc9178431180c49ae16813c0fdf47da29cef5f99e26",
     "src/python/ubl/src/format_factory/ubl/model/aggregates.py": "4176ebfe3d781127fe200b9cc977f2fb2c6f347266a67332bdf3de88f37958e1",
     "src/python/ubl/src/format_factory/ubl/model/charges.py": "4fbe9b0c00cf56603d514c90ca70eb1db9f2ac08241f4dc3f4e0f5e69f95e6a8",
@@ -7938,6 +7960,7 @@
     "tests/python/ubl/test_obligation_typed_projection.py": "2d035c4a83f5ff71729210eb83422f60c3d02a63c9f6b2dc92f3725f8d980b94",
     "tests/python/ubl/test_obligation_unified_validation.py": "70f9e11ad3587d88096d2407f68624039e3f3b5acb020b1e780b35ad0565a380",
     "tests/python/ubl/test_obligation_version_detection_and_refusal.py": "b02e4e8837fed773b02c76abf1d0585edba98191f9447ad20b06699c51e99301",
+    "tests/python/ubl/test_obligation_version_migration.py": "ebbb9390bb04ec3cf31581538f1aa39e6430c3fef16ee2cf4cbd710614b5037a",
     "tests/python/ubl/test_obligation_writer_canonical_order_and_prefix.py": "2d47186eed04f745395ed136df428fdb33c5a70026a9d19e033b2452d5019b7d",
     "tests/python/ubl/test_obligation_writer_schema_order_reordering.py": "1f36ce463f43cf6247797e461e16ff66fe9b544aa6737925ac07dd6ac346c224",
     "tests/python/ubl/test_production_namespace.py": "a4dbeab77322aaeb8d35b8c7cba5d8a173f1fbe5566924c32363157a3b171ce6"
