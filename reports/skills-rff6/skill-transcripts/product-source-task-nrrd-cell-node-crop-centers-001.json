@@ -1,0 +1,61 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-cell-node-crop-centers-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-5d1289f795aad290",
+  "mode": "live",
+  "timestamp": "2026-08-09T11:20:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC-FF6-NRRD-CELL-NODE-CROP-CENTERS-001",
+    "task_kind": "fix-a-precisely-scoped-disclosed-simplification-grounded-in-the-pinned-spec",
+    "root_cause": "This session read nrrd's 9 remaining unresolved obligations fresh (not previously examined) and found NRRD-ARRAY-001's own two obligations named two open items: a numpy/pynrrd interoperability adapter, and cell-vs-node `centers` semantics in axis-min/max recomputation under crop. Investigating the SAL obligation register directly (not the implementation-evidence YAML's own paraphrase) found the numpy/pynrrd adapter is NOT actually required by either obligation's own literal rule_text/required_tests/release_gates -- it was scope a prior evidence entry's own missing_behavior text added, not a real gap, and was correctly left alone rather than force-built. The cell-vs-node centers item, by contrast, IS directly grounded in the release gate ('Array operations preserve metadata consistency') and rule_text ('per-axis metadata follow every operation'), and array_view.py's own code already disclosed it as a known simplification.",
+    "obligation_targeted": "SAL-NRRD-OBL-E4B3D1A206784660 and SAL-NRRD-OBL-FEF73EC95DF631C3 (both NRRD-ARRAY-001) narrowed -- the cell-vs-node centers gap both named is now closed; the (not actually obligation-required) numpy/pynrrd adapter note remains, corrected in this tick's own evidence to state plainly that it is not a real requirement of either obligation.",
+    "acceptance_evidence": "Confirmed the exact cell-vs-node formula directly against the pinned NRRD spec's own worked example (.local/format-contracts/acquired/nrrd/src-nrrd-001.bin: 5 samples, axis min 0.0, axis max 1.0 -- node-centered samples at 0.00/0.25/.../1.00, spacing 0.25; cell-centered samples at 0.10/0.30/.../0.90, spacing 0.20), not assumed from general NRRD knowledge. _sliced_axis_metadata() (array_view.py) now branches on the axis's own `center` field: node-centered (or unspecified, the conservative default) axes keep the module's original formula unchanged; cell-centered axes now span the retained region's own outer edges (`length * spacing`, one full cell wider than the node case for the same sample count), verified against the spec's own numbers directly via an interactive spike before any test was written."
+  },
+  "execution_steps": [
+    "1. After committing and eventing the ora combined-budget slice (FF6-EVENT-000476), read nrrd's 9 remaining unresolved obligations' own missing_behavior text fresh from the implementation-evidence YAML, per this session's own exact_next_action from that event.",
+    "2. Cross-checked NRRD-ARRAY-001's two obligations' own SAL register entries directly (plans/strategic/ff6/obligations/nrrd.yaml) against the implementation-evidence YAML's own missing_behavior paraphrase, and found the 'numpy/pynrrd interoperability adapter' claim does not appear anywhere in either obligation's own rule_text, required_tests, or release_gates -- it was scope a prior evidence entry's own missing_behavior text added beyond the obligation's own literal wording. Correctly did NOT build a numpy adapter this tick; disclosed the discrepancy in this evidence instead of silently ignoring or silently building unrequested scope.",
+    "3. Read array_view.py's own `_sliced_axis_metadata()` function and its docstring directly, which already disclosed the exact simplification ('this module does not branch on center's own cell-vs-node distinction') -- this was the genuinely tractable, spec-grounded gap.",
+    "4. Located and read the pinned NRRD spec's own cell-vs-node worked example directly from the raw acquisition cache (grep for 'cell' across .local/format-contracts/acquired/nrrd/src-nrrd-001.bin) rather than relying on general knowledge -- confirmed the exact numbers (5 samples, axis min 0.0/max 1.0: node positions 0.00/0.25/0.50/0.75/1.00; cell positions 0.10/0.30/0.50/0.70/0.90) before deriving any formula.",
+    "5. Derived the crop formula for each centering by hand from those confirmed numbers: node-centered axis_min/axis_max ARE sample positions (existing formula, unchanged); cell-centered axis_min/axis_max are the grid's own outer edges, so a crop's own new_max must span length*spacing (not (length-1)*spacing) from new_min. Verified the existing new_min formula (start*spacing) is already correct for BOTH centerings by direct reasoning (confirmed, not assumed) before touching any code.",
+    "6. Also verified _flip_axis_metadata()'s existing simple min/max swap needs no corresponding fix, by the same direct reasoning (both centerings reduce to an identical swap under axis reversal) -- confirmed by hand rather than assumed just because the crop formula needed a fix.",
+    "7. Implemented the fix: a single conditional (`length if meta.center == 'cell' else max(length-1, 0)`) inside the existing new_max computation. Smoke-tested interactively against the spec's own worked-example numbers (node crop, cell crop, single-cell crop, unknown-center default) before writing any formal test -- all 5 spike scenarios matched hand-computed expectations on the first attempt.",
+    "8. Wrote 4 new tests (tests/python/nrrd/test_obligation_array_view.py): node-centered crop (unchanged formula), cell-centered crop (corrected formula), a single-retained-cell edge case (proving a cell never collapses to zero width, unlike the node case), and an unspecified-center default (proving the conservative node-equivalent fallback is preserved). Updated the file's own module docstring, which previously explicitly disclaimed this exact gap as 'not attempted here.'",
+    "9. Ran the new tests plus the full array_view test file: 31/31 passed, including all pre-existing tests unchanged (confirming backward compatibility for the default/node case).",
+    "10. Ran ruff check and mypy --strict against array_view.py: both clean on the first run.",
+    "11. Ran the full nrrd suite (908 passed, 1 pre-existing unrelated skip, up from 904) and the 6-format FF6 regression (4296 passed, 4 skipped, up from 4292) -- exact +4 delta in both, no regressions.",
+    "12. Ran the installed-wheel proof (tools/run_package_install_proof.py --format nrrd, 1/1 PASS) and independently re-verified the cell-centering fix from the installed, non-editable site-packages path directly (not the source tree)."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/model/array_view.py",
+    "tests/python/nrrd/test_obligation_array_view.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/model/array_view.py",
+    "tests/python/nrrd/test_obligation_array_view.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_array_view.py -v -- 31 passed (0 failures, correct on the first formal test run after the interactive spike)",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q --timeout=120 -- 908 passed, 1 skipped (was 904)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4296 passed, 4 skipped (was 4292)",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/model/array_view.py tests/python/nrrd/test_obligation_array_view.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/model/array_view.py -- Success: no issues found in 1 source file",
+    "python tools/run_package_install_proof.py --format nrrd -- RESULT: 1/1 PASS; cell-centering fix independently re-exercised from the installed, non-editable wheel's own site-packages path"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "2 obligations (SAL-NRRD-OBL-E4B3D1A206784660, SAL-NRRD-OBL-FEF73EC95DF631C3, both NRRD-ARRAY-001) narrow further -- the cell-vs-node centers gap both named is closed, spec-grounded and tested. Not promoted to implemented: neither obligation was freshly, exhaustively re-audited beyond the two named missing_behavior items this tick addressed.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); nrrd remains UNASSESSED",
+    "obligations_moved": 0,
+    "obligations_narrowed": 2,
+    "obligations_total_for_format": 65,
+    "new_public_api": "None -- fixes an existing private helper (_sliced_axis_metadata) behind the already-public crop()/__getitem__() surface; no signature change."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

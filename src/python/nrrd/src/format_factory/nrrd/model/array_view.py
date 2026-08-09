@@ -143,13 +143,31 @@ def _sliced_axis_metadata(meta: AxisMetadata, *, start: int, length: int) -> Axi
     """`meta` narrowed to `length` elements beginning at local index
     `start`. `axis_min`/`axis_max` are recomputed only when `spacing` is
     known -- otherwise cleared (`None`) rather than carried forward stale,
-    since they cannot be correctly derived from `start` alone. Uniform,
-    node-centered-equivalent spacing is assumed; this module does not
-    branch on `center`'s own cell-vs-node distinction, a disclosed
-    simplification."""
+    since they cannot be correctly derived from `start` alone.
+
+    Branches on `center`, confirmed directly against the pinned NRRD
+    spec's own worked example (5 samples, axis min 0.0, axis max 1.0:
+    node-centered samples land at 0.00/0.25/.../1.00 -- spacing
+    (max-min)/(n-1); cell-centered samples land at 0.10/0.30/.../0.90 --
+    spacing (max-min)/n, each sample offset half a cell from the grid's
+    own edge). For a node-centered axis, `axis_min`/`axis_max` ARE sample
+    positions, so narrowing to `[start, start+length)` spans
+    `(length-1)*spacing` between the first and last retained sample
+    (unchanged from this function's original behavior). For a
+    cell-centered axis, `axis_min`/`axis_max` are the grid's own OUTER
+    EDGES, half a cell short of the first/last sample position on each
+    side, so the retained region's own edges span `length*spacing`, one
+    full cell more than the node case -- the same edge-to-edge extent a
+    single retained cell must have (never zero-width, since a cell always
+    covers real space). Any axis with no declared `center`, or a value
+    other than the literal `"cell"` token (including the common `"node"`
+    case), keeps the node-equivalent formula -- the same conservative
+    default this function has always used.
+    """
     if meta.spacing is not None and meta.axis_min is not None:
         new_min = meta.axis_min + start * meta.spacing
-        new_max = new_min + max(length - 1, 0) * meta.spacing
+        span = length if meta.center == "cell" else max(length - 1, 0)
+        new_max = new_min + span * meta.spacing
     else:
         new_min = None
         new_max = None

@@ -42,6 +42,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-1FE17FFCC0572ABC and SAL-NRRD-OBL-556FAEE08EA61D1A (both NRRD-META-001). None of content/min/max/old-min/old-max/ number had any typed accessor before this slice, confirmed by grepping document.py directly. The pinned spec source confirms each field's exact semantics word-for-word: content is free text with no explicit delimiting; min/max are doubles where \"any value, infinite or not, NaN or not, is valid\"; old min/old max are doubles \"meaningless for floating-point and block nrrds\" (with unspaced oldmin/oldmax aliases); number is explicitly instructed to be \"always ignored on reading, without even an attempt to parse the field as an integer\" -- implemented exactly as instructed (raw text only, deliberately never parsed), not guessed. 9 new tests prove every field's projection, absence, NaN/infinite acceptance, both old-min/old-max spellings, no version gate (baseline since NRRD0001), and round-trip preservation. nrrd suite: 540 -> 549 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-1FE17FFCC0572ABC and SAL-NRRD-OBL-556FAEE08EA61D1A only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-CELL-NODE-CROP-CENTERS-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-cell-node-crop-centers-001.json",
+      "sha256": "cda7ba03012d919d90fb14cfd5ef2ce4a02efd96490218306cde1976463115c7",
+      "truth_boundary": "Closes the \"cell-vs-node centers semantics... under crop\" gap both NRRD-ARRAY-001 obligations (SAL-NRRD-OBL-E4B3D1A206784660, SAL-NRRD-OBL-FEF73EC95DF631C3) named, grounded directly in the pinned NRRD spec's own worked example (confirmed by reading .local/format-contracts/acquired/nrrd/src-nrrd-001.bin directly, not assumed from general NRRD knowledge): 5 samples, axis min 0.0, axis max 1.0 -- node-centered samples land at 0.00/0.25/0.50/0.75/1.00 (spacing 0.25); cell-centered samples land at 0.10/0.30/0.50/0.70/0.90 (spacing 0.20). _sliced_axis_metadata (model/array_view.py), the function `crop()` and plain slicing both route through, keeps its original formula for a node-centered (or unspecified-center, the conservative default) axis -- axis_min/axis_max ARE sample positions there, unchanged from this function's prior behavior. A cell-centered axis now correctly spans the retained region's own outer edges (length * spacing, not (length-1) * spacing) -- one full cell wider than the node case for the same retained sample count, and never collapsing to zero width even for a single retained cell, proven by a dedicated test. Also investigated and disclosed rather than silently ignored or force-built: the \"numpy/pynrrd interoperability adapter\" both obligations' own prior missing_behavior named is confirmed NOT to appear anywhere in either obligation's own rule_text, required_tests, or release_gates in the SAL register -- it was scope a prior evidence entry's own missing_behavior text added beyond either obligation's own literal wording, corrected in this entry's own missing_behavior text rather than left standing uncorrected. 4 new tests (tests/python/nrrd/test_obligation_array_view.py): node-centered crop (formula unchanged), cell-centered crop (corrected formula), a single-retained -cell edge case, and an unspecified-center default. nrrd suite: 904 -> 908 passed (1 pre-existing unrelated skip). 6-format FF6 regression: 4292 -> 4296 passed, 4 skipped. mypy --strict and ruff clean. Installed-wheel behavior independently re-verified: the corrected cell-centering formula was exercised directly from the installed, non-editable site-packages path, not the source tree. Narrows SAL-NRRD-OBL-E4B3D1A206784660 and SAL-NRRD-OBL-FEF73EC95DF631C3 (both NRRD-ARRAY-001) further; does not promote either to implemented -- this tick closed exactly the two named items (the centers gap, and the now-corrected numpy-adapter disclosure), not a fresh, exhaustive re-audit of either obligation's every other named requirement."
+    },
+    {
       "evidence_id": "NRRD-CODEC-AVAILABILITY-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -269,7 +277,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "74e1db56329cf098b024e674be1b4d874f13b93bf71cbfc9f5e4a02dd2d40097",
+    "implementation_evidence": "cb7e3427c05f30aa3be9f8af0061bef735493511626b206293aa6b0506554a92",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2515,14 +2523,16 @@
       "capability_id": "NRRD-ARRAY-001",
       "execution_evidence_ids": [
         "NRRD-R1-SOURCE-TESTS",
-        "NRRD-ARRAY-VIEW-PROOF"
+        "NRRD-ARRAY-VIEW-PROOF",
+        "NRRD-CELL-NODE-CROP-CENTERS-PROOF"
       ],
       "implemented_behavior": [
         "Flat values expose shape and can be reshaped in fastest-first order.",
-        "FF6-NRRD-ARRAY-VIEW-001: dtype (NrrdDtype, reusing codec/payload.py's dtype_info/is_block_type/parse_block_size), strides (element-unit, fastest-first), element access, and slicing (zero-copy, proven via data-identity) are now built and proven -- see NRRD-ARRAY-VIEW-PROOF for the full account, including the range-kind-axis guard and the space-direction/origin propagation this obligation's own \"orientation... follow every operation\" clause names."
+        "FF6-NRRD-ARRAY-VIEW-001: dtype (NrrdDtype, reusing codec/payload.py's dtype_info/is_block_type/parse_block_size), strides (element-unit, fastest-first), element access, and slicing (zero-copy, proven via data-identity) are now built and proven -- see NRRD-ARRAY-VIEW-PROOF for the full account, including the range-kind-axis guard and the space-direction/origin propagation this obligation's own \"orientation... follow every operation\" clause names.",
+        "FF6-EVENT-000477: cell-vs-node `centers` semantics under crop are now modelled, grounded directly in the pinned NRRD spec's own worked example (5 samples, axis min 0.0, axis max 1.0: node samples at 0.00/0.25/.../1.00; cell samples at 0.10/0.30/.../0.90). _sliced_axis_metadata (array_view.py) keeps its original formula for a node-centered (or unspecified-center, the conservative default) axis; a cell-centered axis now spans the retained region's own outer edges, one full cell wider than the node case for the same sample count. Also confirmed, and disclosed rather than force-built: the numpy/pynrrd interoperability adapter this obligation's own prior missing_behavior named is NOT actually required by this obligation's own literal rule_text/required_tests/release_gates -- that was scope a prior evidence entry added beyond the obligation's own wording, not a real gap."
       ],
       "missing_behavior": [
-        "Axis permutation, flip, crop, and per-axis metadata propagation are built and tested (see NRRD-ARRAY-VIEW-PROOF), but two items remain open: cell-vs-node `centers` semantics are not modelled in axis-min/max recomputation under crop (a disclosed simplification, uniform spacing-only treatment), and no numpy/pynrrd interoperability adapter exists (the package's own empty `adapters/` directory is the intended, still-unbuilt home for one)."
+        "No numpy/pynrrd interoperability adapter exists (the package's own empty `adapters/` directory is the intended home for one) -- disclosed for completeness, but confirmed NOT to be a requirement of this obligation's own rule_text/required_tests/release_gates, which name shape/strides/dtype/slicing/permutation/flip/crop/metadata-propagation only. Building one anyway would be unrequested scope, not this obligation's own gap."
       ],
       "negative_test_selectors": [
         "tests/python/nrrd/test_obligation_array_view.py::test_out_of_range_index_raises",
@@ -2555,7 +2565,11 @@
         "tests/python/nrrd/test_obligation_array_view.py::test_double_flip_of_the_same_axis_restores_the_original_values",
         "tests/python/nrrd/test_obligation_array_view.py::test_copy_materializes_independent_backing_data",
         "tests/python/nrrd/test_obligation_array_view.py::test_copy_of_a_transposed_view_preserves_values_in_the_new_order",
-        "tests/python/nrrd/test_obligation_array_view.py::test_array_view_over_a_loaded_document_matches_to_array"
+        "tests/python/nrrd/test_obligation_array_view.py::test_array_view_over_a_loaded_document_matches_to_array",
+        "tests/python/nrrd/test_obligation_array_view.py::test_node_centered_crop_keeps_the_original_sample_position_formula",
+        "tests/python/nrrd/test_obligation_array_view.py::test_cell_centered_crop_spans_the_retained_cells_own_outer_edges",
+        "tests/python/nrrd/test_obligation_array_view.py::test_a_single_retained_cell_still_spans_one_full_cell_width_not_zero",
+        "tests/python/nrrd/test_obligation_array_view.py::test_an_axis_with_no_declared_center_keeps_the_node_equivalent_default"
       ],
       "proof_requirements": {
         "negative": [
@@ -2843,14 +2857,16 @@
       "capability_id": "NRRD-ARRAY-001",
       "execution_evidence_ids": [
         "NRRD-R1-SOURCE-TESTS",
-        "NRRD-ARRAY-VIEW-PROOF"
+        "NRRD-ARRAY-VIEW-PROOF",
+        "NRRD-CELL-NODE-CROP-CENTERS-PROOF"
       ],
       "implemented_behavior": [
         "Shape and fastest-first nested value access exist.",
-        "FF6-NRRD-ARRAY-VIEW-001: stride/dtype metadata (NrrdDtype), slicing, permutation, flip, crop, orientation propagation (space_direction/space_origin under flip, axis metadata under transpose/slice), and zero-copy-vs-copy signaling (the `copied` field, proven by data-identity assertions) are all now built and proven -- see NRRD-ARRAY-VIEW-PROOF."
+        "FF6-NRRD-ARRAY-VIEW-001: stride/dtype metadata (NrrdDtype), slicing, permutation, flip, crop, orientation propagation (space_direction/space_origin under flip, axis metadata under transpose/slice), and zero-copy-vs-copy signaling (the `copied` field, proven by data-identity assertions) are all now built and proven -- see NRRD-ARRAY-VIEW-PROOF.",
+        "FF6-EVENT-000477: cell-vs-node `centers` semantics under crop are now modelled -- see the sibling obligation SAL-NRRD-OBL-E4B3D1A206784660's own implemented_behavior entry for the full account (same capability, same fix, same NRRD-CELL-NODE-CROP-CENTERS-PROOF evidence). The numpy/pynrrd interoperability adapter this obligation's own prior missing_behavior named is confirmed NOT actually required by this obligation's own rule_text/required_tests/release_gates -- disclosed rather than force-built."
       ],
       "missing_behavior": [
-        "Cell-vs-node `centers` semantics are not modelled in axis-min/max recomputation under crop (disclosed simplification), and no numpy/pynrrd interoperability adapter exists (the package's own empty `adapters/` directory is the intended, still-unbuilt home for one)."
+        "No numpy/pynrrd interoperability adapter exists (the package's own empty `adapters/` directory is the intended home for one) -- disclosed for completeness, but confirmed NOT to be a requirement of this obligation's own rule_text/required_tests/release_gates. Building one anyway would be unrequested scope, not this obligation's own gap."
       ],
       "negative_test_selectors": [
         "tests/python/nrrd/test_obligation_array_view.py::test_out_of_range_index_raises",
@@ -2883,7 +2899,11 @@
         "tests/python/nrrd/test_obligation_array_view.py::test_double_flip_of_the_same_axis_restores_the_original_values",
         "tests/python/nrrd/test_obligation_array_view.py::test_copy_materializes_independent_backing_data",
         "tests/python/nrrd/test_obligation_array_view.py::test_copy_of_a_transposed_view_preserves_values_in_the_new_order",
-        "tests/python/nrrd/test_obligation_array_view.py::test_array_view_over_a_loaded_document_matches_to_array"
+        "tests/python/nrrd/test_obligation_array_view.py::test_array_view_over_a_loaded_document_matches_to_array",
+        "tests/python/nrrd/test_obligation_array_view.py::test_node_centered_crop_keeps_the_original_sample_position_formula",
+        "tests/python/nrrd/test_obligation_array_view.py::test_cell_centered_crop_spans_the_retained_cells_own_outer_edges",
+        "tests/python/nrrd/test_obligation_array_view.py::test_a_single_retained_cell_still_spans_one_full_cell_width_not_zero",
+        "tests/python/nrrd/test_obligation_array_view.py::test_an_axis_with_no_declared_center_keeps_the_node_equivalent_default"
       ],
       "proof_requirements": {
         "negative": [
@@ -2914,6 +2934,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-order-001.json": "fa5437773b0590779d16cd411054faa8b6b271acaa3a33c7ee8c777631eae17e",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-basic-metadata-001.json": "bfe3aadc50d89c4688ec73d62c94e027f164c1ba97f713bb8176035f3c57f3f0",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-cell-node-crop-centers-001.json": "cda7ba03012d919d90fb14cfd5ef2ce4a02efd96490218306cde1976463115c7",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-codec-availability-001.json": "cafed57baf428e3e88e044b2ca36579e3ea13c111c54bac9741d48e3d8efbc80",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-cwd-relative-resolver-001.json": "125726ec781f75a540fbe05eaa13ca77253c14b02ee19d8d1d55a230f0bce68e",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-path-version-gate-001.json": "0ddb74585effd11d8f31db536d8242dbcf347f14dba381a36faffab0b40a3add",
@@ -2947,14 +2968,14 @@
     "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "fc03e93585295b46b4b0cd3e5c21c1d1e82fafb57299450d2758185880af639b",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "1c05f5d17614799de2cea369352a67b24a5285fb3d08761e63c787560bfa8fea",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "10984d5ca2c0bc8bf872e94923e41c343dea92c2d98411c429eaa3e79fb624ef",
-    "src/python/nrrd/src/format_factory/nrrd/model/array_view.py": "8326ae97c8dda475989b7ce1513572bc3bbe82afcd13dfbf0ee94a61f6bdea3e",
+    "src/python/nrrd/src/format_factory/nrrd/model/array_view.py": "d0af1ee965b12415efaacdab227b2db9aab52e161bd0d3ec0f3de1b0d9400f04",
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "bb13b031c3e3c41e9c5b775047278c68e6c62b036be71c9e73c0205ac1d3be39",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
     "src/python/nrrd/src/format_factory/nrrd/space.py": "85d5640445d14d653eab2ff6131b4b867be171c16f96fdb943f14e451965afe5",
     "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "82b06e8160941efd42e95c9d698e81a3c2697dbe1edceaa47efa4154b4476ded",
     "tests/python/nrrd/test_ascii_encoding_endian.py": "70aaff339ed8a91183ead5c3b87164d5d1542c393746125c95fb63e5f3f17c04",
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
-    "tests/python/nrrd/test_obligation_array_view.py": "25aa0029428c2289122d5241d6ee71a97f230da3edc58cd0c5a2f891670d6a4e",
+    "tests/python/nrrd/test_obligation_array_view.py": "4b39041bfa5bbba4e1bcea72b516ca3e522b915d8420b83fc49615a02623f3c4",
     "tests/python/nrrd/test_obligation_attachment_conversion.py": "9735c86c534b2bec55338882d3c6049571a7184b3a25d24e450f9146f29b3a55",
     "tests/python/nrrd/test_obligation_axis_field_arity.py": "3528ed42454f8e5f9c3640f3b005ee3f7f3a0972081d0a2b81ce9d3dcd6751e0",
     "tests/python/nrrd/test_obligation_axis_order.py": "926a045509b2395f326340b792bd739bbe85c4da8a02c958bc390d70650d5207",

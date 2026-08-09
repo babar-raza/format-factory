@@ -22,11 +22,25 @@ origin) following every operation, including the "range" kind axis guard
 that refuses a crop/slice which would change a fixed-width sample
 structure's own element count.
 
-Not attempted here, and not claimed: cell-vs-node `centers` nuance in
-axis-min/max recomputation under crop (spacing-only, uniform treatment,
-disclosed in array_view.py's own module docstring), negative-step
-slicing (use `.flip()`), and any numpy interop (no numpy dependency
-exists in this package; `adapters/` stays empty).
+FF6-EVENT-000477 closed the cell-vs-node `centers` gap this file used to
+disclose here as unattempted: `_sliced_axis_metadata` (array_view.py) now
+branches on the axis's own `center` field, confirmed directly against
+the pinned NRRD spec's own worked example (5 samples, axis min 0.0, axis
+max 1.0: node-centered samples land at 0.00/0.25/.../1.00; cell-centered
+samples land at 0.10/0.30/.../0.90) -- a node-centered axis keeps this
+module's original formula unchanged (axis_min/axis_max ARE sample
+positions), while a cell-centered axis now correctly spans the retained
+region's own outer edges, one full cell wider than the node case for the
+same retained sample count.
+
+Not attempted here, and not claimed: negative-step slicing (use
+`.flip()`), and any numpy interop (no numpy dependency exists in this
+package; `adapters/` stays empty -- and, per SAL-NRRD-OBL-E4B3D1A206784660
+/SAL-NRRD-OBL-FEF73EC95DF631C3's own literal rule_text, a numpy/pynrrd
+adapter is not actually a requirement of either obligation at all; that
+was scope a prior evidence entry's own missing_behavior text added
+beyond what either obligation's rule_text/required_tests/release_gates
+name, not something this file force-builds to match).
 """
 
 from __future__ import annotations
@@ -236,6 +250,105 @@ def test_full_size_slice_on_a_range_kind_axis_is_permitted() -> None:
     result = view.crop((1, 3), (0, 3))
 
     assert result.shape == (2, 3)
+
+
+# ── cell-vs-node `centers` semantics under crop ──────────────────────────
+#
+# Both worked examples reproduce the pinned NRRD spec's own example
+# verbatim: 5 samples, axis min 0.0, axis max 1.0 -- node-centered
+# samples land at 0.00/0.25/0.50/0.75/1.00 (spacing 0.25); cell-centered
+# samples land at 0.10/0.30/0.50/0.70/0.90 (spacing 0.20).
+
+
+def test_node_centered_crop_keeps_the_original_sample_position_formula() -> None:
+    """Unchanged from this module's own original, node-equivalent
+    formula -- node-centered `axis_min`/`axis_max` ARE sample positions,
+    so cropping to samples [1, 4) spans exactly those two retained
+    samples' own positions (0.25 to 0.75)."""
+    document = _document(
+        sizes="5",
+        array=[0, 1, 2, 3, 4],
+        extra_header={
+            "kinds": "domain",
+            "spacings": "0.25",
+            "axis mins": "0.0",
+            "axis maxs": "1.0",
+            "centers": "node",
+        },
+    )
+    view = array_view(document)
+
+    cropped = view.crop((1, 4))
+
+    assert cropped.axes[0].axis_min == pytest.approx(0.25)
+    assert cropped.axes[0].axis_max == pytest.approx(0.75)
+
+
+def test_cell_centered_crop_spans_the_retained_cells_own_outer_edges() -> None:
+    """Cell-centered `axis_min`/`axis_max` are the grid's own OUTER
+    EDGES, not sample positions -- cropping to samples [1, 4) (the cells
+    at positions 0.30/0.50/0.70) must span their own edge-to-edge extent,
+    0.20 to 0.80, one full cell wider than the node-centered case above
+    despite selecting the same 3-of-5 samples."""
+    document = _document(
+        sizes="5",
+        array=[0, 1, 2, 3, 4],
+        extra_header={
+            "kinds": "domain",
+            "spacings": "0.20",
+            "axis mins": "0.0",
+            "axis maxs": "1.0",
+            "centers": "cell",
+        },
+    )
+    view = array_view(document)
+
+    cropped = view.crop((1, 4))
+
+    assert cropped.axes[0].axis_min == pytest.approx(0.20)
+    assert cropped.axes[0].axis_max == pytest.approx(0.80)
+
+
+def test_a_single_retained_cell_still_spans_one_full_cell_width_not_zero() -> None:
+    """A cell always covers real space -- cropping a cell-centered axis
+    down to exactly one retained sample must not collapse axis_min and
+    axis_max to the same point the way a node-centered single-sample crop
+    correctly does (see test_flip_swaps_axis_min_and_max's own sibling
+    node behavior elsewhere in this file)."""
+    document = _document(
+        sizes="5",
+        array=[0, 1, 2, 3, 4],
+        extra_header={
+            "kinds": "domain",
+            "spacings": "0.20",
+            "axis mins": "0.0",
+            "axis maxs": "1.0",
+            "centers": "cell",
+        },
+    )
+    view = array_view(document)
+
+    cropped = view.crop((2, 3))
+
+    assert cropped.axes[0].axis_min == pytest.approx(0.40)
+    assert cropped.axes[0].axis_max == pytest.approx(0.60)
+
+
+def test_an_axis_with_no_declared_center_keeps_the_node_equivalent_default() -> None:
+    """No `centers` header field at all (the common case) must not
+    silently start behaving like a cell-centered axis -- the safe,
+    conservative default this module has always used stays unchanged."""
+    document = _document(
+        sizes="5",
+        array=[0, 1, 2, 3, 4],
+        extra_header={"kinds": "domain", "spacings": "0.25", "axis mins": "0.0", "axis maxs": "1.0"},
+    )
+    view = array_view(document)
+
+    cropped = view.crop((1, 4))
+
+    assert cropped.axes[0].axis_min == pytest.approx(0.25)
+    assert cropped.axes[0].axis_max == pytest.approx(0.75)
 
 
 # ── transpose() / permute() ──────────────────────────────────────────────
