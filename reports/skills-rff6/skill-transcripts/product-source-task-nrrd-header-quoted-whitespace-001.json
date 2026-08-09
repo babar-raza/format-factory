@@ -1,0 +1,60 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-header-quoted-whitespace-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-691c16e21e80ff9b",
+  "mode": "live",
+  "timestamp": "2026-08-09T15:17:04Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC-FF6-NRRD-HEADER-QUOTED-WHITESPACE-001",
+    "task_kind": "third-fresh-look-at-a-twice-investigated-genuinely-ambiguous-spec-question-via-a-new-angle",
+    "root_cause": "SAL-NRRD-OBL-6F9641D043F9DAAA (NRRD-HEADER-001)'s own missing_behavior disclosed ONE remaining item, already investigated twice with fresh eyes both times and left as 'a genuinely ambiguous, unsettled question rather than a clear gap': whether a quoted string field's own trailing whitespace (immediately before its own closing quote) should be exempted from the general trailing-whitespace-before-the-line-terminator rule the spec's own text permits stripping, since the pinned spec text does not address this specific sub-case anywhere. Both prior investigations were spec-re-reading exercises. This tick tried a genuinely different angle: structural reasoning about what .strip() can and cannot touch, plus independent corroboration against the real pynrrd reference implementation via this repo's own isolated oracle venv infrastructure.",
+    "obligation_targeted": "SAL-NRRD-OBL-6F9641D043F9DAAA (NRRD-HEADER-001) -- promoted from partial to implemented; this was its own sole disclosed remaining item.",
+    "acceptance_evidence": "Proved by structural/logical reasoning, not spec re-reading, that the disclosed ambiguity does not actually correspond to any real behavioral choice: `_parse_header`'s own `value.strip()` (reader.py) operates on the WHOLE raw field value string, and any properly-closed quoted segment's own last character is structurally always its closing `\"`, never whitespace -- so `.strip()` can only ever remove whitespace that comes strictly AFTER the field value's own final closing quote (already spec-confirmed permitted), and can NEVER remove whitespace from inside any quoted segment, first, middle, or last, regardless of position, for any well-formed (properly terminated) quoted value. There is therefore only ONE behavior a correct implementation can produce -- this is not a judgment call the spec left open, it is a fact about what plain .strip() can structurally do to a string that ends in a non-whitespace character. Verified this empirically in isolation first (bare Python string manipulation, before touching any project code), then against this package's own _parse_quoted_list() directly, then through a full NrrdDocument header round trip (dumps/loads), then independently against the REAL pynrrd reference implementation via this repo's own isolated pynrrd-venv oracle infrastructure (a genuinely new NRRD sample with a quoted label ending in a space, parsed by actual pynrrd, not this package) -- pynrrd agrees exactly, preserving the same interior trailing whitespace. Four independent confirmations, not one."
+  },
+  "execution_steps": [
+    "1. After committing and eventing UBL-EDIT-001's own xmlschema-dependency closure (FF6-EVENT-000489), pulled NRRD's own remaining 4 unresolved obligations and identified NRRD-HEADER-001 as the one flagged by a prior tick's own exact_next_action as 'worth a third, even more careful look', distinct from UBL's remaining items which were clearly data-acquisition or deep-multi-version-schema-research blocked (genuinely not tractable for a single tick).",
+    "2. Deliberately did NOT re-read the same pinned spec text a third time (already exhausted twice); instead reasoned structurally about what Python's own str.strip() can and cannot do to a string containing quoted segments, before looking at any project code.",
+    "3. Verified that reasoning empirically in pure Python first, in isolation: confirmed a raw field value like '\"x \" \"y\" \"z\"' is IDENTICAL before and after .strip() (since the string already starts and ends with the quote character, not whitespace), while a value with genuine trailing whitespace AFTER the final closing quote IS correctly stripped by the same call -- proving the two cases are structurally distinguishable and only one is ever actually touched by strip().",
+    "4. Read reader.py's own _parse_header directly (not assumed) to confirm the exact order of operations: value.strip() is applied to the raw field value BEFORE _parse_quoted_list() ever runs, confirming the structural argument applies to this package's own real code path, not just a hypothetical.",
+    "5. Ran this package's own _parse_quoted_list() directly against a raw value with interior trailing whitespace on the middle token, confirming it already preserves it exactly, with zero source changes.",
+    "6. Found the existing test file for this exact area (test_obligation_axis_field_arity.py) and confirmed no existing test specifically exercised trailing whitespace immediately before a closing quote -- every existing quoted-label test used embedded whitespace in the MIDDLE of a token's own text (e.g. 'x (mm)'), not at the very end just before the closing quote, the specific disclosed ambiguity's own exact shape.",
+    "7. Added one new test (test_a_labels_own_trailing_whitespace_inside_its_quotes_is_preserved) through this file's own established full-round-trip discipline (dumps/loads, not a bare unit call), deliberately putting the trailing-space token LAST (the true boundary case nearest the field value's own overall end, not merely an interior token where the answer would be less surprising).",
+    "8. Ran the full test file (27 tests, up from 26) -- all passed on the first run, confirming zero source changes were needed; this closes a testing gap the twice-prior spec-re-reading investigations did not think to close because they were looking for a SPEC answer, not a STRUCTURAL one.",
+    "9. Sought independent, real-world corroboration beyond pure logical argument: found this repo's own pre-built isolated pynrrd oracle venv (.local/oracle/nrrd/pynrrd-venv, built by an earlier tick for NRRD-ENC-001's own cross-check work) and wrote a small, standalone, zero-project-import probe script (matching the isolation discipline nrrd_pynrrd_probe.py already establishes) that builds a fresh NRRD sample with a quoted label ending in a space and asks the REAL pynrrd package to parse it.",
+    "10. Ran that probe inside the isolated venv: pynrrd itself preserves the exact same trailing interior whitespace, independently confirming this package's own behavior matches the real reference ecosystem, not merely a self-consistent internal argument.",
+    "11. Ran ruff check on the changed test file: clean. No production source file was modified, so no mypy re-run against source code was needed.",
+    "12. Ran the full nrrd suite (959 passed, 1 skipped, up from 958) and the 6-format FF6 regression (4360 passed, 4 skipped, up from 4359) -- exact +1 delta in both, confirming zero regressions.",
+    "13. Ran the installed-wheel proof (tools/run_package_install_proof.py --format nrrd, 1/1 PASS) and independently re-verified the same quoted-trailing-whitespace preservation directly from the installed, non-editable site-packages path."
+  ],
+  "allowed_files": [
+    "tests/python/nrrd/test_obligation_axis_field_arity.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/nrrd/test_obligation_axis_field_arity.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_axis_field_arity.py -v -- 27 passed (26 pre-existing unchanged, 1 new)",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q --timeout=120 -- 959 passed, 1 skipped (was 958)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4360 passed, 4 skipped (was 4359)",
+    ".venv/Scripts/python -m ruff check tests/python/nrrd/test_obligation_axis_field_arity.py -- All checks passed",
+    "isolated pynrrd-venv standalone probe (zero project imports) -- pynrrd itself preserves the identical interior quoted trailing whitespace, independent corroboration",
+    "python tools/run_package_install_proof.py --format nrrd -- RESULT: 1/1 PASS; the quoted-trailing-whitespace preservation independently re-exercised from the installed, non-editable wheel's own site-packages path"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (NRRD-HEADER-001, SAL-NRRD-OBL-6F9641D043F9DAAA) PROMOTED from partial to implemented -- its sole disclosed remaining item was resolved via structural reasoning (not spec re-reading) plus independent corroboration against the real pynrrd reference implementation, and closed with a dedicated test proving the already-correct implementation behavior directly.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); nrrd remains UNASSESSED",
+    "obligations_moved": 1,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "None -- no production source was changed; this closes a testing/documentation gap only, since the implementation was already correct."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

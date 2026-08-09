@@ -101,6 +101,30 @@ def test_a_label_containing_a_space_is_still_one_axis_worth_of_tokens() -> None:
     assert len(document.labels) == 3
 
 
+def test_a_labels_own_trailing_whitespace_inside_its_quotes_is_preserved() -> None:
+    """Twice investigated and left as a genuinely unsettled spec question
+    (whether a quoted field's own trailing whitespace, immediately before
+    ITS OWN closing quote, should be exempted from the general
+    trailing-whitespace-before-the-line-terminator rule the spec's own
+    text permits stripping). Resolved by structural reasoning rather than
+    a third re-read of the same spec text: `_parse_header`'s own
+    `value.strip()` operates on the WHOLE raw field value, and a
+    properly-closed quoted segment's own last character is always its
+    closing `"`, never whitespace -- so a plain `.strip()` can only ever
+    remove whitespace that comes AFTER the final closing quote (already
+    proven permitted), never whitespace inside any quoted segment,
+    first, middle, or last, regardless of position. There is therefore
+    only one behavior a correct implementation can produce; this proves
+    directly, through a full header round trip, that this package
+    already produces it -- including the true boundary case (the LAST
+    token's own interior trailing space, immediately adjacent to the
+    field value's own true end), not only an interior token where the
+    answer would be less surprising."""
+    document = _document(labels='"leading" "middle " "trailing "')
+
+    assert document.labels == ["leading", "middle ", "trailing "]
+
+
 def test_absent_fields_are_empty_not_an_error() -> None:
     document = _document()
     assert document.spacings == []

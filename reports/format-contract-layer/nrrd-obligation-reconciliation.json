@@ -146,6 +146,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-C13492B6879B6E90 (NRRD-HEADER-001) only. The pinned spec source (src-nrrd-001.bin, SRC-NRRD-001) was read directly and confirms word-for-word: \"a colon followed by a single space ... and then the [field descriptor]\"; \"Whitespace (that is not part of the previous line's termination) is not allowed before a field identifier\"; and \"Extra whitespace after the field descriptor and before the line termination is ignored.\" reader.py._parse_header's ordinary-field branch now rejects leading whitespace before the field identifier and any colon spacing other than exactly one space, while still ignoring trailing value whitespace per the spec's own permissive clause. 6 new tests confirm both the rejections and the surviving permissive behavior. nrrd suite: 484 -> 490 passed. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, not VERIFIED. Covers SAL-NRRD-OBL-C13492B6879B6E90 only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "NRRD-HEADER-QUOTED-TRAILING-WHITESPACE-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-quoted-whitespace-001.json",
+      "sha256": "347c40fb2eb2d543b312f88f0016fb24a698fc0e1e6209770f580f7e737c5462",
+      "truth_boundary": "CLOSES SAL-NRRD-OBL-6F9641D043F9DAAA (NRRD-HEADER-001): promoted partial -> implemented. Its own sole disclosed remaining item -- whether a quoted string field's own trailing whitespace, immediately before ITS OWN closing quote, should be exempted from the general trailing-whitespace-before-the-line-terminator rule the spec's own text permits stripping -- had already been investigated twice with fresh eyes, both times via spec re-reading, and left as \"genuinely ambiguous, unsettled\" since the pinned spec text does not address this specific sub-case. This tick tried a genuinely different angle: structural reasoning about what a plain `.strip()` call can and cannot touch, rather than a third re-read of the same text. Proved the disclosed ambiguity does not correspond to any real behavioral choice at all: `_parse_header`'s own `value.strip()` (reader.py) operates on the WHOLE raw field value, and any properly-closed quoted segment's own last character is structurally always its closing `\"`, never whitespace -- so `.strip()` can only ever remove whitespace strictly AFTER the field value's own final closing quote (already spec-confirmed permitted), never whitespace inside any quoted segment, first, middle, or last, for any well-formed value. There is therefore only ONE behavior a correct implementation can produce, not a judgment call the spec left open. Verified this four independent ways: (1) bare Python string manipulation in isolation, before touching any project code; (2) directly against this package's own `_parse_quoted_list()`; (3) through a full `NrrdDocument` header round trip (dumps/loads); (4) independently against the REAL pynrrd reference implementation via this repo's own pre-built isolated oracle venv (`.local/oracle/nrrd/pynrrd-venv`, originally built for NRRD-ENC-001's own cross-check work) -- a new, standalone, zero-project-import probe script (matching `nrrd_pynrrd_probe.py`'s own isolation discipline) built a fresh NRRD sample with a quoted label ending in a space and confirmed pynrrd itself preserves the identical interior trailing whitespace. Added one new test (test_a_labels_own_trailing_whitespace_inside_its_quotes_is_preserved, tests/python/nrrd/test_obligation_axis_field_arity.py) through this file's own established full-round-trip discipline, deliberately placing the trailing-space token LAST (the true boundary case nearest the field value's own overall end) -- passed on the first run, confirming zero source changes were needed; this closes a testing gap the two prior spec-re-reading investigations did not think to close because they were looking for a SPEC answer, not a STRUCTURAL one. nrrd suite: 958 -> 959 passed (1 pre-existing unrelated skip). 6-format FF6 regression: 4359 -> 4360 passed, 4 skipped (exact +1 over the prior UBL-EDIT-001 slice's own 4359 baseline). ruff clean (no source file changed, so no mypy re-run was needed for production code). Installed-wheel behavior independently re-verified: the quoted-trailing-whitespace preservation was exercised directly from the installed, non-editable site-packages path. NOT backed by an independent reference NRRD implementation for the SOURCE claim (SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule for that part) -- but the BEHAVIOR itself is additionally, independently corroborated against the real pynrrd reference implementation, going beyond what GAP-008 requires."
+    },
+    {
       "evidence_id": "NRRD-INDEPENDENT-PYNRRD-ORACLE-PROOF",
       "expected_result": "PASS",
       "granularity": "suite",
@@ -309,7 +317,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "829cba8caa29d732fde8d8d987a8cbcf69e792e3e543062e85a29dec745caa10",
+    "implementation_evidence": "aa284b502ef0918aac64e8e42261a6c7a1a9dd3cc4a3512c9be5f8be8ad5013a",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1582,15 +1590,15 @@
       "capability_id": "NRRD-HEADER-001",
       "execution_evidence_ids": [
         "NRRD-R1-SOURCE-TESTS",
-        "NRRD-HEADER-FIELD-NAME-ALIASES-PROOF"
+        "NRRD-HEADER-FIELD-NAME-ALIASES-PROOF",
+        "NRRD-HEADER-QUOTED-TRAILING-WHITESPACE-PROOF"
       ],
       "implemented_behavior": [
         "LF/CRLF and exact attached-source replay are supported.",
-        "Permitted lexical variants are now fully modeled and tested. Programmatically extracted (not hand-transcribed) every genuine \"<spaced>: <...> <unspaced>: <...>\" alias adjacency from the pinned spec text: block size/blocksize, old min/oldmin, old max/oldmax, data file/datafile, line skip/lineskip, byte skip/byteskip, sample units/sampleunits. Five of the seven were already correctly handled by a scattered header.get(canonical, header.get(alias)) fallback at their consumers; block size/blocksize and data file/datafile were confirmed by direct probing to be genuinely unrecognized anywhere before this slice. Both are now normalized to their canonical spaced key once, in _parse_header, at the earliest possible point -- data file specifically because its own LIST-mode detection is itself keyed on the exact parsed field name, so no scattered per-consumer patch could have fixed that path. Declaring both the spaced and unspaced form of either field is correctly treated as a duplicate-field violation, matching the spec's own framing that alternate forms are \"the same field\"."
+        "Permitted lexical variants are now fully modeled and tested. Programmatically extracted (not hand-transcribed) every genuine \"<spaced>: <...> <unspaced>: <...>\" alias adjacency from the pinned spec text: block size/blocksize, old min/oldmin, old max/oldmax, data file/datafile, line skip/lineskip, byte skip/byteskip, sample units/sampleunits. Five of the seven were already correctly handled by a scattered header.get(canonical, header.get(alias)) fallback at their consumers; block size/blocksize and data file/datafile were confirmed by direct probing to be genuinely unrecognized anywhere before this slice. Both are now normalized to their canonical spaced key once, in _parse_header, at the earliest possible point -- data file specifically because its own LIST-mode detection is itself keyed on the exact parsed field name, so no scattered per-consumer patch could have fixed that path. Declaring both the spaced and unspaced form of either field is correctly treated as a duplicate-field violation, matching the spec's own framing that alternate forms are \"the same field\".",
+        "FF6-EVENT-000490: the sole remaining disclosed item -- whether a quoted field's own trailing whitespace, immediately before its own closing quote, should be exempted from the general trailing-whitespace-stripping rule -- is resolved via structural reasoning (not a third spec re-read): a properly-closed quoted segment's own last character is always its closing quote, never whitespace, so value.strip() (applied to the WHOLE raw field value) can never touch whitespace inside any quoted segment, only whitespace strictly after the final closing quote (already spec-permitted). There is therefore only one behavior a correct implementation can produce, and this package already produces it -- proven directly via a full header round trip, and independently corroborated against the real pynrrd reference implementation (via this repo's own isolated pynrrd-venv oracle infrastructure), which preserves the identical interior trailing whitespace. See NRRD-HEADER-QUOTED-TRAILING-WHITESPACE-PROOF."
       ],
-      "missing_behavior": [
-        "\"Canonical parsing strips significant field whitespace\" was investigated a second time with fresh eyes (flagged by an earlier tick as worth revisiting) and remains a genuinely ambiguous, unsettled question rather than a clear gap: the reader already refuses (not silently strips) any value with more than the one mandatory space after the colon, so there is no leading-whitespace-loss scenario in practice; the only whitespace value.strip() actually removes is trailing whitespace before the line terminator, which the spec's own text explicitly permits ignoring (\"extra whitespace after the field descriptor and before the line termination is ignored\"). Whether a quoted string field's own trailing whitespace inside the quotes should be exempted from this general-field rule is not addressed anywhere in the pinned spec text, and building a guess here risks inventing spec content rather than following it -- deliberately left unresolved, not deferred without investigation."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/nrrd/test_obligation_header_field_name_aliases.py::test_declaring_both_the_spaced_and_unspaced_block_size_form_is_a_duplicate_field",
         "tests/python/nrrd/test_obligation_header_field_name_aliases.py::test_declaring_both_the_spaced_and_unspaced_data_file_form_is_a_duplicate_field"
@@ -1600,7 +1608,8 @@
         "tests/python/nrrd/test_production_namespace.py::test_lossless_mode_replays_unchanged_source_and_reports_mutation",
         "tests/python/nrrd/test_obligation_header_field_name_aliases.py::test_the_unspaced_blocksize_alias_is_recognized_for_a_block_typed_document",
         "tests/python/nrrd/test_obligation_header_field_name_aliases.py::test_the_unspaced_datafile_alias_is_recognized_and_resolves_the_detached_payload",
-        "tests/python/nrrd/test_obligation_header_field_name_aliases.py::test_the_canonical_spaced_forms_still_parse_correctly_unaffected_by_the_alias_map"
+        "tests/python/nrrd/test_obligation_header_field_name_aliases.py::test_the_canonical_spaced_forms_still_parse_correctly_unaffected_by_the_alias_map",
+        "tests/python/nrrd/test_obligation_axis_field_arity.py::test_a_labels_own_trailing_whitespace_inside_its_quotes_is_preserved"
       ],
       "proof_requirements": {
         "negative": [
@@ -1610,13 +1619,13 @@
           "Lexical-variant corpus with byte-exact lossless replay."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_split_header",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_parse_header",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::_header_bytes"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-VERSION-001",
@@ -3027,6 +3036,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-field-name-aliases-001.json": "83d73c735f92aadc0240da321facedf152658ac2fd3144ee4a38aecddea9e547",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-field-ordering-001.json": "69bf3bede20abc9f6cbe94440cd555ce406139e19f65bfad48d30002edcd5a21",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-grammar-001.json": "34ff1e271e63f2ceb26c72ebe47b1f44e9be6b2ddde57a06068be324b1383229",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-quoted-whitespace-001.json": "347c40fb2eb2d543b312f88f0016fb24a698fc0e1e6209770f580f7e737c5462",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-independent-pynrrd-oracle-001.json": "49876d0d095d6bb2bacc3f2fac247d3356871ff50a59ea5e8a612232e795f56f",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-keyvalue-escaping-001.json": "58b4a3c1cb9aefd9d546fb5c0e5dfc1d7f7be90fd15e40b3c7f4424238d11125",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-kind-enum-alias-001.json": "af90cbb0d43424c792cfca31fb6c1ad2122840037389e339e69321a1eece78a4",
@@ -3063,7 +3073,7 @@
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
     "tests/python/nrrd/test_obligation_array_view.py": "e7191ec3c9dcb1bd0ba39fd87e7b0b1e16db24e5d1c161bcd98e3c559daa9cb3",
     "tests/python/nrrd/test_obligation_attachment_conversion.py": "9735c86c534b2bec55338882d3c6049571a7184b3a25d24e450f9146f29b3a55",
-    "tests/python/nrrd/test_obligation_axis_field_arity.py": "3528ed42454f8e5f9c3640f3b005ee3f7f3a0972081d0a2b81ce9d3dcd6751e0",
+    "tests/python/nrrd/test_obligation_axis_field_arity.py": "1c220e3a70674767c1a5e37e595de176836f7cdc61afe79303c472e89b1bead5",
     "tests/python/nrrd/test_obligation_axis_order.py": "926a045509b2395f326340b792bd739bbe85c4da8a02c958bc390d70650d5207",
     "tests/python/nrrd/test_obligation_basic_metadata.py": "a47038126f8bafc580743b85fc7dfff4678a9bebda3afdea28a6590025087660",
     "tests/python/nrrd/test_obligation_codec_availability.py": "d113afa7bc99f2f76e96cb0a4a65617ca765529582653cba30748064f5466b11",
@@ -3106,11 +3116,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 61,
-      "partial": 4
+      "implemented": 62,
+      "partial": 3
     },
     "total": 65,
-    "unresolved": 4
+    "unresolved": 3
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
