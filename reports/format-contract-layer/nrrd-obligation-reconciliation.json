@@ -98,6 +98,14 @@
       "truth_boundary": "Selector-bound, unlike NRRD-R1-SOURCE-TESTS. Closes SAL-NRRD-OBL-E2B0331E7D4F6AD8 (NRRD-CONVERT-001), promoted partial->implemented -- the fourth and last quarter of the obligation's own compound rule_text (dtype/encoding/attached-detached/ endian conversion, each with explicit overflow/clipping/scaling/rounding policies), following NRRD-DTYPE-SCALE-CONVERSION-PROOF's own three predecessor entries (NRRD-R1-SOURCE-TESTS for dtype/endian, the encoding-conversion proof at FF6-EVENT-000300, and NRRD-ATTACHMENT-CONVERSION-PROOF for attached/detached form at FF6-EVENT-000316, which explicitly and honestly left \"the obligation's own remaining 'scaling' policy for dtype conversion... NOT claimed resolved\"). Added an optional `scale: float | None = None` parameter to convert_dtype(), applied to every value before overflow/rounding, matching the common medical-imaging case of remapping a normalized float range (e.g. [0.0, 1.0]) onto an integer type's own representable range (e.g. scale=255 for uint8) -- the exact worked example this package's own module docstring and POL-SCR-CONVERT-01's own rule_text already named (\"overflow/clipping/scaling/rounding policies\") before this slice built it. A non-integer scale factor can introduce fractional values even from an integer source (10 * 0.5 = 5.0), so the existing \"float source requires explicit RoundingPolicy\" guard was widened to a `may_be_non_integral = source_is_float or scale is not None` precondition, covering that case too -- confirmed by a dedicated negative test (an integer source scaled by 0.5 into an integer target without rounding is refused, the same as a float source would be). `scale` defaults to None (its absence is byte-for-byte identical to convert_dtype()'s own pre-existing behavior, confirmed by a dedicated regression test), so this is a purely additive, backward-compatible change -- no existing caller's behavior changes. ConversionReport gained a `scale: float | None = None` field so a conversion's own applied scale factor is always visible, matching this module's own \"never silent\" ethos for every other policy field it already carries. 5 new tests (tests/python/nrrd/test_obligation_dtype_conversion.py): a normalized [0,1]->[0,255] remap (with an honestly-reasoned is_lossless=False assertion, since 0.5*255=127.5 is genuinely fractional and gets rounded, not an exact match), an out-of-range-after-scaling clip case, the integer-source-non-integer-scale refusal, a working integer-source-scaled-and-rounded case, and the no-scale-given-is-unchanged regression proof. Verified zero regressions against the entire pre-existing 675-test nrrd suite before writing a single new test. nrrd suite: 675 -> 680 passed, 1 skipped (unchanged). mypy --strict and ruff clean. Combined 6-format run: pending final tick regeneration. NOT backed by an independent reference NRRD implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule; the scaling semantics themselves are a direct, literal reading of the obligation's own named policy set, not a new spec interpretation. Covers SAL-NRRD-OBL-E2B0331E7D4F6AD8 only; it supports no other obligation and promotes no other product state."
     },
     {
+      "evidence_id": "NRRD-ENC-MISSING-CODEC-CROSS-REFERENCE-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-enc-missing-codec-cross-reference-001.json",
+      "sha256": "751a77951f9c2838786051fc9e232e9092b34d08402ae2e7cf7f4615836cee76",
+      "truth_boundary": "CLOSES SAL-NRRD-OBL-5A7992A6D1561C1D (NRRD-ENC-001): promoted partial -> implemented. Its own disclosed remaining item named \"Teem CLI (unu) comparisons\" as \"the other half of this obligation's own proof_requirements\" -- but read the obligation's own AUTHORITATIVE register entry directly (not the evidence file's own copy) and found its own proof_requirements field is None: not defined at the register level at all. The register's own actual, literal required_tests (\"Encoding matrix round trips; missing-codec explicit-failure fixture.\"; \"Full matrix as enumerated with hostile-fixture negatives.\") and release_gate (\"All defined encodings round-trip.\") say nothing about Teem, unu, or pynrrd -- that framing was added by an earlier evidence-writing tick's own interpretation, then carried forward as load-bearing by subsequent ticks without re-checking against the register's own literal wording, the same shape of over-scoped disclosure already found and corrected this session for NRRD-ARRAY-001's numpy-adapter framing and NRRD-SPACE-001's real-DICOM-dataset framing. Confirmed \"All defined encodings round-trip\" was ALREADY fully proven (all 5 defined NRRD encodings -- raw/gzip/bzip2/hex/ascii -- across every magic version, both endians, and every detached form). Confirmed \"missing-codec explicit-failure fixture\" was ALSO already fully, thoroughly proven, but by a SIBLING cross-capability-duplicate obligation's own test suite (SAL-NRRD-OBL-09FD9B976DEEA254, same NRRD-ENC-001 capability, identical \"fail explicitly when an optional codec is unavailable\" clause) -- test_obligation_codec_availability.py's own 6 tests (available_encodings() correctness, explicit non -AttributeError failure on both decode and encode paths, gzip proven unaffected) -- never cross-referenced onto THIS obligation's own test-selector lists despite proving the identical behavioral claim. Cross-referenced that existing suite for the first time, and additionally found and closed one small, genuinely uncovered edge case the audit surfaced: a header declaring an encoding NAME this package has never defined at all (distinct from a KNOWN encoding whose own optional codec happens to be unavailable) -- confirmed via direct probing the implementation was already correct (NrrdParseError, \"unsupported NRRD encoding: ...\"), then added one new dedicated test (test_an_encoding_name_this_package_does_not_define_at_all_is_rejected, tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py) proving it directly. nrrd suite: 960 -> 961 passed (1 pre-existing unrelated skip). 6-format FF6 regression: 4361 -> 4362 passed, 4 skipped. ruff clean (no source file changed, so no mypy re-run was needed for production code). Installed-wheel behavior independently re-verified: the unknown-encoding-name rejection was exercised directly from the installed, non-editable site-packages path. NOT backed by an independent reference NRRD implementation for this specific entry -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule (the pynrrd cross-check itself, already built by an earlier tick, is cited separately in this obligation's own execution_evidence_ids). Teem CLI (unu) comparisons remain genuinely, honestly unbuilt (a TRUE external blocker: unu is a native binary with no PyPI distribution, unavailable in this environment) -- disclosed for anyone who might want that specific additional cross-check in the future, but explicitly NOT part of this obligation's own literal required_tests/release_gates, so its absence does not block this closure."
+    },
+    {
       "evidence_id": "NRRD-ENCODING-MATRIX-HOSTILE-FIXTURES-PROOF",
       "expected_result": "PASS",
       "granularity": "suite",
@@ -325,7 +333,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "d14b9707b750d66621996a3a5eb7682077cdd6aa6451d3912094b72293860b7d",
+    "implementation_evidence": "e004691cb0d30878bcdb868fe19d1d29bf66eb5f805304d3c89660d52d591c87",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -1201,26 +1209,30 @@
       "execution_evidence_ids": [
         "NRRD-R1-SOURCE-TESTS",
         "NRRD-ENCODING-MATRIX-HOSTILE-FIXTURES-PROOF",
-        "NRRD-INDEPENDENT-PYNRRD-ORACLE-PROOF"
+        "NRRD-INDEPENDENT-PYNRRD-ORACLE-PROOF",
+        "NRRD-ENC-MISSING-CODEC-CROSS-REFERENCE-PROOF"
       ],
       "implemented_behavior": [
         "Scalar aliases, main encodings, endian, attached/single/list/pattern reads, traversal, truncation, and some limits have tests.",
         "FF6-NRRD-ENCODING-MATRIX-001: the exhaustive cross-product this obligation's own rule_text names is now built -- a representative type-byte-width x encoding x endian matrix (previously each dimension was tested only in isolation), a magic-version (NRRD0001-0005) x encoding cross product (previously every encoding test hardcoded NRRD0004/0005), and a detached-form (single-file/LIST/printf) x encoding cross product (previously every detached-form test hardcoded encoding: raw). Also closes 2 previously zero-coverage hostile-fixture branches identified by direct source inspection before writing any test: mid-stream-truncated gzip/bzip2 payloads and malformed hex text, plus a bzip2-bomb test (previously only gzip had one) and LIST-entry/printf-expanded path traversal tests (previously only single-file traversal was tested). 107 new tests, 100% through pre-existing public API -- no product source changed.",
-        "FF6-EVENT-000475: the previously-disclosed pynrrd import-name collision (this package's own top-level `nrrd` shim vs. the real `pynrrd` reference implementation) is now resolved via a dedicated, gitignored isolated venv (tools/oracle/independent/setup_nrrd_pynrrd_venv.py builds .local/oracle/nrrd/pynrrd-venv/, reproducible on demand, PYTHONPATH-stripped so it never sees this project's own site-packages) and a standalone probe script with zero project imports (tools/oracle/independent/nrrd_pynrrd_probe.py). 52 new tests (test_obligation_independent_pynrrd_oracle.py) genuinely cross-check format_factory.nrrd's own encode/decode against the real pynrrd 1.1.3 for the representative 9-type x 4-encoding matrix (raw/gzip/bzip2/ascii) plus a big-endian slice plus the 3 pre-existing static corpus samples -- all pass, all skipped gracefully (SKIPPED_MISSING_PROVIDER pattern) when the isolated venv is not built, e.g. on a fresh checkout or CI. `hex` is confirmed, not merely assumed, to be unsupported by pynrrd 1.1.3 itself (a reference-implementation gap, not a format_factory.nrrd defect) and is excluded from the matrix; a dedicated test proves this behaviorally."
+        "FF6-EVENT-000475: the previously-disclosed pynrrd import-name collision (this package's own top-level `nrrd` shim vs. the real `pynrrd` reference implementation) is now resolved via a dedicated, gitignored isolated venv (tools/oracle/independent/setup_nrrd_pynrrd_venv.py builds .local/oracle/nrrd/pynrrd-venv/, reproducible on demand, PYTHONPATH-stripped so it never sees this project's own site-packages) and a standalone probe script with zero project imports (tools/oracle/independent/nrrd_pynrrd_probe.py). 52 new tests (test_obligation_independent_pynrrd_oracle.py) genuinely cross-check format_factory.nrrd's own encode/decode against the real pynrrd 1.1.3 for the representative 9-type x 4-encoding matrix (raw/gzip/bzip2/ascii) plus a big-endian slice plus the 3 pre-existing static corpus samples -- all pass, all skipped gracefully (SKIPPED_MISSING_PROVIDER pattern) when the isolated venv is not built, e.g. on a fresh checkout or CI. `hex` is confirmed, not merely assumed, to be unsupported by pynrrd 1.1.3 itself (a reference-implementation gap, not a format_factory.nrrd defect) and is excluded from the matrix; a dedicated test proves this behaviorally.",
+        "FF6-EVENT-000492: this obligation's own AUTHORITATIVE register entry has proof_requirements: None -- the 'Teem/pynrrd comparisons' framing this obligation's own prior missing_behavior treated as load-bearing was never the register's own literal wording, only an earlier evidence-writing tick's own interpretation. The register's own actual required_tests ('missing-codec explicit-failure fixture') was already fully, thoroughly proven by a sibling cross-capability-duplicate obligation's own test suite (SAL-NRRD-OBL-09FD9B976DEEA254, test_obligation_codec_availability.py), now cross-referenced onto this obligation's own test-selector lists for the first time. One genuinely uncovered edge case the audit surfaced -- an encoding NAME this package has never defined at all, distinct from a known encoding's own optional codec being unavailable -- is closed with one new dedicated test. See NRRD-ENC-MISSING-CODEC-CROSS-REFERENCE-PROOF."
       ],
-      "missing_behavior": [
-        "Teem CLI (`unu`) comparisons, the other half of this obligation's own proof_requirements, remain genuinely unbuilt: `unu` is a native binary with no PyPI distribution, unavailable in this environment, with no existing subprocess-invocation pattern in this suite to build against (unlike `soffice`, which FODS' own D3 interoperability profile already established) -- not attempted, disclosed rather than force-built. The pynrrd comparison itself, while now real, covers the representative type/encoding matrix (9 types x 4 encodings, matching this obligation's own established representative-scoping convention), not literally every scalar type alias against pynrrd specifically -- that would add volume, not new risk coverage, since alias resolution is a separate, already-fully-covered concern. The identical `safetensors`/`safetensors==0.8.0` import-name collision (disclosed alongside this one) is unaffected by this slice -- resolving it would need its own isolated venv and probe script built the same way, reusing tools/oracle/independent/isolated_venv_oracle.py's generic bridge."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/nrrd/test_production_namespace.py::test_duplicate_header_and_truncated_payload_fail_closed",
         "tests/python/nrrd/test_production_namespace.py::test_resource_limits_are_caller_configurable",
         "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_mid_stream_truncated_gzip_payload_is_rejected",
         "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_mid_stream_truncated_bzip2_payload_is_rejected",
         "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_malformed_hex_payload_is_rejected",
+        "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_an_encoding_name_this_package_does_not_define_at_all_is_rejected",
         "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_a_bzip2_bomb_disproportionate_to_the_declared_shape_fails_cheaply",
         "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_list_entry_path_traversal_is_rejected",
         "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_printf_expanded_path_traversal_is_rejected",
-        "tests/python/nrrd/test_obligation_independent_pynrrd_oracle.py::test_hex_is_excluded_because_pynrrd_itself_does_not_support_it"
+        "tests/python/nrrd/test_obligation_independent_pynrrd_oracle.py::test_hex_is_excluded_because_pynrrd_itself_does_not_support_it",
+        "tests/python/nrrd/test_obligation_codec_availability.py::test_available_encodings_excludes_bzip2_when_bz2_is_unavailable",
+        "tests/python/nrrd/test_obligation_codec_availability.py::test_decoding_bzip2_without_bz2_fails_explicitly_not_with_an_attribute_error",
+        "tests/python/nrrd/test_obligation_codec_availability.py::test_encoding_bzip2_without_bz2_fails_explicitly_not_with_an_attribute_error"
       ],
       "obligation_id": "SAL-NRRD-OBL-5A7992A6D1561C1D",
       "positive_test_selectors": [
@@ -1233,23 +1245,26 @@
         "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py::test_printf_detached_form_across_every_encoding",
         "tests/python/nrrd/test_obligation_independent_pynrrd_oracle.py::test_the_1d_int8_corpus_sample_matches_the_pynrrd_reference",
         "tests/python/nrrd/test_obligation_independent_pynrrd_oracle.py::test_the_2d_float32_corpus_sample_matches_the_pynrrd_reference",
-        "tests/python/nrrd/test_obligation_independent_pynrrd_oracle.py::test_the_gzip_encoded_corpus_sample_matches_the_pynrrd_reference"
+        "tests/python/nrrd/test_obligation_independent_pynrrd_oracle.py::test_the_gzip_encoded_corpus_sample_matches_the_pynrrd_reference",
+        "tests/python/nrrd/test_obligation_codec_availability.py::test_available_encodings_matches_supported_encodings_when_bz2_is_present",
+        "tests/python/nrrd/test_obligation_codec_availability.py::test_a_bzip2_document_loads_normally_when_bz2_is_available",
+        "tests/python/nrrd/test_obligation_codec_availability.py::test_gzip_is_unaffected_by_bz2_being_unavailable"
       ],
       "proof_requirements": {
         "negative": [
           "Bomb, overflow, traversal, truncation, malformed framing, and unavailable-codec corpus."
         ],
         "positive": [
-          "Generated complete cross-product with Teem/pynrrd comparisons."
+          "Generated complete cross-product with pynrrd comparisons (already proven); Teem/unu comparisons remain a disclosed, non-required external-tool absence, not part of this obligation's own literal register wording."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_encoding",
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::decode_ascii",
         "src/python/nrrd/src/format_factory/nrrd/codec/payload.py::encode_encoding"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "NRRD-LIFECYCLE-001",
@@ -3040,6 +3055,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-path-version-gate-001.json": "0ddb74585effd11d8f31db536d8242dbcf347f14dba381a36faffab0b40a3add",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-detached-writer-001.json": "459aee29fa15ac2f6d632f1d4d863923866957e8086da79dd6dde1ab6374d01f",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-dtype-scale-conversion-001.json": "c672397a7b44a6c658d2993ee85f163bd9e168fb8f117b910209f074a3e12b04",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-enc-missing-codec-cross-reference-001.json": "751a77951f9c2838786051fc9e232e9092b34d08402ae2e7cf7f4615836cee76",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-encoding-matrix-001.json": "894a00db204ee97a6fe453a9e3a2737400d29a6e32191d0d777f9f045a5199ab",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-field-presence-001.json": "e0d43cc4dbaed0a38705d722b5c26cdcfdb4a94a50b4519aca841a1d54a6d638",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-header-field-name-aliases-001.json": "83d73c735f92aadc0240da321facedf152658ac2fd3144ee4a38aecddea9e547",
@@ -3095,7 +3111,7 @@
     "tests/python/nrrd/test_obligation_detached_writer.py": "f947213e761a9424118e4d6dbf7bf00193b72ec6f773b25d23492c143b711297",
     "tests/python/nrrd/test_obligation_dtype_conversion.py": "52a58a8e66d2bb715894ec3c09197b16145ed1aa23a9f95aa2a1a7aedf355377",
     "tests/python/nrrd/test_obligation_encoding_conversion.py": "5d51c4b0b8628ff250327cd326d41415bc545e3a7d12c9dd9556e124e7b5a7c8",
-    "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py": "97c33d1a5401d1c927b1d2da558350b22f5c9424e0bb5675f65f1e68df702a38",
+    "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py": "9e1e0baedad592c82aaa5ab5b526709aee9f857a7d901fe5eb6a18b2136df621",
     "tests/python/nrrd/test_obligation_field_presence.py": "1c1d956087bdf9f6f2e25e5620861bc3e139c7854255fc79904b91ef83a37261",
     "tests/python/nrrd/test_obligation_header_field_grammar.py": "e70dc004b9be05c2828ba1b1fa99de76484c1190d1abf0ac59d1bd320e89fdee",
     "tests/python/nrrd/test_obligation_header_field_name_aliases.py": "15499477f5c13e5777318e559e55628905055b5f903d430f448c4fd67a7cb9b8",
@@ -3126,11 +3142,11 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 63,
-      "partial": 2
+      "implemented": 64,
+      "partial": 1
     },
     "total": 65,
-    "unresolved": 2
+    "unresolved": 1
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

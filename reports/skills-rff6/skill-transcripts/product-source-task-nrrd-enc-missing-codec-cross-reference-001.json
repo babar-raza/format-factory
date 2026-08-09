@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-enc-missing-codec-cross-reference-001",
+  "skill_id": "add-installed-package-example",
+  "manifest_id": "sfx-6bdf4104061f46aa",
+  "mode": "live",
+  "timestamp": "2026-08-09T15:43:39Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_kind": "verify-whether-a-true-external-blocker-was-ever-actually-a-literal-obligation-requirement",
+    "task_id": "TC-FF6-NRRD-ENC-MISSING-CODEC-CROSS-REFERENCE-001",
+    "root_cause": "SAL-NRRD-OBL-5A7992A6D1561C1D (NRRD-ENC-001)'s own missing_behavior disclosed 'Teem CLI (unu) comparisons' as the remaining blocker, citing 'this obligation's own recorded proof_requirements.positive' naming 'Generated complete cross-product with Teem/pynrrd comparisons.' The prior tick's own exact_next_action explicitly suggested checking whether this framing was genuinely load-bearing or an evidence-text-added extra, the same shape of gap NRRD-SPACE-001 (its own 'needs a real DICOM dataset' framing) and NRRD-ARRAY-001 (its own numpy-adapter framing) already turned out to have this session. Pulled the obligation's own AUTHORITATIVE register entry directly (plans/strategic/ff6/obligations/nrrd.yaml, not the implementation-evidence file's own copy) and found its own proof_requirements field is None -- not defined at the register level at all. The register's own actual, literal required_tests are 'Encoding matrix round trips; missing-codec explicit-failure fixture.' and 'Full matrix as enumerated with hostile-fixture negatives.'; its own release_gate is 'All defined encodings round-trip.' None of these mention Teem, unu, or pynrrd at all -- that framing was added by an evidence-writing tick's own interpretation, then treated as load-bearing by subsequent ticks without re-verifying against the register's own literal wording each time.",
+    "obligation_targeted": "SAL-NRRD-OBL-5A7992A6D1561C1D (NRRD-ENC-001) -- promoted from partial to implemented; its own actual, literal required_tests/release_gates were already fully satisfied by existing tests, cross-referenced onto this obligation's own evidence entry for the first time, plus one new dedicated test closing a small, genuinely uncovered edge case discovered during the audit.",
+    "acceptance_evidence": "Confirmed 'All defined encodings round-trip' (release_gate) directly: test_every_magic_version_round_trips_across_every_encoding, test_representative_type_encoding_matrix_round_trips(_big_endian), test_single_file_detached_form_across_every_encoding, test_list_detached_form_across_every_encoding, and test_printf_detached_form_across_every_encoding together cover all 5 defined NRRD encodings (raw/gzip/bzip2/hex/ascii) across every magic version, both endians, and every detached form -- already built by prior ticks, but never itself the subject of doubt. Confirmed 'missing-codec explicit-failure fixture' (required_tests) is ALREADY fully, thoroughly satisfied by test_obligation_codec_availability.py's own 6-test suite (available_encodings() reporting correctly when bz2 is absent; explicit, non-AttributeError failure on both the decode AND encode paths; gzip proven unaffected by bz2's own absence) -- built for a sibling cross-capability-duplicate obligation (SAL-NRRD-OBL-09FD9B976DEEA254) under the identical rule_text clause, but never cross-referenced onto THIS obligation's own test-selector lists despite proving the exact same behavioral claim this obligation's own required_tests separately names. Found one genuinely uncovered edge case during the audit -- a header declaring an encoding NAME this package has never defined at all (distinct from a KNOWN encoding whose own optional codec happens to be unavailable) -- and closed it with one new dedicated test."
+  },
+  "execution_steps": [
+    "1. After committing and eventing NRRD-SPACE-001's own closure (FF6-EVENT-000491), pulled NRRD-ENC-001's own rule_text/required_tests/release_gates directly from the AUTHORITATIVE obligation register (plans/strategic/ff6/obligations/nrrd.yaml), not the implementation-evidence file's own paraphrase, and found its own proof_requirements field is None -- confirming the 'Teem/pynrrd comparisons' framing the evidence text carried forward was never sourced from the register's own literal wording.",
+    "2. Confirmed the register's own actual required_tests ('Encoding matrix round trips; missing-codec explicit-failure fixture.'; 'Full matrix as enumerated with hostile-fixture negatives.') and release_gate ('All defined encodings round-trip.') say nothing about Teem, unu, or pynrrd at all.",
+    "3. Cross-checked 'All defined encodings round-trip' against the existing test_obligation_encoding_matrix_and_hostile_fixtures.py file, confirming every one of the 5 defined NRRD encodings (raw/gzip/bzip2/hex/ascii) is already proven round-tripping across every magic version, both endians, and every detached form (single-file/LIST/printf) -- already fully satisfied.",
+    "4. Searched specifically for 'missing-codec explicit-failure fixture' coverage and found test_obligation_codec_availability.py's own dedicated, thorough 6-test suite already proves exactly this claim -- built for a sibling cross-capability-duplicate obligation (SAL-NRRD-OBL-09FD9B976DEEA254, same NRRD-ENC-001 capability, identical 'fail explicitly when an optional codec is unavailable' clause) but never cross-referenced onto THIS obligation's own test-selector lists.",
+    "5. Before assuming full closure, checked for one specific edge case the existing codec-availability suite does NOT cover: a header declaring an encoding NAME this package has never defined at all (not merely a known encoding whose own optional codec happens to be unavailable) -- confirmed via direct probing that decode_encoding() already correctly raises NrrdParseError('unsupported NRRD encoding: ...') for this case, but no committed test proved it.",
+    "6. Added one new test (test_an_encoding_name_this_package_does_not_define_at_all_is_rejected) in test_obligation_encoding_matrix_and_hostile_fixtures.py, distinguishing this case explicitly from the codec-availability suite's own known-encoding-missing-codec scope.",
+    "7. Ran both test files together (114 tests, up from 113) -- all passed on the first run, confirming zero source changes were needed for the new test and zero regressions for the cross-referenced existing coverage.",
+    "8. Ran ruff check on the changed test file: clean. No production source file was modified, so no mypy re-run was needed.",
+    "9. Ran the full nrrd suite (961 passed, 1 skipped, up from 960) and the 6-format FF6 regression (4362 passed, 4 skipped, up from 4361) -- exact +1 delta in both, confirming zero regressions.",
+    "10. Ran the installed-wheel proof (tools/run_package_install_proof.py --format nrrd, 1/1 PASS) and independently re-verified the unknown-encoding-name rejection directly from the installed, non-editable site-packages path."
+  ],
+  "allowed_files": [
+    "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py tests/python/nrrd/test_obligation_codec_availability.py -v -- 114 passed (113 pre-existing unchanged, 1 new)",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q --timeout=120 -- 961 passed, 1 skipped (was 960)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4362 passed, 4 skipped (was 4361)",
+    ".venv/Scripts/python -m ruff check tests/python/nrrd/test_obligation_encoding_matrix_and_hostile_fixtures.py -- All checks passed",
+    "python tools/run_package_install_proof.py --format nrrd -- RESULT: 1/1 PASS; the unknown-encoding-name rejection independently re-verified from the installed, non-editable wheel's own site-packages path"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (NRRD-ENC-001, SAL-NRRD-OBL-5A7992A6D1561C1D) PROMOTED from partial to implemented -- its own literal, authoritative required_tests/release_gates were already fully satisfied (the round-trip matrix by prior work; the missing-codec fixture by a sibling obligation's own already-existing, now cross-referenced test suite), plus one small, genuinely uncovered edge case closed with a new dedicated test.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); nrrd remains UNASSESSED",
+    "obligations_moved": 1,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 65,
+    "new_public_api": "None -- no production source was changed; this closes an evidence-cross-referencing gap plus one small testing gap, since the round-trip and codec-availability behavior was already correct.",
+    "disclosed_honest_boundary": "Teem CLI (unu) comparisons remain genuinely, honestly unbuilt -- unu is a native binary with no PyPI distribution, unavailable in this environment. This is disclosed as a TRUE external blocker for anyone who might want that specific additional cross-check in the future, but it is NOT part of this obligation's own literal required_tests/release_gates, so its absence does not block this closure -- the same distinction NRRD-ARRAY-001's numpy-adapter and NRRD-SPACE-001's real-DICOM-dataset disclosures already established this session."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

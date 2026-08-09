@@ -247,6 +247,21 @@ def test_malformed_hex_payload_is_rejected() -> None:
         loads(_minimal_header("hex") + odd_length_hex)
 
 
+def test_an_encoding_name_this_package_does_not_define_at_all_is_rejected() -> None:
+    """SAL-NRRD-OBL-5A7992A6D1561C1D's own required_tests wording ("missing-
+    codec explicit-failure fixture") had a dedicated, thorough proof for the
+    case an already-KNOWN encoding's own optional codec is unavailable at
+    runtime (test_obligation_codec_availability.py's own bz2-absence
+    suite), but no test covered the distinct, simpler case: a header
+    declaring an encoding name this package has never heard of at all (not
+    one of the 5 NRRD spec ever defines, and not merely one whose codec
+    happens to be missing). Both must fail explicitly, not silently
+    misbehave; this closes the one this obligation's own suite had not yet
+    directly exercised."""
+    with pytest.raises(NrrdParseError, match="unsupported NRRD encoding"):
+        loads(_minimal_header("zzzznotarealencoding") + bytes(64))
+
+
 def test_a_bzip2_bomb_disproportionate_to_the_declared_shape_fails_cheaply() -> None:
     """The bzip2 sibling of test_obligation_security_baseline.py's own
     gzip-bomb test -- SAL-NRRD-OBL-9C262130232DCD09 (NRRD-VALIDATE-001)
