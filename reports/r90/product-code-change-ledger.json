@@ -44831,6 +44831,37 @@
       "validation_command": ".venv/Scripts/pytest tests/python/ubl/ -q",
       "result": "1263 passed (was 1255, +8 new)",
       "rollback": "Remove migration.py, its __init__.py exports, the _generated/migratable_2_1_roots.py module and its generator, the new test file, and this ledger entry."
+    },
+    {
+      "entry_id": "FF6-UBL-PARSE-ALL-ROOTS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "ubl-parse-all-roots-namespace-variation",
+      "capability": "UBL-PARSE-001",
+      "capability_refs": [
+        "UBL-PARSE-001"
+      ],
+      "api_symbols": [
+        "format_factory.ubl.load"
+      ],
+      "product": "UBL Python production package",
+      "format": "UBL",
+      "test_delta": "Test-only closure of UBL-PARSE-001 own release gate (all 91 root types recognized by QName under namespace-variation forms). No production source changed -- the underlying document_from_root() dispatch mechanism was already correct and uniform; this proves it at the release gate own literal 91-type scope rather than a single-type sample. 364 new parametrized tests (test_obligation_all_roots_namespace_variation.py), all passing on first execution.",
+      "git_head": "72009d78a",
+      "skill": "format-feature-expansion",
+      "task_id": "TC_FF6_UBL_PARSE_ALL_ROOTS_001",
+      "source_files": [
+        {
+          "path": "tests/python/ubl/test_obligation_all_roots_namespace_variation.py",
+          "state": "present",
+          "sha256": "93f5b7a19daf479c3359ee3c6be835e71407e5f9a5675454ac9ce728bca181c1"
+        }
+      ],
+      "test_files": [
+        "tests/python/ubl/test_obligation_all_roots_namespace_variation.py"
+      ],
+      "validation_command": ".venv/Scripts/pytest tests/python/ubl/ -q",
+      "result": "1627 passed (was 1263, +364 new)",
+      "rollback": "Remove the new test file, revert UBL-PARSE-001 own evidence entry status to partial, and this ledger entry."
     }
   ],
   "total_entries": 2782,
