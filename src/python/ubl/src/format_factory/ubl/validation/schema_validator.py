@@ -54,6 +54,7 @@ from typing import TYPE_CHECKING, cast
 from format_factory.core import Diagnostic, SourceLocation, ValidationReport
 
 from .._generated.root_catalog import ROOT_NAME_SET
+from .._generated.schema_root_order import SCHEMA_ROOT_ORDER
 from ..errors import SchemaValidationUnavailable, UblParseError
 
 if TYPE_CHECKING:
@@ -106,7 +107,6 @@ def bundled_maindoc_schema_paths() -> tuple[Path, ...]:
     return tuple(_MAINDOC_DIR / f"UBL-{name}-2.3.xsd" for name in sorted(ROOT_NAME_SET))
 
 
-@lru_cache(maxsize=None)
 def schema_root_order(root_name: str) -> tuple[str, ...]:
     """The declared local names of `root_name`'s own maindoc root element's
     direct children, in schema-declared sequence order (e.g. for
@@ -115,23 +115,46 @@ def schema_root_order(root_name: str) -> tuple[str, ...]:
 
     This is the "full header-position knowledge" `components.add_component`'s
     own docstring names as the missing piece for inserting the FIRST
-    occurrence of a component type a document does not already have --
-    read directly from the same bundled, official OASIS maindoc XSD
-    `schema_validate` already loads for conformance checking, via
-    `xmlschema`'s own `XsdGroup.iter_elements()`, which flattens any
-    nested `xsd:sequence`/`xsd:choice` structure into the single document
-    -order list a real instance document's own children must respect.
+    occurrence of a component type a document does not already have.
 
-    Raises `SchemaValidationUnavailable` if the optional `xmlschema`
-    dependency is not installed (the same failure mode `schema_validate`
-    has), or `UblParseError` if `root_name` is not one of this package's
-    91 supported document types.
+    FF6-UBL-EDIT-FIRST-OCCURRENCE-002: answered from `_generated.schema_root_order`
+    -- a table precomputed once (`tools/generate_schema_root_order.py`, dev-time
+    only) from the same bundled, official OASIS maindoc XSD `schema_validate`
+    loads for conformance checking, via `xmlschema`'s own `XsdGroup.iter_elements()`
+    flattening any nested `xsd:sequence`/`xsd:choice` structure into the single
+    document-order list a real instance document's own children must respect.
+    Checked in as plain data, so this function -- and therefore
+    `add_component`'s own first-occurrence insertion -- needs no `xmlschema`
+    installation at runtime for any of the 91 known root types, closing the
+    "no dependency-free fallback for real header-position knowledge" gap this
+    obligation's own missing_behavior previously disclosed.
+
+    Raises `UblParseError` if `root_name` is not one of this package's 91
+    supported document types. Falls back to `_schema_root_order_live` (which
+    DOES require the optional `xmlschema` dependency, raising
+    `SchemaValidationUnavailable` if it is not installed) only if `root_name`
+    is a supported type the generated table does not (yet) cover -- a
+    defensive path for a stale table, not the normal case.
     """
     if root_name not in ROOT_NAME_SET:
         raise UblParseError(
             f"{root_name!r} is not a supported UBL 2.3 root document type "
             f"(no bundled schema for it)"
         )
+    precomputed = SCHEMA_ROOT_ORDER.get(root_name)
+    if precomputed is not None:
+        return precomputed
+    return _schema_root_order_live(root_name)
+
+
+@lru_cache(maxsize=None)
+def _schema_root_order_live(root_name: str) -> tuple[str, ...]:
+    """The live-`xmlschema`-introspection path `schema_root_order` composes
+    -- also what `tools/generate_schema_root_order.py` itself calls to build
+    the checked-in table this module normally answers from instead. Not
+    used at runtime for any of the 91 known root types; kept as the
+    defensive fallback for a root the generated table does not (yet) list,
+    and as the generator's own source of truth."""
     xmlschema = _require_xmlschema()
     schema = _load_schema(root_name)
     (root_element,) = schema.root_elements

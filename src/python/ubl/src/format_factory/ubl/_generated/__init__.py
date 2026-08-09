@@ -9,6 +9,7 @@ from .root_catalog import (
     ROOT_NAMESPACES,
     ROOT_NAME_SET,
 )
+from .schema_root_order import SCHEMA_ROOT_ORDER
 
 __all__ = [
     "ARCHIVE_MEMBER_NAMES_SHA256",
@@ -18,4 +19,5 @@ __all__ = [
     "ROOT_NAMESPACES",
     "ROOT_NAMES_SHA256",
     "ROOT_NAME_SET",
+    "SCHEMA_ROOT_ORDER",
 ]

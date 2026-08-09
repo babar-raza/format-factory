@@ -12,9 +12,9 @@ occurrence, which is always schema-position-correct per XSD sequence
 semantics for repeating elements (see components.py's own module
 docstring). Inserting the FIRST occurrence of a component type a
 document has none of was, at the time this file was first written, the
-still-unbuilt, genuinely harder half -- now closed (when the optional
-xmlschema dependency is installed) by
-`test_obligation_component_first_occurrence_insertion.py`; this file
+still-unbuilt, genuinely harder half -- now closed unconditionally (no
+optional dependency required, since FF6-UBL-EDIT-FIRST-OCCURRENCE-002)
+by `test_obligation_component_first_occurrence_insertion.py`; this file
 keeps only the additional-occurrence scope its own name describes.
 """
 
@@ -178,11 +178,11 @@ def test_add_component_refuses_a_type_mismatched_new_component() -> None:
 def test_add_component_no_longer_unconditionally_refuses_a_first_occurrence() -> None:
     """Superseded by test_obligation_component_first_occurrence_insertion.py:
     inserting the FIRST occurrence of a type the document has none of is
-    now supported (real schema-position knowledge, not a guess) when the
-    optional xmlschema dependency is installed. Kept here, narrowly, only
-    to prove this file's own additional-occurrence scope note above is
-    accurate -- not a positive test of the new capability itself."""
-    pytest.importorskip("xmlschema")
+    now supported unconditionally (real schema-position knowledge, not a
+    guess, and no optional dependency required since
+    FF6-UBL-EDIT-FIRST-OCCURRENCE-002). Kept here, narrowly, only to prove
+    this file's own additional-occurrence scope note above is accurate --
+    not a positive test of the new capability itself."""
     document = load(_invoice_bytes(payment_means_codes=()))
 
     edited = add_component(

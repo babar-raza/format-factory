@@ -15,24 +15,27 @@ header-position knowledge" the package did not have.
 
 That knowledge now comes from `validation.schema_validator.
 schema_root_order()`, which reads the bundled, official UBL 2.3 maindoc
-XSD's own declared child sequence for a document's root type (via the
-optional `xmlschema` dependency this package already integrates for
-`schema_validate()`). This file proves the resulting placement is
-genuinely schema-correct -- not merely "does not raise" -- against the
-real UBL 2.3 Invoice schema's own declared order, independently derived
-here from the same schema files rather than assumed from memory.
+XSD's own declared child sequence for a document's root type. This file
+proves the resulting placement is genuinely schema-correct -- not merely
+"does not raise" -- against the real UBL 2.3 Invoice schema's own
+declared order, independently derived here from the same schema files
+rather than assumed from memory.
+
+FF6-UBL-EDIT-FIRST-OCCURRENCE-002: `schema_root_order()` now answers from
+a table precomputed once, checked in as `_generated/schema_root_order.py`,
+covering all 91 known root types -- no `xmlschema` installation is
+required to run this file anymore, so the tests below run unconditionally
+rather than being skipped when the optional dependency is absent.
 """
 
 from __future__ import annotations
 
 import pytest
 
-xmlschema = pytest.importorskip("xmlschema")
-
-from format_factory.ubl import UblValidationError, load  # noqa: E402
-from format_factory.ubl.components import add_component  # noqa: E402
-from format_factory.ubl.model import XmlNode  # noqa: E402
-from format_factory.ubl.validation.schema_validator import schema_root_order  # noqa: E402
+from format_factory.ubl import UblValidationError, load
+from format_factory.ubl.components import add_component
+from format_factory.ubl.model import XmlNode
+from format_factory.ubl.validation.schema_validator import schema_root_order
 
 _CBC = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
 _CAC = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
@@ -198,3 +201,45 @@ def test_component_name_not_a_declared_child_of_the_root_type_is_refused() -> No
 
     with pytest.raises(UblValidationError, match="not a declared child"):
         add_component(document, component_name="NotARealUblElement", new_component=bogus)
+
+
+# -- FF6-UBL-EDIT-FIRST-OCCURRENCE-002: no xmlschema needed at runtime ----
+
+
+def test_first_occurrence_insertion_works_without_xmlschema_installed(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The whole point of the precomputed table: first-occurrence
+    insertion previously fell back to an unconditional refusal when the
+    optional `xmlschema` dependency was not installed
+    (SchemaValidationUnavailable, caught inside add_component). Blocking
+    the real import here (the same technique
+    test_obligation_official_schema_validation.py's own
+    test_schema_validation_unavailable_when_xmlschema_cannot_be_imported
+    uses to prove the OLD degraded-gracefully behavior) proves the NEW
+    behavior directly: schema_root_order() answers from the generated
+    table without ever attempting to import xmlschema, so add_component()
+    now succeeds -- not merely does not raise -- with the dependency
+    genuinely absent."""
+    import sys
+
+    real_import = __import__
+
+    def _blocked_import(name: str, *args: object, **kwargs: object) -> object:
+        if name == "xmlschema":
+            raise ImportError("simulated: xmlschema not installed")
+        return real_import(name, *args, **kwargs)
+
+    monkeypatch.setitem(sys.modules, "xmlschema", None)
+    monkeypatch.delitem(sys.modules, "xmlschema", raising=False)
+    monkeypatch.setattr("builtins.__import__", _blocked_import)
+
+    document = load(_invoice_bytes())
+    assert "TaxTotal" not in _local_names(document)
+
+    edited = add_component(document, component_name="TaxTotal", new_component=_tax_total_node())
+
+    names = _local_names(edited)
+    assert names.index("AccountingCustomerParty") < names.index("TaxTotal") < names.index(
+        "LegalMonetaryTotal"
+    )

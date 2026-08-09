@@ -1,0 +1,77 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-edit-first-occurrence-dependency-free-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-883ba7a1dab8a0af",
+  "mode": "live",
+  "timestamp": "2026-08-09T15:00:29Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC-FF6-UBL-EDIT-FIRST-OCCURRENCE-DEPENDENCY-FREE-001",
+    "task_kind": "fresh-literal-audit-of-ubl-edit-001-per-established-session-discipline",
+    "root_cause": "SAL-UBL-OBL-237188D47391391E (UBL-EDIT-001)'s own missing_behavior disclosed two remaining items after its FIRST-occurrence insertion capability was built: (1) add_component()'s first-occurrence insertion requires the optional 'xmlschema' dependency at runtime, falling back to unconditional refusal without it; (2) the module has no opinion on a new component's own internal field structure. Confirmed item (1) was genuinely tractable: xmlschema is a true optional extra (pyproject.toml's own [project.optional-dependencies] schema = ['xmlschema==4.1.0']), and the specific knowledge add_component() needs from it (each of the 91 known root types' own declared child order) is fixed, pinned schema data that does not change at runtime -- exactly the kind of fact this codebase's own existing _generated/root_catalog.py pattern (checked-in, provenance-hashed static data, regenerated dev-time-only from the same pinned schema source) already handles for a different derived fact.",
+    "obligation_targeted": "SAL-UBL-OBL-237188D47391391E (UBL-EDIT-001) narrowed further -- missing_behavior item (1) fully closed; item (2) remains, correctly disclosed and unattempted (genuinely separate, larger scope: building a constructor for component types this package's own typed model does not otherwise represent).",
+    "acceptance_evidence": "Built a new checked-in generated table (_generated/schema_root_order.py, 91 entries, one per ROOT_NAMES) via a new dev-time-only generator script (tools/generate_schema_root_order.py) that calls a renamed _schema_root_order_live() (the original xmlschema-based implementation, unchanged in behavior) once per root type and writes the result as plain Python data with no xmlschema import, following the exact same provenance-hash convention (AUTHORITY_SHA256 reused from root_manifest.json, both traced to the same pinned .local/format-contracts/acquired/ubl/src-ubl-002.bin) already established for _generated/root_catalog.py. Cross-checked all 91 generated entries against the live introspection path for 3 samples (Invoice/CreditNote/DespatchAdvice) before wiring anything in, confirming byte-for-byte agreement. Rewrote the public schema_root_order() to answer from this table first, falling back to the live path only as defensive dead code for an unlisted root. Proved the closure THREE independent ways: (a) direct call timing (microseconds, vs the multi-minute live path for all 91 roots); (b) a new pytest test that blocks the real xmlschema import (the exact technique test_obligation_official_schema_validation.py's own existing test already uses to prove the OLD degraded-gracefully behavior) and confirms add_component() now SUCCEEDS, not merely does not raise; (c) independently, directly from the installed, non-editable wheel's own ephemeral proof venv, which genuinely does not have xmlschema installed at all (confirmed by import failure) -- add_component() succeeded there too, unprompted by any test-only mocking."
+  },
+  "execution_steps": [
+    "1. After committing and eventing NRRD-ARRAY-001's closure (FF6-EVENT-000488), pulled UBL-EDIT-001's own rule_text/required_tests/release_gates fresh, then cross-referenced its own required_tests wording ('renumbering fixture proves reference rewrite') against a sibling cross-capability-duplicate obligation (SAL-UBL-OBL-AF5263F0FC7036B9, same capability, identical required_tests wording, already status=implemented) -- confirming that specific clause was already genuinely satisfied, redirecting the audit to the obligation's own remaining disclosed items instead.",
+    "2. Read components.py's own module and add_component() docstrings in full, identifying the precise, narrow remaining gap: xmlschema-dependency-fallback for first-occurrence insertion, distinct from the (correctly out-of-scope) internal-field-structure item.",
+    "3. Confirmed xmlschema is a genuine, real optional extra (pyproject.toml) before investing further, and read schema_root_order()'s own implementation end to end to understand exactly what it needs from xmlschema: a one-time, pinned-schema-derived fact (91 root types' own declared child order), not a per-document, per-call computation.",
+    "4. Found the repo's own existing precedent for checking in exactly this kind of derived, pinned-schema fact as static data (src/python/ubl/tools/generate_roots.py + _generated/root_catalog.py, with AUTHORITY_SHA256/ROOT_NAMES_SHA256 provenance hashes), and reused its exact structure and conventions rather than inventing a new pattern.",
+    "5. Ran an exploratory one-off script computing schema_root_order() for all 91 ROOT_NAMES via the live xmlschema path, confirming 91/91 succeed with zero errors before committing to building the full generator infrastructure -- this took several minutes (no cross-schema caching in xmlschema across distinct root types), run as a tracked background task.",
+    "6. Wrote tools/generate_schema_root_order.py (dev-time-only, mirrors generate_roots.py's own --check/regenerate pattern) and ran it as a second tracked background task, producing _generated/schema_root_order_manifest.json (60KB, full provenance) and _generated/schema_root_order.py (46KB, 91 entries, plain data, zero xmlschema import).",
+    "7. Cross-checked all 91 table entries' key equal ROOT_NAMES exactly (no missing, no extra) and spot-verified 3 samples (Invoice/CreditNote/DespatchAdvice) against the live schema_root_order() path before touching any runtime code.",
+    "8. Renamed the original live-introspection implementation to _schema_root_order_live() (unchanged behavior, still xmlschema-based, kept as the generator's own source of truth and a defensive runtime fallback), and rewrote the public schema_root_order() to consult SCHEMA_ROOT_ORDER (the generated table) first -- confirmed the generator itself must call _schema_root_order_live() directly (not the new public function), avoiding a self-referential chicken-and-egg regeneration bug.",
+    "9. Updated components.py's own module docstring and add_component()'s own docstring (three separate passages) to state the closure precisely: xmlschema is no longer needed at runtime for any of the 91 known root types; the SchemaValidationUnavailable catch remains only as defensive dead code for an unlisted root.",
+    "10. Ran the full existing test suite for this area (52 tests across 6 files) before writing any new test -- all passed unchanged, now running in ~1 second total (previously would have required xmlschema availability for several of them).",
+    "11. Found and removed two now-stale pytest.importorskip('xmlschema') guards (test_obligation_component_first_occurrence_insertion.py's module-level skip, test_obligation_component_create_adjacent.py's one function-level skip) that would have silently SKIPPED, not run, the very tests proving this capability -- an environment without xmlschema installed would previously never have exercised this code path in CI at all; now it does.",
+    "12. Wrote one new adversarial test (test_first_occurrence_insertion_works_without_xmlschema_installed) using the exact same import-blocking technique test_obligation_official_schema_validation.py's own existing test already established for proving the OLD degraded-gracefully behavior, now proving the NEW behavior: add_component() succeeds, not merely avoids raising, with xmlschema genuinely blocked.",
+    "13. Ran the full ubl suite (1255 passed, up from 1254) and the 6-format FF6 regression (4359 passed, 4 skipped, up from 4358) -- exact +1 delta in both, confirming zero regressions.",
+    "14. Ran ruff check and mypy --strict against every changed source file: both clean.",
+    "15. Ran the installed-wheel proof (tools/run_package_install_proof.py --format ubl, 1/1 PASS), then discovered and exploited that the ephemeral proof venv genuinely does NOT have xmlschema installed (confirmed by a real ImportError, not simulated) -- independently re-verified add_component()'s first-occurrence insertion directly from that installed, non-editable wheel with no test-only mocking involved at all, the cleanest possible proof of this closure."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py",
+    "src/python/ubl/src/format_factory/ubl/components.py",
+    "src/python/ubl/src/format_factory/ubl/_generated/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/_generated/schema_root_order.py",
+    "src/python/ubl/src/format_factory/ubl/_generated/schema_root_order_manifest.json",
+    "src/python/ubl/tools/generate_schema_root_order.py",
+    "tests/python/ubl/test_obligation_component_first_occurrence_insertion.py",
+    "tests/python/ubl/test_obligation_component_create_adjacent.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py",
+    "src/python/ubl/src/format_factory/ubl/components.py",
+    "src/python/ubl/src/format_factory/ubl/_generated/__init__.py",
+    "src/python/ubl/src/format_factory/ubl/_generated/schema_root_order.py",
+    "src/python/ubl/src/format_factory/ubl/_generated/schema_root_order_manifest.json",
+    "src/python/ubl/tools/generate_schema_root_order.py",
+    "tests/python/ubl/test_obligation_component_first_occurrence_insertion.py",
+    "tests/python/ubl/test_obligation_component_create_adjacent.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_component_first_occurrence_insertion.py tests/python/ubl/test_obligation_component_create_adjacent.py tests/python/ubl/test_obligation_component_update.py tests/python/ubl/test_obligation_component_removal.py tests/python/ubl/test_obligation_line_crud.py tests/python/ubl/test_obligation_party_replacement.py -v -- 52 passed unchanged before any new test was written",
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_component_first_occurrence_insertion.py -v -- 10 passed (9 pre-existing, now unskippable + 1 new)",
+    ".venv/Scripts/pytest tests/python/ubl/ -q --timeout=120 -- 1255 passed (was 1254)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4359 passed, 4 skipped (was 4358)",
+    ".venv/Scripts/python -m ruff check <all changed source and test files> -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/components.py src/python/ubl/src/format_factory/ubl/validation/schema_validator.py src/python/ubl/src/format_factory/ubl/_generated/schema_root_order.py -- Success: no issues found in 3 source files",
+    "python tools/run_package_install_proof.py --format ubl -- RESULT: 1/1 PASS; add_component()'s first-occurrence insertion independently re-exercised from the installed, non-editable wheel's own ephemeral proof venv, which genuinely has no xmlschema installed (confirmed by a real ImportError, not simulated)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (UBL-EDIT-001, SAL-UBL-OBL-237188D47391391E) narrows further -- missing_behavior item (1) (the xmlschema-dependency-fallback for first-occurrence insertion) is fully closed with a checked-in, provenance-hashed table covering all 91 known root types. NOT promoted to implemented: missing_behavior item (2) (no opinion on a new component's own internal field structure) remains a genuine, separate, disclosed gap this slice does not attempt.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); ubl remains UNASSESSED",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "None visible to callers -- schema_root_order()'s own signature and return type are unchanged; add_component()'s own signature is unchanged. Internal: a new private _schema_root_order_live() function, a new generated module _generated/schema_root_order.py, and a new dev-time-only generator script."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

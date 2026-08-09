@@ -1237,6 +1237,58 @@ execution_evidence:
     types (the type-derivation catalogue) still have no bundled value
     data at all, a separate, larger data-acquisition undertaking
     unaffected by this slice.
+- evidence_id: UBL-EDIT-FIRST-OCCURRENCE-DEPENDENCY-FREE-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-edit-first-occurrence-dependency-free-001.json
+  expected_result: PASS
+  granularity: suite
+  truth_boundary: >-
+    Narrows (does not fully close) SAL-UBL-OBL-237188D47391391E
+    (UBL-EDIT-001) further. This obligation's own prior missing_behavior
+    disclosed two remaining items after add_component()'s first-occurrence
+    insertion was built: (1) the optional `xmlschema` dependency was
+    required at runtime, falling back to unconditional refusal without
+    it; (2) no opinion on a new component's own internal field structure.
+    Closes item (1) fully: `xmlschema` is a genuine optional extra
+    (pyproject.toml's own `[project.optional-dependencies] schema =
+    ["xmlschema==4.1.0"]`), and what `schema_root_order()` needs from it
+    -- each of the 91 known root types' own declared child order -- is
+    fixed, pinned-schema data, not a per-call computation. Precomputed it
+    once via a new dev-time-only generator (`tools/
+    generate_schema_root_order.py`), checked in as
+    `_generated/schema_root_order.py` (91 entries, provenance-hashed via
+    the identical `AUTHORITY_SHA256` `_generated/root_catalog.py` already
+    traces to `.local/format-contracts/acquired/ubl/src-ubl-002.bin`,
+    following that module's own existing checked-in-static-data
+    convention rather than inventing a new one). Cross-checked all 91
+    entries against the live introspection path (3 samples verified
+    byte-for-byte before wiring anything in). `schema_root_order()` now
+    answers from this table first; the original `xmlschema`-based
+    implementation survives, renamed `_schema_root_order_live()`, as the
+    generator's own source of truth and a defensive fallback for an
+    unlisted root (unreachable for any of the 91 known types). Proven
+    three independent ways: microsecond call timing (vs. the multi-minute
+    live path across all 91 roots); a new test blocking the real
+    `xmlschema` import (the identical technique
+    test_obligation_official_schema_validation.py's own existing test
+    already uses to prove the OLD degraded-gracefully behavior) and
+    confirming `add_component()` now SUCCEEDS, not merely avoids raising;
+    and independently, directly from the installed wheel's own ephemeral
+    proof venv, which genuinely has no `xmlschema` installed (a real
+    `ImportError`, not simulated) -- `add_component()`'s first-occurrence
+    insertion succeeded there too, unprompted by any test-only mocking.
+    Also found and removed two now-stale `pytest.importorskip("xmlschema")`
+    guards that would have silently SKIPPED, not run, the very tests
+    proving this capability in an environment without the extra installed.
+    ubl suite: 1254 -> 1255 passed. 6-format FF6 regression: 4358 -> 4359
+    passed, 4 skipped. ruff and mypy --strict clean. NOT backed by an
+    independent reference UBL implementation -- SELF-CONSISTENT
+    format_factory-only evidence per the execution-recovery directive's
+    GAP-008 rule; the precomputed table's own correctness is verified
+    directly against this package's own live introspection of the pinned
+    OASIS schema, not assumed. Covers SAL-UBL-OBL-237188D47391391E only;
+    does NOT promote it to implemented -- missing_behavior item (2) (a
+    new component's own internal field structure) remains a genuine,
+    separate, disclosed gap this slice does not attempt.
 obligations:
 - obligation_id: SAL-UBL-OBL-020F06E51DE6AB65
   capability_id: UBL-LIFECYCLE-001
@@ -2118,6 +2170,7 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/components.py::remove_component
   - src/python/ubl/src/format_factory/ubl/components.py::_first_occurrence_insertion_index
   - src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_root_order
+  - src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::_schema_root_order_live
   positive_test_selectors:
   - tests/python/ubl/test_obligation_line_crud.py::test_add_line_appends_after_the_last_existing_line_and_stays_valid
   - tests/python/ubl/test_obligation_line_crud.py::test_remove_line_deletes_the_matching_line_only
@@ -2151,6 +2204,7 @@ obligations:
   - tests/python/ubl/test_obligation_component_first_occurrence_insertion.py::test_first_occurrence_result_is_schema_valid
   - tests/python/ubl/test_obligation_component_first_occurrence_insertion.py::test_first_occurrence_does_not_mutate_the_original_document
   - tests/python/ubl/test_obligation_component_create_adjacent.py::test_add_component_no_longer_unconditionally_refuses_a_first_occurrence
+  - tests/python/ubl/test_obligation_component_first_occurrence_insertion.py::test_first_occurrence_insertion_works_without_xmlschema_installed
   negative_test_selectors:
   - tests/python/ubl/test_obligation_line_crud.py::test_add_line_refuses_a_line_id_that_duplicates_an_existing_line
   - tests/python/ubl/test_obligation_line_crud.py::test_remove_line_raises_for_an_unmatched_id
@@ -2174,6 +2228,7 @@ obligations:
   - UBL-COMPONENT-CREATE-ADJACENT-PROOF
   - UBL-COMPONENT-REMOVAL-PROOF
   - UBL-EDIT-FIRST-OCCURRENCE-INSERTION-PROOF
+  - UBL-EDIT-FIRST-OCCURRENCE-DEPENDENCY-FREE-PROOF
   implemented_behavior:
   - 'FF6-EVENT-000298: real CRUD now exists for line-role components (InvoiceLine/CreditNoteLine/OrderLine), composing existing primitives (XmlNode.with_children(), reorder_for_schema_order() from FF6-EVENT-000286, validate(), and a new duplicate-line-id check reused from the referential layer built for validate_all() at FF6-EVENT-000296) into add_line/remove_line/move_line/renumber_lines (lines.py). Every operation refuses (raises UblValidationError) if the result would introduce a validation or referential-integrity failure the source document did not already have -- directly satisfying "edits cannot produce elements the schema forbids at that position" for this component category. New lines are inserted after the last existing line, which is schema-position-correct by construction (Line elements are always the trailing repeating group in every UBL maindoc type''s own schema sequence), then run through reorder_for_schema_order() so the inserted line''s own internal field order is also corrected regardless of how the caller constructed it.'
   - 'FF6-EVENT-000335: replace_party() (new module components.py) further narrows this obligation''s own remaining "core business components" gap by closing UPDATE for cac:Party, one of this obligation''s own three cited authority facts (SAL-UBL-00123). Investigated directly and found Party does not need the arbitrary-position INSERT support the missing_behavior text names as the real blocker: a Party is always nested inside an already-existing, single-occurrence root-level wrapper (cac:AccountingSupplierParty or cac:AccountingCustomerParty), so replacing it needs only the same with_children() immutable-replace primitive lines.py already composes, applied one level deeper -- no _ORDER_CHECKED_COMPONENTS-style position knowledge required. Refuses an unknown role, a non-Party replacement node, or a missing wrapper (creating a brand-new wrapper remains the still-unbuilt Create/arbitrary-position problem) rather than silently accepting or fabricating one. Reuses the identical before/after diagnostic-comparison refusal pattern lines.py already established. 7 new tests (tests/python/ubl/test_obligation_party_replacement.py).'
@@ -2181,8 +2236,9 @@ obligations:
   - 'FF6-EVENT-000337: add_component() (components.py) closes a genuinely separable slice of Create itself -- inserting an ADDITIONAL occurrence of a component the document already has at least one of. Grounded directly in XSD sequence-model semantics (confirmed by reading the pinned UBL 2.3 Invoice maindoc schema, not assumed): every element declared maxOccurs>1 inside one xsd:sequence must appear as one contiguous run at its own declared position, so inserting immediately after the last existing same-name sibling is always schema-position-correct for ANY repeating component, not only lines (the same fact lines.py''s own "trailing group" reasoning is a special case of). Runs reorder_for_schema_order() afterward, the same benefit add_line already gives, correcting the new component''s own internal field order for every type already in _ORDER_CHECKED_COMPONENTS (confirmed PaymentMeans/TaxTotal/AllowanceCharge all are). Refuses a type-mismatched new_component or a document with ZERO existing occurrences of component_name (inserting the FIRST occurrence of a type not already present needs full header-position knowledge this function does not have -- correctly left as the obligation''s own one remaining, precisely-scoped gap). 8 new tests (tests/python/ubl/test_obligation_component_create_adjacent.py), including one proving the new component''s own internal field order is corrected regardless of caller-supplied order.'
   - 'FF6-EVENT-000338: remove_component() (components.py) closes the Delete quarter of this obligation''s own "CRUD" rule_text for any already-present occurrence of any core business component -- no position-aware logic is needed to remove one either, only with_children() used to omit rather than replace a child. A genuine, surprising finding was made and honestly disclosed during this slice, not hidden: validate() does NOT currently check for the presence of mandatory top-level elements at all -- confirmed directly by probing a document missing IssueDate/InvoiceTypeCode/DocumentCurrencyCode/AccountingSupplierParty (all XSD minOccurs="1" in the real Invoice schema) and finding validate().is_valid still True. remove_component''s own refusal is therefore exactly as strong as validate() itself and no stronger: it does NOT refuse removing a document''s only AccountingSupplierParty even though the real schema requires one. This is a real, disclosed limitation of the underlying validate() layer this function composes, not a defect in how it composes it -- closing that gap belongs to validate()''s own schema-coverage scope (a different obligation), not this one''s CRUD scope. An initial test draft wrongly assumed the refusal would fire; caught by running the test and observing it did not raise, not assumed correct -- the test and this obligation''s own missing_behavior/docstring text were both corrected to state the verified truth rather than the original assumption. 8 new tests (tests/python/ubl/test_obligation_component_removal.py), including one that directly documents and proves the validate()-coverage-gap finding rather than asserting a false refusal.'
   - 'FF6-UBL-EDIT-FIRST-OCCURRENCE-001: this obligation''s own sole remaining named gap -- inserting the FIRST occurrence of a core business component type a document does not already have at all -- is now closed when the optional xmlschema dependency is installed. schema_root_order() (validation/schema_validator.py) reads the real, declared child sequence for a document''s own root type directly from the bundled, official UBL 2.3 maindoc XSD (the same schema files and the same optional dependency schema_validate() already uses), supplying the exact "full header-position knowledge" this gap''s own prior text named as missing. add_component() now uses it to compute the correct insertion position for a genuinely new component type, proven both for insertion before an already-present later sibling and after an already-present earlier one (real relative-position correctness, not merely "does not raise"). Falls back to the original unconditional refusal, unchanged, when xmlschema is unavailable or the component name is not a declared child of the root type at all. 9 new tests (tests/python/ubl/test_obligation_component_first_occurrence_insertion.py); 1 pre-existing test that pinned the now-superseded refusal was found (repo-wide grep confirmed no other test asserted it) and rewritten to prove the new behavior.'
+  - 'FF6-EVENT-000489: the "optional xmlschema dependency" limitation the entry above named is now closed. schema_root_order() answers from a precomputed table (_generated/schema_root_order.py, 91 entries, provenance-hashed the same way _generated/root_catalog.py already is) built once by a new dev-time-only generator (tools/generate_schema_root_order.py) from the identical pinned schema source -- no xmlschema installation is required at runtime for any of the 91 known root types. The original xmlschema-based implementation survives, renamed _schema_root_order_live(), as the generator''s own source of truth and a defensive fallback for an unlisted root. Proven three ways: microsecond call timing; a new test blocking the real xmlschema import (the same technique test_obligation_official_schema_validation.py''s own existing test uses) confirming add_component() now SUCCEEDS, not merely avoids raising; and independently from the installed wheel''s own ephemeral proof venv, which genuinely has no xmlschema installed (a real ImportError, not simulated). Also found and removed two now-stale pytest.importorskip("xmlschema") guards that would have silently SKIPPED, not run, the very tests proving this capability in an environment without the extra installed.'
   missing_behavior:
-  - 'Two narrower items remain, both disclosed rather than silently dropped when the FIRST-occurrence gap closed: (1) when the optional xmlschema dependency is NOT installed, add_component still refuses a first occurrence unconditionally, exactly as before -- schema_root_order() genuinely needs that dependency and there is no dependency-free fallback for real header-position knowledge; (2) this module has no opinion on a new component''s own INTERNAL field structure for a component type this package''s typed model does not otherwise represent at all -- it only determines correct ROOT-level position, not how to build the component''s own contents. Separately, and NOT part of this obligation''s own scope: validate() itself does not check for mandatory top-level element presence (SAL-UBL-OBL-237188D47391391E''s own remove_component composes validate() as-is and is only as strong as it is) -- a real, disclosed limitation surfaced by an earlier slice''s own testing, belonging to validate()''s own obligation, not tracked or claimed as closed here.'
+  - 'One narrower item remains, disclosed rather than silently dropped when the xmlschema-dependency gap closed: this module has no opinion on a new component''s own INTERNAL field structure for a component type this package''s typed model does not otherwise represent at all -- it only determines correct ROOT-level position, not how to build the component''s own contents; this is a genuinely separate, larger undertaking (a constructor for arbitrary component types), not attempted here. Separately, and NOT part of this obligation''s own scope: validate() itself does not check for mandatory top-level element presence (SAL-UBL-OBL-237188D47391391E''s own remove_component composes validate() as-is and is only as strong as it is) -- a real, disclosed limitation surfaced by an earlier slice''s own testing, belonging to validate()''s own obligation, not tracked or claimed as closed here.'
   proof_requirements:
     positive:
     - Each mutation class save-reload-verifies; renumbering fixture proves reference rewrite.

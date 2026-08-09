@@ -56,10 +56,20 @@ knowledge directly from the same bundled, official UBL 2.3 maindoc XSDs
 `xmlschema`'s own `XsdGroup.iter_elements()`, which flattens a
 complexType's declared sequence into document order), so `add_component`
 can now place a genuinely new component type at its real schema position
-instead of refusing unconditionally. Only reachable when the optional
-`xmlschema` dependency is installed -- when it is not, `add_component`
-falls back to the original unconditional refusal rather than guessing a
-position, so behavior for a caller without that extra is unchanged.
+instead of refusing unconditionally.
+
+FF6-UBL-EDIT-FIRST-OCCURRENCE-002: the "only reachable when the optional
+`xmlschema` dependency is installed" limitation the paragraph above used
+to name is now closed. `schema_root_order()` answers from a table
+precomputed once, dev-time only, from the identical bundled schemas
+(`tools/generate_schema_root_order.py`, checked in as
+`_generated/schema_root_order.py`) -- covering all 91 supported root
+types -- so `add_component`'s own first-occurrence insertion needs no
+`xmlschema` installation at runtime at all. The `SchemaValidationUnavailable`
+catch below remains as a defensive fallback should a future root type
+ever land in `ROOT_NAME_SET` before the generated table is regenerated to
+include it, but is unreachable for any of the 91 root types this package
+currently supports.
 
 ``remove_component`` closes the Delete quarter of this obligation's own
 "CRUD" rule_text for any already-present occurrence: no position-aware
@@ -73,11 +83,11 @@ component type here.
 
 With this, every CRUD operation this module attempts is now covered for
 both already-present occurrences of any core business component AND
-first occurrences of a genuinely new one, when schema data is available.
-Remaining, disclosed scope: `component_name` values this package's own
-typed model does not otherwise represent at all (this module has no
-opinion on what `new_component`'s own internal structure should be,
-only where it belongs), and the `xmlschema`-unavailable fallback case.
+first occurrences of a genuinely new one, unconditionally for all 91
+known root types. Remaining, disclosed scope: `component_name` values
+this package's own typed model does not otherwise represent at all (this
+module has no opinion on what `new_component`'s own internal structure
+should be, only where it belongs).
 """
 
 from __future__ import annotations
@@ -253,10 +263,15 @@ def _first_occurrence_insertion_index(
     element never forces an otherwise-correct insertion point earlier.
 
     Raises `UblValidationError` if `component_name` is not a valid child
-    of `document.root_name` at all per the bundled schema, or
-    `SchemaValidationUnavailable` if the optional `xmlschema` dependency
-    is not installed -- propagated to the caller, which decides how to
-    react (see `add_component`'s own fallback).
+    of `document.root_name` at all per the bundled schema. Since
+    FF6-UBL-EDIT-FIRST-OCCURRENCE-002, `schema_root_order()` answers from
+    a precomputed table covering all 91 known root types and no longer
+    needs the optional `xmlschema` dependency at runtime, so
+    `SchemaValidationUnavailable` is not expected here in practice; it
+    remains possible in principle (propagated to the caller, which
+    decides how to react -- see `add_component`'s own fallback) only if
+    `document.root_name` were ever a supported type the generated table
+    does not cover.
     """
     order = schema_root_order(document.root_name)
     if component_name not in order:
@@ -296,10 +311,11 @@ def add_component(document: UblDocument, *, component_name: str, new_component: 
     from the bundled official UBL 2.3 schema's own declared child order
     for `document.root_name` (`schema_root_order`,
     FF6-UBL-EDIT-FIRST-OCCURRENCE-001) -- real header-position knowledge,
-    not a guess. If the optional `xmlschema` dependency is not installed,
-    this falls back to the original refusal (`UblValidationError`)
-    rather than silently guessing a position or requiring the dependency
-    unconditionally.
+    not a guess, and available unconditionally for all 91 known root
+    types since FF6-UBL-EDIT-FIRST-OCCURRENCE-002 (no `xmlschema`
+    installation required at runtime). The `SchemaValidationUnavailable`
+    catch below remains only as a defensive fallback to the original
+    refusal (`UblValidationError`), not the normal path.
 
     Runs `reorder_for_schema_order()` afterward, same as `add_line`, so
     `new_component`'s own internal field order is corrected regardless of
@@ -310,10 +326,12 @@ def add_component(document: UblDocument, *, component_name: str, new_component: 
     Raises `UblValidationError` if `new_component`'s own local name does
     not match `component_name`, if the document has no existing occurrence
     AND `component_name` is not a valid child of `document.root_name` at
-    all per the bundled schema, if the optional `xmlschema` dependency is
-    unavailable and the document has no existing occurrence to place a
-    new one adjacent to, or if the edit would introduce a validation
-    failure the source document did not already have.
+    all per the bundled schema, if the edit would introduce a validation
+    failure the source document did not already have, or (defensive
+    fallback only, not the normal path since
+    FF6-UBL-EDIT-FIRST-OCCURRENCE-002) if the optional `xmlschema`
+    dependency is unavailable and the document has no existing occurrence
+    to place a new one adjacent to.
     """
     if local_name(new_component.qname) != component_name:
         raise UblValidationError(
