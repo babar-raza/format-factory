@@ -2,6 +2,14 @@
   "contract_id": "FC-NRRD-V1",
   "execution_evidence": [
     {
+      "evidence_id": "NRRD-ARRAY-VIEW-PROOF",
+      "expected_result": "PASS",
+      "granularity": "suite",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-array-view-001.json",
+      "sha256": "c2a255bc2935f1dd903e7e898d10700c79c762c42ebf723708597b00f2374556",
+      "truth_boundary": "Builds format_factory.nrrd.array_view (NrrdArrayView/NrrdDtype/AxisMetadata), the package's first typed N-dimensional array view: shape/strides/dtype as first-class objects (previously only a flat/nested Python list existed, no dtype/stride object, no operations -- confirmed by a full repository search before implementing), element access, zero-copy slicing/transpose/permute/ flip/crop, and explicit .copy(). No numpy dependency added -- the package's own adapters/ directory already exists empty specifically for \"optional NRRD ecosystem adapters\", so a numpy layer, if ever built, belongs there as additive work, not a hard dependency; this stays consistent with format-factory-core's and format-factory-ora's own zero-dependency, bounded-reader design. Per-axis metadata (kind, label, unit, spacing, axis min/max, center, thickness, space direction) follows every operation: transpose reorders it; flip swaps axis_min/axis_max, negates space_direction, and shifts space_origin by (size-1)*old_direction to keep the view's own first element pinned at its pre-flip world-space position; slice/crop shift axis_min/axis_max by start*spacing when spacing is known, else clear them (None) rather than carry a stale bound forward -- a disclosed simplification (cell-vs-node centers nuance is not modelled). A \"range\" kind axis (SAL-NRRD-00022, KIND_REQUIRED_SIZE not None -- e.g. a 3-color channel axis) refuses a slice/crop that would change its own element count, since that would change what the sample means, not resample it. Grounded directly against SAL-NRRD-00010/00011/00012/00015/00016/00019/00022, read from shared/sal-facts/nrrd.yaml directly since neither target obligation's own authority_fact_ids cites any SAL fact (both are empty lists in the raw register -- the only cited authority is a policy id and a reference- implementation pointer). 27 new tests (tests/python/nrrd/test_obligation_array_view.py): shape/strides/dtype (including block type), element access (negative index, out-of-range, too-many-indices), zero-copy proof (data-identity assertion, not merely value equality), stepped-slice rejection, metadata propagation under slicing with and without spacing, crop (including the range-kind guard and its full-size-permitted counterpart), transpose/permute (value correctness under permutation, non-permutation rejection), flip (value reversal, min/max swap, space-direction/origin propagation, double-flip identity), copy (independent-data proof), resource-limit bounding (reusing codec/payload.py's existing checked_element_count), and an end-to-end dumps()/loads() round trip matching NrrdDocument.to_array(). nrrd suite: 718 -> 745 passed, 1 skipped, 0 failed. 6-format FF6 regression (nrrd/ora/xliff/ubl/ipynb/safetensors): 4093 passed, 4 skipped. mypy --strict, ruff, and pyright all clean on the first run. Installed-wheel behavior independently verified (tools/run_package_install_proof.py --format nrrd, then array_view()/flip() exercised from the installed site-packages path, not the source tree). Directly narrows SAL-NRRD-OBL-E4B3D1A206784660 and SAL-NRRD-OBL-FEF73EC95DF631C3 (both NRRD-ARRAY-001, missing -> partial); neither promoted to implemented -- cell/node-centering nuance in axis-min/max recomputation and any numpy/pynrrd interoperability adapter remain open, disclosed scope."
+    },
+    {
       "evidence_id": "NRRD-ATTACHMENT-CONVERSION-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -245,7 +253,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "aec57caf1f908f5b8063adc41385b1302ded1791f3f438e7f9e074a3b480b887",
+    "implementation_evidence": "2e771d67d534d81a8224a1d57aff0afc90b3ba55f8f3c12a6145b1cd22e07d23",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -2470,18 +2478,48 @@
     {
       "capability_id": "NRRD-ARRAY-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-ARRAY-VIEW-PROOF"
       ],
       "implemented_behavior": [
-        "Flat values expose shape and can be reshaped in fastest-first order."
+        "Flat values expose shape and can be reshaped in fastest-first order.",
+        "FF6-NRRD-ARRAY-VIEW-001: dtype (NrrdDtype, reusing codec/payload.py's dtype_info/is_block_type/parse_block_size), strides (element-unit, fastest-first), element access, and slicing (zero-copy, proven via data-identity) are now built and proven -- see NRRD-ARRAY-VIEW-PROOF for the full account, including the range-kind-axis guard and the space-direction/origin propagation this obligation's own \"orientation... follow every operation\" clause names."
       ],
       "missing_behavior": [
-        "No dtype/stride object, element API, slicing, permutation, flip, crop, metadata propagation, or view/copy contract."
+        "Axis permutation, flip, crop, and per-axis metadata propagation are built and tested (see NRRD-ARRAY-VIEW-PROOF), but two items remain open: cell-vs-node `centers` semantics are not modelled in axis-min/max recomputation under crop (a disclosed simplification, uniform spacing-only treatment), and no numpy/pynrrd interoperability adapter exists (the package's own empty `adapters/` directory is the intended, still-unbuilt home for one)."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_array_view.py::test_out_of_range_index_raises",
+        "tests/python/nrrd/test_obligation_array_view.py::test_too_many_indices_raises",
+        "tests/python/nrrd/test_obligation_array_view.py::test_stepped_slices_are_rejected_in_favor_of_flip",
+        "tests/python/nrrd/test_obligation_array_view.py::test_crop_on_a_fixed_width_range_kind_axis_is_refused",
+        "tests/python/nrrd/test_obligation_array_view.py::test_transpose_rejects_a_non_permutation_order",
+        "tests/python/nrrd/test_obligation_array_view.py::test_array_view_rejects_a_document_whose_array_length_disagrees_with_sizes",
+        "tests/python/nrrd/test_obligation_array_view.py::test_array_view_bounds_element_count_against_supplied_limits"
+      ],
       "obligation_id": "SAL-NRRD-OBL-E4B3D1A206784660",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_obligation_shape_production.py::test_big_endian_axis_zero_fastest_and_detached_payload"
+        "tests/python/nrrd/test_obligation_shape_production.py::test_big_endian_axis_zero_fastest_and_detached_payload",
+        "tests/python/nrrd/test_obligation_array_view.py::test_shape_strides_and_dtype_match_the_declared_header",
+        "tests/python/nrrd/test_obligation_array_view.py::test_block_type_dtype_carries_the_declared_block_size",
+        "tests/python/nrrd/test_obligation_array_view.py::test_element_access_follows_fastest_first_axis_order",
+        "tests/python/nrrd/test_obligation_array_view.py::test_negative_index_counts_from_the_end",
+        "tests/python/nrrd/test_obligation_array_view.py::test_partial_indexing_keeps_remaining_axes",
+        "tests/python/nrrd/test_obligation_array_view.py::test_slicing_is_zero_copy_sharing_the_same_backing_data",
+        "tests/python/nrrd/test_obligation_array_view.py::test_sliced_axis_metadata_recomputes_min_max_from_spacing",
+        "tests/python/nrrd/test_obligation_array_view.py::test_sliced_axis_metadata_clears_min_max_without_spacing",
+        "tests/python/nrrd/test_obligation_array_view.py::test_crop_selects_the_declared_sub_region",
+        "tests/python/nrrd/test_obligation_array_view.py::test_full_size_slice_on_a_range_kind_axis_is_permitted",
+        "tests/python/nrrd/test_obligation_array_view.py::test_transpose_reorders_shape_strides_and_axis_metadata",
+        "tests/python/nrrd/test_obligation_array_view.py::test_transpose_with_no_arguments_reverses_axis_order",
+        "tests/python/nrrd/test_obligation_array_view.py::test_permute_is_an_alias_for_transpose_taking_one_sequence",
+        "tests/python/nrrd/test_obligation_array_view.py::test_flip_reverses_axis_order_of_values",
+        "tests/python/nrrd/test_obligation_array_view.py::test_flip_swaps_axis_min_and_max",
+        "tests/python/nrrd/test_obligation_array_view.py::test_flip_negates_space_direction_and_shifts_origin_to_compensate",
+        "tests/python/nrrd/test_obligation_array_view.py::test_double_flip_of_the_same_axis_restores_the_original_values",
+        "tests/python/nrrd/test_obligation_array_view.py::test_copy_materializes_independent_backing_data",
+        "tests/python/nrrd/test_obligation_array_view.py::test_copy_of_a_transposed_view_preserves_values_in_the_new_order",
+        "tests/python/nrrd/test_obligation_array_view.py::test_array_view_over_a_loaded_document_matches_to_array"
       ],
       "proof_requirements": {
         "negative": [
@@ -2494,7 +2532,11 @@
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::to_array",
-        "src/python/nrrd/src/format_factory/nrrd/model/document.py::reshape_nrrd_array"
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::reshape_nrrd_array",
+        "src/python/nrrd/src/format_factory/nrrd/model/array_view.py::array_view",
+        "src/python/nrrd/src/format_factory/nrrd/model/array_view.py::NrrdArrayView",
+        "src/python/nrrd/src/format_factory/nrrd/model/array_view.py::NrrdDtype",
+        "src/python/nrrd/src/format_factory/nrrd/model/array_view.py::AxisMetadata"
       ],
       "status": "partial"
     },
@@ -2764,18 +2806,48 @@
     {
       "capability_id": "NRRD-ARRAY-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-ARRAY-VIEW-PROOF"
       ],
       "implemented_behavior": [
-        "Shape and fastest-first nested value access exist."
+        "Shape and fastest-first nested value access exist.",
+        "FF6-NRRD-ARRAY-VIEW-001: stride/dtype metadata (NrrdDtype), slicing, permutation, flip, crop, orientation propagation (space_direction/space_origin under flip, axis metadata under transpose/slice), and zero-copy-vs-copy signaling (the `copied` field, proven by data-identity assertions) are all now built and proven -- see NRRD-ARRAY-VIEW-PROOF."
       ],
       "missing_behavior": [
-        "No stride/dtype metadata object, slicing, permutation, flip, crop, orientation propagation, or zero-copy/copy signaling."
+        "Cell-vs-node `centers` semantics are not modelled in axis-min/max recomputation under crop (disclosed simplification), and no numpy/pynrrd interoperability adapter exists (the package's own empty `adapters/` directory is the intended, still-unbuilt home for one)."
       ],
-      "negative_test_selectors": [],
+      "negative_test_selectors": [
+        "tests/python/nrrd/test_obligation_array_view.py::test_out_of_range_index_raises",
+        "tests/python/nrrd/test_obligation_array_view.py::test_too_many_indices_raises",
+        "tests/python/nrrd/test_obligation_array_view.py::test_stepped_slices_are_rejected_in_favor_of_flip",
+        "tests/python/nrrd/test_obligation_array_view.py::test_crop_on_a_fixed_width_range_kind_axis_is_refused",
+        "tests/python/nrrd/test_obligation_array_view.py::test_transpose_rejects_a_non_permutation_order",
+        "tests/python/nrrd/test_obligation_array_view.py::test_array_view_rejects_a_document_whose_array_length_disagrees_with_sizes",
+        "tests/python/nrrd/test_obligation_array_view.py::test_array_view_bounds_element_count_against_supplied_limits"
+      ],
       "obligation_id": "SAL-NRRD-OBL-FEF73EC95DF631C3",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_obligation_shape_production.py::test_big_endian_axis_zero_fastest_and_detached_payload"
+        "tests/python/nrrd/test_obligation_shape_production.py::test_big_endian_axis_zero_fastest_and_detached_payload",
+        "tests/python/nrrd/test_obligation_array_view.py::test_shape_strides_and_dtype_match_the_declared_header",
+        "tests/python/nrrd/test_obligation_array_view.py::test_block_type_dtype_carries_the_declared_block_size",
+        "tests/python/nrrd/test_obligation_array_view.py::test_element_access_follows_fastest_first_axis_order",
+        "tests/python/nrrd/test_obligation_array_view.py::test_negative_index_counts_from_the_end",
+        "tests/python/nrrd/test_obligation_array_view.py::test_partial_indexing_keeps_remaining_axes",
+        "tests/python/nrrd/test_obligation_array_view.py::test_slicing_is_zero_copy_sharing_the_same_backing_data",
+        "tests/python/nrrd/test_obligation_array_view.py::test_sliced_axis_metadata_recomputes_min_max_from_spacing",
+        "tests/python/nrrd/test_obligation_array_view.py::test_sliced_axis_metadata_clears_min_max_without_spacing",
+        "tests/python/nrrd/test_obligation_array_view.py::test_crop_selects_the_declared_sub_region",
+        "tests/python/nrrd/test_obligation_array_view.py::test_full_size_slice_on_a_range_kind_axis_is_permitted",
+        "tests/python/nrrd/test_obligation_array_view.py::test_transpose_reorders_shape_strides_and_axis_metadata",
+        "tests/python/nrrd/test_obligation_array_view.py::test_transpose_with_no_arguments_reverses_axis_order",
+        "tests/python/nrrd/test_obligation_array_view.py::test_permute_is_an_alias_for_transpose_taking_one_sequence",
+        "tests/python/nrrd/test_obligation_array_view.py::test_flip_reverses_axis_order_of_values",
+        "tests/python/nrrd/test_obligation_array_view.py::test_flip_swaps_axis_min_and_max",
+        "tests/python/nrrd/test_obligation_array_view.py::test_flip_negates_space_direction_and_shifts_origin_to_compensate",
+        "tests/python/nrrd/test_obligation_array_view.py::test_double_flip_of_the_same_axis_restores_the_original_values",
+        "tests/python/nrrd/test_obligation_array_view.py::test_copy_materializes_independent_backing_data",
+        "tests/python/nrrd/test_obligation_array_view.py::test_copy_of_a_transposed_view_preserves_values_in_the_new_order",
+        "tests/python/nrrd/test_obligation_array_view.py::test_array_view_over_a_loaded_document_matches_to_array"
       ],
       "proof_requirements": {
         "negative": [
@@ -2788,7 +2860,11 @@
       "proof_status": "PARTIAL_NONPROMOTING",
       "source_symbols": [
         "src/python/nrrd/src/format_factory/nrrd/model/document.py::NrrdDocument::to_array",
-        "src/python/nrrd/src/format_factory/nrrd/model/document.py::reshape_nrrd_array"
+        "src/python/nrrd/src/format_factory/nrrd/model/document.py::reshape_nrrd_array",
+        "src/python/nrrd/src/format_factory/nrrd/model/array_view.py::array_view",
+        "src/python/nrrd/src/format_factory/nrrd/model/array_view.py::NrrdArrayView",
+        "src/python/nrrd/src/format_factory/nrrd/model/array_view.py::NrrdDtype",
+        "src/python/nrrd/src/format_factory/nrrd/model/array_view.py::AxisMetadata"
       ],
       "status": "partial"
     }
@@ -2796,6 +2872,7 @@
   "promotion_effect": "none",
   "proof_strength": "supporting_nonpromoting",
   "referenced_input_digests": {
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-array-view-001.json": "c2a255bc2935f1dd903e7e898d10700c79c762c42ebf723708597b00f2374556",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-ascii-endian-001.json": "60a99a5918aff5911cec49c6ecb8ca17e2d2284e8e513697a17e12a0f06e20c2",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-attachment-conversion-001.json": "b5ce2947e6b853a1bd21cde3bb41e33f8a8daaab04c0b49c2d45cf49edd65ae4",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-axis-arity-001.json": "7fa7b5a006873ffa9a1c9c12179d744a9cc9ff9612a9be34435c0203624ca5d7",
@@ -2832,12 +2909,14 @@
     "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "fc03e93585295b46b4b0cd3e5c21c1d1e82fafb57299450d2758185880af639b",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "1c05f5d17614799de2cea369352a67b24a5285fb3d08761e63c787560bfa8fea",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "10984d5ca2c0bc8bf872e94923e41c343dea92c2d98411c429eaa3e79fb624ef",
+    "src/python/nrrd/src/format_factory/nrrd/model/array_view.py": "8326ae97c8dda475989b7ce1513572bc3bbe82afcd13dfbf0ee94a61f6bdea3e",
     "src/python/nrrd/src/format_factory/nrrd/model/document.py": "bb13b031c3e3c41e9c5b775047278c68e6c62b036be71c9e73c0205ac1d3be39",
     "src/python/nrrd/src/format_factory/nrrd/security/limits.py": "61960ec909fda7e5b9accf4934948291467bb5e8ce4ce584ec6e6ee12e60e844",
     "src/python/nrrd/src/format_factory/nrrd/space.py": "85d5640445d14d653eab2ff6131b4b867be171c16f96fdb943f14e451965afe5",
     "src/python/nrrd/src/format_factory/nrrd/validation/validator.py": "82b06e8160941efd42e95c9d698e81a3c2697dbe1edceaa47efa4154b4476ded",
     "tests/python/nrrd/test_ascii_encoding_endian.py": "70aaff339ed8a91183ead5c3b87164d5d1542c393746125c95fb63e5f3f17c04",
     "tests/python/nrrd/test_golden_raw_scalar_slice.py": "b818dd89a20229421b46b4cbb8aa19dc3449ee197d45552469069cfb10d76513",
+    "tests/python/nrrd/test_obligation_array_view.py": "25aa0029428c2289122d5241d6ee71a97f230da3edc58cd0c5a2f891670d6a4e",
     "tests/python/nrrd/test_obligation_attachment_conversion.py": "9735c86c534b2bec55338882d3c6049571a7184b3a25d24e450f9146f29b3a55",
     "tests/python/nrrd/test_obligation_axis_field_arity.py": "3528ed42454f8e5f9c3640f3b005ee3f7f3a0972081d0a2b81ce9d3dcd6751e0",
     "tests/python/nrrd/test_obligation_axis_order.py": "926a045509b2395f326340b792bd739bbe85c4da8a02c958bc390d70650d5207",

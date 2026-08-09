@@ -1,0 +1,68 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-array-view-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-efc95601efc6ff0d",
+  "mode": "live",
+  "timestamp": "2026-08-09T08:25:22Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC-FF6-NRRD-ARRAY-VIEW-001",
+    "task_kind": "build-a-genuinely-unbuilt-capability",
+    "root_cause": "A fresh contract_reconciler run (this session, after completing the ora render-engine slice) confirmed nrrd at 9/65 unresolved obligations. Two of them (SAL-NRRD-OBL-E4B3D1A206784660, SAL-NRRD-OBL-FEF73EC95DF631C3), both capability_id NRRD-ARRAY-001, share the same missing_behavior: no dtype/stride object, element API, slicing, permutation, flip, crop, metadata propagation, or view/copy contract exists anywhere in the package. NrrdDocument.array/.to_array() are a flat/nested Python list with no shape/strides/dtype object and no operations -- confirmed by a full repository read (production package structure, existing test coverage, dependency state) before writing any code.",
+    "obligation_targeted": "SAL-NRRD-OBL-E4B3D1A206784660 and SAL-NRRD-OBL-FEF73EC95DF631C3 (both NRRD-ARRAY-001) together -- the two obligations are near-duplicates of each other (near-identical rule_text) and are closed by the same capability, not sequentially.",
+    "acceptance_evidence": "Built format_factory.nrrd.array_view (module model/array_view.py): NrrdDtype (reusing codec/payload.py's existing dtype_info()/is_block_type()/parse_block_size(), not duplicating), AxisMetadata (kind/label/unit/spacing/axis-min-max/center/thickness/space-direction, one per axis), and NrrdArrayView (shape/strides/dtype, element access via __getitem__, zero-copy slicing/transpose/permute/flip/crop, explicit .copy()). No numpy dependency added -- the package's adapters/ directory already exists empty specifically for 'optional NRRD ecosystem adapters', signalling numpy (if ever added) belongs there as an additive layer, not a hard dependency; this implementation stays consistent with format-factory-core's and format-factory-ora's own zero-dependency, bounded-reader design. Per-axis metadata follows every operation: transpose reorders axis metadata (space_origin itself is axis-order-independent, unaffected); flip swaps axis_min/axis_max, negates space_direction, and shifts space_origin by (size-1)*old_direction to keep the view's own first element pinned at its pre-flip world-space position; slice/crop shift axis_min/axis_max by start*spacing when spacing is known, else clear them (None) rather than carry a stale bound forward. A 'range' kind axis (SAL-NRRD-00022, KIND_REQUIRED_SIZE not None -- e.g. a 3-color channel axis) refuses a slice/crop that would change its own element count, since that would change what the sample means, not resample it. Grounded directly against SAL-NRRD-00010/00011/00012/00015/00016/00019/00022 (none of which the raw obligation register cites via authority_fact_ids -- both target obligations show authority_fact_ids: [] -- so this session read the pinned SAL facts directly to ground the implementation rather than working from the obligation record's own citations alone)."
+  },
+  "execution_steps": [
+    "1. After committing and eventing the ora render-engine slice (FF6-EVENT-000468), ran python -m tools.ff6.goal_driver resume: 3/6 certified unchanged, ora/nrrd/ubl remain UNASSESSED. Per the user's explicit scope instruction this session ('work only on 3 products not been certified yet'), selected nrrd next.",
+    "2. Delegated a read-only research pass (Explore agent) to gather: both target obligations' full register text; the nrrd package's complete file listing with per-module docstrings; current array-handling behavior in the load path; numpy dependency state; existing test coverage for array/dtype/stride/slicing/orientation; relevant SAL facts (stride/dtype/type/endian/encoding/dimension/space-directions/kinds); and related NRRD-* obligation statuses (confirming NRRD-LAZY-001 is already fully implemented and this obligation's own array-view work is additive to it, not overlapping).",
+    "3. Read model/document.py, codec/payload.py, codec/kinds.py, and space.py in full to identify exactly what to reuse (dtype_info, _axis_strides, KIND_REQUIRED_SIZE/canonical_kind, parse_space_directions/parse_space_origin) rather than reimplementing any of it.",
+    "4. Checked coordination state for conflicts on the nrrd files to be touched: __init__.py and _convenience.py carried leases from the same already-dead 2026-08-05 session found during the ora slice, both already auto-expired to STALE (not ACTIVE, unlike ora's leases which required takeover before this session began). Performed a governed cleanup takeover of both for audit-trail consistency before committing.",
+    "5. Ran tools.governance.skills_first.resolve --operation add_python_api, which selected skill_id add-python-api (route product_backfill, score 9) -- the same governed route as the ora slice.",
+    "6. Implemented model/array_view.py: NrrdDtype.from_type_name (scalar + block-type handling), AxisMetadata with is_range_kind, and NrrdArrayView with __getitem__ (int/slice indexing, negative indices, partial indexing, out-of-range/too-many-indices/stepped-slice/fixed-width-kind-violation rejection), crop() (named sugar over __getitem__), transpose()/permute() (with non-permutation rejection), flip() (with axis_min/max swap and space_direction/origin propagation), copy() (independent materialization via a walk mirroring document.py's own reshape_nrrd_array recursion pattern for internal consistency), and to_nested_list(). array_view(document, limits=...) is the construction entry point, bounding element count against ResourceLimits (reusing codec/payload.py's checked_element_count) before materializing the immutable backing tuple.",
+    "7. Smoke-tested interactively before writing formal tests: 3D shape/stride/dtype construction, fastest-first element access at several coordinates, slicing, flip, transpose, to_nested_list, and copy -- all correct on first run. Then interactively verified space-direction/origin propagation under flip and the range-kind crop guard, both correct on first run.",
+    "8. Wrote tests/python/nrrd/test_obligation_array_view.py (27 tests): shape/strides/dtype (including block type), element access (negative index, out-of-range, too-many-indices), slicing (zero-copy data-identity proof, stepped-slice rejection), metadata propagation under slicing (spacing-present vs spacing-absent), crop (value correctness, range-kind-axis rejection, full-size-slice-on-range-axis permitted), transpose/permute (value correctness under permutation, non-permutation rejection, no-argument reversal), flip (value reversal, axis-min/max swap, space-direction/origin propagation, double-flip identity), copy (independent-data proof, correctness after transpose), resource-limit bounding, and an end-to-end dumps()/loads() round-trip proving array_view() matches NrrdDocument.to_array() for an unviewed document.",
+    "9. First test run: 26/27 passed, 1 failure (test_crop_selects_the_declared_sub_region) -- diagnosed as the TEST'S OWN expected value being wrong (mentally transposed axis order while writing it by hand), not an implementation bug; independently re-derived the correct expected nested-list shape from the stride formula and fixed the test's own assertion. Also simplified a flip test's -0.0-vs-0.0 float-sign assertion to use pytest.approx. Re-ran: 27/27 passed.",
+    "10. Ran the full tests/python/nrrd/ suite (745 passed, 1 skipped, up from 718 -- no regressions), then the 6-format FF6 regression (nrrd/ora/xliff/ubl/ipynb/safetensors: 4093 passed, 4 skipped).",
+    "11. Ran ruff check, mypy --strict, and pyright against every changed file: all clean on the first run with no findings to fix (unlike the ora slice, which needed two small mypy --strict fixes).",
+    "12. Built and installed the nrrd wheel via tools/run_package_install_proof.py --format nrrd (1/1 PASS), confirmed model/array_view.py shipped in the wheel's site-packages tree, and independently exercised array_view()/flip() from that installed, non-editable location."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/model/array_view.py",
+    "src/python/nrrd/src/format_factory/nrrd/model/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/errors.py",
+    "tests/python/nrrd/test_obligation_array_view.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/model/array_view.py",
+    "src/python/nrrd/src/format_factory/nrrd/model/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/__init__.py",
+    "src/python/nrrd/src/format_factory/nrrd/errors.py",
+    "tests/python/nrrd/test_obligation_array_view.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_array_view.py -v -- 27 passed (1 initial failure diagnosed as the test's own wrong expected value, fixed, re-run clean)",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q --timeout=120 -- 745 passed, 1 skipped (was 718)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4093 passed, 4 skipped",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/model/array_view.py src/python/nrrd/src/format_factory/nrrd/model/__init__.py src/python/nrrd/src/format_factory/nrrd/__init__.py src/python/nrrd/src/format_factory/nrrd/errors.py tests/python/nrrd/test_obligation_array_view.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/model/array_view.py src/python/nrrd/src/format_factory/nrrd/__init__.py src/python/nrrd/src/format_factory/nrrd/model/__init__.py src/python/nrrd/src/format_factory/nrrd/errors.py -- Success: no issues found in 4 source files",
+    ".venv/Scripts/python -m pyright src/python/nrrd/src/format_factory/nrrd/model/array_view.py -- 0 errors, 0 warnings, 0 informations",
+    "python tools/run_package_install_proof.py --format nrrd -- RESULT: 1/1 PASS; array_view()/flip() independently exercised from the installed wheel's site-packages path (not the source tree)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Both NRRD-ARRAY-001 obligations move missing -> partial with real, tested typed-array-view capability. Not claimed as fully implemented/certified: axis-min/max recomputation under crop deliberately does not model cell-vs-node centers nuance (disclosed simplification), and no numpy/pynrrd interoperability adapter was built (adapters/ stays empty, out of this slice's scope).",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); nrrd remains UNASSESSED, now with substantially stronger obligation coverage",
+    "obligations_moved": 0,
+    "obligations_narrowed": 2,
+    "obligations_total_for_format": 65,
+    "new_public_api": "format_factory.nrrd's NrrdArrayView, NrrdDtype, AxisMetadata, array_view, NrrdArrayError"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

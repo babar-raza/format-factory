@@ -46,7 +46,7 @@ from .convert import (
     convert_to_detached_list,
     convert_to_detached_printf,
 )
-from .errors import NrrdError, NrrdParseError, NrrdWriteError
+from .errors import NrrdArrayError, NrrdError, NrrdParseError, NrrdWriteError
 from .space import (
     SpaceTransform,
     build_space_transform,
@@ -56,10 +56,14 @@ from .space import (
 )
 from .model import (
     DOMAIN_KINDS,
+    AxisMetadata,
     AxisOrderReport,
+    NrrdArrayView,
     NrrdDocument,
+    NrrdDtype,
     PreservationIssue,
     PreservationReport,
+    array_view,
     axis_order_report,
     flatten_nrrd_array,
     reshape_nrrd_array,
@@ -69,13 +73,15 @@ from .validation import validate
 
 __all__ = [
     "AttachmentConversionReport",
+    "AxisMetadata",
     "AxisOrderReport",
     "ConversionReport", "DOMAIN_KINDS", "EncodingConversionReport",
-    "NRRD_DEFAULT_LIMITS", "NrrdDocument",
+    "NRRD_DEFAULT_LIMITS", "NrrdArrayError", "NrrdArrayView", "NrrdDocument", "NrrdDtype",
     "NrrdError", "NrrdHeader", "NrrdLazyPayload", "NrrdParseError",
     "NrrdWriteError", "OverflowPolicy", "PayloadAccess", "PayloadAccessMode",
     "PreservationIssue", "PreservationReport", "RoundingPolicy",
     "SpaceTransform",
+    "array_view",
     "available_encodings",
     "axis_order_report",
     "axis_sizes", "build_space_transform", "convert_dtype", "convert_encoding",

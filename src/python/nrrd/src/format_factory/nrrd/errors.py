@@ -17,3 +17,9 @@ class NrrdWriteError(FormatWriteError, NrrdError):
 
 class NrrdValidationError(NrrdError):
     """Raised when a document violates its selected profile."""
+
+
+class NrrdArrayError(NrrdError):
+    """An array-view operation violated an axis's own declared semantics
+    (out-of-range index, non-permutation transpose order, or a crop/slice
+    that would change a fixed-size "range" kind axis's own element count)."""
