@@ -7,14 +7,15 @@
   "baseline_file": "reports/certification/ubl/performance-baseline.json",
   "results": {
     "sample": "samples/by-format/ubl/valid/invoice-full-depth.xml",
-    "parse_median_ms": 0.75,
-    "parse_min_ms": 0.75,
-    "write_median_ms": 0.39,
-    "write_min_ms": 0.39,
-    "memory_peak_kb": 36.6,
+    "parse_median_ms": 0.6,
+    "parse_min_ms": 0.58,
+    "write_median_ms": 0.37,
+    "write_min_ms": 0.34,
+    "memory_peak_kb": 36.9,
     "runs": 5
   },
   "genuinely_new_this_tick": "No performance benchmark existed for ubl anywhere in the repository before this tick. Added benchmark_ubl() following the exact same measurement pattern already established for xliff/ora/nrrd (time.perf_counter over 5 runs for parse/write, tracemalloc for peak memory) and registered it in the tool's own main() loop. Re-ran the full tool since main() always reruns every registered benchmark; only the genuinely new ubl-specific output is committed -- the other formats' own baseline files were regenerated as a side effect with pure timing noise and reverted rather than committed, matching the exact precedent established for xliff/ora/nrrd's own performance-gate work.",
+  "re_run_this_tick": "FF6-EVENT-000450: independently re-ran, completing ubl's own leg of the nrrd/ora/ubl gate sweep. ubl's own baseline was already refreshed as a side effect of Event 410's shared tool invocation, left uncommitted at the time since ubl was outside that tick's own ipynb-focused scope; now within this sweep's own scope. New numbers (parse=0.6ms/write=0.37ms vs prior 0.75ms/0.39ms; memory 36.9KB vs 36.6KB) differ but stay within ordinary sub-millisecond timing noise for a sample this small. No SLA exists to violate in either direction.",
   "note_on_thresholds": "No pre-existing pass/fail performance threshold exists for any format in this tool -- it records baselines, it does not gate on them. This gate's own PASS verdict reflects 'a real, reproducible baseline now exists and the operations complete in reasonable time for a document this size', not a numeric SLA.",
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the performance invariant only, not a certification claim for the format as a whole.",
   "commit": "pending"
