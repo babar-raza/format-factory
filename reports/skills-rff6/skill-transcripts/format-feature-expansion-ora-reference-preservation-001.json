@@ -1,0 +1,68 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "format-feature-expansion-ora-reference-preservation-001",
+  "skill_id": "format-feature-expansion",
+  "manifest_id": "sfx-6dbc641ed9338971",
+  "mode": "live",
+  "timestamp": "2026-08-10T00:00:00Z",
+  "inputs": {
+    "format_id": "ora",
+    "profile_id": "OpenRaster-0.0.5",
+    "obligation_id": "SAL-ORA-OBL-EC8D65524EB96820",
+    "capability_id": "ORA-EDIT-001",
+    "task_id": "TC_FF6_ORA_REFERENCE_PRESERVATION_001",
+    "contract_digest": "sha256:8e3ad5d9893bd413c6887be8661de1563c94074104df03ba8defcf766a438cd7",
+    "authority_digests": {"authority_lock_sha256": "sha256:5c1ac942018f1e26e0fc0ca7c8284313452d1cb44c04d7e225faad4b21219929"},
+    "affected_layer": "L07-Tests",
+    "planned_paths": ["tests/python/ora/test_obligation_reference_preservation.py", "shared/format-contracts/implementation-evidence/ora.yaml"],
+    "proof_inputs": ["SAL-ORA-OBL-EC8D65524EB96820"],
+    "root_cause": "Continuing the register-vs-evidence-text discipline (proven repeatedly productive on ubl this session) applied to ora's own 5 remaining obligations with fresh eyes. ORA-EDIT-001's own release_gate ('Editing workflows preserve all unmodified supported and unknown data') is fundamentally different from the other 4 ora obligations' own shared release_gate (independent-producer/consumer corpus, a genuine external blocker) -- it is about preservation, not independent verification, and was worth checking separately. FF6-EVENT-000318's own prior evidence found 'metadata' and 'maintain references' both ungrounded in the pinned spec, but on re-reading, 'maintain references' was only ever asserted in PROSE ('renaming, moving, or removing a layer does not change what its own src value means') -- never directly, mechanically tested against real CRUD operations.",
+    "acceptance_evidence": "Read transaction.py and the existing test_obligation_transactional_edit.py in full to confirm apply_transaction() is genuinely generic (any OraImage -> OraImage callable is a valid step) and that add/replace/move/remove/rename step helpers already exist as TEST-file-local patterns (not exported product functions) reusable for a new proof. Wrote test_obligation_reference_preservation.py: 6 tests, each building a 3-layer fixture (one inside a nested group, two at root level) and asserting that after a transaction targeting ONE layer, every OTHER layer's own src value is byte-for-byte identical before and after -- covering add, replace, move, remove, rename-of-root, and a multi-step transaction combining three operation types against three different layers while confirming a fourth, entirely uninvolved layer survives untouched. All 6 passed on first execution, directly proving (not merely asserting) that src -- confirmed by the prior tick's own full-text spec search to be OpenRaster's ONLY reference-shaped concept -- is genuinely preserved by every CRUD operation type."
+  },
+  "execution_steps": [
+    "1. Confirmed the FF6 mission head (Event 502) matched the prior tick's own hand-off before starting, per goal_driver resume.",
+    "2. Re-ran the ora obligation reconciler fresh and pulled the current literal register rule_text/required_tests/release_gates for all 5 remaining real ora obligations (COMPOSITE-001, BASELINEASSET-001, RENDER-001, ISOLATION-001, EDIT-001) directly from plans/strategic/ff6/obligations/ora.yaml.",
+    "3. Noticed ORA-EDIT-001's own release_gate ('Editing workflows preserve all unmodified supported and unknown data') is structurally different from the other 4's own shared release_gate (independent-producer/consumer agreement) -- worth investigating separately rather than assuming it shares the same external-corpus blocker.",
+    "4. Read ORA-EDIT-001's own full current evidence entry: missing_behavior named 2 remaining clauses ('metadata' as an edit target, 'maintain references'), both previously classified as 'ungrounded' via a full-text spec search (FF6-EVENT-000318). Re-read that prior finding's own exact wording for 'maintain references': it asserts src needs no maintenance on edit, backed by reasoning but not by a dedicated test.",
+    "5. Confirmed via direct grep that no existing ora test file directly proves an untouched sibling layer's own src value survives a transaction targeting a different node -- the closest existing tests (test_replace_swaps_a_layer_for_a_new_one_with_the_same_position etc.) check structural position/count, not src preservation specifically.",
+    "6. Read transaction.py's own module docstring and the existing test_obligation_transactional_edit.py's own step-helper patterns (_add_layer, _replace_layer, _move_layer_into_group, _remove_layer, _rename_root) to reuse the exact same construction style for the new file's own fixtures.",
+    "7. Wrote test_obligation_reference_preservation.py: a 3-layer fixture (one nested in a group, two at root) plus a _src_map() helper walking the tree recursively to snapshot every layer's own src by name, then 6 tests -- one per named operation type (add/replace/move/remove/rename) plus one multi-step composition -- each asserting untouched layers' own src values are byte-identical before and after.",
+    "8. Ran the new test file: all 6 passed on first execution.",
+    "9. Ran ruff check: clean. Ran mypy --strict on the new test file: hit a pre-existing 'Cannot find implementation or library stub for module format_factory.ora' error -- verified this is NOT introduced by this task by running the identical mypy command against the already-passing test_obligation_transactional_edit.py, which shows the same error, confirming this is a pre-existing ora-test-file mypy configuration gap unrelated to this change. Confirmed source-level mypy --strict src/python/ora/src/format_factory/ora is unaffected and still clean (15 source files, unchanged).",
+    "10. Ran the full ora suite: 420 passed (was 414, +6 new, zero regressions).",
+    "11. Ran the six-FF6-format regression suite directly: 4847 passed, 4 skipped (was 4841, +6 new, zero cross-format regression).",
+    "12. Updated shared/format-contracts/implementation-evidence/ora.yaml's own SAL-ORA-OBL-EC8D65524EB96820 entry: replaced the positive_test_selectors list to lead with the 6 new reference-preservation tests, added a new execution_evidence_id, added a full implemented_behavior entry documenting the closure, and narrowed missing_behavior from '2 ungrounded clauses (metadata, maintain references)' to '1 ungrounded clause (metadata only) -- maintain references is now proven, not asserted'. Status stays partial, not implemented -- 'metadata' as a CRUD target remains genuinely, permanently unmet since the spec defines no metadata concept at all.",
+    "13. Ran the obligation reconciler (contract_reconciler --format-id ora --exact-obligations) after the evidence edit: confirmed clean, ora still 6/134 unresolved (unchanged -- correctly a narrowing, not a closure, since 'metadata' remains genuinely unmet)."
+  ],
+  "allowed_files": [
+    "tests/python/ora/test_obligation_reference_preservation.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml",
+    "reports/format-contract-layer/ora-obligation-reconciliation.json"
+  ],
+  "actual_files_changed": [
+    "tests/python/ora/test_obligation_reference_preservation.py",
+    "shared/format-contracts/implementation-evidence/ora.yaml",
+    "reports/format-contract-layer/ora-obligation-reconciliation.json"
+  ],
+  "tests_run": [
+    "tests/python/ora/test_obligation_reference_preservation.py -- 6 passed (add/replace/move/remove/rename plus a multi-step composition, all first-execution passes, no implementation change needed)",
+    "ruff check tests/python/ora/test_obligation_reference_preservation.py -- all checks passed",
+    "mypy --strict src/python/ora/src/format_factory/ora -- success, 15 source files (unaffected, no source changed)",
+    ".venv/Scripts/pytest tests/python/ora/ -q -- 420 passed (was 414, +6 new)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 4847 passed, 4 skipped (was 4841, +6 new, zero regression)",
+    "contract_reconciler --format-id ora --exact-obligations -- clean, 6/134 unresolved (unchanged, correctly a narrowing not a closure)"
+  ],
+  "ledger_entry_id": "FF6-ORA-REFERENCE-PRESERVATION-001",
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Narrows (does not close) SAL-ORA-OBL-EC8D65524EB96820 (ORA-EDIT-001): the 'maintain references' clause is now directly, mechanically proven (not merely asserted in prose) for every named CRUD operation type. Status stays partial -- 'metadata' as a CRUD target remains genuinely, permanently unmet since the OpenRaster spec defines no metadata concept at all. No production source code was changed -- this closes a proof gap for an already-correct property, not an implementation gap.",
+    "controller_event_effect": "pending",
+    "certification_state": "3/6 (ipynb, xliff, safetensors CERTIFIED per Event 467; ora/nrrd/ubl remain uncertified -- promotion.* untouched by this task, no fresh explicit user authorization exists this session)",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 134,
+    "new_public_api": "none -- test-only closure proving an already-correct existing property (src preservation), no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

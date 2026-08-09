@@ -44928,6 +44928,37 @@
       "validation_command": ".venv/Scripts/pytest tests/python/ubl/ -q",
       "result": "1733 passed (was 1636, +97 new)",
       "rollback": "Remove the new test file, revert UBL-WRITE-001 own evidence entry missing_behavior to the pre-migration state, and this ledger entry."
+    },
+    {
+      "entry_id": "FF6-ORA-REFERENCE-PRESERVATION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "ora-reference-preservation",
+      "capability": "ORA-EDIT-001",
+      "capability_refs": [
+        "ORA-EDIT-001"
+      ],
+      "api_symbols": [
+        "format_factory.ora.apply_transaction"
+      ],
+      "product": "ORA Python production package",
+      "format": "ORA",
+      "test_delta": "Test-only narrowing of ORA-EDIT-001 own maintain-references clause. No production source changed -- apply_transaction() was already correct; this proves (rather than merely asserts) that every untouched layer own src value survives every named CRUD operation type. 6 new tests (test_obligation_reference_preservation.py), all passing on first execution.",
+      "git_head": "e0415cec0",
+      "skill": "format-feature-expansion",
+      "task_id": "TC_FF6_ORA_REFERENCE_PRESERVATION_001",
+      "source_files": [
+        {
+          "path": "tests/python/ora/test_obligation_reference_preservation.py",
+          "state": "present",
+          "sha256": "b21e9c1e7eb802f6c97ff02809ba95cf0c8ae041291a893b96d183da0e976eb3"
+        }
+      ],
+      "test_files": [
+        "tests/python/ora/test_obligation_reference_preservation.py"
+      ],
+      "validation_command": ".venv/Scripts/pytest tests/python/ora/ -q",
+      "result": "420 passed (was 414, +6 new)",
+      "rollback": "Remove the new test file, revert ORA-EDIT-001 own evidence entry missing_behavior to the pre-narrowing state, and this ledger entry."
     }
   ],
   "total_entries": 2782,
