@@ -767,3 +767,29 @@ facts:
       receipt_path: reports/sal-verification/ubl.json
       receipt_sha256: 2cc0f2cac163b7f42ab18bbe5220837d1f49a808904ac964c536085ca6d111a0
       fact_proof_sha256: f33488aadf00aceba12f950547c803d3f9c12604f040b2336fe3414da2e2dd2e
+- fact_id: SAL-UBL-7546731B76606EC0
+  qname: FACT-UBL-137
+  element_qname: ubl:version-migration-2.1-to-2.3
+  claim: Of the 65 maindoc document types declared in both the UBL 2.1 and UBL 2.3 OASIS release packages, every
+    root-level element sequence change from 2.1 to 2.3 is either a newly added optional element (minOccurs=0, 40
+    additions across all 65 types) or a cardinality relaxation (12 changes, all widening minOccurs/maxOccurs, never
+    narrowing) -- zero elements were removed and zero were reordered for any of the 65 shared types. The remaining
+    26 of 91 UBL 2.3 root types (for example BusinessCard, ImportCustomsDeclaration, TenderContract) have no maindoc
+    schema in the UBL 2.1 release package at all and therefore cannot be migrated FROM 2.1, only detected as not-yet-existing
+    at that version.
+  section: UBL 2.1 xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural comparison
+  authority: OASIS UBL 2.1 and UBL 2.3 Standard maindoc schemas (direct structural diff)
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  readiness_categories: []
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC_FF6_UBL_VERSION_MIGRATION_SAL_SEED_001
+    added_at: '2026-08-09'
+    authority_sources:
+    - source_id: SRC-UBL-002
+      sha256: 623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970
+    - source_id: SRC-UBL-004
+      sha256: 60b80d76394a8a2add90723ecb8e0e2e9d826775de9749df37a72d60703f86ed

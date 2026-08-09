@@ -1,0 +1,68 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "ingest-spec-sal-ubl-version-migration-seed-001",
+  "skill_id": "ingest-spec-sal",
+  "manifest_id": "sfx-fe5e5dd39e95d276",
+  "mode": "live",
+  "timestamp": "2026-08-09T00:00:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_VERSION_MIGRATION_SAL_SEED_001",
+    "spec_source_uri": "https://docs.oasis-open.org/ubl/os-UBL-2.1/UBL-2.1.zip and https://docs.oasis-open.org/ubl/os-UBL-2.3/UBL-2.3.zip",
+    "spec_version": "UBL 2.1 OASIS Standard vs UBL 2.3 OASIS Standard (direct structural comparison)",
+    "spec_body": "OASIS",
+    "target_fact_count_min": 35,
+    "root_cause": "Event 497's own exact_next_action left an already-verified structural fact (all 91 UBL root document types diffed between 2.1 and 2.3 schemas) staged but not yet committed through the governed SAL pipeline, having deliberately deferred completion to a fresh tick after discovering a source_id collision between authority-lock.yaml's own SRC-UBL-004 (the real, newly-acquired UBL 2.1 package) and shared/format-contracts/research/ubl.yaml's own pre-existing SRC-UBL-004 (a URL_ONLY placeholder titled 'OASIS UBL 2.3').",
+    "acceptance_evidence": "Verified ingest-spec-sal's own Prerequisite 1 (source acquired and digest-pinned, reflected in shared/format-contracts/research/{format}.yaml with an ACQUIRED source record) was NOT yet met for the real UBL 2.1 acquisition -- the research file still had the collision placeholder. Resolved by loading the current committed research/ubl.yaml programmatically (never hand-edited, since research_intake.py's own Allowed Paths forbid direct edits), renaming the pre-existing URL_ONLY 'SRC-UBL-004' to 'SRC-UBL-005' (preserving it, not deleting), adding a new, correctly-ACQUIRED SRC-UBL-004 entry matching authority-lock.yaml's own real fields exactly, and copying all 8 existing findings byte-for-byte unchanged (research_intake.py fully REPLACES both source_records and findings from the draft, so an incomplete findings list would have silently destroyed the other 8 committed findings -- verified this risk by reading research_intake.py's own source before running it). Ran research_intake.py --format-id ubl --draft .local/format-contracts/drafts/ubl-draft.yaml and confirmed its own reported counts (8 findings committed, 0 SAL candidates queued) matched expectations exactly, then diffed the committed file directly and confirmed the change was exactly the intended 11-line addition (rename + new entry), nothing else moved. Added source_ids: [SRC-UBL-002, SRC-UBL-004] and a candidate_id to the already-staged local sal-candidates entry, then ran seed_sal_candidates.py --format-id ubl --added-by TC_FF6_UBL_VERSION_MIGRATION_SAL_SEED_001 --candidate-id ubl-version-migration-2-1-to-2-3-001 (scoped to exactly this one candidate, since 5 OTHER pre-existing, unrelated staged candidates in the same local queue file were also missing source_ids and out of scope for this task -- confirmed seeded 1, skipped 0, store total 35. Verified the new fact SAL-UBL-7546731B76606EC0 carries correct authority_sources provenance for both cited source IDs with their real SHA-256 digests. Ran merge_sal_facts.py (ubl: already_in_sync, confirming the seeder's own auto-recompile already handled it). Investigated schemas/sal-facts/sal-facts-schema.json's own top-level shape (required: generated_at/generator/formats_processed/etc) and determined it does NOT describe shared/sal-facts/{format}.yaml's own per-format shape -- it is consumed via tools/spec/sal_status.py's own $defs.verification_status sub-schema as a status-vocabulary policy, not a whole-document validator for the per-format store. Confirmed the new fact's own verification_status ('structural_derivation') is a valid enum value, correctly classified NON_PROMOTING (conservative, not falsely elevated to PROMOTING for a not-yet-independently-cross-verified structural derivation). Ran contract_compiler.py --format-id ubl --check (confirmed diff exists), then compiled for real and reviewed the FULL diff line-by-line: the new authority_lock_sha256/authority_src_ubl_004_sha256 additions were expected; target_spec_version changing from 'UBL 2.3 OASIS Standard' to 'UBL 2.3' was investigated and found to be CORRECT, deliberate compiler behavior (contract_compiler.py's own len(pinned_versions)==1 rule: with two distinct AUTHORITATIVE+ACQUIRED source versions now pinned (2.1 and 2.3), the compiler can no longer claim single-version source consensus and correctly falls back to the registry's own baseline declaration, an honest reflection of the now-multi-version authority set, not a bug). Ran --verify-idempotency (OK) and --readiness-only (ready: true, score 1.0, unchanged). Re-ran the ubl obligation reconciler and confirmed still 6/194 unresolved, unchanged (the new fact adds supporting evidence to UBL-UPGRADE-001's own capability entry but does not itself satisfy the obligation's required_tests/release_gates, which still require real migration-transform code -- no premature/incorrect promotion occurred)."
+  },
+  "execution_steps": [
+    "1. Confirmed the FF6 mission head (Event 497) matched the prior tick's own hand-off exactly before starting, per goal_driver resume.",
+    "2. Read shared/format-contracts/research/ubl.yaml in full (175 lines, 8 findings, 4 source_records) to understand the exact collision and confirm the file's own small size made a safe, complete, lossless reconstruction tractable within this tick.",
+    "3. Read the research-findings.schema.json in full to confirm the exact required/allowed fields for source_records and findings, ensuring the reconstructed draft would validate cleanly on the first attempt.",
+    "4. Wrote a Python script (not hand-edited YAML) to load the committed research file and authority-lock.yaml together, rename the collision entry to SRC-UBL-005, append a new correctly-ACQUIRED SRC-UBL-004 entry copying authority-lock.yaml's own real fields verbatim, and write a draft to .local/format-contracts/drafts/ubl-draft.yaml with source_records (5, reconciled) and findings (8, byte-for-byte copied) -- deliberately omitting sal_candidates from this draft so research_intake.py's own queue-overwrite step would not touch the separate local sal-candidates file at all.",
+    "5. Ran research_intake.py --format-id ubl --draft <path>, confirmed its own printed summary (8 findings committed, 0 SAL candidates queued), then git-diffed the committed file directly and confirmed the change was exactly the intended minimal edit (11 insertions, 1 deletion) with the findings section completely untouched.",
+    "6. Directly tested _authority_sources('ubl') from seed_sal_candidates.py's own module to confirm SRC-UBL-004 now correctly resolves with the real, expected SHA-256 before attempting the actual seed.",
+    "7. Added source_ids: [SRC-UBL-002, SRC-UBL-004] to the already-staged local candidate entry (added at the end of the prior tick). First seed attempt (no --candidate-id) failed with the same 'no acquired source_ids' error -- investigated and found 5 OTHER, unrelated pre-existing candidates in the same local queue file (ubl:amount-arithmetic, cbc:code, cac:external-reference, cbc:embedded-document-binary-object, ext:ubl-extensions) were ALSO not yet actually seeded into shared/sal-facts/ubl.yaml and ALSO lacked source_ids -- out of scope for this task. Added a candidate_id field to only my own entry and re-ran with --candidate-id to scope the seed precisely to the intended fact, leaving the other 5 pre-existing candidates completely untouched (a genuine, separate, pre-existing gap this task correctly did not attempt to fix).",
+    "8. Ran seed_sal_candidates.py successfully (seeded 1, skipped 0, store total 35), then read the new fact's own full record directly to confirm its provenance.authority_sources cites both source IDs with their real digests, and its verification_status/fact_status are correctly conservative (structural_derivation/verified, not falsely claiming independent cross-verification).",
+    "9. Ran merge_sal_facts.py (confirmed already_in_sync, since the seeder's own docstring already promised auto-recompilation).",
+    "10. Attempted to validate shared/sal-facts/ubl.yaml directly against the full sal-facts-schema.json top-level schema; got 6 unrelated 'required property' errors (generated_at/generator/etc). Investigated by grepping every consumer of this schema path across tools/ and found it is actually consumed via a $defs.verification_status sub-schema extraction (tools/spec/sal_status.py), not as a whole-document validator for the per-format store -- confirmed the new fact's own verification_status value passes that real, applicable check.",
+    "11. Ran contract_compiler.py --format-id ubl --check (diff confirmed present), then for real, then reviewed the complete diff. Investigated the one genuinely surprising line (target_spec_version changing) by reading contract_compiler.py's own spec_version derivation logic directly rather than assuming it was a bug -- confirmed it is correct, intentional behavior given two distinct pinned authoritative versions now exist.",
+    "12. Ran --verify-idempotency (OK) and --readiness-only (ready: true, score 1.0, unchanged from before this task) to confirm no regression.",
+    "13. Re-ran the ubl obligation reconciler (contract_reconciler --exact-obligations) and confirmed the unresolved count is unchanged (6/194) -- the new fact is real supporting evidence, correctly not treated as satisfying UBL-UPGRADE-001's own remaining, larger requirement (actual migration-transform code).",
+    "14. Ran the full ubl test suite (.venv/Scripts/pytest tests/python/ubl/ -q) as a final sanity check -- 1255 passed, unchanged, confirming zero regression from contract-layer-only changes."
+  ],
+  "allowed_files": [
+    "shared/format-contracts/research/ubl.yaml",
+    "shared/sal-facts/ubl.yaml",
+    "shared/format-contracts/ubl.yaml",
+    "reports/format-contract-layer/ubl-obligation-reconciliation.json"
+  ],
+  "actual_files_changed": [
+    "shared/format-contracts/research/ubl.yaml",
+    "shared/sal-facts/ubl.yaml",
+    "shared/format-contracts/ubl.yaml",
+    "reports/format-contract-layer/ubl-obligation-reconciliation.json"
+  ],
+  "tests_run": [
+    "research_intake.py --format-id ubl --draft ubl-draft.yaml -- 8 findings committed, 0 SAL candidates queued (exact expected counts)",
+    "seed_sal_candidates.py --format-id ubl --candidate-id ubl-version-migration-2-1-to-2-3-001 -- seeded 1, skipped 0, store total 35",
+    "merge_sal_facts.py -- ubl already_in_sync",
+    "contract_compiler.py --format-id ubl --check / (compile) / --verify-idempotency -- idempotency OK",
+    "contract_compiler.py --format-id ubl --readiness-only -- ready: true, score 1.0 (unchanged)",
+    "contract_reconciler --format-id ubl --exact-obligations -- 6/194 unresolved (unchanged, no unintended promotion)",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 1255 passed (unchanged, no product source touched)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Commits a real, twice-verified structural fact (UBL 2.1-to-2.3 schema backward-compatibility across 65 shared document types) into the canonical SAL facts store and compiled format contract for ubl, resolving the source_id collision that blocked it. Does NOT close UBL-UPGRADE-001 -- the obligation reconciler confirms 6/194 unresolved, unchanged. This is grounding evidence for a future migration-transform implementation, not the implementation itself.",
+    "controller_event_effect": "pending",
+    "certification_state": "3/6 (ipynb, xliff, safetensors CERTIFIED per Event 467; ora/nrrd/ubl remain uncertified -- promotion.* untouched by this task, no fresh explicit user authorization exists this session)",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 194,
+    "new_public_api": "none -- SAL fact and format-contract layer only, no product source code touched"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
