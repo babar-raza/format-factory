@@ -385,7 +385,7 @@ def loads(
 ) -> NrrdDocument:
     if mode not in {"strict", "preservation", "recovery"}:
         raise ValueError("mode must be 'strict', 'preservation', or 'recovery'")
-    return _load(data, limits=effective_limits(limits), cwd_relative_base=cwd_relative_base)
+    return _load(data, limits=effective_limits(limits), mode=mode, cwd_relative_base=cwd_relative_base)
 
 
 def load(
@@ -397,13 +397,14 @@ def load(
 ) -> NrrdDocument:
     if mode not in {"strict", "preservation", "recovery"}:
         raise ValueError("mode must be 'strict', 'preservation', or 'recovery'")
-    return _load(source, limits=effective_limits(limits), cwd_relative_base=cwd_relative_base)
+    return _load(source, limits=effective_limits(limits), mode=mode, cwd_relative_base=cwd_relative_base)
 
 
 def _load(
     source: BinarySource,
     *,
     limits: ResourceLimits,
+    mode: str = "strict",
     recovery_actions: tuple[str, ...] = (),
     cwd_relative_base: Path | None = None,
 ) -> NrrdDocument:
@@ -492,10 +493,46 @@ def _load(
             require_endian=False,
         )
     else:
+        # For raw encoding under recovery mode, the cap below is
+        # deliberately left at the caller's own general ceiling rather
+        # than tightened to `expected`: raw's own decode_encoding() branch
+        # never expands the payload (result is the payload itself), so
+        # there is no hidden-amplification risk the tighter cap exists to
+        # catch for compressed encodings -- leaving it wide lets a
+        # too-long raw payload reach the recovery-mode truncation below
+        # instead of failing early as a resource-limit violation. Every
+        # other case (strict/preservation mode, or any non-raw encoding
+        # even under recovery mode) keeps the existing tight cap
+        # unchanged: gzip/bzip2/hex payloads already cap decompression at
+        # `expected` bytes because that IS the amplification guard this
+        # obligation's own sibling (NRRD-VALIDATE-001) requires, and
+        # "excess decompressed data" for those encodings is a
+        # resource-limit concern this recovery scenario does not attempt
+        # to relax.
+        raw_recovery = mode == "recovery" and encoding == "raw"
         decode_limits = replace(
-            limits, max_decompressed_bytes=min(limits.max_decompressed_bytes, expected)
+            limits,
+            max_decompressed_bytes=(
+                limits.max_decompressed_bytes
+                if raw_recovery
+                else min(limits.max_decompressed_bytes, expected)
+            ),
         )
         binary = decode_encoding(payload, encoding, limits=decode_limits)
+        if raw_recovery and len(binary) > expected:
+            # "a tolerant read mode that recovers where the format
+            # permits, with recovery actions reported" -- excess trailing
+            # bytes beyond the declared shape's own exact byte count are
+            # never part of any declared element, so discarding them
+            # cannot misinterpret real data (unlike a payload SHORTER
+            # than declared, which stays rejected in every mode: there is
+            # no safe way to invent missing bytes).
+            excess = len(binary) - expected
+            binary = binary[:expected]
+            recovery_actions = recovery_actions + (
+                f"raw payload had {excess} extra trailing byte(s) beyond the declared "
+                f"{expected}-byte shape; discarded",
+            )
         array = decode_binary(
             header["type"],
             sizes,

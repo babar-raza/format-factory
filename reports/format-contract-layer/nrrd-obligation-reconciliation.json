@@ -234,6 +234,14 @@
       "truth_boundary": "The transcript records 58 production-namespace and 219 legacy tests passing at commit 767e7006, but it does not bind individual selector outcomes and is non-promoting support only."
     },
     {
+      "evidence_id": "NRRD-RECOVERY-MODE-PROOF",
+      "expected_result": "PASS",
+      "granularity": "selector",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-recovery-mode-001.json",
+      "sha256": "bb0405799be4f10855b1eb870e33e9c3d05ffe8e3613d60ad533abd63050394a",
+      "truth_boundary": "Closes the specific \"recovery mode performs no defined recovery\" gap SAL-NRRD-OBL-1F6231D4F759D037 (NRRD-LIFECYCLE-001) named: load()/loads()'s own mode parameter was validated but silently ignored -- _load() ran identically for strict/preservation/recovery, so recovery_actions was always the empty tuple. Before designing anything, investigated the pinned spec text directly for any tolerant-reader guidance (grepped for recover/lenient/tolerant/robust/permissive -- found none describing malformed-input recovery; the sole \"recover\" match concerns an unrelated, already-implemented feature, deriving spacing from a non-unit-length space-direction vector). Found the spec's own explicit contrast instead: duplicate key/value pairs resolve as \"last one wins\" per the spec's own words (already correct, unconditionally, via this package's existing dict-based parsing -- not a gap), while duplicate field specifications are a hard \"no more than once\" rule with no recovery semantics at all (correctly left rejected). Extra whitespace immediately after a field's own colon was also investigated and correctly ruled out: the spec requires exactly \"a single space,\" with only TRAILING whitespace before the line terminator explicitly \"ignored\" -- tolerating more would be non-conformant leniency, not format-permitted recovery. Landed on the one genuinely safe, spec-consistent scenario: a raw-encoded payload with MORE bytes than its declared shape needs. Excess trailing bytes are never part of any declared element, so discarding them cannot misinterpret real data -- a payload with FEWER bytes than declared stays rejected in every mode, since there is no safe way to invent missing bytes, proven directly by a dedicated negative test. Traced the exact reason this needed a targeted fix rather than a one-line change: decode_encoding()'s own existing decode_limits cap (min(caller_limit, expected), a deliberate resource-exhaustion guard for compressed-encoding amplification, NRRD-VALIDATE-001's own requirement) already rejects an oversized raw payload via ResourceLimitError before reaching any new code -- widened that cap specifically for the mode==\"recovery\" and encoding==\"raw\" combination only (raw never expands its own payload, so the amplification risk that cap exists to catch does not apply to it), leaving every other combination (strict/preservation mode, or any non-raw encoding even under recovery mode) on the existing tight cap unchanged -- gzip/bzip2/hex excess-decompressed-data stays a resource-limit concern in every mode, proven by a dedicated negative test showing gzip is not recovered even under mode=\"recovery\". 7 new tests (tests/python/nrrd/test_obligation_recovery_mode.py). nrrd suite: 950 -> 957 passed (1 pre-existing unrelated skip). 6-format FF6 regression: 4338 -> 4345 passed, 4 skipped. mypy --strict and ruff clean. Installed-wheel behavior independently re-verified: the recovery scenario and its recovery_actions report were both exercised directly from the installed, non-editable site-packages path. Narrows SAL-NRRD-OBL-1F6231D4F759D037 (NRRD-LIFECYCLE-001) further; does not promote it to implemented -- this is one concrete, safe recovery scenario within a broader \"tolerant read mode\" requirement, and the extensive negative research this tick did found no further spec-grounded recovery scenarios to build without inventing behavior the format does not define."
+    },
+    {
       "evidence_id": "NRRD-SAMPLE-UNITS-PROOF",
       "expected_result": "PASS",
       "granularity": "selector",
@@ -293,7 +301,7 @@
   "format_id": "nrrd",
   "input_digests": {
     "compiled_contract": "f71089946ae810e0996fe595a6d0555a6316bfa57d4d4834c4e7eb8545865b39",
-    "implementation_evidence": "35c253b722416b91ff350a377d53589a3e3a299eddf7546f6c4594c315b310c0",
+    "implementation_evidence": "8ccf8d8a584f0dd3430ca6973c13b73e0155a835abf44d3801cfd234ffa84eb7",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "f7c0f3cb559e1dee631255b716ba9379756bcdca7c8a080e266d8326194d8fd8",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -589,20 +597,28 @@
     {
       "capability_id": "NRRD-LIFECYCLE-001",
       "execution_evidence_ids": [
-        "NRRD-R1-SOURCE-TESTS"
+        "NRRD-R1-SOURCE-TESTS",
+        "NRRD-RECOVERY-MODE-PROOF"
       ],
       "implemented_behavior": [
-        "Strict, preservation, and recovery mode names are explicit and invalid modes are rejected."
+        "Strict, preservation, and recovery mode names are explicit and invalid modes are rejected.",
+        "FF6-EVENT-000480: recovery mode now performs one concrete, safe, spec-bounded recovery -- a raw-encoded payload with excess trailing bytes beyond its declared shape is truncated (never a payload with fewer bytes than declared, which stays rejected in every mode) and the recovery is reported via NrrdDocument.recovery_actions. Extensive negative research (grepping the pinned spec for tolerant-reader language, checking duplicate-field/duplicate-key-value semantics, checking colon-whitespace rules) found no other spec-grounded recovery scenario to build without inventing behavior the format does not define; see this obligation's own missing_behavior for what remains open."
       ],
       "missing_behavior": [
-        "Recovery mode performs no defined recovery and reports no recovery decision rules."
+        "Recovery mode's own scope is currently limited to the one scenario above (excess trailing raw payload bytes); gzip/bzip2/hex excess-decompressed-data remains a resource-limit concern in every mode (deliberately not relaxed, since that cap is a compressed-encoding amplification guard, not a simple trailing-bytes nicety), and no further malformed-input recovery scenario was found to be genuinely format-permitted rather than invented, per this tick's own documented research."
       ],
       "negative_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_recovery_mode_is_explicit_and_reports_no_unsafe_repair"
+        "tests/python/nrrd/test_production_namespace.py::test_recovery_mode_is_explicit_and_reports_no_unsafe_repair",
+        "tests/python/nrrd/test_obligation_recovery_mode.py::test_excess_trailing_bytes_are_still_rejected_outside_recovery_mode",
+        "tests/python/nrrd/test_obligation_recovery_mode.py::test_a_truncated_payload_is_never_recoverable_even_in_recovery_mode",
+        "tests/python/nrrd/test_obligation_recovery_mode.py::test_gzip_excess_decompressed_data_is_not_recovered"
       ],
       "obligation_id": "SAL-NRRD-OBL-1F6231D4F759D037",
       "positive_test_selectors": [
-        "tests/python/nrrd/test_production_namespace.py::test_recovery_mode_is_explicit_and_reports_no_unsafe_repair"
+        "tests/python/nrrd/test_production_namespace.py::test_recovery_mode_is_explicit_and_reports_no_unsafe_repair",
+        "tests/python/nrrd/test_obligation_recovery_mode.py::test_recovery_mode_discards_excess_trailing_raw_bytes",
+        "tests/python/nrrd/test_obligation_recovery_mode.py::test_recovery_mode_reports_the_recovery_action",
+        "tests/python/nrrd/test_obligation_recovery_mode.py::test_recovery_mode_reports_nothing_for_an_already_exact_payload"
       ],
       "proof_requirements": {
         "negative": [
@@ -617,6 +633,7 @@
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::probe",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::loads",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::load",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump"
       ],
@@ -1237,6 +1254,7 @@
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::probe",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::loads",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::load",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump"
       ],
@@ -2735,6 +2753,7 @@
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::probe",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::loads",
         "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::load",
+        "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py::_load",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dumps",
         "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py::dump"
       ],
@@ -3008,6 +3027,7 @@
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-multifile-printf-writer-001.json": "d18c5d0ca4e8db3cf28c20e12836cbac341fa0300e4cb1b62e96b11a834c7321",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-multifile-version-gate-001.json": "f16c7a47d8e3db8b5297c3213f2378f2e9dce6ddd3c9446c54d0b9c36f63d6cc",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-named-space-dimension-cross-check-001.json": "8c86588afa853567dd264acd2f293ba893efbb47fb0602fd0af3d016ea88545a",
+    "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-recovery-mode-001.json": "bb0405799be4f10855b1eb870e33e9c3d05ffe8e3613d60ad533abd63050394a",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-sample-units-001.json": "ebdffdda4ad995da88900bc58b415ca7cbb3b42f554d667fb318a012f192b403",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-security-baseline-001.json": "75e80c2707a235afef3f1ab9980697a5e95e32a90fb18e8e1000fd29bbd2ee82",
     "reports/skills-rff6/skill-transcripts/product-source-task-nrrd-space-consistency-validation-001.json": "1d0eb0868c8c67f8960e37d737fd2fcdec5f2dbd2794e9415754230864574b26",
@@ -3019,7 +3039,7 @@
     "src/python/nrrd/src/format_factory/nrrd/codec/kinds.py": "cf8517da058c0ce753866a46fdc5f1c652ab39b90b66e14b65c39d71891d8808",
     "src/python/nrrd/src/format_factory/nrrd/codec/lazy.py": "1efec4207dee2d2d04b4cbabbe4e0abccf66c93cbd11106fcd5538a70b4e910e",
     "src/python/nrrd/src/format_factory/nrrd/codec/payload.py": "f40b683110082f666fefd99b096ca4c9e9b78f87d0020541477d7a62587f980a",
-    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "3049a0429a477ab23e3c476e39da39b137051e4d00181538fb9743b7e60c8e61",
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py": "31abb76293b401f44ada70ec3214132dcb50fd964e869bf621ce8f7deccf190d",
     "src/python/nrrd/src/format_factory/nrrd/codec/writer/writer.py": "1c05f5d17614799de2cea369352a67b24a5285fb3d08761e63c787560bfa8fea",
     "src/python/nrrd/src/format_factory/nrrd/convert.py": "10984d5ca2c0bc8bf872e94923e41c343dea92c2d98411c429eaa3e79fb624ef",
     "src/python/nrrd/src/format_factory/nrrd/measurement_frame.py": "669db3c387721c1d21af7e12f2eb97fc0ae0b6018abf012d496e977cef1d067d",
@@ -3062,6 +3082,7 @@
     "tests/python/nrrd/test_obligation_multifile_writer.py": "e3b8824b68aeb3414fb2e06de021400b1e1d314188932c0133f0ee3ac315b76a",
     "tests/python/nrrd/test_obligation_named_space_dimension_cross_check.py": "2901a62ed3edfc8080758546f38b83fa4bb05b091d4157dc095fd4bfbd80d039",
     "tests/python/nrrd/test_obligation_payload_skip.py": "631ddbb609282e655c179358af0e8cbaa76038e33343cd482c87aaeecb1b8116",
+    "tests/python/nrrd/test_obligation_recovery_mode.py": "a2a65dd7cdcdfe2ebf39e296b22039ddfcef9c5d365942c4f39acd87480ac6e9",
     "tests/python/nrrd/test_obligation_sample_units.py": "5ce898c45cfadddd9b88fe79cc3c7442a155ae789e1642be43df04bf99283957",
     "tests/python/nrrd/test_obligation_security_baseline.py": "13be04537b7e1244c9f110cd3c6629c17e619810ac9a98f4880738eb7c4259ef",
     "tests/python/nrrd/test_obligation_shape_production.py": "17ebb172b6e8f2ac861d2ff907dbe19794d327a6e20b5f915b20a9704be9dce5",

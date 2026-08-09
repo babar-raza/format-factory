@@ -1,0 +1,60 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-nrrd-recovery-mode-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-27b47d8d9d68c753",
+  "mode": "live",
+  "timestamp": "2026-08-09T12:10:00Z",
+  "inputs": {
+    "format_id": "nrrd",
+    "task_id": "TC-FF6-NRRD-RECOVERY-MODE-001",
+    "task_kind": "build-one-safe-spec-bounded-recovery-scenario-after-extensive-negative-research",
+    "root_cause": "SAL-NRRD-OBL-1F6231D4F759D037 (NRRD-LIFECYCLE-001) named a genuine no-op: load()/loads()'s own mode parameter was validated (raising ValueError for unrecognized values) but then silently ignored -- _load() ran identically for 'strict', 'preservation', and 'recovery', so recovery mode never actually recovered anything and recovery_actions was always the empty tuple.",
+    "obligation_targeted": "SAL-NRRD-OBL-1F6231D4F759D037 (NRRD-LIFECYCLE-001) narrowed -- one concrete, safe recovery scenario is now real and tested; not claimed as the obligation's full, exhaustive scope.",
+    "acceptance_evidence": "Investigated the pinned NRRD spec text directly for any explicit 'tolerant reader' guidance before designing anything (grepped for recover/lenient/tolerant/robust/permissive -- found none describing malformed-input recovery at all; the one 'recover' match concerns an unrelated already-implemented feature, deriving spacing from a non-unit-length direction vector). Found the spec's own explicit contrast instead: duplicate KEY/VALUE pairs are explicitly resolved as 'last one wins' (already correct, unconditionally, via this package's own dict-based parsing -- not a gap), while duplicate FIELD specifications are a hard 'no more than once' rule with no stated recovery (correctly left rejected). Landed on the one genuinely safe, bounded scenario the architecture already hinted at (an unused recovery_actions field, an unused mode parameter): a raw-encoded payload with MORE bytes than its declared shape needs. Excess trailing bytes are never part of any declared element, so discarding them cannot misinterpret real data -- unlike a payload with FEWER bytes than declared, which the same code path still rejects in every mode, since there is no safe way to invent missing bytes. Deliberately scoped to raw only: gzip/bzip2/hex already cap decompression at the declared byte count as a resource-exhaustion guard (NRRD-VALIDATE-001's own requirement), so relaxing that for compressed encodings would touch a different, higher-stakes safety mechanism this slice does not attempt."
+  },
+  "execution_steps": [
+    "1. After committing and eventing the space-field-typing slice (FF6-EVENT-000479), read NRRD-LIFECYCLE-001's own SAL register rule_text/required_tests/release_gates directly, per that event's own exact_next_action.",
+    "2. Spent significant research time before writing any code, deliberately looking for spec-grounded recovery scenarios rather than inventing one: grepped the pinned spec for tolerant-reader language (zero matches for lenient/tolerant/robust/permissive), checked field-syntax whitespace rules (found the spec explicitly requires exactly one space after the colon, ruling out 'extra whitespace after colon' as a legitimate recovery target -- that would be non-conformant leniency, not format-permitted recovery), and checked duplicate-field/duplicate-key-value semantics (found an explicit spec distinction: key/value duplicates resolve as 'last one wins', already correct in the existing dict-based parser; field duplicates are a hard rule with no recovery semantics at all).",
+    "3. Landed on excess trailing raw-payload bytes as the one candidate that is both genuinely safe (never risks misinterpreting declared data, only discards verifiably-unused bytes) and cleanly distinguishable from the unsafe case (a payload shorter than declared, which stays rejected everywhere) -- the sharp strict-vs-tolerant contrast this obligation's own rule_text asks for.",
+    "4. Traced the exact code path from decode_encoding() through decode_binary() before writing any fix: found the existing decode_limits capping (max_decompressed_bytes = min(caller_limit, expected)) already rejects oversized raw payloads via ResourceLimitError, inside decode_encoding()'s own _enforce_expansion() check -- discovered via a failing first smoke-test attempt, not assumed. Confirmed this cap exists specifically to guard against compressed-encoding amplification attacks (a small compressed payload claiming a huge decompressed size), a risk that does not apply to raw encoding at all (raw's own decode_encoding branch never expands the payload; result is the payload itself).",
+    "5. Threaded mode through loads()/load()/_load() (previously accepted and validated but never passed to the internal loader at all). Widened decode_limits' own cap specifically for the mode=='recovery' and encoding=='raw' combination (using the caller's original, uncapped max_decompressed_bytes instead of min(limit, expected)), leaving every other combination (strict/preservation mode, or any non-raw encoding even under recovery mode) on the existing tight cap unchanged -- confirmed via direct reasoning that this narrowly targets the one case with no amplification risk, not a general safety relaxation.",
+    "6. Added the post-decode truncation and recovery_actions reporting immediately after decode_encoding() returns, only reachable when the widened cap actually let an oversized raw payload through.",
+    "7. Smoke-tested interactively before writing any formal test: strict mode still rejects excess bytes (via ResourceLimitError, the pre-existing behavior, unchanged); recovery mode successfully truncates and reports the action; an exact-size payload under recovery mode reports nothing (matching the pre-existing test's own assertion); a truncated (too-short) payload is still rejected even under recovery mode; preservation mode gets no leniency (recovery is exclusive to mode=='recovery'). All 5 scenarios matched design intent on the first attempt.",
+    "8. Wrote 7 tests (tests/python/nrrd/test_obligation_recovery_mode.py): the recovery itself (array values correct after truncation), the recovery_actions report's own content, the exact-size-payload empty-report case, a parametrized strict/preservation-still-reject negative, a truncated-payload-never-recoverable negative, and a gzip-excess-decompressed-data-not-recovered negative proving the out-of-scope boundary behaviorally rather than only in prose. All 7 passed on the first formal test run.",
+    "9. Ran ruff check and mypy --strict against reader.py: both clean.",
+    "10. Ran the full nrrd suite (957 passed, 1 pre-existing unrelated skip, up from 950) and the 6-format FF6 regression (4345 passed, 4 skipped, up from 4338) -- exact +7 delta in both, no regressions.",
+    "11. Ran the installed-wheel proof (tools/run_package_install_proof.py --format nrrd, 1/1 PASS) and independently re-verified the recovery scenario and its recovery_actions report directly from the installed, non-editable site-packages path."
+  ],
+  "allowed_files": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_recovery_mode.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py",
+    "tests/python/nrrd/test_obligation_recovery_mode.py",
+    "shared/format-contracts/implementation-evidence/nrrd.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/nrrd/test_obligation_recovery_mode.py -v -- 7 passed (0 failures, correct on the first formal test run after the interactive spike)",
+    ".venv/Scripts/pytest tests/python/nrrd/ -q --timeout=120 -- 957 passed, 1 skipped (was 950)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4345 passed, 4 skipped (was 4338)",
+    ".venv/Scripts/python -m ruff check src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py tests/python/nrrd/test_obligation_recovery_mode.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/nrrd/src/format_factory/nrrd/codec/reader/reader.py -- Success: no issues found in 1 source file",
+    "python tools/run_package_install_proof.py --format nrrd -- RESULT: 1/1 PASS; the recovery scenario and its recovery_actions report independently re-exercised from the installed, non-editable wheel's own site-packages path"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (NRRD-LIFECYCLE-001) narrows -- one concrete, safe, spec-bounded recovery scenario is now real and tested, closing the specific 'performs no defined recovery' gap for that scenario. Not promoted to implemented: this is one scenario within a broader 'tolerant read mode' requirement, and the extensive negative research this tick did (documented in the new test file's own module docstring) found no further spec-grounded recovery scenarios to build without inventing behavior the format does not define.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); nrrd remains UNASSESSED",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 65,
+    "new_public_api": "None -- load()/loads()'s own pre-existing mode parameter now has real effect for mode='recovery'; no signature change."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
