@@ -198,6 +198,30 @@ def test_projecting_a_line_missing_its_item_is_refused() -> None:
         invoice_line_of(find(loads(broken).root, "InvoiceLine"))
 
 
+def test_a_spoofed_id_sibling_from_an_unrelated_namespace_is_not_projected() -> None:
+    """FF6-EVENT-000485: invoice_line_of() now uses find_qname() internally
+    (UBL-PARSE-001's own namespace-precise primitive, wave 4 of the ~79
+    disclosed find()/find_all() call sites) -- proven directly that a
+    same-local-name ID sibling from an attacker-controlled namespace is
+    correctly ignored rather than shadowing the real cbc:ID value."""
+    evil = "urn:evil:attacker:namespace"
+    spoofed = f"""<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+     xmlns:cbc="{CBC}" xmlns:cac="{CAC}" xmlns:evil="{evil}">
+    <cac:InvoiceLine>
+      <evil:ID>SPOOFED-999</evil:ID>
+      <cbc:ID>1</cbc:ID>
+      <cbc:InvoicedQuantity>2</cbc:InvoicedQuantity>
+      <cbc:LineExtensionAmount currencyID="EUR">20.00</cbc:LineExtensionAmount>
+      <cac:Item><cbc:Name>Coffee beans</cbc:Name></cac:Item>
+    </cac:InvoiceLine>
+    </Invoice>""".encode("utf-8")
+    from format_factory.ubl import find
+
+    line = invoice_line_of(find(loads(spoofed).root, "InvoiceLine"))
+
+    assert line.id.value == "1"
+
+
 # ── Reconciliation reports; it never fixes and never raises ────────────────
 
 

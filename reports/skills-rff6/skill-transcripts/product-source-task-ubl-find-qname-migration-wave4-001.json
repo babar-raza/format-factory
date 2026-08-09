@@ -1,0 +1,59 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-find-qname-migration-wave4-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-f8f21d33a7e5fb04",
+  "mode": "live",
+  "timestamp": "2026-08-09T13:34:46Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC-FF6-UBL-FIND-QNAME-MIGRATION-WAVE4-001",
+    "task_kind": "continue-the-established-multi-wave-find-qname-migration-pattern-wave-4-of-n",
+    "root_cause": "Continuing UBL-PARSE-001's own disclosed call-site migration per the prior tick's own exact_next_action, which named aggregates.py (21 sites, the smaller of the 2 remaining files) as the wave-4 target.",
+    "obligation_targeted": "SAL-UBL-OBL-0996E6D7B91D544F (UBL-PARSE-001) narrowed further -- 21 more of the confirmed 43 remaining find()/find_all() call sites are now migrated (57 of ~79 total across 4 waves).",
+    "acceptance_evidence": "Read model/aggregates.py in full (6 functions: item_of, invoice_line_of, tax_subtotal_of, tax_total_of, legal_monetary_total_of, reconcile_invoice, plus its private helper _reconcile_allowance_charge_totals) before migrating anything. Spiked a live xmlschema introspection against the real pinned OASIS UBL 2.3 schema for InvoiceLineType, TaxSubtotalType, TaxTotalType, TaxCategoryType, MonetaryTotalType, and ItemType before writing any migration code -- confirmed the genuine mixed-namespace split (ID/InvoicedQuantity/LineExtensionAmount/TaxableAmount/TaxAmount/all MonetaryTotal amount fields are CommonBasicComponents; Item/TaxCategory/TaxSubtotal/InvoiceLine/TaxTotal/LegalMonetaryTotal/AllowanceCharge are CommonAggregateComponents aggregates). Also confirmed, via the same introspection, a pre-existing and already-disclosed model-field-mapping gap (documented in two other tests' own module docstrings: test_obligation_aggregates_cardinality_validation.py and test_obligation_item_and_price_cardinality_and_order_validation.py): ItemType's real schema has no direct cbc:ID or cbc:CommodityClassification child at all -- item identification is always wrapped in aggregates (cac:BuyersItemIdentification etc.) and CommodityClassification is itself a cac: aggregate. Since no test exercises Item.identifiers/classification_codes via a real document, this migration preserves current behavior exactly by keeping those two lookups on the CBC namespace (matching the codebase's own existing 'cbc:ID'/'cbc:CommodityClassification' documentation of them) rather than asserting a new, unproven schema-conformance claim -- explicitly disclosed as an unresolved gap, not silently carried forward."
+  },
+  "execution_steps": [
+    "1. After committing and eventing wave 3 (FF6-EVENT-000484), read aggregates.py in full before migrating anything, confirming it has 6 public functions plus 1 private helper spanning both CBC leaf fields and CAC aggregate fields.",
+    "2. Spiked a live xmlschema introspection against the real pinned OASIS UBL 2.3 schema for InvoiceLineType, TaxSubtotalType, TaxTotalType, TaxCategoryType, MonetaryTotalType, and ItemType before writing any migration code, confirming the exact namespace for every field this file's own functions look up, and separately confirming (not assuming) the pre-existing Item.identifiers/classification_codes gap already disclosed by two other test files' own docstrings.",
+    "3. Migrated all 21 call sites (counting the 2 redundant find(category, 'ID') calls on tax_subtotal_of's single line as 2, matching the file's own pre-existing double-lookup) across 6 functions plus 1 private helper, reusing the _cbc()/_cac() wrapper pair pattern established in waves 2-3 and adding a fourth wrapper, _cbc_all(), for Item's own identifiers/classification_codes multi-match lookups.",
+    "4. Simplified tax_subtotal_of's own redundant double find(category, 'ID') call (previously called twice on one line: once for the truthiness check, once for the value) into a single _cbc(category, 'ID') call stored once and reused -- eliminates a pre-existing redundant lookup as a direct, minimal side effect of the migration itself, not a separate refactor.",
+    "5. Ran the file's own full existing downstream test coverage (71 tests across 5 files: aggregate projection/construction, business calculation/reconciliation, cardinality validation for InvoiceLine/TaxSubtotal/TaxTotal/LegalMonetaryTotal, Item/Price cardinality and order, and the maindoc lines file that imports this module's _require/item_of) BEFORE writing any new test -- all 71 passed unchanged, confirming zero regression including for the mixed-namespace and allowance/charge reconciliation paths specifically.",
+    "6. Added one new test proving the migration's own actual security value directly: a spoofed same-local-name ID sibling from an attacker namespace is now correctly ignored by invoice_line_of() itself -- passed on the first run.",
+    "7. Ran ruff check and mypy --strict against aggregates.py and the test file: both clean.",
+    "8. Ran the full ubl suite (1253 passed, up from 1252) and the 6-format FF6 regression (4354 passed, 4 skipped, up from 4353) -- exact +1 delta in both, confirming zero regressions from the migration itself.",
+    "9. Ran the installed-wheel proof (tools/run_package_install_proof.py --format ubl, 1/1 PASS) and independently re-verified the spoofed-ID scenario directly from the installed, non-editable site-packages path."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/model/aggregates.py",
+    "tests/python/ubl/test_obligation_aggregate_components.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/model/aggregates.py",
+    "tests/python/ubl/test_obligation_aggregate_components.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_aggregate_components.py tests/python/ubl/test_obligation_business_calculation.py tests/python/ubl/test_obligation_aggregates_cardinality_validation.py tests/python/ubl/test_obligation_item_and_price_cardinality_and_order_validation.py tests/python/ubl/test_obligation_maindoc_lines.py -v -- 71 passed (70 pre-existing unchanged, 1 new)",
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_aggregate_components.py -v -- 21 passed (20 pre-existing unchanged, 1 new)",
+    ".venv/Scripts/pytest tests/python/ubl/ -q --timeout=120 -- 1253 passed (was 1252)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4354 passed, 4 skipped (was 4353)",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/model/aggregates.py tests/python/ubl/test_obligation_aggregate_components.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/model/aggregates.py -- Success: no issues found in 1 source file",
+    "python tools/run_package_install_proof.py --format ubl -- RESULT: 1/1 PASS; the spoofed-ID scenario independently re-exercised from the installed, non-editable wheel's own site-packages path"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (UBL-PARSE-001) narrows further -- 21 more call sites migrated (57 of ~79 total across 4 waves). Not promoted to implemented: party.py (22) remains, the sole remaining file.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); ubl remains UNASSESSED",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "None -- every migrated function's own signature and return type are unchanged; the migration is entirely internal to aggregates.py."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -253,6 +253,59 @@ execution_evidence:
     SAL-UBL-OBL-0996E6D7B91D544F only; does not promote it to implemented --
     aggregates.py (21) and party.py (22), 43 call sites across 2 files,
     remain unmigrated.
+- evidence_id: UBL-FIND-QNAME-MIGRATION-WAVE4-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-find-qname-migration-wave4-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close)
+    SAL-UBL-OBL-0996E6D7B91D544F (UBL-PARSE-001) further -- wave 4 of the
+    disclosed find()/find_all()-to-find_qname()/find_all_qname() migration
+    (wave 1: reference.py; wave 2: charges.py; wave 3: lines.py). Selected
+    model/aggregates.py (21 sites, 6 functions plus 1 private helper:
+    item_of, invoice_line_of, tax_subtotal_of, tax_total_of,
+    legal_monetary_total_of, reconcile_invoice,
+    _reconcile_allowance_charge_totals) as the smaller of the 2 remaining
+    files. Confirmed directly via a live xmlschema introspection against the
+    real pinned OASIS schema (InvoiceLineType/TaxSubtotalType/TaxTotalType/
+    TaxCategoryType/MonetaryTotalType) before migrating that this file
+    genuinely mixes both namespaces: ID/InvoicedQuantity/
+    LineExtensionAmount/TaxableAmount/TaxAmount/all MonetaryTotal amount
+    fields are CommonBasicComponents; Item/TaxCategory/TaxSubtotal/
+    InvoiceLine/TaxTotal/LegalMonetaryTotal/AllowanceCharge are
+    CommonAggregateComponents aggregates. The same introspection also
+    confirmed a pre-existing, already-disclosed model-field-mapping gap
+    (documented in test_obligation_aggregates_cardinality_validation.py and
+    test_obligation_item_and_price_cardinality_and_order_validation.py's own
+    docstrings): ItemType's real schema has no direct cbc:ID or
+    cbc:CommodityClassification child at all. Since no test exercises
+    Item.identifiers/classification_codes via a real document, this
+    migration preserves current behavior exactly by keeping those two
+    lookups on the CBC namespace (matching the codebase's own existing
+    documentation of them), not asserting a new schema-conformance claim --
+    the gap remains disclosed, not silently carried forward. Reused the
+    _cbc()/_cac()/_cac_all() wrapper pattern from waves 2-3 and added a
+    fourth, _cbc_all(), for Item's own multi-match lookups; also simplified
+    tax_subtotal_of's own pre-existing redundant double find(category, "ID")
+    call into a single lookup stored once and reused, as a direct,
+    minimal side effect of the migration itself. Ran the file's own full
+    existing 71-test downstream coverage (aggregate projection/
+    construction, business calculation/reconciliation, cardinality
+    validation, Item/Price cardinality and order, and the maindoc lines
+    file that imports this module's _require/item_of) BEFORE writing any
+    new test, confirming zero regression including for the mixed-namespace
+    and allowance/charge reconciliation paths specifically. Added one new
+    test proving the migration's own actual security value directly: a
+    spoofed same-local-name ID sibling from an attacker namespace is now
+    correctly ignored by invoice_line_of() itself. ubl suite: 1252 -> 1253
+    passed. 6-format FF6 regression: 4353 -> 4354 passed, 4 skipped. mypy
+    --strict and ruff clean. Installed-wheel behavior independently
+    re-verified: the spoofed-ID scenario was exercised directly from the
+    installed, non-editable site-packages path. NOT backed by an independent
+    reference UBL implementation -- SELF-CONSISTENT format_factory-only
+    evidence per the execution-recovery directive's GAP-008 rule. Covers
+    SAL-UBL-OBL-0996E6D7B91D544F only; does not promote it to implemented --
+    party.py (22 call sites), the sole remaining file, is still unmigrated.
 - evidence_id: UBL-DOCUMENT-TYPE-COVERAGE-VOCABULARY-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-document-type-coverage-001.json
   expected_result: PASS
@@ -1316,6 +1369,13 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/model/lines.py::document_reference_of
   - src/python/ubl/src/format_factory/ubl/model/lines.py::response_of
   - src/python/ubl/src/format_factory/ubl/model/lines.py::document_response_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::item_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::invoice_line_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::tax_subtotal_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::tax_total_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::legal_monetary_total_of
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::reconcile_invoice
+  - src/python/ubl/src/format_factory/ubl/model/aggregates.py::_reconcile_allowance_charge_totals
   positive_test_selectors:
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_a_document_with_no_namespace_collision_is_unaffected
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_the_check_does_not_recurse_into_opaque_extension_content
@@ -1327,6 +1387,8 @@ obligations:
   - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_payee_financial_account_projects_with_its_leaf_fields
   - tests/python/ubl/test_obligation_maindoc_lines.py::test_despatch_line_projects_with_its_fields
   - tests/python/ubl/test_obligation_maindoc_lines.py::test_document_response_with_multiple_document_references
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_invoice_lines_project_from_xml
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_tax_total_projects_with_its_subtotals
   negative_test_selectors:
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_itself_is_still_naively_vulnerable_a_known_documented_caveat
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_a_spoofed_sibling_from_an_unrelated_namespace_fails_validation
@@ -1338,6 +1400,7 @@ obligations:
   - tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceProjection::test_a_spoofed_sibling_from_an_unrelated_namespace_is_not_projected
   - tests/python/ubl/test_obligation_temporal_projection_and_charges.py::test_a_spoofed_payment_means_code_sibling_is_not_projected
   - tests/python/ubl/test_obligation_maindoc_lines.py::test_a_spoofed_id_sibling_from_an_unrelated_namespace_is_not_projected
+  - tests/python/ubl/test_obligation_aggregate_components.py::test_a_spoofed_id_sibling_from_an_unrelated_namespace_is_not_projected
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-NAMESPACE-SHADOWING-SECURITY-PROOF
@@ -1345,14 +1408,16 @@ obligations:
   - UBL-FIND-QNAME-MIGRATION-WAVE1-PROOF
   - UBL-FIND-QNAME-MIGRATION-WAVE2-PROOF
   - UBL-FIND-QNAME-MIGRATION-WAVE3-PROOF
+  - UBL-FIND-QNAME-MIGRATION-WAVE4-PROOF
   implemented_behavior:
   - 'Root-level namespace mismatches were already rejected (test_wrong_namespace_and_preview_profile_fail_closed). A genuine defense-in-depth mitigation is now also in place: validate() detects the one structural signature every find()/find_all() namespace-spoofing attempt must produce -- two or more same-local-name children, in different namespaces, under one parent -- and rejects the whole document as invalid before any find()-derived value could be trusted downstream. Proven directly against the exact reproduction case from this obligation''s own original finding (a spoofed {urn:evil:attacker:namespace}ID sibling of the real cbc:ID), at both the document root and nested deeper in the tree, regardless of spoofed-vs-real ordering. Verified to produce zero false positives against the entire pre-existing 878-test ubl suite before any new test was written, and deliberately does not recurse into ext:ExtensionContent (opaque vendor content this package never queries by field name, where the check would be a false-positive risk rather than a real protection).'
   - 'FF6-EVENT-000481: the complementary fix at the lookup site itself now exists. find_qname()/find_all_qname() (model/typed.py) match children by full QName (namespace AND local name), generalizing document.py''s own already-correct private _first_child_text() pattern (used for UBLVersionID/CustomizationID/ProfileID) into a public, reusable primitive rather than a new convention. Proven directly against this obligation''s own original spoofed-sibling reproduction case: find_qname() correctly returns each element by its own namespace where find() returns only whichever comes first. Purely additive -- none of the ~78-84 existing find()/find_all() call sites were touched, so this carries zero regression risk to existing behavior.'
   - 'FF6-EVENT-000482: wave 1 of the disclosed call-site migration is complete. model/reference.py''s own 5 find() calls (external_reference_of, cac:ExternalReference''s projector) now use find_qname() internally, chosen as the smallest fully self-contained file with every field''s own namespace already confirmed unambiguous by pre-existing tests. Proven directly, not only inferred from the primitive''s own proof: a spoofed same-local-name URI sibling is now correctly ignored by external_reference_of() itself. Zero regressions across the file''s own full existing 28-test downstream coverage.'
   - 'FF6-EVENT-000483: wave 2 is complete. model/charges.py''s own 13 find() calls (allowance_charge_of, price_of, financial_account_of, payment_means_of) now use find_qname() internally via _cbc()/_cac() wrappers -- the first genuinely mixed-namespace wave (every field CommonBasicComponents except PayeeFinancialAccount, a CommonAggregateComponents aggregate, confirmed directly via a live xmlschema introspection against the real pinned OASIS schema before migrating). Proven directly: a spoofed same-local-name PaymentMeansCode sibling is now correctly ignored by payment_means_of() itself. Zero regressions across the file''s own full existing 25-test downstream coverage, including the mixed-namespace PayeeFinancialAccount path specifically. Also corrected the prior tick''s own call-site estimate: genericode.py''s own apparent matches were Python stdlib ElementTree API, unrelated to this obligation -- the real remaining total after both waves is 61 call sites across 3 files (aggregates.py 21, lines.py 18, party.py 22), not 79.'
   - 'FF6-EVENT-000484: wave 3 is complete. model/lines.py''s own 18 find() calls across 7 functions (line_item_of, order_line_of, credit_note_line_of, despatch_line_of, document_reference_of, response_of, document_response_of) now use find_qname()/find_all_qname() internally via _cbc()/_cac()/_cac_all() wrappers -- confirmed directly via a live xmlschema introspection against the real pinned OASIS schema (LineItemType/OrderLineType/CreditNoteLineType/DespatchLineType/DocumentReferenceType/ResponseType/DocumentResponseType) before migrating that this file genuinely mixes both namespaces. document_response_of() is the migration''s first real (non-test) use of find_all_qname, for its own multiple-DocumentReference lookup. Proven directly: a spoofed same-local-name ID sibling is now correctly ignored by despatch_line_of() itself. Zero regressions across the file''s own full existing 14-test downstream coverage, including the find_all_qname-based multi-reference path specifically.'
+  - 'FF6-EVENT-000485: wave 4 is complete. model/aggregates.py''s own 21 find() calls across 6 functions plus 1 private helper (item_of, invoice_line_of, tax_subtotal_of, tax_total_of, legal_monetary_total_of, reconcile_invoice, _reconcile_allowance_charge_totals) now use find_qname()/find_all_qname() internally via _cbc()/_cac()/_cbc_all()/_cac_all() wrappers -- confirmed directly via a live xmlschema introspection against the real pinned OASIS schema (InvoiceLineType/TaxSubtotalType/TaxTotalType/TaxCategoryType/MonetaryTotalType) before migrating that this file genuinely mixes both namespaces. The same introspection also confirmed a pre-existing, already-disclosed model-field-mapping gap (ItemType has no direct cbc:ID or cbc:CommodityClassification child at all) that this migration explicitly does not resolve, preserving Item.identifiers/classification_codes'' existing CBC-namespace lookup behavior exactly since no test exercises that path via a real document. Proven directly: a spoofed same-local-name ID sibling is now correctly ignored by invoice_line_of() itself. Zero regressions across the file''s own full existing 71-test downstream coverage, including the mixed-namespace and allowance/charge reconciliation paths specifically.'
   missing_behavior:
-  - 'find()/find_all() remain unfixed at the primitive level for 43 confirmed remaining call sites, across aggregates.py (21) and party.py (22) -- reference.py''s own 5 sites, charges.py''s own 13 sites, and lines.py''s own 18 sites are now migrated (see implemented_behavior above), 36 of the real 79-site total. This obligation''s own rule_text (unambiguous resolution, never best-effort local-name guessing) is therefore still not fully satisfied program-wide. UBL-UPGRADE-001 and UBL-WRITE-001, ubl''s other 2 remaining unresolved obligations, were also freshly scoped this session and confirmed independently non-tractable for a single tick (new multi-version transform research; official OASIS examples absent from the pinned source data).'
+  - 'find()/find_all() remain unfixed at the primitive level for 22 confirmed remaining call sites, all in party.py -- reference.py''s own 5 sites, charges.py''s own 13 sites, lines.py''s own 18 sites, and aggregates.py''s own 21 sites are now migrated (see implemented_behavior above), 57 of the real 79-site total. This obligation''s own rule_text (unambiguous resolution, never best-effort local-name guessing) is therefore still not fully satisfied program-wide. Separately, Item.identifiers/classification_codes'' own find_all(node, "ID")/find_all(node, "CommodityClassification") lookups do not correspond to ItemType''s real schema structure (item identification is always wrapped in aggregates like cac:BuyersItemIdentification, and CommodityClassification is itself a cac: aggregate, not a leaf) -- a pre-existing, already-disclosed model-field-mapping gap this migration preserves rather than resolves, since no test exercises that path via a real document. UBL-UPGRADE-001 and UBL-WRITE-001, ubl''s other 2 remaining unresolved obligations, were also freshly scoped this session and confirmed independently non-tractable for a single tick (new multi-version transform research; official OASIS examples absent from the pinned source data).'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;

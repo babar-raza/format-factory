@@ -34,6 +34,28 @@ that legitimately declares a prepayment as a mismatch -- a false positive on
 real, correct data, which is worse than not checking at all. This is
 recorded as the honest remaining gap rather than an approximate formula that
 would be systematically wrong.
+
+UBL-PARSE-001 (FF6-EVENT-000485): every lookup here is namespace-precise via
+`find_qname`/`find_all_qname`, not `find`/`find_all`'s own local-name-only
+matching -- wave 4 of the ~79 disclosed call sites (wave 1: reference.py;
+wave 2: charges.py; wave 3: lines.py). Every field's own namespace was
+confirmed directly against the pinned OASIS UBL 2.3 schema
+(InvoiceLineType/TaxSubtotalType/TaxTotalType/TaxCategoryType/
+MonetaryTotalType, via a live xmlschema introspection) before migrating.
+The one exception is `Item.identifiers`/`Item.classification_codes`'s own
+`find_all(node, "ID")`/`find_all(node, "CommodityClassification")` lookups:
+`ItemType`'s real schema has no direct cbc:ID or cbc:CommodityClassification
+child at all (confirmed by the same introspection; item identification is
+always wrapped in aggregates like cac:BuyersItemIdentification, and
+CommodityClassification is itself a cac: aggregate, not a leaf) -- an
+already-disclosed, pre-existing model-field-mapping gap (see
+test_obligation_aggregates_cardinality_validation.py and
+test_obligation_item_and_price_cardinality_and_order_validation.py's own
+module docstrings) this migration does not attempt to resolve. No test
+exercises that path via a real document, so it is migrated to the CBC
+namespace, matching this codebase's own existing "cbc:ID"/
+"cbc:CommodityClassification" documentation of it, preserving exact current
+behavior without asserting a new schema-conformance claim.
 """
 
 from __future__ import annotations
@@ -45,8 +67,27 @@ from format_factory.core import Diagnostic, Severity, ValidationReport
 
 from ..errors import UblValidationError
 from .document import XmlNode
-from .typed import amount_of, code_of, find, find_all, identifier_of, quantity_of
+from .typed import amount_of, code_of, find_all_qname, find_qname, identifier_of, quantity_of
 from .values import Amount, Code, Identifier, Quantity
+
+_CBC_NAMESPACE = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+_CAC_NAMESPACE = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+
+
+def _cbc(node: XmlNode, name: str) -> XmlNode | None:
+    return find_qname(node, _CBC_NAMESPACE, name)
+
+
+def _cbc_all(node: XmlNode, name: str) -> tuple[XmlNode, ...]:
+    return find_all_qname(node, _CBC_NAMESPACE, name)
+
+
+def _cac(node: XmlNode, name: str) -> XmlNode | None:
+    return find_qname(node, _CAC_NAMESPACE, name)
+
+
+def _cac_all(node: XmlNode, name: str) -> tuple[XmlNode, ...]:
+    return find_all_qname(node, _CAC_NAMESPACE, name)
 
 
 def _require(value: object, name: str, owner: str) -> None:
@@ -139,14 +180,14 @@ class LegalMonetaryTotal:
 def item_of(node: XmlNode | None) -> Item:
     if node is None:
         raise UblValidationError("cannot project a missing element into a cac:Item")
-    name = find(node, "Name")
+    name = _cbc(node, "Name")
     if name is None:
         raise UblValidationError("cac:Item has no cbc:Name")
     return Item(
         name=name.text,
-        identifiers=tuple(identifier_of(child) for child in find_all(node, "ID")),
+        identifiers=tuple(identifier_of(child) for child in _cbc_all(node, "ID")),
         classification_codes=tuple(
-            code_of(child) for child in find_all(node, "CommodityClassification")
+            code_of(child) for child in _cbc_all(node, "CommodityClassification")
         ),
     )
 
@@ -154,13 +195,13 @@ def item_of(node: XmlNode | None) -> Item:
 def invoice_line_of(node: XmlNode | None) -> InvoiceLine:
     if node is None:
         raise UblValidationError("cannot project a missing element into a cac:InvoiceLine")
-    item = find(node, "Item")
+    item = _cac(node, "Item")
     if item is None:
         raise UblValidationError("cac:InvoiceLine has no cac:Item")
     return InvoiceLine(
-        id=identifier_of(find(node, "ID")),
-        invoiced_quantity=quantity_of(find(node, "InvoicedQuantity")),
-        line_extension_amount=amount_of(find(node, "LineExtensionAmount")),
+        id=identifier_of(_cbc(node, "ID")),
+        invoiced_quantity=quantity_of(_cbc(node, "InvoicedQuantity")),
+        line_extension_amount=amount_of(_cbc(node, "LineExtensionAmount")),
         item=item_of(item),
     )
 
@@ -168,11 +209,12 @@ def invoice_line_of(node: XmlNode | None) -> InvoiceLine:
 def tax_subtotal_of(node: XmlNode | None) -> TaxSubtotal:
     if node is None:
         raise UblValidationError("cannot project a missing element into a cac:TaxSubtotal")
-    category = find(node, "TaxCategory")
+    category = _cac(node, "TaxCategory")
+    category_id = _cbc(category, "ID") if category is not None else None
     return TaxSubtotal(
-        taxable_amount=amount_of(find(node, "TaxableAmount")),
-        tax_amount=amount_of(find(node, "TaxAmount")),
-        category_code=code_of(find(category, "ID")) if category and find(category, "ID") else None,
+        taxable_amount=amount_of(_cbc(node, "TaxableAmount")),
+        tax_amount=amount_of(_cbc(node, "TaxAmount")),
+        category_code=code_of(category_id) if category_id is not None else None,
     )
 
 
@@ -180,13 +222,13 @@ def tax_total_of(node: XmlNode | None) -> TaxTotal:
     if node is None:
         raise UblValidationError("cannot project a missing element into a cac:TaxTotal")
     return TaxTotal(
-        tax_amount=amount_of(find(node, "TaxAmount")),
-        subtotals=tuple(tax_subtotal_of(child) for child in find_all(node, "TaxSubtotal")),
+        tax_amount=amount_of(_cbc(node, "TaxAmount")),
+        subtotals=tuple(tax_subtotal_of(child) for child in _cac_all(node, "TaxSubtotal")),
     )
 
 
 def _optional_amount(node: XmlNode, name: str) -> Amount | None:
-    child = find(node, name)
+    child = _cbc(node, name)
     return amount_of(child) if child is not None else None
 
 
@@ -196,8 +238,8 @@ def legal_monetary_total_of(node: XmlNode | None) -> LegalMonetaryTotal:
             "cannot project a missing element into a cac:LegalMonetaryTotal"
         )
     return LegalMonetaryTotal(
-        line_extension_amount=amount_of(find(node, "LineExtensionAmount")),
-        payable_amount=amount_of(find(node, "PayableAmount")),
+        line_extension_amount=amount_of(_cbc(node, "LineExtensionAmount")),
+        payable_amount=amount_of(_cbc(node, "PayableAmount")),
         tax_exclusive_amount=_optional_amount(node, "TaxExclusiveAmount"),
         tax_inclusive_amount=_optional_amount(node, "TaxInclusiveAmount"),
         allowance_total_amount=_optional_amount(node, "AllowanceTotalAmount"),
@@ -222,7 +264,7 @@ def reconcile_invoice(
     """
     found: list[Diagnostic] = []
 
-    line_nodes = find_all(root, "InvoiceLine")
+    line_nodes = _cac_all(root, "InvoiceLine")
     lines: list[InvoiceLine] = []
     for node in line_nodes:
         try:
@@ -256,7 +298,7 @@ def reconcile_invoice(
             for line in lines[1:]:
                 line_sum = line_sum + line.line_extension_amount
 
-    monetary_node = find(root, "LegalMonetaryTotal")
+    monetary_node = _cac(root, "LegalMonetaryTotal")
     if monetary_node is not None and line_sum is not None:
         try:
             monetary = legal_monetary_total_of(monetary_node)
@@ -295,7 +337,7 @@ def reconcile_invoice(
                     )
                 )
 
-    for node in find_all(root, "TaxTotal"):
+    for node in _cac_all(root, "TaxTotal"):
         try:
             total = tax_total_of(node)
         except UblValidationError as exc:
@@ -360,7 +402,7 @@ def _reconcile_allowance_charge_totals(
         return
     from .charges import allowance_charge_of
 
-    allowance_charge_nodes = find_all(root, "AllowanceCharge")
+    allowance_charge_nodes = _cac_all(root, "AllowanceCharge")
     if not allowance_charge_nodes:
         return
 
