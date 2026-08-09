@@ -117,3 +117,21 @@ def test_gzip_excess_decompressed_data_is_not_recovered() -> None:
 
     with pytest.raises(ResourceLimitError):
         loads(header + compressed, mode="recovery")
+
+
+def test_a_duplicate_field_is_never_recoverable_even_in_recovery_mode() -> None:
+    """This module's own docstring already asserts, in prose, that
+    duplicate FIELD specifications were investigated and correctly left
+    unrecoverable ("may appear no more than once," a hard rule with no
+    recovery semantics) -- proven here behaviorally rather than only
+    documented. `mode` is threaded through `_load()` and consulted in
+    exactly one conditional expression anywhere in that function (verified
+    by direct source inspection, not incomplete search): the raw-encoding
+    excess-trailing-bytes check. Header parsing itself
+    (`_split_header`/`_parse_header`) takes no `mode` parameter at all, so
+    a duplicate field is structurally, provably rejected identically
+    regardless of mode -- this is that structural fact made executable."""
+    duplicate = _header().replace(b"type: uint8\n", b"type: uint8\ntype: uint8\n")
+
+    with pytest.raises(NrrdParseError, match="duplicate"):
+        loads(duplicate + bytes(4), mode="recovery")
