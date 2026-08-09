@@ -1,0 +1,69 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "format-feature-expansion-ubl-edit-crud-round-trip-001",
+  "skill_id": "format-feature-expansion",
+  "manifest_id": "sfx-19daf8a22ee9a34a",
+  "mode": "live",
+  "timestamp": "2026-08-10T00:00:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "profile_id": "UBL-2.3",
+    "obligation_id": "SAL-UBL-OBL-237188D47391391E",
+    "capability_id": "UBL-EDIT-001",
+    "task_id": "TC_FF6_UBL_EDIT_CRUD_ROUND_TRIP_001",
+    "contract_digest": "sha256:2199e2856511091e3c08bc071991bce0268d96178cc8e275cd50f312121a3df8",
+    "authority_digests": {"SRC-UBL-002": "sha256:623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970"},
+    "affected_layer": "L07-Tests",
+    "planned_paths": ["tests/python/ubl/test_obligation_crud_round_trip.py", "shared/format-contracts/implementation-evidence/ubl.yaml"],
+    "proof_inputs": ["SAL-UBL-OBL-237188D47391391E"],
+    "root_cause": "Following the same register-vs-evidence-text discipline with fresh eyes that closed UBL-PARSE-001 last tick (Event 500), re-examined UBL-EDIT-001's own current evidence. Its own release_gate ('Every documented mutation proven by round-trip tests') and required_tests ('Each mutation class save-reload-verifies') were never actually checked against the real test files -- grepped all 6 existing CRUD test files for dump()/dumps() calls and found zero matches in any of them, despite extensive in-memory-only coverage across 30+ tests. The obligation's own other disclosed gap ('a constructor for arbitrary component types') was also re-examined against the rule_text's own literal wording.",
+    "acceptance_evidence": "Wrote test_obligation_crud_round_trip.py: 9 tests, each performing a genuine dumps()-then-load() cycle on real bytes for one of the 8 documented mutations (add_line, remove_line, move_line, renumber_lines, replace_party, update_component, add_component x2 for both the already-has-an-occurrence and first-occurrence paths, remove_component), confirming both the edit's own effect persists correctly through serialization AND the reloaded result independently re-validates clean via validate().is_valid. All 9 passed on first execution -- no production code change needed, since dumps()/load() already worked correctly; this closes a proof gap, not an implementation gap. Separately, re-read the 'constructor for arbitrary component types' missing_behavior item against the obligation's own literal rule_text ('CRUD for core business components with schema-order preservation; edits cannot produce elements the schema forbids AT THAT POSITION') and confirmed via direct code reading that add_component()/update_component()/remove_component() are already fully generic (component_name is caller-supplied, works for any schema-declared component) and already correctly position any new component (both already-present and first-occurrence cases, both proven). The rule_text is about edit POSITION correctness, not about auto-synthesizing a new component's own internal field values -- a caller supplying content via a hand-built XmlNode is the ordinary CRUD contract this package's own other typed-value operations already use. Reclassified this item as out of the obligation's own scope, disclosed with full reasoning in the evidence, not silently dropped."
+  },
+  "execution_steps": [
+    "1. Confirmed the FF6 mission head (Event 500) matched the prior tick's own hand-off before starting, per goal_driver resume.",
+    "2. Re-ran the ubl obligation reconciler fresh and pulled the current literal register rule_text/required_tests/release_gates for UBL-EDIT-001 directly from plans/strategic/ff6/obligations/ubl.yaml.",
+    "3. Read UBL-EDIT-001's own full current evidence entry (missing_behavior) in full -- one narrower item named (constructor for arbitrary component types) plus a separately-disclosed, correctly-out-of-scope validate() coverage gap.",
+    "4. Grepped all 6 existing CRUD-related test files (test_obligation_line_crud.py, test_obligation_party_replacement.py, test_obligation_component_update.py, test_obligation_component_create_adjacent.py, test_obligation_component_removal.py, test_obligation_component_first_occurrence_insertion.py) for dump()/dumps() usage -- zero matches in any file, confirmed by checking imports directly (none import dump/dumps at all), a real and significant finding: the release gate's own literal wording was never actually verified despite the obligation carrying 30+ passing tests.",
+    "5. Wrote test_obligation_crud_round_trip.py: one dumps()-then-load() round trip per documented mutation (9 tests covering 8 mutation types, add_component covering both its own already-has-an-occurrence and first-occurrence code paths separately), reusing the same fixture style already established in test_obligation_line_crud.py for consistency.",
+    "6. Ran the new test file: all 9 passed on first execution.",
+    "7. Re-examined the 'constructor for arbitrary component types' item with fresh eyes rather than assuming it still blocked promotion: read add_component()/update_component()/remove_component() directly, confirmed they are already fully generic (no hardcoded component-type list) and already correctly schema-position every new component including first-occurrence insertion (already proven in an earlier tick this session). Concluded the rule_text's own literal wording ('edits cannot produce elements the schema forbids AT THAT POSITION') is about tree POSITION, not about auto-generating a new component's own internal content from nothing -- a materially different, larger feature (a full schema-driven object generator) the rule_text does not ask for.",
+    "8. Ran ruff check and mypy --strict on the new test file: mypy initially failed with 19 errors (missing return-type annotations on _dumped_and_reloaded and all 9 test functions) -- fixed by adding explicit type annotations throughout, re-ran clean.",
+    "9. Ran the full ubl suite: 1636 passed (was 1627, +9 new, zero regressions).",
+    "10. Ran the six-FF6-format regression suite directly: 4744 passed, 4 skipped (was 4735, +9 new, zero cross-format regression).",
+    "11. Updated shared/format-contracts/implementation-evidence/ubl.yaml's own SAL-UBL-OBL-237188D47391391E entry: status partial -> implemented, added the new 9 positive test selectors and a new execution_evidence_id, added a full implemented_behavior entry documenting both the round-trip closure and the honest reclassification of the constructor-for-arbitrary-types item, cleared missing_behavior to [] (the separately-disclosed validate()-coverage item remains correctly excluded from this obligation's own scope, referenced but not re-added to missing_behavior), and updated proof_requirements.negative.",
+    "12. Ran the obligation reconciler (contract_reconciler --format-id ubl --exact-obligations) after the evidence edit: confirmed clean, ubl now 4/194 unresolved (down from 5/194) -- the second obligation-status promotion in consecutive ticks (after UBL-PARSE-001 at Event 500), confirming the register-vs-evidence-text discipline was not yet exhausted for ubl's remaining items.",
+    "13. Recompiled the format contract (contract_compiler.py --format-id ubl) and verified idempotency -- byte-identical to before, expected since no SAL fact or research finding changed, only test coverage and evidence tracking."
+  ],
+  "allowed_files": [
+    "tests/python/ubl/test_obligation_crud_round_trip.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml",
+    "reports/format-contract-layer/ubl-obligation-reconciliation.json"
+  ],
+  "actual_files_changed": [
+    "tests/python/ubl/test_obligation_crud_round_trip.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml",
+    "reports/format-contract-layer/ubl-obligation-reconciliation.json"
+  ],
+  "tests_run": [
+    "tests/python/ubl/test_obligation_crud_round_trip.py -- 9 passed (real dumps()-then-load() round trips for all 8 documented CRUD mutations, all first-execution passes, no implementation change needed)",
+    "ruff check tests/python/ubl/test_obligation_crud_round_trip.py -- all checks passed",
+    "mypy --strict tests/python/ubl/test_obligation_crud_round_trip.py -- success after fixing 19 missing-annotation errors from the first draft",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 1636 passed (was 1627, +9 new)",
+    ".venv/Scripts/pytest tests/python/ipynb tests/python/ora tests/python/nrrd tests/python/xliff tests/python/safetensors tests/python/ubl -q -- 4744 passed, 4 skipped (was 4735, +9 new, zero regression)",
+    "contract_reconciler --format-id ubl --exact-obligations -- clean, 4/194 unresolved (down from 5/194)",
+    "contract_compiler.py --format-id ubl --verify-idempotency -- OK, byte-identical output"
+  ],
+  "ledger_entry_id": "FF6-UBL-EDIT-CRUD-ROUND-TRIP-001",
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Promotes SAL-UBL-OBL-237188D47391391E (UBL-EDIT-001) from partial to implemented -- both required_tests and the release_gate are now directly proven for all 8 documented mutations via real serialization round trips, and the remaining 'constructor for arbitrary component types' item is honestly reclassified as out of this obligation's own literal scope with full reasoning recorded, not silently dropped. No production source code was changed.",
+    "controller_event_effect": "pending",
+    "certification_state": "3/6 (ipynb, xliff, safetensors CERTIFIED per Event 467; ora/nrrd/ubl remain uncertified -- promotion.* untouched by this task, no fresh explicit user authorization exists this session)",
+    "obligations_moved": 1,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 194,
+    "new_public_api": "none -- test-only closure of already-correct existing serialization primitives"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

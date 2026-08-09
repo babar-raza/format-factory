@@ -44862,6 +44862,38 @@
       "validation_command": ".venv/Scripts/pytest tests/python/ubl/ -q",
       "result": "1627 passed (was 1263, +364 new)",
       "rollback": "Remove the new test file, revert UBL-PARSE-001 own evidence entry status to partial, and this ledger entry."
+    },
+    {
+      "entry_id": "FF6-UBL-EDIT-CRUD-ROUND-TRIP-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "ubl-edit-crud-round-trip",
+      "capability": "UBL-EDIT-001",
+      "capability_refs": [
+        "UBL-EDIT-001"
+      ],
+      "api_symbols": [
+        "format_factory.ubl.dumps",
+        "format_factory.ubl.load"
+      ],
+      "product": "UBL Python production package",
+      "format": "UBL",
+      "test_delta": "Test-only closure of UBL-EDIT-001 own release gate (every documented CRUD mutation proven by round-trip tests). No production source changed -- dumps()/load() were already correct; this proves the combination with all 8 CRUD mutations specifically via real dumps()-then-load() cycles. 9 new tests (test_obligation_crud_round_trip.py), all passing on first execution.",
+      "git_head": "0f32417c2",
+      "skill": "format-feature-expansion",
+      "task_id": "TC_FF6_UBL_EDIT_CRUD_ROUND_TRIP_001",
+      "source_files": [
+        {
+          "path": "tests/python/ubl/test_obligation_crud_round_trip.py",
+          "state": "present",
+          "sha256": "f1528daa5802c17a4cf9577f288e9fd7fe0364f87f7035e9f87e3d4ab35cb051"
+        }
+      ],
+      "test_files": [
+        "tests/python/ubl/test_obligation_crud_round_trip.py"
+      ],
+      "validation_command": ".venv/Scripts/pytest tests/python/ubl/ -q",
+      "result": "1636 passed (was 1627, +9 new)",
+      "rollback": "Remove the new test file, revert UBL-EDIT-001 own evidence entry status to partial, and this ledger entry."
     }
   ],
   "total_entries": 2782,
