@@ -187,6 +187,78 @@ class TestV243ExceptionHierarchyCorrectness:
         assert item["package"] == "efmt"
         assert item["actual_base"] == "Exception"
 
+    def test_core_package_is_excluded(self, tmp_path):
+        """`core` is the shared-infra package where FormatFactoryError itself is
+        DEFINED -- checking whether its own root class "derives from" FormatFactoryError
+        is a category error and must be skipped, not FAILed for a missing file."""
+        pkg = tmp_path / "src" / "python" / "core"
+        _write(pkg / "src" / "format_factory" / "core" / "errors.py", (
+            "class FormatFactoryError(Exception):\n"
+            "    pass\n"
+        ))
+
+        result = validate_exception_hierarchy_correctness({}, repo_root=tmp_path)
+
+        assert result["result"] == "PASS"
+        assert result["items"] == []
+
+    def test_nested_errors_module_preferred_over_stray_top_level_shim(self, tmp_path):
+        """A package migrated to the nested src-layout (`src/format_factory/<pkg>/
+        errors.py`) is checked there -- a stray top-level exceptions.py left over from
+        before the migration (and excluded from the built wheel) must not shadow it."""
+        pkg = tmp_path / "src" / "python" / "migrated"
+        _write(pkg / "exceptions.py", (
+            "class MigratedError(RuntimeError):\n"
+            "    \"\"\"Stray pre-migration file -- not part of the built wheel.\"\"\"\n"
+        ))
+        _write(pkg / "src" / "format_factory" / "migrated" / "errors.py", (
+            "from format_factory.core import FormatFactoryError\n"
+            "\n"
+            "\n"
+            "class MigratedError(FormatFactoryError):\n"
+            "    pass\n"
+        ))
+
+        result = validate_exception_hierarchy_correctness({}, repo_root=tmp_path)
+
+        assert result["result"] == "PASS"
+        assert result["items"] == []
+
+    def test_root_basing_on_a_core_category_class_passes(self, tmp_path):
+        """A root class based on one of format_factory.core's own four category
+        classes (not FormatFactoryError itself) still ultimately terminates at
+        FormatFactoryError one hop away -- e.g. ora's `OraError(FormatParseError)`,
+        safetensors' `SafeTensorsError(FormatValidationError)` -- and must PASS."""
+        pkg = tmp_path / "src" / "python" / "catfmt"
+        _write(pkg / "src" / "format_factory" / "catfmt" / "errors.py", (
+            "from format_factory.core import FormatParseError\n"
+            "\n"
+            "\n"
+            "class CatfmtError(FormatParseError):\n"
+            "    pass\n"
+        ))
+
+        result = validate_exception_hierarchy_correctness({}, repo_root=tmp_path)
+
+        assert result["result"] == "PASS"
+        assert result["items"] == []
+
+    def test_root_basing_on_an_unrelated_class_via_nested_path_still_fails(self, tmp_path):
+        """The nested-path preference and the widened accepted-base set must not turn
+        this into a rubber stamp -- a genuinely wrong base still FAILs."""
+        pkg = tmp_path / "src" / "python" / "badnested"
+        _write(pkg / "src" / "format_factory" / "badnested" / "errors.py", (
+            "class BadnestedError(RuntimeError):\n"
+            "    pass\n"
+        ))
+
+        result = validate_exception_hierarchy_correctness({}, repo_root=tmp_path)
+
+        assert result["result"] == "FAIL"
+        item = result["items"][0]
+        assert item["package"] == "badnested"
+        assert item["actual_base"] == "RuntimeError"
+
     def test_try_except_fallback_pattern_passes(self, tmp_path):
         """The documented try/except _shared._shared_exceptions fallback aliasing is
         accepted -- what matters is the literal AST base name, not how it was bound."""

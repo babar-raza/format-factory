@@ -51,6 +51,20 @@ _ERROR_CLASS_RE = re.compile(r"^[A-Z]\w*Error$")
 # Directory names directly under src/python/ that are infrastructure, not format packages.
 _NON_FORMAT_DIRS = frozenset({"__pycache__", "build"})
 
+# V243: base names accepted as "ultimately derives from FormatFactoryError" -- the class
+# itself plus the four category classes format_factory.core exports (each a direct
+# FormatFactoryError subclass, see src/python/core/src/format_factory/core/errors.py).
+# A package's root error class may base directly on FormatFactoryError, or on one of
+# these categories to also participate in cross-format catch-by-category (e.g. a caller
+# doing `except FormatParseError` across every format without importing each one).
+_CORE_TERMINAL_ERRORS = frozenset({
+    "FormatFactoryError",
+    "FormatParseError",
+    "FormatValidationError",
+    "FormatWriteError",
+    "ResourceLimitError",
+})
+
 
 def _repo_root(repo_root: "Path | None") -> Path:
     return Path(repo_root) if repo_root else Path(__file__).resolve().parent.parent.parent
@@ -205,14 +219,36 @@ def validate_exception_hierarchy_correctness(declaration: dict, repo_root: "Path
     """V243: each package's root exception class must derive from FormatFactoryError.
 
     Unconditional full-repo scan; `declaration` is ignored by design (see module docstring).
-    FAIL when the root of exceptions.py's local Error hierarchy bases on anything other
-    than FormatFactoryError (e.g. ValueError, Exception directly), or when exceptions.py
-    is missing or defines no Error-suffixed class at all.
+    FAIL when the root of the package's local Error hierarchy bases on anything other
+    than FormatFactoryError -- directly, or via one of the four category classes
+    `format_factory.core` itself exports (FormatParseError, FormatValidationError,
+    FormatWriteError, ResourceLimitError; each is a direct FormatFactoryError subclass,
+    so a root basing on one of these still terminates at FormatFactoryError, just one
+    hop away -- e.g. ora's `OraError(FormatParseError)`, safetensors'
+    `SafeTensorsError(FormatValidationError)`) -- or when no exceptions module is found
+    or it defines no Error-suffixed class at all.
+
+    The `core` package is excluded: it is the shared-infrastructure package where
+    FormatFactoryError itself is DEFINED, not a format package with its own hierarchy
+    to check against it -- checking whether the origin "derives from" itself is a
+    category error, not a real package-integrity question.
+
+    File resolution prefers the real, SHIPPED exceptions module for the migrated
+    package layout (`<pkg_dir>/src/format_factory/<pkg>/errors.py`), falling back to
+    the legacy top-level `<pkg_dir>/exceptions.py` (still authoritative for any package
+    that has not migrated to the nested src-layout, and used by this validator's own
+    synthetic test fixtures). Several packages carry a STRAY top-level exceptions.py
+    left over from before the nested-src migration that is not part of the built wheel
+    (excluded from `[tool.setuptools.packages.find]`'s `where=["src"]`) -- checking it
+    instead of the real nested module would validate dead code and miss the shipped one.
     """
     repo = _repo_root(repo_root)
     items: list[dict] = []
     for pkg_name, pkg_dir in _iter_format_packages(repo):
-        exc_file = pkg_dir / "exceptions.py"
+        if pkg_name == "core":
+            continue
+        nested_exc_file = pkg_dir / "src" / "format_factory" / pkg_name / "errors.py"
+        exc_file = nested_exc_file if nested_exc_file.is_file() else pkg_dir / "exceptions.py"
         try:
             rel = str(exc_file.relative_to(repo).as_posix())
         except ValueError:
@@ -221,7 +257,7 @@ def validate_exception_hierarchy_correctness(declaration: dict, repo_root: "Path
             items.append({
                 "package": pkg_name,
                 "class_name": None,
-                "actual_base": "<exceptions.py missing>",
+                "actual_base": "<no exceptions module found (checked nested errors.py and top-level exceptions.py)>",
                 "expected_base": "FormatFactoryError",
                 "file": rel,
             })
@@ -231,7 +267,7 @@ def validate_exception_hierarchy_correctness(declaration: dict, repo_root: "Path
             items.append({
                 "package": pkg_name,
                 "class_name": None,
-                "actual_base": "<exceptions.py unparsable>",
+                "actual_base": "<exceptions module unparsable>",
                 "expected_base": "FormatFactoryError",
                 "file": rel,
             })
@@ -247,7 +283,7 @@ def validate_exception_hierarchy_correctness(declaration: dict, repo_root: "Path
             })
             continue
         class_name, base_name = root
-        if base_name != "FormatFactoryError":
+        if base_name not in _CORE_TERMINAL_ERRORS:
             items.append({
                 "package": pkg_name,
                 "class_name": class_name,
