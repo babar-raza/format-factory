@@ -44760,6 +44760,35 @@
       "validation_command": ".venv/Scripts/pytest tests/python/ora/ -q",
       "result": "414 passed, 0 failed (unchanged from pre-task baseline)",
       "rollback": "Revert the new Rendering and compositing README section, the Baseline asset replacement/Current scope corrections, the result.error->result.failure fix, and this ledger entry."
+    },
+    {
+      "entry_id": "FF6-UBL-FIRST-OCCURRENCE-DOCS-FIX-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "ubl-readme-first-occurrence-docs-fix",
+      "capability": "UBL-EDIT-001",
+      "capability_refs": [
+        "UBL-EDIT-001"
+      ],
+      "api_symbols": [
+        "format_factory.ubl.add_component"
+      ],
+      "product": "UBL Python production package",
+      "format": "UBL",
+      "test_delta": "Documentation-only change (README.md) fixing a real, affirmatively false claim: add_component first-occurrence insertion was claimed unbuilt (needs header-position knowledge this package does not yet have), but schema_root_order() work earlier this session already closed that gap. Verified directly by inserting a genuinely-absent PaymentMeans component into a real corpus document and confirming success. No production or test source modified.",
+      "git_head": "747853edf",
+      "skill": "product-source-task",
+      "task_id": "TC_FF6_UBL_FIRST_OCCURRENCE_DOCS_FIX_001",
+      "source_files": [
+        {
+          "path": "src/python/ubl/README.md",
+          "state": "present",
+          "sha256": "2ea224006d79651c5ea3139f4d994cc8f27c6f812c4658879f087a2be372bf37"
+        }
+      ],
+      "test_files": [],
+      "validation_command": ".venv/Scripts/pytest tests/python/ubl/ -q",
+      "result": "1255 passed (unchanged from pre-task baseline)",
+      "rollback": "Revert the corrected \"What is not built\" paragraph and this ledger entry."
     }
   ],
   "total_entries": 2782,

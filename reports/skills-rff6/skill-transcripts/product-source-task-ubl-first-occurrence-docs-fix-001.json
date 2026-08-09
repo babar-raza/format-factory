@@ -1,0 +1,58 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-first-occurrence-docs-fix-001",
+  "skill_id": "product-source-task",
+  "manifest_id": "sfx-6e2572e0fbc85a0a",
+  "mode": "live",
+  "timestamp": "2026-08-09T00:00:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_FIRST_OCCURRENCE_DOCS_FIX_001",
+    "task_kind": "defect",
+    "root_cause": "Applying the same README-freshness check just used for nrrd and ora to ubl's own 'Editing core business components' section found the README's own 'What is not built' paragraph claims: 'inserting the first occurrence of a component type a document does not already have at all... needs header-position knowledge this package does not yet have.' Cross-checked against shared/format-contracts/implementation-evidence/ubl.yaml's own SAL-UBL-OBL-237188D47391391E entry (UBL-EDIT-001), whose implemented_behavior explicitly documents FF6-UBL-EDIT-FIRST-OCCURRENCE-001 and -002 closing exactly this gap earlier this session (schema_root_order() precomputed table, add_component() now uses it, 9 new tests including test_add_component_no_longer_unconditionally_refuses_a_first_occurrence). The README's own claim was written before that work landed and was never updated.",
+    "obligation_targeted": "No specific obligation-register status change -- this closes a gap in the documentation completion-invariant gate itself (product-goal.yaml invariant #4) and fixes a real, affirmatively false claim in previously-published documentation. Matches the precedent already established this session for the nrrd (product-source-task-nrrd-array-measurement-recovery-docs-001) and ora (product-source-task-ora-render-docs-bugfix-001) equivalents.",
+    "planned_paths": ["src/python/ubl/README.md", "reports/certification/ubl/documentation-gate.json"],
+    "input_digests": {"src/python/ubl/README.md": "sha256:2ea224006d79651c5ea3139f4d994cc8f27c6f812c4658879f087a2be372bf37"},
+    "regression_tier": "format (ubl full suite only -- documentation-only change, no source or test file modified, six-format cross-suite not required)",
+    "acceptance_evidence": "Verified the real, current behavior directly before touching the README: loaded samples/by-format/ubl/valid/minimal-invoice.xml (confirmed it has zero PaymentMeans children), built a real XmlNode for a new PaymentMeans component, and called add_component(document, component_name='PaymentMeans', new_component=new_pm) -- a case the README claimed was unconditionally refused. The insertion succeeded (has PaymentMeans after: True) and the result passed validate() (is_valid: True), confirming schema_root_order()-based first-occurrence insertion is genuinely built, tested, and working, not merely claimed in the evidence YAML."
+  },
+  "execution_steps": [
+    "1. Applied the same documentation-freshness check just used for nrrd/ora to ubl, reading the 'Editing core business components' section in full alongside SAL-UBL-OBL-237188D47391391E's own current evidence YAML entry.",
+    "2. Found a direct contradiction: the evidence YAML's implemented_behavior explicitly states first-occurrence insertion is now closed (FF6-UBL-EDIT-FIRST-OCCURRENCE-001/002, schema_root_order() precomputed table, no xmlschema needed at runtime), while the README's own 'What is not built' paragraph still claims it needs 'header-position knowledge this package does not yet have'.",
+    "3. Read add_component()'s current docstring and implementation in full (components.py) to confirm the real current behavior matches the evidence YAML's claim, not the README's.",
+    "4. Verified directly before writing anything: loaded a real corpus document with zero PaymentMeans children, called add_component() with a hand-built XmlNode for a new PaymentMeans, and confirmed the insertion succeeded and the result stayed schema-valid via validate() -- a case the README's own stale text claimed would be refused.",
+    "5. Corrected the README's 'What is not built' paragraph to state the real, narrower remaining gap: add_component() now determines correct ROOT-level position for a first occurrence (no longer unbuilt), but still has no opinion on that component's own INTERNAL field structure for a type the typed model does not otherwise represent -- the caller must still construct new_component's own children directly.",
+    "6. Also updated the preceding paragraph describing add_line/add_component's insertion behavior to mention the first-occurrence case (previously the paragraph only described the already-has-an-occurrence case, silently omitting the first-occurrence path now that it exists).",
+    "7. Spot-checked the rest of the README (grep for 'not currently'/'no support'/'does not support'/'cannot'/'unavailable'/'limitation') for other stale claims -- the remaining hits (validate() not checking mandatory top-level elements; reconcile_invoice not checking arithmetic the XSD cannot express; profile registry immutability) all matched current, verified evidence YAML text, no further staleness found.",
+    "8. Re-verified the existing (unmodified) line-CRUD example block (add_line/move_line/remove_line/renumber_lines) end-to-end against samples/by-format/ubl/valid/multi-line-invoice.xml as a sanity check while in this section -- unchanged, still correct.",
+    "9. Regenerated reports/certification/ubl/documentation-gate.json: readme_line_count 269->278, added a re_run_this_tick entry disclosing the stale-claim finding and fix, regression numbers refreshed from stale 1216 to current 1255 passed.",
+    "10. Did not modify any production source code -- schema_root_order()/add_component() already existed, fully implemented and already tested; this task is purely a documentation-accuracy fix plus its own supporting gate-evidence regeneration.",
+    "11. Ran the full ubl suite (.venv/Scripts/pytest tests/python/ubl/ -q) and ruff check to confirm zero regressions: 1255 passed; ruff clean."
+  ],
+  "allowed_files": [
+    "src/python/ubl/README.md",
+    "reports/certification/ubl/documentation-gate.json"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/README.md",
+    "reports/certification/ubl/documentation-gate.json"
+  ],
+  "tests_run": [
+    "Direct interactive verification: add_component() against a real corpus sample (samples/by-format/ubl/valid/minimal-invoice.xml) inserting a genuinely-absent PaymentMeans component, confirming success and post-insertion schema validity -- the exact scenario the stale README text claimed was refused",
+    ".venv/Scripts/pytest tests/python/ubl/ -q -- 1255 passed (unchanged from pre-task baseline; documentation-only change, no production or test source modified)",
+    "ruff check src/python/ubl/ -- all checks passed (no source changed, sanity confirmation)"
+  ],
+  "ledger_entry_id": "FF6-UBL-FIRST-OCCURRENCE-DOCS-FIX-001",
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "Fixed a real, affirmatively false claim in previously-published documentation (first-occurrence component insertion was claimed unbuilt; it is genuinely built, tested, and working) -- no obligation-register status change, but a real correctness fix preventing a caller from believing a working capability does not exist.",
+    "controller_event_effect": "pending",
+    "certification_state": "3/6 (ipynb, xliff, safetensors CERTIFIED per Event 467; ora/nrrd/ubl remain uncertified -- promotion.* untouched by this task, no fresh explicit user authorization exists this session for nrrd, ora, or ubl)",
+    "obligations_moved": 0,
+    "obligations_narrowed": 0,
+    "obligations_total_for_format": 194,
+    "new_public_api": "none -- corrects a false claim about existing, already-exported, already-implemented API; no new production code"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

@@ -100,26 +100,35 @@ document = remove_component(document, component_name="AllowanceCharge", index=0)
 ```
 
 `add_line`/`add_component` insert immediately after the last existing
-occurrence of the same element -- always schema-position-correct, since
-every repeating component in the pinned UBL 2.3 schema appears as one
-contiguous run at its own declared sequence position, not only lines.
-`replace_party`/`update_component` replace an *already-present*
-occurrence in place; `remove_line`/`remove_component` delete one.
-`renumber_lines` rewrites line identifiers and returns the applied
-old-ID-to-new-ID map, since this package's generic model has no closed
-set of "fields that reference a line" to rewrite on the caller's behalf.
-Every operation raises `UblValidationError` rather than silently
-producing a worse document.
+occurrence of the same element when one is already present --
+always schema-position-correct, since every repeating component in the
+pinned UBL 2.3 schema appears as one contiguous run at its own declared
+sequence position, not only lines. When the document has NO existing
+occurrence of `component_name` at all, `add_component` looks up the
+correct root-level insertion position from the bundled UBL 2.3 schema's
+own declared child order (`schema_root_order`, precomputed for all 91
+known root types -- no `xmlschema` installation needed at runtime) and
+inserts there, proven correct both before an already-present later
+sibling and after an already-present earlier one. `replace_party`/
+`update_component` replace an *already-present* occurrence in place;
+`remove_line`/`remove_component` delete one. `renumber_lines` rewrites
+line identifiers and returns the applied old-ID-to-new-ID map, since this
+package's generic model has no closed set of "fields that reference a
+line" to rewrite on the caller's behalf. Every operation raises
+`UblValidationError` rather than silently producing a worse document.
 
-**What is not built:** inserting the *first* occurrence of a component
-type a document does not already have at all, and creating a brand-new
-`AccountingSupplierParty`/`AccountingCustomerParty` wrapper, both need
-header-position knowledge this package does not yet have. `remove_component`'s
-refusal is exactly as strong as `validate()` itself: `validate()` does not
-currently check for missing mandatory top-level elements, so removing a
-document's only mandatory party wrapper is not refused today -- a
-disclosed limitation of the validator this function composes, not of the
-CRUD operation itself.
+**What is not built:** `add_component` determines correct ROOT-level
+position for a first occurrence, but has no opinion on that component's
+own INTERNAL field structure for a component type this package's typed
+model does not otherwise represent -- building one still requires the
+caller to construct `new_component`'s own children directly, as in the
+example above. Creating a brand-new
+`AccountingSupplierParty`/`AccountingCustomerParty` wrapper is not built.
+`remove_component`'s refusal is exactly as strong as `validate()` itself:
+`validate()` does not currently check for missing mandatory top-level
+elements, so removing a document's only mandatory party wrapper is not
+refused today -- a disclosed limitation of the validator this function
+composes, not of the CRUD operation itself.
 
 ## Cross-field arithmetic reconciliation
 
