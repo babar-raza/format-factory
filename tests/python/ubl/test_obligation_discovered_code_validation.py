@@ -18,10 +18,20 @@ literal "Code", with zero ambiguous cases in the bundled files).
 `discover_codes=True` (opt-in; default is `False`, reproducing the
 original caller-supplied-only behavior exactly) walks a document for
 every one of those 273 element types and validates the ones this
-package has real bundled OASIS genericode data for (11 of the 273) --
-using the element's own local name as an implied default `list_id` only
-when the document itself declares none, and always honoring an
-explicitly-declared list identity over any implied default.
+package has real bundled OASIS genericode data for connectable to an
+element (9 of the 11 bundled lists) -- using the element's own local
+name as an implied default `list_id` only when the document itself
+declares none, and always honoring an explicitly-declared list identity
+over any implied default.
+
+The remaining 2 of the 11 bundled lists (LanguageCode, UnitOfMeasureCode)
+are not element-based at all -- confirmed by direct schema read to be
+carried via the `languageID`/`unitCode` XML attributes on any Text/
+Quantity-typed element (CCTS convention). `discover_codes=True` also
+walks the document for those 2 fixed attribute names directly (see the
+"attribute-carried" tests below); this is a separate, simpler mechanism
+than the 273-element catalogue, since the attribute name itself names
+the list, with no document-declared identity to defer to.
 
 Deliberately NOT attempted here, and not claimed: the other 262
 discoverable element types have no bundled value data at all (a
@@ -92,7 +102,9 @@ def test_the_catalogue_contains_every_bundled_lists_own_element_name() -> None:
     _ELEMENT_NAME_TO_LIST_ID_OVERRIDES); the remaining 2
     (LanguageCode, UnitOfMeasureCode) are carried via XML attributes
     (languageID/unitCode), not elements at all, so they cannot appear in
-    an element-only catalogue by construction, not by omission."""
+    an element-only catalogue by construction, not by omission -- proven
+    connected via the separate attribute-based mechanism instead, in the
+    "Attribute-carried codes" tests below."""
     catalogue = code_bearing_element_qnames()
     local_names = {qn.rsplit("}", 1)[-1] for qn in catalogue}
     attribute_carried = {"LanguageCode", "UnitOfMeasureCode"}
@@ -243,3 +255,104 @@ def test_discover_codes_composes_with_explicit_used_codes() -> None:
 
     diagnostics = _codelist_diagnostics(report)
     assert diagnostics.count("ubl.codelist.invalid") == 2
+
+
+# ── Attribute-carried codes: unitCode / languageID ───────────────────────
+
+
+def _invoice_with_item_name_attrs(item_name_attrs: str = "") -> bytes:
+    """The base fixture's own `cbc:InvoicedQuantity` already carries a
+    valid `unitCode="KGM"`; `cac:Item/cbc:Name` carries no `languageID`
+    by default -- confirmed live against the bundled schema's own
+    `NameType` to accept one."""
+    return _invoice_with_payment_code("<cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>").replace(
+        b"<cac:Item><cbc:Name>Widget</cbc:Name></cac:Item>",
+        f'<cac:Item><cbc:Name {item_name_attrs}>Widget</cbc:Name></cac:Item>'.encode(),
+    )
+
+
+def test_an_invalid_unit_code_attribute_is_discovered_and_reported() -> None:
+    registry = official_code_list_registry()
+    xml = _invoice_with_payment_code("<cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>").replace(
+        b'<cbc:InvoicedQuantity unitCode="KGM">1</cbc:InvoicedQuantity>',
+        b'<cbc:InvoicedQuantity unitCode="NOTAUNIT">1</cbc:InvoicedQuantity>',
+    )
+
+    report = validate_all(xml, code_registry=registry, discover_codes=True)
+
+    assert "ubl.codelist.invalid" in _codelist_diagnostics(report)
+
+
+def test_a_genuinely_valid_unit_code_attribute_is_not_flagged() -> None:
+    """"KGM" (kilogram) is a real member of the bundled
+    UnitOfMeasureCode-2016.gc list -- the base fixture's own default."""
+    registry = official_code_list_registry()
+    xml = _invoice_with_payment_code("<cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>")
+
+    report = validate_all(xml, code_registry=registry, discover_codes=True)
+
+    assert _codelist_diagnostics(report) == []
+
+
+def test_an_invalid_language_id_attribute_is_discovered_and_reported() -> None:
+    registry = official_code_list_registry()
+    xml = _invoice_with_item_name_attrs('languageID="ZZZ_NOT_A_REAL_LANGUAGE"')
+
+    report = validate_all(xml, code_registry=registry, discover_codes=True)
+
+    diagnostics = [d.message for d in report.diagnostics if "codelist" in d.code]
+    assert any("languageID" in message for message in diagnostics)
+
+
+def test_a_genuinely_valid_language_id_attribute_is_not_flagged() -> None:
+    """"EN" is a real member of the bundled LanguageCode-2020.gc list."""
+    registry = official_code_list_registry()
+    xml = _invoice_with_item_name_attrs('languageID="EN"')
+
+    report = validate_all(xml, code_registry=registry, discover_codes=True)
+
+    diagnostics = [d.message for d in report.diagnostics if "codelist" in d.code]
+    assert not any("languageID" in message for message in diagnostics)
+
+
+def test_no_language_id_attribute_present_produces_no_diagnostic_for_it() -> None:
+    """The base fixture's `cbc:Name` carries no `languageID` at all --
+    discovery must not invent a value to check when the attribute is
+    simply absent."""
+    registry = official_code_list_registry()
+    xml = _invoice_with_payment_code("<cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>")
+
+    report = validate_all(xml, code_registry=registry, discover_codes=True)
+
+    diagnostics = [d.message for d in report.diagnostics if "codelist" in d.code]
+    assert not any("languageID" in message for message in diagnostics)
+
+
+def test_attribute_carried_discovery_composes_with_element_based_discovery() -> None:
+    """A bad element-based code (PaymentMeansCode) and a bad
+    attribute-carried code (unitCode) in the same document are both
+    reported together, not just one mechanism's finding."""
+    registry = official_code_list_registry()
+    xml = _invoice_with_payment_code(
+        "<cbc:PaymentMeansCode>NOT_A_REAL_CODE</cbc:PaymentMeansCode>"
+    ).replace(
+        b'<cbc:InvoicedQuantity unitCode="KGM">1</cbc:InvoicedQuantity>',
+        b'<cbc:InvoicedQuantity unitCode="NOTAUNIT">1</cbc:InvoicedQuantity>',
+    )
+
+    report = validate_all(xml, code_registry=registry, discover_codes=True)
+
+    diagnostics = _codelist_diagnostics(report)
+    assert diagnostics.count("ubl.codelist.invalid") == 2
+
+
+def test_discover_codes_defaults_to_false_and_skips_attribute_discovery_too() -> None:
+    registry = official_code_list_registry()
+    xml = _invoice_with_item_name_attrs('languageID="ZZZ_NOT_A_REAL_LANGUAGE"').replace(
+        b'<cbc:InvoicedQuantity unitCode="KGM">1</cbc:InvoicedQuantity>',
+        b'<cbc:InvoicedQuantity unitCode="NOTAUNIT">1</cbc:InvoicedQuantity>',
+    )
+
+    report = validate_all(xml, code_registry=registry)  # discover_codes not passed
+
+    assert _codelist_diagnostics(report) == []

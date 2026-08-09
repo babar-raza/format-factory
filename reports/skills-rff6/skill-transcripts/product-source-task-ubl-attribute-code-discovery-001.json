@@ -1,0 +1,60 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-attribute-code-discovery-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-a3f60700ef2edd6b",
+  "mode": "live",
+  "timestamp": "2026-08-09T10:23:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC-FF6-UBL-ATTRIBUTE-CODE-DISCOVERY-001",
+    "task_kind": "close-a-disclosed-companion-gap-from-the-immediately-prior-slice",
+    "root_cause": "The just-closed UBL discovered-code-validation slice (commit 3e1eb3beb, Event 473) explicitly disclosed, rather than attempted, 2 of the 11 bundled genericode lists (LanguageCode, UnitOfMeasureCode) because they are carried via XML attributes (languageID/unitCode), not elements -- a mechanism code_bearing_element_qnames()'s type-derivation walk cannot reach by construction. That disclosure was itself the scoping for this slice's exact next action.",
+    "obligation_targeted": "SAL-UBL-OBL-788B2748204338B8 (UBL-VALIDATE-001) narrowed further -- all 11 of 11 bundled genericode lists are now connected to a real discovery mechanism (9 element-based + 2 attribute-based). Still not implemented: 262 of 273 discoverable element types remain undata'd (a separate data-acquisition gap, unaffected by this slice).",
+    "acceptance_evidence": "Confirmed directly against BDNDR-CCTS_CCT_SchemaModule-1.1.xsd that languageID (line 297/700) and unitCode (line 543/624) are attributes declared on the Text-derived and Quantity/Measure-derived CCTS base type extensions respectively, reused unqualified on any element whose type extends those bases -- confirmed live via xmlschema against cac:Item/cbc:Name's own NameType, which carries languageID. Added _ATTRIBUTE_NAME_TO_LIST_ID (combined.py) and _discovered_attribute_code_diagnostics(), which walks the document for any node carrying unitCode or languageID and validates the value directly against its bundled list -- simpler than the element mechanism since the attribute name itself names the list, with no document-declared list-identity question to defer to. Wired into validate_all(discover_codes=True) alongside the existing element-based walk."
+  },
+  "execution_steps": [
+    "1. Immediately following commit 3e1eb3beb + FF6-EVENT-000473 (the discovered-code-validation slice), continued the loop per that event's own exact_next_action, which named this attribute-carried gap as candidate (3).",
+    "2. Confirmed the exact schema facts directly rather than trusting the prior slice's own citation from memory: grepped BDNDR-CCTS_CCT_SchemaModule-1.1.xsd for languageID/unitCode, found both declared on CCTS base-type extensions (Text-derived, Quantity/Measure-derived), confirmed via a live xmlschema type lookup that cac:Item/cbc:Name's own NameType genuinely carries a languageID attribute (not merely declared somewhere unreachable).",
+    "3. Confirmed the bundled genericode data's own real values for both lists (UnitOfMeasureCode: 1732 values including 'KGM'; LanguageCode: 671 values including 'EN', not 'en' -- these lists are case-sensitive and not always the expected casing).",
+    "4. Ran tools.governance.skills_first.resolve --operation add_python_api against combined.py; selected the same route/skill (add-python-api, product_backfill, score 9) as every prior slice this session.",
+    "5. Implemented _ATTRIBUTE_NAME_TO_LIST_ID, _attribute_value(), and _discovered_attribute_code_diagnostics() in combined.py, reusing the existing _implied_bundled_defaults() helper (already list-id-keyed, no changes needed) and the existing Code/validate_code plumbing. Wired the new function into validate_all()'s discover_codes branch alongside the existing element-based call. Updated combined.py's own module docstring and the _ELEMENT_NAME_TO_LIST_ID_OVERRIDES comment to state the new mechanism accurately (no longer 'not attempted').",
+    "6. Smoke-tested interactively before writing formal tests: an invalid unitCode is discovered and reported; an invalid languageID (added to cac:Item/cbc:Name) is discovered and reported; a valid languageID produces no diagnostic. All matched expectations on the first attempt.",
+    "7. Extended tests/python/ubl/test_obligation_discovered_code_validation.py (same file as the mechanism it tests) with a new 'Attribute-carried codes' section: invalid/valid unitCode, invalid/valid languageID, absent-attribute silently-skipped, composition with the element-based mechanism in the same document, and discover_codes defaulting to False also skipping attribute discovery. Updated the file's own module docstring and the catalogue-coverage test's docstring to state that all 11 of 11 bundled lists are now connected, 9 one way and 2 the other.",
+    "8. Ran the new tests: 19/19 passed on the first run (no self-inflicted bugs this time, unlike the prior 2 slices this session).",
+    "9. Ran the full tests/python/ubl/ suite (1244 passed, up from 1237, no regressions), then the 6-format FF6 regression (4238 passed, 4 skipped, up from 4231).",
+    "10. Ran ruff check and mypy --strict against combined.py: both clean on the first run.",
+    "11. Built and installed the ubl wheel via tools/run_package_install_proof.py --format ubl (1/1 PASS); additionally installed xmlschema directly into the ephemeral proof venv and independently re-ran the invalid-unitCode/invalid-languageID smoke scenario against the installed, non-editable format_factory.ubl location, confirming both diagnostics fire identically from the installed wheel."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/validation/combined.py",
+    "tests/python/ubl/test_obligation_discovered_code_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/validation/combined.py",
+    "tests/python/ubl/test_obligation_discovered_code_validation.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_discovered_code_validation.py -v -- 19 passed (was 12; 7 new attribute-carried tests, all passed on first run)",
+    ".venv/Scripts/pytest tests/python/ubl/ -q --timeout=120 -- 1244 passed (was 1237)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4238 passed, 4 skipped (was 4231)",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/validation/combined.py tests/python/ubl/test_obligation_discovered_code_validation.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/validation/combined.py -- Success: no issues found in 1 source file",
+    "python tools/run_package_install_proof.py --format ubl -- RESULT: 1/1 PASS; attribute-carried discovery independently re-exercised from the installed wheel's site-packages path with xmlschema installed directly, both invalid-unitCode and invalid-languageID diagnostics confirmed identical to the source-tree behavior"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (UBL-VALIDATE-001) narrows further -- all 11 of 11 bundled genericode lists now connect to a real, tested discovery mechanism (9 element-based, 2 attribute-based). Not promoted to implemented: 262 of 273 discoverable element types remain undata'd (a separate data-acquisition gap).",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); ubl remains UNASSESSED",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "None -- validate_all()'s existing discover_codes= parameter now covers strictly more ground with identical signature; no new exported symbols."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

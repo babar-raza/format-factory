@@ -34,18 +34,30 @@ the list's ShortName directly, 2 more via ``_ELEMENT_NAME_TO_LIST_ID_
 OVERRIDES`` for a confirmed element/ShortName mismatch), an undeclared
 code is validated against that list as an implied default; a document
 that DOES declare list identity explicitly is always honored over any
-implied default. The remaining 2 bundled lists (LanguageCode,
-UnitOfMeasureCode) are carried via XML attributes
-(``languageID``/``unitCode``), not separate elements at all -- a
-genuinely different discovery mechanism this element-only catalogue
-does not attempt; see ``_ELEMENT_NAME_TO_LIST_ID_OVERRIDES``'s own
-comment for the full citation trail.
+implied default.
 
-This closes real, disclosed depth, not the whole obligation: 262 of the
-273 discoverable element types have no bundled value data at all --
+FF6-UBL-VALIDATE-ATTRIBUTE-CODES-001 closes the remaining 2 of the 11
+bundled lists (LanguageCode, UnitOfMeasureCode), confirmed by direct
+schema read (``BDNDR-CCTS_CCT_SchemaModule-1.1.xsd``) to be carried via
+the ``languageID``/``unitCode`` XML attributes on any Text/Quantity
+-typed element (e.g. ``cac:Item/cbc:Name[@languageID]``,
+``cbc:InvoicedQuantity[@unitCode]``), not via a dedicated global element
+at all -- a genuinely different, simpler discovery mechanism than
+``code_bearing_element_qnames``' type-derivation walk: any node in the
+document carrying one of these two fixed attribute names is validated
+against its bundled list directly, since the attribute names themselves
+are self-identifying (unlike an element's ``listID``, there is no
+separate "did the document declare a list identity" question for an
+attribute-carried code). See ``_ATTRIBUTE_NAME_TO_LIST_ID``'s own
+comment for the schema citation.
+
+Together, ``discover_codes=True`` now connects all 11 of the 11 bundled
+OASIS genericode lists to a real discovery mechanism -- 9 element-based,
+2 attribute-based. This closes real, disclosed depth, not the whole
+obligation: 262 of the 273 discoverable *element* types (the
+type-derivation catalogue) have no bundled value data at all --
 sourcing more official code lists (UNTDID, additional ISO/UN registries)
-is a separate data-acquisition undertaking this does not attempt, and
-attribute-carried codes need a separate walker this does not build.
+is a separate data-acquisition undertaking this does not attempt.
 Discovering that an element IS code-bearing (a schema-introspection
 fact) and knowing what values it may legally hold (a data-availability
 fact) are kept honestly distinct throughout.
@@ -62,6 +74,7 @@ from ..model import (
     Code,
     CodeListRegistry,
     UblDocument,
+    XmlNode,
     code_of,
     load_bundled_code_lists,
     local_name,
@@ -125,13 +138,36 @@ def _code_list_diagnostics(
 #: convention), not a separate global `<cbc:LanguageCode>`/
 #: `<cbc:UnitOfMeasureCode>` element -- confirmed directly
 #: (BDNDR-CCTS_CCT_SchemaModule-1.1.xsd's own `languageID`/`unitCode`
-#: attribute declarations). Attribute-carried codes are a genuinely
-#: different discovery mechanism `code_bearing_element_qnames` (element
-#: -only) does not attempt; disclosed, not force-mapped here.
+#: attribute declarations). `code_bearing_element_qnames` (element-only)
+#: cannot discover these; `_ATTRIBUTE_NAME_TO_LIST_ID` below is the
+#: separate, attribute-based mechanism that now connects them instead.
 _ELEMENT_NAME_TO_LIST_ID_OVERRIDES: dict[str, str] = {
     "MimeCode": "BinaryObjectMimeCode",
     "IdentificationCode": "CountryIdentificationCode",
 }
+
+#: `languageID` and `unitCode` are fixed CCTS attribute names, confirmed
+#: directly (BDNDR-CCTS_CCT_SchemaModule-1.1.xsd: `languageID` declared
+#: on the Text-derived extension at line 297/700; `unitCode` declared on
+#: the Quantity/Measure-derived extension at line 543/624) and reused
+#: unqualified on any element whose type extends those base UDTs (e.g.
+#: `cac:Item/cbc:Name[@languageID]`, `cbc:InvoicedQuantity[@unitCode]`,
+#: confirmed via a live xmlschema type lookup against NameType). Unlike
+#: an element's own `listID`, there is no document-declared list
+#: identity to defer to here -- the attribute name itself names the
+#: list, so every occurrence is validated directly against the bundled
+#: list it names.
+_ATTRIBUTE_NAME_TO_LIST_ID: dict[str, str] = {
+    "unitCode": "UnitOfMeasureCode",
+    "languageID": "LanguageCode",
+}
+
+
+def _attribute_value(node: XmlNode, name: str) -> str | None:
+    for key, value in node.attributes:
+        if key == name:
+            return value
+    return None
 
 
 def _implied_bundled_defaults() -> dict[str, tuple[str, str | None, str | None]]:
@@ -183,6 +219,40 @@ def _discovered_code_diagnostics(
     return diagnostics
 
 
+def _discovered_attribute_code_diagnostics(
+    document: UblDocument, registry: CodeListRegistry
+) -> list[Diagnostic]:
+    """Walk every element in `document` carrying `unitCode` or `languageID`,
+    and validate each against its bundled list directly -- the
+    attribute-based counterpart to `_discovered_code_diagnostics`, for the
+    2 bundled lists (`UnitOfMeasureCode`, `LanguageCode`) that are not
+    element-based at all. See this module's own docstring and
+    `_ATTRIBUTE_NAME_TO_LIST_ID`'s own comment for the schema citation."""
+    bundled_defaults = _implied_bundled_defaults()
+    diagnostics: list[Diagnostic] = []
+    for node in document.root.iter():
+        for attribute_name, list_id in _ATTRIBUTE_NAME_TO_LIST_ID.items():
+            value = _attribute_value(node, attribute_name)
+            if value is None:
+                continue
+            defaults = bundled_defaults.get(list_id)
+            if defaults is None:
+                continue  # bundled list not loaded -- nothing to check against
+            _, agency_id, version = defaults
+            code = Code(value, list_id=list_id, list_agency_id=agency_id, list_version_id=version)
+            result = validate_code(registry, code)
+            if result.is_valid is False:
+                diagnostics.append(
+                    Diagnostic(
+                        "ubl.codelist.invalid",
+                        f"{local_name(node.qname)}@{attribute_name} {value!r} "
+                        f"(list {list_id!r}): {result.detail}",
+                        severity=Severity.ERROR,
+                    )
+                )
+    return diagnostics
+
+
 def validate_all(
     source: BinarySource,
     *,
@@ -200,9 +270,10 @@ def validate_all(
     line identifiers), code-list (caller-supplied codes, plus -- when
     `discover_codes=True` and `code_registry` is given -- every
     schema-discoverable code-bearing element this package has bundled data
-    for; see this module's own docstring), pluggable business-rule (a
-    caller-registered profile validator, if one matches the document's own
-    customization ID).
+    for, both element-typed (`listID`-style) and attribute-carried
+    (`unitCode`/`languageID`); see this module's own docstring), pluggable
+    business-rule (a caller-registered profile validator, if one matches
+    the document's own customization ID).
 
     `discover_codes` defaults to `False`: passing neither it nor
     `used_codes` reproduces this function's original code-list behavior
@@ -255,6 +326,7 @@ def validate_all(
             diagnostics.extend(_discovered_code_diagnostics(document, code_registry))
         except SchemaValidationUnavailable:
             pass
+        diagnostics.extend(_discovered_attribute_code_diagnostics(document, code_registry))
 
     if document is not None and profile_registry is not None:
         profile_report = validate_profile(document, profile_registry)

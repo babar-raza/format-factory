@@ -18,6 +18,14 @@
       "truth_boundary": "Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close) 11 obligations across UBL-MODEL-001/PARSE-001/DOCTYPES-001/VALIDATE-001/REF-001/SIGN-001: extends the already-proven cardinality cluster (events 216-223) and element-order cluster (event 231) to a 14th already-modeled component, cac:AllowanceCharge. Surveyed this package's typed model classes (aggregates.py, charges.py, reference.py) for any modeled complexType not yet in _CARDINALITY_CHECKED_COMPONENTS/_ORDER_CHECKED_COMPONENTS and found AllowanceCharge (charges.py), never previously checked by either cluster. Read AllowanceChargeType directly from the pinned OASIS UBL 2.3 CommonAggregateComponents schema (.local/format-contracts/acquired/ubl/src-ubl-002.bin): ChargeIndicator (maxOccurs=1, required) and AllowanceChargeReasonCode/Amount (maxOccurs=1, optional) are the fields this package's own AllowanceCharge dataclass models as single-occurrence, in that declared schema order; AllowanceChargeReason is deliberately excluded from both checks -- the schema declares it minOccurs=0 maxOccurs=UNBOUNDED (genuinely repeatable), even though this package's own AllowanceCharge.reason field models only the first occurrence as a singular value, the same model-scoping question already documented for PaymentMeans.PaymentID and Response.Description elsewhere in this cluster. Added _ALLOWANCE_CHARGE_QNAME/_ALLOWANCE_CHARGE_SINGLE_OCCURRENCE_FIELDS to validator.py and one entry each to _CARDINALITY_CHECKED_COMPONENTS and _ORDER_CHECKED_COMPONENTS, reusing the exact same qname-keyed dispatch pattern proven for every prior component in this cluster. Verified zero false positives against the entire pre-existing 941-test ubl suite before writing a single new test. 8 new tests (tests/python/ubl/test_obligation_allowance_charge_cardinality_and_order_validation.py) prove: a well-formed AllowanceCharge validates cleanly; a duplicate ChargeIndicator and a duplicate Amount are each independently flagged as cardinality violations; Amount before ChargeIndicator and AllowanceChargeReasonCode after Amount are each independently flagged as order violations; a repeated AllowanceChargeReason is correctly NOT flagged (genuinely repeatable); and dumps() refuses an out-of-order document while writing a correctly-ordered one without incident (the same validate()-integration side effect proven for other components in UBL-WRITER-CANONICAL-ORDER-AND-PREFIX-PROOF). ubl suite: 941 -> 949 passed. Narrows all 11 affected obligations' missing_behavior text from \"13 complexTypes\"/\"...ExternalReference's already-modeled...\" to \"14 complexTypes\"/\"...ExternalReference/AllowanceCharge's already-modeled...\", none promoted to implemented (the underlying \"full schema and cardinality/order validation across every UBL complexType\" claim remains a genuinely larger, separate undertaking). NOT backed by an independent reference UBL implementation -- SELF-CONSISTENT format_factory-only evidence per the execution-recovery directive's GAP-008 rule, every declared field/order read directly from the pinned schema, not invented. Covers SAL-UBL-OBL-03AF3A7D3A76F362, SAL-UBL-OBL-3C2E2EA8D3B697C9, SAL-UBL-OBL-783649FDF531B0F9, SAL-UBL-OBL-9736787B52CB148C, SAL-UBL-OBL-9C170E327B30FBD3, SAL-UBL-OBL-26CD31E7F8CF91E1, SAL-UBL-OBL-31DE92275AF5F6EF, SAL-UBL-OBL-3B43504E9C74003C, SAL-UBL-OBL-4936871F9800219B, SAL-UBL-OBL-71FF376D05E7219A, and SAL-UBL-OBL-CDADC5CFB25A9B9E only; it supports no other obligation and promotes no product state."
     },
     {
+      "evidence_id": "UBL-ATTRIBUTE-CODE-DISCOVERY-PROOF",
+      "expected_result": "PASS",
+      "granularity": "suite",
+      "path": "reports/skills-rff6/skill-transcripts/product-source-task-ubl-attribute-code-discovery-001.json",
+      "sha256": "b014c510271fa3bbb6f5028c7d1a10b6dbf96f0ef773fa19b3167001bb3aeaa0",
+      "truth_boundary": "Closes the specific \"different, unbuilt walker\" gap the immediately prior evidence entry (UBL-DISCOVERED-CODE-VALIDATION-PROOF) disclosed rather than attempted. Confirmed directly against BDNDR-CCTS_CCT_SchemaModule-1.1.xsd that `languageID` (line 297/700) and `unitCode` (line 543/624) are attributes declared on the CCTS Text-derived and Quantity/Measure-derived base type extensions respectively, reused unqualified on any element whose type extends those bases -- confirmed live via xmlschema against `cac:Item/cbc:Name`'s own `NameType`, which genuinely carries a `languageID` attribute. `_ATTRIBUTE_NAME_TO_LIST_ID` and `_discovered_attribute_code_diagnostics()` (validation/combined.py) walk the document for any node carrying `unitCode` or `languageID` and validate the value directly against its bundled list -- simpler than the element mechanism since the attribute name itself names the list, with no document-declared list-identity question to defer to. Wired into `validate_all(discover_codes=True)` alongside the existing element-based walk; `discover_codes` still defaults to `False`, unchanged. All 11 of the 11 bundled OASIS genericode lists now connect to a real, tested discovery mechanism (9 element-based, 2 attribute-based), up from 9. 7 new tests (tests/python/ubl/test_obligation_discovered_code_validation.py, same file as the element-based mechanism it complements). ubl suite: 1244 passed (no regressions, up from 1237). 6-format FF6 regression: 4238 passed, 4 skipped (was 4231). mypy --strict and ruff clean. Installed-wheel behavior independently re-verified from the non-editable installed location for both `unitCode` and `languageID` with the optional xmlschema extra present. Narrows SAL-UBL-OBL-788B2748204338B8 (UBL-VALIDATE-001) further; does not promote it to implemented -- 262 of the 273 discoverable element types (the type-derivation catalogue) still have no bundled value data at all, a separate, larger data-acquisition undertaking unaffected by this slice."
+    },
+    {
       "evidence_id": "UBL-BASELINE-SUITE",
       "expected_result": "PASS",
       "granularity": "suite",
@@ -445,7 +453,7 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "41aec8cae7ec194c419ce7ac98ba0b5a3c67db3af0ff2a3c6b2f0e13594f62ab",
-    "implementation_evidence": "ada56db45a6ca06940fdfed551bf73601705842b45b6378081b35dbe3f45f510",
+    "implementation_evidence": "6ba549468932246567a29a112be1eb68ef8fd8f3d791c496320268bc9129bc95",
     "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
     "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
@@ -4157,15 +4165,17 @@
         "UBL-AGGREGATES-CARDINALITY-PROOF",
         "UBL-EXTERNAL-REFERENCE-CARDINALITY-PROOF",
         "UBL-OFFICIAL-SCHEMA-VALIDATION-PROOF",
-        "UBL-DISCOVERED-CODE-VALIDATION-PROOF"
+        "UBL-DISCOVERED-CODE-VALIDATION-PROOF",
+        "UBL-ATTRIBUTE-CODE-DISCOVERY-PROOF"
       ],
       "implemented_behavior": [
         "4 of the 5 named layers exist as separate, independently invokable, diagnostic-returning capabilities rather than one monolithic all-or-nothing check: syntax (XML parse errors), referential (DocumentIndex.duplicate_line_ids), code-list (CodeListRegistry.validate_code), and pluggable business-rule (ProfileValidatorRegistry) are each separately callable and each return structured diagnostics rather than raising. validate() itself returns a ValidationReport rather than an exception, proven directly. The 5th layer, schema/XSD-conformance, is now also fully proven, not just a growing slice: schema_validate() (validation/schema_validator.py) validates raw UBL XML against the real, official OASIS UBL 2.3 schema for any of this package's 91 supported root document types, auto-detecting the type from the document's own root element -- grounded directly in the pinned raw acquisition cache's own official schema distribution (.local/format-contracts/acquired/ubl/src-ubl-002.bin), not the package's own narrower 16-complexType typed-model cardinality checker.",
         "FF6-EVENT-000296: the \"not unified into one combined call\" half of this obligation's own missing_behavior is now closed. validate_all() (validation/combined.py) runs all 5 layers from one source (bytes/path/stream), returning every layer's diagnostics together in one ValidationReport, never stopping at the first error -- exactly the obligation's own wording. The earlier missing_behavior's claim that unifying \"would additionally require a pluggable business-rule mechanism... neither of which exists yet\" was investigated and found wrong: ProfileValidatorRegistry (UBL-PROFILE-001's own already-implemented, already-tested capability) IS the pluggable mechanism the rule_text asks for -- \"pluggable\" describes the mechanism's extensibility, not a requirement to ship a comprehensive default rule set, which would be unscopable for a generic UBL library serving arbitrary jurisdictions/customizations anyway. 11 new tests (test_obligation_unified_validation.py) prove all 5 layers fire correctly, in combination, and that multiple simultaneous violations across different layers are all reported together.",
-        "FF6-EVENT-000473: the code-list layer's own \"no automatic field-by-field code discoverer exists\" gap is now partly closed. code_bearing_element_qnames() (validation/schema_validator.py) mechanically discovers all 273 code-bearing element types across the bundled schema graph via xmlschema type-derivation introspection, confirmed root-independent and confirmed to exclude the one deliberate same-shaped trap (cbc:CodeValue). validate_all(discover_codes=True) (opt-in; default False, unchanged) walks a document for those elements and validates the 9 of 11 this package has real bundled OASIS genericode data for connectable to an element (7 direct element-name matches, 2 via a confirmed, schema-cited element/ShortName override map for MimeCode and IdentificationCode), always honoring an explicitly document-declared list identity over any implied default, and silently skipping elements with no bundled data rather than fabricating a verdict. 12 new tests (test_obligation_discovered_code_validation.py)."
+        "FF6-EVENT-000473: the code-list layer's own \"no automatic field-by-field code discoverer exists\" gap is now partly closed. code_bearing_element_qnames() (validation/schema_validator.py) mechanically discovers all 273 code-bearing element types across the bundled schema graph via xmlschema type-derivation introspection, confirmed root-independent and confirmed to exclude the one deliberate same-shaped trap (cbc:CodeValue). validate_all(discover_codes=True) (opt-in; default False, unchanged) walks a document for those elements and validates the 9 of 11 this package has real bundled OASIS genericode data for connectable to an element (7 direct element-name matches, 2 via a confirmed, schema-cited element/ShortName override map for MimeCode and IdentificationCode), always honoring an explicitly document-declared list identity over any implied default, and silently skipping elements with no bundled data rather than fabricating a verdict. 12 new tests (test_obligation_discovered_code_validation.py).",
+        "FF6-EVENT-000474: the 2 remaining bundled lists (LanguageCode, UnitOfMeasureCode), disclosed as an unbuilt attribute-based mechanism by the immediately prior event, are now also connected. _discovered_attribute_code_diagnostics() (validation/combined.py) walks the document for any node carrying the languageID or unitCode XML attribute (confirmed directly against BDNDR-CCTS_CCT_SchemaModule-1.1.xsd to be CCTS base-type attributes reused across many elements, e.g. cac:Item/cbc:Name[@languageID], cbc:InvoicedQuantity[@unitCode]) and validates the value directly against its bundled list -- no document-declared list-identity question applies here, since the attribute name itself names the list. All 11 of the 11 bundled OASIS genericode lists now connect to a real, tested discovery mechanism. 7 new tests (test_obligation_discovered_code_validation.py)."
       ],
       "missing_behavior": [
-        "discover_codes=True validates only the 9 of 273 discoverable code-bearing element types this package has real bundled OASIS genericode data reachable for -- the other 262 discoverable element types have no bundled value data at all; sourcing more official code lists (UNTDID, additional ISO/UN registries) is a separate, larger data-acquisition undertaking, not a schema-introspection gap, and is not attempted here. 2 further bundled lists (LanguageCode, UnitOfMeasureCode) are carried via XML attributes (languageID/unitCode), not elements at all -- a genuinely different discovery mechanism the current element-only catalogue does not and cannot cover; disclosed in combined.py's own module docstring, not force-mapped. A caller who wants coverage beyond these 9 lists must still supply codes explicitly via `used_codes`."
+        "discover_codes=True validates only the 9 of 273 discoverable *element* code-bearing types (the type-derivation catalogue) this package has real bundled OASIS genericode data reachable for, plus the 2 attribute-carried lists -- the other 262 discoverable element types have no bundled value data at all; sourcing more official code lists (UNTDID, additional ISO/UN registries) is a separate, larger data-acquisition undertaking, not a schema-introspection gap, and is not attempted here. A caller who wants coverage beyond these 11 bundled lists must still supply codes explicitly via `used_codes`."
       ],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
@@ -4180,7 +4190,10 @@
         "tests/python/ubl/test_obligation_unified_validation.py::test_multiple_layer_violations_are_all_reported_together_not_just_the_first",
         "tests/python/ubl/test_obligation_discovered_code_validation.py::test_discover_codes_true_finds_an_invalid_undeclared_code",
         "tests/python/ubl/test_obligation_discovered_code_validation.py::test_the_mime_code_element_name_override_is_applied_behaviorally",
-        "tests/python/ubl/test_obligation_discovered_code_validation.py::test_the_country_identification_code_element_name_override_is_applied_behaviorally"
+        "tests/python/ubl/test_obligation_discovered_code_validation.py::test_the_country_identification_code_element_name_override_is_applied_behaviorally",
+        "tests/python/ubl/test_obligation_discovered_code_validation.py::test_an_invalid_unit_code_attribute_is_discovered_and_reported",
+        "tests/python/ubl/test_obligation_discovered_code_validation.py::test_an_invalid_language_id_attribute_is_discovered_and_reported",
+        "tests/python/ubl/test_obligation_discovered_code_validation.py::test_attribute_carried_discovery_composes_with_element_based_discovery"
       ],
       "obligation_id": "SAL-UBL-OBL-788B2748204338B8",
       "positive_test_selectors": [
@@ -4198,7 +4211,11 @@
         "tests/python/ubl/test_obligation_discovered_code_validation.py::test_discover_codes_defaults_to_false_and_changes_nothing",
         "tests/python/ubl/test_obligation_discovered_code_validation.py::test_discover_codes_true_does_not_flag_a_genuinely_valid_code",
         "tests/python/ubl/test_obligation_discovered_code_validation.py::test_an_element_with_no_bundled_data_and_no_declared_list_is_silently_skipped",
-        "tests/python/ubl/test_obligation_discovered_code_validation.py::test_an_explicitly_declared_list_identity_is_honored_over_the_implied_default"
+        "tests/python/ubl/test_obligation_discovered_code_validation.py::test_an_explicitly_declared_list_identity_is_honored_over_the_implied_default",
+        "tests/python/ubl/test_obligation_discovered_code_validation.py::test_a_genuinely_valid_unit_code_attribute_is_not_flagged",
+        "tests/python/ubl/test_obligation_discovered_code_validation.py::test_a_genuinely_valid_language_id_attribute_is_not_flagged",
+        "tests/python/ubl/test_obligation_discovered_code_validation.py::test_no_language_id_attribute_present_produces_no_diagnostic_for_it",
+        "tests/python/ubl/test_obligation_discovered_code_validation.py::test_discover_codes_defaults_to_false_and_skips_attribute_discovery_too"
       ],
       "proof_requirements": {
         "negative": [
@@ -4218,7 +4235,8 @@
         "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::schema_validate",
         "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py::code_bearing_element_qnames",
         "src/python/ubl/src/format_factory/ubl/validation/combined.py::validate_all",
-        "src/python/ubl/src/format_factory/ubl/validation/combined.py::_discovered_code_diagnostics"
+        "src/python/ubl/src/format_factory/ubl/validation/combined.py::_discovered_code_diagnostics",
+        "src/python/ubl/src/format_factory/ubl/validation/combined.py::_discovered_attribute_code_diagnostics"
       ],
       "status": "partial"
     },
@@ -7665,6 +7683,7 @@
     "reports/skills-rff6/skill-transcripts/build-evidence-ledger-ubl-001.json": "1e7b783cd545d3fcc56de100cfbd37c2d62ad9bf226093f940808de488756200",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-aggregates-cardinality-001.json": "1f526f72c961cbfc6a3a8e2448e9b89f6bda23fad34dc3fa5a100751293cc9be",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-allowance-charge-cardinality-order-001.json": "be3be3c8ddcf5e2bb4c8ba7982e8e93b6c24c1ab788d773b153503dbc7d783e6",
+    "reports/skills-rff6/skill-transcripts/product-source-task-ubl-attribute-code-discovery-001.json": "b014c510271fa3bbb6f5028c7d1a10b6dbf96f0ef773fa19b3167001bb3aeaa0",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-binary-object-checksum-001.json": "621897ca705dd5134d672eaf89bb73d8243a35820d00cc5cad7ece7bafb2a6a7",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-cbc-cac-namespace-001.json": "eccc2e54f8e79a06a1a7612f1408232778432d403e060465cc2bcd0e10b320ee",
     "reports/skills-rff6/skill-transcripts/product-source-task-ubl-codelist-citation-audit-001.json": "e86ec085304fda4650c0a8e685459487d3fdf3ada7c4eab9b5d8b444c2222302",
@@ -7738,7 +7757,7 @@
     "src/python/ubl/src/format_factory/ubl/model/typed.py": "3768fa130256f78078070bc083c3c571d3827e4a8074ffb224b56db5e753a31c",
     "src/python/ubl/src/format_factory/ubl/model/values.py": "4aaa55d4f2c6faa457b1a03ab6bf9a5ff83ffcd7ee90f87c0b649c18b39b642f",
     "src/python/ubl/src/format_factory/ubl/security/limits.py": "95ba5485bad5547fe800d4952518507824e217d15a197df822945f73921afc6d",
-    "src/python/ubl/src/format_factory/ubl/validation/combined.py": "f90ba6d33e38c8ef57ad23cfaafb56d17b1cc448a61436a55f30095a5a3ee8d5",
+    "src/python/ubl/src/format_factory/ubl/validation/combined.py": "5071195faf041d12333acb06f5427fca32817754aa3c02d90ca4a9cb2bb2a99e",
     "src/python/ubl/src/format_factory/ubl/validation/profiles.py": "9be1805b9ea265200e890fc833526dd3589b0be559d61f1d6ba76954f63b0c35",
     "src/python/ubl/src/format_factory/ubl/validation/schema_validator.py": "fff65aa9073e78318c319be6261a528c933a0241b64f16b9a202a3eac7cd38ba",
     "src/python/ubl/src/format_factory/ubl/validation/validator.py": "39b752ce54c8b8d0eb5d7e58fbfa6956a465ede2731ee8541710c02280b823ff",
@@ -7754,7 +7773,7 @@
     "tests/python/ubl/test_obligation_component_removal.py": "3029cd5979ef7d9a8e38ac71ca4e1dbe9e7b6b293e735d3b758caffe0cade9cf",
     "tests/python/ubl/test_obligation_component_update.py": "771cac86fd4727c3503b840ce1688c85efb80391d9e1a3270f935f24b725bbc8",
     "tests/python/ubl/test_obligation_detected_declared_version.py": "303950d7c328d8673c9d6d5546892afdba38c52653a5bb7b45a86eea37ea7991",
-    "tests/python/ubl/test_obligation_discovered_code_validation.py": "48ed35915b2af8999b21dcb737b10bfd6d81f0b9ac81711f963336f4fd5a3c26",
+    "tests/python/ubl/test_obligation_discovered_code_validation.py": "d1c88d7ba35c8335aa25ce5462bdf3cc6449e62e0ff09f27dcf38e4278dea304",
     "tests/python/ubl/test_obligation_document_query.py": "43151bb1577f2c57f8f9782753d37cac8595d3e2efde33bf25d03d71705b3f21",
     "tests/python/ubl/test_obligation_document_type_coverage.py": "8d4b7b1d87b5f9a33cc836139d0c0ceac7656e2e2d5ed8392724cd0a0e17ddba",
     "tests/python/ubl/test_obligation_element_order_validation.py": "54a081993ab5237c7c78f035a9bf7daca90b32aa47c1d9cc7b460c5d88dc3911",
