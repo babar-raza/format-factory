@@ -1,0 +1,57 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-find-qname-migration-wave3-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-8d5ac4834095e4e8",
+  "mode": "live",
+  "timestamp": "2026-08-09T13:10:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC-FF6-UBL-FIND-QNAME-MIGRATION-WAVE3-001",
+    "task_kind": "continue-the-established-multi-wave-find-qname-migration-pattern-wave-3-of-n",
+    "root_cause": "Continuing UBL-PARSE-001's own disclosed call-site migration per the prior tick's own exact_next_action, which named lines.py (18 sites, the smallest of the 3 remaining files after wave 2's corrected count) as the wave-3 target.",
+    "obligation_targeted": "SAL-UBL-OBL-0996E6D7B91D544F (UBL-PARSE-001) narrowed further -- 18 more of the confirmed 61 remaining find()/find_all() call sites are now migrated (36 of ~79 total across 3 waves).",
+    "acceptance_evidence": "Read model/lines.py in full (7 functions: line_item_of, order_line_of, credit_note_line_of, despatch_line_of, document_reference_of, response_of, document_response_of) before migrating anything. Spiked a live xmlschema introspection against the real pinned OASIS UBL 2.3 schema for all 7 relevant complex types (LineItemType, OrderLineType, CreditNoteLineType, DespatchLineType, DocumentReferenceType, ResponseType, DocumentResponseType) to confirm every field's own exact namespace before writing any migration code -- this file genuinely mixes both namespaces (ID/Quantity/LineExtensionAmount/CreditedQuantity/DeliveredQuantity/DocumentTypeCode/ResponseCode/Description are CommonBasicComponents; Item/LineItem/Response/DocumentReference are CommonAggregateComponents aggregates), confirming the pattern established in wave 2 (charges.py) generalizes to files with more functions and more fields. Added a third wrapper, _cac_all() around find_all_qname(), for document_response_of()'s own multiple-DocumentReference lookup (the first migrated call site using find_all_qname in a real function, not just its own dedicated test)."
+  },
+  "execution_steps": [
+    "1. After committing and eventing wave 2 (FF6-EVENT-000483), read lines.py in full before migrating anything, confirming it has 7 distinct functions spanning both CBC leaf fields and CAC aggregate fields.",
+    "2. Spiked a live xmlschema introspection against the real pinned OASIS UBL 2.3 schema for all 7 relevant complex types before writing any migration code, confirming the exact namespace for every one of the ~15 distinct field names this file's own functions look up -- not assumed from naming convention, since some field names (e.g. Item, LineItem, Response, DocumentReference) are aggregates while textually-similar-looking ones (ID, Quantity, Description) are simple leaf values.",
+    "3. Migrated all 18 call sites across all 7 functions, reusing the _cbc()/_cac() wrapper pair established in wave 2, and adding a new _cac_all() wrapper around find_all_qname() for document_response_of()'s own multi-DocumentReference lookup -- the first real (non-test) use of the find_all_qname primitive in this migration.",
+    "4. Ran the file's own full existing downstream test coverage (14 tests across all 7 functions, including a real-document round-trip test) before writing any new test -- all 14 passed unchanged, confirming zero regression including for the find_all_qname-based multi-reference path specifically.",
+    "5. Added one new test (test_a_spoofed_id_sibling_from_an_unrelated_namespace_is_not_projected) proving the migration's own actual security value directly: a spoofed same-local-name ID sibling from an attacker namespace is now correctly ignored by despatch_line_of() itself -- passed on the first run.",
+    "6. Ran ruff check and mypy --strict against lines.py: both clean.",
+    "7. Ran the full ubl suite (1252 passed, up from 1251) and the 6-format FF6 regression (4353 passed, 4 skipped, up from 4352) -- exact +1 delta in both, confirming zero regressions from the migration itself.",
+    "8. Ran the installed-wheel proof (tools/run_package_install_proof.py --format ubl, 1/1 PASS) and independently re-verified the spoofed-ID scenario directly from the installed, non-editable site-packages path."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/model/lines.py",
+    "tests/python/ubl/test_obligation_maindoc_lines.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/model/lines.py",
+    "tests/python/ubl/test_obligation_maindoc_lines.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_maindoc_lines.py -v -- 15 passed (14 pre-existing unchanged, 1 new)",
+    ".venv/Scripts/pytest tests/python/ubl/ -q --timeout=120 -- 1252 passed (was 1251)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4353 passed, 4 skipped (was 4352)",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/model/lines.py tests/python/ubl/test_obligation_maindoc_lines.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/model/lines.py -- Success: no issues found in 1 source file",
+    "python tools/run_package_install_proof.py --format ubl -- RESULT: 1/1 PASS; the spoofed-ID scenario independently re-exercised from the installed, non-editable wheel's own site-packages path"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (UBL-PARSE-001) narrows further -- 18 more call sites migrated (36 of ~79 total across 3 waves), including the migration's first real use of find_all_qname (document_response_of's own multi-DocumentReference lookup). Not promoted to implemented: aggregates.py (21) and party.py (22) remain, 43 sites across 2 files.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); ubl remains UNASSESSED",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "None -- every migrated function's own signature and return type are unchanged; the migration is entirely internal to lines.py."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

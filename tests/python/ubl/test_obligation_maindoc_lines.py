@@ -174,6 +174,27 @@ def test_despatch_line_requires_an_id() -> None:
         despatch_line_of(_cac("DespatchLine", (_item_node(),)))
 
 
+def test_a_spoofed_id_sibling_from_an_unrelated_namespace_is_not_projected() -> None:
+    """FF6-EVENT-000484: despatch_line_of() now uses find_qname() internally
+    (UBL-PARSE-001's own namespace-precise primitive, wave 3 of the ~79
+    disclosed find()/find_all() call sites) -- proven directly that a
+    same-local-name ID sibling from an attacker-controlled namespace is
+    correctly ignored rather than shadowing the real cbc:ID value."""
+    evil = "urn:evil:attacker:namespace"
+    node = _cac(
+        "DespatchLine",
+        (
+            XmlNode.create(f"{{{evil}}}ID", text="SPOOFED-999"),
+            _leaf("ID", "1"),
+            _item_node(),
+        ),
+    )
+
+    line = despatch_line_of(node)
+
+    assert line.id == Identifier("1")
+
+
 # ── cac:DocumentResponse ─────────────────────────────────────────────────
 
 

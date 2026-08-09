@@ -19,6 +19,19 @@ package does not separately model). `cac:LineItem` (OrderLineType's
 required child, itself carrying the identifying/quantity/amount/item
 fields InvoiceLine has) is modeled as its own type, matching the XSD's own
 structure rather than flattening it into OrderLine.
+
+UBL-PARSE-001 (FF6-EVENT-000484): every lookup here is namespace-precise
+via `find_qname`/`find_all_qname`, not `find`/`find_all`'s own
+local-name-only matching -- wave 3 of the ~79 disclosed call sites (wave
+1: reference.py; wave 2: charges.py). Every field's own namespace was
+confirmed directly against the pinned OASIS UBL 2.3 schema
+(LineItemType/OrderLineType/CreditNoteLineType/DespatchLineType/
+DocumentReferenceType/ResponseType/DocumentResponseType, via a live
+xmlschema introspection) before migrating, not assumed: this file mixes
+both namespaces genuinely (ID/Quantity/LineExtensionAmount/
+CreditedQuantity/DeliveredQuantity/DocumentTypeCode/ResponseCode/
+Description are CommonBasicComponents; Item/LineItem/Response/
+DocumentReference are CommonAggregateComponents aggregates).
 """
 
 from __future__ import annotations
@@ -28,8 +41,23 @@ from dataclasses import dataclass
 from ..errors import UblValidationError
 from .aggregates import Item, _require, item_of
 from .document import XmlNode
-from .typed import amount_of, code_of, find, find_all, identifier_of, local_name, quantity_of
+from .typed import amount_of, code_of, find_all_qname, find_qname, identifier_of, local_name, quantity_of
 from .values import Amount, Code, Identifier, Quantity
+
+_CBC_NAMESPACE = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+_CAC_NAMESPACE = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+
+
+def _cbc(node: XmlNode, name: str) -> XmlNode | None:
+    return find_qname(node, _CBC_NAMESPACE, name)
+
+
+def _cac(node: XmlNode, name: str) -> XmlNode | None:
+    return find_qname(node, _CAC_NAMESPACE, name)
+
+
+def _cac_all(node: XmlNode, name: str) -> tuple[XmlNode, ...]:
+    return find_all_qname(node, _CAC_NAMESPACE, name)
 
 
 @dataclass(frozen=True)
@@ -120,13 +148,13 @@ class DocumentResponse:
 def line_item_of(node: XmlNode | None) -> LineItem:
     if node is None:
         raise UblValidationError("cannot project a missing element into a cac:LineItem")
-    item = find(node, "Item")
+    item = _cac(node, "Item")
     if item is None:
         raise UblValidationError("cac:LineItem has no cac:Item")
-    quantity = find(node, "Quantity")
-    amount = find(node, "LineExtensionAmount")
+    quantity = _cbc(node, "Quantity")
+    amount = _cbc(node, "LineExtensionAmount")
     return LineItem(
-        id=identifier_of(find(node, "ID")),
+        id=identifier_of(_cbc(node, "ID")),
         item=item_of(item),
         quantity=quantity_of(quantity) if quantity is not None else None,
         line_extension_amount=amount_of(amount) if amount is not None else None,
@@ -136,7 +164,7 @@ def line_item_of(node: XmlNode | None) -> LineItem:
 def order_line_of(node: XmlNode | None) -> OrderLine:
     if node is None:
         raise UblValidationError("cannot project a missing element into a cac:OrderLine")
-    line_item = find(node, "LineItem")
+    line_item = _cac(node, "LineItem")
     if line_item is None:
         raise UblValidationError(
             f"<{local_name(node.qname)}> has no cac:LineItem"
@@ -149,11 +177,11 @@ def credit_note_line_of(node: XmlNode | None) -> CreditNoteLine:
         raise UblValidationError(
             "cannot project a missing element into a cac:CreditNoteLine"
         )
-    quantity = find(node, "CreditedQuantity")
-    amount = find(node, "LineExtensionAmount")
-    item = find(node, "Item")
+    quantity = _cbc(node, "CreditedQuantity")
+    amount = _cbc(node, "LineExtensionAmount")
+    item = _cac(node, "Item")
     return CreditNoteLine(
-        id=identifier_of(find(node, "ID")),
+        id=identifier_of(_cbc(node, "ID")),
         credited_quantity=quantity_of(quantity) if quantity is not None else None,
         line_extension_amount=amount_of(amount) if amount is not None else None,
         item=item_of(item) if item is not None else None,
@@ -163,23 +191,23 @@ def credit_note_line_of(node: XmlNode | None) -> CreditNoteLine:
 def despatch_line_of(node: XmlNode | None) -> DespatchLine:
     if node is None:
         raise UblValidationError("cannot project a missing element into a cac:DespatchLine")
-    item = find(node, "Item")
+    item = _cac(node, "Item")
     if item is None:
         raise UblValidationError(
             f"<{local_name(node.qname)}> has no cac:Item"
         )
-    quantity = find(node, "DeliveredQuantity")
+    quantity = _cbc(node, "DeliveredQuantity")
     return DespatchLine(
-        id=identifier_of(find(node, "ID")),
+        id=identifier_of(_cbc(node, "ID")),
         item=item_of(item),
         delivered_quantity=quantity_of(quantity) if quantity is not None else None,
     )
 
 
 def document_reference_of(node: XmlNode) -> DocumentReference:
-    code = find(node, "DocumentTypeCode")
+    code = _cbc(node, "DocumentTypeCode")
     return DocumentReference(
-        id=identifier_of(find(node, "ID")),
+        id=identifier_of(_cbc(node, "ID")),
         document_type_code=code_of(code) if code is not None else None,
     )
 
@@ -187,8 +215,8 @@ def document_reference_of(node: XmlNode) -> DocumentReference:
 def response_of(node: XmlNode | None) -> Response | None:
     if node is None:
         return None
-    code = find(node, "ResponseCode")
-    description = find(node, "Description")
+    code = _cbc(node, "ResponseCode")
+    description = _cbc(node, "Description")
     return Response(
         response_code=code_of(code) if code is not None else None,
         description=description.text.strip() if description is not None else None,
@@ -200,7 +228,7 @@ def document_response_of(node: XmlNode | None) -> DocumentResponse:
         raise UblValidationError(
             "cannot project a missing element into a cac:DocumentResponse"
         )
-    response = response_of(find(node, "Response"))
+    response = response_of(_cac(node, "Response"))
     if response is None:
         raise UblValidationError(
             f"<{local_name(node.qname)}> has no cac:Response"
@@ -208,7 +236,7 @@ def document_response_of(node: XmlNode | None) -> DocumentResponse:
     return DocumentResponse(
         response=response,
         document_references=tuple(
-            document_reference_of(child) for child in find_all(node, "DocumentReference")
+            document_reference_of(child) for child in _cac_all(node, "DocumentReference")
         ),
     )
 
