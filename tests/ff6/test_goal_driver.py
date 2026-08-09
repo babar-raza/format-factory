@@ -226,11 +226,16 @@ def test_exit_code_distinguishes_goal_achieved_from_continue(
 def test_real_mission_is_not_finished_and_says_so() -> None:
     result = gd.evaluate()
     assert result["verdict"] == "CONTINUE"
-    assert result["certified_count"] == 0
+    # Not a fixed snapshot: certification progresses over real sessions, so this
+    # checks the qualitative invariant the test name describes (mission ongoing,
+    # not GOAL_ACHIEVED) rather than a literal count that would go stale the
+    # next time a format is certified.
+    assert 0 <= result["certified_count"] < result["required_count"]
     assert result["required_count"] == 6
 
 
 def test_real_resume_briefing_names_the_next_action() -> None:
-    text = gd.render_resume(gd.evaluate())
-    assert "0/6" in text
+    result = gd.evaluate()
+    text = gd.render_resume(result)
+    assert f"{result['certified_count']}/6" in text
     assert "NEXT ACTION" in text

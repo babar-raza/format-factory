@@ -141,11 +141,12 @@ def format_progress(format_id: str, promotion: dict[str, Any]) -> dict[str, Any]
     entry["by_status"] = by_status
     entry["obligations_resolved"] = resolved
     entry["obligations_unresolved"] = unresolved
-    entry["next_step"] = (
-        f"close the remaining {unresolved} unresolved {format_id} obligations"
-        if unresolved
-        else f"{format_id} obligations resolved; run certification gates"
-    )
+    if unresolved:
+        entry["next_step"] = f"close the remaining {unresolved} unresolved {format_id} obligations"
+    elif entry["certified"]:
+        entry["next_step"] = f"{format_id} is certified; no further action required for this format"
+    else:
+        entry["next_step"] = f"{format_id} obligations resolved; run certification gates"
     return entry
 
 
