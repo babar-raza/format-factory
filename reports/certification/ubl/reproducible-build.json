@@ -5,28 +5,28 @@
   "build_1": {
     "ok": true,
     "epoch": "315532800",
-    "seconds": 17.8,
+    "seconds": 16.4,
     "artifacts": {
-      "format_factory_ubl-0.2.0.dev0-py3-none-any.whl": "718fceb73655d8a070edeb46fe957287637f9d3c4b0c10764543d63a6349341b",
-      "format_factory_ubl-0.2.0.dev0.tar.gz": "603054f002f56f98298241da95d768d51d003160cfd851ca19f0f7c981cd384f"
+      "format_factory_ubl-0.2.0.dev0-py3-none-any.whl": "be551f1fc988969a916ff46706c5bddef6c441ab013b20eb75be5472c50ee860",
+      "format_factory_ubl-0.2.0.dev0.tar.gz": "b550b2dceba2cf89261b368b9aeed528d73c150284ee1330fc7ee551a0fc2f36"
     }
   },
   "build_2": {
     "ok": true,
     "epoch": "315532800",
-    "seconds": 15.9,
+    "seconds": 15.6,
     "artifacts": {
-      "format_factory_ubl-0.2.0.dev0-py3-none-any.whl": "718fceb73655d8a070edeb46fe957287637f9d3c4b0c10764543d63a6349341b",
-      "format_factory_ubl-0.2.0.dev0.tar.gz": "603054f002f56f98298241da95d768d51d003160cfd851ca19f0f7c981cd384f"
+      "format_factory_ubl-0.2.0.dev0-py3-none-any.whl": "be551f1fc988969a916ff46706c5bddef6c441ab013b20eb75be5472c50ee860",
+      "format_factory_ubl-0.2.0.dev0.tar.gz": "b550b2dceba2cf89261b368b9aeed528d73c150284ee1330fc7ee551a0fc2f36"
     }
   },
   "build_control": {
     "ok": true,
     "epoch": "1600000000",
-    "seconds": 15.5,
+    "seconds": 15.4,
     "artifacts": {
-      "format_factory_ubl-0.2.0.dev0-py3-none-any.whl": "136b35c6f317e4419f4a47328e4b1301a0b67e9ecc6af936b83f9588e54d30a4",
-      "format_factory_ubl-0.2.0.dev0.tar.gz": "ad683a75f1c6bffaaa6ac575f6456bdb89fb23bb86eddaf5641d5f93c61fdc89"
+      "format_factory_ubl-0.2.0.dev0-py3-none-any.whl": "eda1ef0e2cf03c61bf2b1b5041ed9c09016fa04a94288ac5a30a5f9617433eb7",
+      "format_factory_ubl-0.2.0.dev0.tar.gz": "109a8b6ee1e20318cf1c2e98c18fc23bbd1c0551da6bd2ffc97e4ca889b2d879"
     }
   },
   "artifacts_identical_across_two_builds": true,
@@ -36,5 +36,7 @@
   },
   "comparison_proven_sensitive": true,
   "reproducible": true,
-  "verdict": "REPRODUCIBLE"
+  "verdict": "REPRODUCIBLE",
+  "re_run_this_tick": "Re-ran fresh against current HEAD (post this session's own UBL-PARSE-001/UBL-EDIT-001/UBL-UPGRADE-001/UBL-WRITE-001 obligation work plus this tick's own README/CHANGELOG documentation additions): wheel_sha256 changed from the prior 718fceb73655d8a070edeb46fe957287637f9d3c4b0c10764543d63a6349341b to be551f1fc988969a916ff46706c5bddef6c441ab013b20eb75be5472c50ee860 -- byte-for-byte IDENTICAL to the wheel independently built by this same tick's own installed-wheel-gate.json (post its own final README/CHANGELOG-triggered re-run), confirming ubl's cross-confirmation continues to hold after this session's substantial growth. Reproducibility itself re-confirmed unchanged: build_1 == build_2, both differ from build_control (epoch-sensitivity still proven).",
+  "commit": "pending"
 }

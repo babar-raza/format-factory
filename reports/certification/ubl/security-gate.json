@@ -13,9 +13,10 @@
   "prior_art": "UBL-SEC-001's own obligation (prevent path traversal and unapproved absolute-path access when resolving any detached/referenced resource) already has a substantial, pre-existing dedicated test file: tests/python/ubl/test_obligation_security_baseline.py, plus a second dedicated file tests/python/ubl/test_obligation_namespace_shadowing_security.py. This gate adds the one narrow gap neither already provides: bare eval/exec/compile/__import__ builtin calls, which import-based AST scanning does not detect -- the identical, now third-times-applied fix already made for nrrd's own equivalent gap this session.",
   "new_tests": "tests/python/ubl/test_obligation_security_eval_exec_sweep.py (2 tests, all new -- a separate file from both pre-existing security test files, not a modification of either)",
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the security invariant only, not a certification claim for the format as a whole.",
+  "re_run_this_tick": "Re-verified fresh against current HEAD (post this session's own UBL-PARSE-001/UBL-EDIT-001/UBL-UPGRADE-001/UBL-WRITE-001 obligation work): all 3 dedicated security test files (test_obligation_security_baseline.py, test_obligation_namespace_shadowing_security.py, test_obligation_security_eval_exec_sweep.py) re-run together (20 passed). Directly grepped the new migration.py and generated _generated/migratable_2_1_roots.py source for every forbidden import/call pattern (networking, subprocess, dynamic import, eval/exec/compile/__import__): zero matches -- the new version-migration capability introduces no new attack surface.",
   "regression": {
-    "ubl_suite": "1178 passed (was 1176, +2)",
-    "six_format_suite": "3940 passed, 4 skipped, 0 failed"
+    "ubl_suite": "1733 passed (was 1178; +555 net from this session's obligation-closure work)",
+    "six_format_suite": "4854 passed, 4 skipped, 0 failed"
   },
   "commit": "pending"
 }

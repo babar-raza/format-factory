@@ -2,24 +2,24 @@
   "format_id": "ubl",
   "gate": "independent-repository-extraction",
   "source_dir": "src/python/ubl",
-  "isolated_location": "C:\\Users\\prora\\AppData\\Local\\Temp\\ff6-independent-repo-ubl-o9714vq5\\ubl",
-  "source_file_count": 187,
+  "isolated_location": "C:\\Users\\prora\\AppData\\Local\\Temp\\ff6-independent-repo-ubl-6r5dlpi9\\ubl",
+  "source_file_count": 194,
   "source_preserved_byte_identical": true,
   "build_epoch": "315532800",
   "isolated_build": {
     "ok": true,
-    "seconds": 15.4,
+    "seconds": 15.5,
     "artifacts": {
-      "format_factory_ubl-0.2.0.dev0-py3-none-any.whl": "718fceb73655d8a070edeb46fe957287637f9d3c4b0c10764543d63a6349341b",
-      "format_factory_ubl-0.2.0.dev0.tar.gz": "603054f002f56f98298241da95d768d51d003160cfd851ca19f0f7c981cd384f"
+      "format_factory_ubl-0.2.0.dev0-py3-none-any.whl": "be551f1fc988969a916ff46706c5bddef6c441ab013b20eb75be5472c50ee860",
+      "format_factory_ubl-0.2.0.dev0.tar.gz": "b550b2dceba2cf89261b368b9aeed528d73c150284ee1330fc7ee551a0fc2f36"
     }
   },
   "in_place_build": {
     "ok": true,
-    "seconds": 17.3,
+    "seconds": 16.8,
     "artifacts": {
-      "format_factory_ubl-0.2.0.dev0-py3-none-any.whl": "718fceb73655d8a070edeb46fe957287637f9d3c4b0c10764543d63a6349341b",
-      "format_factory_ubl-0.2.0.dev0.tar.gz": "603054f002f56f98298241da95d768d51d003160cfd851ca19f0f7c981cd384f"
+      "format_factory_ubl-0.2.0.dev0-py3-none-any.whl": "be551f1fc988969a916ff46706c5bddef6c441ab013b20eb75be5472c50ee860",
+      "format_factory_ubl-0.2.0.dev0.tar.gz": "b550b2dceba2cf89261b368b9aeed528d73c150284ee1330fc7ee551a0fc2f36"
     }
   },
   "package_digests_preserved": true,
@@ -28,8 +28,8 @@
   "invariant_text": "Every distribution extracts to an independent repository with preserved canonical source and package digests.",
   "invariant_source": "plans/strategic/ff6/product-goal.yaml completion_invariants",
   "tool": "tools/certification/independent_repository_extraction_gate.py --format ubl",
-  "method": "Copied src/python/ubl/ verbatim (186 files, excluding build/.pytest_cache/etc.) into a fresh OS-temp directory with no ancestor relationship to this repository, confirmed byte-identical against the original, built a wheel+sdist from that isolated copy with its own cwd (never this repository root), built a second wheel+sdist from the in-place source at the same pinned SOURCE_DATE_EPOCH, and compared artifact digests.",
-  "note": "Clean on the first run for THIS gate, despite this format's own build/ directory having 155 stray files (the most of any FF6 format) -- the fix already applied to this gate's own _build() clears it before comparing. Separately, this format's own PRE-EXISTING reports/certification/ubl/reproducible-build.json was found stale and was refreshed this same tick using the now-fixed reproducible_build_gate.py -- the two now agree exactly. This file ORIGINALLY also recorded a THIRD, separate finding here about tools/run_package_install_proof.py producing a different wheel digest than this gate and reproducible_build_gate.py, attributed at the time to a build-environment interpreter-pinning inconsistency (system python vs .venv python) -- that theory is RETRACTED (see reports/certification/ubl/installed-wheel-gate.json's own retraction text): the real cause was packaging/python/package-matrix.yaml's own ubl entry pointing at the deprecated legacy shim, not an interpreter-pinning issue at all. Once that matrix entry was fixed at Event 327/442-era work, all three tools (this gate, reproducible_build_gate.py, and run_package_install_proof.py) now agree on an identical digest regardless of interpreter. This is one of product-goal.yaml's own completion invariants, separate from the 10-item gate list (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build). Not a certification claim -- the other outstanding program-wide invariant (all-six-co-install, already separately satisfied at FF6-EVENT-000322) and this format's own remaining obligation/gate work are tracked independently.",
-  "re_run_this_tick": "FF6-EVENT-000451: independently re-ran this gate fresh, completing all 11 gate slots for ubl AND the entire nrrd/ora/ubl gate sweep (Events 419-451). Verdict unchanged: EXTRACTS_INDEPENDENTLY. source_file_count grew from 186 to 187 (matching the same +1 growth already confirmed for this format's own typing-gate at Event 447). The fresh wheel_sha256 (718fceb73655d8a070edeb46fe957287637f9d3c4b0c10764543d63a6349341b) is byte-for-byte IDENTICAL to the wheel independently built by both the installed-wheel gate (Event 442) and reproducible-build gate (Event 449) -- ubl reaches the same full 3-tool cross-confirmation already demonstrated for all 5 other FF6 formats, and this fresh match further reinforces that the old interpreter-pinning theory (corrected above) was genuinely a red herring, not a still-open finding. Found and corrected the stale, pre-retraction 'third open finding' text above (this file's own copy of the retracted claim had never been updated to match the correction already made in installed-wheel-gate.json) while merging the fresh technical data by hand, preserving all other pre-existing narrative content.",
+  "method": "Copied src/python/ubl/ verbatim (194 files, excluding build/.pytest_cache/etc.) into a fresh OS-temp directory with no ancestor relationship to this repository, confirmed byte-identical against the original, built a wheel+sdist from that isolated copy with its own cwd (never this repository root), built a second wheel+sdist from the in-place source at the same pinned SOURCE_DATE_EPOCH, and compared artifact digests.",
+  "note": "This is one of product-goal.yaml's own completion invariants, separate from the 10-item gate list (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build). Not a certification claim -- the other outstanding program-wide invariant (all-six-co-install, already separately satisfied) and this format's own remaining obligation/gate work are tracked independently.",
+  "re_run_this_tick": "Re-ran fresh against current HEAD (post this session's own UBL-PARSE-001/UBL-EDIT-001/UBL-UPGRADE-001/UBL-WRITE-001 obligation work plus this tick's own README/CHANGELOG documentation additions): source_file_count rose from 187 to 194 -- 7 new files, confirmed via git log --diff-filter=A against this session's own commits: migration.py, _generated/migratable_2_1_roots.py + its own manifest, _generated/schema_root_order.py + its own manifest, and the two dev-time generator scripts under tools/ (generate_migratable_2_1_roots.py, generate_schema_root_order.py) -- genuine source growth, not drift. wheel_sha256 changed to be551f1fc988969a916ff46706c5bddef6c441ab013b20eb75be5472c50ee860, byte-for-byte IDENTICAL to the wheel independently built by both the installed-wheel gate and reproducible-build gate this same tick -- ubl's 3-tool cross-confirmation continues to hold after this session's substantial growth.",
   "commit": "pending"
 }

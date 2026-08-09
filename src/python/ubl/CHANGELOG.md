@@ -29,3 +29,17 @@ generated_by: codex
   (`add_line`, `remove_line`, `move_line`, `renumber_lines`, `replace_party`,
   `update_component`, `add_component`, `remove_component`) with
   schema-order-preserving inserts and validation-preserving refusal.
+- Add cross-field arithmetic reconciliation (`reconcile_invoice`) checking
+  invoice-line-sum, tax-subtotal-sum, and allowance/charge totals against
+  their declared `LegalMonetaryTotal`/`TaxTotal` values -- checks the XSD
+  structurally cannot express.
+- Add opt-in extension content decoding (`ExtensionAdapterRegistry`,
+  `decode_extension`) for foreign-namespace `ExtensionContent` payloads,
+  with an explicit unknown-adapter state rather than a guess.
+- Add opt-in profile-specific validation (`ProfileValidatorRegistry`,
+  `validate_profile`) keyed by `cbc:CustomizationID`, with an immutable
+  registry and a `None` result that is never mistaken for a passing report.
+- Add UBL 2.1-to-2.3 version migration (`migrate_document`,
+  `MigrationReport`) for the 65 of 91 document roots whose UBL 2.1 schema
+  differs from 2.3 only by optional additions and cardinality widenings,
+  gated on re-validation against the stable 2.3 profile before relabeling.

@@ -234,6 +234,38 @@ declares: `None` is not evidence of conformance, it means no
 profile-specific ruleset ran at all, and a caller must not read it as
 "passed."
 
+## Version migration
+
+`dumps()` refuses to serialize a document that does not declare the
+stable UBL 2.3 profile -- older documents must be migrated first, not
+silently relabeled. `migrate_document()` supports only the UBL 2.1-to-2.3
+direction, the one pair this package has an acquired, diffed authority
+source for (a direct structural diff of the official OASIS UBL 2.1 and
+2.3 release packages): of UBL 2.3's 91 root document types, exactly 65
+had a UBL 2.1 schema that differs from 2.3 only by optional additions and
+cardinality widenings, never a removal or a tightening, so a valid UBL
+2.1 document of one of those 65 types is already valid 2.3 *content* --
+migration only relabels `cbc:UBLVersionID`, and only after re-validating
+the relabeled result against the stable 2.3 profile:
+
+```python
+from format_factory.ubl import load, migrate_document, dumps
+
+document = load(path.read_bytes())          # declared_version == "2.1"
+migrated, report = migrate_document(document)
+print(report.note)                          # what changed and why it's safe
+output = dumps(migrated)                     # declared_version == "2.3"
+```
+
+`migrate_document()` raises `UblValidationError` -- never returns a
+partially-migrated result -- when the document does not declare UBL 2.1,
+when its root type is not one of the 65 additive/relaxing-only types, or
+when the relabeled result fails `validate()`. The other 26 UBL 2.3 root
+types (for example `BusinessCard`, `ImportCustomsDeclaration`) never had
+a UBL 2.1 schema at all and are refused, not silently attempted. The
+source `document` is never mutated; `migrate_document()` always returns a
+new object plus a `MigrationReport` recording what was checked.
+
 ## Official OASIS sample corpus
 
 ```python

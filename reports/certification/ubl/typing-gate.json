@@ -3,15 +3,16 @@
   "gate": "typing",
   "tool": "mypy --strict",
   "target": "src/python/ubl/src/format_factory/ubl",
-  "source_files_checked": 39,
+  "source_files_checked": 42,
   "errors_found": 0,
   "status": "PASS",
   "verdict": "PASS",
-  "note": "Zero errors across all 39 source files under mypy --strict. This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the typing invariant only, not a certification claim for the format as a whole. Follows the exact same gate pattern already established for ipynb/safetensors/xliff/ora/nrrd.",
+  "note": "Zero errors across all 42 source files under mypy --strict. This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the typing invariant only, not a certification claim for the format as a whole. Follows the exact same gate pattern already established for ipynb/safetensors/xliff/ora/nrrd.",
   "re_run_this_tick": "FF6-EVENT-000447: independently re-ran mypy --strict fresh, continuing the ubl leg of the nrrd/ora/ubl gate sweep. Result: 0 errors, unchanged -- but source_files_checked grew from 38 to 39 (confirmed via a direct filesystem count of *.py files, matching mypy's own count exactly), reflecting this session's own real ubl growth (extension adapters, profile validators). Updated the count to reflect current HEAD.",
+  "re_run_this_tick_2": "Re-ran fresh against current HEAD (post this session's own UBL-PARSE-001/UBL-EDIT-001/UBL-UPGRADE-001/UBL-WRITE-001 obligation work): source_files_checked rose from 39 to 42 (migration.py plus the generated _generated/migratable_2_1_roots.py and its own package __init__.py, all added this session -- genuine source growth, not drift), zero errors. The new migrate_document()/MigrationReport/MIGRATABLE_2_1_ROOT_NAMES additions all typecheck cleanly under --strict.",
   "regression": {
-    "ubl_suite": "1176 passed (unchanged by this check)",
-    "six_format_suite": "3940 passed, 4 skipped, 0 failed"
+    "ubl_suite": "1733 passed, 0 failed",
+    "six_format_suite": "4854 passed, 4 skipped, 0 failed"
   },
   "commit": "pending"
 }
