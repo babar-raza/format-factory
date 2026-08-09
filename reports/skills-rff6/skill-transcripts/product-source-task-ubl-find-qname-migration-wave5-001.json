@@ -1,0 +1,60 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-find-qname-migration-wave5-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-571768b6c7d72b90",
+  "mode": "live",
+  "timestamp": "2026-08-09T13:48:23Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC-FF6-UBL-FIND-QNAME-MIGRATION-WAVE5-001",
+    "task_kind": "complete-the-established-multi-wave-find-qname-migration-pattern-final-wave",
+    "root_cause": "Completing UBL-PARSE-001's own disclosed call-site migration per the prior tick's own exact_next_action, which named party.py (22 sites, the sole remaining file) as the final wave.",
+    "obligation_targeted": "SAL-UBL-OBL-0996E6D7B91D544F (UBL-PARSE-001) narrowed further -- the last 22 of the confirmed 79 call sites are now migrated, bringing the internal migration to 100% completion (79 of 79).",
+    "acceptance_evidence": "Read model/party.py in full (7 functions: country_of, postal_address_of, party_identification_of, party_name_of, contact_of, tax_scheme_of, party_tax_scheme_of, party_of) before migrating anything. Spiked a live xmlschema introspection against the real pinned OASIS UBL 2.3 schema for AddressType, CountryType, PartyIdentificationType, PartyNameType, ContactType, TaxSchemeType, PartyTaxSchemeType, and PartyType before writing any migration code -- independently cross-checked against this module's own pre-existing test fixtures (every _leaf() call is CBC, every _cac() call is CAC), both agreeing exactly: every field is CommonBasicComponents except PostalAddress's own cac:Country, PartyTaxScheme's own cac:TaxScheme, and Party's own 5 named child-element kinds, all CommonAggregateComponents aggregates. After migrating, ran a full-package grep across every file in model/ (not just the 5 files touched across all 5 waves) and confirmed zero remaining bare find()/find_all() call sites of this package's own primitive anywhere in product code -- only the primitive definitions themselves (model/typed.py's own find()/find_all()), prose/docstring references, query.py's own deliberately-separate local-name-only by_local_name() API (not a migration target -- UBL-QUERY-001's own distinct, intentional local-name-matching surface), and genericode.py's unrelated stdlib xml.etree.ElementTree calls remain. This is the migration's closing verification: all 79 disclosed call sites across reference.py (5), charges.py (13), lines.py (18), aggregates.py (21), and party.py (22) are now migrated."
+  },
+  "execution_steps": [
+    "1. After committing and eventing wave 4 (FF6-EVENT-000485), read party.py in full before migrating anything, confirming it has 7 functions spanning both CBC leaf fields and CAC aggregate fields.",
+    "2. Spiked a live xmlschema introspection against the real pinned OASIS UBL 2.3 schema for AddressType, CountryType, PartyIdentificationType, PartyNameType, ContactType, TaxSchemeType, PartyTaxSchemeType, and PartyType before writing any migration code, cross-checking the result against this module's own pre-existing test fixtures' _leaf()/_cac() usage -- both sources agreed exactly on every field's namespace.",
+    "3. Migrated all 22 call sites across all 7 functions, reusing the _cbc()/_cac()/_cac_all() wrapper pattern established in waves 2-4.",
+    "4. Ran the file's own full existing downstream test coverage (30 tests across 2 files: aggregate projection/construction and cardinality validation) BEFORE writing any new test -- all 30 passed unchanged, confirming zero regression.",
+    "5. Added one new test proving the migration's own actual security value directly: a spoofed same-local-name PartyName sibling from an attacker namespace is now correctly excluded from party_of()'s own party_names projection -- passed on the first run.",
+    "6. Ran ruff check and mypy --strict against party.py and the test file: both clean.",
+    "7. Ran the full ubl suite (1254 passed, up from 1253) and the 6-format FF6 regression (4355 passed, 4 skipped, up from 4354) -- exact +1 delta in both, confirming zero regressions from the migration itself.",
+    "8. Ran a full-package grep across every .py file in model/ for bare find()/find_all() calls of this package's own primitive, confirming zero remain -- only the primitive definitions in typed.py, prose references, query.py's own deliberately separate local-name-only API, and genericode.py's unrelated stdlib ElementTree calls remain. This confirms the migration is genuinely complete, not merely narrowed further.",
+    "9. Ran the installed-wheel proof (tools/run_package_install_proof.py --format ubl, 1/1 PASS) and independently re-verified the spoofed-sibling scenario directly from the installed, non-editable site-packages path."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/model/party.py",
+    "tests/python/ubl/test_obligation_party_and_postal_address.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/model/party.py",
+    "tests/python/ubl/test_obligation_party_and_postal_address.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_party_and_postal_address.py tests/python/ubl/test_obligation_party_cardinality_validation.py -v -- 30 passed (all pre-existing unchanged, before the new test was added)",
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_party_and_postal_address.py -v -- 20 passed (19 pre-existing unchanged, 1 new)",
+    ".venv/Scripts/pytest tests/python/ubl/ -q --timeout=120 -- 1254 passed (was 1253)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4355 passed, 4 skipped (was 4354)",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/model/party.py tests/python/ubl/test_obligation_party_and_postal_address.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/model/party.py -- Success: no issues found in 1 source file",
+    "python tools/run_package_install_proof.py --format ubl -- RESULT: 1/1 PASS; the spoofed-sibling scenario independently re-exercised from the installed, non-editable wheel's own site-packages path",
+    "grep -rn bare find(/find_all( across src/python/ubl/src/format_factory/ubl/ -- zero remaining call sites of this package's own primitive outside typed.py's own definitions, prose, query.py's deliberately separate API, and genericode.py's unrelated stdlib calls"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (UBL-PARSE-001) narrows further -- the internal find()/find_all()-to-find_qname()/find_all_qname() call-site migration is now 100% complete (79 of 79 disclosed sites across 5 files). Obligation status remains partial, NOT promoted to implemented: the rule_text demands 'reject namespace spoofing ... with diagnostics', which is provided by validate()'s own structural-signature detection, a separate call a caller must invoke -- find() itself remains directly callable and naively vulnerable if used without validating first (an existing, deliberately documented negative test: test_find_itself_is_still_naively_vulnerable_a_known_documented_caveat). The release_gate ('All specification document roots recognized by QName with namespace-variation tests') is a distinct, unverified axis this wave does not address. Promoting to implemented would require closing both gaps, not attempted in this tick.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); ubl remains UNASSESSED",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "None -- every migrated function's own signature and return type are unchanged; the migration is entirely internal to party.py."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

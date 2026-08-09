@@ -249,6 +249,27 @@ def test_party_of_returns_none_for_a_missing_node() -> None:
     assert party_of(None) is None
 
 
+def test_a_spoofed_party_name_sibling_from_an_unrelated_namespace_is_not_projected() -> None:
+    """FF6-EVENT-000486: party_of() now uses find_qname()/find_all_qname()
+    internally (UBL-PARSE-001's own namespace-precise primitive, wave 5 --
+    the final wave -- of the ~79 disclosed find()/find_all() call sites) --
+    proven directly that a same-local-name PartyName sibling from an
+    attacker-controlled namespace is correctly excluded from projection
+    rather than being counted alongside the real cac:PartyName."""
+    evil = "urn:evil:attacker:namespace"
+    node = XmlNode.create(
+        "{" + CAC + "}Party",
+        children=(
+            XmlNode.create(f"{{{evil}}}PartyName", children=(_leaf("Name", "Spoofed Corp"),)),
+            _cac("PartyName", (_leaf("Name", "Acme Corp"),)),
+        ),
+    )
+
+    party = party_of(node)
+
+    assert party.party_names == (PartyName(name="Acme Corp"),)
+
+
 def test_multiple_party_identifications_and_names_are_each_preserved() -> None:
     node = _cac(
         "Party",

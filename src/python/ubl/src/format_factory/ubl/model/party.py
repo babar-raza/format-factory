@@ -20,6 +20,20 @@ each as a thin leaf-level aggregate. Deeper nested structures the contract
 does not separately name (e.g. `cac:RegistrationAddress` inside
 `cac:PartyTaxScheme`, itself another PostalAddress) are not modeled, the
 same honest-narrowing discipline already applied elsewhere in this package.
+
+UBL-PARSE-001 (FF6-EVENT-000486): every lookup here is namespace-precise via
+`find_qname`/`find_all_qname`, not `find`/`find_all`'s own local-name-only
+matching -- wave 5, the final wave of the ~79 disclosed call sites (wave 1:
+reference.py; wave 2: charges.py; wave 3: lines.py; wave 4: aggregates.py).
+Every field's own namespace was confirmed directly against the pinned OASIS
+UBL 2.3 schema (AddressType/CountryType/PartyIdentificationType/
+PartyNameType/ContactType/TaxSchemeType/PartyTaxSchemeType/PartyType, via a
+live xmlschema introspection) before migrating, and independently against
+this module's own pre-existing test fixtures (every `_leaf()` call is CBC,
+every `_cac()` call is CAC): every field is CommonBasicComponents except
+PostalAddress's own `cac:Country`, PartyTaxScheme's own `cac:TaxScheme`, and
+Party's own 5 named child-element kinds, all CommonAggregateComponents
+aggregates.
 """
 
 from __future__ import annotations
@@ -29,8 +43,23 @@ from dataclasses import dataclass
 from ..errors import UblValidationError
 from .aggregates import _require
 from .document import XmlNode
-from .typed import code_of, find, find_all, identifier_of, local_name
+from .typed import code_of, find_all_qname, find_qname, identifier_of, local_name
 from .values import Code, Identifier
+
+_CBC_NAMESPACE = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+_CAC_NAMESPACE = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+
+
+def _cbc(node: XmlNode, name: str) -> XmlNode | None:
+    return find_qname(node, _CBC_NAMESPACE, name)
+
+
+def _cac(node: XmlNode, name: str) -> XmlNode | None:
+    return find_qname(node, _CAC_NAMESPACE, name)
+
+
+def _cac_all(node: XmlNode, name: str) -> tuple[XmlNode, ...]:
+    return find_all_qname(node, _CAC_NAMESPACE, name)
 
 
 def _text_or_none(node: XmlNode | None) -> str | None:
@@ -123,10 +152,10 @@ class Party:
 def country_of(node: XmlNode | None) -> Country | None:
     if node is None:
         return None
-    code = find(node, "IdentificationCode")
+    code = _cbc(node, "IdentificationCode")
     return Country(
         identification_code=code_of(code) if code is not None else None,
-        name=_text_or_none(find(node, "Name")),
+        name=_text_or_none(_cbc(node, "Name")),
     )
 
 
@@ -134,15 +163,15 @@ def postal_address_of(node: XmlNode | None) -> PostalAddress | None:
     if node is None:
         return None
     return PostalAddress(
-        street_name=_text_or_none(find(node, "StreetName")),
-        city_name=_text_or_none(find(node, "CityName")),
-        postal_zone=_text_or_none(find(node, "PostalZone")),
-        country=country_of(find(node, "Country")),
+        street_name=_text_or_none(_cbc(node, "StreetName")),
+        city_name=_text_or_none(_cbc(node, "CityName")),
+        postal_zone=_text_or_none(_cbc(node, "PostalZone")),
+        country=country_of(_cac(node, "Country")),
     )
 
 
 def party_identification_of(node: XmlNode) -> PartyIdentification:
-    identifier = find(node, "ID")
+    identifier = _cbc(node, "ID")
     if identifier is None:
         raise UblValidationError(
             f"<{local_name(node.qname)}> has no cbc:ID"
@@ -151,7 +180,7 @@ def party_identification_of(node: XmlNode) -> PartyIdentification:
 
 
 def party_name_of(node: XmlNode) -> PartyName:
-    name = find(node, "Name")
+    name = _cbc(node, "Name")
     if name is None:
         raise UblValidationError(f"<{local_name(node.qname)}> has no cbc:Name")
     return PartyName(name=name.text.strip())
@@ -161,26 +190,26 @@ def contact_of(node: XmlNode | None) -> Contact | None:
     if node is None:
         return None
     return Contact(
-        name=_text_or_none(find(node, "Name")),
-        telephone=_text_or_none(find(node, "Telephone")),
-        electronic_mail=_text_or_none(find(node, "ElectronicMail")),
+        name=_text_or_none(_cbc(node, "Name")),
+        telephone=_text_or_none(_cbc(node, "Telephone")),
+        electronic_mail=_text_or_none(_cbc(node, "ElectronicMail")),
     )
 
 
 def tax_scheme_of(node: XmlNode | None) -> TaxScheme | None:
     if node is None:
         return None
-    identifier = find(node, "ID")
-    code = find(node, "TaxTypeCode")
+    identifier = _cbc(node, "ID")
+    code = _cbc(node, "TaxTypeCode")
     return TaxScheme(
         id=identifier_of(identifier) if identifier is not None else None,
-        name=_text_or_none(find(node, "Name")),
+        name=_text_or_none(_cbc(node, "Name")),
         tax_type_code=code_of(code) if code is not None else None,
     )
 
 
 def party_tax_scheme_of(node: XmlNode) -> PartyTaxScheme:
-    scheme_node = find(node, "TaxScheme")
+    scheme_node = _cac(node, "TaxScheme")
     scheme = tax_scheme_of(scheme_node)
     if scheme is None:
         raise UblValidationError(
@@ -188,8 +217,8 @@ def party_tax_scheme_of(node: XmlNode) -> PartyTaxScheme:
         )
     return PartyTaxScheme(
         tax_scheme=scheme,
-        registration_name=_text_or_none(find(node, "RegistrationName")),
-        company_id=_text_or_none(find(node, "CompanyID")),
+        registration_name=_text_or_none(_cbc(node, "RegistrationName")),
+        company_id=_text_or_none(_cbc(node, "CompanyID")),
     )
 
 
@@ -200,14 +229,14 @@ def party_of(node: XmlNode | None) -> Party | None:
         return None
     return Party(
         party_identifications=tuple(
-            party_identification_of(child) for child in find_all(node, "PartyIdentification")
+            party_identification_of(child) for child in _cac_all(node, "PartyIdentification")
         ),
-        party_names=tuple(party_name_of(child) for child in find_all(node, "PartyName")),
-        postal_address=postal_address_of(find(node, "PostalAddress")),
+        party_names=tuple(party_name_of(child) for child in _cac_all(node, "PartyName")),
+        postal_address=postal_address_of(_cac(node, "PostalAddress")),
         party_tax_schemes=tuple(
-            party_tax_scheme_of(child) for child in find_all(node, "PartyTaxScheme")
+            party_tax_scheme_of(child) for child in _cac_all(node, "PartyTaxScheme")
         ),
-        contact=contact_of(find(node, "Contact")),
+        contact=contact_of(_cac(node, "Contact")),
     )
 
 
