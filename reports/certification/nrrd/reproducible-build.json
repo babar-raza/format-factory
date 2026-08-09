@@ -5,28 +5,28 @@
   "build_1": {
     "ok": true,
     "epoch": "315532800",
-    "seconds": 12.1,
+    "seconds": 16.3,
     "artifacts": {
-      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "87e31b5766b91f423583e8cf9a43ef2e5dc93fa030e445620606a83d0cc68133",
-      "format_factory_nrrd-0.2.0.dev0.tar.gz": "760b406f1c7f51a689faed4491b14aa471977706c01998019ecb6cc6f049a66a"
+      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "cab9f615c1212ee1beab72c3b2d0b9843c4ee00762e76f020d962328a086ee99",
+      "format_factory_nrrd-0.2.0.dev0.tar.gz": "9f7f17c32fb33c021e1994bca25db96ec533f28086e6e01cb23ebb7188f925a8"
     }
   },
   "build_2": {
     "ok": true,
     "epoch": "315532800",
-    "seconds": 12.6,
+    "seconds": 14.9,
     "artifacts": {
-      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "87e31b5766b91f423583e8cf9a43ef2e5dc93fa030e445620606a83d0cc68133",
-      "format_factory_nrrd-0.2.0.dev0.tar.gz": "760b406f1c7f51a689faed4491b14aa471977706c01998019ecb6cc6f049a66a"
+      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "cab9f615c1212ee1beab72c3b2d0b9843c4ee00762e76f020d962328a086ee99",
+      "format_factory_nrrd-0.2.0.dev0.tar.gz": "9f7f17c32fb33c021e1994bca25db96ec533f28086e6e01cb23ebb7188f925a8"
     }
   },
   "build_control": {
     "ok": true,
     "epoch": "1600000000",
-    "seconds": 11.5,
+    "seconds": 13.9,
     "artifacts": {
-      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "4ec2849da6f6fc592df8031295ab2e928a71d005f6a13dc924a9fab2d2b3b3db",
-      "format_factory_nrrd-0.2.0.dev0.tar.gz": "157c9eb1e8143dbc8781235c6b081c38e14034142f3b55456a2b3befb7b0518a"
+      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "9e9754e1769cb965e8420e8d4b45c39ee0819f1b72c66618d0d943f9f4934fb6",
+      "format_factory_nrrd-0.2.0.dev0.tar.gz": "8c60d8e9b8fcc3616c845e5138f847cd81d7579ba2f2218b510c00b36af0c425"
     }
   },
   "artifacts_identical_across_two_builds": true,
@@ -36,5 +36,6 @@
   },
   "comparison_proven_sensitive": true,
   "reproducible": true,
-  "verdict": "REPRODUCIBLE"
+  "verdict": "REPRODUCIBLE",
+  "re_run_this_tick": "FF6-EVENT-000457 (via /product-source-task): wheel_sha256 changed from 87e31b5766... to cab9f615... because src/python/nrrd/src/format_factory/nrrd/_convenience.py was added -- 11 convenience-wrapper functions moved out of __init__.py to resolve a validate_source_architecture RULE-AM-002 STRUCTURAL_GOV_BLOCK (__init__.py 183->96 LOC). Matches exactly the fresh installed-wheel-gate.json digest. Reproducibility itself re-confirmed unchanged: build_1 == build_2, both differ from build_control (epoch-sensitivity still proven)."
 }

@@ -5,18 +5,18 @@
   "canonical_manifest": "reports/package-install-proof/proof-manifest.json",
   "status": "PASS",
   "verdict": "PASS",
-  "proof_id": "PACKAGE-PROOF-8A111351D621C84E236BC4041B4FC2180B998033E58985894942F699509816FB",
+  "proof_id": "PACKAGE-PROOF-FD2B1F47D99840B2E1895204661FFE19C1F51DD6F0D7D50D189955A9D70B87A9",
   "checks": {
     "build_mode": "native_pyproject",
     "install_result": "PASS -- installed from a freshly built wheel into an isolated ephemeral venv, not the dev checkout",
     "local_dependency": "format-factory-core wheel installed first, PASS",
     "import_result": "PASS",
-    "deep_import": "PASS -- 20/20 submodules import cleanly, 0 failing",
+    "deep_import": "PASS -- 21/21 submodules import cleanly, 0 failing",
     "smoke_result": "PASS -- format_factory.nrrd.load_nrrd on samples/by-format/nrrd/valid/1d-int8.nrrd",
     "pytest_in_proof_venv": "2 passed, 1 skipped"
   },
-  "wheel_digest_cross_check": "wheel_sha256 5c4b174577ae38900e18bf4430c06e7a38107f7ff944c5865e067f7af324fc3a matches exactly the digest already recorded by this format's own reproducible-build.json and independent-repository-extraction-gate.json (both refreshed at FF6-EVENT-000324 after the stale-build-cache fix) -- confirms all three gates agree on the current, clean wheel content.",
-  "re_run_this_tick": "FF6-EVENT-000420: independently re-ran this gate fresh, continuing the nrrd/ora/ubl certification-gate sweep (nrrd's own independent-oracle gate freshened at Event 419). Result unchanged: 20/20 submodules PASS, smoke test PASS, 2 passed/1 skipped. The wheel_sha256 (87e31b5766b91f423583e8cf9a43ef2e5dc93fa030e445620606a83d0cc68133) already matched current HEAD -- it was refreshed as a side effect of the full 6-format co-install re-run at Event 407, this gate's own committed proof_id text simply hadn't been synced to that already-fresh value until now. New proof_id recorded (8A111351...).",
+  "wheel_digest_cross_check": "wheel_sha256 cab9f615c1212ee1beab72c3b2d0b9843c4ee00762e76f020d962328a086ee99 -- refreshed this tick alongside reproducible-build.json and independent-repository-extraction-gate.json (all three re-run together, see re_run_this_tick) to confirm continued agreement after the source change below.",
+  "re_run_this_tick": "FF6-EVENT-000457 (via /product-source-task): submodule count grew from 20 to 21 and the wheel digest changed from 5c4b1745... to cab9f615... because src/python/nrrd/src/format_factory/nrrd/_convenience.py was added this tick -- 11 top-level convenience-wrapper functions (probe_nrrd, load_nrrd, write_nrrd, decode_nrrd_data, encode_nrrd_data, get_array, get_dimension, get_encoding, preservation_report, roundtrip, nrrd_installed_workflow) were moved out of __init__.py into this new module to resolve a validate_source_architecture RULE-AM-002 STRUCTURAL_GOV_BLOCK (__init__.py was 183 LOC against a 100 LOC cap; now 96 LOC). Pure relocation, re-exported under identical names from __init__.py -- zero behavior change, confirmed by nrrd's full test suite (718 passed, 1 skipped, byte-identical to the pre-change baseline) and mypy --strict (clean). This is an EXPECTED, EXPLAINED hash change from real source growth, not drift or a stale-proof condition.",
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the installed-wheel invariant only, not a certification claim for the format as a whole.",
   "commit": "pending"
 }
