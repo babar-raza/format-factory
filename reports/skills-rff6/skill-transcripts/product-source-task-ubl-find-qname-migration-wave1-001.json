@@ -1,0 +1,59 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-find-qname-migration-wave1-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-048b3c05f84d825f",
+  "mode": "live",
+  "timestamp": "2026-08-09T12:40:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC-FF6-UBL-FIND-QNAME-MIGRATION-WAVE1-001",
+    "task_kind": "start-the-disclosed-84-site-migration-as-a-genuine-incremental-multi-tick-project-wave-1-of-n",
+    "root_cause": "The prior tick's own exact_next_action offered two paths: begin a careful incremental first wave of the ubl find()-to-find_qname migration now that the primitive exists, or a fresh cross-format re-scoping pass. Chose to begin the migration, since the primitive (find_qname/find_all_qname, built and tested the prior tick) is now a real, proven tool and the migration itself is the highest-value remaining lever on ubl's own largest disclosed obligation gap (UBL-PARSE-001).",
+    "obligation_targeted": "SAL-UBL-OBL-0996E6D7B91D544F (UBL-PARSE-001) narrowed further -- 5 of the ~84 disclosed find()/find_all() call sites are now migrated to the namespace-precise primitive, proven with zero regressions.",
+    "acceptance_evidence": "Selected model/reference.py as wave 1: the smallest fully self-contained file (5 call sites, all in one function, cac:ExternalReference's own projector), with every field's expected namespace already confirmed unambiguous (CBC-only) by the module's own pre-existing test fixtures before any code was touched -- no schema re-derivation needed, no risk of guessing the wrong namespace for any field. Migrated all 5 find() calls to a local _find() wrapper around find_qname(node, _CBC_NAMESPACE, name), keeping call sites themselves visually unchanged (still `_find(node, \"URI\")` etc.) so the diff is minimal and reviewable. Ran the file's own full existing test suite (4 test files, 28 tests spanning construction, projection, cardinality validation, element ordering, and security baseline) before writing any new test, confirming zero behavioral change for every non-adversarial case. Added one new test proving the migration's own actual security value: a spoofed same-local-name sibling from an attacker-controlled namespace is now correctly ignored by external_reference_of() itself (not just by the separate validator-level check), where it previously would have silently won via find()'s own local-name-only matching."
+  },
+  "execution_steps": [
+    "1. After committing and eventing the qname-precise-lookup-primitive slice (FF6-EVENT-000481), decided to begin the disclosed 84-site migration as a genuine incremental, multi-tick project rather than defer to a re-scoping pass, per that event's own exact_next_action.",
+    "2. Surveyed all 8 files touching find()/find_all() (aggregates.py 20 sites, charges.py 13, genericode.py, lines.py, party.py, reference.py 5, typed.py 2 [the definitions], validation/validator.py) and picked reference.py as the safest possible first wave: smallest (5 sites), single function, single file, and its own field-to-namespace mapping already independently confirmed by pre-existing tests rather than needing fresh schema research.",
+    "3. Verified the exact namespace for all 5 fields (URI, DocumentHash, MimeCode, FileName, Description) directly from the file's own pre-existing test fixtures (test_obligation_external_reference.py's own _child() helper, CBC-only) before writing any migration code, rather than assuming.",
+    "4. Migrated reference.py: replaced the `find` import with `find_qname`, added a local `_CBC_NAMESPACE` constant (matching this codebase's own established per-module-local-constant convention, confirmed by checking document.py and validator.py, which each define their own private copy rather than sharing one), and added a thin `_find()` wrapper so the 5 call sites themselves stay visually unchanged, keeping the diff minimal and easy to review.",
+    "5. Ran the file's own full existing downstream test coverage (28 tests across 4 files: construction, projection, cardinality validation, element ordering, security baseline) before writing any new test -- all 28 passed unchanged, confirming zero regression for every non-adversarial case this package's own suite already covers.",
+    "6. Added one new test (test_a_spoofed_sibling_from_an_unrelated_namespace_is_not_projected) proving the migration's own actual value directly: a spoofed same-local-name URI sibling from an attacker namespace is now correctly ignored by external_reference_of() itself, not merely caught by the separate, document-wide validator check -- passed on the first run.",
+    "7. Ran ruff check and mypy --strict against reference.py: both clean.",
+    "8. Ran the full ubl suite (1250 passed, up from 1249) and the 6-format FF6 regression (4351 passed, 4 skipped, up from 4350) -- exact +1 delta in both (only the one genuinely new test; the other 4 wave-1-relevant assertions were pre-existing and unchanged), confirming zero regressions from the migration itself.",
+    "9. Ran the installed-wheel proof (tools/run_package_install_proof.py --format ubl, 1/1 PASS) and independently re-verified the spoofed-sibling scenario directly from the installed, non-editable site-packages path."
+  ],
+  "allowed_files": [
+    "src/python/ubl/src/format_factory/ubl/model/reference.py",
+    "tests/python/ubl/test_obligation_external_reference.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "src/python/ubl/src/format_factory/ubl/model/reference.py",
+    "tests/python/ubl/test_obligation_external_reference.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_external_reference.py tests/python/ubl/test_obligation_external_reference_cardinality_validation.py tests/python/ubl/test_obligation_element_order_validation.py tests/python/ubl/test_obligation_security_baseline.py -v -- 28 passed (all pre-existing, unchanged, confirming zero regression before adding any new test)",
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_external_reference.py -v -- 8 passed (1 new: the spoofed-sibling proof)",
+    ".venv/Scripts/pytest tests/python/ubl/ -q --timeout=120 -- 1250 passed (was 1249)",
+    ".venv/Scripts/pytest tests/python/nrrd tests/python/ora tests/python/xliff tests/python/ubl tests/python/ipynb tests/python/safetensors -q --timeout=300 -- 4351 passed, 4 skipped (was 4350)",
+    ".venv/Scripts/python -m ruff check src/python/ubl/src/format_factory/ubl/model/reference.py tests/python/ubl/test_obligation_external_reference.py -- All checks passed",
+    ".venv/Scripts/python -m mypy --strict src/python/ubl/src/format_factory/ubl/model/reference.py -- Success: no issues found in 1 source file",
+    "python tools/run_package_install_proof.py --format ubl -- RESULT: 1/1 PASS; the spoofed-sibling scenario independently re-exercised from the installed, non-editable wheel's own site-packages path"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation (UBL-PARSE-001) narrows further -- 5 of ~84 disclosed find()/find_all() call sites (all of reference.py, one full file) are now migrated to the namespace-precise primitive, with zero regressions and one new test proving the migration's own actual security value directly. Not promoted to implemented: 79 call sites across 7 more files remain unmigrated, disclosed as before, now as a smaller remaining number.",
+    "controller_event_effect": "pending -- record as the next FF6 event after this evidence declaration closes",
+    "certification_state": "3/6 unchanged (ipynb, xliff, safetensors); ubl remains UNASSESSED",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "None -- external_reference_of()'s own signature and return type are unchanged; the migration is entirely internal to reference.py."
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}

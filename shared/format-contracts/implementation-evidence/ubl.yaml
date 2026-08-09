@@ -133,6 +133,46 @@ execution_evidence:
     SAL-UBL-OBL-0996E6D7B91D544F only; does not promote it to implemented --
     the 84 existing find()/find_all() call sites remain unmigrated, a
     separate, larger, disclosed task this slice deliberately does not attempt.
+- evidence_id: UBL-FIND-QNAME-MIGRATION-WAVE1-PROOF
+  path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-find-qname-migration-wave1-001.json
+  expected_result: PASS
+  granularity: selector
+  truth_boundary: >-
+    Selector-bound, unlike UBL-BASELINE-SUITE. Narrows (does not fully close)
+    SAL-UBL-OBL-0996E6D7B91D544F (UBL-PARSE-001) further -- wave 1 of the
+    disclosed 84-site find()/find_all()-to-find_qname()/find_all_qname()
+    migration (UBL-QNAME-PRECISE-LOOKUP-PROOF built the primitive; this entry
+    is the first real migration against it). Deliberately chose model/
+    reference.py as the smallest, fully self-contained first wave: 5 call
+    sites, one function (external_reference_of), every field's own expected
+    namespace already confirmed unambiguous and CBC-only by this module's own
+    pre-existing test fixtures before any migration code was written, so no
+    fresh schema research was needed and no namespace was guessed. Migrated
+    all 5 call sites to a local _find() wrapper around find_qname(node,
+    _CBC_NAMESPACE, name) (a local constant, matching this codebase's own
+    established per-module-constant convention rather than introducing shared
+    coupling), keeping the call sites themselves visually unchanged so the
+    diff stays minimal. Ran the file's own full existing downstream test
+    coverage (28 tests across 4 files: construction, projection, cardinality
+    validation, element ordering, security baseline) BEFORE writing any new
+    test, confirming zero behavioral change for every non-adversarial case
+    already covered. Added one new test proving the migration's own actual
+    security value directly (not merely inferred from the primitive's own
+    proof): a spoofed same-local-name URI sibling from an attacker-controlled
+    namespace is now correctly ignored by external_reference_of() itself, not
+    only by the separate, document-wide validator check -- where it previously
+    would have silently won via find()'s own local-name-only matching. ubl
+    suite: 1249 -> 1250 passed. 6-format FF6 regression: 4350 -> 4351 passed,
+    4 skipped. mypy --strict and ruff clean. Installed-wheel behavior
+    independently re-verified: the spoofed-sibling scenario was exercised
+    directly from the installed, non-editable site-packages path. NOT backed
+    by an independent reference UBL implementation -- SELF-CONSISTENT
+    format_factory-only evidence per the execution-recovery directive's
+    GAP-008 rule. Covers SAL-UBL-OBL-0996E6D7B91D544F only; does not promote it
+    to implemented -- 79 call sites across 7 more files (aggregates.py,
+    charges.py, genericode.py, lines.py, party.py, validation/validator.py)
+    remain unmigrated, a smaller but still real remainder of the same
+    disclosed task.
 - evidence_id: UBL-DOCUMENT-TYPE-COVERAGE-VOCABULARY-PROOF
   path: reports/skills-rff6/skill-transcripts/product-source-task-ubl-document-type-coverage-001.json
   expected_result: PASS
@@ -1184,12 +1224,14 @@ obligations:
   - src/python/ubl/src/format_factory/ubl/validation/validator.py::_namespace_shadowing_diagnostics
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_qname
   - src/python/ubl/src/format_factory/ubl/model/typed.py::find_all_qname
+  - src/python/ubl/src/format_factory/ubl/model/reference.py::external_reference_of
   positive_test_selectors:
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_a_document_with_no_namespace_collision_is_unaffected
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_the_check_does_not_recurse_into_opaque_extension_content
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_qname_returns_none_for_a_namespace_with_no_matching_child
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_qname_matches_finds_own_result_when_there_is_no_collision
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_all_qname_preserves_document_order_among_genuine_matches
+  - tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceProjection::test_projecting_a_full_element
   negative_test_selectors:
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_itself_is_still_naively_vulnerable_a_known_documented_caveat
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_a_spoofed_sibling_from_an_unrelated_namespace_fails_validation
@@ -1198,15 +1240,18 @@ obligations:
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_nested_shadowing_deeper_in_the_tree_is_also_detected
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_qname_correctly_disambiguates_a_spoofed_sibling
   - tests/python/ubl/test_obligation_namespace_shadowing_security.py::test_find_all_qname_excludes_a_same_local_name_sibling_from_another_namespace
+  - tests/python/ubl/test_obligation_external_reference.py::TestExternalReferenceProjection::test_a_spoofed_sibling_from_an_unrelated_namespace_is_not_projected
   execution_evidence_ids:
   - UBL-BASELINE-SUITE
   - UBL-NAMESPACE-SHADOWING-SECURITY-PROOF
   - UBL-QNAME-PRECISE-LOOKUP-PROOF
+  - UBL-FIND-QNAME-MIGRATION-WAVE1-PROOF
   implemented_behavior:
   - 'Root-level namespace mismatches were already rejected (test_wrong_namespace_and_preview_profile_fail_closed). A genuine defense-in-depth mitigation is now also in place: validate() detects the one structural signature every find()/find_all() namespace-spoofing attempt must produce -- two or more same-local-name children, in different namespaces, under one parent -- and rejects the whole document as invalid before any find()-derived value could be trusted downstream. Proven directly against the exact reproduction case from this obligation''s own original finding (a spoofed {urn:evil:attacker:namespace}ID sibling of the real cbc:ID), at both the document root and nested deeper in the tree, regardless of spoofed-vs-real ordering. Verified to produce zero false positives against the entire pre-existing 878-test ubl suite before any new test was written, and deliberately does not recurse into ext:ExtensionContent (opaque vendor content this package never queries by field name, where the check would be a false-positive risk rather than a real protection).'
   - 'FF6-EVENT-000481: the complementary fix at the lookup site itself now exists. find_qname()/find_all_qname() (model/typed.py) match children by full QName (namespace AND local name), generalizing document.py''s own already-correct private _first_child_text() pattern (used for UBLVersionID/CustomizationID/ProfileID) into a public, reusable primitive rather than a new convention. Proven directly against this obligation''s own original spoofed-sibling reproduction case: find_qname() correctly returns each element by its own namespace where find() returns only whichever comes first. Purely additive -- none of the ~78-84 existing find()/find_all() call sites were touched, so this carries zero regression risk to existing behavior.'
+  - 'FF6-EVENT-000482: wave 1 of the disclosed call-site migration is complete. model/reference.py''s own 5 find() calls (external_reference_of, cac:ExternalReference''s projector) now use find_qname() internally, chosen as the smallest fully self-contained file with every field''s own namespace already confirmed unambiguous by pre-existing tests. Proven directly, not only inferred from the primitive''s own proof: a spoofed same-local-name URI sibling is now correctly ignored by external_reference_of() itself. Zero regressions across the file''s own full existing 28-test downstream coverage.'
   missing_behavior:
-  - 'find()/find_all() themselves (model/typed.py) remain unfixed at the primitive level -- confirmed directly, not merely assumed: find() still returns a spoofed element''s value when called directly without validating the document first, proven as its own dedicated test rather than hidden. This obligation''s own rule_text (unambiguous resolution, never best-effort local-name guessing) is therefore not fully satisfied by the detection-only validator mitigation plus the new opt-in find_qname()/find_all_qname() primitive alone. Fixing find()/find_all() properly still requires auditing and migrating roughly 84 call sites across typed.py/aggregates.py/charges.py/reference.py (confirmed by direct count) to the new namespace-precise primitives -- a cross-cutting change with real blast radius, still out of scope for a single tick and left for a dedicated future taskcard with proper regression coverage. UBL-UPGRADE-001 and UBL-WRITE-001, ubl''s other 2 remaining unresolved obligations, were also freshly scoped this tick and confirmed independently non-tractable for a single tick (new multi-version transform research; official OASIS examples absent from the pinned source data).'
+  - 'find()/find_all() remain unfixed at the primitive level for 79 of the confirmed 84 call sites, across aggregates.py (20), charges.py (13), genericode.py, lines.py, party.py, and validation/validator.py -- reference.py''s own 5 sites are now migrated (see implemented_behavior above), a smaller but still real remainder of the same disclosed, cross-cutting task. This obligation''s own rule_text (unambiguous resolution, never best-effort local-name guessing) is therefore still not fully satisfied program-wide. UBL-UPGRADE-001 and UBL-WRITE-001, ubl''s other 2 remaining unresolved obligations, were also freshly scoped this session and confirmed independently non-tractable for a single tick (new multi-version transform research; official OASIS examples absent from the pinned source data).'
   proof_requirements:
     positive:
     - Same document under default namespace, prefixed, and re-prefixed forms parses to identical models;
