@@ -39,7 +39,8 @@ generated_by: codex
 - Add opt-in profile-specific validation (`ProfileValidatorRegistry`,
   `validate_profile`) keyed by `cbc:CustomizationID`, with an immutable
   registry and a `None` result that is never mistaken for a passing report.
-- Add UBL 2.1-to-2.3 version migration (`migrate_document`,
-  `MigrationReport`) for the 65 of 91 document roots whose UBL 2.1 schema
-  differs from 2.3 only by optional additions and cardinality widenings,
-  gated on re-validation against the stable 2.3 profile before relabeling.
+- Add UBL 2.0-to-2.3, 2.1-to-2.3, and 2.2-to-2.3 version migration
+  (`migrate_document`, `MigrationReport`) for the 31, 65, and 81 (of 91)
+  document roots respectively whose older schema differs from 2.3 only by
+  optional additions and cardinality widenings, gated on re-validation
+  against the stable 2.3 profile before relabeling.

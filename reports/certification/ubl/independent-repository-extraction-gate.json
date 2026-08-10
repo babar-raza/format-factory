@@ -2,24 +2,24 @@
   "format_id": "ubl",
   "gate": "independent-repository-extraction",
   "source_dir": "src/python/ubl",
-  "isolated_location": "C:\\Users\\prora\\AppData\\Local\\Temp\\ff6-independent-repo-ubl-6r5dlpi9\\ubl",
-  "source_file_count": 194,
+  "isolated_location": "C:\\Users\\prora\\AppData\\Local\\Temp\\ff6-independent-repo-ubl-b636j2q6\\ubl",
+  "source_file_count": 200,
   "source_preserved_byte_identical": true,
   "build_epoch": "315532800",
   "isolated_build": {
     "ok": true,
-    "seconds": 15.5,
+    "seconds": 14.5,
     "artifacts": {
-      "format_factory_ubl-0.2.0.dev0-py3-none-any.whl": "be551f1fc988969a916ff46706c5bddef6c441ab013b20eb75be5472c50ee860",
-      "format_factory_ubl-0.2.0.dev0.tar.gz": "b550b2dceba2cf89261b368b9aeed528d73c150284ee1330fc7ee551a0fc2f36"
+      "format_factory_ubl-0.2.0.dev0-py3-none-any.whl": "9dbd09c79986c10605149cf80625a0184a172932c9aba1df322029923e15042d",
+      "format_factory_ubl-0.2.0.dev0.tar.gz": "65cb3103e041efd1df83d265793bac010e9ad575dded761822e5f6cfbaf59660"
     }
   },
   "in_place_build": {
     "ok": true,
-    "seconds": 16.8,
+    "seconds": 15.7,
     "artifacts": {
-      "format_factory_ubl-0.2.0.dev0-py3-none-any.whl": "be551f1fc988969a916ff46706c5bddef6c441ab013b20eb75be5472c50ee860",
-      "format_factory_ubl-0.2.0.dev0.tar.gz": "b550b2dceba2cf89261b368b9aeed528d73c150284ee1330fc7ee551a0fc2f36"
+      "format_factory_ubl-0.2.0.dev0-py3-none-any.whl": "9dbd09c79986c10605149cf80625a0184a172932c9aba1df322029923e15042d",
+      "format_factory_ubl-0.2.0.dev0.tar.gz": "65cb3103e041efd1df83d265793bac010e9ad575dded761822e5f6cfbaf59660"
     }
   },
   "package_digests_preserved": true,
@@ -28,8 +28,8 @@
   "invariant_text": "Every distribution extracts to an independent repository with preserved canonical source and package digests.",
   "invariant_source": "plans/strategic/ff6/product-goal.yaml completion_invariants",
   "tool": "tools/certification/independent_repository_extraction_gate.py --format ubl",
-  "method": "Copied src/python/ubl/ verbatim (194 files, excluding build/.pytest_cache/etc.) into a fresh OS-temp directory with no ancestor relationship to this repository, confirmed byte-identical against the original, built a wheel+sdist from that isolated copy with its own cwd (never this repository root), built a second wheel+sdist from the in-place source at the same pinned SOURCE_DATE_EPOCH, and compared artifact digests.",
+  "method": "Copied src/python/ubl/ verbatim (200 files, excluding build/dist/__pycache__/.egg-info/etc.) into a fresh OS-temp directory with no ancestor relationship to this repository, confirmed byte-identical against the original, built a wheel+sdist from that isolated copy with its own cwd (never this repository root), built a second wheel+sdist from the in-place source at the same pinned SOURCE_DATE_EPOCH, and compared artifact digests.",
   "note": "This is one of product-goal.yaml's own completion invariants, separate from the 10-item gate list (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build). Not a certification claim -- the other outstanding program-wide invariant (all-six-co-install, already separately satisfied) and this format's own remaining obligation/gate work are tracked independently.",
-  "re_run_this_tick": "Re-ran fresh against current HEAD (post this session's own UBL-PARSE-001/UBL-EDIT-001/UBL-UPGRADE-001/UBL-WRITE-001 obligation work plus this tick's own README/CHANGELOG documentation additions): source_file_count rose from 187 to 194 -- 7 new files, confirmed via git log --diff-filter=A against this session's own commits: migration.py, _generated/migratable_2_1_roots.py + its own manifest, _generated/schema_root_order.py + its own manifest, and the two dev-time generator scripts under tools/ (generate_migratable_2_1_roots.py, generate_schema_root_order.py) -- genuine source growth, not drift. wheel_sha256 changed to be551f1fc988969a916ff46706c5bddef6c441ab013b20eb75be5472c50ee860, byte-for-byte IDENTICAL to the wheel independently built by both the installed-wheel gate and reproducible-build gate this same tick -- ubl's 3-tool cross-confirmation continues to hold after this session's substantial growth.",
+  "re_run_this_tick": "Re-ran fresh against current HEAD (post this session's own UBL 2.0-to-2.3/2.2-to-2.3 migration extensions and this tick's own Version-migration README correction, which closed UBL-UPGRADE-001): source_file_count rose from 194 to 200 -- confirmed via an independent Python recomputation using the tool's own exact exclusion logic (IGNORED_NAMES set + .pyc/.pyo/.egg-info suffix filter), not merely trusted from the tool's own report. wheel_sha256 changed to 9dbd09c79986c10605149cf80625a0184a172932c9aba1df322029923e15042d, byte-for-byte IDENTICAL to the wheel independently built by both the installed-wheel gate and reproducible-build gate this same tick -- ubl's 3-tool cross-confirmation continues to hold.",
   "commit": "pending"
 }

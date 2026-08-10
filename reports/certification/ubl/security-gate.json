@@ -14,9 +14,10 @@
   "new_tests": "tests/python/ubl/test_obligation_security_eval_exec_sweep.py (2 tests, all new -- a separate file from both pre-existing security test files, not a modification of either)",
   "note": "This is one of product-goal.yaml's own 10 completion invariants (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build) -- this file records the security invariant only, not a certification claim for the format as a whole.",
   "re_run_this_tick": "Re-verified fresh against current HEAD (post this session's own UBL-PARSE-001/UBL-EDIT-001/UBL-UPGRADE-001/UBL-WRITE-001 obligation work): all 3 dedicated security test files (test_obligation_security_baseline.py, test_obligation_namespace_shadowing_security.py, test_obligation_security_eval_exec_sweep.py) re-run together (20 passed). Directly grepped the new migration.py and generated _generated/migratable_2_1_roots.py source for every forbidden import/call pattern (networking, subprocess, dynamic import, eval/exec/compile/__import__): zero matches -- the new version-migration capability introduces no new attack surface.",
+  "re_run_this_tick_2": "Re-verified fresh against current HEAD (post this session's own UBL 2.0-to-2.3 and 2.2-to-2.3 migration extensions): all 3 dedicated security test files still pass together (20 passed, unchanged). Directly grepped migration.py's own extended form and the new _generated/migratable_2_0_roots.py module for every forbidden import/call pattern: zero matches -- the dispatch-table extension introduces no new attack surface.",
   "regression": {
-    "ubl_suite": "1733 passed (was 1178; +555 net from this session's obligation-closure work)",
-    "six_format_suite": "4854 passed, 4 skipped, 0 failed"
+    "ubl_suite": "1777 passed (was 1178; +599 net from this session's obligation-closure work)",
+    "six_format_suite": "4898 passed, 4 skipped, 0 failed"
   },
   "commit": "pending"
 }
