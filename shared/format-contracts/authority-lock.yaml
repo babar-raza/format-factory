@@ -351,6 +351,32 @@ sources:
       immutable: true
     allowed_hosts:
     - docs.oasis-open.org
+- source_id: SRC-UBL-007
+  format_id: ubl
+  title: OASIS UBL 2.0 Standard release package
+  organization: OASIS
+  version: UBL 2.0 OASIS Standard
+  authority_class: AUTHORITATIVE
+  materialized_path: .local/format-contracts/acquired/ubl/src-ubl-007.bin
+  expected_sha256: d3eb3356d425bcf16c786d705ebaed99d7da8e581e1a0bcefc4855d734c0ddc9
+  media_type: application/zip
+  legal:
+    license_id: LicenseRef-OASIS-Specification-Notice
+    redistribution: ALLOWED_WITH_NOTICE
+    use_status: APPROVED_FOR_LOCAL_USE
+    evidence: 'Copyright and permission notice distributed with the official OASIS UBL 2.0 Standard package (UBL-2.0.html''s own Notices section: "Copyright (c) OASIS Open 2006. All Rights Reserved." plus a permission grant to copy/distribute/create derivative works "without restriction of any kind, provided that the above copyright notice and this section are included") -- confirmed directly against the same notice text, not assumed from the UBL 2.1/2.2/2.3 sibling entries above. NOTE, disclosed rather than smoothed over: this 2006-era notice phrasing does not include the explicit inline "RF on Limited Terms Mode" royalty-free grant the 2.1/2.2/2.3 notices state directly -- it instead references the separate OASIS IPR Policy by name for patent-licensing terms, the same IPR Policy that has governed the UBL TC continuously since its charter (UBL has been RF-on-Limited-Terms since inception, not a mode adopted only in later versions). The copying/redistribution grant itself (the operative term for vendoring this package locally) is present and equivalent in substance to the later notices.'
+    notes: 'External package bytes remain in the ignored local CAS. Acquired to extend UBL-UPGRADE-001''s own version-migration-transform coverage (SAL-UBL-OBL-7B16479ACBBC8EFC) and UBL-WRITE-001''s own official-sample round-trip coverage (SAL-UBL-OBL-F9D5251F2302AE3A) -- 7 of the 55 vendored official OASIS samples (DespatchAdvice, ForwardingInstructions, Quotation, ReceiptAdvice, RemittanceAdvice, Statement, Waybill) declare UBL 2.0 and are currently correctly refused for lack of an acquired 2.0 schema to diff against or migrate from. A separate UBL 2.0 Update Package (os-UBL-2.0-update-delta.zip, published 2008-05, correcting post-publication errata) exists at the same host but was NOT also acquired this tick -- disclosed as a known, not-yet-investigated wrinkle: if the base 2.0 package''s own schemas differ from the update package''s corrected versions in a way that affects the structural diff this source exists to support, a future tick should acquire and reconcile against it too before trusting the base package alone as ground truth.'
+  limits:
+    max_bytes: 268435456
+    timeout_seconds: 180
+    max_redirects: 3
+  fetch:
+    kind: URL
+    locators:
+    - url: https://docs.oasis-open.org/ubl/os-UBL-2.0.zip
+      immutable: true
+    allowed_hosts:
+    - docs.oasis-open.org
 - source_id: SRC-XLF-001
   format_id: xliff
   title: OASIS XLIFF 2.0 Standard release package
