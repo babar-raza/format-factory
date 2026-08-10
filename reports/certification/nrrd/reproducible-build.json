@@ -5,28 +5,28 @@
   "build_1": {
     "ok": true,
     "epoch": "315532800",
-    "seconds": 20.5,
+    "seconds": 15.2,
     "artifacts": {
-      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "fec42a888b8756d9d16363b9b7c8438e45269a02cade4923e11fa445d531a34d",
-      "format_factory_nrrd-0.2.0.dev0.tar.gz": "809cad69e277c3a87737ea444630821e1e59d0c9a2d4a5b3b001d6e899fe4178"
+      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "e1996e9235ff958a9393d8edb94ebe16598a7e5b372c1a1cd6b9ff65e588240d",
+      "format_factory_nrrd-0.2.0.dev0.tar.gz": "f2b1a72194ab35ba2a7d6d2abd156726b95eb3d722e3a1509feaf208d34a0b48"
     }
   },
   "build_2": {
     "ok": true,
     "epoch": "315532800",
-    "seconds": 19.4,
+    "seconds": 15.1,
     "artifacts": {
-      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "fec42a888b8756d9d16363b9b7c8438e45269a02cade4923e11fa445d531a34d",
-      "format_factory_nrrd-0.2.0.dev0.tar.gz": "809cad69e277c3a87737ea444630821e1e59d0c9a2d4a5b3b001d6e899fe4178"
+      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "e1996e9235ff958a9393d8edb94ebe16598a7e5b372c1a1cd6b9ff65e588240d",
+      "format_factory_nrrd-0.2.0.dev0.tar.gz": "f2b1a72194ab35ba2a7d6d2abd156726b95eb3d722e3a1509feaf208d34a0b48"
     }
   },
   "build_control": {
     "ok": true,
     "epoch": "1600000000",
-    "seconds": 16.2,
+    "seconds": 14.4,
     "artifacts": {
-      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "9aa0552cdbca3910b6259982ac0dc863c9ca1576dba7e8311ac70681c26ab24e",
-      "format_factory_nrrd-0.2.0.dev0.tar.gz": "b05b611fe5cf61396f0f705a7ace58021e70ccc414ef50cd819399989ad0ceaf"
+      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "cbe6531b6ae6dd4025b538c2d0caff4b12c32fa1ea9b576bba524f8d2755b771",
+      "format_factory_nrrd-0.2.0.dev0.tar.gz": "be2b2d0674a4e4f6c840a33032274a549ec3a7326dbd0faa2623b516b7ad7fa9"
     }
   },
   "artifacts_identical_across_two_builds": true,
@@ -36,5 +36,7 @@
   },
   "comparison_proven_sensitive": true,
   "reproducible": true,
-  "verdict": "REPRODUCIBLE"
+  "verdict": "REPRODUCIBLE",
+  "re_run_this_tick": "Pre-certification re-verification: wheel_sha256 changed from the prior committed fec42a888b8756d9d16363b9b7c8438e45269a02cade4923e11fa445d531a34d to e1996e9235ff958a9393d8edb94ebe16598a7e5b372c1a1cd6b9ff65e588240d despite zero commits and zero uncommitted changes to src/python/nrrd/ since this format's own last gate-freshening (8c2372bca) -- see installed-wheel-gate.json's own re_run_this_tick_2 for the full disclosure. This fresh digest is byte-for-byte IDENTICAL to the wheel independently built by both the installed-wheel gate and independent-repository-extraction gate this same tick. Reproducibility itself re-confirmed unchanged: build_1 == build_2, both differ from build_control (epoch-sensitivity still proven -- the comparison remains genuinely capable of detecting a difference, not merely insensitive).",
+  "commit": "pending"
 }

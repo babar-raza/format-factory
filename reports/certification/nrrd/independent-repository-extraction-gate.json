@@ -2,27 +2,34 @@
   "format_id": "nrrd",
   "gate": "independent-repository-extraction",
   "source_dir": "src/python/nrrd",
-  "isolated_location": "C:\\Users\\prora\\AppData\\Local\\Temp\\ff6-independent-repo-nrrd-kcqtf7fb\\nrrd",
+  "isolated_location": "C:\\Users\\prora\\AppData\\Local\\Temp\\ff6-independent-repo-nrrd-h2xs8uiy\\nrrd",
   "source_file_count": 48,
   "source_preserved_byte_identical": true,
   "build_epoch": "315532800",
   "isolated_build": {
     "ok": true,
-    "seconds": 15.3,
+    "seconds": 15.2,
     "artifacts": {
-      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "fec42a888b8756d9d16363b9b7c8438e45269a02cade4923e11fa445d531a34d",
-      "format_factory_nrrd-0.2.0.dev0.tar.gz": "809cad69e277c3a87737ea444630821e1e59d0c9a2d4a5b3b001d6e899fe4178"
+      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "e1996e9235ff958a9393d8edb94ebe16598a7e5b372c1a1cd6b9ff65e588240d",
+      "format_factory_nrrd-0.2.0.dev0.tar.gz": "f2b1a72194ab35ba2a7d6d2abd156726b95eb3d722e3a1509feaf208d34a0b48"
     }
   },
   "in_place_build": {
     "ok": true,
-    "seconds": 15.2,
+    "seconds": 14.3,
     "artifacts": {
-      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "fec42a888b8756d9d16363b9b7c8438e45269a02cade4923e11fa445d531a34d",
-      "format_factory_nrrd-0.2.0.dev0.tar.gz": "809cad69e277c3a87737ea444630821e1e59d0c9a2d4a5b3b001d6e899fe4178"
+      "format_factory_nrrd-0.2.0.dev0-py3-none-any.whl": "e1996e9235ff958a9393d8edb94ebe16598a7e5b372c1a1cd6b9ff65e588240d",
+      "format_factory_nrrd-0.2.0.dev0.tar.gz": "f2b1a72194ab35ba2a7d6d2abd156726b95eb3d722e3a1509feaf208d34a0b48"
     }
   },
   "package_digests_preserved": true,
   "extracts_independently": true,
-  "verdict": "EXTRACTS_INDEPENDENTLY"
+  "verdict": "EXTRACTS_INDEPENDENTLY",
+  "invariant_text": "Every distribution extracts to an independent repository with preserved canonical source and package digests.",
+  "invariant_source": "plans/strategic/ff6/product-goal.yaml completion_invariants",
+  "tool": "tools/certification/independent_repository_extraction_gate.py --format nrrd",
+  "method": "Copied src/python/nrrd/ verbatim (48 files, excluding build/dist/__pycache__/.egg-info/etc.) into a fresh OS-temp directory with no ancestor relationship to this repository, confirmed byte-identical against the original, built a wheel+sdist from that isolated copy with its own cwd (never this repository root), built a second wheel+sdist from the in-place source at the same pinned SOURCE_DATE_EPOCH, and compared artifact digests.",
+  "note": "This is one of product-goal.yaml's own completion invariants, separate from the 10-item gate list (installed-wheel, independent-oracle, corpus, security, resource, typing, documentation, compatibility, performance, reproducible-build). Not a certification claim -- the other outstanding program-wide invariant (all-six-co-install) and this format's own remaining evidence are tracked independently.",
+  "re_run_this_tick": "Pre-certification re-verification: wheel_sha256 e1996e9235ff958a9393d8edb94ebe16598a7e5b372c1a1cd6b9ff65e588240d is byte-for-byte IDENTICAL to the wheel independently built by both the installed-wheel gate and reproducible-build gate this same tick -- nrrd's 3-tool cross-confirmation holds. See installed-wheel-gate.json's own re_run_this_tick_2 for the honest disclosure of why this digest differs from the one committed at nrrd's own last gate-freshening despite zero source changes in between.",
+  "commit": "pending"
 }
