@@ -1514,6 +1514,20 @@ obligations:
     (FF6-ORA-RENDERER-ADAPTER-DIFFERENTIAL-001 above) -- this is the obligation''s own sole
     remaining item, narrowing it to the same single-blocker shape already correctly established for
     its 3 corpus-blocked siblings.'
+  - 'A dedicated research pass (2026-08-10) confirms this blocker with concrete, file-level evidence
+    rather than a general "GPL exists" statement: MyPaint''s own repository (full recursive tree scan)
+    contains exactly 3 real .ora fixtures (tests/bigimage.ora, fill_outlines.ora, smallimage.ora) plus
+    2 reference composited PNGs used by its own rendering/compositing tests -- the only ready-made
+    corpus of the required depth found anywhere. Krita''s own repository was also fully scanned and
+    contains ZERO .ora files. Two systematic format-corpus aggregators (openpreserve/format-corpus,
+    ForAllSecure/starter-testsuites) were checked exhaustively and confirmed to have no OpenRaster
+    material. 3 small permissively-licensed .ora fixtures were found (image-rs/image-extras,
+    OliverVea/Olve.OpenRaster, zsgalusz/ora.js) but none individually or combined substitute for
+    multi-layer/blend-mode/isolated-group depth. Full decision-ready brief, including exact MyPaint
+    license text and a plain-language risk analysis of what vendoring would/would not obligate:
+    reports/format-contract-layer/ora-corpus-license-decision-memo.md. Still unresolved by this
+    memo -- it makes the pending business/legal decision faster and better-informed, it does not
+    make it.'
   proof_requirements:
     positive:
     - Golden pixel vectors, alpha edge cases, unsupported-operation preservation, and adapter differential
@@ -2202,6 +2216,15 @@ obligations:
     consumer application to open and visually confirm a generated asset, which is outside what
     this library''s own code and tests can produce or claim on their own. Not attempted this
     tick; not claimed as met.'
+  - 'A dedicated research pass (2026-08-10) confirmed the same GPL-corpus blocker already
+    disclosed for ORA-RENDER-001/COMPOSITE-001/ISOLATION-001 applies here in a related but
+    distinct form: this obligation needs an independent CONSUMER application (one that can
+    open and visually confirm a generated asset), not merely producer sample files. MyPaint
+    and Krita are the only real OpenRaster-capable applications found with any usable
+    corpus/consumer angle, and both are GPL -- see
+    reports/format-contract-layer/ora-corpus-license-decision-memo.md for the full evidence
+    and the pending business/legal decision. No permissively-licensed independent OpenRaster
+    consumer application was found. Still unresolved.'
   proof_requirements:
     positive:
     - Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices.
@@ -3412,6 +3435,11 @@ obligations:
     disclosed scope boundary, tested). No documented behavior for OpenRaster''s text elements is
     rendered -- consistent with this package''s existing baseline reading profile, which does not
     interpret text (model/stack.py''s OraText), so nothing here invents rendering semantics for it.'
+  - 'A dedicated research pass (2026-08-10) confirms this blocker with concrete evidence -- see
+    reports/format-contract-layer/ora-corpus-license-decision-memo.md and ORA-COMPOSITE-001''s own
+    missing_behavior entry above for the full findings (MyPaint is the only ready-made corpus of
+    the required depth, GPL-licensed; Krita ships none; no permissive alternative found despite an
+    exhaustive search). Still unresolved -- a business/legal decision, not a technical one.'
   proof_requirements:
     positive:
     - Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential
@@ -3485,6 +3513,10 @@ obligations:
     "at least two independent producers/consumers" requirement) remains unmet: every isolation
     test here is either hand-computed arithmetic or comparison against this project''s own
     synthetic corpus, not an independent OpenRaster producer''s own isolated-group output.'
+  - 'A dedicated research pass (2026-08-10) confirms this blocker with concrete evidence -- see
+    reports/format-contract-layer/ora-corpus-license-decision-memo.md and ORA-COMPOSITE-001''s own
+    missing_behavior entry above for the full findings. Still unresolved -- a business/legal
+    decision, not a technical one.'
   proof_requirements:
     positive:
     - Declared/inferred isolation pixel vectors and pre-profile rejection/preservation cases.
