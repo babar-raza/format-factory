@@ -294,6 +294,10 @@ registered_validators:
   domain: certification
   function: validate_gap_reconciliation_map_exists
   source_file: tools/supervisor\governance_validators_certification.py
+- rule_id: V_CERT_06
+  domain: certification
+  function: validate_extraction_standard_present
+  source_file: tools/supervisor\governance_validators_certification.py
 - rule_id: V_VALIDATE_NO_STALE_INSTALLED_PACKAGES
   domain: consumer_proof
   function: validate_no_stale_installed_packages

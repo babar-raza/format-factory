@@ -559,17 +559,18 @@ modules:
       - V186
 
   # -------------------------------------------------------------------------
-  # governance_validators_certification — V_CERT_01 through V_CERT_05
+  # governance_validators_certification — V_CERT_01 through V_CERT_06
   # -------------------------------------------------------------------------
   certification:
     module: governance_validators_certification
-    count: 5
+    count: 6
     validators:
       - V_CERT_01  # validate_all_evidence_present_for_certified_formats
       - V_CERT_02  # validate_no_certified_format_has_material_stubs
       - V_CERT_03  # validate_certification_run_manifests_exist
       - V_CERT_04  # validate_certification_layer_registered
       - V_CERT_05  # validate_gap_reconciliation_map_exists
+      - V_CERT_06  # validate_extraction_standard_present
 
   # -------------------------------------------------------------------------
   # governance_validators_product_gov — V150-V151, V154-V157

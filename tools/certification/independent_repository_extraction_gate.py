@@ -172,6 +172,26 @@ def main() -> int:
         in_place_out = REPO_ROOT / ".local" / "independent-repository-extraction" / format_id
         in_place_build = _build(source_dir, in_place_out, cwd=REPO_ROOT)
 
+        extraction_standard = REPO_ROOT / "docs" / "governance" / "python-library-extraction-standard.md"
+        if extraction_standard.exists():
+            es_sha256 = hashlib.sha256(extraction_standard.read_bytes()).hexdigest()
+            extraction_standard_info: dict[str, Any] = {
+                "extraction_standard_present": True,
+                "extraction_standard_sha256": es_sha256,
+                "governance_seed_files": [
+                    {
+                        "source": "docs/governance/python-library-extraction-standard.md",
+                        "target": "EXTRACTION-STANDARD.md",
+                        "sha256": es_sha256,
+                    },
+                ],
+            }
+        else:
+            extraction_standard_info = {
+                "extraction_standard_present": False,
+                "extraction_standard_warning": "Extraction standard missing from monorepo",
+            }
+
         result: dict[str, Any] = {
             "format_id": format_id,
             "gate": "independent-repository-extraction",
@@ -182,6 +202,7 @@ def main() -> int:
             "build_epoch": BUILD_EPOCH,
             "isolated_build": isolated_build,
             "in_place_build": in_place_build,
+            **extraction_standard_info,
         }
 
         if not source_preserved:

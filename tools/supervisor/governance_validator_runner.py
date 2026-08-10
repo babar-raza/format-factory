@@ -1061,7 +1061,7 @@ def run_all_governance_validators(
     except Exception as _exc_v183:
         _skipped_validators.append({"validators": ["V183", "V184", "V185", "V186"], "error": str(_exc_v183)})
 
-    # V_CERT_01-V_CERT_05 (TC-007 precious-wandering-lighthouse, 2026-07-13): certification lifecycle validators
+    # V_CERT_01-V_CERT_06 (TC-007 precious-wandering-lighthouse, 2026-07-13): certification lifecycle validators
     try:
         from governance_validators_certification import (  # noqa: PLC0415
             validate_all_evidence_present_for_certified_formats as _v_cert01,
@@ -1069,6 +1069,7 @@ def run_all_governance_validators(
             validate_certification_run_manifests_exist as _v_cert03,
             validate_certification_layer_registered as _v_cert04,
             validate_gap_reconciliation_map_exists as _v_cert05,
+            validate_extraction_standard_present as _v_cert06,
         )
         results.extend([
             _v_cert01(declaration, repo_root),
@@ -1076,9 +1077,10 @@ def run_all_governance_validators(
             _v_cert03(declaration, repo_root),
             _v_cert04(declaration, repo_root),
             _v_cert05(declaration, repo_root),
+            _v_cert06(declaration, repo_root),
         ])
     except Exception as _exc_v_cert:
-        _skipped_validators.append({"validators": ["V_CERT_01", "V_CERT_02", "V_CERT_03", "V_CERT_04", "V_CERT_05"], "error": str(_exc_v_cert)})
+        _skipped_validators.append({"validators": ["V_CERT_01", "V_CERT_02", "V_CERT_03", "V_CERT_04", "V_CERT_05", "V_CERT_06"], "error": str(_exc_v_cert)})
 
     # V150-V151, V154-V157 (CT-GOV-002, memoized-frolicking-donut TC-GOV-015, 2026-07-14):
     # product governance chain validators — CP/CI/RC lifecycle enforcement

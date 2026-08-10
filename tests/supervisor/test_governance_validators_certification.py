@@ -1,4 +1,4 @@
-"""Tests for governance_validators_certification.py (V_CERT_01-V_CERT_05).
+"""Tests for governance_validators_certification.py (V_CERT_01-V_CERT_06).
 
 TC-007 (precious-wandering-lighthouse, 2026-07-13).
 """
@@ -19,6 +19,7 @@ from governance_validators_certification import (
     validate_certification_run_manifests_exist,
     validate_certification_layer_registered,
     validate_gap_reconciliation_map_exists,
+    validate_extraction_standard_present,
 )
 
 
@@ -195,3 +196,71 @@ class TestVCert05GapReconciliationMapExists:
     def test_fail_when_no_map_exists(self, tmp_path):
         result = validate_gap_reconciliation_map_exists(_DECL, tmp_path)
         assert result["result"] == "FAIL"
+
+
+def _write_binding(tmp_path: Path, sha256: str) -> None:
+    import yaml
+    reg_dir = tmp_path / "registry"
+    reg_dir.mkdir(parents=True, exist_ok=True)
+    binding = {
+        "governance_files": [
+            {
+                "path": "docs/governance/python-library-extraction-standard.md",
+                "sha256": sha256,
+                "role": "python_library_extraction_contract",
+            }
+        ]
+    }
+    (reg_dir / "governance-binding.yaml").write_text(
+        yaml.dump(binding, default_flow_style=False)
+    )
+
+
+def _write_standard(tmp_path: Path, content: str = "# Extraction Standard\n") -> Path:
+    gov_dir = tmp_path / "docs" / "governance"
+    gov_dir.mkdir(parents=True, exist_ok=True)
+    standard = gov_dir / "python-library-extraction-standard.md"
+    standard.write_text(content, encoding="utf-8")
+    return standard
+
+
+class TestVCert06ExtractionStandardPresent:
+
+    def test_pass_when_standard_and_binding_match(self, tmp_path):
+        import hashlib
+        standard = _write_standard(tmp_path)
+        sha = hashlib.sha256(standard.read_bytes()).hexdigest()
+        _write_binding(tmp_path, sha)
+        result = validate_extraction_standard_present(_DECL, tmp_path)
+        assert result["result"] == "PASS"
+        assert "hash matches" in result["message"]
+
+    def test_fail_when_standard_missing(self, tmp_path):
+        result = validate_extraction_standard_present(_DECL, tmp_path)
+        assert result["result"] == "FAIL"
+        assert "not found" in result["message"]
+
+    def test_fail_when_hash_mismatch(self, tmp_path):
+        _write_standard(tmp_path)
+        _write_binding(tmp_path, "0" * 64)
+        result = validate_extraction_standard_present(_DECL, tmp_path)
+        assert result["result"] == "FAIL"
+        assert "mismatch" in result["message"]
+
+    def test_fail_when_not_registered_in_binding(self, tmp_path):
+        import yaml
+        _write_standard(tmp_path)
+        reg_dir = tmp_path / "registry"
+        reg_dir.mkdir(parents=True, exist_ok=True)
+        (reg_dir / "governance-binding.yaml").write_text(
+            yaml.dump({"governance_files": []}, default_flow_style=False)
+        )
+        result = validate_extraction_standard_present(_DECL, tmp_path)
+        assert result["result"] == "FAIL"
+        assert "not registered" in result["message"]
+
+    def test_warn_when_no_governance_binding(self, tmp_path):
+        _write_standard(tmp_path)
+        result = validate_extraction_standard_present(_DECL, tmp_path)
+        assert result["result"] == "WARN"
+        assert "governance-binding.yaml not found" in result["message"]

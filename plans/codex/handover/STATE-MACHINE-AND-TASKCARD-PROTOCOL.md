@@ -63,7 +63,7 @@ Transition rules:
 | `VERIFY` | `REPAIR` | an executed gate exposes a reproducible unmet obligation |
 | `REPAIR` | `VERIFY` | repair lands and invalidated proof is replayed |
 | `VERIFY` | `CERTIFY` | implementation-verified proof graph is complete for the format |
-| `CERTIFY` | `EXTRACT` | all mandatory certification gates pass from clean environments |
+| `CERTIFY` | `EXTRACT` | all mandatory certification gates pass from clean environments; extraction standard (`docs/governance/python-library-extraction-standard.md`) is integrity-verified and queued for seed propagation |
 | `EXTRACT` | `RELEASE_PREP` | independent repository reproduces canonical source/package digests and recertifies |
 | `RELEASE_PREP` | `COMPLETE` | all six are technically release-ready; external publication blocks may remain recorded |
 

@@ -8,15 +8,17 @@ When staleness is detected, the validator produces a WARN finding which surfaces
 in the autonomous cycle as a rework item. The supervisor selects recertification
 work from the normal task queue.
 
-Validators (V_CERT_01 through V_CERT_05):
+Validators (V_CERT_01 through V_CERT_06):
   V_CERT_01 — validate_all_evidence_present_for_certified_formats
   V_CERT_02 — validate_no_certified_format_has_material_stubs
   V_CERT_03 — validate_certification_run_manifests_exist
   V_CERT_04 — validate_certification_layer_registered
   V_CERT_05 — validate_gap_reconciliation_map_exists
+  V_CERT_06 — validate_extraction_standard_present
 """
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
@@ -271,3 +273,44 @@ def validate_gap_reconciliation_map_exists(
         validator,
         "No gap reconciliation map found in reports/certification-integration/",
     )
+
+
+_EXTRACTION_STANDARD_REL = "docs/governance/python-library-extraction-standard.md"
+
+
+@validator(rule_id="V_CERT_06", domain="certification", description=(
+    "Extraction standard must exist at docs/governance/python-library-extraction-standard.md "
+    "and be integrity-verified against governance-binding.yaml"
+))
+def validate_extraction_standard_present(
+    declaration: dict[str, Any],
+    repo_root: Path,
+) -> dict[str, Any]:
+    """V_CERT_06: Extraction standard present and integrity-verified."""
+    vname = "validate_extraction_standard_present"
+    standard_path = repo_root / _EXTRACTION_STANDARD_REL
+    if not standard_path.exists():
+        return _fail(vname, f"{_EXTRACTION_STANDARD_REL} not found")
+
+    binding_path = repo_root / "registry" / "governance-binding.yaml"
+    if not binding_path.exists():
+        return _warn(vname, "governance-binding.yaml not found; cannot verify hash")
+
+    actual_hash = hashlib.sha256(standard_path.read_bytes()).hexdigest()
+
+    try:
+        import yaml  # noqa: PLC0415
+        binding = yaml.safe_load(binding_path.read_text(encoding="utf-8")) or {}
+    except Exception as exc:
+        return _warn(vname, f"Could not parse governance-binding.yaml: {exc}")
+
+    for entry in binding.get("governance_files", []):
+        if entry.get("path") == _EXTRACTION_STANDARD_REL:
+            if entry.get("sha256") == actual_hash:
+                return _pass(vname, "Extraction standard present and hash matches governance-binding")
+            return _fail(
+                vname,
+                f"Hash mismatch: expected {entry.get('sha256')}, got {actual_hash}",
+            )
+
+    return _fail(vname, f"{_EXTRACTION_STANDARD_REL} not registered in governance-binding.yaml")

@@ -30,6 +30,7 @@ distribution_rules:
   - "There is no format_factory/__init__.py."
   - "There is no top-level nrrd or safetensors package."
   - "Every distribution owns its build, dependency lock, tests, docs, changelog, security policy, release manifest, and extraction boundary."
+  - "Every distribution's extraction manifest must reference docs/governance/python-library-extraction-standard.md with a verified SHA-256."
   - "requires-python is >=3.11 and classifiers cover 3.11 through 3.14."
 required_layers:
   - model
@@ -66,6 +67,7 @@ verification:
   - "Run namespace collision and official-implementation co-installation tests."
   - "Require two identical release builds and deterministic checked-in generation."
   - "Compute readiness from the canonical proof graph; never accept a manual status."
+  - "The extraction standard (docs/governance/python-library-extraction-standard.md) must be present and hash-bound before extraction."
 migration:
   preserve:
     - "Capture working alpha behavior with characterization tests."
