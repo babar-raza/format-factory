@@ -15,7 +15,7 @@ contract_metadata:
   input_digests:
     authority_lock_impl_sha256: 3295565e37b8a5ff47a6e05aa8b49b70bb8574171bbe2e7ba9362f344e20012c
     authority_lock_schema_sha256: a8b860f4bef1ceae1b9dd6348c29cc99b35f2bde2dca032217398bddb061f913
-    authority_lock_sha256: 64ef27de5e462c58ba32495d5350e8f81e1ac361eb1dd95e0b3ed62ad372e70a
+    authority_lock_sha256: 10a698ffade4d255aaa53569839adedfcee7feb557f1ecd593305941c0f53ebb
     authority_materializer_sha256: b730b8f700aec1460fcd48ef2e849e7e1b2798f7849de8c37c5c15943c204f58
     authority_runtime_sha256: a24f0834bc99cc2758e2b70201ce1d28039c11a057688f95f5a1f6c29ea23a15
     authority_src_ubl_001_sha256: aa89ecb356d2a0c03493c3de5ab22d86819dbb391fde8c23c0c6f9c9ab21db4f
@@ -23,6 +23,7 @@ contract_metadata:
     authority_src_ubl_003_sha256: 07d380f7d0b3bb973f4ca223946a4fff5f1e116f98548d036a2322483dc1fa4c
     authority_src_ubl_004_sha256: d2337840ba3813af41817564841fc85c99818160b641a13bb0806df964e5cb8d
     authority_src_ubl_006_sha256: dba1290bf904a6c62a3ad48f305f4c42b2958ad29ad0bfd835f89aee6bc71ad2
+    authority_src_ubl_007_sha256: af8921028de5c5aa69f3bc51b65c6cd9b09ee78f11a8f9ac3b3282f3fbdf1f79
     canonical_io_impl_sha256: aca19b1319bf7304d5136fd6c9d729cb50b22d8a23a17ca9314fdb0c58cc164d
     contract_compiler_impl_sha256: e98ad15504ab1d338f114e21c9909b2eb5af9699961c0621da964bb59403dc67
     contract_stores_impl_sha256: cd120c7990a37b0f913a2b59e81ab28fdf7b3d50897e38d78cb20fc9e0823f7a
@@ -32,8 +33,8 @@ contract_metadata:
     product_requirements_sha256: 07d380f7d0b3bb973f4ca223946a4fff5f1e116f98548d036a2322483dc1fa4c
     qname_registry_sha256: 9ca85535d450af64bab3f26811be019bdebbd2701041ff291c043d096af87fb6
     research_intake_impl_sha256: 4c7d3bfd69e7e5a74a9db2483d25b062e11cfdcb6609637b0343dfa8d3cd0579
-    research_sha256: 073d000a3a5e8a488ec82ca354ef53d997d45032a850c37a0a1d9505c1f9ce36
-    sal_facts_sha256: 2a2a7c16bac7665f2a1a411f3d6636a1b92059dfb13ba5dff13257f556db8534
+    research_sha256: bc26c12dc28287e773d0c3d412a48ee073f41c0e8b268b6321bd05cd4a77521d
+    sal_facts_sha256: 796e28d288e7e1c9ee5df4d61010297f5dfebf3ed64faa6d74c3f1522bdd7672
     shared_contract_sha256: ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494
     source_researcher_impl_sha256: 4367e7591a368bcbc6a01199a7eb6da0f569ccc5c706d6650cdd96db0b7083a3
 format_identity:
@@ -94,6 +95,15 @@ authoritative_sources:
   local_path: .local/format-contracts/acquired/ubl/src-ubl-006.bin
   canonical_url: https://docs.oasis-open.org/ubl/os-UBL-2.2/UBL-2.2.zip
   content_hash: 90f7ce34c57fc21cd5a88d7bcd4acdf3c89d59218ce00770a7949bf707e71346
+  authority_class: AUTHORITATIVE
+  acquisition_status: ACQUIRED
+- title: OASIS UBL 2.0 Standard release package
+  source_id: SRC-UBL-007
+  organization: OASIS
+  version: UBL 2.0 OASIS Standard
+  local_path: .local/format-contracts/acquired/ubl/src-ubl-007.bin
+  canonical_url: https://docs.oasis-open.org/ubl/os-UBL-2.0.zip
+  content_hash: d3eb3356d425bcf16c786d705ebaed99d7da8e581e1a0bcefc4855d734c0ddc9
   authority_class: AUTHORITATIVE
   acquisition_status: ACQUIRED
 scope_policy:
@@ -224,6 +234,7 @@ capabilities:
   - SAL-UBL-00131
   - SAL-UBL-00132
   - SAL-UBL-00133
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-50613DF5EFE944E0
   - SAL-UBL-7546731B76606EC0
   - SAL-UBL-F90975267B9AE315
@@ -275,6 +286,17 @@ capabilities:
     lax validation.
   - (UBL 2.3 schema package - maindoc inventory) The pinned UBL 2.3 OASIS Standard package contains exactly
     91 maindoc XSD files, one for each supported UBL document root.
+  - (UBL 2.0 os-UBL-2.0/xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural
+    comparison) Of the 31 maindoc document types declared in both the UBL 2.0 and UBL 2.3 OASIS release
+    packages, every root-level element sequence change from 2.0 to 2.3 is either a newly added optional
+    element (minOccurs=0, 126 additions across all 31 types) or a cardinality relaxation (16 changes,
+    all widening minOccurs/maxOccurs, never narrowing) -- zero elements were removed and zero were reordered
+    for any of the 31 shared types (confirmed directly for Invoice as an example -- 48 elements in UBL
+    2.0 versus 54 in UBL 2.3, 6 additions, zero removals). The remaining 60 of 91 UBL 2.3 root types (for
+    example BusinessCard, ImportCustomsDeclaration, TenderContract) have no maindoc schema in the UBL
+    2.0 release package at all -- UBL 2.0 is the oldest OASIS release and predates the introduction of
+    most later document types entirely -- and therefore cannot be migrated FROM 2.0, only detected as
+    not-yet-existing at that version.
   - (xsd/maindoc/UBL-*-2.3.xsd) Each UBL 2.3 maindoc XSD declares a document-type target namespace and
     qualified XML element syntax for its document element and content model.
   - (UBL 2.1 xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural comparison)
@@ -318,6 +340,7 @@ capabilities:
   - SAL-UBL-00105
   - SAL-UBL-00123
   - SAL-UBL-00125
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-7546731B76606EC0
   - SAL-UBL-F90975267B9AE315
   required_behavior:
@@ -332,6 +355,17 @@ capabilities:
     names, postal addresses, tax schemes, and contacts as child elements
   - (UBL common library - Address) cac:PostalAddress is an aggregate component type composed of street,
     city, postal zone, and country sub-elements
+  - (UBL 2.0 os-UBL-2.0/xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural
+    comparison) Of the 31 maindoc document types declared in both the UBL 2.0 and UBL 2.3 OASIS release
+    packages, every root-level element sequence change from 2.0 to 2.3 is either a newly added optional
+    element (minOccurs=0, 126 additions across all 31 types) or a cardinality relaxation (16 changes,
+    all widening minOccurs/maxOccurs, never narrowing) -- zero elements were removed and zero were reordered
+    for any of the 31 shared types (confirmed directly for Invoice as an example -- 48 elements in UBL
+    2.0 versus 54 in UBL 2.3, 6 additions, zero removals). The remaining 60 of 91 UBL 2.3 root types (for
+    example BusinessCard, ImportCustomsDeclaration, TenderContract) have no maindoc schema in the UBL
+    2.0 release package at all -- UBL 2.0 is the oldest OASIS release and predates the introduction of
+    most later document types entirely -- and therefore cannot be migrated FROM 2.0, only detected as
+    not-yet-existing at that version.
   - (UBL 2.1 xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural comparison)
     Of the 65 maindoc document types declared in both the UBL 2.1 and UBL 2.3 OASIS release packages,
     every root-level element sequence change from 2.1 to 2.3 is either a newly added optional element
@@ -478,6 +512,7 @@ capabilities:
   - SAL-UBL-00130
   - SAL-UBL-00131
   - SAL-UBL-00132
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-50613DF5EFE944E0
   - SAL-UBL-6D5AF510AAF4874B
   - SAL-UBL-7546731B76606EC0
@@ -552,6 +587,17 @@ capabilities:
   - (UBL extension model) ext:UBLExtensions is the first optional component in UBL document sequences;
     each UBLExtension contains ExtensionContent, which permits one foreign-namespaced apex element with
     lax validation.
+  - (UBL 2.0 os-UBL-2.0/xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural
+    comparison) Of the 31 maindoc document types declared in both the UBL 2.0 and UBL 2.3 OASIS release
+    packages, every root-level element sequence change from 2.0 to 2.3 is either a newly added optional
+    element (minOccurs=0, 126 additions across all 31 types) or a cardinality relaxation (16 changes,
+    all widening minOccurs/maxOccurs, never narrowing) -- zero elements were removed and zero were reordered
+    for any of the 31 shared types (confirmed directly for Invoice as an example -- 48 elements in UBL
+    2.0 versus 54 in UBL 2.3, 6 additions, zero removals). The remaining 60 of 91 UBL 2.3 root types (for
+    example BusinessCard, ImportCustomsDeclaration, TenderContract) have no maindoc schema in the UBL
+    2.0 release package at all -- UBL 2.0 is the oldest OASIS release and predates the introduction of
+    most later document types entirely -- and therefore cannot be migrated FROM 2.0, only detected as
+    not-yet-existing at that version.
   - (xsd/maindoc/UBL-*-2.3.xsd) Each UBL 2.3 maindoc XSD declares a document-type target namespace and
     qualified XML element syntax for its document element and content model.
   - (xsd/common/UBL-CommonBasicComponents-2.3.xsd) The UBL 2.3 Common Basic Components XSD declares namespace-qualified
@@ -619,6 +665,7 @@ capabilities:
   - SAL-UBL-00130
   - SAL-UBL-00132
   - SAL-UBL-00133
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-50613DF5EFE944E0
   - SAL-UBL-6D5AF510AAF4874B
   - SAL-UBL-7546731B76606EC0
@@ -681,6 +728,17 @@ capabilities:
     lax validation.
   - (UBL 2.3 schema package - maindoc inventory) The pinned UBL 2.3 OASIS Standard package contains exactly
     91 maindoc XSD files, one for each supported UBL document root.
+  - (UBL 2.0 os-UBL-2.0/xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural
+    comparison) Of the 31 maindoc document types declared in both the UBL 2.0 and UBL 2.3 OASIS release
+    packages, every root-level element sequence change from 2.0 to 2.3 is either a newly added optional
+    element (minOccurs=0, 126 additions across all 31 types) or a cardinality relaxation (16 changes,
+    all widening minOccurs/maxOccurs, never narrowing) -- zero elements were removed and zero were reordered
+    for any of the 31 shared types (confirmed directly for Invoice as an example -- 48 elements in UBL
+    2.0 versus 54 in UBL 2.3, 6 additions, zero removals). The remaining 60 of 91 UBL 2.3 root types (for
+    example BusinessCard, ImportCustomsDeclaration, TenderContract) have no maindoc schema in the UBL
+    2.0 release package at all -- UBL 2.0 is the oldest OASIS release and predates the introduction of
+    most later document types entirely -- and therefore cannot be migrated FROM 2.0, only detected as
+    not-yet-existing at that version.
   - (xsd/maindoc/UBL-*-2.3.xsd) Each UBL 2.3 maindoc XSD declares a document-type target namespace and
     qualified XML element syntax for its document element and content model.
   - (xsd/common/UBL-CommonBasicComponents-2.3.xsd) The UBL 2.3 Common Basic Components XSD declares namespace-qualified
@@ -755,6 +813,7 @@ capabilities:
   - POL-XBZ-PROFILE-01
   - SAL-UBL-00128
   - SAL-UBL-00131
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-7546731B76606EC0
   - SAL-UBL-F90975267B9AE315
   required_behavior:
@@ -765,6 +824,17 @@ capabilities:
     the customization profile and business process profile a document instance follows
   - (UBL document metadata - version identification) cbc:UBLVersionID identifies the UBL specification
     version a document instance declares
+  - (UBL 2.0 os-UBL-2.0/xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural
+    comparison) Of the 31 maindoc document types declared in both the UBL 2.0 and UBL 2.3 OASIS release
+    packages, every root-level element sequence change from 2.0 to 2.3 is either a newly added optional
+    element (minOccurs=0, 126 additions across all 31 types) or a cardinality relaxation (16 changes,
+    all widening minOccurs/maxOccurs, never narrowing) -- zero elements were removed and zero were reordered
+    for any of the 31 shared types (confirmed directly for Invoice as an example -- 48 elements in UBL
+    2.0 versus 54 in UBL 2.3, 6 additions, zero removals). The remaining 60 of 91 UBL 2.3 root types (for
+    example BusinessCard, ImportCustomsDeclaration, TenderContract) have no maindoc schema in the UBL
+    2.0 release package at all -- UBL 2.0 is the oldest OASIS release and predates the introduction of
+    most later document types entirely -- and therefore cannot be migrated FROM 2.0, only detected as
+    not-yet-existing at that version.
   - (UBL 2.1 xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural comparison)
     Of the 65 maindoc document types declared in both the UBL 2.1 and UBL 2.3 OASIS release packages,
     every root-level element sequence change from 2.1 to 2.3 is either a newly added optional element
@@ -839,6 +909,7 @@ capabilities:
   - SAL-UBL-00130
   - SAL-UBL-00131
   - SAL-UBL-00132
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-7546731B76606EC0
   - SAL-UBL-F90975267B9AE315
   required_behavior:
@@ -880,6 +951,17 @@ capabilities:
   - (UBL extension model) ext:UBLExtensions is the first optional component in UBL document sequences;
     each UBLExtension contains ExtensionContent, which permits one foreign-namespaced apex element with
     lax validation.
+  - (UBL 2.0 os-UBL-2.0/xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural
+    comparison) Of the 31 maindoc document types declared in both the UBL 2.0 and UBL 2.3 OASIS release
+    packages, every root-level element sequence change from 2.0 to 2.3 is either a newly added optional
+    element (minOccurs=0, 126 additions across all 31 types) or a cardinality relaxation (16 changes,
+    all widening minOccurs/maxOccurs, never narrowing) -- zero elements were removed and zero were reordered
+    for any of the 31 shared types (confirmed directly for Invoice as an example -- 48 elements in UBL
+    2.0 versus 54 in UBL 2.3, 6 additions, zero removals). The remaining 60 of 91 UBL 2.3 root types (for
+    example BusinessCard, ImportCustomsDeclaration, TenderContract) have no maindoc schema in the UBL
+    2.0 release package at all -- UBL 2.0 is the oldest OASIS release and predates the introduction of
+    most later document types entirely -- and therefore cannot be migrated FROM 2.0, only detected as
+    not-yet-existing at that version.
   - (UBL 2.1 xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural comparison)
     Of the 65 maindoc document types declared in both the UBL 2.1 and UBL 2.3 OASIS release packages,
     every root-level element sequence change from 2.1 to 2.3 is either a newly added optional element
@@ -992,6 +1074,7 @@ capabilities:
   provenance:
   - POL-XBZ-UPGRADE-01
   - SAL-UBL-00131
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-7546731B76606EC0
   - SAL-UBL-F90975267B9AE315
   required_behavior:
@@ -1000,6 +1083,17 @@ capabilities:
   normative_rules:
   - (UBL document metadata - version identification) cbc:UBLVersionID identifies the UBL specification
     version a document instance declares
+  - (UBL 2.0 os-UBL-2.0/xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural
+    comparison) Of the 31 maindoc document types declared in both the UBL 2.0 and UBL 2.3 OASIS release
+    packages, every root-level element sequence change from 2.0 to 2.3 is either a newly added optional
+    element (minOccurs=0, 126 additions across all 31 types) or a cardinality relaxation (16 changes,
+    all widening minOccurs/maxOccurs, never narrowing) -- zero elements were removed and zero were reordered
+    for any of the 31 shared types (confirmed directly for Invoice as an example -- 48 elements in UBL
+    2.0 versus 54 in UBL 2.3, 6 additions, zero removals). The remaining 60 of 91 UBL 2.3 root types (for
+    example BusinessCard, ImportCustomsDeclaration, TenderContract) have no maindoc schema in the UBL
+    2.0 release package at all -- UBL 2.0 is the oldest OASIS release and predates the introduction of
+    most later document types entirely -- and therefore cannot be migrated FROM 2.0, only detected as
+    not-yet-existing at that version.
   - (UBL 2.1 xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural comparison)
     Of the 65 maindoc document types declared in both the UBL 2.1 and UBL 2.3 OASIS release packages,
     every root-level element sequence change from 2.1 to 2.3 is either a newly added optional element
@@ -1047,6 +1141,7 @@ capabilities:
   - SAL-UBL-00117
   - SAL-UBL-00132
   - SAL-UBL-00133
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-6D5AF510AAF4874B
   - SAL-UBL-7546731B76606EC0
   - SAL-UBL-87F7B313CE24D408
@@ -1080,6 +1175,17 @@ capabilities:
     lax validation.
   - (UBL 2.3 schema package - maindoc inventory) The pinned UBL 2.3 OASIS Standard package contains exactly
     91 maindoc XSD files, one for each supported UBL document root.
+  - (UBL 2.0 os-UBL-2.0/xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural
+    comparison) Of the 31 maindoc document types declared in both the UBL 2.0 and UBL 2.3 OASIS release
+    packages, every root-level element sequence change from 2.0 to 2.3 is either a newly added optional
+    element (minOccurs=0, 126 additions across all 31 types) or a cardinality relaxation (16 changes,
+    all widening minOccurs/maxOccurs, never narrowing) -- zero elements were removed and zero were reordered
+    for any of the 31 shared types (confirmed directly for Invoice as an example -- 48 elements in UBL
+    2.0 versus 54 in UBL 2.3, 6 additions, zero removals). The remaining 60 of 91 UBL 2.3 root types (for
+    example BusinessCard, ImportCustomsDeclaration, TenderContract) have no maindoc schema in the UBL
+    2.0 release package at all -- UBL 2.0 is the oldest OASIS release and predates the introduction of
+    most later document types entirely -- and therefore cannot be migrated FROM 2.0, only detected as
+    not-yet-existing at that version.
   - (xsd/common/UBL-CommonBasicComponents-2.3.xsd) The UBL 2.3 Common Basic Components XSD declares namespace-qualified
     XML elements whose values use the qualified and unqualified data-type schemas.
   - (UBL 2.1 xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural comparison)
@@ -1136,6 +1242,7 @@ capabilities:
   - SAL-UBL-00127
   - SAL-UBL-00129
   - SAL-UBL-00130
+  - SAL-UBL-1FBA330BB51DAEF5
   - RF-UBL-00002
   required_behavior:
   - Use decimal arithmetic for amounts and quantities; preserve currencyID, unitCode, listID, schemeID,
@@ -1180,6 +1287,17 @@ capabilities:
     whose value is base64Binary and whose mimeCode attribute is required in the UBL UDT.
   - (UBL common library - Identifier type) cbc:ID is a basic component element of UDT IdentifierType carrying
     optional schemeID and schemeAgencyID attributes
+  - (UBL 2.0 os-UBL-2.0/xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural
+    comparison) Of the 31 maindoc document types declared in both the UBL 2.0 and UBL 2.3 OASIS release
+    packages, every root-level element sequence change from 2.0 to 2.3 is either a newly added optional
+    element (minOccurs=0, 126 additions across all 31 types) or a cardinality relaxation (16 changes,
+    all widening minOccurs/maxOccurs, never narrowing) -- zero elements were removed and zero were reordered
+    for any of the 31 shared types (confirmed directly for Invoice as an example -- 48 elements in UBL
+    2.0 versus 54 in UBL 2.3, 6 additions, zero removals). The remaining 60 of 91 UBL 2.3 root types (for
+    example BusinessCard, ImportCustomsDeclaration, TenderContract) have no maindoc schema in the UBL
+    2.0 release package at all -- UBL 2.0 is the oldest OASIS release and predates the introduction of
+    most later document types entirely -- and therefore cannot be migrated FROM 2.0, only detected as
+    not-yet-existing at that version.
   depth_required: 4
   depth_rationale: 'MUST model capability: family depth floor 3, finding hints applied; depth scale 0-8
     per L30 schema.'
@@ -1379,6 +1497,7 @@ coverage_map:
   - SAL-UBL-00131
   - SAL-UBL-00132
   - SAL-UBL-00133
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-50613DF5EFE944E0
   - SAL-UBL-7546731B76606EC0
   - SAL-UBL-F90975267B9AE315
@@ -1390,6 +1509,7 @@ coverage_map:
   - SAL-UBL-00105
   - SAL-UBL-00123
   - SAL-UBL-00125
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-7546731B76606EC0
   - SAL-UBL-F90975267B9AE315
 - capability_id: UBL-EXT-001
@@ -1443,6 +1563,7 @@ coverage_map:
   - SAL-UBL-00130
   - SAL-UBL-00131
   - SAL-UBL-00132
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-50613DF5EFE944E0
   - SAL-UBL-6D5AF510AAF4874B
   - SAL-UBL-7546731B76606EC0
@@ -1476,6 +1597,7 @@ coverage_map:
   - SAL-UBL-00130
   - SAL-UBL-00132
   - SAL-UBL-00133
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-50613DF5EFE944E0
   - SAL-UBL-6D5AF510AAF4874B
   - SAL-UBL-7546731B76606EC0
@@ -1492,6 +1614,7 @@ coverage_map:
   - POL-XBZ-PROFILE-01
   - SAL-UBL-00128
   - SAL-UBL-00131
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-7546731B76606EC0
   - SAL-UBL-F90975267B9AE315
 - capability_id: UBL-QUERY-001
@@ -1517,6 +1640,7 @@ coverage_map:
   - SAL-UBL-00130
   - SAL-UBL-00131
   - SAL-UBL-00132
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-7546731B76606EC0
   - SAL-UBL-F90975267B9AE315
 - capability_id: UBL-SEC-001
@@ -1537,6 +1661,7 @@ coverage_map:
   provenance:
   - POL-XBZ-UPGRADE-01
   - SAL-UBL-00131
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-7546731B76606EC0
   - SAL-UBL-F90975267B9AE315
 - capability_id: UBL-VALIDATE-001
@@ -1553,6 +1678,7 @@ coverage_map:
   - SAL-UBL-00117
   - SAL-UBL-00132
   - SAL-UBL-00133
+  - SAL-UBL-1FBA330BB51DAEF5
   - SAL-UBL-6D5AF510AAF4874B
   - SAL-UBL-7546731B76606EC0
   - SAL-UBL-87F7B313CE24D408
@@ -1577,6 +1703,7 @@ coverage_map:
   - SAL-UBL-00127
   - SAL-UBL-00129
   - SAL-UBL-00130
+  - SAL-UBL-1FBA330BB51DAEF5
   - RF-UBL-00002
 - capability_id: UBL-WRITE-001
   provenance:

@@ -30,7 +30,7 @@ Canonical machine-readable source: `proof-manifest.json`. Orchestrator:
 | 21 | sylk | format-factory-sylk | 0.1.0.dev0 | PASS | PASS | **PASS** | 31/32 |
 | 22 | toml | format-factory-toml | 0.1.0.dev0 | PASS | PASS | **PASS** | 29/30 |
 | 23 | tsv | format-factory-tsv | 0.1.0.dev0 | PASS | PASS | **PASS** | 31/32 |
-| 24 | ubl | format-factory-ubl | 0.2.0.dev0 | PASS | PASS | **PASS** | 42/42 |
+| 24 | ubl | format-factory-ubl | 0.2.0.dev0 | PASS | PASS | **PASS** | 43/43 |
 | 25 | xcf | format-factory-xcf | 0.1.0.dev0 | PASS | PASS | **PASS** | 19/19 |
 | 26 | xliff | format-factory-xliff | 0.2.0.dev0 | PASS | PASS | **PASS** | 24/24 |
 | 27 | zst | format-factory-zst | 0.1.0.dev0 | PASS | PASS | **PASS** | 18/18 |

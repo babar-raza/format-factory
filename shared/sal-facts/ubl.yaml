@@ -820,3 +820,32 @@ facts:
       sha256: 623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970
     - source_id: SRC-UBL-006
       sha256: 90f7ce34c57fc21cd5a88d7bcd4acdf3c89d59218ce00770a7949bf707e71346
+- fact_id: SAL-UBL-1FBA330BB51DAEF5
+  qname: FACT-UBL-139
+  element_qname: ubl:version-migration-2.0-to-2.3
+  claim: Of the 31 maindoc document types declared in both the UBL 2.0 and UBL 2.3 OASIS release packages, every
+    root-level element sequence change from 2.0 to 2.3 is either a newly added optional element (minOccurs=0, 126
+    additions across all 31 types) or a cardinality relaxation (16 changes, all widening minOccurs/maxOccurs, never
+    narrowing) -- zero elements were removed and zero were reordered for any of the 31 shared types (confirmed directly
+    for Invoice as an example -- 48 elements in UBL 2.0 versus 54 in UBL 2.3, 6 additions, zero removals). The remaining
+    60 of 91 UBL 2.3 root types (for example BusinessCard, ImportCustomsDeclaration, TenderContract) have no maindoc
+    schema in the UBL 2.0 release package at all -- UBL 2.0 is the oldest OASIS release and predates the introduction
+    of most later document types entirely -- and therefore cannot be migrated FROM 2.0, only detected as not-yet-existing
+    at that version.
+  section: UBL 2.0 os-UBL-2.0/xsd/maindoc/*.xsd vs UBL 2.3 xsd/maindoc/*.xsd -- direct root-sequence structural
+    comparison
+  authority: OASIS UBL 2.0 and UBL 2.3 Standard maindoc schemas (direct structural diff)
+  source: structural_fact_manual
+  fact_status: verified
+  verification_status: structural_derivation
+  readiness_categories: []
+  provenance:
+    extraction_method: structural_derivation
+    confidence: medium
+    added_by: TC_FF6_UBL_VERSION_MIGRATION_2_0_SAL_SEED_001
+    added_at: '2026-08-10'
+    authority_sources:
+    - source_id: SRC-UBL-002
+      sha256: 623bef8310db4d979ff28000a96bcc56dbcdda4f6206cf094c0aa79b75817970
+    - source_id: SRC-UBL-007
+      sha256: d3eb3356d425bcf16c786d705ebaed99d7da8e581e1a0bcefc4855d734c0ddc9

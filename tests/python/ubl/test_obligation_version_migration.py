@@ -11,10 +11,14 @@ UBL 2.1 and UBL 2.3 release packages) proves that for 65 of the 91 UBL 2.3
 root document types, every schema difference between 2.1 and 2.3 is
 additive/relaxing only -- never a removal, reordering, or tightening.
 SAL-UBL-F90975267B9AE315 proves the analogous fact for 81 of the 91 UBL
-2.3 root document types between UBL 2.2 and 2.3. ``migrate_document()`` is
-grounded directly in these two facts, not invented: it supports ONLY the
-2.1-to-2.3 and 2.2-to-2.3 directions, and ONLY the root types each
-respective fact covers, refusing everything else rather than guessing.
+2.3 root document types between UBL 2.2 and 2.3. SAL-UBL-1FBA330BB51DAEF5
+proves the analogous fact for 31 of the 91 UBL 2.3 root document types
+between UBL 2.0 and 2.3 (UBL 2.0 is the oldest OASIS release and defines
+maindoc schemas for far fewer root types than later versions).
+``migrate_document()`` is grounded directly in these three facts, not
+invented: it supports ONLY the 2.0-to-2.3, 2.1-to-2.3, and 2.2-to-2.3
+directions, and ONLY the root types each respective fact covers, refusing
+everything else rather than guessing.
 """
 
 from __future__ import annotations
@@ -66,15 +70,16 @@ def _business_card_2_1_ineligible_bytes() -> bytes:
     ).encode()
 
 
-def _import_customs_declaration_2_2_ineligible_bytes() -> bytes:
-    """A root type declaring UBLVersionID 2.2 but whose own root type is
-    genuinely NOT in MIGRATABLE_2_2_ROOT_NAMES -- ``ImportCustomsDeclaration``
-    never had a UBL 2.2 maindoc schema at all (confirmed directly against
-    the acquired UBL 2.2 release package, not assumed)."""
+def _import_customs_declaration_ineligible_bytes(*, version: str) -> bytes:
+    """A root type declaring the given UBLVersionID but whose own root type is
+    genuinely NOT in that version's own migratable-root-names table --
+    ``ImportCustomsDeclaration`` never had a UBL 2.0, 2.1, or 2.2 maindoc
+    schema at all (confirmed directly against each acquired release
+    package, not assumed)."""
     ns = "urn:oasis:names:specification:ubl:schema:xsd:ImportCustomsDeclaration-2"
     return (
         f'<ImportCustomsDeclaration xmlns="{ns}" xmlns:cbc="{_CBC}" xmlns:cac="{_CAC}">'
-        "<cbc:UBLVersionID>2.2</cbc:UBLVersionID>"
+        f"<cbc:UBLVersionID>{version}</cbc:UBLVersionID>"
         "<cbc:ID>ICD-001</cbc:ID>"
         "</ImportCustomsDeclaration>"
     ).encode()
@@ -109,8 +114,8 @@ def test_migrate_document_does_not_mutate_the_original_document():
 
 
 def test_migrate_document_refuses_a_document_declaring_an_unsupported_version():
-    document = load(_invoice_bytes(version="2.0"))
-    with pytest.raises(UblValidationError, match="2.0"):
+    document = load(_invoice_bytes(version="1.0"))
+    with pytest.raises(UblValidationError, match="1.0"):
         migrate_document(document)
 
 
@@ -163,12 +168,45 @@ def test_migrate_document_2_2_result_passes_stable_2_3_validation():
 
 
 def test_migrate_document_refuses_a_2_2_root_type_not_covered_by_the_structural_diff():
-    document = load(_import_customs_declaration_2_2_ineligible_bytes())
+    document = load(_import_customs_declaration_ineligible_bytes(version="2.2"))
     with pytest.raises(UblValidationError, match="ImportCustomsDeclaration"):
         migrate_document(document)
 
 
 def test_migrate_document_refuses_rather_than_silently_relabels_a_2_2_document_when_the_result_would_fail_validation():
     document = load(_invoice_bytes(version="2.2", duplicate_version=True))
+    with pytest.raises(UblValidationError, match="validation"):
+        migrate_document(document)
+
+
+def test_migrate_document_relabels_a_valid_2_0_invoice_and_produces_a_report():
+    document = load(_invoice_bytes(version="2.0"))
+    migrated, report = migrate_document(document)
+
+    assert migrated.declared_version == "2.3"
+    assert isinstance(report, MigrationReport)
+    assert report.root_name == "Invoice"
+    assert report.source_version == "2.0"
+    assert report.target_version == "2.3"
+
+
+def test_migrate_document_2_0_result_passes_stable_2_3_validation():
+    from format_factory.ubl import validate
+
+    document = load(_invoice_bytes(version="2.0"))
+    migrated, _ = migrate_document(document)
+
+    report = validate(migrated)
+    assert report.is_valid, report.diagnostics
+
+
+def test_migrate_document_refuses_a_2_0_root_type_not_covered_by_the_structural_diff():
+    document = load(_import_customs_declaration_ineligible_bytes(version="2.0"))
+    with pytest.raises(UblValidationError, match="ImportCustomsDeclaration"):
+        migrate_document(document)
+
+
+def test_migrate_document_refuses_rather_than_silently_relabels_a_2_0_document_when_the_result_would_fail_validation():
+    document = load(_invoice_bytes(version="2.0", duplicate_version=True))
     with pytest.raises(UblValidationError, match="validation"):
         migrate_document(document)

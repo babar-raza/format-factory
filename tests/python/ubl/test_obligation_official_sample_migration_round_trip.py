@@ -1,4 +1,4 @@
-"""UBL-WRITE-001 -- official UBL 2.1/2.2 samples round-trip via migrate_document().
+"""UBL-WRITE-001 -- official UBL 2.0/2.1/2.2 samples round-trip via migrate_document().
 
 SAL-UBL-OBL-F9D5251F2302AE3A (MUST): "Round-trip every official sample of
 each supported maindoc type comparing canonicalized XML plus typed
@@ -10,26 +10,32 @@ serialize directly.
 
 That framing is now only PARTLY true. UBL-UPGRADE-001's own
 migrate_document() (built this session, grounded in SAL-UBL-7546731B76606EC0
-for the 2.1 direction and SAL-UBL-F90975267B9AE315 for the 2.2 direction)
-migrates a UBL 2.1 or UBL 2.2 document to 2.3 for any root type its
-matching structural-diff fact proves additive/relaxing-compatible. Cross-
-referencing the official corpus manifest against MIGRATABLE_2_1_ROOT_NAMES
-and MIGRATABLE_2_2_ROOT_NAMES finds 32 "2.1"-declaring samples plus 5
-"2.2"-declaring samples (BusinessCard, DigitalAgreement, DigitalCapability,
+for the 2.1 direction, SAL-UBL-F90975267B9AE315 for the 2.2 direction, and
+SAL-UBL-1FBA330BB51DAEF5 for the 2.0 direction) migrates a UBL 2.0, 2.1, or
+2.2 document to 2.3 for any root type its matching structural-diff fact
+proves additive/relaxing-compatible. Cross-referencing the official corpus
+manifest against MIGRATABLE_2_0_ROOT_NAMES, MIGRATABLE_2_1_ROOT_NAMES, and
+MIGRATABLE_2_2_ROOT_NAMES finds 7 "2.0"-declaring samples (DespatchAdvice,
+ForwardingInstructions, Quotation, ReceiptAdvice, RemittanceAdvice,
+Statement, Waybill) plus 32 "2.1"-declaring samples plus 5 "2.2"-declaring
+samples (BusinessCard, DigitalAgreement, DigitalCapability,
 ExpressionOfInterestRequest, WeightStatement) with a root type within their
-respective migratable set -- confirmed empirically against all 37 real
+respective migratable set -- confirmed empirically against all 44 real
 OASIS documents before extending this file, not assumed from the manifest
-alone. This file proves those 37 now genuinely round-trip via migration:
+alone. This file proves those 44 now genuinely round-trip via migration:
 load -> migrate_document() -> dumps() -> reload -> semantically-equal to
 the original (modulo the intentionally-relabeled cbc:UBLVersionID text
 itself) -> stable under a second round trip.
 
-The remaining 18 non-round-tripping samples (1 declaring "2.1" with a root
-type outside the 65-type migratable set, all "2.0" declarations, since
-this package has not acquired or diffed that version's schema) are
-UNCHANGED by this file -- they remain correctly, deliberately refused,
-proven by the existing TestOlderVersionSamplesAreLoadOnlyNeverSilentlyRelabeled
-class, which this file does not modify.
+Combined with the 10 samples that already round-trip directly (declare 2.3,
+or no version at all but are otherwise 2.3-profile-valid), official-sample
+round-trip coverage now reaches 54 of 55 vendored samples. The single
+remaining non-round-tripping sample, CommonTransportationReport, is
+UNCHANGED by this file -- it declares "2.1" but has a root type outside the
+65-type 2.1-migratable set (a real structural incompatibility, not an
+unacquired source), and remains correctly, deliberately refused, proven by
+the existing TestOlderVersionSamplesAreLoadOnlyNeverSilentlyRelabeled class,
+which this file does not modify.
 """
 
 from __future__ import annotations
@@ -41,6 +47,7 @@ import pytest
 import yaml
 
 from format_factory.ubl import dumps, loads, migrate_document, validate
+from format_factory.ubl._generated.migratable_2_0_roots import MIGRATABLE_2_0_ROOT_NAMES
 from format_factory.ubl._generated.migratable_2_1_roots import MIGRATABLE_2_1_ROOT_NAMES
 from format_factory.ubl._generated.migratable_2_2_roots import MIGRATABLE_2_2_ROOT_NAMES
 
@@ -48,6 +55,7 @@ OFFICIAL_DIR = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "
 MANIFEST = yaml.safe_load((OFFICIAL_DIR / "_official-corpus-manifest.yaml").read_text(encoding="utf-8"))
 _UBL_VERSION_TAG = "{urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2}UBLVersionID"
 _MIGRATABLE_ROOT_NAMES_BY_VERSION = {
+    "2.0": MIGRATABLE_2_0_ROOT_NAMES,
     "2.1": MIGRATABLE_2_1_ROOT_NAMES,
     "2.2": MIGRATABLE_2_2_ROOT_NAMES,
 }
@@ -86,15 +94,16 @@ MIGRATABLE_SAMPLES = [
 ]
 
 
-def test_exactly_37_official_samples_are_2_1_or_2_2_and_migratable() -> None:
-    """A fixed-count sanity check: if the vendored corpus or either
-    migratable-root-type table ever changes, this test fails loudly rather
-    than the parametrized tests below silently covering a different set."""
-    assert len(MIGRATABLE_SAMPLES) == 37
-    by_version = {"2.1": 0, "2.2": 0}
+def test_exactly_44_official_samples_are_2_0_2_1_or_2_2_and_migratable() -> None:
+    """A fixed-count sanity check: if the vendored corpus or any of the
+    3 migratable-root-type tables ever changes, this test fails loudly
+    rather than the parametrized tests below silently covering a different
+    set."""
+    assert len(MIGRATABLE_SAMPLES) == 44
+    by_version = {"2.0": 0, "2.1": 0, "2.2": 0}
     for entry in MIGRATABLE_SAMPLES:
         by_version[entry["declared_ubl_version"]] += 1
-    assert by_version == {"2.1": 32, "2.2": 5}
+    assert by_version == {"2.0": 7, "2.1": 32, "2.2": 5}
 
 
 class TestOfficialSampleMigrationRoundtrip:

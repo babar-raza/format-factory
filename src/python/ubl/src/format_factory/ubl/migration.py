@@ -17,6 +17,13 @@ acquired OASIS UBL 2.2 and UBL 2.3 release packages, SRC-UBL-002/SRC-UBL-006):
 the same additive/relaxing-only property holds for 81 of the 91 UBL 2.3
 root document types between 2.2 and 2.3.
 
+SAL-UBL-1FBA330BB51DAEF5 (the analogous direct structural diff of the
+acquired OASIS UBL 2.0 and UBL 2.3 release packages, SRC-UBL-002/SRC-UBL-007):
+the same additive/relaxing-only property holds for 31 of the 91 UBL 2.3
+root document types between 2.0 and 2.3 -- UBL 2.0 is the oldest OASIS
+release and defines maindoc schemas for far fewer root types than the
+later versions.
+
 A valid document of one of these covered types is therefore ALREADY
 structurally valid content under the 2.3 schema: migration needs no content
 rewriting at all, only relabeling ``cbc:UBLVersionID`` to "2.3" -- and even
@@ -25,21 +32,19 @@ the relabeled result genuinely passes the stable 2.3 profile, per this
 obligation's own "never label... without... validation" clause, enforced
 here as a hard precondition rather than a disclosed caveat.
 
-``migrate_document()`` deliberately supports ONLY the 2.1-to-2.3 and
-2.2-to-2.3 directions, the two pairs this package has an acquired, diffed
-authority source for. The 10 UBL 2.3 root types with no UBL 2.2 schema at
-all (for example ``ImportCustomsDeclaration``) and the 26 with no UBL 2.1
-schema at all (for example ``BusinessCard``) are refused for their
-respective source version, not silently attempted -- every root type that
-DID exist in both a source version and 2.3 was independently confirmed
-additive/relaxing-only for that pair, with zero exceptions (confirmed
-directly against the acquired packages by
-``tools/generate_migratable_2_1_roots.py`` and
-``tools/generate_migratable_2_2_roots.py``, not assumed). A document
-declaring any OTHER older version (2.0) is also refused: this package has
-not acquired or diffed that schema package, and inventing a migration
-transform without a verified structural basis is exactly what this
-session's own evidence discipline exists to prevent.
+``migrate_document()`` deliberately supports ONLY the 2.0-to-2.3, 2.1-to-2.3,
+and 2.2-to-2.3 directions, the three pairs this package has an acquired,
+diffed authority source for -- covering every UBL version OASIS has ever
+released prior to 2.3. The root types with no maindoc schema at all in a
+given source version (for example ``ImportCustomsDeclaration``, absent
+from all three older packages; ``BusinessCard``, absent from 2.0 and 2.1)
+are refused for that source version, not silently attempted -- every root
+type that DID exist in both a source version and 2.3 was independently
+confirmed additive/relaxing-only for that pair, with zero exceptions
+(confirmed directly against the acquired packages by
+``tools/generate_migratable_2_0_roots.py``,
+``tools/generate_migratable_2_1_roots.py``, and
+``tools/generate_migratable_2_2_roots.py``, not assumed).
 """
 
 from __future__ import annotations
@@ -47,6 +52,7 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from typing import Final
 
+from ._generated.migratable_2_0_roots import MIGRATABLE_2_0_ROOT_NAMES
 from ._generated.migratable_2_1_roots import MIGRATABLE_2_1_ROOT_NAMES
 from ._generated.migratable_2_2_roots import MIGRATABLE_2_2_ROOT_NAMES
 from .errors import UblValidationError
@@ -57,6 +63,7 @@ from .validation.validator import validate
 TARGET_VERSION: Final = "2.3"
 
 _MIGRATIONS: Final[dict[str, tuple[frozenset[str], str]]] = {
+    "2.0": (MIGRATABLE_2_0_ROOT_NAMES, "SAL-UBL-1FBA330BB51DAEF5"),
     "2.1": (MIGRATABLE_2_1_ROOT_NAMES, "SAL-UBL-7546731B76606EC0"),
     "2.2": (MIGRATABLE_2_2_ROOT_NAMES, "SAL-UBL-F90975267B9AE315"),
 }
@@ -74,16 +81,15 @@ class MigrationReport:
 
 
 def migrate_document(document: UblDocument) -> tuple[UblDocument, MigrationReport]:
-    """Migrate ``document`` from its own declared UBL version (2.1 or 2.2) to UBL 2.3.
+    """Migrate ``document`` from its own declared UBL version (2.0, 2.1, or 2.2) to UBL 2.3.
 
     Returns ``(migrated_document, MigrationReport)`` on success. Raises
     ``UblValidationError`` -- never a silent no-op or a partially-migrated
     result -- when:
 
     - ``document`` does not declare a supported source ``UBLVersionID``
-      ("2.1" or "2.2"; migrating from any OTHER older version is not
-      attempted, since this package has not acquired or diffed that
-      version's own schema package);
+      ("2.0", "2.1", or "2.2" -- every UBL version OASIS released prior to
+      2.3);
     - ``document``'s root type is not one of the root types the matching
       structural-diff SAL fact proves are additive/relaxing-only for its
       declared source version;
