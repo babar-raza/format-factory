@@ -26,6 +26,8 @@ Assertions come from the contract's normative rules, quoted where they bind:
 
 from __future__ import annotations
 
+import zipfile
+
 import pytest
 
 from format_factory.core import ResourceLimits
@@ -65,6 +67,33 @@ def test_required_root_attributes_are_required(missing: str) -> None:
         parse_stack(payload)
 
     assert missing in str(raised.value)
+
+
+def test_required_version_attribute_correctly_rejects_a_real_independent_producers_document() -> None:
+    """`test_required_root_attributes_are_required` above proves the "version"
+    branch of this rule against a hand-crafted attribute deletion. This
+    proves the same rule firing against a real one: `smallimage.ora` is an
+    unmodified vendored fixture from MyPaint (github.com/mypaint/mypaint,
+    tests/), a real, independent, widely-used OpenRaster-producing
+    application, whose own root `<image>` element genuinely has no
+    `version` attribute -- not a synthetic violation this project invented.
+
+    This file was acquired to serve as a render/composite comparison corpus
+    (ORA-RENDER-001/ORA-COMPOSITE-001's own "independent producer" release
+    gate); like its two sibling fixtures, it is not spec-conformant enough
+    to reach rendering at all, which is itself the honest, disclosed result
+    of that effort -- see fixtures/third-party-gpl-mypaint/PROVENANCE.md.
+    """
+    path = "tests/python/ora/fixtures/third-party-gpl-mypaint/smallimage.ora"
+    with zipfile.ZipFile(path) as archive:
+        stack_xml = archive.read("stack.xml")
+
+    assert b'version="' not in stack_xml
+
+    with pytest.raises(OraValidationError) as raised:
+        parse_stack(stack_xml)
+
+    assert "version" in str(raised.value)
 
 
 @pytest.mark.parametrize("bad", ["0", "-1", "1.5", "", "eight", "0x10", " 8"])

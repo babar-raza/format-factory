@@ -100,6 +100,45 @@ def test_mimetype_must_be_the_first_member() -> None:
     assert "first" in str(raised.value).lower()
 
 
+@pytest.mark.parametrize(
+    ("fixture_name", "expected_first_member"),
+    [
+        ("bigimage.ora", "data/"),
+        ("fill_outlines.ora", "Thumbnails/"),
+    ],
+)
+def test_mimetype_first_rule_correctly_rejects_a_real_independent_producers_archive(
+    fixture_name: str, expected_first_member: str
+) -> None:
+    """`test_mimetype_must_be_the_first_member` above proves this rule against
+    a hand-crafted malformed archive. This proves the same rule firing
+    against a real one: these two files are unmodified vendored fixtures
+    from MyPaint (github.com/mypaint/mypaint, tests/), a real, independent,
+    widely-used OpenRaster-producing application -- not a synthetic
+    violation this project invented to exercise its own check.
+
+    Verified directly via `zipfile.ZipFile.namelist()` (the true central
+    -directory order any real reader sees), not `unzip -l`'s display order,
+    which does not necessarily match it -- see
+    fixtures/third-party-gpl-mypaint/PROVENANCE.md for the full finding.
+    Both files were acquired to serve as a render/composite comparison
+    corpus (ORA-RENDER-001/ORA-COMPOSITE-001's own "independent producer"
+    release gate); neither one is spec-conformant enough to reach rendering
+    at all, which is itself the honest, disclosed result of that effort.
+    """
+    path = f"tests/python/ora/fixtures/third-party-gpl-mypaint/{fixture_name}"
+    with open(path, "rb") as handle:
+        payload = handle.read()
+
+    with zipfile.ZipFile(io.BytesIO(payload)) as archive:
+        assert archive.namelist()[0] == expected_first_member
+
+    with pytest.raises(OraArchiveError) as raised:
+        OraContainer.from_bytes(payload)
+
+    assert "first" in str(raised.value).lower()
+
+
 def test_mimetype_must_be_stored_uncompressed() -> None:
     with pytest.raises(OraArchiveError) as raised:
         OraContainer.from_bytes(build_archive(mimetype_compressed=True))

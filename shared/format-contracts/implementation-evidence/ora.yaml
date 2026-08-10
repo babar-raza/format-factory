@@ -1516,18 +1516,46 @@ obligations:
     its 3 corpus-blocked siblings.'
   - 'A dedicated research pass (2026-08-10) confirms this blocker with concrete, file-level evidence
     rather than a general "GPL exists" statement: MyPaint''s own repository (full recursive tree scan)
-    contains exactly 3 real .ora fixtures (tests/bigimage.ora, fill_outlines.ora, smallimage.ora) plus
-    2 reference composited PNGs used by its own rendering/compositing tests -- the only ready-made
-    corpus of the required depth found anywhere. Krita''s own repository was also fully scanned and
-    contains ZERO .ora files. Two systematic format-corpus aggregators (openpreserve/format-corpus,
-    ForAllSecure/starter-testsuites) were checked exhaustively and confirmed to have no OpenRaster
-    material. 3 small permissively-licensed .ora fixtures were found (image-rs/image-extras,
-    OliverVea/Olve.OpenRaster, zsgalusz/ora.js) but none individually or combined substitute for
-    multi-layer/blend-mode/isolated-group depth. Full decision-ready brief, including exact MyPaint
-    license text and a plain-language risk analysis of what vendoring would/would not obligate:
-    reports/format-contract-layer/ora-corpus-license-decision-memo.md. Still unresolved by this
-    memo -- it makes the pending business/legal decision faster and better-informed, it does not
-    make it.'
+    contains exactly 3 real .ora fixtures (tests/bigimage.ora, fill_outlines.ora, smallimage.ora) --
+    the only ready-made corpus of the required depth found anywhere. Krita''s own repository was also
+    fully scanned and contains ZERO .ora files. Two systematic format-corpus aggregators
+    (openpreserve/format-corpus, ForAllSecure/starter-testsuites) were checked exhaustively and
+    confirmed to have no OpenRaster material. 3 small permissively-licensed .ora fixtures were found
+    (image-rs/image-extras, OliverVea/Olve.OpenRaster, zsgalusz/ora.js) but none individually or
+    combined substitute for multi-layer/blend-mode/isolated-group depth. Full decision-ready brief,
+    including exact MyPaint license text and a plain-language risk analysis of what vendoring
+    would/would not obligate: reports/format-contract-layer/ora-corpus-license-decision-memo.md.
+    Correction to that memo''s own initial characterization, found while investigating MyPaint''s
+    actual test suite before building anything on it: the memo implied these 3 files pair with 2
+    reference composited PNGs (correct_docPaint_flat.png/correct_docPaint_alpha.png) from MyPaint''s
+    own tests/test_mypaintlib.py. Verified false by reading that file directly -- those 2 PNGs are
+    compared against a document generated programmatically by replaying brush-stroke events
+    (painting30sec.dat) inside test_docpaint, not by loading any of the 3 named .ora files. No
+    independently-produced pixel ground truth for these 3 files was found anywhere in MyPaint''s own
+    test suite.'
+  - 'GPL vendoring approved by the repository owner 2026-08-10 (explicit structured approval,
+    scoped to: isolated directory, never shipped in product artifacts, internal test use only).
+    All 3 files vendored unmodified at
+    tests/python/ora/fixtures/third-party-gpl-mypaint/ (sha256-pinned, commit-pinned, full
+    provenance at that directory''s own PROVENANCE.md), and directly tested against this package''s
+    own reader before any comparison code was written. Result: none of the 3 files load far enough
+    to reach rendering. bigimage.ora and fill_outlines.ora both fail the mimetype-first-member check
+    (verified via zipfile.ZipFile.namelist()''s true central-directory order: their real first
+    members are "data/" and "Thumbnails/" respectively, not "mimetype"). smallimage.ora passes that
+    check but its stack.xml root <image> element has no version attribute, failing ORA-DOCUMENT-001''s
+    own required-attribute check. This means MyPaint''s own historical OpenRaster output is not
+    conformant enough, by this project''s own correct spec-conformance enforcement, to serve this
+    obligation''s render/composite comparison at all -- not a further excuse, a genuine dead end for
+    the one real corpus this exhaustive search located. Format-factory''s own container/stack
+    validation was not loosened to accommodate this corpus; instead, 3 new tests
+    (test_obligation_container_and_mimetype.py::test_mimetype_first_rule_correctly_rejects_a_real_independent_producers_archive,
+    test_obligation_stack_and_document.py::test_required_version_attribute_correctly_rejects_a_real_independent_producers_document)
+    now prove these already-implemented checks correctly reject a real independent producer''s
+    non-conformant archives, not only hand-crafted synthetic ones. This obligation''s own "agrees
+    with at least two independent producers" release gate remains unmet -- zero independent
+    producers'' output has been successfully rendered and compared, though one producer''s
+    real-world output has now genuinely been acquired and tried, honestly, rather than left
+    unattempted.'
   proof_requirements:
     positive:
     - Golden pixel vectors, alpha edge cases, unsupported-operation preservation, and adapter differential
@@ -2225,6 +2253,15 @@ obligations:
     reports/format-contract-layer/ora-corpus-license-decision-memo.md for the full evidence
     and the pending business/legal decision. No permissively-licensed independent OpenRaster
     consumer application was found. Still unresolved.'
+  - 'GPL vendoring of MyPaint''s 3 .ora fixtures approved and executed 2026-08-10 (see
+    SAL-ORA-OBL-2CC875865800D528''s own missing_behavior for the full account). Not directly
+    applicable here even in principle: this obligation needs an independent CONSUMER
+    application opening a format-factory-GENERATED asset, not producer sample files being
+    read by format-factory -- vendoring producer files does not touch this obligation''s own
+    gate at all. Noted for completeness rather than as progress: none of the 3 vendored files
+    load through this package''s own reader anyway (real conformance failures, not a licensing
+    question), so even a hypothetical "does MyPaint accept our thumbnail" consumer-side check
+    against these specific files was never a live option.'
   proof_requirements:
     positive:
     - Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices.
@@ -3440,6 +3477,16 @@ obligations:
     missing_behavior entry above for the full findings (MyPaint is the only ready-made corpus of
     the required depth, GPL-licensed; Krita ships none; no permissive alternative found despite an
     exhaustive search). Still unresolved -- a business/legal decision, not a technical one.'
+  - 'GPL vendoring approved and executed 2026-08-10 -- see SAL-ORA-OBL-2CC875865800D528''s own
+    missing_behavior for the full account. Result here is identical: MyPaint''s 3 real .ora files
+    are now vendored at tests/python/ora/fixtures/third-party-gpl-mypaint/, but none load through
+    this package''s own spec-conformant reader far enough to be rendered at all (bigimage.ora and
+    fill_outlines.ora fail the mimetype-first-member check; smallimage.ora''s stack.xml has no
+    version attribute). The business/legal blocker this obligation''s prior entry named is no
+    longer the only obstacle -- even with GPL vendoring approved, the one located independent
+    -producer corpus does not itself clear this package''s own archive/document conformance
+    checks, which were correctly left unloosened rather than weakened to fit it. This obligation''s
+    own "agrees with at least two independent producers" release gate remains unmet.'
   proof_requirements:
     positive:
     - Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential
@@ -3517,6 +3564,17 @@ obligations:
     reports/format-contract-layer/ora-corpus-license-decision-memo.md and ORA-COMPOSITE-001''s own
     missing_behavior entry above for the full findings. Still unresolved -- a business/legal
     decision, not a technical one.'
+  - 'GPL vendoring approved and executed 2026-08-10 -- see SAL-ORA-OBL-2CC875865800D528''s own
+    missing_behavior for the full account. Notably, fill_outlines.ora''s own stack.xml (read
+    directly while investigating this corpus) declares several isolation="isolate" groups
+    (Root, ClosedOutlines, GapOutlines, HeavyFills, Fills) -- genuinely relevant structure for
+    this obligation, unlike bigimage.ora/smallimage.ora''s flat layer lists. But every one of
+    those isolated groups is visibility="hidden" (so none contributes to the file''s own visible
+    composited output even if it could be rendered), and the file fails this package''s own
+    mimetype-first-member check regardless, so this structural relevance could not be exercised
+    as isolated-compositing proof. This obligation''s own release gate remains unmet for the same
+    reason as its siblings: the located independent-producer corpus does not clear this package''s
+    own conformance checks.'
   proof_requirements:
     positive:
     - Declared/inferred isolation pixel vectors and pre-profile rejection/preservation cases.
