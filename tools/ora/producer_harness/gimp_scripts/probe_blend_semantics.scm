@@ -1,0 +1,35 @@
+(define (fill-solid-layer image layer width height r g b a)
+  (let* ((offsets (gimp-drawable-offsets layer))
+         (ox (car offsets))
+         (oy (cadr offsets)))
+    (gimp-image-set-active-layer image layer)
+    (gimp-context-set-foreground (list r g b))
+    (gimp-image-select-rectangle image CHANNEL-OP-REPLACE ox oy width height)
+    (gimp-edit-fill layer FILL-FOREGROUND)
+    (gimp-selection-none image)))
+
+(define (make-layer image width height x y r g b a opacity-pct mode visible position)
+  (let* ((layer (car (gimp-layer-new image width height RGBA-IMAGE "layer" opacity-pct mode))))
+    (gimp-image-insert-layer image layer 0 position)
+    (gimp-layer-set-offsets layer x y)
+    (fill-solid-layer image layer width height r g b a)
+    (if (< a 255)
+        (gimp-layer-set-opacity layer (* opacity-pct (/ a 255.0))))
+    (gimp-item-set-visible layer visible)
+    layer))
+
+(define (test-mode name mode-value)
+  (let* ((image (car (gimp-image-new 4 4 RGB))))
+    (make-layer image 4 4 0 0 30 200 60 255 100 LAYER-MODE-NORMAL-LEGACY TRUE 0)
+    (make-layer image 4 4 0 0 220 40 180 166 100 mode-value TRUE 0)
+    (gimp-image-flatten image)
+    (let* ((drawable (car (gimp-image-get-active-drawable image)))
+           (px (gimp-drawable-get-pixel drawable 1 1)))
+      (gimp-message (string-append name "=" (string-append
+        (number->string (vector-ref (cadr px) 0)) ","
+        (number->string (vector-ref (cadr px) 1)) ","
+        (number->string (vector-ref (cadr px) 2))))))
+    (gimp-image-delete image)))
+
+(test-mode "Addition_LEGACY" LAYER-MODE-ADDITION-LEGACY)
+(gimp-message "addition probe done")
