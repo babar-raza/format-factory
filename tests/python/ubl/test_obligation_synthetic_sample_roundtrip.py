@@ -52,6 +52,37 @@ def test_manifest_covers_exactly_the_36_types_with_no_official_example() -> None
     assert len(SAMPLES) == len({s["root_name"] for s in SAMPLES})
 
 
+def test_common_transportation_report_writer_functionality_is_confirmed_independent_of_its_own_non_migratable_official_sample() -> None:
+    """CommonTransportationReport is the sole official sample (of 91 supported
+    types) that does not round-trip -- it declares UBL 2.1 but has a root type
+    structurally incompatible with 2.3, and was never defined under 2.0 or 2.2
+    either. This is a migration-path limitation of that ONE legacy document,
+    not a writer defect -- confirmed by generating fresh 2.3-native content for
+    the same type and proving it validates and round-trips cleanly, exactly
+    like the 36 officially-unexampled types. This is the empirical basis for
+    keeping UBL-WRITE-001 (writer functionality) implemented while
+    SAL-UBL-OBL-A480CAD1CFEA58AD (official-sample provenance) tracks the
+    provenance gap separately."""
+    entry = MANIFEST["supplementary_samples"][0]
+    assert entry["root_name"] == "CommonTransportationReport"
+    path = SYNTHETIC_DIR.parent / entry["filename"]
+    raw = path.read_bytes()
+
+    import hashlib
+
+    assert hashlib.sha256(raw).hexdigest() == entry["sha256"]
+
+    report = schema_validate(raw, root_name="CommonTransportationReport")
+    assert not report.diagnostics, [d.message for d in report.diagnostics]
+
+    document = loads(raw)
+    rewritten = dumps(document)
+    reloaded = loads(rewritten)
+    assert reloaded.root_name == "CommonTransportationReport"
+    reloaded_report = schema_validate(rewritten, root_name="CommonTransportationReport")
+    assert not reloaded_report.diagnostics, [d.message for d in reloaded_report.diagnostics]
+
+
 @pytest.mark.parametrize("entry", SAMPLES, ids=lambda e: e["root_name"])
 class TestSyntheticSampleIntegrity:
     def test_manifest_hash_matches_the_vendored_file(self, entry: dict) -> None:

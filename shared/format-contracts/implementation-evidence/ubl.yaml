@@ -6793,7 +6793,7 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-UBL-OBL-F9D5251F2302AE3A
   capability_id: UBL-WRITE-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ubl/src/format_factory/ubl/validation/validator.py::reorder_for_schema_order
   - src/python/ubl/src/format_factory/ubl/migration.py::migrate_document
@@ -6835,39 +6835,94 @@ obligations:
     proof, official or synthetic -- up from 55/91 having any official-sample evidence at all. Explicitly
     labeled SYNTHETIC_SCHEMA_DERIVED throughout (manifest, module docstring, test-file docstring) and
     never presented as OASIS-authored content or as independent-producer interoperability evidence.'
-  missing_behavior:
-  - 'The official-example PROVENANCE gap is unchanged by this narrowing and remains genuinely open: 55
-    of this package''s own 91 supported UBL 2.3 root types have an OASIS-authored example in the pinned
-    release package; the remaining 36 do not, in any UBL version OASIS has ever published (confirmed
-    exhaustively, see the research-pass entry below) -- their only round-trip evidence is the
-    project-generated synthetic fixtures above, honestly labeled as such, not as OASIS or real-world
-    producer content. Of the 55 official samples, 54 round-trip (10 directly; 32/5/7 via
-    migrate_document()''s 2.1/2.2/2.0-to-2.3 paths respectively); the sole remaining non-round-tripping
-    official sample is CommonTransportationReport, structurally incompatible with 2.3 and never defined
-    under 2.0 or 2.2 either (confirmed directly, not an acquisition gap). Status stays partial, not
-    implemented: "official sample of each supported maindoc type" (this obligation''s own literal
-    wording) is not met for 36 of 91 types, and CommonTransportationReport still does not round-trip at
-    all -- but every one of the 91 supported types now has SOME form of schema-valid round-trip
-    evidence, which was not true before this narrowing (0/91 before FF6-EVENT-000320; 55/91 after it;
-    91/91 after this entry, only 55/91 of which are OASIS-provenanced).'
-  - 'A dedicated research pass (2026-08-10) confirms the 36-type official-example gap is a genuine OASIS specification-level
-    gap, not an artifact of which release package this project pins: every OASIS UBL deliverable that
-    could plausibly carry example instances (2.1, 2.2, 2.3, the 2.4 Committee Specification, the 2.5
-    development draft, UBL-IFTM-Mapping, and the TC''s own linked resources) was checked exhaustively --
-    none contain an example instance for any of the 36 types, in any UBL version, ever. Two real,
-    realistic examples were found outside OASIS (OpenPEPPOL''s own ApplicationResponse and Catalogue
-    instances) but both carry an explicit restrictive copyright ("may not be modified, re-distributed,
-    sold or repackaged... without prior consent of CEN and/or OpenPeppol AISBL") -- not vendored. A
-    licensing-inquiry letter requesting permission for these 2 specific documents was drafted 2026-08-11
-    (reports/format-contract-layer/openpeppol-licensing-inquiry-draft.md) but not yet sent (no
-    authenticated email tool available in this session) or granted. Full findings:
-    reports/format-contract-layer/ubl-sample-coverage-research-memo.md. Still genuinely open.'
+  - 'GOVERNANCE SPLIT (2026-08-11), Workstream A: this obligation''s own rule_text and status were
+    reconstructed from first principles rather than trusting the accumulated missing_behavior narrative.
+    Its canonical register entry (plans/strategic/ff6/obligations/ubl.yaml) cites ZERO SAL spec facts
+    (authority_fact_ids: []) and exactly 2 authority_reference_ids: POL-XBZ-WRITE-01 (family-pack policy
+    -- text: "Write elements in schema-valid order independent of mutation order; offer canonical
+    prefix/formatting policies and lossless mode preserving significant lexical values" -- says NOTHING
+    about official-sample provenance) and RF-UBL-00008 (a shared/format-contracts/research/ubl.yaml
+    finding, authority_class: PRODUCT_REQUIREMENT, explicitly distinct from a normative spec fact per
+    that file''s own taxonomy note: "Normative claims live in shared/sal-facts/... never here";
+    reviewed_at 2026-07-16, reviewer FCL-MACHINERY-2026-07-16 pilot review, verdict ACCEPTED; source_ids
+    SRC-UBL-002, the real pinned OASIS UBL 2.3 release package). A fresh Explore agent, given only these
+    source artifacts and not this session''s own prior conclusion, independently reached the identical
+    classification: RF-UBL-00008''s official-sample-provenance requirement is (b) an authorized,
+    formally reviewed project acceptance policy layered ON TOP of the UBL spec -- not spec-normative, not
+    optional, not baseless self-expansion, not unsatisfiable. Per the applicable mechanical disposition
+    ("if A-D are complete but E/F is an independently stated clause, split the obligation so completed
+    writer behavior is not held partial"), the official-sample-provenance clause is split out to its own
+    obligation, SAL-UBL-OBL-A480CAD1CFEA58AD, tracked independently in this same file. This obligation
+    keeps its original ID, rescoped to exactly what POL-XBZ-WRITE-01 requires: schema-valid element
+    order regardless of mutation order (proven), and round-trip proof using EITHER real official samples
+    OR schema-derived synthetic fixtures (both now proven for all 91 supported types). Also empirically
+    confirmed, not merely inferred: CommonTransportationReport -- the one official sample that does not
+    round-trip -- was independently regenerated as fresh 2.3-native synthetic content
+    (samples/by-format/ubl/synthetic/CommonTransportationReport.xml,
+    test_common_transportation_report_writer_functionality_is_confirmed_independent_of_its_own_non_migratable_official_sample)
+    and validates + round-trips cleanly, proving its non-round-trip status is a migration-path
+    limitation of that one legacy sample (UBL-UPGRADE-001''s own domain), not a writer defect. Status
+    corrected from partial to implemented on this basis: every clause POL-XBZ-WRITE-01 itself states is
+    now fully proven for all 91 supported types, with zero remaining exceptions.'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Out-of-order property assignment still yields schema-valid output; determinism byte-compare.
+    - Round trips per supported document type with canonical XML comparison, using an official sample where one exists and a schema-derived synthetic fixture otherwise.
+    negative:
+    - 'Selector-bound negative cases are identified: test_an_older_declared_version_sample_parses_but_dumps_refuses_it proves the as-loaded document still correctly refuses direct serialization when its declared version is not 2.3 and cannot be migrated.'
+- obligation_id: SAL-UBL-OBL-A480CAD1CFEA58AD
+  capability_id: UBL-WRITE-001
+  status: partial
+  source_symbols:
+  - src/python/ubl/src/format_factory/ubl/migration.py::migrate_document
+  positive_test_selectors:
+  - tests/python/ubl/test_obligation_official_sample_roundtrip.py::TestOfficialSampleParsing::test_every_official_sample_parses_to_its_own_declared_root
+  - tests/python/ubl/test_obligation_official_sample_roundtrip.py::TestOfficialSampleRoundtrip::test_a_roundtrip_capable_sample_reproduces_semantically_identical_xml
+  - tests/python/ubl/test_obligation_official_sample_roundtrip.py::TestOfficialSampleRoundtrip::test_a_roundtrip_capable_sample_is_stable_under_a_second_round_trip
+  - tests/python/ubl/test_obligation_official_sample_migration_round_trip.py::test_exactly_44_official_samples_are_2_0_2_1_or_2_2_and_migratable
+  - tests/python/ubl/test_obligation_official_sample_migration_round_trip.py::TestOfficialSampleMigrationRoundtrip::test_a_migratable_sample_migrates_dumps_and_reloads_cleanly
+  negative_test_selectors:
+  - tests/python/ubl/test_obligation_official_sample_roundtrip.py::TestOlderVersionSamplesAreLoadOnlyNeverSilentlyRelabeled::test_an_older_declared_version_sample_parses_but_dumps_refuses_it
+  execution_evidence_ids:
+  - UBL-OFFICIAL-SAMPLE-ROUNDTRIP-PROOF
+  - UBL-OFFICIAL-SAMPLE-MIGRATION-ROUNDTRIP-PROOF
+  - UBL-VERSION-MIGRATION-2-0-TO-2-3-PROOF
+  implemented_behavior:
+  - 'GOVERNANCE SPLIT (2026-08-11), Workstream A: split out of SAL-UBL-OBL-F9D5251F2302AE3A -- see that
+    obligation''s own GOVERNANCE SPLIT entry for the full account of RF-UBL-00008''s origin and
+    classification. This obligation tracks ONLY the official-OASIS-sample provenance requirement: 55 of
+    this package''s own 91 supported UBL 2.3 root types have an OASIS-authored example in the pinned
+    release package (samples/by-format/ubl/official/, manifest at _official-corpus-manifest.yaml); of
+    those 55, 54 round-trip (10 directly declare/omit a 2.3-compatible version; 32/5/7 via
+    migrate_document()''s 2.1/2.2/2.0-to-2.3 paths respectively -- UBL-UPGRADE-001''s own capability,
+    cited not re-proven).'
+  missing_behavior:
+  - 'Genuinely open on two independent fronts. First: 36 of 91 supported types have no official OASIS
+    example in ANY UBL release, confirmed exhaustively (every OASIS UBL deliverable that could plausibly
+    carry example instances -- 2.1, 2.2, 2.3, the 2.4 Committee Specification, the 2.5 development
+    draft, UBL-IFTM-Mapping, and the TC''s own linked resources -- was checked; none contain an example
+    for any of the 36, in any version, ever). Two real, realistic examples were found outside OASIS
+    (OpenPEPPOL''s own ApplicationResponse and Catalogue instances) but both carry an explicit
+    restrictive copyright ("may not be modified, re-distributed, sold or repackaged... without prior
+    consent of CEN and/or OpenPeppol AISBL") -- not vendored. A licensing-inquiry letter requesting
+    permission for these 2 specific documents was drafted 2026-08-11
+    (reports/format-contract-layer/openpeppol-licensing-inquiry-draft.md) but not yet sent (no
+    authenticated email tool available in this session) or granted. Full findings:
+    reports/format-contract-layer/ubl-sample-coverage-research-memo.md. Second: of the 55 that DO have
+    an official sample, 1 (CommonTransportationReport) does not round-trip -- its own official sample
+    declares UBL 2.1 but has a root type structurally incompatible with 2.3 and was never defined under
+    2.0 or 2.2 either (confirmed directly, and independently confirmed NOT to be a writer defect via
+    SAL-UBL-OBL-F9D5251F2302AE3A''s own supplementary synthetic-fixture check). Neither front is a
+    writer-functionality gap; both are genuinely open provenance/migration-path questions, tracked here
+    and only here.'
+  proof_requirements:
+    positive:
     - Official-sample round trips per supported document type with canonical XML comparison.
     negative:
-    - 'Selector-bound negative cases are identified: test_an_older_declared_version_sample_parses_but_dumps_refuses_it (the sole remaining genuinely non-migratable sample, CommonTransportationReport) proves the as-loaded document still correctly refuses direct serialization.'
+    - 'Selector-bound negative cases are cited for the sole non-migratable official sample
+      (CommonTransportationReport); no negative case exists for the 36-type provenance gap itself since
+      there is no artifact to test against.'
 - obligation_id: SAL-UBL-OBL-FBD6CE2F9C471A5A
   capability_id: UBL-PARSE-001
   status: implemented

@@ -350,3 +350,27 @@ samples:
   generation_date: '2026-08-11'
   license: Apache-2.0 (format-factory project)
   provenance_status: SYNTHETIC_SCHEMA_DERIVED
+supplementary_samples_note: 'The entry below is NOT one of the 36 above and is NOT counted in
+  total_count/schema_valid_count/roundtrip_capable_count -- CommonTransportationReport DOES have
+  an official OASIS sample (samples/by-format/ubl/official/CommonTransportationReport.xml), unlike
+  the 36. That official sample declares UBL 2.1 but has a root type structurally incompatible with
+  2.3 (outside the 65-type 2.1-migratable set) and was never defined under 2.0 or 2.2 either, so it
+  cannot round-trip -- the ONLY official sample in the entire 91-type corpus that does not. This
+  supplementary synthetic fixture exists solely to answer one precise question: is that a genuine
+  writer defect (format-factory cannot produce valid CommonTransportationReport content at all), or
+  purely a migration-path limitation of that one legacy sample? Generated 2026-08-11 with the same
+  tool and method as the 36 above; it validates against the real official schema with zero
+  diagnostics and round-trips cleanly (load -> dumps -> reload), proving the writer itself has no
+  defect for this type -- the gap is entirely UBL-UPGRADE-001''s own migration-path question for
+  this one legacy sample, not a UBL-WRITE-001 writer-functionality gap.'
+supplementary_samples:
+- root_name: CommonTransportationReport
+  filename: synthetic/CommonTransportationReport.xml
+  sha256: 0ee7e1a11b351f86e4d2f9b0d77d6a55ac42cb844311702f315c5e7fe9949da9
+  size_bytes: 470
+  source_type: project-generated-synthetic-supplementary
+  generation_tool: tools/ubl/generate_synthetic_document_samples.py (XSD-driven minimal-instance builder)
+  generation_date: '2026-08-11'
+  license: Apache-2.0 (format-factory project)
+  provenance_status: SYNTHETIC_SCHEMA_DERIVED
+  purpose: confirms_writer_functionality_independent_of_the_one_non_migratable_official_sample

@@ -3,7 +3,7 @@ goal_id: FF6-PRODUCTION-LIBRARIES-001
 format_id: ubl
 contract_id: FC-UBL-V1
 authority_status: READY
-obligation_count: 194
+obligation_count: 195
 source_input_digests:
   .local/format-contracts/acquired/ipynb/src-nb-002.bin: 4d3750b55006e92d8063a6ac427a84eb1f91c44e376d90de53d03893674991d9
   .local/format-contracts/acquired/nrrd/src-nrrd-001.bin: 43ca6102cc998e0191e225d7954278547d491e29b74a132b3118571d85a8b0d5
@@ -23440,17 +23440,131 @@ obligations:
   source_field: required_behavior
   authority_reference_ids:
   - POL-XBZ-WRITE-01
+  authority_fact_ids: []
+  authority_source_ids: []
+  rule_text: Write every supported maindoc type to schema-valid output in schema-valid element order independent of mutation order, and round-trip it (load real or schema-derived content, write, reload) with canonical XML plus typed-semantics equivalence.
+  required_tests:
+  - Out-of-order property assignment still yields schema-valid output; determinism byte-compare.
+  - Round trips per supported document type with canonical XML comparison, using an official OASIS sample where one exists and a schema-derived synthetic fixture otherwise.
+  release_gates:
+  - Writer output schema-validates for every supported type; determinism proven; every supported type round-trips (directly, via version migration, or via a schema-derived synthetic fixture).
+  verification_status: UNVERIFIED
+  proof_node_ids: PLANNED
+  split_from_note: 'GOVERNANCE SPLIT (2026-08-11), Workstream A: this obligation previously
+    combined writer-functionality (schema-valid order, round-trip, determinism -- POL-XBZ-WRITE-01)
+    with an official-OASIS-sample PROVENANCE requirement (RF-UBL-00008, a reviewed
+    PRODUCT_REQUIREMENT finding, authority_class distinct from a normative spec fact --
+    see shared/format-contracts/research/ubl.yaml:126-136). Independently re-verified (a
+    fresh Explore agent given only the source artifacts, not this session''s own prior
+    conclusion, reached the identical classification) as (b) an authorized, formally
+    reviewed project acceptance policy layered ON TOP of the UBL spec, not derived from it
+    and not baseless. Per the mechanical disposition rule for this case ("if A-D are
+    complete but E/F is an independently stated clause, split the obligation so completed
+    writer behavior is not held partial"), RF-UBL-00008''s own official-sample-provenance
+    requirement is split out to SAL-UBL-OBL-A480CAD1CFEA58AD (same capability_id, ID
+    freshly minted via product_contract.py''s own _stable_obligation_id(format_id="ubl",
+    capability_id="UBL-WRITE-001", field="release_gates", text=RF-UBL-00008''s own literal
+    requirement text) for authentic consistency with how the pipeline would derive it,
+    collision-checked against all 194 pre-split IDs). This obligation keeps its own
+    original ID and is rescoped to exactly what POL-XBZ-WRITE-01 itself requires.'
+  invalidation_inputs:
+  - .local/format-contracts/acquired/ipynb/src-nb-002.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
+  - .local/format-contracts/acquired/nrrd/src-nrrd-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-001.bin
+  - .local/format-contracts/acquired/ora/src-ora-002.bin
+  - .local/format-contracts/acquired/ora/src-ora-003.bin
+  - .local/format-contracts/acquired/safetensors/src-safetensors-002.bin
+  - .local/format-contracts/acquired/ubl/src-ubl-001.bin
+  - .local/format-contracts/acquired/ubl/src-ubl-002.bin
+  - .local/format-contracts/acquired/xliff/src-xlf-001.bin
+  - .local/format-contracts/acquired/xliff/src-xlf-002.bin
+  - .local/format-contracts/acquired/xliff/src-xliff-001.bin
+  - .local/format-contracts/acquired/xliff/src-xliff-003.bin
+  - plans/strategic/ff6/capability-enrichments/ipynb.yaml
+  - plans/strategic/ff6/capability-enrichments/nrrd.yaml
+  - plans/strategic/ff6/capability-enrichments/ora.yaml
+  - plans/strategic/ff6/capability-enrichments/safetensors.yaml
+  - plans/strategic/ff6/capability-enrichments/ubl.yaml
+  - plans/strategic/ff6/capability-enrichments/xliff.yaml
+  - plans/strategic/ff6/capability-policy.yaml
+  - schemas/ff6/capability-universe.schema.json
+  - schemas/format-contracts/authority-lock.schema.json
+  - shared/format-contracts/authority-lock.yaml
+  - shared/format-contracts/ipynb.yaml
+  - shared/format-contracts/nrrd.yaml
+  - shared/format-contracts/ora.yaml
+  - shared/format-contracts/policy/family-packs/binary_tensor.yaml
+  - shared/format-contracts/policy/family-packs/executable_document.yaml
+  - shared/format-contracts/policy/family-packs/layered_raster_archive.yaml
+  - shared/format-contracts/policy/family-packs/scientific_raster.yaml
+  - shared/format-contracts/policy/family-packs/xml_business.yaml
+  - shared/format-contracts/policy/family-packs/xml_localization.yaml
+  - shared/format-contracts/policy/shared-library-contract.yaml
+  - shared/format-contracts/product-requirements/ipynb.yaml
+  - shared/format-contracts/product-requirements/nrrd.yaml
+  - shared/format-contracts/product-requirements/ubl.yaml
+  - shared/format-contracts/product-requirements/xliff.yaml
+  - shared/format-contracts/research/ipynb.yaml
+  - shared/format-contracts/research/nrrd.yaml
+  - shared/format-contracts/research/ora.yaml
+  - shared/format-contracts/research/safetensors.yaml
+  - shared/format-contracts/research/ubl.yaml
+  - shared/format-contracts/research/xliff.yaml
+  - shared/format-contracts/safetensors.yaml
+  - shared/format-contracts/ubl.yaml
+  - shared/format-contracts/xliff.yaml
+  - shared/sal-facts/evidence/ipynb.yaml
+  - shared/sal-facts/evidence/nrrd.yaml
+  - shared/sal-facts/evidence/ora.yaml
+  - shared/sal-facts/evidence/safetensors.yaml
+  - shared/sal-facts/evidence/ubl.yaml
+  - shared/sal-facts/evidence/xliff.yaml
+  - shared/sal-facts/ipynb.yaml
+  - shared/sal-facts/nrrd.yaml
+  - shared/sal-facts/ora.yaml
+  - shared/sal-facts/safetensors.yaml
+  - shared/sal-facts/ubl.yaml
+  - shared/sal-facts/xliff.yaml
+  - tools/format_contract/capability_universe.py
+  - tools/format_contract/capability_universe_command.py
+  - tools/format_contract/capability_universe_runtime.py
+  - tools/format_contract/capability_universe_validation.py
+  - tools/format_contract/product_contract.py
+- obligation_id: SAL-UBL-OBL-A480CAD1CFEA58AD
+  format_id: ubl
+  profile_id: production
+  spec_profiles:
+  - ubl_2.3
+  capability_id: UBL-WRITE-001
+  classification: STABLE_REQUIRED
+  level: MUST
+  kind: positive
+  source_field: required_behavior
+  authority_reference_ids:
   - RF-UBL-00008
   authority_fact_ids: []
   authority_source_ids: []
-  rule_text: Round-trip every official sample of each supported maindoc type comparing canonicalized XML plus typed semantics, and prove schema-valid element order for documents assembled property-by-property in arbitrary order.
+  rule_text: Round-trip every official OASIS-published sample of each supported maindoc type, comparing canonicalized XML plus typed semantics.
   required_tests:
-  - Out-of-order property assignment still yields schema-valid output; determinism byte-compare.
   - Official-sample round trips per supported document type with canonical XML comparison.
   release_gates:
-  - Writer output schema-validates for every first-wave type; determinism proven.
+  - Every supported maindoc type has an official OASIS-published sample that round-trips.
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
+  split_note: 'GOVERNANCE SPLIT (2026-08-11), Workstream A: split out of
+    SAL-UBL-OBL-F9D5251F2302AE3A -- see that obligation''s own split_from_note for the
+    full account. This obligation tracks ONLY the official-OASIS-sample PROVENANCE
+    requirement RF-UBL-00008 states (shared/format-contracts/research/ubl.yaml:126-136,
+    authority_class: PRODUCT_REQUIREMENT, reviewed and ACCEPTED 2026-07-16). It is
+    explicitly NOT a writer-functionality obligation -- do not describe it as missing
+    writer capability. A type failing this obligation may still fully satisfy
+    SAL-UBL-OBL-F9D5251F2302AE3A (writer functionality) via a schema-derived synthetic
+    fixture; the two are now independently tracked so one is never held back by the
+    other. ID minted via product_contract.py''s own _stable_obligation_id algorithm
+    (format_id="ubl", capability_id="UBL-WRITE-001", field="release_gates", text=this
+    obligation''s own rule_text-equivalent RF-UBL-00008 wording) for authentic pipeline
+    consistency, collision-checked against all 194 pre-split obligation IDs.'
   invalidation_inputs:
   - .local/format-contracts/acquired/ipynb/src-nb-002.bin
   - .local/format-contracts/acquired/nrrd/src-nrrd-001.bin
