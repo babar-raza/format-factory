@@ -1,0 +1,59 @@
+{
+  "schema": "skills-first/transcript@1",
+  "invocation_id": "product-source-task-ubl-synthetic-sample-roundtrip-001",
+  "skill_id": "add-python-api",
+  "manifest_id": "sfx-bf8b56b3251e15e1",
+  "mode": "live",
+  "timestamp": "2026-08-11T00:00:00Z",
+  "inputs": {
+    "format_id": "ubl",
+    "task_id": "TC_FF6_UBL_WRITE_001_SYNTHETIC_FIXTURE_GENERATION_001",
+    "task_kind": "generate-schema-valid-synthetic-fixtures-for-officially-unexampled-types",
+    "root_cause": "User directive (2026-08-11): 'OASIS did not publish an example does not mean a writer cannot be tested. A writer can be tested against normative schemas, semantic rules, deterministic synthetic fixtures, round trips, and available public examples.' UBL-WRITE-001's own missing_behavior named 36 of 91 supported root types with no official OASIS example in any UBL release, treated as a hard data-acquisition blocker.",
+    "obligation_targeted": "SAL-UBL-OBL-F9D5251F2302AE3A (UBL-WRITE-001), narrowed (not closed): the 36-type official-example gap is unchanged and still genuinely open, but all 36 types now have independent schema-valid round-trip proof via synthetic fixtures, which the obligation's own rule_text (round-trip proof against schema-valid content) does not require to be OASIS-authored.",
+    "acceptance_evidence": "tools/ubl/generate_synthetic_document_samples.py walks each of the 36 types' own vendored official OASIS maindoc XSD (src/python/ubl/src/format_factory/ubl/validation/schemas/maindoc/) using the xmlschema library's real content-model introspection, builds the smallest tree satisfying every minOccurs>=1 particle recursively (choice groups take their first branch only), fills leaf text via primitive-type-appropriate deterministic placeholders (honoring an enumeration facet when the schema restricts one; refuses to guess for an unhandled pattern restriction rather than emit unverified content), and serializes each via this package's own public dumps(). All 36/36 generated and validated against the real official schema on first execution -- zero manual per-type fixes needed.",
+    "regression_tier": "full ubl package suite, mypy, ruff"
+  },
+  "execution_steps": [
+    "1. Confirmed all 36 missing-example root types have a typed ROOT_CLASSES subclass already (document_types.py's own claim that every one of 91 UBL 2.3 root types is fully typed) -- zero not found.",
+    "2. Inspected xmlschema's own XsdElement/XsdComplexType/XsdGroup object model directly against a simple type (DocumentStatusRequest: 2 required leaf elements, ID and IssueDate) and a complex type with required nested aggregates (Catalogue: ID, IssueDate, ProviderParty, ReceiverParty, CatalogueLine) to confirm has_simple_content()/content/model/min_occurs give everything needed to walk a content model generically, without a hand-maintained per-type field list.",
+    "3. Checked whether required leaf types carry enumeration/pattern facets (ID/IssueDate: neither) and whether any required attributes exist on the sampled types (none) -- confirmed most codes/facets in UBL are on optional (minOccurs=0) elements, which a minimal-instance generator naturally never touches.",
+    "4. Wrote the generic recursive builder: _build_element_node (leaf simple-content -> placeholder text + any required attributes; complex content -> recurse into its own group) and _walk_group (sequence/all -> every minOccurs>=1 particle; choice -> first branch only), with a depth guard (40) against schema cycles.",
+    "5. Ran the generator against all 36 types. Result: 36/36 generated and schema-valid on the first execution (schema_validate() against each type's own real official XSD) -- confirmed via a background run since 36 sequential xmlschema.XMLSchema() constructions (each pulling in the full shared common-component schema graph) took several minutes.",
+    "6. Built a manifest (samples/by-format/ubl/synthetic/_synthetic-corpus-manifest.yaml) programmatically from the generated files' own sha256/size, explicitly labeled provenance_status: SYNTHETIC_SCHEMA_DERIVED for every entry -- never presented as an OASIS example, mirroring but clearly distinguished from the official corpus's own manifest style.",
+    "7. Wrote tests/python/ubl/test_obligation_synthetic_sample_roundtrip.py: a manifest-driven parametrized suite (5 test methods x 36 types + 1 manifest-integrity test = 181 tests) proving manifest-hash integrity, real official-schema validity, successful load, round-trip stability (load -> dumps -> reload, still schema-valid), and that every fixture declares a UBL 2.3-compatible version (never given a free pass past the same stable-profile gate real documents must clear).",
+    "8. Ran the new test file alone (181/181 passed, ~145s -- schema_validate() reloads the target XSD per call, the same cost profile the existing 55-official-sample test file already has), mypy (clean), ruff (clean), then the full ubl suite (1958 passed, 0 failed, up from 1777)."
+  ],
+  "allowed_files": [
+    "samples/by-format/ubl/synthetic",
+    "tests/python/ubl/test_obligation_synthetic_sample_roundtrip.py",
+    "tools/ubl/generate_synthetic_document_samples.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "actual_files_changed": [
+    "tools/ubl/generate_synthetic_document_samples.py",
+    "samples/by-format/ubl/synthetic/_synthetic-corpus-manifest.yaml",
+    "samples/by-format/ubl/synthetic/*.xml (36 project-generated synthetic documents)",
+    "tests/python/ubl/test_obligation_synthetic_sample_roundtrip.py",
+    "shared/format-contracts/implementation-evidence/ubl.yaml"
+  ],
+  "tests_run": [
+    ".venv/Scripts/pytest tests/python/ubl/test_obligation_synthetic_sample_roundtrip.py -q -- 181 passed (all new)",
+    ".venv/Scripts/python -m mypy tests/python/ubl/test_obligation_synthetic_sample_roundtrip.py tools/ubl/generate_synthetic_document_samples.py -- Success: no issues found",
+    ".venv/Scripts/python -m ruff check tests/python/ubl/test_obligation_synthetic_sample_roundtrip.py tools/ubl/generate_synthetic_document_samples.py -- All checks passed",
+    ".venv/Scripts/pytest tests/python/ubl -q -- 1958 passed (was 1777)"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "evidence": {
+    "product_promotion_effect": "1 obligation narrowed (partial -> partial, corrected missing_behavior: all 91 supported root types now have schema-valid round-trip evidence, official or synthetic; only the official-example provenance gap for 36 types and the single structurally-incompatible CommonTransportationReport sample remain genuinely open), not closed",
+    "controller_event_effect": "pending",
+    "certification_state": "4/6",
+    "obligations_moved": 0,
+    "obligations_narrowed": 1,
+    "obligations_total_for_format": 194,
+    "new_public_api": "none -- tools/ubl/generate_synthetic_document_samples.py consumes only this package's own existing public API (dumps, loads, ROOT_CLASSES, schema_validate, XmlNode); no src/python/ubl/ file was modified"
+  },
+  "generated_by": "claude",
+  "visibility": "generated"
+}
