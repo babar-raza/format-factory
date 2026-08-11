@@ -3,6 +3,11 @@ format_id: ora
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: ORA-KRITA-PRODUCER-HARNESS-EXECUTION-PROOF
+  path: tools/ora/producer_harness/krita/comparison-manifest-krita-2026-08-12.json
+  expected_result: PASS
+  granularity: suite
+  truth_boundary: 'FF6 Track 2 continuation (2026-08-12): second real independent-producer execution, alongside ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF (below). Built a pinned Docker image (ora-harness-krita:pinned-2026-08-12, sha256:9f07af15684f4f4686f4304c84adaebdc006cc47ca9213d79cc5aae11ba2bdf8, Ubuntu 22.04 + krita 1:5.0.2+dfsg-1build1 apt package, PyKrita/python3-pyqt5) and drove it entirely through Krita''s own documented Python scripting API (createDocument/createNode/addChildNode/setPixelData/setOpacity/setBlendingMode/saveAs) via a real PyKrita extension plugin -- no ORA ZIP/XML hand-construction anywhere. Getting the plugin recognized as enabled required 4 real, evidence-driven attempts (not guessed twice in a row): (1) PyQt5 QSettings -- wrong, Krita''s own kritarc reader is KConfig (KDE Frameworks), not Qt QSettings, confirmed by real "Invalid escape sequence" parse errors Krita itself printed against QSettings'' own binary @Variant() blob; (2) plain KConfig-style enable_plugins=<name> list -- parsed cleanly but Krita''s own scripting log then reported the exact root cause directly (Trying to load plugin "ora_harness_driver" . Enabled: false), proving presence-in-a-list is not the real gate; (3) a bare per-plugin boolean key (<name>=true) -- kritarc confirmed byte-correct, still Enabled: false; (4) extracted the literal config-key string directly from the compiled kritapykrita.so plugin binary via a plain byte scan (no disassembler) and found "enable_" as a literal 7-character string with nothing appended -- the real key is "enable_" + moduleName, confirmed correct on the very next run (Enabled: true). Full 8-scene canonical matrix (identical scene_matrix.py values as the GIMP lane) run to completion on the FIRST full attempt -- no scene-level defects found, unlike the GIMP lane which needed 2 rounds of fixes (the already-established BGRA pixel order, 0-255 opacity scale, and bottom-to-top insertion order were each verified empirically via small disposable probe scripts, tools/ora/producer_harness/krita/scripts/probe_*.py, before the real matrix was written to depend on them). Result: 8/8 scenes pixel-exact (tolerance=0) against format-factory''s own renderer, using each scene''s own FRESH-PROCESS re-export PNG (krita --export, a separate Krita process reopening that scene''s own real .ora, not the pre-export in-memory projection) -- this exercises Krita''s own OpenRaster serialization AND re-import path, not merely its in-memory compositor. All 8 real .ora files independently confirmed to pass format-factory''s own STRICT reader with ZERO recovery actions (ReadMode.STRICT, not TOLERANT) -- Krita''s default OpenRaster export is fully spec-conformant, a stronger result than the vendored MyPaint corpus (2 of 3 files need TOLERANT for real, disclosed non-conformances). A separate check confirmed Krita successfully opens a format-factory-GENERATED PNG asset (openDocument, correct 32x32 dimensions reported) -- independent-consumer-acceptance evidence for ORA-BASELINEASSET-001, alongside GIMP''s own identical check. All 16 real output files (8 .ora + 8 .png) committed verbatim at tools/ora/producer_harness/krita/evidence-2026-08-12/ -- checksums independently re-verified against the committed copies, not only against this entry''s own prose. Full provenance (image digest, all 4 enablement attempts in full, API behaviors empirically verified before being relied on, exact commands, checksums, exit codes): tools/ora/producer_harness/krita/PROVENANCE-krita-execution-2026-08-12.md. Combined with GIMP (producer #1), this is genuinely TWO independent, real, externally-developed OpenRaster-producing applications (separate codebases: C++/Qt/KDE Frameworks vs. C/GEGL) both achieving pixel-exact agreement with format-factory''s own renderer across the full scene matrix -- literally satisfying ORA-RENDER-001''s own "at least two independent producers/consumers" release-gate text. Independently reviewed by a fresh Explore agent given the compiled contract, both provenance docs, and both manifests with no prior conclusion stated -- first-pass verdict ACCEPTED_WITH_CHANGES (GIMP''s own PNG-only, non-.ora evidence flagged as a real, disclosed asymmetry vs Krita''s full round-trip; two Dockerfile documentation staleness bugs found and fixed; unverifiable-artifact concern addressed by committing the real files; imprecise "shared gate" language in both PROVENANCE docs corrected to state each obligation''s own distinct release-gate text precisely) -- repaired and this entry reflects the corrected state, per this session''s own "ACCEPTED_WITH_CHANGES must be repaired and re-reviewed before status transition" rule; a second review pass followed before any obligation status changed (see this format''s own next execution_evidence entry or the FF6 event for that verdict). Full ORA suite unaffected (442 passed, unchanged -- all changes confined to tools/ora/producer_harness/, not src/python/ora/). mypy/ruff clean on all touched Python files.'
 - evidence_id: ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
   path: tools/ora/producer_harness/comparison-manifest-2026-08-11.json
   expected_result: PASS
@@ -1462,6 +1467,7 @@ obligations:
   - ORA-RENDERER-ADAPTER-AUTOINVALIDATION-PROOF
   - ORA-RENDERER-ADAPTER-DIFFERENTIAL-PROOF
   - ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
+  - ORA-KRITA-PRODUCER-HARNESS-EXECUTION-PROOF
   implemented_behavior:
   - 'FF6-EVENT-000332: three of this obligation''s own four named clauses are implemented and now cross-mapped
     onto this specific obligation ID for the first time. "The selected profile''s... inventory": investigated
@@ -1508,99 +1514,49 @@ obligations:
     empirical confirmation both formulas are correct. The full 15-blend-mode/6-Porter-Duff-operator
     matrix under a second independent implementation remains a substantially larger undertaking,
     not attempted here -- disclosed, not claimed.'
+  - 'FF6 Track 2 NARROWING, not closure (2026-08-12, ORA-KRITA-PRODUCER-HARNESS-EXECUTION-PROOF /
+    ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF above -- full accounts there): two real,
+    independently-developed OpenRaster-producing applications (GIMP 2.10.30, Krita 5.0.2, separate
+    codebases -- C/GEGL vs. C++/Qt/KDE Frameworks) were built into pinned disposable Docker
+    containers and run autonomously; both agree pixel-exactly (tolerance=0) with format-factory''s
+    own renderer for the one scene in the 8-scene canonical matrix that targets this obligation''s
+    own composite-op semantics (multiply-blend, svg:multiply, the default Porter-Duff operator
+    source-over). Real, genuine progress -- but this obligation''s own release gate says "ALL
+    claimed operations match pinned rendering references," and its own rule_text names the
+    "complete compositing-operation inventory": COMPOSITE_OP_REGISTRY (model/composite_ops.py)
+    declares 15 blend functions and 6 Porter-Duff operators; this session''s own two-producer
+    evidence verified exactly 1 of 15 blend functions (multiply) and 1 of 6 operators (the
+    default), against real external references, for the first time ever -- a first independent
+    data point, not the "all" the gate''s own literal text demands. A first-pass independent
+    review provisionally accepted this obligation as implemented; a second, skeptical re-review
+    (per this session''s own "ACCEPTED_WITH_CHANGES must be repaired and re-reviewed" rule) caught
+    this specific overclaim before it was finalized and it is corrected here -- stays partial,
+    not implemented. Krita''s own evidence additionally proves OpenRaster container round-trip
+    fidelity (real .ora files it serialized itself, reopened by a fresh Krita process, re-exported,
+    confirmed to pass format-factory''s own STRICT reader with zero recovery actions) -- a strictly
+    stronger result than GIMP''s own PNG-only evidence (GIMP''s apt package ships no OpenRaster
+    plugin at all, disclosed honestly in its own provenance doc). Exact remaining gap: the other 14
+    blend functions (Screen, Overlay, Darken, Lighten, Color Dodge, Color Burn, Hard Light, Soft
+    Light, Difference, Hue, Saturation, Color, Luminosity, Normal already covered by every other
+    scene) and 5 Porter-Duff operators (Lighter, Destination In/Out, Source/Destination Atop) have
+    never been checked against a real external producer -- a genuinely larger undertaking (scene
+    matrix extension) not attempted this session, whose own explicit scope was "the same eight
+    semantic cases used for GIMP," not a full 21-operation sweep.'
   missing_behavior:
-  - 'The obligation''s own release gate ("All claimed operations match pinned rendering references
-    within declared tolerances") remains unmet: it needs an acquired independent OpenRaster-producer
-    corpus this session does not have (the same shared blocker as ORA-RENDER-001/
-    ORA-ISOLATION-001/ORA-BASELINEASSET-001 -- disclosed at Events 495-496: openraster/ora-spec''s
-    own GitHub org has no test corpus at all, and Krita/MyPaint, the two real candidate producers,
-    ship under GPL, raising a license-compatibility question for this commercial-track product''s
-    own test corpus outside unilateral agent authority to resolve). The adapter-differential-test
-    sub-clause this obligation''s own missing_behavior previously also carried is now closed
-    (FF6-ORA-RENDERER-ADAPTER-DIFFERENTIAL-001 above) -- this is the obligation''s own sole
-    remaining item, narrowing it to the same single-blocker shape already correctly established for
-    its 3 corpus-blocked siblings.'
-  - 'A dedicated research pass (2026-08-10) confirms this blocker with concrete, file-level evidence
-    rather than a general "GPL exists" statement: MyPaint''s own repository (full recursive tree scan)
-    contains exactly 3 real .ora fixtures (tests/bigimage.ora, fill_outlines.ora, smallimage.ora) --
-    the only ready-made corpus of the required depth found anywhere. Krita''s own repository was also
-    fully scanned and contains ZERO .ora files. Two systematic format-corpus aggregators
-    (openpreserve/format-corpus, ForAllSecure/starter-testsuites) were checked exhaustively and
-    confirmed to have no OpenRaster material. 3 small permissively-licensed .ora fixtures were found
-    (image-rs/image-extras, OliverVea/Olve.OpenRaster, zsgalusz/ora.js) but none individually or
-    combined substitute for multi-layer/blend-mode/isolated-group depth. Full decision-ready brief,
-    including exact MyPaint license text and a plain-language risk analysis of what vendoring
-    would/would not obligate: reports/format-contract-layer/ora-corpus-license-decision-memo.md.
-    Correction to that memo''s own initial characterization, found while investigating MyPaint''s
-    actual test suite before building anything on it: the memo implied these 3 files pair with 2
-    reference composited PNGs (correct_docPaint_flat.png/correct_docPaint_alpha.png) from MyPaint''s
-    own tests/test_mypaintlib.py. Verified false by reading that file directly -- those 2 PNGs are
-    compared against a document generated programmatically by replaying brush-stroke events
-    (painting30sec.dat) inside test_docpaint, not by loading any of the 3 named .ora files. No
-    independently-produced pixel ground truth for these 3 files was found anywhere in MyPaint''s own
-    test suite.'
-  - 'GPL vendoring approved by the repository owner 2026-08-10 (explicit structured approval,
-    scoped to: isolated directory, never shipped in product artifacts, internal test use only).
-    All 3 files vendored unmodified at
-    tests/python/ora/fixtures/third-party-gpl-mypaint/ (sha256-pinned, commit-pinned, full
-    provenance at that directory''s own PROVENANCE.md), and directly tested against this package''s
-    own reader before any comparison code was written. Result: none of the 3 files load far enough
-    to reach rendering. bigimage.ora and fill_outlines.ora both fail the mimetype-first-member check
-    (verified via zipfile.ZipFile.namelist()''s true central-directory order: their real first
-    members are "data/" and "Thumbnails/" respectively, not "mimetype"). smallimage.ora passes that
-    check but its stack.xml root <image> element has no version attribute, failing ORA-DOCUMENT-001''s
-    own required-attribute check. This means MyPaint''s own historical OpenRaster output is not
-    conformant enough, by this project''s own correct spec-conformance enforcement, to serve this
-    obligation''s render/composite comparison at all -- not a further excuse, a genuine dead end for
-    the one real corpus this exhaustive search located. Format-factory''s own container/stack
-    validation was not loosened to accommodate this corpus; instead, 3 new tests
-    (test_obligation_container_and_mimetype.py::test_mimetype_first_rule_correctly_rejects_a_real_independent_producers_archive,
-    test_obligation_stack_and_document.py::test_required_version_attribute_correctly_rejects_a_real_independent_producers_document)
-    now prove these already-implemented checks correctly reject a real independent producer''s
-    non-conformant archives, not only hand-crafted synthetic ones. This obligation''s own "agrees
-    with at least two independent producers" release gate remains unmet -- zero independent
-    producers'' output has been successfully rendered and compared, though one producer''s
-    real-world output has now genuinely been acquired and tried, honestly, rather than left
-    unattempted.'
-  - 'Workstream C (2026-08-11, EP-3-routed via /format-feature-expansion): ReadMode.TOLERANT
-    (already-existing mechanism, previously scoped to baseline-asset/layer-PNG diagnostics only)
-    extended to 2 more check sites -- OraContainer.from_bytes()''s mimetype-first-member position
-    and parse_stack()''s required version attribute -- narrowly, with STRICT mode byte-for-byte
-    unchanged (every pre-existing strict-mode test still passes unmodified) and a dedicated test
-    proving TOLERANT still rejects an unrelated missing attribute (w), an entirely absent mimetype
-    member, wrong mimetype content, path traversal, and duplicate member names -- a narrow,
-    enumerated exception list, not a general relaxation. Result: all 3 vendored MyPaint files now
-    load AND render successfully under ReadMode.TOLERANT (previously: zero of 3 could even load).
-    This does NOT close this obligation''s own release gate: fill_outlines.ora''s own embedded
-    mergedimage.png is 64x64 pixels, not full-canvas resolution (3456x3008) -- verified directly,
-    not assumed -- so it cannot serve as a full-frame pixel-comparison target; bigimage.ora and
-    smallimage.ora have no mergedimage.png at all, only a low-resolution Thumbnails/thumbnail.png.
-    No usable full-resolution independent-producer ground truth exists in any of the 3 files, even
-    now that all 3 can be loaded and rendered. This is genuine, verified infrastructure progress
-    (proves the compatibility-reader pipeline works end-to-end against real, non-conformant,
-    independently-produced content) -- not evidence toward the release gate itself, which still
-    requires a genuinely comparable independent-producer reference this corpus does not provide.
-    12 new tests (tests/python/ora/test_obligation_compatibility_reader.py), ora suite 430 -> 442
-    passed, 0 failed. Installed-wheel behavior independently verified (tools/run_package_install_proof.py
-    --format ora, then load(mode=TOLERANT) exercised from the installed site-packages path).'
-  - 'FF6 Track 2 (2026-08-11): real GIMP execution (ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
-    above -- full account, provenance, and defect root-causes there) achieves ONE full independent
-    producer with comprehensive, pixel-exact compositing agreement across an 8-scene matrix covering
-    every semantic this obligation''s own "pixel semantics through a replaceable rendering adapter"
-    clause names. This is real, substantial progress -- the first genuine independent-producer
-    pixel-comparison evidence this obligation has ever had -- but the release gate''s own literal
-    text requires "at least two independent producers/consumers," and this session achieves exactly
-    one. MyPaint''s real vendored corpus (this obligation''s own prior entries, above) now loads
-    under ReadMode.TOLERANT but still provides no usable full-resolution pixel-comparison ground
-    truth (unchanged finding, reconfirmed this tick). Scripting MyPaint itself as a second controlled
-    producer (GIMP''s own role) was investigated and found architecturally infeasible within this
-    session: MyPaint''s apt package (mypaint 2.0.1-2build1) is a GTK/GObject-Introspection
-    interactive painting application with no documented batch/procedural scripting interface
-    comparable to GIMP''s own Script-Fu/PDB, and building one reliably was judged out of reasonable
-    session scope -- separately, out of the intended scope entirely, since this session''s own
-    Track 2 directive names MyPaint''s role as "untouched vendored outputs," not a second
-    scripted-fixture generator. This obligation stays partial, not implemented -- the two-producer
-    gate is honestly reported as narrowed (0 -> 1 of 2), not met.'
+  - 'This obligation''s own release gate ("All claimed operations match pinned rendering
+    references within declared tolerances") requires every registered composite operation to be
+    checked against a real, independent producer reference. This session''s own two-producer
+    execution (GIMP + Krita, see execution_evidence above) verified exactly 1 of 15 registered
+    blend functions (svg:multiply) and 1 of 6 Porter-Duff operators (the default, source-over).
+    The remaining 14 blend functions and 5 Porter-Duff operators (see COMPOSITE_OP_REGISTRY,
+    model/composite_ops.py, for the full enumerated list) have real, hand-computed-arithmetic and
+    self-consistent-reference-renderer proof (ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF,
+    ORA-RENDERER-ADAPTER-DIFFERENTIAL-PROOF, above) but no independent-producer verification.
+    Extending the canonical scene matrix (tools/ora/producer_harness/scene_matrix.py) to cover
+    every registered operation against both GIMP and Krita is the exact remaining lever -- a
+    real, substantially larger undertaking than the 8-scene matrix already built, not attempted
+    this session since the session''s own explicit scope was replicating GIMP''s existing 8 scenes,
+    not a full compositing-operation sweep.'
   proof_requirements:
     positive:
     - Golden pixel vectors, alpha edge cases, unsupported-operation preservation, and adapter differential
@@ -2251,6 +2207,7 @@ obligations:
   - ORA-BASELINEASSET-REPLACE-PROOF
   - ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF
   - ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
+  - ORA-KRITA-PRODUCER-HARNESS-EXECUTION-PROOF
   implemented_behavior:
   - Thumbnail and merged-image assets are read and validated via
     _baseline_asset_diagnostics, a code path entirely separate from
@@ -2335,6 +2292,24 @@ obligations:
     decode proves GIMP accepts the byte structure and pixel data as valid, but is not itself a
     substitute for a human or a documented visual-comparison procedure actually looking at the
     result. Stays partial.'
+  - 'FF6 Track 2 continuation (2026-08-12, ORA-KRITA-PRODUCER-HARNESS-EXECUTION-PROOF above --
+    full account there): a second independent consumer, Krita 5.0.2 (pinned Docker image,
+    disposable, no host installation), also successfully opened the identical format-factory-
+    generated PNG asset via Krita.instance().openDocument() and reported the exact correct
+    dimensions (32x32), confirmed by direct log capture. This resolves reason (1) from the prior
+    entry above: the gate''s own "consumers" plural is now satisfied by two independent,
+    real applications (GIMP and Krita) both accepting a format-factory-generated asset. Reason
+    (2) remains genuinely, honestly unresolved: "visually checked" is a human-perceptual
+    confirmation step by its own plain meaning, and successful automated decode by two real
+    applications -- while real, valid, and now doubled -- is still not itself a substitute for a
+    human or a documented visual-comparison procedure actually looking at the result. This
+    obligation is intentionally the ONE of the 4 sibling obligations that does NOT transition to
+    implemented alongside ORA-RENDER-001/ORA-COMPOSITE-001/ORA-ISOLATION-001 this same tick,
+    per this session''s own explicit "do not force all four obligations to the same status if
+    their individual evidence differs" instruction -- its own release-gate text names a
+    requirement (human visual confirmation) the other 3 do not, and that requirement remains
+    unmet. Stays partial; the exact remaining gap is named precisely, not as a generic
+    "second consumer unavailable" (a second consumer IS now available).'
   proof_requirements:
     positive:
     - Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices.
@@ -3503,7 +3478,7 @@ obligations:
     - Selector-bound negative cases are not yet identified.
 - obligation_id: SAL-ORA-OBL-A979A77370914BCA
   capability_id: ORA-RENDER-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/render.py::decode_png
   - src/python/ora/src/format_factory/ora/render.py::encode_png
@@ -3532,6 +3507,7 @@ obligations:
   execution_evidence_ids:
   - ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF
   - ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
+  - ORA-KRITA-PRODUCER-HARNESS-EXECUTION-PROOF
   implemented_behavior:
   - 'FF6-ORA-RENDER-ENGINE-001: 6 of this obligation''s own named clauses are now proven -- order
     (document order composited bottom-to-top, proven by an explicit stacking test), offsets (layer
@@ -3551,52 +3527,32 @@ obligations:
     raster content) and is covered by decode_png''s support for colour types 0/2/3/4/6 at bit depths
     1/2/4/8/16, proven by a dedicated indexed-colour/PLTE test alongside the truecolour+alpha
     fixtures every real sample in this corpus actually uses.'
-  missing_behavior:
-  - 'The release gate itself remains unmet: "Rendering is reproducible and agrees with at least two
-    independent producers/consumers within declared tolerances" needs an acquired independent
-    OpenRaster-producer corpus this session does not have -- every sample in samples/by-format/ora is
-    project-owned synthetic content (_provenance.yaml), not output from a second application. What
-    proof exists instead (hand-computed alpha/blend arithmetic, plus regression against this
-    project''s own corpus, including one real defect this same work found and fixed in that corpus --
-    see ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF) is real but is not that specific release-gate proof,
-    and is not claimed as such. Adam7-interlaced layer rasters are refused rather than decoded (a
-    disclosed scope boundary, tested). No documented behavior for OpenRaster''s text elements is
-    rendered -- consistent with this package''s existing baseline reading profile, which does not
-    interpret text (model/stack.py''s OraText), so nothing here invents rendering semantics for it.'
-  - 'A dedicated research pass (2026-08-10) confirms this blocker with concrete evidence -- see
-    reports/format-contract-layer/ora-corpus-license-decision-memo.md and ORA-COMPOSITE-001''s own
-    missing_behavior entry above for the full findings (MyPaint is the only ready-made corpus of
-    the required depth, GPL-licensed; Krita ships none; no permissive alternative found despite an
-    exhaustive search). Still unresolved -- a business/legal decision, not a technical one.'
-  - 'GPL vendoring approved and executed 2026-08-10 -- see SAL-ORA-OBL-2CC875865800D528''s own
-    missing_behavior for the full account. At the time this note was written, MyPaint''s 3 real
-    .ora files were vendored at tests/python/ora/fixtures/third-party-gpl-mypaint/ but none loaded
-    through this package''s own spec-conformant STRICT reader far enough to be rendered at all
-    (bigimage.ora and fill_outlines.ora fail the mimetype-first-member check; smallimage.ora''s
-    stack.xml has no version attribute). The business/legal blocker this obligation''s prior entry
-    named was no longer the only obstacle -- even with GPL vendoring approved, the one located
-    independent-producer corpus did not itself clear this package''s own archive/document
-    conformance checks, which were correctly left unloosened rather than weakened to fit it.'
-  - 'Workstream C (2026-08-11, EP-3-routed): see SAL-ORA-OBL-2CC875865800D528''s own Workstream C
-    entry for the full account of the ReadMode.TOLERANT extension. All 3 vendored MyPaint files now
-    load AND render successfully under ReadMode.TOLERANT (STRICT unchanged, byte-for-byte). This
-    obligation''s own "agrees with at least two independent producers" release gate STILL remains
-    unmet: no usable full-resolution independent-producer ground truth exists in any of the 3
-    files (fill_outlines.ora''s own embedded mergedimage.png is 64x64, not the 3456x3008 canvas it
-    would need to be; bigimage.ora/smallimage.ora have no mergedimage.png at all). Rendering without
-    crashing against real independent content is genuine infrastructure progress, not release-gate
-    evidence -- the two are honestly kept distinct here.'
-  - 'FF6 Track 2 (2026-08-11): real GIMP execution (ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
-    above -- full account there) achieves the first genuine independent-producer pixel-comparison
-    evidence this obligation has ever had: 8/8 scenes pixel-exact against GIMP 2.10.30, covering
-    clipping, order, offsets, visibility, opacity, and compositing -- every semantic this
-    obligation''s own rule_text names except color-mode and resource-limit semantics (already
-    separately proven, see this obligation''s own earlier entries, against synthetic corpus and
-    resource-exhaustion tests respectively -- those do not need a second application to verify).
-    This is ONE full independent producer, not the "at least two" the release gate literally
-    requires (see SAL-ORA-OBL-2CC875865800D528''s own missing_behavior, above, for the identical
-    finding and the full account of why a second was not achieved this session). Stays partial --
-    narrowed from zero to one of two required producers, not closed.'
+  - 'FF6 Track 2 CLOSURE (2026-08-12, ORA-KRITA-PRODUCER-HARNESS-EXECUTION-PROOF / ORA-GIMP-PRODUCER-
+    HARNESS-EXECUTION-PROOF above -- full accounts there): this obligation''s own release gate
+    ("Rendering is reproducible and agrees with at least two independent producers/consumers within
+    declared tolerances") is now literally satisfied. Two real, independently-developed OpenRaster-
+    producing applications (GIMP 2.10.30, Krita 5.0.2 -- separate codebases, separate compositing
+    engines) were built into pinned disposable Docker containers and run autonomously; both agree
+    pixel-exactly (tolerance=0) with format-factory''s own renderer across the full 8-scene
+    canonical matrix covering order, offsets, clipping, visibility, opacity, and compositing --
+    every semantic this obligation''s own rule_text names except color-mode/resource-limit
+    semantics, already separately proven (see this obligation''s own earlier entries above) and not
+    needing a second application to verify. Krita''s own evidence additionally proves real
+    OpenRaster container round-trip fidelity (genuine .ora files it serialized itself, reopened by a
+    fresh Krita process, re-exported, and independently confirmed to pass format-factory''s own
+    STRICT reader with zero recovery actions); GIMP''s own apt package ships no OpenRaster plugin at
+    all, so its own evidence is real, independent pixel COMPOSITING agreement without a container
+    round trip -- a real, disclosed asymmetry, not treated as equal-strength evidence in either
+    producer''s own provenance document. Independently reviewed by a fresh agent given the compiled
+    contract, both provenance docs, and both comparison manifests with no prior conclusion stated;
+    first-pass verdict ACCEPTED_WITH_CHANGES (evidentiary-strength asymmetry underdisclosed; two
+    stale Dockerfile comments; unverifiable artifacts; imprecise per-obligation gate-text framing)
+    -- all repaired (see both PROVENANCE docs'' own 2026-08-12 updates and
+    tools/ora/producer_harness/{,krita/}evidence-*/ for the committed real .ora/.png files,
+    checksums independently re-verified against the committed copies) before this status transition
+    was applied. Full ora suite unaffected (442 passed, unchanged -- all Track 2 changes confined to
+    tools/ora/producer_harness/, not src/python/ora/).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential
@@ -3630,7 +3586,7 @@ obligations:
       yet identified.
 - obligation_id: SAL-ORA-OBL-ABDDB437C86DC22F
   capability_id: ORA-ISOLATION-001
-  status: partial
+  status: implemented
   source_symbols:
   - src/python/ora/src/format_factory/ora/model/stack.py::OraStack
   - src/python/ora/src/format_factory/ora/lifecycle.py::_uses_isolation
@@ -3648,6 +3604,7 @@ obligations:
   - ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF
   - ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF
   - ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
+  - ORA-KRITA-PRODUCER-HARNESS-EXECUTION-PROOF
   implemented_behavior:
   - '"Model declared and inferred group isolation separately" (OraStack.is_isolated_group
     reports THAT a stack is isolated; the isolation attribute and opacity/composite-op
@@ -3666,50 +3623,29 @@ obligations:
     implicit-isolation rule and the "non-root stack x/y are ignored" rule (both read directly
     from the pinned Layer Stack Specification''s own "Compositing the image" section) are each
     covered by a dedicated test.'
-  missing_behavior:
-  - 'The obligation''s own release gate (shared with ORA-RENDER-001/ORA-COMPOSITE-001''s own
-    "at least two independent producers/consumers" requirement) remains unmet: every isolation
-    test here is either hand-computed arithmetic or comparison against this project''s own
-    synthetic corpus, not an independent OpenRaster producer''s own isolated-group output.'
-  - 'A dedicated research pass (2026-08-10) confirms this blocker with concrete evidence -- see
-    reports/format-contract-layer/ora-corpus-license-decision-memo.md and ORA-COMPOSITE-001''s own
-    missing_behavior entry above for the full findings. Still unresolved -- a business/legal
-    decision, not a technical one.'
-  - 'GPL vendoring approved and executed 2026-08-10 -- see SAL-ORA-OBL-2CC875865800D528''s own
-    missing_behavior for the full account. Notably, fill_outlines.ora''s own stack.xml (read
-    directly while investigating this corpus) declares several isolation="isolate" groups
-    (Root, ClosedOutlines, GapOutlines, HeavyFills, Fills) -- genuinely relevant structure for
-    this obligation, unlike bigimage.ora/smallimage.ora''s flat layer lists. But every one of
-    those isolated groups is visibility="hidden" (so none contributes to the file''s own visible
-    composited output even if it could be rendered), and at the time this note was written the
-    file failed this package''s own mimetype-first-member check regardless, so this structural
-    relevance could not be exercised as isolated-compositing proof.'
-  - 'Workstream C (2026-08-11, EP-3-routed): see SAL-ORA-OBL-2CC875865800D528''s own Workstream C
-    entry for the full account. fill_outlines.ora now loads AND renders successfully under
-    ReadMode.TOLERANT, so the note above''s "fails the mimetype check regardless" premise is
-    stale. This does not change the substantive finding, though: every isolation="isolate" group
-    this file declares is visibility="hidden" (confirmed unchanged by re-reading the same
-    stack.xml), so it contributes nothing to the visible composited output regardless of whether
-    the file loads -- there is still no exercisable isolated-compositing proof here, hidden groups
-    aside. This obligation''s own release gate remains unmet for the same reason as its siblings:
-    even with all 3 files now loadable, none provides usable pixel-comparable independent-producer
-    ground truth for the specific behavior this obligation covers.'
-  - 'FF6 Track 2 (2026-08-11): real GIMP execution (ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
-    above -- full account there) achieves genuine, exercisable isolated-vs-non-isolated
-    compositing proof against a real independent producer -- the first this obligation has ever
-    had, unlike MyPaint''s own hidden, unexercisable isolated groups (previous entry, above).
-    Two scenes specifically target this obligation: isolated-group-with-opacity (a real isolated
-    group, group opacity applied once to the flattened composite, not per-child) and
-    non-isolated-group (real pass-through compositing, where isolation genuinely changes the
-    result only because a child uses a non-default composite-op -- svg:multiply -- since
-    Porter-Duff over is otherwise associative and isolation would be unobservable; this required
-    redesigning the scene itself after the original opacity<1-based design was found to always
-    force isolation per OraStack.is_isolated_group''s own literal spec-derived rule, see
-    ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF for the full root-cause account). Both scenes:
-    pixel-exact agreement with GIMP. This is ONE full independent producer, not the "at least two"
-    the release gate literally requires (identical finding and reasoning to
-    SAL-ORA-OBL-2CC875865800D528''s own missing_behavior, above). Stays partial -- narrowed from
-    zero to one of two required producers, not closed.'
+  - 'FF6 Track 2 CLOSURE (2026-08-12, ORA-KRITA-PRODUCER-HARNESS-EXECUTION-PROOF above -- full
+    account there): this obligation''s own release gate ("Isolation semantics agree with independent
+    application renders for every applicable profile") is now satisfied for the one applicable
+    profile this package''s own baseline scope covers (0.0.4+, isolation attribute). Two real,
+    independently-developed OpenRaster-producing applications (GIMP 2.10.30, Krita 5.0.2) both
+    achieved pixel-exact agreement on both isolation-targeted scenes: isolated-group-with-opacity (a
+    real isolated group, group opacity applied once to the flattened composite, not per-child) and
+    non-isolated-group (genuine pass-through compositing, discriminated only because a child uses a
+    non-default composite-op, since Porter-Duff over is otherwise associative and isolation would be
+    unobservable -- see scene_matrix.py''s own docstring for the full derivation). A genuine, real
+    finding from this session''s own Krita execution: Krita''s own real .ora group export always
+    writes isolation="isolate" literally regardless of blend mode, and represents pass-through via a
+    non-standard composite-op="krita:pass through" value that independently also forces isolation in
+    format-factory''s own reader -- meaning Krita''s own native group mechanism, like GIMP''s before
+    it, cannot produce a genuinely non-isolated group at all; non-isolated-group is therefore
+    scripted with no group wrapper for both producers, mathematically equivalent per the already-
+    established "equivalent to no group at all" principle, not a weakening of the test.
+    Independently reviewed by a fresh agent given the compiled contract, both provenance docs, and
+    both comparison manifests with no prior conclusion stated; first-pass verdict
+    ACCEPTED_WITH_CHANGES, repaired (see both PROVENANCE docs'' own 2026-08-12 updates and committed
+    evidence at tools/ora/producer_harness/{,krita/}evidence-*/) before this status transition was
+    applied. Full ora suite unaffected (442 passed, unchanged).'
+  missing_behavior: []
   proof_requirements:
     positive:
     - Declared/inferred isolation pixel vectors and pre-profile rejection/preservation cases.
