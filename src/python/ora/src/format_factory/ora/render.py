@@ -580,11 +580,29 @@ def _composite_layer_onto(
     composite_op: str,
 ) -> None:
     """Alpha-composite one straight-alpha RGBA8 raster onto `canvas` (a
-    premultiplied float32-per-channel buffer), clipped to the overlap of
-    the raster's placed bounds and the canvas. `composite_op` selects the
+    premultiplied float32-per-channel buffer). `composite_op` selects the
     blend function and Porter-Duff operator via `composite_op_info`; an
     unrecognized (forward-compatible) value falls back to the default --
-    rendering cannot invent semantics for a mode it does not know."""
+    rendering cannot invent semantics for a mode it does not know.
+
+    For Source Over (every blend function pairs with it), only the overlap
+    of the raster's placed bounds and the canvas is touched: outside that
+    overlap alpha_s=0, and Source Over's own Fb=(1-alpha_s)=1 there, i.e.
+    "leave the canvas exactly as it was" -- skipping those pixels is a
+    genuine optimization, not an approximation.
+
+    For the other 5 Porter-Duff operators this is NOT generally true --
+    Destination In and Destination Atop both have Fb=alpha_s, which is 0.0
+    (not 1.0) outside the source's own bounds, meaning the destination
+    must be CLEARED there, not left untouched. (Confirmed via
+    ORA-COMPOSITE-001's own full-inventory producer-verification sweep,
+    2026-08-12: a from-scratch independent oracle caught this exact
+    discrepancy; test_destination_in_clears_the_destination_outside_the_
+    source_layers_own_bounds and its own Destination Atop sibling in
+    test_obligation_render_and_compositing.py pin it down.) These 5
+    operators are therefore evaluated over the FULL canvas, with
+    out-of-bounds pixels treated as the true, explicit alpha_s=0 the
+    Porter-Duff formula itself expects -- not skipped."""
     info = composite_op_info(composite_op) or composite_op_info(DEFAULT_COMPOSITE_OP)
     assert info is not None  # DEFAULT_COMPOSITE_OP is always in the registry
     blend_name = info.blending_function
@@ -595,22 +613,34 @@ def _composite_layer_onto(
 
     x0, y0 = max(0, x), max(0, y)
     x1, y1 = min(canvas_width, x + raster_width), min(canvas_height, y + raster_height)
-    if x0 >= x1 or y0 >= y1:
-        return
 
-    for cy in range(y0, y1):
+    if is_source_over:
+        if x0 >= x1 or y0 >= y1:
+            return
+        cy_range: range = range(y0, y1)
+        cx_range: range = range(x0, x1)
+    else:
+        cy_range = range(canvas_height)
+        cx_range = range(canvas_width)
+
+    for cy in cy_range:
         ry = cy - y
         canvas_row = cy * canvas_width * 4
         raster_row = ry * raster_width * 4
-        for cx in range(x0, x1):
+        in_y_bounds = y0 <= cy < y1
+        for cx in cx_range:
             rx = cx - x
-            o_src = raster_row + rx * 4
-            alpha_s = (raster_pixels[o_src + 3] / 255.0) * opacity
-            cs = (
-                raster_pixels[o_src] / 255.0,
-                raster_pixels[o_src + 1] / 255.0,
-                raster_pixels[o_src + 2] / 255.0,
-            )
+            if in_y_bounds and x0 <= cx < x1:
+                o_src = raster_row + rx * 4
+                alpha_s = (raster_pixels[o_src + 3] / 255.0) * opacity
+                cs = (
+                    raster_pixels[o_src] / 255.0,
+                    raster_pixels[o_src + 1] / 255.0,
+                    raster_pixels[o_src + 2] / 255.0,
+                )
+            else:
+                alpha_s = 0.0
+                cs = (0.0, 0.0, 0.0)
 
             ci = canvas_row + cx * 4
             rb, gb, bb, alpha_b = canvas[ci], canvas[ci + 1], canvas[ci + 2], canvas[ci + 3]

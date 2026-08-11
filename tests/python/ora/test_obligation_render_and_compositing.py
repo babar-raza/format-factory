@@ -383,6 +383,90 @@ def test_unrecognized_composite_op_falls_back_to_default_rather_than_raising() -
     assert result.pixels == bytes((5, 6, 7, 255))
 
 
+# ── Non-default Porter-Duff operators ───────────────────────────────────
+#
+# Found via ORA-COMPOSITE-001's own full-inventory producer-verification
+# sweep (2026-08-12): a real, independent mathematical oracle
+# (tools/ora/producer_harness/composite_oracle.py, re-derived from Porter &
+# Duff (1984) independently of this module's own arithmetic) disagreed with
+# format-factory's own render() for exactly 2 of the 6 registered Porter-Duff
+# operators, at points OUTSIDE the source layer's own declared raster
+# bounds. Root cause: _composite_layer_onto only ever iterates the
+# intersection of the canvas and the source layer's own raster bounds --
+# correct for Source Over/Lighter/Destination Out/Source Atop, whose own
+# Fb coefficient equals 1.0 (i.e. "leave the destination unchanged") at
+# alpha_s=0, so skipping out-of-bounds pixels coincidentally produces the
+# right answer for those 4. It is NOT correct for Destination In and
+# Destination Atop, whose own Fb equals alpha_s -- 0.0 outside the source
+# layer's bounds, meaning the destination must be CLEARED there, not left
+# untouched. Confirmed by direct computation
+# (porter_duff_coeffs('Destination In', alpha_s=0.0, alpha_b=0.6) ==
+# (0.0, 0.0), not (0.0, 1.0)) before this test was written, not guessed.
+
+
+def test_destination_in_clears_the_destination_outside_the_source_layers_own_bounds() -> None:
+    """Porter & Duff (1984): Destination In has Fa=0, Fb=alpha_s. Where the
+    source layer has no pixel data at all (alpha_s=0 by definition, not
+    merely by transparency), Fb=0 too -- the destination must be cleared to
+    fully transparent, not left as whatever it was before this operator was
+    applied. A 1x1 canvas with a destination layer covering it and a source
+    layer covering NONE of it (built via an empty raster placed outside the
+    canvas) isolates exactly this case."""
+    destination = solid_rgba_png(2, 2, (230, 60, 40, 153))
+    # 1x1 source placed at (5,5) -- entirely outside the 2x2 canvas, so
+    # every canvas pixel is "outside the source layer's own bounds".
+    source = solid_rgba_png(1, 1, (40, 120, 230, 128))
+    root = OraStack(
+        children=(
+            OraLayer(src="source.png", composite_op="svg:dst-in", x=5, y=5),
+            OraLayer(src="destination.png"),
+        )
+    )
+
+    result = render(root, {"source.png": source, "destination.png": destination}, width=2, height=2)
+
+    assert result.pixels == bytes(16)  # fully transparent everywhere -- no source coverage anywhere
+
+
+def test_destination_atop_clears_the_destination_outside_the_source_layers_own_bounds() -> None:
+    """Porter & Duff (1984): Destination Atop has Fb=alpha_s (same as
+    Destination In for this specific edge case) -- 0 where the source layer
+    does not cover the canvas at all, clearing the destination there too."""
+    destination = solid_rgba_png(2, 2, (230, 60, 40, 153))
+    source = solid_rgba_png(1, 1, (40, 120, 230, 128))
+    root = OraStack(
+        children=(
+            OraLayer(src="source.png", composite_op="svg:dst-atop", x=5, y=5),
+            OraLayer(src="destination.png"),
+        )
+    )
+
+    result = render(root, {"source.png": source, "destination.png": destination}, width=2, height=2)
+
+    assert result.pixels == bytes(16)
+
+
+def test_destination_out_and_source_atop_correctly_leave_destination_unchanged_outside_source_bounds() -> None:
+    """Sibling operators to the 2 above, whose own Fb coefficient genuinely
+    does equal 1.0 (unchanged) at alpha_s=0 -- included as a contrast case
+    so the 2 fixed operators above are not mistaken for a blanket
+    'always clear outside source bounds' rule, which would be equally
+    wrong (it would break these 2)."""
+    destination = solid_rgba_png(2, 2, (230, 60, 40, 153))
+    source = solid_rgba_png(1, 1, (40, 120, 230, 128))
+    expected = bytes((230, 60, 40, 153)) * 4
+
+    for composite_op in ("svg:dst-out", "svg:src-atop"):
+        root = OraStack(
+            children=(
+                OraLayer(src="source.png", composite_op=composite_op, x=5, y=5),
+                OraLayer(src="destination.png"),
+            )
+        )
+        result = render(root, {"source.png": source, "destination.png": destination}, width=2, height=2)
+        assert result.pixels == expected, f"{composite_op} unexpectedly changed outside source bounds"
+
+
 # ── Isolation ────────────────────────────────────────────────────────────
 
 

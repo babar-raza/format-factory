@@ -1,0 +1,62 @@
+{
+  "schema": "skills-first/transcript@1",
+  "skill_id": "format-feature-expansion",
+  "task_id": "TC_FF6_ORA_COMPOSITE_001_DESTINATION_IN_ATOP_BOUNDS_FIX_001",
+  "format_id": "ora",
+  "profile_id": "0.0.4",
+  "capability_id": "ORA-COMPOSITE-001",
+  "obligation_id": "SAL-ORA-OBL-2CC875865800D528",
+  "affected_layer": "src/python/ora/src/format_factory/ora",
+  "goal": "Fix a real compositing defect (Destination In / Destination Atop clearing incorrectly outside the source layer's own declared raster bounds) found via an independent mathematical oracle during ORA-COMPOSITE-001's own full-inventory producer-verification sweep, per this session's own explicit A4 instruction to fix repository-owned defects with focused regression tests.",
+  "obligation_confirmed_current": true,
+  "obligation_selection_basis": "Deliberately selected: discovered mid-flow while building real two-producer (GIMP + Krita) evidence for this exact obligation's own unmet 'all claimed operations match pinned rendering references' release gate, not an arbitrary/unrelated change.",
+  "characterization": {
+    "affected_behavior": "_composite_layer_onto's own bounds-clipping loop, used by every composite-op, both Source Over blend functions and the 5 non-default Porter-Duff operators.",
+    "public_callers_enumerated": [
+      "format_factory.ora.render.render() (via _render_node -> _composite_layer_onto)",
+      "format_factory.ora.render.render_document()",
+      "format_factory.ora.render.W3CCompositingRenderer.render()"
+    ],
+    "caller_blast_radius": "All public rendering entry points share this one private compositing primitive; no public API signature changed."
+  },
+  "failing_test_first": {
+    "tests": [
+      "tests/python/ora/test_obligation_render_and_compositing.py::test_destination_in_clears_the_destination_outside_the_source_layers_own_bounds",
+      "tests/python/ora/test_obligation_render_and_compositing.py::test_destination_atop_clears_the_destination_outside_the_source_layers_own_bounds"
+    ],
+    "observed_failing_before_fix": true,
+    "failure_mode": "AssertionError: destination pixels outside the source layer's own raster bounds were left unchanged (e.g. (230,60,40,153)) instead of cleared to (0,0,0,0), for Destination In and Destination Atop specifically."
+  },
+  "contrast_test": {
+    "test": "tests/python/ora/test_obligation_render_and_compositing.py::test_destination_out_and_source_atop_correctly_leave_destination_unchanged_outside_source_bounds",
+    "purpose": "Proves the fix does not over-correct the 3 operators (Source Over, Lighter, Destination Out, Source Atop) whose own Porter-Duff Fb coefficient genuinely equals 1.0 at alpha_s=0 -- already passed before the fix and still passes after."
+  },
+  "root_cause": "_composite_layer_onto only ever iterated the intersection of canvas bounds and the source layer's own raster bounds, implicitly treating every pixel outside that intersection as alpha_s=0 with NO compositing applied at all. Correct for Source Over (Fb=1-alpha_s=1 at alpha_s=0, i.e. genuinely unchanged) and, coincidentally, for Lighter/Destination Out/Source Atop (each also has Fb=1.0 at alpha_s=0). Incorrect for Destination In and Destination Atop, whose own Fb=alpha_s=0.0 at alpha_s=0 -- the destination must be cleared there per Porter & Duff (1984), not left untouched.",
+  "fix": "Evaluate the 5 non-Source-Over Porter-Duff operators over the FULL canvas (not just the source layer's own bounds), with out-of-bounds pixels given the explicit alpha_s=0, cs=(0,0,0) the formula itself expects. Source Over keeps its own existing bounds-clipped fast path unchanged, since it is correct there, not merely coincidental.",
+  "changed_paths": [
+    "src/python/ora/src/format_factory/ora/render.py",
+    "tests/python/ora/test_obligation_render_and_compositing.py"
+  ],
+  "regression_tests": {
+    "focused_file": "tests/python/ora/test_obligation_render_and_compositing.py",
+    "focused_result": "35 passed",
+    "full_ora_suite_result": "462 passed, 0 failed (459 before this fix's own 3 new tests)",
+    "harness_contract_tests_result": "17 passed (tests/tools/test_ora_producer_harness_compare.py, unaffected)"
+  },
+  "typing_and_lint": {
+    "mypy": "clean (no new errors introduced by this change)",
+    "ruff": "clean"
+  },
+  "proof_inputs": {
+    "independent_oracle": "tools/ora/producer_harness/composite_oracle.py::porter_duff_coeffs (independently re-derived from Porter & Duff 1984, not the module under fix)",
+    "discriminating_fixture": "tools/ora/producer_harness/composite_matrix.py::PORTER_DUFF_SCENES (5 scenes exercising destination-only/source-only/overlap/transparent regions)"
+  },
+  "new_proof_nodes": [
+    "test_destination_in_clears_the_destination_outside_the_source_layers_own_bounds",
+    "test_destination_atop_clears_the_destination_outside_the_source_layers_own_bounds",
+    "test_destination_out_and_source_atop_correctly_leave_destination_unchanged_outside_source_bounds"
+  ],
+  "readiness_note": "Does not itself close SAL-ORA-OBL-2CC875865800D528 -- that obligation's own remaining gap is producer-evidence breadth across the full 20-operation registry, tracked separately in implementation-evidence/ora.yaml and composite-coverage-matrix-2026-08-12.json. This transcript covers only the compositor defect fix and its own regression proof.",
+  "next_queued_obligation": "SAL-ORA-OBL-2CC875865800D528 remains open pending full coverage-matrix reconciliation (in progress, same session).",
+  "verdict": "PASS"
+}
