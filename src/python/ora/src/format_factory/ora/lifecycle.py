@@ -45,20 +45,13 @@ from .codec.stack_xml import parse_stack
 from .errors import OraError, OraLimitError, OraValidationError
 from .model.document import DEFAULT_RESOLUTION_PPI, OraDocument
 from .model.stack import DEFAULT_COMPOSITE_OP, OraLayer, OraStack, OraText
+from .modes import ReadMode
 
 #: The ZIP epoch. Every written member carries it, so output never depends on
 #: when the write happened.
 NORMALIZED_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 
 BASELINE_VERSION = "0.0.2"
-
-
-class ReadMode(Enum):
-    """STRICT rejects anything the specification requires; TOLERANT recovers
-    where the format permits and reports what it did."""
-
-    STRICT = "strict"
-    TOLERANT = "tolerant"
 
 
 class PreservationMode(Enum):
@@ -340,16 +333,19 @@ def load(
 ) -> OraImage:
     """Load an OpenRaster image from bytes, a path, or a readable stream."""
     payload = _read_source(source)
-    container = OraContainer.from_bytes(payload, limits=limits)
+    container = OraContainer.from_bytes(payload, limits=limits, mode=mode)
     members = {name: container.read(name) for name in container.names}
 
-    document = parse_stack(members[STACK_MEMBER], limits=limits)
+    document = parse_stack(members[STACK_MEMBER], limits=limits, mode=mode)
     # What the file says about itself, kept verbatim and never rewritten.
     declared_version = document.version
 
     diagnostics = _baseline_asset_diagnostics(members)
     diagnostics.extend(_layer_png_diagnostics(document, members, limits))
-    recovery: list[str] = []
+    # Container- and stack.xml-level recoveries (mimetype position, missing
+    # version) are already mode-gated inside from_bytes()/parse_stack()
+    # themselves -- they raised already, in STRICT, before this line runs.
+    recovery: list[str] = [*container.recovery_actions, *document.recovery_actions]
     if diagnostics:
         if mode is ReadMode.STRICT:
             raise OraValidationError(

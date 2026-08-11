@@ -48,6 +48,11 @@ class OraDocument:
     root: OraStack
     xres: int = DEFAULT_RESOLUTION_PPI
     yres: int = DEFAULT_RESOLUTION_PPI
+    #: Non-empty only when codec/stack_xml.py's own parse_stack(mode=TOLERANT)
+    #: recovered from a defect STRICT mode would have refused (currently: a
+    #: missing root version attribute). Always empty for a document built
+    #: directly in memory or parsed under STRICT mode.
+    recovery_actions: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         _require_positive(self.width, label="width")

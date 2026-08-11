@@ -19,8 +19,21 @@ The normative rules this implements, quoted from the format contract:
 
 Validation is eager and total: `from_bytes` either returns a container whose
 every member has already been checked, or raises. There is deliberately no
-lazy or permissive mode -- a half-validated archive is the state in which
-callers write the bugs this module exists to prevent.
+general lazy or permissive mode -- a half-validated archive is the state in
+which callers write the bugs this module exists to prevent.
+
+`ReadMode.TOLERANT` (2026-08-11) is the one narrow, explicitly enumerated
+exception: it does not weaken any check above, it changes exactly one thing
+-- the mimetype sentinel is located by NAME rather than required to be the
+ZIP's own first physical central-directory entry, because a real, widely
+-used OpenRaster-producing application (MyPaint; see
+tests/python/ora/fixtures/third-party-gpl-mypaint/PROVENANCE.md) emits
+archives that do not honor that ordering. Existence, STORED compression, and
+exact sentinel bytes are still mandatory in both modes; duplicate member
+names, path traversal, disallowed compression, and every resource limit in
+this module are unconditional in both modes. STRICT is unchanged: this
+module's own docstring guarantee ("eager and total... or raises") still
+holds for STRICT byte-for-byte.
 
 ORA-STREAM-001 (FF6-EVENT-000487): `_check_limits`'s declared-size and
 compression-ratio checks only ever inspect the ZIP central directory's own
@@ -45,6 +58,7 @@ from pathlib import PurePosixPath
 from format_factory.core import DEFAULT_LIMITS, ResourceLimits
 
 from ..errors import OraArchiveError, OraLimitError
+from ..modes import ReadMode
 
 #: The sentinel's exact bytes. Compared without stripping, by design.
 OPENRASTER_MEDIA_TYPE = b"image/openraster"
@@ -103,25 +117,40 @@ def _reject_unsafe_name(name: str) -> None:
         )
 
 
-def _check_mimetype(archive: zipfile.ZipFile, infos: list[zipfile.ZipInfo]) -> str:
-    """Enforce the sentinel's position, compression method and exact bytes."""
+def _check_mimetype(
+    archive: zipfile.ZipFile, infos: list[zipfile.ZipInfo], *, mode: ReadMode
+) -> tuple[str, tuple[str, ...]]:
+    """Enforce the sentinel's position (STRICT only), compression method and
+    exact bytes (both modes, unconditionally). Returns (mimetype, recovery_notes)."""
     if not infos:
         raise OraArchiveError("archive is empty; the mimetype member is required")
 
+    present = any(info.filename == MIMETYPE_MEMBER for info in infos)
+    if not present:
+        raise OraArchiveError("archive has no mimetype member")
+
     first = infos[0]
+    recovery: list[str] = []
     if first.filename != MIMETYPE_MEMBER:
-        present = any(info.filename == MIMETYPE_MEMBER for info in infos)
-        if present:
+        if mode is ReadMode.STRICT:
             raise OraArchiveError(
                 f"the mimetype member must be the first archive member, but "
                 f"{first.filename!r} is first"
             )
-        raise OraArchiveError("archive has no mimetype member")
+        # TOLERANT: existence (checked above), compression, and exact content
+        # are still mandatory below -- only physical position is excused, and
+        # only because the member genuinely exists somewhere in the archive.
+        recovery.append(
+            f"mimetype member was not the first archive member (found after "
+            f"{first.filename!r}); located by name instead of position "
+            "(ReadMode.TOLERANT)"
+        )
 
-    if first.compress_type != zipfile.ZIP_STORED:
+    mimetype_info = next(info for info in infos if info.filename == MIMETYPE_MEMBER)
+    if mimetype_info.compress_type != zipfile.ZIP_STORED:
         raise OraArchiveError(
             "the mimetype member must be STORED without compression, but is "
-            f"{_describe_compression(first.compress_type)}"
+            f"{_describe_compression(mimetype_info.compress_type)}"
         )
 
     payload = archive.read(MIMETYPE_MEMBER)
@@ -134,7 +163,7 @@ def _check_mimetype(archive: zipfile.ZipFile, infos: list[zipfile.ZipInfo]) -> s
             f"newline, but contains {payload!r}"
         )
 
-    return OPENRASTER_MEDIA_TYPE.decode("ascii")
+    return OPENRASTER_MEDIA_TYPE.decode("ascii"), tuple(recovery)
 
 
 def _bounded_read(archive: zipfile.ZipFile, name: str, *, limit: int) -> bytes:
@@ -223,15 +252,22 @@ class OraContainer:
     names: tuple[str, ...]
     _archive: zipfile.ZipFile = field(repr=False, compare=False)
     _limits: ResourceLimits = field(repr=False, compare=False)
+    recovery_actions: tuple[str, ...] = ()
 
     @classmethod
     def from_bytes(
-        cls, payload: bytes, *, limits: ResourceLimits = DEFAULT_LIMITS
+        cls,
+        payload: bytes,
+        *,
+        limits: ResourceLimits = DEFAULT_LIMITS,
+        mode: ReadMode = ReadMode.STRICT,
     ) -> "OraContainer":
         """Validate `payload` as an OpenRaster archive and return a
         `OraContainer` over it, enforcing this class's own guarantees (size,
         ZIP well-formedness, safe/unique member names, allowed compression,
-        declared-size limits) before any member is decompressed."""
+        declared-size limits) before any member is decompressed. `mode`
+        controls exactly one thing -- see this module's own docstring for the
+        precise, narrow scope of what `ReadMode.TOLERANT` excuses."""
         if len(payload) > limits.max_input_bytes:
             raise OraLimitError(
                 f"input is {len(payload)} bytes, over the limit of "
@@ -281,13 +317,17 @@ class OraContainer:
 
             member_names.append(name)
 
-        mimetype = _check_mimetype(archive, infos)
+        mimetype, recovery = _check_mimetype(archive, infos, mode=mode)
 
         if STACK_MEMBER not in seen:
             raise OraArchiveError(f"archive has no required {STACK_MEMBER} member")
 
         return cls(
-            mimetype=mimetype, names=tuple(member_names), _archive=archive, _limits=limits
+            mimetype=mimetype,
+            names=tuple(member_names),
+            _archive=archive,
+            _limits=limits,
+            recovery_actions=recovery,
         )
 
     def read(self, name: str) -> bytes:

@@ -959,7 +959,7 @@ obligations:
   capability_id: ORA-LIFECYCLE-001
   status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/modes.py::ReadMode
   - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
   - src/python/ora/src/format_factory/ora/lifecycle.py::load
   - src/python/ora/src/format_factory/ora/lifecycle.py::dumps
@@ -1343,7 +1343,7 @@ obligations:
   capability_id: ORA-LIFECYCLE-001
   status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/modes.py::ReadMode
   - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
   - src/python/ora/src/format_factory/ora/lifecycle.py::load
   - src/python/ora/src/format_factory/ora/lifecycle.py::dumps
@@ -1556,6 +1556,27 @@ obligations:
     producers'' output has been successfully rendered and compared, though one producer''s
     real-world output has now genuinely been acquired and tried, honestly, rather than left
     unattempted.'
+  - 'Workstream C (2026-08-11, EP-3-routed via /format-feature-expansion): ReadMode.TOLERANT
+    (already-existing mechanism, previously scoped to baseline-asset/layer-PNG diagnostics only)
+    extended to 2 more check sites -- OraContainer.from_bytes()''s mimetype-first-member position
+    and parse_stack()''s required version attribute -- narrowly, with STRICT mode byte-for-byte
+    unchanged (every pre-existing strict-mode test still passes unmodified) and a dedicated test
+    proving TOLERANT still rejects an unrelated missing attribute (w), an entirely absent mimetype
+    member, wrong mimetype content, path traversal, and duplicate member names -- a narrow,
+    enumerated exception list, not a general relaxation. Result: all 3 vendored MyPaint files now
+    load AND render successfully under ReadMode.TOLERANT (previously: zero of 3 could even load).
+    This does NOT close this obligation''s own release gate: fill_outlines.ora''s own embedded
+    mergedimage.png is 64x64 pixels, not full-canvas resolution (3456x3008) -- verified directly,
+    not assumed -- so it cannot serve as a full-frame pixel-comparison target; bigimage.ora and
+    smallimage.ora have no mergedimage.png at all, only a low-resolution Thumbnails/thumbnail.png.
+    No usable full-resolution independent-producer ground truth exists in any of the 3 files, even
+    now that all 3 can be loaded and rendered. This is genuine, verified infrastructure progress
+    (proves the compatibility-reader pipeline works end-to-end against real, non-conformant,
+    independently-produced content) -- not evidence toward the release gate itself, which still
+    requires a genuinely comparable independent-producer reference this corpus does not provide.
+    12 new tests (tests/python/ora/test_obligation_compatibility_reader.py), ora suite 430 -> 442
+    passed, 0 failed. Installed-wheel behavior independently verified (tools/run_package_install_proof.py
+    --format ora, then load(mode=TOLERANT) exercised from the installed site-packages path).'
   proof_requirements:
     positive:
     - Golden pixel vectors, alpha edge cases, unsupported-operation preservation, and adapter differential
@@ -1641,7 +1662,7 @@ obligations:
   capability_id: ORA-LIFECYCLE-001
   status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/modes.py::ReadMode
   - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
   - src/python/ora/src/format_factory/ora/lifecycle.py::load
   - src/python/ora/src/format_factory/ora/lifecycle.py::dumps
@@ -2036,7 +2057,7 @@ obligations:
   capability_id: ORA-LIFECYCLE-001
   status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/modes.py::ReadMode
   - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
   - src/python/ora/src/format_factory/ora/lifecycle.py::load
   - src/python/ora/src/format_factory/ora/lifecycle.py::dumps
@@ -2258,10 +2279,19 @@ obligations:
     applicable here even in principle: this obligation needs an independent CONSUMER
     application opening a format-factory-GENERATED asset, not producer sample files being
     read by format-factory -- vendoring producer files does not touch this obligation''s own
-    gate at all. Noted for completeness rather than as progress: none of the 3 vendored files
-    load through this package''s own reader anyway (real conformance failures, not a licensing
-    question), so even a hypothetical "does MyPaint accept our thumbnail" consumer-side check
-    against these specific files was never a live option.'
+    gate at all. Noted for completeness rather than as progress: at the time this note was
+    written, none of the 3 vendored files loaded through this package''s own reader (real
+    conformance failures, not a licensing question), so even a hypothetical "does MyPaint accept
+    our thumbnail" consumer-side check against these specific files was never a live option.'
+  - 'CORRECTION (2026-08-11, Workstream C): the note above is now stale on its own narrow factual
+    claim -- ReadMode.TOLERANT was extended (see SAL-ORA-OBL-2CC875865800D528''s own Workstream C
+    entry for the full account) and all 3 vendored files now load and render successfully. This
+    still does NOT touch this obligation''s own gate: the gate needs an independent CONSUMER
+    application opening a format-factory-GENERATED asset, and no permissively-licensed independent
+    OpenRaster consumer application has been found (MyPaint/Krita remain the only real candidates,
+    both GPL, per the same corpus research). Loading MyPaint''s own files is orthogonal to this
+    specific obligation''s own requirement -- correcting the stale premise, not claiming progress
+    against the actual gate.'
   proof_requirements:
     positive:
     - Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices.
@@ -2318,7 +2348,7 @@ obligations:
   capability_id: ORA-LIFECYCLE-001
   status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/modes.py::ReadMode
   - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
   - src/python/ora/src/format_factory/ora/lifecycle.py::load
   - src/python/ora/src/format_factory/ora/lifecycle.py::dumps
@@ -3495,15 +3525,23 @@ obligations:
     the required depth, GPL-licensed; Krita ships none; no permissive alternative found despite an
     exhaustive search). Still unresolved -- a business/legal decision, not a technical one.'
   - 'GPL vendoring approved and executed 2026-08-10 -- see SAL-ORA-OBL-2CC875865800D528''s own
-    missing_behavior for the full account. Result here is identical: MyPaint''s 3 real .ora files
-    are now vendored at tests/python/ora/fixtures/third-party-gpl-mypaint/, but none load through
-    this package''s own spec-conformant reader far enough to be rendered at all (bigimage.ora and
-    fill_outlines.ora fail the mimetype-first-member check; smallimage.ora''s stack.xml has no
-    version attribute). The business/legal blocker this obligation''s prior entry named is no
-    longer the only obstacle -- even with GPL vendoring approved, the one located independent
-    -producer corpus does not itself clear this package''s own archive/document conformance
-    checks, which were correctly left unloosened rather than weakened to fit it. This obligation''s
-    own "agrees with at least two independent producers" release gate remains unmet.'
+    missing_behavior for the full account. At the time this note was written, MyPaint''s 3 real
+    .ora files were vendored at tests/python/ora/fixtures/third-party-gpl-mypaint/ but none loaded
+    through this package''s own spec-conformant STRICT reader far enough to be rendered at all
+    (bigimage.ora and fill_outlines.ora fail the mimetype-first-member check; smallimage.ora''s
+    stack.xml has no version attribute). The business/legal blocker this obligation''s prior entry
+    named was no longer the only obstacle -- even with GPL vendoring approved, the one located
+    independent-producer corpus did not itself clear this package''s own archive/document
+    conformance checks, which were correctly left unloosened rather than weakened to fit it.'
+  - 'Workstream C (2026-08-11, EP-3-routed): see SAL-ORA-OBL-2CC875865800D528''s own Workstream C
+    entry for the full account of the ReadMode.TOLERANT extension. All 3 vendored MyPaint files now
+    load AND render successfully under ReadMode.TOLERANT (STRICT unchanged, byte-for-byte). This
+    obligation''s own "agrees with at least two independent producers" release gate STILL remains
+    unmet: no usable full-resolution independent-producer ground truth exists in any of the 3
+    files (fill_outlines.ora''s own embedded mergedimage.png is 64x64, not the 3456x3008 canvas it
+    would need to be; bigimage.ora/smallimage.ora have no mergedimage.png at all). Rendering without
+    crashing against real independent content is genuine infrastructure progress, not release-gate
+    evidence -- the two are honestly kept distinct here.'
   proof_requirements:
     positive:
     - Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential
@@ -3587,11 +3625,19 @@ obligations:
     (Root, ClosedOutlines, GapOutlines, HeavyFills, Fills) -- genuinely relevant structure for
     this obligation, unlike bigimage.ora/smallimage.ora''s flat layer lists. But every one of
     those isolated groups is visibility="hidden" (so none contributes to the file''s own visible
-    composited output even if it could be rendered), and the file fails this package''s own
-    mimetype-first-member check regardless, so this structural relevance could not be exercised
-    as isolated-compositing proof. This obligation''s own release gate remains unmet for the same
-    reason as its siblings: the located independent-producer corpus does not clear this package''s
-    own conformance checks.'
+    composited output even if it could be rendered), and at the time this note was written the
+    file failed this package''s own mimetype-first-member check regardless, so this structural
+    relevance could not be exercised as isolated-compositing proof.'
+  - 'Workstream C (2026-08-11, EP-3-routed): see SAL-ORA-OBL-2CC875865800D528''s own Workstream C
+    entry for the full account. fill_outlines.ora now loads AND renders successfully under
+    ReadMode.TOLERANT, so the note above''s "fails the mimetype check regardless" premise is
+    stale. This does not change the substantive finding, though: every isolation="isolate" group
+    this file declares is visibility="hidden" (confirmed unchanged by re-reading the same
+    stack.xml), so it contributes nothing to the visible composited output regardless of whether
+    the file loads -- there is still no exercisable isolated-compositing proof here, hidden groups
+    aside. This obligation''s own release gate remains unmet for the same reason as its siblings:
+    even with all 3 files now loadable, none provides usable pixel-comparable independent-producer
+    ground truth for the specific behavior this obligation covers.'
   proof_requirements:
     positive:
     - Declared/inferred isolation pixel vectors and pre-profile rejection/preservation cases.
@@ -4439,7 +4485,7 @@ obligations:
   capability_id: ORA-LIFECYCLE-001
   status: implemented
   source_symbols:
-  - src/python/ora/src/format_factory/ora/lifecycle.py::ReadMode
+  - src/python/ora/src/format_factory/ora/modes.py::ReadMode
   - src/python/ora/src/format_factory/ora/lifecycle.py::OraImage
   - src/python/ora/src/format_factory/ora/lifecycle.py::load
   - src/python/ora/src/format_factory/ora/lifecycle.py::dumps

@@ -25,6 +25,15 @@ from format_factory.core import DEFAULT_LIMITS, CheckedArithmeticError, Resource
 
 from ..errors import OraLimitError, OraValidationError
 from ..model.document import DEFAULT_RESOLUTION_PPI, OraDocument
+from ..modes import ReadMode
+
+#: Used only when ReadMode.TOLERANT recovers a root <image> with no version
+#: attribute. Deliberately not a real OpenRaster version string (those are
+#: dotted-numeric, e.g. "0.0.5") so it can never be mistaken for one --
+#: OraDocument.version stays a non-empty str (its own __post_init__ invariant)
+#: without this package inventing a specific profile the document never
+#: declared.
+UNSPECIFIED_VERSION = "unspecified (ReadMode.TOLERANT recovery)"
 from ..model.stack import (
     DEFAULT_COMPOSITE_OP,
     DEFAULT_VISIBILITY,
@@ -241,8 +250,18 @@ def _resolution(element: ElementTree.Element) -> tuple[int, int]:
     )
 
 
-def parse_stack(payload: bytes, *, limits: ResourceLimits = DEFAULT_LIMITS) -> OraDocument:
-    """Parse `stack.xml` bytes into an `OraDocument`."""
+def parse_stack(
+    payload: bytes,
+    *,
+    limits: ResourceLimits = DEFAULT_LIMITS,
+    mode: ReadMode = ReadMode.STRICT,
+) -> OraDocument:
+    """Parse `stack.xml` bytes into an `OraDocument`. `mode` controls exactly
+    one thing: whether a root `<image>` missing the required `version`
+    attribute is refused (STRICT, unchanged default) or recovered with
+    `UNSPECIFIED_VERSION` and a `recovery_actions` entry (TOLERANT). Every
+    other requirement in this function -- `w`/`h`, well-formedness, the
+    doctype refusal, resource limits -- is unconditional in both modes."""
     if len(payload) > limits.max_header_bytes:
         raise OraLimitError(
             f"stack.xml is {len(payload)} bytes, over the limit of "
@@ -267,7 +286,18 @@ def parse_stack(payload: bytes, *, limits: ResourceLimits = DEFAULT_LIMITS) -> O
 
     width = _positive_integer(_require(root, "w"), label="image w")
     height = _positive_integer(_require(root, "h"), label="image h")
-    version = _require(root, "version")
+    recovery: list[str] = []
+    declared_version = root.get("version")
+    if declared_version is None:
+        if mode is ReadMode.STRICT:
+            raise OraValidationError("<image> is missing the required 'version' attribute")
+        version = UNSPECIFIED_VERSION
+        recovery.append(
+            "root <image> had no 'version' attribute; treated as an unspecified "
+            "profile version rather than assuming a specific one (ReadMode.TOLERANT)"
+        )
+    else:
+        version = declared_version
     xres, yres = _resolution(root)
 
     # w*h is a number callers allocate against, so it is bounded before it is
@@ -293,7 +323,8 @@ def parse_stack(payload: bytes, *, limits: ResourceLimits = DEFAULT_LIMITS) -> O
         xres=xres,
         yres=yres,
         root=walker.stack(stacks[0], 0),
+        recovery_actions=tuple(recovery),
     )
 
 
-__all__ = ["ROOT_ELEMENT", "parse_stack"]
+__all__ = ["ROOT_ELEMENT", "UNSPECIFIED_VERSION", "parse_stack"]
