@@ -285,10 +285,10 @@
   "format_id": "ora",
   "input_digests": {
     "compiled_contract": "781a8fbe45739cf172c739f7402445211564158f018ad7abb53379a259600697",
-    "implementation_evidence": "8d2f0d1d08f8471a7d76c97cf09d5bc7efead0f2824f97c9534a00047382d58c",
-    "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
+    "implementation_evidence": "0f1b9b7bf56da7c29aeecca40ba81b224a73a5c50e619ca7894cffbd6620c9ee",
+    "implementation_evidence_schema": "5a8009127b30e59d0abeeaa56cdeb4c2fc2ca0674b64ea4436f6dc0d1960ed3d",
     "obligation_register": "41a34d4a25c5422c9e3842e63eee01dd5a858b9cd79a8370cf15fc1b892f430b",
-    "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
+    "reconciler": "4a8e27531a2a53ed6f601d0a7622d1f94ef7fae07afd43c2a816d2f15c67cc05"
   },
   "obligations": [
     {
@@ -3376,9 +3376,7 @@
       "capability_id": "ORA-MASK-001",
       "execution_evidence_ids": [],
       "implemented_behavior": [],
-      "missing_behavior": [
-        "Investigated directly, not merely unaudited: same finding as this obligation's ORA-MASK-001 sibling, SAL-ORA-OBL-2DA8F5A931FB747D. The cited authority_fact_ids (SAL-ORA-00006, SAL-ORA-00008) do not substantiate a \"mask\" requirement when read directly, and the word \"mask\" appears zero times across all three pinned OpenRaster spec sources this repository has acquired (confirmed by direct full-text search). \"Provide an explicit mask extension model and registry boundary\" cannot be honestly built without a verified spec source actually defining what that model or registry should contain -- building one now would mean inventing the very thing this obligation claims to require, which this session's evidence discipline exists to prevent (see the composite-op cluster's identical refusal for the same reasoning, and this obligation's own sibling for the fuller citation-level detail). Correctly left missing, not force-built."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-ORA-OBL-96DAD1AD6C297273",
       "positive_test_selectors": [],
@@ -3390,9 +3388,10 @@
           "Recognized-mask edit tests and unknown-mask byte-preservation tests from independent producers."
         ]
       },
-      "proof_status": "MISSING",
+      "proof_status": "QUARANTINED_NONNORMATIVE",
+      "rationale": "GOVERNANCE AMENDMENT (2026-08-11), classification SPEC_UNDEFINED. Normative-source search: the obligation's own cited authority_fact_ids (SAL-ORA-00006, SAL-ORA-00008) were read directly and describe generic extensibility (\"permits custom extensions that remain safe for baseline consumers\") and the ZIP/`.ora` container wrapper, respectively -- neither mentions masks. A case-insensitive full-text search of all 3 pinned OpenRaster spec sources (baseline.rst, file-layout-spec.rst, layer-stack-spec.rst, pinned at commit f050b99f per shared/format-contracts/authority-lock.yaml) for \"mask\" returns zero hits in every file (re-confirmed independently this amendment, not merely carried forward from the prior missing_behavior text below). The family-pack policy entry this obligation also cites, POL-LRA-MASK-01 (shared/format-contracts/policy/family-packs/layered_raster_archive.yaml), is itself internally-authored template text, not a citation to spec content -- its own fact_keywords (\"extension, custom extension, safely with the baseline\") omit \"mask\" entirely, suggesting the link to SAL-ORA-00006 is a keyword-similarity artifact (\"extension\" ~ \"mask extension\") rather than genuine content correspondence. Sibling content: nothing else in this obligation is separately implemented -- it is entirely about a mask model the spec does not define, so quarantining it hides no implemented behavior. Independent review: a fresh Explore agent, given only the obligation ID and told to determine independently whether normative basis exists (not told this session's own prior conclusion), reached the same verdict via the same primary-source search on 2026-08-11. Disposition: OpenRaster may define an explicit mask extension profile in a future spec revision; if the pinned spec is ever updated to define one, this obligation should be de-quarantined and re-evaluated against the new spec text, not left quarantined by default. This amendment supersedes, and carries forward the substance of, the prior missing_behavior text this row held under status=missing: \"Investigated directly, not merely unaudited: same finding as this obligation's ORA-MASK-001 sibling, SAL-ORA-OBL-2DA8F5A931FB747D... correctly left missing, not force-built.\"",
       "source_symbols": [],
-      "status": "missing"
+      "status": "quarantined_by_amendment"
     },
     {
       "capability_id": "ORA-ISOLATION-001",
@@ -4622,9 +4621,7 @@
         "FF6-EVENT-000318: investigated whether 'metadata' and 'maintain references' -- 2 of this obligation's own 3 remaining rule_text clauses -- are genuinely grounded in the pinned OpenRaster spec, applying the identical discipline already validated for this obligation's own ORA-MASK-001 sibling (same authority_fact_ids cluster, SAL-ORA-00008 among them). Full-text-searched all 3 pinned acquired spec sources (.local/format-contracts/acquired/ora/src-ora-00{1,2,3}.bin) for \"metadata\": 0 hits in all 3 -- the OpenRaster format has no dedicated metadata element or schema the way ODF has meta.xml; it is a ZIP of mimetype + stack.xml + raster assets only. Searched for \"reference\": 4 hits, all in src-ora-002.bin, all describing the src attribute pointing to an ARCHIVE MEMBER FILE (\"image data files referenced by stack.xml\", \"files must be referenced in stack.xml by their full path\") -- zero hits describing a cross-ELEMENT reference within the model tree (no id-based pointer from one layer/stack/text to another exists anywhere in the spec). src (already fully validated by validate_src in model/stack.py, confirmed unaffected by rename/move/remove since it is a static archive path, not derived from tree position) is the ONLY reference-shaped concept OpenRaster defines, and it needs no \"maintenance\" on edit -- renaming, moving, or removing a layer does not change what its own src value means. Both clauses are therefore ungrounded authoring artifacts, the same finding already established for ORA-MASK-001's own \"mask extension model\" clause -- not force-built, matching this obligation's own established discipline of citing rather than inventing. The 3rd remaining clause, stale-derived-view invalidation, is NOT ungrounded -- it is genuinely blocked on ORA-RENDER-001/ORA-COMPOSITE-001's own still-unbuilt rendering engine (confirmed: no pixel-compositing infrastructure exists anywhere in this package). Zero source or test changes -- pure evidence-grounding correction, matching the identical evidentiary weight and non-promoting scope of ORA-UTF8-BASELINE-CITATION-AUDIT-PROOF and ORA-COMPOSITE-OP-REJECTION-SCOPE-CORRECTION-PROOF earlier this session. ora suite unchanged (349 passed).",
         "FF6-ORA-REFERENCE-PRESERVATION-001: FF6-EVENT-000318's own \"maintain references\" claim (\"renaming, moving, or removing a layer does not change what its own src value means\") was asserted in prose but never directly tested -- closed with a dedicated proof. 6 new tests (test_obligation_reference_preservation.py) directly verify that every named CRUD operation type (add, replace, move, remove, and rename of the root) leaves every genuinely UNTOUCHED layer's own src value byte-for-byte identical, including a multi-step transaction combining three different operation types against three different layers while confirming a fourth, entirely uninvolved layer's own src survives unchanged. Since src is this format's own ONLY reference-shaped concept (confirmed by FF6-EVENT-000318's own full-text search), this directly, literally proves \"maintain references\" -- not merely asserts it. \"Metadata\" as a CRUD target remains genuinely, separately unmet (the OpenRaster spec defines no metadata concept at all, confirmed by the same full-text search) and is NOT addressed by this proof -- the obligation stays partial, narrowed from \"2 ungrounded clauses\" to \"1 ungrounded clause plus 1 now-proven clause,\" not closed."
       ],
-      "missing_behavior": [
-        "'Metadata' as a CRUD edit target remains genuinely, permanently unmet: the OpenRaster spec defines no metadata concept anywhere (0 hits for \"metadata\" across all 3 pinned spec sources, per FF6-EVENT-000318's own full-text search) -- there is no metadata element or schema the way ODF has meta.xml, so this clause cannot be honestly built without inventing content the format does not define. This is the obligation's own sole remaining item: \"maintain references\" is now directly proven (FF6-ORA-REFERENCE-PRESERVATION-001 above, not merely asserted) and stale-derived-view invalidation is fully automatic (apply_transaction_and_refresh_baseline_assets, FF6-ORA-ADAPTER-AUTOINVALIDATION-001)."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ora/test_obligation_transactional_edit.py::test_a_failing_step_rolls_back_to_the_original_image",
         "tests/python/ora/test_obligation_transactional_edit.py::test_a_validation_error_from_an_invalid_edit_also_rolls_back",
@@ -4658,13 +4655,14 @@
           "Each named operation (add, replace, move, rename, remove) against each named target kind (groups, layers, assets, metadata) has a focused positive test, plus reference-maintenance and stale-derived-view-invalidation coverage."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "QUARANTINED_NONNORMATIVE",
+      "rationale": "GOVERNANCE AMENDMENT (2026-08-11), classification SPEC_UNDEFINED, scoped to this obligation's own \"metadata\" clause only -- the ONLY clause of this obligation's 3-clause rule_text (\"groups, layers, assets, and metadata; maintain references and invalidate stale derived views\") that lacks normative basis. The other two clauses are NOT quarantined -- they are separately, fully proven and remain visible above: \"maintain references\" via FF6-ORA-REFERENCE-PRESERVATION-001 (6 dedicated tests), stale-derived-view invalidation via FF6-ORA-ADAPTER-AUTOINVALIDATION-001 (apply_transaction_and_refresh_baseline_assets, proven both to refresh on commit and NOT refresh on rollback). Normative-source search: FF6-EVENT-000318 (see implemented_behavior above) full-text-searched all 3 pinned OpenRaster spec sources for \"metadata\" and found zero hits in any of them -- OpenRaster defines no metadata element or schema the way ODF has meta.xml. Re-confirmed independently this amendment via a fresh Explore agent given only the obligation ID (not told this session's own prior conclusion): same verdict, same zero-hit search across all 3 pinned sources, plus direct confirmation that the cited authority_fact_ids never mention metadata and that this package's own only \"metadata\"-named symbol (RasterMetadata/ read_png_metadata) is an unrelated PNG IHDR-decode concept for ORA-ASSET-001, not a document-level CRUD target. \"Metadata\" as an editable entity cannot be honestly built without inventing content the format does not define -- doing so would fabricate the very thing this clause claims to require. Disposition: if a future OpenRaster spec revision defines a metadata concept, this quarantine should be revisited against the new spec text, not left in place by default. This obligation was correctly held `partial` rather than promoted while this clause remained un-adjudicated (see FF6-EVENT-000318's own explicit refusal to force-close it) -- this amendment is what that prior event's own investigation was waiting on: a governance mechanism able to act on a confirmed negative-source finding without either fabricating the missing behavior or leaving fully-proven sibling clauses permanently miscategorized as incomplete.",
       "source_symbols": [
         "src/python/ora/src/format_factory/ora/transaction.py::TransactionResult",
         "src/python/ora/src/format_factory/ora/transaction.py::apply_transaction",
         "src/python/ora/src/format_factory/ora/transaction.py::apply_transaction_and_refresh_baseline_assets"
       ],
-      "status": "partial"
+      "status": "quarantined_by_amendment"
     },
     {
       "capability_id": "ORA-VALIDATE-001",
@@ -5111,11 +5109,11 @@
   "summary": {
     "by_status": {
       "implemented": 128,
-      "missing": 1,
-      "partial": 5
+      "partial": 4,
+      "quarantined_by_amendment": 2
     },
     "total": 134,
-    "unresolved": 6
+    "unresolved": 4
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }

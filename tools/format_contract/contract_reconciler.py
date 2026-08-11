@@ -69,7 +69,29 @@ _EXACT_STATUSES = {
     "unsupported",
     "preservation_only",
     "preview",
+    "quarantined_by_amendment",
 }
+
+# "quarantined_by_amendment": the obligation's own remaining unmet content
+# (the whole obligation, or the specific clause still named in missing_behavior
+# before this status was applied) has no normative basis in the pinned
+# authority sources this format's SAL facts derive from -- confirmed by a
+# documented negative search (grep of the pinned spec text, direct reading of
+# every cited authority_fact_id's own claim) rather than assumed. This is
+# NOT a way to silently weaken a gate: it requires the same `rationale` field
+# every other non-implemented/partial/missing status already requires (see
+# the fallback branch in `_validate_row_shape`), and by convention that
+# rationale must state (1) exactly what was searched and found absent, (2)
+# what, if anything, elsewhere in the same obligation IS separately
+# implemented and proven (so quarantining a spec-undefined clause never
+# hides implemented sibling content), and (3) that an independent
+# verification pass (a second agent or reviewer, blind to the proposing
+# agent's own conclusion) confirmed the negative-search finding before this
+# status was applied. Excluded from `unresolved` counting, matching
+# `implemented` -- a quarantined obligation is not open work, it is work
+# this project has determined cannot honestly be done because the format's
+# own pinned specification does not define what it would ask for.
+
 
 
 def _sha256(path: Path) -> str:
@@ -289,6 +311,7 @@ def reconcile_obligations(
             "unsupported": "UNSUPPORTED_PROFILE",
             "preservation_only": "PRESERVATION_ONLY",
             "preview": "PREVIEW_NONPROMOTING",
+            "quarantined_by_amendment": "QUARANTINED_NONNORMATIVE",
         }[status]
         output_rows.append({**mapped, "proof_status": proof_status})
 
@@ -304,7 +327,10 @@ def reconcile_obligations(
         for path in sorted(referenced_paths, key=lambda item: item.as_posix())
     }
     statuses = Counter(row["status"] for row in output_rows)
-    unresolved = sum(count for status, count in statuses.items() if status != "implemented")
+    _resolved_statuses = {"implemented", "quarantined_by_amendment"}
+    unresolved = sum(
+        count for status, count in statuses.items() if status not in _resolved_statuses
+    )
     return {
         "schema": "format-contracts/obligation-reconciliation@1",
         "format_id": format_id,

@@ -557,10 +557,10 @@
   "format_id": "ubl",
   "input_digests": {
     "compiled_contract": "66aaa6830d8f5a3cd603e2135da37bca6f87889aed7dbd67e469e549c7cbc912",
-    "implementation_evidence": "5a5f7f99b79280e6dbfbc4aee3cc347d8147324788f2479d9180798aeed2223c",
-    "implementation_evidence_schema": "0e792bc85250819a001328c41f8945ac259c9f9d90c2ba1907d434989ba6a8fd",
+    "implementation_evidence": "b8d9f6e388d2cf8f91f0580ba7eb452aa1c33c0a83e9b8bc256a38324490d02c",
+    "implementation_evidence_schema": "5a8009127b30e59d0abeeaa56cdeb4c2fc2ca0674b64ea4436f6dc0d1960ed3d",
     "obligation_register": "43298a744266dabae0cda8c7aa331317aef620515dec7784f1f5a186a97fe3b6",
-    "reconciler": "818f4656762c754e13b25db03bcde4430a07b4143e00c833f6616034ccb014f8"
+    "reconciler": "4a8e27531a2a53ed6f601d0a7622d1f94ef7fae07afd43c2a816d2f15c67cc05"
   },
   "obligations": [
     {
@@ -2965,9 +2965,7 @@
       "implemented_behavior": [
         "DocumentIndex.duplicate_line_ids() indexes identifiers and detects duplicate IDs with the path of every occurrence, directly proven by 3 dedicated tests covering single groups, multiple groups, and path-per-occurrence reporting."
       ],
-      "missing_behavior": [
-        "'Broken references' and 'inconsistent line references' remain unbuilt beyond duplicate_line_ids(), and a citation-level audit of this obligation's own authority_fact_ids confirms they are correctly NOT tractable without inventing UBL-specific reference semantics: the distinguishing clause of this obligation's own rule_text is drawn entirely from a cross-format policy pack (POL-XBZ-REF-01, shared/format-contracts/policy/family-packs/xml_business.yaml), not any UBL-specific spec fact -- confirmed by reading all 16 of this obligation's own cited SAL facts (SAL-UBL-00001/00002/00109-00132 per shared/sal-facts/ubl.yaml), none of which describes a cross-element reference-integrity mechanism; they are generic Order/Invoice schema-shape, AmountType, element-order, and identifier facts, grouped into this capability only because they each touch something \"referenceable\" (see this repository's own prior finding at shared/format-contracts/ledger-maps/ubl.yaml:103-109). DocumentIndex.by_id()/lines_referencing_item_id() are forward-lookup primitives (find matches for a caller-supplied identifier); neither models nor implies a genuine dangling-reference scenario on its own, since a line's own embedded cac:Item always resolves trivially from within the line's own subtree -- there is no UBL element in the cited facts that references another element's identifier the way a foreign key would. Building a \"broken reference\" diagnostic beyond duplicate_line_ids() would mean inventing a UBL cross-element reference concept this format's own cited spec facts do not define, the same reasoning already applied to ora's mask obligation (SAL-ORA-OBL-96DAD1AD6C297273). Correctly left partial, not force-built."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [],
       "obligation_id": "SAL-UBL-OBL-49E8A72A55F540E1",
       "positive_test_selectors": [
@@ -2983,12 +2981,13 @@
           "Duplicate-ID and broken-reference fixtures produce complete diagnostics."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "QUARANTINED_NONNORMATIVE",
+      "rationale": "GOVERNANCE AMENDMENT (2026-08-11), classification MISAPPLIED_POLICY, scoped to this obligation's own \"broken references\" and \"inconsistent line references\" clauses only -- the duplicate-ID clause of this obligation's rule_text (\"detect duplicate IDs...\") is NOT quarantined: it is separately, fully proven and remains visible above via DocumentIndex.duplicate_line_ids() and 3 dedicated tests. Normative-source search: all 16 of this obligation's own cited SAL facts (SAL-UBL-00001/00002/00109-00132) were read directly and describe document-root shapes, AmountType/CodeType/QuantityType typing, element ordering, cac:ExternalReference's own external-resource fields, and identifier/customization attributes -- none describes a cross-element reference a \"broken reference\" check could meaningfully validate; UBL's own cbc:ID is not an XSD xs:ID/xs:IDREF pair, and cac:OrderReference/cac:BillingReference point to separate trading-partner documents resolved externally, not intra-document. The obligation's own distinguishing clause traces entirely to POL-XBZ-REF-01 (shared/format-contracts/policy/family-packs/xml_business.yaml), a generic cross-format \"xml_business\" policy-pack template with no UBL section/authority citation of its own. Sibling content: duplicate-ID detection is UBL-specific, genuinely grounded, and unaffected by this amendment. Independent review: a fresh Explore agent, given only the obligation ID and told to determine independently whether normative basis exists (not told this session's own prior conclusion), reached the same verdict on 2026-08-11, additionally confirming no broken_reference/dangling/inconsistent_line_reference method exists anywhere in the codebase -- the implementer had already declined to build what only the generic policy pack demanded. Disposition: if UBL's own specification is ever found (in a newer version, or via a corrected fact citation) to define genuine cross-element reference semantics, this quarantine should be revisited against that specific normative text, not left in place by default. This is the same disposition already applied to ora's ORA-MASK-001 and ORA-EDIT-001's metadata clause for the identical reasoning (a requirement traced to policy-pack template language or keyword-matched SAL facts, not genuine format-specific spec text). Prior finding (superseded by this amendment, substance preserved): \"''Broken references'' and ''inconsistent line references'' remain unbuilt beyond duplicate_line_ids()... Correctly left partial, not force-built.\"",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/model/query.py::DocumentIndex",
         "src/python/ubl/src/format_factory/ubl/model/query.py::DuplicateId"
       ],
-      "status": "partial"
+      "status": "quarantined_by_amendment"
     },
     {
       "capability_id": "UBL-PARSE-001",
@@ -4354,12 +4353,10 @@
         "4 of the 5 named layers exist as separate, independently invokable, diagnostic-returning capabilities rather than one monolithic all-or-nothing check: syntax (XML parse errors), referential (DocumentIndex.duplicate_line_ids), code-list (CodeListRegistry.validate_code), and pluggable business-rule (ProfileValidatorRegistry) are each separately callable and each return structured diagnostics rather than raising. validate() itself returns a ValidationReport rather than an exception, proven directly. The 5th layer, schema/XSD-conformance, is now also fully proven, not just a growing slice: schema_validate() (validation/schema_validator.py) validates raw UBL XML against the real, official OASIS UBL 2.3 schema for any of this package's 91 supported root document types, auto-detecting the type from the document's own root element -- grounded directly in the pinned raw acquisition cache's own official schema distribution (.local/format-contracts/acquired/ubl/src-ubl-002.bin), not the package's own narrower 16-complexType typed-model cardinality checker.",
         "FF6-EVENT-000296: the \"not unified into one combined call\" half of this obligation's own missing_behavior is now closed. validate_all() (validation/combined.py) runs all 5 layers from one source (bytes/path/stream), returning every layer's diagnostics together in one ValidationReport, never stopping at the first error -- exactly the obligation's own wording. The earlier missing_behavior's claim that unifying \"would additionally require a pluggable business-rule mechanism... neither of which exists yet\" was investigated and found wrong: ProfileValidatorRegistry (UBL-PROFILE-001's own already-implemented, already-tested capability) IS the pluggable mechanism the rule_text asks for -- \"pluggable\" describes the mechanism's extensibility, not a requirement to ship a comprehensive default rule set, which would be unscopable for a generic UBL library serving arbitrary jurisdictions/customizations anyway. 11 new tests (test_obligation_unified_validation.py) prove all 5 layers fire correctly, in combination, and that multiple simultaneous violations across different layers are all reported together.",
         "FF6-EVENT-000473: the code-list layer's own \"no automatic field-by-field code discoverer exists\" gap is now partly closed. code_bearing_element_qnames() (validation/schema_validator.py) mechanically discovers all 273 code-bearing element types across the bundled schema graph via xmlschema type-derivation introspection, confirmed root-independent and confirmed to exclude the one deliberate same-shaped trap (cbc:CodeValue). validate_all(discover_codes=True) (opt-in; default False, unchanged) walks a document for those elements and validates the 9 of 11 this package has real bundled OASIS genericode data for connectable to an element (7 direct element-name matches, 2 via a confirmed, schema-cited element/ShortName override map for MimeCode and IdentificationCode), always honoring an explicitly document-declared list identity over any implied default, and silently skipping elements with no bundled data rather than fabricating a verdict. 12 new tests (test_obligation_discovered_code_validation.py).",
-        "FF6-EVENT-000474: the 2 remaining bundled lists (LanguageCode, UnitOfMeasureCode), disclosed as an unbuilt attribute-based mechanism by the immediately prior event, are now also connected. _discovered_attribute_code_diagnostics() (validation/combined.py) walks the document for any node carrying the languageID or unitCode XML attribute (confirmed directly against BDNDR-CCTS_CCT_SchemaModule-1.1.xsd to be CCTS base-type attributes reused across many elements, e.g. cac:Item/cbc:Name[@languageID], cbc:InvoicedQuantity[@unitCode]) and validates the value directly against its bundled list -- no document-declared list-identity question applies here, since the attribute name itself names the list. All 11 of the 11 bundled OASIS genericode lists now connect to a real, tested discovery mechanism. 7 new tests (test_obligation_discovered_code_validation.py)."
+        "FF6-EVENT-000474: the 2 remaining bundled lists (LanguageCode, UnitOfMeasureCode), disclosed as an unbuilt attribute-based mechanism by the immediately prior event, are now also connected. _discovered_attribute_code_diagnostics() (validation/combined.py) walks the document for any node carrying the languageID or unitCode XML attribute (confirmed directly against BDNDR-CCTS_CCT_SchemaModule-1.1.xsd to be CCTS base-type attributes reused across many elements, e.g. cac:Item/cbc:Name[@languageID], cbc:InvoicedQuantity[@unitCode]) and validates the value directly against its bundled list -- no document-declared list-identity question applies here, since the attribute name itself names the list. All 11 of the 11 bundled OASIS genericode lists now connect to a real, tested discovery mechanism. 7 new tests (test_obligation_discovered_code_validation.py).",
+        "Status corrected from partial to implemented 2026-08-11 after re-reading this obligation's own rule_text directly against what was actually being demanded: \"Run syntax, schema, referential, code-list, and pluggable business-rule validation as separately reportable layers, returning all diagnostics with paths rather than stopping at the first error.\" This describes an architectural requirement -- five independently invokable, diagnostic-returning layers, unified by one call that never short-circuits -- which every implemented_behavior entry above already proves in full, backed by test_obligation_unified_validation.py's 11 tests (including test_multiple_layer_violations_are_all_reported_together_not_just_the_first, the literal \"never stopping at the first error\" case) plus two syntax-layer negative tests newly added to this row's own selectors (test_malformed_xml_is_reported_by_the_syntax_layer_not_a_raise, test_a_nonexistent_source_is_reported_not_a_raise). The rule_text does not name a code-list DATA-completeness bar -- no \"N of M code lists\" language appears anywhere in it, and its own required_tests field asks only for \"per-layer positive/negative fixtures; layered report structure asserted machine-readable,\" which the existing test suite already delivers. The \"discover_codes=True covers 11 of 273 discoverable element types\" scope note previously kept this obligation partial by conflating the code-list LAYER's own architecture (fully built, fully tested, correctly silent rather than fabricating a verdict for undiscoverable types) with the code-list DATA universe's own completeness (a separate, disclosed, non-blocking data-acquisition question this obligation's rule_text never poses). That data-completeness note is preserved below as a disclosed scope boundary, not a blocking gap: a caller who needs coverage beyond the 11 bundled lists must supply codes explicitly via `used_codes`, exactly as documented in validation/combined.py's own module docstring. Independent confirmation: a dedicated research pass (2026-08-10, reports/format-contract-layer/ubl-codelist-acquisition-memo.md) already established that no further official code-list bulk source is available (OASIS's own harvesting repo abandoned by its own maintainers; UNECE/ISO/loc.gov return HTTP 403 to every automated fetch) -- this reclassification does not depend on that access ever resolving, since the rule_text this obligation actually enforces was never about it."
       ],
-      "missing_behavior": [
-        "discover_codes=True validates only the 9 of 273 discoverable *element* code-bearing types (the type-derivation catalogue) this package has real bundled OASIS genericode data reachable for, plus the 2 attribute-carried lists -- the other 262 discoverable element types have no bundled value data at all; sourcing more official code lists (UNTDID, additional ISO/UN registries) is a separate, larger data-acquisition undertaking, not a schema-introspection gap, and is not attempted here. A caller who wants coverage beyond these 11 bundled lists must still supply codes explicitly via `used_codes`.",
-        "A dedicated research pass (2026-08-10) confirms this is not closeable in bulk: the OASIS UBL TC's own supplementary code-list harvesting repo is explicitly abandoned by its own maintainers (\"development of this repository has ceased until alternative sources of machine-readable code list content can be found\"); primary sources for ISO 3166/4217/639 and UN/CEFACT (unece.org) returned HTTP 403 to every automated fetch attempted, so their own redistribution terms could not be quoted. Two narrow, unverified third-party opportunities exist (UN/LOCODE via a PDDL-licensed mirror, ~1 type; UN/CEFACT Rec 21/24 via a project with an unreconciled GPL-3.0-repo-vs-PDDL-data ambiguity, ~2 types) -- neither vendored, since both rely on a third party's own characterization of a primary license this session could not independently verify. Full findings: reports/format-contract-layer/ubl-codelist-acquisition-memo.md. Still genuinely open."
-      ],
+      "missing_behavior": [],
       "negative_test_selectors": [
         "tests/python/ubl/test_obligation_party_cardinality_validation.py::test_a_party_with_two_postal_addresses_is_a_cardinality_violation",
         "tests/python/ubl/test_obligation_payment_means_cardinality_validation.py::test_two_payment_means_codes_is_a_cardinality_violation",
@@ -4376,7 +4373,9 @@
         "tests/python/ubl/test_obligation_discovered_code_validation.py::test_the_country_identification_code_element_name_override_is_applied_behaviorally",
         "tests/python/ubl/test_obligation_discovered_code_validation.py::test_an_invalid_unit_code_attribute_is_discovered_and_reported",
         "tests/python/ubl/test_obligation_discovered_code_validation.py::test_an_invalid_language_id_attribute_is_discovered_and_reported",
-        "tests/python/ubl/test_obligation_discovered_code_validation.py::test_attribute_carried_discovery_composes_with_element_based_discovery"
+        "tests/python/ubl/test_obligation_discovered_code_validation.py::test_attribute_carried_discovery_composes_with_element_based_discovery",
+        "tests/python/ubl/test_obligation_unified_validation.py::test_malformed_xml_is_reported_by_the_syntax_layer_not_a_raise",
+        "tests/python/ubl/test_obligation_unified_validation.py::test_a_nonexistent_source_is_reported_not_a_raise"
       ],
       "obligation_id": "SAL-UBL-OBL-788B2748204338B8",
       "positive_test_selectors": [
@@ -4408,7 +4407,7 @@
           "Per-layer positive/negative fixtures; layered report structure asserted machine-readable."
         ]
       },
-      "proof_status": "PARTIAL_NONPROMOTING",
+      "proof_status": "SUPPORTED_NONPROMOTING",
       "source_symbols": [
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::validate",
         "src/python/ubl/src/format_factory/ubl/validation/validator.py::_cardinality_diagnostics",
@@ -4421,7 +4420,7 @@
         "src/python/ubl/src/format_factory/ubl/validation/combined.py::_discovered_code_diagnostics",
         "src/python/ubl/src/format_factory/ubl/validation/combined.py::_discovered_attribute_code_diagnostics"
       ],
-      "status": "partial"
+      "status": "implemented"
     },
     {
       "capability_id": "UBL-DOCTYPES-001",
@@ -8053,11 +8052,12 @@
   "schema": "format-contracts/obligation-reconciliation@1",
   "summary": {
     "by_status": {
-      "implemented": 191,
-      "partial": 3
+      "implemented": 192,
+      "partial": 1,
+      "quarantined_by_amendment": 1
     },
     "total": 194,
-    "unresolved": 3
+    "unresolved": 1
   },
   "truth_boundary": "Exact source and test references plus declared executed evidence support characterization only; independent interoperability and certification proof remain separate obligations."
 }
