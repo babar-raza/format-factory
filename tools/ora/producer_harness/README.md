@@ -1,14 +1,14 @@
 # ORA independent-producer comparison harness
 
-State: **`EXTERNAL_EXECUTION_READY`** — not `implemented`, not generic
-`blocked`. Every piece of this harness that does not require a GIMP install
-is built and tested (17 passing contract tests against mocked producer
-output, `tests/tools/test_ora_producer_harness_compare.py`). The piece that
-actually produces new evidence — running GIMP, in batch mode, to render
-each scene independently of format-factory's own code — cannot execute in
-this repository's own sandboxed environment (no GIMP install, no display
-server, no package manager access confirmed; see the root-cause
-investigation this session's own Explore agent ran before concluding this).
+State: **executed** — GIMP 2.10.30 was run for real, autonomously, inside a
+disposable pinned Docker container (`ora-harness-gimp:pinned-2026-08-11`),
+against the full 8-scene canonical matrix. Full account, exact commands,
+checksums, and stdout/stderr: `PROVENANCE-gimp-execution-2026-08-11.md`.
+Result: **8/8 scenes pixel-exact**. This is genuine, verified evidence of
+independent-producer compositing agreement — not a claim that the shared
+"at least two independent producers/consumers" release gate is fully met
+(it isn't: this achieves one of the required two — see "What remains open"
+below).
 
 ## What this answers
 
@@ -16,155 +16,109 @@ ORA-RENDER-001 / ORA-COMPOSITE-001 / ORA-ISOLATION-001 share one release
 gate, compiled from `POL-LRA-RENDER-01` and its siblings
 (`shared/format-contracts/policy/family-packs/layered_raster_archive.yaml`)
 into the real product contract (`shared/format-contracts/ora.yaml`) via
-`contract_compiler.py` — an authorized project policy (see this session's
-own Workstream B finding), not a spec-normative claim, and not something to
-quarantine. It asks for rendering that "agrees with at least two
-independent producers/consumers within declared tolerances." This harness
-is how that evidence gets produced, once it can run somewhere with GIMP
-installed.
+`contract_compiler.py` — an authorized project policy, not a spec-normative
+claim. It asks for rendering that "agrees with at least two independent
+producers/consumers within declared tolerances." `ORA-BASELINEASSET-001`
+has a related but distinct gate: "generated viewing assets are accepted and
+visually checked by independent consumers." This harness produces evidence
+for both.
 
-## What is built and tested here (no GIMP required)
+## What is built and tested here
 
 | File | Purpose | Tested by |
 |---|---|---|
 | `scene_matrix.py` | 8 producer-agnostic scene definitions covering layer order, opacity, clipping, visibility, one blend mode, and isolated-vs-non-isolated group compositing | `test_ora_producer_harness_compare.py` (imports and renders every scene) |
 | `format_factory_side.py` | Realizes a scene with format-factory's own `OraStack`/`OraLayer` model and renders it | Same |
 | `compare.py` | Pure comparison math (pixel-exact + tolerance-based), manifest generation, malformed-input handling — the actual reconciler-facing logic | 17 tests, all mocked producer input |
-| `gimp_scripts/generate_scene.py` | GIMP Python-Fu script that independently constructs each scene inside a real GIMP and exports `.ora` | **Not testable here** — no `gimpfu` module exists outside a real GIMP install. Syntactically follows GIMP 2.10's documented Python-Fu API; unverified against a real GIMP process. |
+| `gimp_scripts/generate_scenes.scm` | **The real, working, GIMP-Script-Fu (Scheme) generator** — executed against a real GIMP 2.10.30 install; constructs every scene with GIMP's own layer/group compositing engine and exports a flattened PNG | Real execution only (Script-Fu cannot run outside GIMP's own bundled interpreter) — see `PROVENANCE-gimp-execution-2026-08-11.md` |
+| `gimp_scripts/generate_scene.py` | Original GIMP **Python-Fu** draft | **Superseded, not used.** GIMP 2.10's apt package on Ubuntu 22.04 does not ship a working Python-Fu batch interpreter (it requires Python 2, which Ubuntu 22.04 dropped) — confirmed via `GIMP-Warning: The batch interpreter 'python-fu-eval' is not available`. Kept for historical reference only. |
+| `Dockerfile` / `entrypoint.sh` | Pinned, disposable GIMP execution environment (Ubuntu 22.04 + GIMP 2.10.30 apt package + Xvfb, with a manual Xvfb-readiness poll instead of `xvfb-run`, whose SIGUSR1 handshake did not reliably fire under this host's Docker Desktop/WSL2 backend) | Real execution — see provenance doc |
 
 The drift guard (`test_gimp_script_scene_ids_are_a_subset_of_the_canonical_matrix`)
-catches the GIMP script's own scene data going out of sync with
-`scene_matrix.py` without needing GIMP installed to notice.
+still checks `generate_scene.py`'s own scene-ID list against `scene_matrix.py`
+(it predates the Script-Fu script and was never repointed — the two Scheme
+and Python scene lists are kept in sync manually per each file's own header
+comment, not by an automated check).
 
-## Known gaps in `generate_scene.py`
+## What actually happened, briefly (full account in the provenance doc)
 
-- **Isolated/non-isolated group scenes are not yet scripted.** GIMP layer
-  groups (`gimp-image-insert-layer` with a group parent) map to
-  OpenRaster's `isolation` attribute in a way this session could not
-  verify against a real GIMP `.ora` export (no GIMP install to check
-  against). Scripting this blind, without being able to confirm GIMP's own
-  exporter actually sets `isolation="isolate"` the way expected, would risk
-  silently mis-mapping the one scene this harness cares about most —
-  correctly left as a documented gap rather than a guessed implementation.
-- Only one blend mode (`svg:multiply`) is scripted, matching
-  `LAYER_MODE_MULTIPLY`'s GIMP-side constant, which is confirmed correct
-  for GIMP's legacy (non-"default") layer-mode set. GIMP 2.10 added a
-  second "default" mode group with different blend math for some modes —
-  this script uses the legacy constants throughout for consistency; a real
-  GIMP run should confirm this is what actually gets exported.
-- `pdb.file_openraster_save`'s exact signature/plugin name should be
-  reconfirmed against the target GIMP version before running — plugin
-  procedure names have shifted across GIMP major versions (2.8 vs. 2.10 vs.
-  3.x's GObject-Introspection API, which does not use `gimpfu`/`pdb` at
-  all). This script targets **GIMP 2.10**, the version reachable via
-  `apt-get install gimp` on Ubuntu 22.04/24.04 as of this writing.
+GIMP 2.10's apt package on Ubuntu 22.04 ships **no OpenRaster plugin at
+all** (confirmed: 0 PDB procedures match `openraster`; no
+`file-ora*`/`file-openraster*` plugin binary anywhere in the image) — so
+this harness does not produce real `.ora` files. It constructs each scene
+with GIMP's own compositor and exports the flattened result as a plain PNG,
+which is exactly what `compare.py` needs and is disclosed everywhere this
+evidence is used: it proves independent *compositing* agreement, not
+OpenRaster *container* interop with GIMP specifically (a separate concern,
+`ORA-CONTAINER-001`).
 
-## Exact external command (Ubuntu, matching this repo's own CI convention)
+Two genuine defects were found and root-caused (not guessed) via exact
+pixel diffing against format-factory's own render output, both now fixed in
+`generate_scenes.scm` — see that file's own header comments and
+`scene_matrix.py`'s own `non-isolated-group` docstring for the complete
+accounts:
 
-This repository's own `.github/workflows/ci.yml` runs every job on
-`ubuntu-latest`. The following extends that same convention — it is **not**
-wired into `ci.yml` (per this session's own instruction: do not create or
-trigger a remote workflow without explicit authorization) — it is the exact
-sequence a human or an authorized CI change would run:
+1. A coordinate bug in `fill-solid-layer`: it selected a fixed
+   `(0, 0, width, height)` region in image-global coordinates regardless of
+   the target layer's own offset, silently under-filling any non-zero-offset
+   layer (invisible for every offset-`(0,0)` scene, which is most of them).
+2. `scene_matrix.py`'s original `non-isolated-group` scene used group
+   `opacity=0.5`, which `OraStack.is_isolated_group` — directly implementing
+   the OpenRaster spec's own literal "isolation is isolate, opacity is below
+   one, or composite-op differs from svg:src-over" text — *always* forces
+   into isolated compositing, regardless of the declared `isolation`
+   attribute. That scene could never have exercised non-isolated compositing
+   against format-factory's own renderer, no matter what GIMP produced. The
+   fix belonged in the scene definition, not the GIMP script: group
+   `opacity=1.0` (not forcibly isolated) with one child using a non-default
+   composite-op (`svg:multiply`) — the only condition under which isolated
+   vs. non-isolated compositing can differ at all, since Porter-Duff `over`
+   is otherwise associative.
+
+A separate check loaded a format-factory-*generated* PNG
+(`encode_png()` of a real `render()` output) into the same real GIMP
+instance, confirming successful decode at the correct dimensions — direct,
+automated independent-consumer-acceptance evidence for
+`ORA-BASELINEASSET-001`.
+
+## What remains open
+
+The shared release gate says "at least **two** independent
+producers/consumers." This harness's real execution achieves exactly
+**one** (GIMP) with full pixel-comparison evidence. The vendored MyPaint
+corpus (`tests/python/ora/fixtures/third-party-gpl-mypaint/`) is a real,
+independent, second application's output, and all 3 of its files now load
+successfully under `ReadMode.TOLERANT` — but none provides a usable
+full-resolution ground truth for pixel comparison (only one file embeds a
+`mergedimage.png`, and it is a 64×64 thumbnail, not the document's real
+canvas resolution). Scripting MyPaint itself as a second controlled-scene
+producer (GIMP's own role here) was investigated and found architecturally
+infeasible within a reasonable session scope: MyPaint's own apt package is
+a GTK/GObject-Introspection interactive painting application with no
+documented batch/procedural scripting interface comparable to GIMP's own
+Script-Fu/PDB. `ORA-RENDER-001` / `ORA-COMPOSITE-001` / `ORA-ISOLATION-001`
+/ `ORA-BASELINEASSET-001` therefore all stay `partial`, not `implemented` —
+see `shared/format-contracts/implementation-evidence/ora.yaml`'s own
+`missing_behavior` entries for each obligation's precise, current gap.
+
+## Reproducing this execution
+
+See `PROVENANCE-gimp-execution-2026-08-11.md` for the exact `docker build`
+/ `docker run` commands, image digest, and checksums. In short:
 
 ```bash
-# 1. Install GIMP 2.10 (ships Python-Fu / gimpfu out of the box on Ubuntu)
-sudo apt-get update && sudo apt-get install -y gimp xvfb
+docker build --build-arg http_proxy=<your-proxy> --build-arg https_proxy=<your-proxy> \
+  -t ora-harness-gimp:pinned-2026-08-11 tools/ora/producer_harness
 
-# 2. Clone/checkout this repository at the commit under test, then, from
-#    the repo root, run each scene through GIMP's own headless batch mode
-#    (xvfb-run provides a virtual display; GIMP's batch mode still expects
-#    one even with no GUI shown):
-mkdir -p /tmp/ora-harness-out
-for scene in single-opaque-layer layer-order partial-opacity \
-             offset-and-clipping hidden-layer multiply-blend; do
-  xvfb-run -a gimp -i -b \
-    "(python-fu-generate-scene RUN-NONINTERACTIVE \"$scene\" \"/tmp/ora-harness-out/$scene.ora\")" \
-    -b '(gimp-quit 0)' \
-    --batch-interpreter python-fu-eval \
-    tools/ora/producer_harness/gimp_scripts/generate_scene.py
-done
-
-# 3. Extract each producer .ora's own embedded mergedimage.png (or export a
-#    plain PNG from GIMP directly, if mergedimage.png does not exist for a
-#    given scene -- OpenRaster's own spec leaves mergedimage.png optional),
-#    then run the comparison:
-python -c "
-from pathlib import Path
-import zipfile
-from tools.ora.producer_harness.compare import compare_scene, write_manifest
-
-results = []
-for scene_id in ['single-opaque-layer', 'layer-order', 'partial-opacity',
-                  'offset-and-clipping', 'hidden-layer', 'multiply-blend']:
-    ora_path = Path(f'/tmp/ora-harness-out/{scene_id}.ora')
-    with zipfile.ZipFile(ora_path) as z:
-        png_bytes = z.read('mergedimage.png')
-    results.append(compare_scene(
-        scene_id, png_bytes,
-        producer_name='GIMP', producer_version='2.10.x (record exact patch version)',
-    ))
-write_manifest(results, Path('/tmp/ora-harness-out/comparison-manifest.json'))
-print(open('/tmp/ora-harness-out/comparison-manifest.json').read())
-"
+docker run --rm \
+  -v "$(pwd)/tools/ora/producer_harness/gimp_scripts:/scripts:ro" \
+  -v "<host-output-dir>:/out" \
+  ora-harness-gimp:pinned-2026-08-11 \
+  gimp -i -d -f \
+    -b '(begin (load "/scripts/generate_scenes.scm") (run-all-scenes "/out"))' \
+    -b '(gimp-quit 0)'
 ```
 
-### Required packages
-
-- `gimp` (2.10.x) and `xvfb`, via `apt-get` on an Ubuntu runner (or
-  equivalent for another distribution).
-- This repository's own Python environment (`pip install -e .` from the
-  repo root, or just `PYTHONPATH=.` against the checked-out source tree —
-  no additional Python packages beyond what `format_factory.ora` itself
-  needs).
-
-### Expected runtime
-
-GIMP batch-mode startup is the dominant cost (2-5 seconds per invocation on
-a typical CI runner); with 6 currently-scripted scenes, expect roughly
-15-40 seconds total, well within any CI job's own timeout budget.
-
-### Expected outputs
-
-- One `.ora` file per scripted scene in `/tmp/ora-harness-out/` (or
-  wherever the output path is redirected), each GIMP's own genuinely
-  independent export.
-- `comparison-manifest.json`, matching the `ora-producer-harness/
-  comparison-manifest@1` schema `compare.py`'s own `write_manifest()`
-  writes — `result: "PASS"` only if every scripted scene is
-  `within_tolerance`.
-
-### Success criteria
-
-- Every scripted scene's own GIMP export must load through
-  `format_factory.ora`'s own `loads()` (STRICT mode — GIMP's own OpenRaster
-  exporter is a maintained, actively-developed implementation, unlike the
-  vendored MyPaint fixtures found non-conformant this session; if GIMP's
-  own export also fails STRICT, that is itself a real, reportable finding,
-  not a harness bug to work around).
-- Each scene's `mergedimage.png` must be full-canvas resolution (verify
-  this directly, the way this session verified MyPaint's own
-  `fill_outlines.ora` was NOT, before trusting it as a comparison target).
-- `compare_scene(...)`'s own `pixel_exact_match` or `within_tolerance` (for
-  a documented, non-zero tolerance) must be `True` for every scene before
-  this evidence can be cited toward ORA-RENDER-001/COMPOSITE-001/
-  ISOLATION-001's own release gate.
-
-## Once real GIMP output exists
-
-1. Vendor the real `.ora` outputs into a clearly-labeled directory
-   (matching this session's own `tests/python/ora/fixtures/
-   third-party-gpl-mypaint/` convention, but licensed under GIMP's own
-   terms — GIMP is GPL-3.0+, so the same vendoring-shape discipline that
-   memo established applies again here).
-2. Run `write_manifest(...)` against the real comparison and commit the
-   resulting `comparison-manifest.json` as `execution_evidence` in
-   `shared/format-contracts/implementation-evidence/ora.yaml`, following
-   this repo's own existing `execution_evidence_ids` convention.
-3. Only then update the 4 affected obligations' own `missing_behavior` —
-   and only for the scenes actually proven, not by extrapolation. GIMP
-   alone still supplies only ONE independent producer; ORA-RENDER-001's own
-   gate says "at least two" — a second (MyPaint, once/if its own
-   conformance gaps are separately addressed, or another real OpenRaster
-   application) remains necessary before any of these 4 obligations can
-   honestly move past `partial`.
+Then compare with `tools/ora/producer_harness/compare.py::compare_scene`
+against `tools/ora/producer_harness/format_factory_side.py::render_scene`
+for each scene in `scene_matrix.SCENES`.

@@ -97,3 +97,22 @@ application — strengthening the existing archive/stack validation obligations
 fixtures alone did not cover. See the companion tests in
 `test_obligation_container_and_mimetype.py` and
 `test_obligation_stack_and_document.py`.
+
+## Update (2026-08-11, FF6 Track 2)
+
+`ReadMode.TOLERANT` was extended to cover both defect classes found above
+(mimetype-not-first-member; missing `version` attribute) — all 3 files now
+load and render successfully under `ReadMode.TOLERANT`, while `STRICT` mode
+remains byte-for-byte unchanged (every finding above still holds under
+`STRICT`). See `test_obligation_compatibility_reader.py`.
+
+This does **not** change the finding above regarding pixel-level render
+comparison: only `fill_outlines.ora` embeds a `mergedimage.png`, and it is
+64×64 pixels — a thumbnail, not the document's real 3456×3008 canvas — so it
+still cannot serve as full-resolution ground truth. `bigimage.ora` and
+`smallimage.ora` have no `mergedimage.png` at all. The render/composite/
+isolation release gate's own "at least two independent producers" text
+remains unmet by these 3 files specifically. A real independent producer
+(GIMP) was separately acquired and executed this same session, achieving
+one full pixel-comparison producer via a controlled scene matrix instead —
+see `tools/ora/producer_harness/PROVENANCE-gimp-execution-2026-08-11.md`.

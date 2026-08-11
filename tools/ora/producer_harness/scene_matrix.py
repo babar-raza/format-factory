@@ -181,15 +181,35 @@ SCENES: tuple[Scene, ...] = (
     ),
     Scene(
         scene_id="non-isolated-group",
-        description="The same group opacity (0.5) and backdrop as isolated-group-with-opacity, "
-        "but WITHOUT isolation, and with a semi-transparent (not fully opaque) top child --"
-        "deliberately NOT the same layer alphas as the isolated scene: two fully-opaque "
-        "same-size children mathematically produce an IDENTICAL result whether isolated or "
-        "not (nothing shows through either way), so that combination cannot discriminate the "
-        "two modes at all. Partial transparency is what makes isolated vs. non-isolated "
-        "compositing actually diverge -- matching this package's own "
-        "test_non_isolated_auto_group_is_equivalent_to_no_group_at_all, which uses the same "
-        "reasoning to choose its own fixture values.",
+        description="REDESIGNED 2026-08-11 (see PROVENANCE.md 'non-isolated-group scene "
+        "redesign' for the full account): the original version of this scene used group "
+        "opacity=0.5 to try to discriminate isolated vs. non-isolated compositing. That is "
+        "unsound against this package's own OraStack.is_isolated_group (model/stack.py), "
+        "which forces isolation whenever 'isolation is isolate, opacity is below one, or "
+        "composite-op differs from svg:src-over' (the OpenRaster spec's own literal text) -- "
+        "opacity=0.5 on the group therefore ALWAYS forces isolation regardless of the "
+        "isolated=False declaration, so the original scene could never actually exercise "
+        "non-isolated compositing at all (confirmed empirically: a real GIMP pass-through "
+        "compositor correctly disagreed with format-factory's own necessarily-isolated "
+        "rendering of it). Further, for a GENUINELY non-isolated group (opacity==1.0, "
+        "isolation!='isolate', composite_op==default), isolated and non-isolated compositing "
+        "are mathematically IDENTICAL whenever every child uses the default composite-op "
+        "(svg:src-over) -- Porter-Duff 'over' is associative, so pre-flattening children in "
+        "isolation and then compositing the flattened result over the backdrop always equals "
+        "compositing them directly against the real backdrop one at a time, regardless of "
+        "child alpha. Isolation is only OBSERVABLE when a CHILD's own composite-op differs "
+        "from default (e.g. svg:multiply): isolated compositing blends that child against a "
+        "transparent sub-canvas backdrop first; non-isolated blends it directly against the "
+        "REAL backdrop -- these differ whenever the group's own cumulative alpha before "
+        "reaching the backdrop is below 1 (hence 'bottom' here is translucent, alpha=160). "
+        "Verified computationally before committing (not asserted): with group "
+        "opacity=1.0/isolation=auto and top's own composite_op=svg:multiply, rendering this "
+        "scene produces byte-identical output to the SAME 3 layers with no group wrapper at "
+        "all (matching test_non_isolated_auto_group_is_equivalent_to_no_group_at_all's own "
+        "'equivalent to no group' principle) and produces a DIFFERENT result than the "
+        "isolated variant of the identical children ((49,31,2,255) vs (124,49,6,255) at "
+        "pixel (0,0) for these exact values) -- proof this scene actually discriminates the "
+        "two modes, which the original design never did.",
         targets=("ORA-ISOLATION-001",),
         canvas_width=32,
         canvas_height=32,
@@ -197,10 +217,10 @@ SCENES: tuple[Scene, ...] = (
             SceneGroup(
                 name="not-isolated",
                 isolated=False,
-                opacity=0.5,
+                opacity=1.0,
                 layers=(
-                    SceneLayer(name="top", rgba=(255, 0, 0, 160), width=32, height=32),
-                    SceneLayer(name="bottom", rgba=(0, 255, 0, 255), width=32, height=32),
+                    SceneLayer(name="top", rgba=(200, 50, 10, 255), composite_op="svg:multiply", width=32, height=32),
+                    SceneLayer(name="bottom", rgba=(100, 250, 90, 160), width=32, height=32),
                 ),
             ),
             SceneLayer(name="backdrop", rgba=(0, 0, 0, 255), width=32, height=32),

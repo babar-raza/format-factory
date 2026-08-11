@@ -3,6 +3,11 @@ format_id: ora
 visibility: generated
 generated_by: claude
 execution_evidence:
+- evidence_id: ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
+  path: tools/ora/producer_harness/comparison-manifest-2026-08-11.json
+  expected_result: PASS
+  granularity: suite
+  truth_boundary: 'FF6 Track 2 (2026-08-11): first REAL execution of the producer-comparison harness against an actual independently-developed application, not a mock. Docker Desktop 28.4.0 (Windows/WSL2) detected and used per the required detection order (Docker found first -- Podman/other runtimes/CI runner were not needed); a pinned image (ora-harness-gimp:pinned-2026-08-11, sha256:5a7a0f1b376e6f1bdd87323e56004fc76a64eeab8b6382076fbb795f043a0575, Ubuntu 22.04 + gimp 2.10.30-1ubuntu0.1 apt package) was built and run disposably -- no host-level package installation. GIMP''s Python-Fu batch interpreter is not available in this package (Ubuntu 22.04 dropped the Python 2 it requires); Script-Fu (Scheme) is, and is what this execution actually used (tools/ora/producer_harness/gimp_scripts/generate_scenes.scm, superseding the unusable generate_scene.py Python-Fu draft). The gimp apt package ships zero OpenRaster plugin support (confirmed: 0 PDB procedures match "openraster"; no file-ora*/file-openraster* plugin binary exists anywhere in the image) -- scenes are therefore constructed with GIMP''s own layer/group compositing engine and exported as flattened PNG, proving independent compositing agreement, not OpenRaster container interop (a separate concern, ORA-CONTAINER-001). Full 8-scene canonical matrix run twice: the first run surfaced 2 genuine defects, root-caused via exact pixel diffing (not guessed) rather than patched blindly -- (1) fill-solid-layer selected a fixed (0,0,width,height) region in image-global coordinates regardless of the target layer''s own offset, silently under-filling any non-zero-offset layer, fixed by querying gimp-drawable-offsets; (2) the original non-isolated-group scene used group opacity=0.5, which OraStack.is_isolated_group (model/stack.py, directly implementing the OpenRaster spec''s own literal "isolation is isolate, opacity is below one, or composite-op differs from svg:src-over" text) always forces into isolated compositing regardless of the declared isolation attribute -- so that scene could never have exercised non-isolated compositing against format-factory''s own renderer at all. Root-caused only after two straight GIMP-side fix attempts (a real PASS-THROUGH group, then manual per-child opacity distribution) both correctly implemented genuine pass-through semantics and both, correctly, disagreed with format-factory''s own necessarily-isolated rendering of the unsound scene -- per this session''s own "two failures from the same approach" rule, the fix was applied to the scene definition itself (scene_matrix.py), not a third GIMP patch: group opacity=1.0 (not forcibly isolated) with one child using a non-default composite-op (svg:multiply), the only condition under which isolated vs. non-isolated compositing can differ at all given Porter-Duff over''s own associativity. Verified computationally against format-factory''s own renderer before being committed (non-isolated variant byte-identical to the same 3 layers with no group wrapper at all, matching test_non_isolated_auto_group_is_equivalent_to_no_group_at_all''s own principle; differs from the isolated variant of the identical children). Second (final) run: 8/8 scenes pixel-exact (tolerance=0) -- single-opaque-layer, layer-order, partial-opacity, offset-and-clipping, hidden-layer, multiply-blend (svg:multiply), isolated-group-with-opacity, non-isolated-group. A separate, additional check loaded a format-factory-GENERATED PNG (encode_png() of the isolated-group-with-opacity scene''s own render() output) into the same real GIMP, confirming successful decode at the correct 32x32/1-layer shape -- direct independent-consumer-acceptance evidence. Full provenance (exact commands, stdout/stderr, exit codes, all output SHA-256 checksums, package versions): tools/ora/producer_harness/PROVENANCE-gimp-execution-2026-08-11.md. This achieves ONE full independent producer with comprehensive pixel-comparison agreement -- NOT the "at least two independent producers/consumers" every affected release gate literally requires. See each obligation''s own missing_behavior for why a second full-pixel-comparison producer was not achieved this session (MyPaint''s real vendored files load under ReadMode.TOLERANT but provide no usable full-resolution ground truth; scripting MyPaint itself was investigated and found architecturally infeasible -- a GTK/GObject-Introspection interactive painting application with no documented batch/procedural API comparable to GIMP''s own Script-Fu/PDB -- and out of scope, since this session''s own Track 2 directive names MyPaint''s role as "untouched vendored outputs," not a second scripted-fixture generator). Full ora suite re-run after all harness changes: 442 passed, 0 failed -- zero regression (the changes are confined to tools/ora/producer_harness/, not src/python/ora/). mypy/ruff clean on all touched harness files. Covers SAL-ORA-OBL-2CC875865800D528 (ORA-COMPOSITE-001), SAL-ORA-OBL-A979A77370914BCA (ORA-RENDER-001), SAL-ORA-OBL-ABDDB437C86DC22F (ORA-ISOLATION-001) as partial narrowing evidence, and SAL-ORA-OBL-52746ABC41B3E790 (ORA-BASELINEASSET-001) for its own separate independent-consumer-acceptance sub-clause specifically (the format-factory-generated-PNG-into-GIMP check).'
 - evidence_id: ORA-RENDERER-ADAPTER-DIFFERENTIAL-PROOF
   path: reports/skills-rff6/skill-transcripts/format-feature-expansion-ora-renderer-adapter-differential-001.json
   expected_result: PASS
@@ -1456,6 +1461,7 @@ obligations:
   - ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF
   - ORA-RENDERER-ADAPTER-AUTOINVALIDATION-PROOF
   - ORA-RENDERER-ADAPTER-DIFFERENTIAL-PROOF
+  - ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
   implemented_behavior:
   - 'FF6-EVENT-000332: three of this obligation''s own four named clauses are implemented and now cross-mapped
     onto this specific obligation ID for the first time. "The selected profile''s... inventory": investigated
@@ -1577,6 +1583,24 @@ obligations:
     12 new tests (tests/python/ora/test_obligation_compatibility_reader.py), ora suite 430 -> 442
     passed, 0 failed. Installed-wheel behavior independently verified (tools/run_package_install_proof.py
     --format ora, then load(mode=TOLERANT) exercised from the installed site-packages path).'
+  - 'FF6 Track 2 (2026-08-11): real GIMP execution (ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
+    above -- full account, provenance, and defect root-causes there) achieves ONE full independent
+    producer with comprehensive, pixel-exact compositing agreement across an 8-scene matrix covering
+    every semantic this obligation''s own "pixel semantics through a replaceable rendering adapter"
+    clause names. This is real, substantial progress -- the first genuine independent-producer
+    pixel-comparison evidence this obligation has ever had -- but the release gate''s own literal
+    text requires "at least two independent producers/consumers," and this session achieves exactly
+    one. MyPaint''s real vendored corpus (this obligation''s own prior entries, above) now loads
+    under ReadMode.TOLERANT but still provides no usable full-resolution pixel-comparison ground
+    truth (unchanged finding, reconfirmed this tick). Scripting MyPaint itself as a second controlled
+    producer (GIMP''s own role) was investigated and found architecturally infeasible within this
+    session: MyPaint''s apt package (mypaint 2.0.1-2build1) is a GTK/GObject-Introspection
+    interactive painting application with no documented batch/procedural scripting interface
+    comparable to GIMP''s own Script-Fu/PDB, and building one reliably was judged out of reasonable
+    session scope -- separately, out of the intended scope entirely, since this session''s own
+    Track 2 directive names MyPaint''s role as "untouched vendored outputs," not a second
+    scripted-fixture generator. This obligation stays partial, not implemented -- the two-producer
+    gate is honestly reported as narrowed (0 -> 1 of 2), not met.'
   proof_requirements:
     positive:
     - Golden pixel vectors, alpha edge cases, unsupported-operation preservation, and adapter differential
@@ -2226,6 +2250,7 @@ obligations:
   - ORA-BASELINEASSET-SELECTOR-PROOF
   - ORA-BASELINEASSET-REPLACE-PROOF
   - ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF
+  - ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
   implemented_behavior:
   - Thumbnail and merged-image assets are read and validated via
     _baseline_asset_diagnostics, a code path entirely separate from
@@ -2292,6 +2317,24 @@ obligations:
     both GPL, per the same corpus research). Loading MyPaint''s own files is orthogonal to this
     specific obligation''s own requirement -- correcting the stale premise, not claiming progress
     against the actual gate.'
+  - 'FF6 Track 2 (2026-08-11): first real progress against THIS obligation''s own specific gate
+    (ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF above -- full account, provenance, and checksums
+    there). format-factory''s own render()/encode_png() (render.py) produced a real PNG asset (the
+    isolated-group-with-opacity scene''s own composited output), which was then loaded by a real,
+    independently-developed GIMP 2.10.30 instance (pinned Docker image, disposable, no host
+    installation) via gimp-file-load -- GIMP decoded it successfully and reported the exact
+    correct dimensions and layer count (32x32, 1 layer), confirmed by direct stdout capture, not
+    inferred from a non-error exit code alone. This is genuine, real, automated independent-consumer
+    ACCEPTANCE evidence -- narrowing from "zero independent consumers tried" to "one independent
+    consumer, GIMP, successfully accepts a format-factory-generated asset." It does not close this
+    obligation''s own gate for two distinct, honestly-disclosed reasons: (1) the gate''s own text
+    says "consumers," plural -- this session achieves exactly one, the same one-of-two shape as
+    this format''s sibling render/composite/isolation obligations (see SAL-ORA-OBL-2CC875865800D528''s
+    own missing_behavior for why a second was not achieved this session); (2) "visually checked"
+    is, by its own plain meaning, a human-perceptual confirmation step -- successful automated
+    decode proves GIMP accepts the byte structure and pixel data as valid, but is not itself a
+    substitute for a human or a documented visual-comparison procedure actually looking at the
+    result. Stays partial.'
   proof_requirements:
     positive:
     - Raster-depth, dimension, aspect, interlace, path, XML-reference, and stale-view regeneration matrices.
@@ -3488,6 +3531,7 @@ obligations:
   - tests/python/ora/test_obligation_render_and_compositing.py::test_oversized_layer_raster_is_rejected_before_decompression
   execution_evidence_ids:
   - ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF
+  - ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
   implemented_behavior:
   - 'FF6-ORA-RENDER-ENGINE-001: 6 of this obligation''s own named clauses are now proven -- order
     (document order composited bottom-to-top, proven by an explicit stacking test), offsets (layer
@@ -3542,6 +3586,17 @@ obligations:
     would need to be; bigimage.ora/smallimage.ora have no mergedimage.png at all). Rendering without
     crashing against real independent content is genuine infrastructure progress, not release-gate
     evidence -- the two are honestly kept distinct here.'
+  - 'FF6 Track 2 (2026-08-11): real GIMP execution (ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
+    above -- full account there) achieves the first genuine independent-producer pixel-comparison
+    evidence this obligation has ever had: 8/8 scenes pixel-exact against GIMP 2.10.30, covering
+    clipping, order, offsets, visibility, opacity, and compositing -- every semantic this
+    obligation''s own rule_text names except color-mode and resource-limit semantics (already
+    separately proven, see this obligation''s own earlier entries, against synthetic corpus and
+    resource-exhaustion tests respectively -- those do not need a second application to verify).
+    This is ONE full independent producer, not the "at least two" the release gate literally
+    requires (see SAL-ORA-OBL-2CC875865800D528''s own missing_behavior, above, for the identical
+    finding and the full account of why a second was not achieved this session). Stays partial --
+    narrowed from zero to one of two required producers, not closed.'
   proof_requirements:
     positive:
     - Golden images, subtree rendering, clipping, resource exhaustion, and adapter-version differential
@@ -3592,6 +3647,7 @@ obligations:
   - ORA-BASELINE-SUITE
   - ORA-RESOLUTION-ISOLATION-SELECTOR-PROOF
   - ORA-RENDER-ENGINE-PIXEL-COMPOSITE-PROOF
+  - ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
   implemented_behavior:
   - '"Model declared and inferred group isolation separately" (OraStack.is_isolated_group
     reports THAT a stack is isolated; the isolation attribute and opacity/composite-op
@@ -3638,6 +3694,22 @@ obligations:
     aside. This obligation''s own release gate remains unmet for the same reason as its siblings:
     even with all 3 files now loadable, none provides usable pixel-comparable independent-producer
     ground truth for the specific behavior this obligation covers.'
+  - 'FF6 Track 2 (2026-08-11): real GIMP execution (ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF
+    above -- full account there) achieves genuine, exercisable isolated-vs-non-isolated
+    compositing proof against a real independent producer -- the first this obligation has ever
+    had, unlike MyPaint''s own hidden, unexercisable isolated groups (previous entry, above).
+    Two scenes specifically target this obligation: isolated-group-with-opacity (a real isolated
+    group, group opacity applied once to the flattened composite, not per-child) and
+    non-isolated-group (real pass-through compositing, where isolation genuinely changes the
+    result only because a child uses a non-default composite-op -- svg:multiply -- since
+    Porter-Duff over is otherwise associative and isolation would be unobservable; this required
+    redesigning the scene itself after the original opacity<1-based design was found to always
+    force isolation per OraStack.is_isolated_group''s own literal spec-derived rule, see
+    ORA-GIMP-PRODUCER-HARNESS-EXECUTION-PROOF for the full root-cause account). Both scenes:
+    pixel-exact agreement with GIMP. This is ONE full independent producer, not the "at least two"
+    the release gate literally requires (identical finding and reasoning to
+    SAL-ORA-OBL-2CC875865800D528''s own missing_behavior, above). Stays partial -- narrowed from
+    zero to one of two required producers, not closed.'
   proof_requirements:
     positive:
     - Declared/inferred isolation pixel vectors and pre-profile rejection/preservation cases.
