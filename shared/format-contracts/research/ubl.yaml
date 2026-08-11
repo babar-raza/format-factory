@@ -134,6 +134,18 @@ findings:
     verdict: ACCEPTED
   source_ids:
   - SRC-UBL-002
+  downstream_amendment_note: 'GOVERNANCE AMENDMENT (2026-08-11, independently reviewed, verdict
+    ACCEPTED_WITH_CHANGES): this finding''s own "every supported maindoc type" wording is unsatisfiable
+    in principle for 36 of 91 types, since OASIS has never published an example for them in any UBL
+    release (confirmed exhaustively). The downstream obligation this finding drives,
+    SAL-UBL-OBL-A480CAD1CFEA58AD (split from SAL-UBL-OBL-F9D5251F2302AE3A in commit 821d43e70), was
+    amended with a tiered evidence policy (official sample > lawfully-licensed third-party example >
+    deterministic SYNTHETIC_SCHEMA_DERIVED instance) so the obligation can reach a satisfiable completion
+    state without inventing a fallback THIS finding''s own text never states. This finding''s own
+    requirement text is left unmodified -- the amendment lives on the downstream obligation, not here --
+    but is cross-referenced from both directions so a future reader of this finding alone is not left
+    unaware of it. See reports/format-contract-layer/ubl-write-provenance-tiered-evidence-amendment.md
+    for the full amendment and independent-review record.'
 note: Committed canonical research store (L30 research plane). Findings are PRODUCT_REQUIREMENT knowledge
   with mandatory sources and review verdicts. Normative claims live in shared/sal-facts/ (L01), never
   here.

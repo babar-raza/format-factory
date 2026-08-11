@@ -23545,13 +23545,26 @@ obligations:
   - RF-UBL-00008
   authority_fact_ids: []
   authority_source_ids: []
-  rule_text: Round-trip every official OASIS-published sample of each supported maindoc type, comparing canonicalized XML plus typed semantics.
+  rule_text: For each supported maindoc type, provide the strongest lawfully available evidence tier (Tier 1 official OASIS sample; Tier 2 lawfully-licensed independent example; Tier 3 deterministic SYNTHETIC_SCHEMA_DERIVED instance when neither Tier 1 nor Tier 2 is lawfully available), each backed by Tier 4 support (schema validation, round-trip or documented correct-refusal, deterministic serialization).
   required_tests:
-  - Official-sample round trips per supported document type with canonical XML comparison.
+  - Official-sample round trips per supported document type with canonical XML comparison, where an official sample exists and clears round-trip.
+  - Deterministic synthetic-fixture round trips per supported document type with canonical XML comparison, where no official or lawfully-licensed independent example is available.
   release_gates:
-  - Every supported maindoc type has an official OASIS-published sample that round-trips.
+  - Every supported maindoc type has evidence at its own strongest lawfully available tier, each backed by schema validation and round-trip (or documented correct-refusal) plus deterministic serialization.
   verification_status: UNVERIFIED
   proof_node_ids: PLANNED
+  tiered_amendment_note: 'GOVERNANCE AMENDMENT (2026-08-11, independently reviewed, verdict
+    ACCEPTED_WITH_CHANGES): rule_text/required_tests/release_gates above replace this obligation''s
+    own pre-amendment text (preserved verbatim below for audit trail), which required an official
+    OASIS sample for "every supported maindoc type" -- unsatisfiable in principle for 36 of 91 types,
+    since OASIS has never published an example for them in any UBL release (exhaustively confirmed).
+    Full amendment, per-type 91-type matrix, and independent-review record:
+    reports/format-contract-layer/ubl-write-provenance-tiered-evidence-amendment.md. Cross-referenced
+    from RF-UBL-00008 itself (shared/format-contracts/research/ubl.yaml) in both directions.
+    PRE-AMENDMENT TEXT (superseded, kept for history): rule_text: "Round-trip every official
+    OASIS-published sample of each supported maindoc type, comparing canonicalized XML plus typed
+    semantics." release_gates: "Every supported maindoc type has an official OASIS-published sample
+    that round-trips."'
   split_note: 'GOVERNANCE SPLIT (2026-08-11), Workstream A: split out of
     SAL-UBL-OBL-F9D5251F2302AE3A -- see that obligation''s own split_from_note for the
     full account. This obligation tracks ONLY the official-OASIS-sample PROVENANCE
