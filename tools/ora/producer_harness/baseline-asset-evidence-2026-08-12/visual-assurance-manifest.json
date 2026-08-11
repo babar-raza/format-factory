@@ -1,0 +1,48 @@
+{
+  "schema": "ora-producer-harness/baseline-asset-visual-assurance-manifest@1",
+  "result": "PASS",
+  "obligation_id": "SAL-ORA-OBL-52746ABC41B3E790",
+  "amendment_path": "reports/format-contract-layer/ora-baseline-asset-visual-assurance-amendment.md",
+  "scenes": [
+    {
+      "scene_id": "multiply-blend",
+      "total_pixels": 1024,
+      "gimp_mismatch_pixels": 0,
+      "krita_mismatch_pixels": 0,
+      "max_delta": 0,
+      "diff_panel_all_black": true,
+      "contact_sheet_path": "tools/ora/producer_harness/baseline-asset-evidence-2026-08-12/contact-sheets/contact-sheet-multiply-blend.png"
+    },
+    {
+      "scene_id": "layer-order",
+      "total_pixels": 4096,
+      "gimp_mismatch_pixels": 0,
+      "krita_mismatch_pixels": 0,
+      "max_delta": 0,
+      "diff_panel_all_black": true,
+      "contact_sheet_path": "tools/ora/producer_harness/baseline-asset-evidence-2026-08-12/contact-sheets/contact-sheet-layer-order.png"
+    }
+  ],
+  "canary_self_check": {
+    "purpose": "proves the diff/comparison code genuinely detects a real discrepancy, not merely emitting black unconditionally",
+    "injected_defect": "10x10 red patch at (10,10) on the expected side only, layer-order scene",
+    "max_delta": 255,
+    "mismatch_pixel_count": 100,
+    "total_pixels": 4096,
+    "path": "tools/ora/producer_harness/baseline-asset-evidence-2026-08-12/contact-sheets/CANARY-injected-defect-layer-order.png"
+  },
+  "independent_vision_reviews": [
+    {
+      "reviewer": 1,
+      "verdict_multiply_blend": "PASS",
+      "verdict_layer_order": "PASS",
+      "methodology": "per-panel byte comparison via PIL/numpy"
+    },
+    {
+      "reviewer": 2,
+      "verdict_multiply_blend": "PASS",
+      "verdict_layer_order": "PASS",
+      "methodology": "yellow-gutter boundary detection then per-panel byte comparison via PIL/numpy"
+    }
+  ]
+}
