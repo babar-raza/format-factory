@@ -7,16 +7,20 @@ exact remaining action, executable command where one exists, expected
 artifact, completion criteria, responsible lane, and whether human action is
 genuinely unavoidable.
 
-**Updated 2026-08-12 after Track 1 (UBL tiered evidence policy) and both
-Track 2 producer executions (GIMP, then Krita).** Current counts (fresh,
-`contract_reconciler.py --exact-obligations`): **ubl 0/195 unresolved**
-(closed via a governed tiered-evidence-policy amendment, independently
-reviewed — commit `6df67b3d6`), **ora 2/134 unresolved** (down from 4/134 —
-2 obligations genuinely closed by real two-producer evidence, 2 honestly
-kept `partial` with precisely-named remaining gaps after a second,
-skeptical independent review caught and corrected an overclaim on one of
-them). `promotion.*` in `plans/strategic/ff6/controller-state.yaml` is
-untouched by every item below.
+**Updated 2026-08-12, second continuation (full composite-operation
+inventory + baseline-asset visual-assurance amendment and execution).**
+Current counts (fresh, `contract_reconciler.py --exact-obligations`):
+**ubl 0/195 unresolved** (closed via a governed tiered-evidence-policy
+amendment, independently reviewed — commit `6df67b3d6`), **ora 1/134
+unresolved** (down from 2/134 — `ORA-BASELINEASSET-001` closed via a
+traced, independently-reviewed visual-assurance amendment and its
+executed evidence; `ORA-COMPOSITE-001` substantially narrowed, from
+1-of-15-blend/1-of-6-Porter-Duff producer-verified to 19-of-20 operations
+with at least one producer's agreement and 9-of-20 with two, but stays
+`partial` against its own literal "ALL claimed operations" gate, with the
+single remaining operation and 10 single-producer operations named
+precisely). `promotion.*` in `plans/strategic/ff6/controller-state.yaml`
+is untouched by every item below.
 
 ---
 
@@ -58,54 +62,60 @@ not touched this continuation.)
 | Responsible lane | Closed this session — Track 2 |
 | Human action unavoidable? | No |
 
-## ORA-COMPOSITE-001 — `SAL-ORA-OBL-2CC875865800D528` — **stays PARTIAL (corrected from a first-pass overclaim)**
+## ORA-COMPOSITE-001 — `SAL-ORA-OBL-2CC875865800D528` — **stays PARTIAL (substantially narrowed, precise remaining gap)**
 
 | Field | Value |
 |---|---|
-| State | `PARTIAL` — real two-producer evidence for 1 of 15 blend functions and 1 of 6 Porter-Duff operators; the gate's own literal "all" is not yet met |
+| State | `PARTIAL` — 9 of 20 registered operations now have two-producer agreement, 10 have single-producer agreement, 1 has none; the gate's own literal "all" is not yet met |
 | Normative/policy source | `POL-LRA-COMPOSITE-01` — rule_text names the "**complete** compositing-operation inventory"; release gate says "**All** claimed operations match pinned rendering references within declared tolerances" |
-| Blocker classification | Scope gap, not an environment/producer gap — the compute/producer problem is solved (2 real producers now exist and agree exactly on every scene tested); what remains is scene-matrix BREADTH |
-| Work completed this session | Both GIMP and Krita agree pixel-exactly on the one scene (`multiply-blend`, `svg:multiply`) that exercises this obligation's own composite-op semantics — the first independent-producer verification this obligation has ever had for any non-default operation. |
-| **A first independent review pass provisionally accepted this obligation as `implemented`. A required second, skeptical re-review caught this specific overclaim before it was finalized**: `COMPOSITE_OP_REGISTRY` (`model/composite_ops.py`) declares 15 blend functions and 6 Porter-Duff operators; this session verified exactly 1 of each against real producers. The other 14 blend functions (Screen, Overlay, Darken, Lighten, Color Dodge, Color Burn, Hard Light, Soft Light, Difference, Hue, Saturation, Color, Luminosity — Normal already covered by every other scene) and 5 Porter-Duff operators (Lighter, Destination In/Out, Source/Destination Atop) have real self-consistent proof (hand-computed arithmetic, a second independently-derived reference renderer) but no independent-producer verification. This is a genuinely larger undertaking than the 8-scene matrix already built. |
-| Exact remaining action | Extend `tools/ora/producer_harness/scene_matrix.py` to cover every registered composite operation, then run both GIMP and Krita against the extended matrix |
-| Executable command | Same pattern already proven twice (pinned Docker image, real scripting API) — extend the scene list, no new infrastructure needed |
-| Expected artifact | An extended `comparison-manifest*.json` covering all 21 operations for both producers |
-| Completion criteria | `within_tolerance: true` for every registered operation against both real producers |
+| Blocker classification | 9/20 fully closed. 10/20 blocked on a real producer limitation (GIMP: 6 non-conformant blend functions, confirmed via direct pixel comparison; 4 Porter-Duff operators GIMP cannot test at all — no OpenRaster plugin). 1/20 (Lighter/svg:plus) blocked on a confirmed defect in Krita's own OpenRaster import, with no alternative producer identified. |
+| Work completed this session | Built an independent mathematical oracle (`composite_oracle.py`) and 18 new discriminating scenes; found and fixed a genuine render.py compositor defect (Destination In/Atop bounds handling) the exercise itself surfaced; executed all 18 remaining operations against both GIMP and Krita. See `PROVENANCE-composite-coverage-2026-08-12.md` and `composite-coverage-matrix-2026-08-12.json` for the full account. |
+| Exact remaining action | Lighter (svg:plus): needs either a real fix inside Krita itself (out of this project's own control) or a third independent OpenRaster-capable application that correctly implements it. The 10 single-producer operations: needs GIMP's own blend-mode/Porter-Duff implementation to change (also out of this project's own control) or a third producer for either gap. |
+| Executable command | None identified — this now looks like this obligation's own irreducible, externally-bounded terminus rather than a lever this project can pull further alone, though a dedicated investigation into whether a third permissively-usable OpenRaster-capable application exists has not been run |
+| Expected artifact | Either new evidence from a third producer, or a governed amendment (matching the ORA-BASELINEASSET-001 pattern below) documenting that this obligation's own "ALL" requirement is unsatisfiable in principle for these 11 operations with the tooling this project has legitimate access to |
+| Completion criteria | Producer agreement for the remaining 11 operations, or a reviewed policy amendment narrowing the gate's own scope |
 | Responsible lane | Future session |
-| Human action unavoidable? | No — this is pure scene-matrix extension work, fully within agent capability |
+| Human action unavoidable? | No — either more producer research or a policy amendment, both fully within agent capability |
 
-## ORA-BASELINEASSET-001 — `SAL-ORA-OBL-52746ABC41B3E790` — **stays PARTIAL (one precisely-named clause)**
+## ORA-BASELINEASSET-001 — `SAL-ORA-OBL-52746ABC41B3E790` — **CLOSED (via a traced, independently-reviewed amendment)**
 
 | Field | Value |
 |---|---|
-| State | `PARTIAL` — 2 independent consumers now confirmed; the literal "visually checked" clause remains |
+| State | `IMPLEMENTED` (was: `PARTIAL`) |
 | Normative/policy source | `POL-LRA-BASELINE-ASSET-01` — "Generated viewing assets are accepted and visually checked by independent **consumers**" (plural) |
-| Blocker classification | The "consumers" (plural) requirement is now met (GIMP + Krita); "visually checked" in the literal human-perceptual sense is not |
-| Work completed this session | Krita joined GIMP as a second independent consumer: `Krita.instance().openDocument()` successfully opened a format-factory-generated PNG asset and reported the exact correct dimensions, confirmed by direct log capture — matching GIMP's own already-established check. |
-| Exact remaining action | An actual human-perceptual "visually checked" step, or a documented, policy-authorized substitute (e.g. a perceptual-diff procedure explicitly endorsed as satisfying this clause) — automated decode-success by two real applications is real, valid, doubled evidence, but is not itself a substitute for a human or a documented visual-comparison procedure actually looking at the result |
-| Executable command | None yet — this is a policy-interpretation question (does an automated perceptual-diff check satisfy "visually checked," or does the text require literal human judgment?) as much as an execution one |
-| Expected artifact | Either a human sign-off record, or a governed amendment (matching Track 1's own UBL pattern) establishing what automated evidence can satisfy this clause |
-| Completion criteria | Independent consumers (plural, now met) visually confirm a format-factory-generated asset per whatever this clause is determined to require |
-| Responsible lane | Future session — likely needs a policy decision, not just more execution |
-| Human action unavoidable? | Likely yes for the literal reading; a governed policy amendment (like Track 1's UBL one) could resolve this without literal human action, but that amendment does not yet exist |
+| What closed it | Traced the clause to its own policy-authored origin (not spec text; zero grounding for a human-reviewer reading anywhere in its authority chain) and found every sibling `release_gates` entry in the same file means independent *applications* when it says "independent." Drafted and independently reviewed (`ACCEPTED_WITH_CHANGES`, 4 repairs applied) a governed visual-assurance amendment: exact-match pixel comparison against 2 independent decoders (GIMP, Krita — real applications, not format-factory's own decoder) plus independent vision-capable-agent review of contact sheets, with a narrow human-escalation path preserved for genuine disagreement or ambiguity. Executed: 5120/5120 pixels exact match across 2 already-verified scenes, a canary self-check proving the diff tooling genuinely detects real discrepancies, and 2 fresh, independent vision-capable reviewers reaching PASS via unshared methodologies. |
+| Work completed this session | Full amendment (`reports/format-contract-layer/ora-baseline-asset-visual-assurance-amendment.md`) and execution (`tools/ora/producer_harness/PROVENANCE-baseline-asset-visual-check-2026-08-12.md`). |
+| Independent review | Amendment reviewed before execution (1 fresh agent, `ACCEPTED_WITH_CHANGES`); execution evidence reviewed by 2 further fresh vision-capable agents, independently, neither seeing the other's report. |
+| Responsible lane | Closed this session |
+| Human action unavoidable? | No — the amendment concluded literal human inspection was not textually required, and the amended procedure preserves a narrow, named escalation path that was not triggered |
 
 ---
 
 ## Reading this table
 
 - **1 ubl obligation: CLOSED** (Track 1).
-- **2 ora obligations: CLOSED this session** (`ORA-RENDER-001`,
-  `ORA-ISOLATION-001`) — two real, independent, externally-developed
-  OpenRaster producers (GIMP, Krita) now agree pixel-exactly with
-  format-factory's own renderer across the full scene matrix, satisfying
-  each obligation's own literal release-gate text.
-- **2 ora obligations: honestly narrowed, not force-closed**
-  (`ORA-COMPOSITE-001`, `ORA-BASELINEASSET-001`) — each has a real,
-  substantive amount of new two-producer evidence, but each also has a
-  literal textual requirement ("all," "visually checked") the evidence
-  does not yet fully reach, and this is reported precisely rather than
-  glossed over. A first-pass independent review provisionally accepted
-  `ORA-COMPOSITE-001` as closed; a required second, skeptical re-review
-  caught that specific overclaim and it was corrected before being
-  finalized — the review discipline this session used is itself part of
-  why these 2 remaining gaps are trustworthy rather than optimistic.
+- **3 ora obligations: CLOSED across both continuations**
+  (`ORA-RENDER-001`, `ORA-ISOLATION-001` — two real, independent,
+  externally-developed OpenRaster producers (GIMP, Krita) agree
+  pixel-exactly with format-factory's own renderer across the full scene
+  matrix; `ORA-BASELINEASSET-001` — a traced, independently-reviewed
+  visual-assurance amendment plus its own executed, independently-reviewed
+  evidence) — each obligation's own literal release-gate text is
+  genuinely satisfied, not asserted.
+- **1 ora obligation: substantially narrowed, honestly not force-closed**
+  (`ORA-COMPOSITE-001`) — went from 1-of-15-blend/1-of-6-Porter-Duff
+  producer-verified to 19-of-20 operations with at least one producer's
+  agreement (9-of-20 with two), with a genuine render.py compositor
+  defect found and fixed along the way. The 1 remaining fully-uncovered
+  operation and 10 single-producer operations are named precisely, and
+  the evidence suggests — without yet confirming — that this may be an
+  irreducible, externally-bounded terminus (real limitations in both
+  integrated producer applications, not a gap this project's own code can
+  close by further effort alone) rather than a lever to keep pulling. A
+  first-pass independent review confirmed the coverage matrix, oracle
+  methodology, and evidence classification are sound, with one CONCERN
+  (an oracle-independence overclaim) caught and repaired before this
+  reconciliation, matching this session's own established review
+  discipline — repair every ACCEPTED_WITH_CHANGES or CONCERN finding
+  before finalizing, not just the outright REJECTED ones.
+- **ora unresolved count: 2/134 → 1/134** this continuation.
