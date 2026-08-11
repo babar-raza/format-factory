@@ -24,7 +24,6 @@ RUN apt-get update && \
         echo "built_at_utc: $(date -u +%Y-%m-%dT%H:%M:%SZ)"; \
       } > /opt/versions.txt && cat /opt/versions.txt
 
-COPY gimp_scripts/generate_scene.py /opt/generate_scene.py
 COPY entrypoint.sh /opt/entrypoint.sh
 RUN chmod +x /opt/entrypoint.sh
 

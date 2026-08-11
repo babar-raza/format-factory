@@ -85,6 +85,12 @@ ignore = [
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["E711", "F401", "F811"]  # tests use conditional imports and fixtures
 "tools/**" = ["F401", "F811"]          # tools use dynamic imports
+"tools/ora/producer_harness/krita/scripts/**" = ["F821"]
+# These scripts are never imported or run standalone -- they are exec()'d by
+# ora_harness_driver's own __init__.py inside a real Krita process, which
+# injects Krita/window/log/write_sentinel into the exec() namespace at
+# runtime (see that file's own _run_driver_script). Undefined-name warnings
+# for those 4 names are therefore false positives, not real bugs.
 
 [tool.mypy]
 # Format Factory's newer-generation format libraries (core, ipynb, nrrd,

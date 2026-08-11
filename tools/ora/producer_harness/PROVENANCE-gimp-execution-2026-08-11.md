@@ -144,11 +144,14 @@ output unless noted):
 | `non-isolated-group.png` | 579 | `b482f84bb4dbf889139d7b39a0a40917f0b12e4a178eb38b822b81f465ba2100` |
 | `format-factory-generated-mergedimage.png` (format-factory's own output, fed **into** GIMP, not produced by it) | 101 | `1b78cd3a7a1cf59e2e9d1ae13b8b87b17145da6b924da965349cede1e97b6d00` |
 
-These are debug/scratch artifacts (written to this session's scratchpad
-directory, not the repository) — the durable evidence is the comparison
-result recorded in `implementation-evidence/ora.yaml` and this document, not
-the PNG bytes themselves, which are trivially reproducible by re-running the
-commands above against the pinned image.
+**Update (2026-08-12):** the 8 GIMP-produced PNGs are now committed verbatim
+at `tools/ora/producer_harness/evidence-gimp-2026-08-11/` (checksums
+re-verified identical to the table above) — an earlier version of this
+document described these as scratch-only artifacts; that is no longer
+accurate. `format-factory-generated-mergedimage.png` (fed *into* GIMP, not
+produced by it) is not duplicated there since it is reproducible directly
+from `render.py`'s own `encode_png()` output for this scene, and is not
+independent-producer evidence itself.
 
 ## Comparison results (GIMP vs. format-factory's own renderer)
 
@@ -211,26 +214,29 @@ implementation defects found during the *first* full run were fixed (see
   format-factory-*generated* PNG asset without error, at the correct
   dimensions — direct evidence for `ORA-BASELINEASSET-001`'s own
   independent-consumer-acceptance gate.
-- **Does not establish:** the release gates shared by these 4 obligations
-  each require "at least **two** independent producers/consumers." This
-  execution achieves exactly **one** with full pixel-comparison evidence.
-  MyPaint's own vendored real-world corpus (see the third-party fixtures'
-  own `PROVENANCE.md`) now loads and renders successfully under
-  `ReadMode.TOLERANT` (all 3 files, following this session's Track 2
-  compatibility-reader work), which is genuine, real second-producer
-  evidence for the *reading/compatibility* obligations, but none of the 3
-  files provide a usable full-resolution ground truth for pixel comparison
-  (only `fill_outlines.ora` embeds a `mergedimage.png`, and it is 64×64 —
-  a thumbnail, not the document's real 3456×3008 canvas). Installing and
-  scripting MyPaint itself as a *second* controlled-scene producer (the same
-  role GIMP fills) was investigated this session: MyPaint's own apt
-  package (`mypaint 2.0.1-2build1`) is a GTK/GObject-Introspection
-  interactive painting application with no documented batch/procedural
-  scripting interface comparable to GIMP's Script-Fu/PDB — building one
-  reliably within this session was judged infeasible and, separately, out
-  of scope: this session's own Track 2 directive names MyPaint's role as
-  "untouched vendored outputs," not a second scripted-fixture generator.
-  **The obligations therefore remain `partial`, not `implemented`** — the
-  literal two-producer release gate is not met, and this is reported
-  honestly rather than narrowed. See `implementation-evidence/ora.yaml`'s
-  own updated `missing_behavior` entries for the per-obligation detail.
+- **A real limitation, disclosed rather than smoothed over:** GIMP's own
+  apt package ships no OpenRaster plugin at all (confirmed above), so this
+  execution's own evidence is a plain flattened PNG comparison, produced
+  and compared within the same process/session as scene construction — it
+  does **not** include a save-as-`.ora`-then-reopen-in-a-fresh-process
+  round trip. This is real, independent PIXEL COMPOSITING agreement (the
+  actual concern of `ORA-RENDER-001`/`ORA-COMPOSITE-001`/`ORA-ISOLATION-001`'s
+  own rule text — compositing math, not container framing, which is
+  `ORA-CONTAINER-001`'s own separate concern), but is not the same
+  evidentiary strength as a full container round trip.
+- **Update (2026-08-12): a second producer was subsequently obtained.**
+  This session's own later work (`tools/ora/producer_harness/krita/`)
+  built and ran Krita — a second, real, independently-developed OpenRaster
+  producer — achieving 8/8 pixel-exact scenes via genuine `.ora` files
+  Krita serialized itself, reopened in a fresh process, and re-exported;
+  see `tools/ora/producer_harness/krita/PROVENANCE-krita-execution-2026-08-12.md`
+  for the full account, including that document's own precise, per-obligation
+  release-gate wording (the 4 obligations do **not** share identical
+  release-gate text — only `ORA-RENDER-001`'s own text literally says "at
+  least two"). MyPaint's own vendored real-world corpus (see the
+  third-party fixtures' own `PROVENANCE.md`) remains supplementary
+  reading/compatibility evidence only — none of its 3 files provide a
+  usable full-resolution ground truth for pixel comparison, and it is not
+  counted as a producer toward this gate. See
+  `implementation-evidence/ora.yaml`'s own current entries for the
+  precise, per-obligation disposition after both producers' evidence.
