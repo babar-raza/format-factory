@@ -1,13 +1,20 @@
 """UBL-WRITE-001 -- round-trip proof for the 36 document types OASIS never
 published an official example of, in any UBL version.
 
-SAL-UBL-OBL-F9D5251F2302AE3A (MUST): "Round-trip every official sample of
-each supported maindoc type comparing canonicalized XML plus typed
-semantics." test_obligation_official_sample_roundtrip.py already proves
-this against the 55 root types that DO have a real OASIS example. This file
-covers the remaining 36 (see ubl-sample-coverage-research-memo.md for the
-exhaustive, independently re-verified confirmation that OASIS has never
-published an example for any of them, in any UBL release).
+SAL-UBL-OBL-A480CAD1CFEA58AD (MUST, split 2026-08-11 from
+SAL-UBL-OBL-F9D5251F2302AE3A -- see that obligation's own GOVERNANCE SPLIT
+evidence entry for the full account): "Round-trip every official
+OASIS-published sample of each supported maindoc type, comparing
+canonicalized XML plus typed semantics." test_obligation_official_sample_
+roundtrip.py already proves this against the 55 root types that DO have a
+real OASIS example. This file covers the remaining 36 (see
+ubl-sample-coverage-research-memo.md for the exhaustive, independently
+re-verified confirmation that OASIS has never published an example for any
+of them, in any UBL release) as writer-functionality evidence for the
+SIBLING obligation SAL-UBL-OBL-F9D5251F2302AE3A, which no longer requires
+official-sample provenance specifically -- these fixtures narrow neither
+obligation's own official-sample-provenance question, which stays with
+SAL-UBL-OBL-A480CAD1CFEA58AD alone.
 
 The key correction this file embodies: "OASIS did not publish an example"
 does not mean this package's own writer is untestable for these types. Each
