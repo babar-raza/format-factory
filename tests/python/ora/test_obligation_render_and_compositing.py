@@ -548,6 +548,7 @@ def test_stack_x_and_y_are_ignored_for_both_isolated_and_non_isolated_groups() -
 def test_render_accepts_an_interior_subtree_not_only_the_document_root() -> None:
     image = load("samples/by-format/ora/valid/with-groups.ora")
     group_a = image.document.root.children[0]
+    assert isinstance(group_a, OraStack)
     assert group_a.name == "Group A"
 
     # Rendered standalone, the subtree is its own implicit isolated render
@@ -723,6 +724,7 @@ def test_regenerated_baseline_assets_reflect_a_committed_transaction_edit() -> N
     """
     image = load("samples/by-format/ora/valid/with-groups.ora")
     group_a, base = image.document.root.children
+    assert isinstance(base, OraLayer)
     original_merged = decode_png(image.members["mergedimage.png"])
     base_raster = decode_png(image.members[base.src])
 

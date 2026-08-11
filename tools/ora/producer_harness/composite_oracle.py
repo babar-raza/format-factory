@@ -43,6 +43,7 @@ claims one).
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Callable
 
 RGB = tuple[float, float, float]
 
@@ -86,7 +87,7 @@ def _soft_light(cb: float, cs: float) -> float:
     return cb + (2 * cs - 1) * (d - cb)
 
 
-SEPARABLE_BLEND = {
+SEPARABLE_BLEND: dict[str, Callable[[float, float], float]] = {
     "Normal": lambda cb, cs: cs,
     "Multiply": _multiply,
     "Screen": _screen,
