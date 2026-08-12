@@ -1,0 +1,317 @@
+{
+  "trace": [
+    {
+      "event": "create_canvas",
+      "id": "canvas0",
+      "stack": "    at document.createElement (<anonymous>:10:71) |     at eval (eval at evaluate (:311:30), <anonymous>:8:29) |     at UtilityScript.evaluate (<anonymous>:313:16)"
+    },
+    {
+      "event": "get_context",
+      "canvas": "canvas0",
+      "type": "webgl2",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "event": "create_canvas",
+      "id": "canvas1",
+      "stack": "    at document.createElement (<anonymous>:10:71) |     at WebGL2Kernel.setupFeatureChecks (webpack://jsora/./node_modules/gpu.js/dist/gpu-browser.js?:16800:29) |     at get isSupported (webpack://jsora/./node_modules/gpu.js/dist/gpu-browser.js?:16793:10)"
+    },
+    {
+      "event": "get_context",
+      "canvas": "canvas1",
+      "type": "webgl2",
+      "width": 300,
+      "height": 150
+    },
+    {
+      "event": "viewport",
+      "glcanvas": "canvas1",
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 1
+    },
+    {
+      "event": "readPixels",
+      "glcanvas": "canvas1",
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 1,
+      "pixel_hash": 29791,
+      "first8": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "event": "viewport",
+      "glcanvas": "canvas1",
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 2
+    },
+    {
+      "event": "texImage2D",
+      "glcanvas": "canvas1",
+      "nargs": 9,
+      "source": "unknown"
+    },
+    {
+      "event": "texImage2D",
+      "glcanvas": "canvas1",
+      "nargs": 9,
+      "source": "unknown"
+    },
+    {
+      "event": "texImage2D",
+      "glcanvas": "canvas1",
+      "nargs": 9,
+      "source": "unknown"
+    },
+    {
+      "event": "readPixels",
+      "glcanvas": "canvas1",
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 2,
+      "pixel_hash": 1802136839,
+      "first8": [
+        1,
+        0,
+        0,
+        64,
+        0,
+        224,
+        188,
+        68
+      ]
+    },
+    {
+      "event": "create_canvas",
+      "id": "canvas2",
+      "stack": "    at document.createElement (<anonymous>:10:71) |     at Renderer.render_to_canvas (webpack://jsora/./src/render.js?:155:45) |     at eval (eval at evaluate (:311:30), <anonymous>:10:20)"
+    },
+    {
+      "event": "create_canvas",
+      "id": "canvas3",
+      "stack": "    at document.createElement (<anonymous>:10:71) |     at Renderer.render_isolated (webpack://jsora/./src/render.js?:93:41) |     at async Renderer.render_to_canvas (webpack://jsora/./src/render.js?:164:44)"
+    },
+    {
+      "event": "get_context",
+      "canvas": "canvas3",
+      "type": "2d",
+      "width": 20,
+      "height": 20
+    },
+    {
+      "event": "drawImage",
+      "dest": "canvas3",
+      "source": "IMG",
+      "source_w": 20,
+      "source_h": 20,
+      "args": [
+        0,
+        0
+      ]
+    },
+    {
+      "event": "viewport",
+      "glcanvas": "canvas0",
+      "x": 0,
+      "y": 0,
+      "w": 32,
+      "h": 32
+    },
+    {
+      "event": "texImage2D",
+      "glcanvas": "canvas0",
+      "nargs": 9,
+      "source": "unknown"
+    },
+    {
+      "event": "texImage2D",
+      "glcanvas": "canvas0",
+      "nargs": 6,
+      "source": "canvas2 (32x32)"
+    },
+    {
+      "event": "texImage2D",
+      "glcanvas": "canvas0",
+      "nargs": 6,
+      "source": "canvas3 (20x20)"
+    },
+    {
+      "event": "create_canvas",
+      "id": "canvas4",
+      "stack": "    at document.createElement (<anonymous>:10:71) |     at cloneCanvas (webpack://jsora/./src/utils.js?:24:32) |     at KernelRunner._runKernel (webpack://jsora/./src/blend.js?:26:74)"
+    },
+    {
+      "event": "get_context",
+      "canvas": "canvas4",
+      "type": "2d",
+      "width": 300,
+      "height": 150
+    },
+    {
+      "event": "drawImage",
+      "dest": "canvas4",
+      "source": "canvas0",
+      "source_w": 32,
+      "source_h": 32,
+      "args": [
+        0,
+        0
+      ]
+    },
+    {
+      "event": "create_canvas",
+      "id": "canvas5",
+      "stack": "    at document.createElement (<anonymous>:10:71) |     at Renderer.render_isolated (webpack://jsora/./src/render.js?:93:41) |     at async Renderer.render_to_canvas (webpack://jsora/./src/render.js?:164:44)"
+    },
+    {
+      "event": "get_context",
+      "canvas": "canvas5",
+      "type": "2d",
+      "width": 20,
+      "height": 20
+    },
+    {
+      "event": "drawImage",
+      "dest": "canvas5",
+      "source": "IMG",
+      "source_w": 20,
+      "source_h": 20,
+      "args": [
+        0,
+        0
+      ]
+    },
+    {
+      "event": "viewport",
+      "glcanvas": "canvas0",
+      "x": 0,
+      "y": 0,
+      "w": 32,
+      "h": 32
+    },
+    {
+      "event": "texImage2D",
+      "glcanvas": "canvas0",
+      "nargs": 9,
+      "source": "unknown"
+    },
+    {
+      "event": "texImage2D",
+      "glcanvas": "canvas0",
+      "nargs": 6,
+      "source": "canvas4 (32x32)"
+    },
+    {
+      "event": "texImage2D",
+      "glcanvas": "canvas0",
+      "nargs": 6,
+      "source": "canvas5 (20x20)"
+    },
+    {
+      "event": "create_canvas",
+      "id": "canvas6",
+      "stack": "    at document.createElement (<anonymous>:10:71) |     at cloneCanvas (webpack://jsora/./src/utils.js?:24:32) |     at KernelRunner._runKernel (webpack://jsora/./src/blend.js?:26:74)"
+    },
+    {
+      "event": "get_context",
+      "canvas": "canvas6",
+      "type": "2d",
+      "width": 300,
+      "height": 150
+    },
+    {
+      "event": "drawImage",
+      "dest": "canvas6",
+      "source": "canvas0",
+      "source_w": 32,
+      "source_h": 32,
+      "args": [
+        0,
+        0
+      ]
+    },
+    {
+      "event": "texImage2D",
+      "glcanvas": "canvas0",
+      "nargs": 6,
+      "source": "canvas0 (32x32)"
+    },
+    {
+      "event": "texImage2D",
+      "glcanvas": "canvas0",
+      "nargs": 6,
+      "source": "canvas6 (32x32)"
+    },
+    {
+      "event": "create_canvas",
+      "id": "canvas7",
+      "stack": "    at document.createElement (<anonymous>:10:71) |     at cloneCanvas (webpack://jsora/./src/utils.js?:24:32) |     at KernelRunner._runKernel (webpack://jsora/./src/blend.js?:26:74)"
+    },
+    {
+      "event": "get_context",
+      "canvas": "canvas7",
+      "type": "2d",
+      "width": 300,
+      "height": 150
+    },
+    {
+      "event": "drawImage",
+      "dest": "canvas7",
+      "source": "canvas0",
+      "source_w": 32,
+      "source_h": 32,
+      "args": [
+        0,
+        0
+      ]
+    },
+    {
+      "event": "create_canvas",
+      "id": "canvas8",
+      "stack": "    at document.createElement (<anonymous>:10:71) |     at eval (eval at evaluate (:311:30), <anonymous>:12:28) |     at async <anonymous>:337:30"
+    },
+    {
+      "event": "get_context",
+      "canvas": "canvas8",
+      "type": "2d",
+      "width": 300,
+      "height": 150
+    },
+    {
+      "event": "drawImage",
+      "dest": "canvas8",
+      "source": "canvas0",
+      "source_w": 32,
+      "source_h": 32,
+      "args": [
+        0,
+        0
+      ]
+    }
+  ],
+  "finalSample": {
+    "dest_only_5_5": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "source_only_25_25": [
+      230,
+      60,
+      40,
+      153
+    ]
+  }
+}
