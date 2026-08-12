@@ -7,17 +7,22 @@ exact remaining action, executable command where one exists, expected
 artifact, completion criteria, responsible lane, and whether human action is
 genuinely unavoidable.
 
-**Updated 2026-08-12, second continuation (full composite-operation
-inventory + baseline-asset visual-assurance amendment and execution).**
-Current counts (fresh, `contract_reconciler.py --exact-obligations`):
-**ubl 0/195 unresolved** (closed via a governed tiered-evidence-policy
-amendment, independently reviewed — commit `6df67b3d6`), **ora 1/134
-unresolved** (down from 2/134 — `ORA-BASELINEASSET-001` closed via a
-traced, independently-reviewed visual-assurance amendment and its
-executed evidence; `ORA-COMPOSITE-001` substantially narrowed, from
-1-of-15-blend/1-of-6-Porter-Duff producer-verified to 19-of-20 operations
-with at least one producer's agreement and 9-of-20 with two, but stays
-`partial` against its own literal "ALL claimed operations" gate, with the
+**Updated 2026-08-12, third continuation (ORA-COMPOSITE-001 third-
+candidate attempt: GIMP 3.x + jsora, both executed, no new coverage,
+NOT declared irreducible).** Current counts (fresh,
+`contract_reconciler.py --exact-obligations`): **ubl 0/195 unresolved**
+(closed via a governed tiered-evidence-policy amendment, independently
+reviewed — commit `6df67b3d6`), **ora 1/134 unresolved** (unchanged this
+cycle — `ORA-BASELINEASSET-001` stays closed from the prior continuation;
+`ORA-COMPOSITE-001` stays `partial`, its own coverage numbers genuinely
+unchanged (9/20 two-producer, 10/20 single-producer, 1/20 uncovered)
+despite a real, substantial, independently-reviewed attempt this cycle —
+see its own row below for the full account). Prior-continuation summary,
+still accurate for that scope: `ORA-COMPOSITE-001` was substantially
+narrowed from 1-of-15-blend/1-of-6-Porter-Duff producer-verified to
+19-of-20 operations with at least one producer's agreement and 9-of-20
+with two, but stays `partial` against its own literal "ALL claimed
+operations" gate, with the
 single remaining operation and 10 single-producer operations named
 precisely). `promotion.*` in `plans/strategic/ff6/controller-state.yaml`
 is untouched by every item below.
@@ -62,20 +67,20 @@ not touched this continuation.)
 | Responsible lane | Closed this session — Track 2 |
 | Human action unavoidable? | No |
 
-## ORA-COMPOSITE-001 — `SAL-ORA-OBL-2CC875865800D528` — **stays PARTIAL (substantially narrowed, precise remaining gap)**
+## ORA-COMPOSITE-001 — `SAL-ORA-OBL-2CC875865800D528` — **stays PARTIAL (third-candidate attempt executed, no new coverage, NOT declared irreducible)**
 
 | Field | Value |
 |---|---|
-| State | `PARTIAL` — 9 of 20 registered operations now have two-producer agreement, 10 have single-producer agreement, 1 has none; the gate's own literal "all" is not yet met |
+| State | `PARTIAL` — unchanged this cycle: 9 of 20 registered operations have two-producer agreement, 10 have single-producer agreement, 1 (Lighter/`svg:plus`) has none |
 | Normative/policy source | `POL-LRA-COMPOSITE-01` — rule_text names the "**complete** compositing-operation inventory"; release gate says "**All** claimed operations match pinned rendering references within declared tolerances" |
-| Blocker classification | 9/20 fully closed. 10/20 blocked on a real producer limitation (GIMP: 6 non-conformant blend functions, confirmed via direct pixel comparison; 4 Porter-Duff operators GIMP cannot test at all — no OpenRaster plugin). 1/20 (Lighter/svg:plus) blocked on a confirmed defect in Krita's own OpenRaster import, with no alternative producer identified. |
-| Work completed this session | Built an independent mathematical oracle (`composite_oracle.py`) and 18 new discriminating scenes; found and fixed a genuine render.py compositor defect (Destination In/Atop bounds handling) the exercise itself surfaced; executed all 18 remaining operations against both GIMP and Krita. See `PROVENANCE-composite-coverage-2026-08-12.md` and `composite-coverage-matrix-2026-08-12.json` for the full account. |
-| Exact remaining action | Lighter (svg:plus): needs either a real fix inside Krita itself (out of this project's own control) or a third independent OpenRaster-capable application that correctly implements it. The 10 single-producer operations: needs GIMP's own blend-mode/Porter-Duff implementation to change (also out of this project's own control) or a third producer for either gap. |
-| Executable command | None identified — this now looks like this obligation's own irreducible, externally-bounded terminus rather than a lever this project can pull further alone, though a dedicated investigation into whether a third permissively-usable OpenRaster-capable application exists has not been run |
-| Expected artifact | Either new evidence from a third producer, or a governed amendment (matching the ORA-BASELINEASSET-001 pattern below) documenting that this obligation's own "ALL" requirement is unsatisfiable in principle for these 11 operations with the tooling this project has legitimate access to |
+| Blocker classification | Same 9/20 stay closed. For the remaining 11, this cycle specifically tested whether a 3rd producer could close them — see below. |
+| Work completed this cycle (2026-08-12, third continuation) | Resolved "what counts as an independent producer" via a fresh, governed review (concluded: separate implementation with zero shared code, not installability as a desktop app — a library can qualify). Executed 2 new candidates: **GIMP 3.x** (current, 3.0.4) — sourced its own live master-branch OpenRaster plugin directly, confirmed the 4 Porter-Duff operators remain entirely unmapped even in current GIMP, and empirically **confirmed a real MISMATCH** for `svg:plus` (GIMP's own current "Addition" mode still does not implement true Porter-Duff Lighter — a disclosed GIMP 3.0.4 defect, not a format-factory issue). **jsora** (InkLab, npm 0.3.0) — independently reviewed and confirmed to QUALIFY as a full independent producer, but its own rendering pipeline produced spatially-incorrect output for every multi-layer scene tested in a real, pinned, official headless-Chromium+WebGL2 environment, confirmed via 3 independent diagnostics that ruled out both this project's own driver and the specific composite-op as the cause — a genuine execution/environment feasibility blocker, not a policy failure. Also found and disclosed (not patched) a second, distinct jsora defect: absolute ZIP member paths in its own native export, refused by format-factory's own reader. Evaluated 4 bounded fallbacks (MyPaint, Scribus, Drawpile, Pinta) via source-level research only; rejected all 4 with cited reasons — most substantively, Drawpile's own live wiki source-confirms it cannot help with 9 of the 10 needed single-producer operations. See `tools/ora/producer_harness/gimp3/PROVENANCE-gimp3-svg-plus-spike-2026-08-12.md`, `tools/ora/producer_harness/jsora/PROVENANCE-jsora-feasibility-spike-2026-08-12.md`, and `tools/ora/producer_harness/bounded-fallback-candidates-2026-08-12.md` for full accounts. |
+| Exact remaining action | Lighter (`svg:plus`): needs either a real fix inside Krita or GIMP (both out of this project's own control), or a 5th, not-yet-identified independent OpenRaster-capable application that correctly implements it — 4 real candidates (GIMP 2.10, GIMP 3.x, Krita, jsora) have now been tried and none succeed. The 10 single-producer operations: same structural gap — GIMP's own blend-mode/Porter-Duff implementation would need to change (out of this project's own control), or a working 3rd producer, which jsora's own rendering-pipeline defect prevented this cycle from providing. |
+| Executable command | None currently identified that is expected to succeed. A prior draft of this row concluded this looked like an "irreducible, externally-bounded terminus" — **this session's own explicit instruction was not to declare that conclusion**, and this cycle's real, executed attempt (2 new candidates, both genuinely tried, both genuinely failed for disclosed reasons) neither confirms nor refutes it: every *named* candidate has now failed, but "every viable primary-source candidate" has not been exhaustively searched for (a 5th, unidentified OpenRaster implementation may exist). |
+| Expected artifact | Either new evidence from a genuinely-working 5th producer, or a governed amendment (matching the `ORA-BASELINEASSET-001` pattern above) documenting, with the now-much-stronger evidentiary basis this cycle built, that this obligation's own "ALL" requirement may be unsatisfiable in principle with any tooling this project has found so far — a decision for a future session, not made here |
 | Completion criteria | Producer agreement for the remaining 11 operations, or a reviewed policy amendment narrowing the gate's own scope |
 | Responsible lane | Future session |
-| Human action unavoidable? | No — either more producer research or a policy amendment, both fully within agent capability |
+| Human action unavoidable? | No — either a further, broader producer search, an upstream bug report to jsora (whose own compositing math was independently verified correct, only its rendering pipeline under headless/software WebGL2 failed), or a policy amendment, all fully within agent capability |
 
 ## ORA-BASELINEASSET-001 — `SAL-ORA-OBL-52746ABC41B3E790` — **CLOSED (via a traced, independently-reviewed amendment)**
 
@@ -102,20 +107,27 @@ not touched this continuation.)
   visual-assurance amendment plus its own executed, independently-reviewed
   evidence) — each obligation's own literal release-gate text is
   genuinely satisfied, not asserted.
-- **1 ora obligation: substantially narrowed, honestly not force-closed**
-  (`ORA-COMPOSITE-001`) — went from 1-of-15-blend/1-of-6-Porter-Duff
+- **1 ora obligation: substantially narrowed across 2 continuations,
+  honestly not force-closed, NOT declared irreducible** (`ORA-COMPOSITE-001`)
+  — the second continuation took it from 1-of-15-blend/1-of-6-Porter-Duff
   producer-verified to 19-of-20 operations with at least one producer's
   agreement (9-of-20 with two), with a genuine render.py compositor
-  defect found and fixed along the way. The 1 remaining fully-uncovered
-  operation and 10 single-producer operations are named precisely, and
-  the evidence suggests — without yet confirming — that this may be an
-  irreducible, externally-bounded terminus (real limitations in both
-  integrated producer applications, not a gap this project's own code can
-  close by further effort alone) rather than a lever to keep pulling. A
-  first-pass independent review confirmed the coverage matrix, oracle
-  methodology, and evidence classification are sound, with one CONCERN
-  (an oracle-independence overclaim) caught and repaired before this
-  reconciliation, matching this session's own established review
-  discipline — repair every ACCEPTED_WITH_CHANGES or CONCERN finding
-  before finalizing, not just the outright REJECTED ones.
+  defect found and fixed along the way. A first-pass independent review
+  confirmed the coverage matrix, oracle methodology, and evidence
+  classification are sound, with one CONCERN (an oracle-independence
+  overclaim) caught and repaired before that reconciliation.
+  **This third continuation** then explicitly tested — rather than
+  assumed — whether the remaining gap was closable: 2 new candidates
+  (current GIMP 3.x, jsora) were fully executed with real, disclosed
+  results (both failed, for precise, independently-reviewed reasons —
+  GIMP 3.x's own current Addition mode is empirically non-conformant;
+  jsora qualifies as an independent producer but its own rendering
+  pipeline is broken in this project's own headless execution
+  environment), and 4 bounded fallbacks were evaluated and rejected on
+  cited source evidence. Coverage numbers are genuinely unchanged by
+  this cycle. Per this session's own explicit instruction, this is
+  **not** reported as an irreducible terminus — a 5th, unidentified
+  independent OpenRaster implementation may still exist and has not been
+  exhaustively searched for; the honest state is "4 real candidates
+  tried, 4 failed, search not yet exhaustive," not "impossible."
 - **ora unresolved count: 2/134 → 1/134** this continuation.
