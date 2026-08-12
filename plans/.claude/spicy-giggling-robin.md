@@ -849,3 +849,12 @@ To verify the plan is complete and correct:
 3. After each feature: rerun full suite + new tests
 4. After all features: `mypy --strict src/libsafetensors/`, `ruff check src/`, `pytest --cov=libsafetensors`
 5. Final: build wheel (`python -m build`), install in clean venv, run tests from installed package
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-08-12T13:12:24.486685+00:00"
+  locked_by: "682e01169d9f"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->
