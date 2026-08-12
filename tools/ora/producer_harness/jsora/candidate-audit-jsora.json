@@ -1,0 +1,79 @@
+{
+  "schema": "ora-producer-harness/candidate-audit@1",
+  "candidates": [
+    {
+      "candidate": "jsora",
+      "kind": "javascript_library",
+      "identity": {
+        "upstream_repository": "https://gitlab.com/inklabapp/jsora",
+        "upstream_organization": "InkLab",
+        "npm_package": "jsora",
+        "pinned_version": "0.3.0",
+        "npm_dist_tag_latest": "0.3.0",
+        "npm_gitHead_at_publish": "12659e50727a7fbb2c6bb470f24231b2322fbad0",
+        "npm_tarball_url": "https://registry.npmjs.org/jsora/-/jsora-0.3.0.tgz",
+        "npm_tarball_integrity_sha512": "sha512-q+01MArPNdQwSQjgq8d8GXpDbKN8KSsa8FGXfXfukWgJYkdZs+cWSGqvIYwPQgvil1iaGf8L5AoBC4ZX0KkC0Q==",
+        "npm_tarball_shasum_sha1": "df722df3b0d962bbcbbfbbeae10880de007628bc",
+        "independently_reverified_sha1": "df722df3b0d962bbcbbfbbeae10880de007628bc",
+        "independently_reverified_sha256": "5c52a760a669a010b9fb6410e7abef5d60e83c898e1f1eed7065891b315e8840",
+        "license": "MIT",
+        "npm_publish_date": "2020-02-21T23:06:02.126Z",
+        "npm_last_modified": "2022-05-06T23:22:51.784Z",
+        "disclosed_anomaly": "npm registry lists a version '1.0.0' published seconds BEFORE 0.1.0 on the same day (2019-12-09), with 0.1.0/0.2.0/0.3.0 following as the real semver progression; dist-tags.latest correctly points to 0.3.0. Treated as an early placeholder publish, not a maintained release line; 0.3.0 is used as the pinned version throughout this audit.",
+        "npm_versions_ever_published": ["0.1.0", "0.2.0", "0.3.0", "1.0.0"],
+        "last_publish_age_relative_to_2026-08-12": "over 6 years stale (last real release 2020-02-21) -- effectively unmaintained"
+      },
+      "dependencies": {
+        "runtime": [
+          {"name": "jszip", "declared_range": "^3.2.2", "npm_latest_seen": "3.10.1", "license": "MIT OR GPL-3.0-or-later", "repository": "https://github.com/Stuk/jszip.git", "role": "ZIP container read/write (mimetype, stack.xml, layer PNGs)", "independence": "unrelated third-party project, not format-factory/GIMP/Krita/MyPaint lineage"},
+          {"name": "gpu.js", "declared_range": "^2.6.9", "npm_latest_seen": "2.24.0", "license": "MIT", "repository": "https://github.com/gpujs/gpu.js.git", "role": "compiles JS kernel functions to WebGL2 GLSL for GPU-accelerated pixel compositing", "independence": "unrelated third-party project, not format-factory/GIMP/Krita/MyPaint lineage"}
+        ],
+        "dev_only": ["webpack", "webpack-cli", "webpack-dev-server"]
+      },
+      "source_inspection": {
+        "method": "downloaded and extracted the real npm tarball (jsora-0.3.0.tgz), independently re-verified its sha1/sha256 against the npm registry's own reported shasum, then read every src/*.js file directly with a local file-read tool -- not a web-page summary of the GitLab UI, which was tried first and found unreliable (an initial WebFetch pass over composite.js's own raw file mis-rendered the _plus function as missing its alpha-channel line; the actual downloaded file shows the alpha line is present and correct -- see composite_svg_plus below).",
+        "files": ["src/index.js (project/layer model, save()/load() via JSZip)", "src/render.js (rendering orchestrator, svg:* -> kernel-name mapping tables)", "src/blend.js (11 separable W3C blend modes as GPU.js kernels, plus 5 additional unregistered kernels: addition/subtract/grain_extract/grain_merge/divide, defined but never wired into the public API)", "src/blendnonsep.js (4 non-separable blend modes: color/luminosity/hue/saturation)", "src/composite.js (5 Porter-Duff operators: plus/dst_in/dst_out/src_atop/dst_atop)", "src/layer.js", "src/utils.js"],
+        "operation_mapping_table_render_js": {
+          "blend_modes": {"svg:multiply": "multiply", "svg:screen": "screen", "svg:overlay": "overlay", "svg:darken": "darken_only", "svg:lighten": "lighten_only", "svg:color-dodge": "dodge", "svg:color-burn": "burn", "svg:hard-light": "hard_light", "svg:soft-light": "soft_light", "svg:difference": "difference"},
+          "blend_modes_nonsep": {"svg:color": "color", "svg:luminosity": "luminosity", "svg:hue": "hue", "svg:saturation": "saturation"},
+          "composite_modes": {"svg:plus": "plus", "svg:dst-in": "dst_in", "svg:dst-out": "dst_out", "svg:src-atop": "src_atop", "svg:dst-atop": "dst_atop"},
+          "default_else_branch": "normal blend, implicit svg:src-over -- matches the registry's own DEFAULT_COMPOSITE_OP",
+          "coverage_vs_COMPOSITE_OP_REGISTRY": "10 + 4 + 5 + 1(default) = 20 of 20 registry entries have an attempted mapping. This is a genuine, source-verified claim, not an inference from the README's unenumerated 'all blend modes' text."
+        },
+        "formula_analysis_before_empirical_testing": {
+          "method": "hand-derived algebraic comparison against composite_oracle.py's own already-independently-derived W3C/Porter-Duff formulas, to predict which operations are likely to match empirically and which are not, BEFORE running any browser execution -- not a substitute for the actual pixel-level spike, which follows.",
+          "svg:plus (composite.js, _plus)": "oa = min(ua+la, 1.0); or/og/ob = min((ua*ur)+(la*lr), 1.0) -- this is the textbook Porter-Duff Lighter formula in premultiplied space (Fa=Fb=1, clamped), matching composite_oracle.py's own porter_duff_coeffs('Lighter', ...) == (1.0, 1.0) exactly. Predicted: MATCH, pending the out-of-bounds caveat below.",
+          "svg:dst-in / svg:dst-out / svg:src-atop / svg:dst-atop (composite.js)": "All 4 algebraically match composite_oracle.py's own Porter & Duff (1984) coefficients exactly when hand-expanded. Predicted: MATCH for in-bounds pixels.",
+          "out_of_bounds_bug_class_shared_with_format_factorys_own_pre_fix_defect": "All 5 Porter-Duff kernels in composite.js use the identical structural pattern: 'if (i>=0 && i<sourceWidth && j>=0 && j<sourceHeight) { <formula> } else { this.color(lr,lg,lb,la); }' -- i.e. OUTSIDE the source layer's own declared bounds, the destination is always left UNCHANGED, for every one of the 5 operators including dst_in and dst_atop. This is the exact same bug class independently found and fixed in format-factory's own render.py this session (Destination In/Atop require the destination to be CLEARED outside source bounds, not left unchanged, since their own Fb=alpha_s=0 there). PREDICTION, not yet confirmed empirically: if the existing discriminating fixture (composite_matrix.py PORTER_DUFF_SCENES, which places source layer smaller than the canvas specifically to exercise a destination-only sample point) is reused unmodified, jsora's dst_in and dst_atop are likely to MISMATCH at the destination-only sample point, for the same root cause already diagnosed once this session -- not a fixture problem, a real, disclosable jsora defect if confirmed.",
+          "svg:overlay (blend.js, _overlay)": "Hand-expanded jsora's own branch-on-backdrop formula and confirmed it is algebraically identical to composite_oracle.py's own _overlay(cb,cs) = _hard_light(cs,cb) definition (both reduce to the same 2 branches). Predicted: MATCH -- unlike GIMP 2.10's own confirmed-non-conformant Overlay (delta=6).",
+          "svg:soft-light (blend.js, _soft_light)": "Hand-expanded jsora's own core formula (ignoring an alpha==0 edge-case fallback term that never fires against this session's own always-opaque-backdrop discriminating fixture) and found it matches the well-known 'Pegtop' soft-light approximation ((1-2*Cs)*Cb^2 + 2*Cs*Cb), NOT the W3C spec's own literal piecewise formula (which composite_oracle.py implements exactly, per the spec text). Predicted: MEASURABLE MISMATCH for at least some inputs -- a real, different-but-not-identical divergence from the W3C spec, distinct from (not proof of relation to) GIMP's own non-conformance.",
+          "svg:hue / svg:saturation / svg:color / svg:luminosity (blendnonsep.js)": "Structurally implement the correct SetLum/SetSat/ClipColor algorithm shape from the W3C spec, but use luma coefficients (0.299, 0.587, 0.114 -- ITU-R BT.601/NTSC) that differ from the W3C Compositing spec's own literal coefficients (0.3, 0.59, 0.11), which composite_oracle.py implements exactly. Predicted: MEASURABLE MISMATCH -- close but not bit-identical, a real, different-but-not-identical divergence from the W3C spec, again distinct from GIMP's own non-conformance (GIMP's own deltas for these 4 operations ranged 8-29/255; jsora's expected delta from a 0.001-0.023 luma-coefficient difference is likely much smaller but still nonzero for saturated colors)."
+        },
+        "rendering_pipeline": "render.js's own render_to_canvas() requires a real WebGL2 context (canvas.getContext('webgl2', {premultipliedAlpha:false})) to construct the gpu.js GPU instance every kernel runs through -- there is no Canvas2D/CPU-only fallback path in this version. This is a genuine environment requirement for the execution spike (headless Chromium must expose functioning WebGL2, e.g. via SwiftShader software rendering, not merely a DOM), not yet verified working in this project's own Docker environment.",
+        "write_path": "index.js's own save() builds a real ZIP via JSZip (mimetype + stack.xml + layer/thumbnail/mergedimage members) -- independently verified via direct grep of the downloaded source, not inferred from the README.",
+        "read_path": "index.js's own load path uses JSZip.loadAsync + zip.file('stack.xml').async('string') -- independently verified, a real, separate parse path from format-factory's own codec/stack_xml.py."
+      },
+      "lineage_independence_check": {
+        "shares_code_with_format_factory": "No -- different language (JavaScript vs Python), different runtime (browser/WebGL vs CPU), no import or reference to format_factory anywhere in the downloaded source (grepped).",
+        "shares_code_with_gimp_or_krita_or_mypaint": "No evidence found -- jsora's own compositor is GPU.js-kernel-based JavaScript, structurally and technologically unrelated to GIMP's C/GEGL pipeline or Krita's C++/Qt pipeline. No shared authorship, dependency, or vendored code identified.",
+        "other_inklab_packages": "pyora (github/gitlab: inklabapp/pyora) is a separate, PURE PYTHON package under the same InkLab organization/author. Different language from jsora (Python vs JavaScript/WebGL), so it cannot share jsora's own GPU.js-kernel compositor implementation even in principle. pyora is NOT being counted as a producer in this audit -- noted here only to answer the directive's own explicit lineage-sharing question, not because it is in use.",
+        "verdict": "No evidence of shared implementation code with format-factory, GIMP, Krita, or MyPaint. Same-author (InkLab) sibling package (pyora) exists but is a different language/runtime and is not being counted."
+      },
+      "automation_surface": {
+        "preferred": "headless Chromium via a real browser (WebGL2/SwiftShader required, not yet verified in this project's Docker environment)",
+        "driver_role": "orchestrate only (load page, invoke jsora's own public API, collect outputs) -- must not implement compositing formulas or hand-construct ORA bytes, per the directive's own constraint"
+      },
+      "qualifying_evidence_types_if_used": ["PRODUCER_NATIVE_EXPORT (jsora creates layers + saves ORA)", "PRODUCER_REOPEN_RENDER (fresh browser process reopens the saved ORA and renders it)"],
+      "independence_decision": "PENDING FRESH REVIEW -- not self-decided by the agent proposing to use it, per the directive's own explicit requirement (Section 2). This report supplies the facts; the review supplies the policy interpretation and the qualification verdict.",
+      "execution_priority": 2,
+      "rejection_reason": null
+    },
+    {
+      "candidate": "GIMP 3.x (current)",
+      "kind": "desktop_application",
+      "identity": {"note": "Audited separately in the GIMP 3.x spike phase, not duplicated here -- this candidate report's primary new subject is jsora per the directive's own priority order (GIMP 3.x is priority 1, audited via its own spike section)."},
+      "execution_priority": 1,
+      "rejection_reason": null
+    }
+  ]
+}
