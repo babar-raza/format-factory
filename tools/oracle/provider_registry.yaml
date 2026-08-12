@@ -52,6 +52,43 @@ providers:
     acquisition_pack: acquisition-packs/fods/oracle-installation-checklist.md
     status: approved
 
+  - provider_id: okapi-tikal
+    display_name: Okapi Framework (Tikal)
+    provider_type: cli-tool
+    description: >
+      Tikal is the command-line tool of the Okapi Framework, an open-source
+      localization toolset independent of format-factory. Its okf_xliff
+      (1.2) and okf_xliff2 (2.x) filters provide an independently-developed
+      XLIFF reader used as the interoperability oracle for the xliff format
+      track (see oracle/formats/xliff/oracle-package.yaml). Selected as the
+      plan's named fallback after OpenXLIFF proved infeasible in this
+      environment (no prebuilt release JAR; source build requires Java 25,
+      only 21/17 available) -- see
+      format-factory/.local/oracle-tooling/okapi/PROVENANCE.md.
+    version_minimum: "1.40"
+    version_recommended: "1.48.0"
+    license: Apache-2.0
+    homepage: "https://okapiframework.org/wiki/index.php/Main_Page"
+    discovery:
+      env_var: FORMAT_FACTORY_TIKAL
+      binary_names:
+        - tikal.bat
+        - tikal.exe
+        - tikal
+      standard_paths:
+        - ".local/oracle-tooling/okapi/tikal.bat"
+    version_flag: "-i"
+    acquisition_pack: null
+    status: approved
+    notes: >
+      Test-only tooling, never a runtime or install-time dependency of any
+      product. Acquired by downloading the platform-matching prebuilt
+      distribution from okapiframework.org/binaries/main/<version>/ (no
+      GitHub/GitLab release binaries exist for this project) into
+      .local/oracle-tooling/okapi/ (gitignored, not committed). Re-acquire
+      by re-running the download step documented in PROVENANCE.md if that
+      directory is absent (e.g. fresh checkout, CI).
+
 # ---------------------------------------------------------------------------
 # Format-to-provider assignments
 # ---------------------------------------------------------------------------
@@ -79,3 +116,31 @@ format_provider_assignments:
       No other provider may be used without updating this registry and the gate
       documentation. The oracle comparison runs LibreOffice in headless mode to
       export FODS files, then compares the export against our parser's output.
+
+  xliff:
+    gate: null
+    description: >
+      XLIFF oracle compares libxliff's own parse against Okapi Tikal's
+      independently-developed okf_xliff/okf_xliff2 filters on the same
+      document (segment-by-segment plain-text source/target equivalence).
+      libxliff is the independent, standalone product now backing this
+      format track (format-factory's libxliff extraction plan, Mission 2);
+      the format_factory.xliff donor under src/python/xliff/ is frozen
+      history, not exercised by this oracle.
+    approved_providers:
+      - okapi-tikal
+    fallback_providers: []
+    blocker_report: null
+    installation_checklist: null
+    current_status: oracle_ready
+    notes: >
+      Okapi Tikal is the sole approved oracle execution provider for the
+      xliff interoperability track (TC-ORACLE-001..004). OpenXLIFF was
+      evaluated first per the originating plan and rejected: no prebuilt
+      release JAR on any GitHub release, and its build.gradle pins Java 25
+      (only 21/17 available in this environment). Set FORMAT_FACTORY_TIKAL
+      to the acquired tikal.bat's absolute path, or place the extracted
+      Okapi distribution at .local/oracle-tooling/okapi/ (gitignored,
+      test-only, never committed) -- see
+      format-factory/.local/oracle-tooling/okapi/PROVENANCE.md for the
+      exact acquisition steps and SHA-256.

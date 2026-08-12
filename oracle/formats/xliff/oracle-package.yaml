@@ -45,15 +45,23 @@ corpus_refs:
   license: project-owned-synthetic
   authority_class: GENERATED_FROM_NEUTRAL_MODEL
   description: XLIFF with inline formatting codes (pc, ph elements)
+- corpus_id: xliff-1.2-minimal
+  sample_ref: samples/by-format/xliff/valid/minimal-1.2.xliff
+  sha256: sha256:ca4facd483e54301719a04aec4f1c434c1b41ecbc7d424d509f99e6bda323b72
+  license: project-owned-synthetic
+  authority_class: GENERATED_FROM_NEUTRAL_MODEL
+  description: >
+    Minimal XLIFF 1.2 file (TC-ORACLE-004) -- added when the xliff oracle
+    was re-pointed at libxliff, whose v12 submodule is a genuinely separate
+    1.2 Core model (never flattened into the 2.x dataclasses).
 profiles:
 - STRUCTURAL_VALIDITY
 - PARSE_VALIDITY
 - DOMAIN_MODEL_MAPPING
 - ROUNDTRIP_SEMANTIC_EQUIVALENCE
 - SAME_FORMAT_SERIALIZATION
+- INTEROPERABILITY
 profiles_not_applicable:
-- profile: INTEROPERABILITY
-  reason: Python stdlib xml.etree is the reference parser
 - profile: LOSSLESS_TRANSFORMATION
   reason: XML text format; no lossy compression
 - profile: SECURITY_ROBUSTNESS
@@ -98,19 +106,91 @@ valid_cases:
   - PARSE_VALIDITY
   - DOMAIN_MODEL_MAPPING
 - case_id: xliff-valid-003
-  purpose: XliffDocument.spec_qname matches registered qname xliff:file
+  purpose: >
+    Parsed document reports the correct XLIFF version attribute.
+    TC-ORACLE-002 (libxliff Mission 2): this case previously checked
+    spec_qname == "xliff:file" against the format_factory.xliff donor.
+    spec_qname is an FF-monorepo-internal qname-registry convention that
+    libxliff (the independent product now backing this oracle track, see
+    ENRICHED_LOADERS/executor_config below) deliberately does not implement
+    -- removed on purpose during extraction (TC-API-002-03, "monorepo
+    convention", not a defect). Re-pointed at version, a real XLIFF domain
+    property, rather than leaving a case that would always FAIL against the
+    now-canonical implementation for a property it was never meant to have.
   authority_class: SPEC_NORMATIVE
   authority_refs:
-  - shared/qname-registry/xliff.yaml -- xliff:file entry
+  - XLIFF-SPEC -- xliff/@version attribute is mandatory
   sample_ref: samples/by-format/xliff/valid/minimal.xliff
   input_hash: sha256:04da8a74ce16130ea8a83e59eba813087ce1798c1097679861baac816310f977
   expected_parse_result: SUCCESS
   expected_model_properties:
-  - property: spec_qname
-    value: xliff:file
+  - property: version
+    value: '2.0'
     authority: XLIFF-SPEC
   applicable_profiles:
   - DOMAIN_MODEL_MAPPING
+interoperability_cases:
+- case_id: xliff-okapi-001
+  purpose: >
+    libxliff's own parse of a minimal XLIFF 2.0 document agrees with Okapi
+    Tikal's independently-developed okf_xliff2 filter on source/target text
+    content (TC-ORACLE-002/003). Okapi Framework (Apache-2.0,
+    okapiframework.org) is a real, actively maintained, independent
+    localization toolset -- not affiliated with this project -- selected
+    per the Mission 2 plan's named-alternative fallback after OpenXLIFF
+    proved infeasible in this environment (no prebuilt release JAR; source
+    build requires Java 25, only 21/17 available). See
+    tools/oracle/provider_registry.yaml: okapi-tikal.
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - XLIFF-SPEC -- source/target text content
+  sample_ref: samples/by-format/xliff/valid/minimal.xliff
+  okapi_filter: okf_xliff2
+  target_language: fr
+  applicable_profiles:
+  - INTEROPERABILITY
+- case_id: xliff-okapi-002
+  purpose: >
+    Multi-unit XLIFF 2.0 document -- libxliff vs. Okapi Tikal segment-by-
+    segment text agreement across 3 units (TC-ORACLE-003).
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - XLIFF-SPEC -- unit ordering and source/target text content
+  sample_ref: samples/by-format/xliff/valid/multi-unit.xliff
+  okapi_filter: okf_xliff2
+  target_language: fr
+  applicable_profiles:
+  - INTEROPERABILITY
+- case_id: xliff-okapi-003
+  purpose: >
+    XLIFF 2.0 document with inline pc codes -- libxliff's flatten_inline_
+    content() vs. Okapi Tikal's own inline-code-stripping table extraction
+    agree on the resulting plain text (TC-ORACLE-003). Verified empirically
+    during TC-ORACLE-001 acquisition that Tikal's -2tbl output strips
+    inline codes to plain text, making this a like-for-like text
+    comparison rather than a codes-vs-no-codes mismatch.
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - XLIFF-SPEC -- pc inline code content model
+  sample_ref: samples/by-format/xliff/valid/with-inline-codes.xliff
+  okapi_filter: okf_xliff2
+  target_language: de
+  applicable_profiles:
+  - INTEROPERABILITY
+- case_id: xliff-okapi-101
+  purpose: >
+    XLIFF 1.2 Core -- libxliff's v12 model vs. Okapi Tikal's independent
+    okf_xliff (1.2) filter agree on source/target text content
+    (TC-ORACLE-004, extending the 2.x interoperability lane to 1.2).
+  authority_class: SPEC_NORMATIVE
+  authority_refs:
+  - XLIFF-SPEC-1.2 -- source/target text content
+  sample_ref: samples/by-format/xliff/valid/minimal-1.2.xliff
+  input_hash: sha256:ca4facd483e54301719a04aec4f1c434c1b41ecbc7d424d509f99e6bda323b72
+  okapi_filter: okf_xliff
+  target_language: fr
+  applicable_profiles:
+  - INTEROPERABILITY
 invalid_cases:
 - case_id: xliff-invalid-001
   purpose: XML without XLIFF namespace must raise XliffParseError
@@ -149,7 +229,25 @@ consumers:
 dependency_hashes:
   executor_hash: null
   registry_hash: null
-  recorded_at: '2026-07-14'
+  recorded_at: '2026-08-12'
 executor_config:
-  module: format_factory.xliff
-  callable: load_xliff
+  module: libxliff
+  callable: load_any
+  notes: >
+    TC-ORACLE-002 (libxliff Mission 2, 2026-08-12): re-pointed from the
+    superseded format_factory.xliff donor (src/python/xliff/, frozen
+    history, not touched) to libxliff -- the independent, standalone XLIFF
+    library that is now the maintained product for this format track.
+    load_any (not the plain 2.x-only load) is used deliberately so this
+    oracle track covers both XLIFF 1.2 and 2.x without needing two
+    separate executor_configs -- load_any probes and dispatches to
+    libxliff's genuinely separate v12 vs. 2.x models, never flattening
+    them (see libxliff ADR-001). load_any(path) raises XliffParseError
+    (XliffUnsupportedVersionError is a subclass) for malformed/unsupported
+    input (verified against xliff-invalid-001's missing-namespace sample),
+    matching the generic invalid-case executor's raise-to-PASS contract.
+    libxliff must be `pip install`-ed into this venv for the oracle to
+    resolve this import -- see tools/oracle/enriched_generic.py's
+    ENRICHED_LOADERS comment and format-factory's libxliff extraction plan.
+    Resolved as a bare top-level import (not src.python.libxliff) via
+    execute_oracle.py's resolve_executor_module_path().

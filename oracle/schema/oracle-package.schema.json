@@ -41,7 +41,7 @@
     },
     "family": {
       "type": "string",
-      "enum": ["cells", "words", "presentation", "drawing", "imaging", "archive", "data", "odf"]
+      "enum": ["cells", "words", "presentation", "drawing", "imaging", "archive", "data", "odf", "localization"]
     },
     "authority": {
       "type": "object",
@@ -113,6 +113,11 @@
     "roundtrip_cases": {
       "type": "array",
       "items": {"$ref": "#/$defs/roundtrip_case"}
+    },
+    "interoperability_cases": {
+      "type": "array",
+      "description": "Cases exercised against an independent external tool (see tools/oracle/provider_registry.yaml), not this repo's own parser twice.",
+      "items": {"$ref": "#/$defs/interoperability_case"}
     },
     "conversion_cases": {
       "type": "array",
@@ -350,6 +355,24 @@
         "tolerance_policy": {"type": "string"},
         "expected_diagnostics": {"type": "array", "items": {"type": "string"}}
       }
+    },
+    "interoperability_case": {
+      "type": "object",
+      "description": "Format-specific extra fields (e.g. xliff's okapi_filter/target_language, fods's fods-lo-* naming) are intentionally permitted beyond this common shape -- each format's executor function defines and documents its own.",
+      "required": ["case_id", "purpose", "authority_class", "sample_ref", "applicable_profiles"],
+      "properties": {
+        "case_id": {"type": "string"},
+        "purpose": {"type": "string"},
+        "authority_class": {"$ref": "#/$defs/authority_class"},
+        "authority_refs": {"type": "array", "items": {"type": "string"}},
+        "sample_ref": {"type": "string"},
+        "input_hash": {"type": "string"},
+        "applicable_profiles": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "additionalProperties": true
     }
   }
 }

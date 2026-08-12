@@ -42,6 +42,23 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 ORACLE_DIR = REPO_ROOT / "oracle"
 LOCAL_ORACLE_DIR = REPO_ROOT / ".local" / "oracle"
 SAMPLES_DIR = REPO_ROOT / "samples" / "by-format"
+
+# Module-name prefixes that resolve as ordinary top-level imports (editable/
+# pip-installed packages reachable via sys.path as-is) rather than being
+# rewritten to "src.python.<module>". "format_factory." covers this repo's
+# own shipped packages; "libxliff" covers the externally-developed,
+# independent library installed into this venv for oracle testing only
+# (TC-ORACLE-002 — libxliff has zero dependency back on format-factory;
+# this allowlist entry exists solely so FF's own oracle tooling can import
+# the installed product under test).
+_BARE_IMPORT_PREFIXES = ("format_factory.", "libxliff")
+
+
+def resolve_executor_module_path(module: str) -> str:
+    """Resolve an executor_config module name to its importable path."""
+    if module.startswith(_BARE_IMPORT_PREFIXES):
+        return module
+    return f"src.python.{module}"
 # Authority classes that BLOCK a PASS verdict (cannot self-approve)
 BLOCKING_AUTHORITY_CLASSES = {"AI_DRAFT_UNVERIFIED", "IMPLEMENTATION_OBSERVED", "UNKNOWN", "REJECTED"}
 # Allowed result values
@@ -785,7 +802,7 @@ def execute_generic_load_case(case: dict, pkg: dict, format_id: str, module: str
     try:
         sys.path.insert(0, str(REPO_ROOT))
         import importlib
-        module_path = module if module.startswith("format_factory.") else f"src.python.{module}"
+        module_path = resolve_executor_module_path(module)
         mod = importlib.import_module(module_path)
         fn = getattr(mod, callable_name)
         result_val = fn(str(sample_path))
@@ -860,7 +877,7 @@ def execute_generic_invalid_case(
         src_py = str(REPO_ROOT / "src" / "python")
         if src_py not in sys.path:
             sys.path.insert(0, str(REPO_ROOT))
-        module_path = module if module.startswith("format_factory.") else f"src.python.{module}"
+        module_path = resolve_executor_module_path(module)
         mod = importlib.import_module(module_path)
         fn = getattr(mod, callable_name)
         fn(input_data)
@@ -1854,6 +1871,166 @@ def execute_fods_libreoffice_case(case: dict, pkg: dict) -> dict:
         )
 
 
+def execute_xliff_okapi_interop_case(case: dict, pkg: dict) -> dict:
+    """Execute an XLIFF<->Okapi Tikal interoperability case (TC-ORACLE-002/003/004).
+
+    Independent cross-tool evidence for libxliff (the standalone product that
+    now backs FF's xliff oracle track — see ENRICHED_LOADERS): parses the
+    same sample with (1) libxliff's own codec and (2) Okapi Tikal's
+    independently-developed okf_xliff/okf_xliff2 filter (invoked out of
+    process via -2tbl -csv table extraction), then compares plain-text
+    source/target content segment-by-segment. This checks text-content
+    equivalence specifically — not the full multi-dimension fidelity model
+    (IDs/context/notes/states/metadata) the product research describes;
+    that remains a documented, honestly-scoped boundary of this oracle case,
+    not a silent gap.
+
+    Returns SKIPPED_MISSING_PROVIDER if Tikal is not discoverable (expected
+    on CI without the TC-ORACLE-001 test-tooling acquired locally).
+    """
+    import csv as _csv
+    import io as _io
+    import os
+    import shutil
+    import subprocess
+    import tempfile
+
+    case_id = case.get("case_id", "")
+    _, authority_status = check_authority(case, True)
+    common = dict(
+        oracle_id=pkg["oracle_id"], oracle_version=pkg["oracle_version"],
+        format_id="xliff", product_id="format-factory-xliff", language="python",
+        case_id=case_id, profile="INTEROPERABILITY", authority_status=authority_status,
+    )
+
+    tikal = (
+        os.environ.get("FORMAT_FACTORY_TIKAL")
+        or shutil.which("tikal.bat")
+        or shutil.which("tikal.exe")
+        or shutil.which("tikal")
+    )
+    if not tikal or not Path(tikal).exists():
+        return make_verdict(
+            **common, result=RESULT_SKIPPED_MISSING_PROVIDER, depth_level=DEPTH_D0,
+            diagnostics=[
+                "Okapi Tikal not found — set FORMAT_FACTORY_TIKAL to tikal.bat's path "
+                "or add it to PATH (see tools/oracle/provider_registry.yaml: okapi-tikal). "
+                "INTEROPERABILITY skipped, not silently passed."
+            ],
+        )
+
+    sample_ref = case.get("sample_ref")
+    if not sample_ref:
+        return make_verdict(
+            **common, result=RESULT_NOT_APPLICABLE, depth_level=DEPTH_D0,
+            diagnostics=["No sample_ref on interoperability case"],
+        )
+    sample_path = REPO_ROOT / sample_ref
+    if not sample_path.exists():
+        return make_verdict(
+            **common, result=RESULT_BLOCKED_MISSING_SAMPLE, depth_level=DEPTH_D0,
+            diagnostics=[f"Sample not found: {sample_path}"],
+        )
+
+    okapi_filter = case.get("okapi_filter", "okf_xliff2")
+    input_hash = sha256_file(sample_path)
+
+    # 1. libxliff's own parse of the same file (independent product under test).
+    try:
+        sys.path.insert(0, str(REPO_ROOT))
+        import libxliff
+        from libxliff.model.inline import flatten_inline_content
+
+        doc = libxliff.load_any(str(sample_path))
+        own_pairs: list[tuple[str, str]] = []
+        if hasattr(doc, "iter_units"):
+            src_lang = doc.source_language
+            for unit in doc.iter_units():
+                for seg in unit.segments:
+                    own_pairs.append((
+                        flatten_inline_content(seg.source),
+                        flatten_inline_content(seg.target) if seg.target is not None else "",
+                    ))
+        else:
+            src_lang = "en"
+            for tu in doc.iter_trans_units():
+                own_pairs.append((
+                    flatten_inline_content(tu.source),
+                    flatten_inline_content(tu.target) if tu.target is not None else "",
+                ))
+    except Exception as e:
+        return make_verdict(
+            **common, result=RESULT_FAIL, depth_level=DEPTH_D0, input_hash=input_hash,
+            diagnostics=[f"libxliff failed to parse its own sample: {type(e).__name__}: {e}"],
+        )
+
+    # 2. Okapi Tikal's independent parse of the same file, out of process.
+    tgt_lang = case.get("target_language", "fr")
+    try:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            proc = subprocess.run(
+                [tikal, "-2tbl", str(sample_path), "-fc", okapi_filter,
+                 "-sl", src_lang, "-tl", tgt_lang, "-csv", "-od", tmpdir],
+                capture_output=True, text=True, timeout=60,
+            )
+            if proc.returncode != 0:
+                return make_verdict(
+                    **common, result=RESULT_FAIL, depth_level=DEPTH_D3, input_hash=input_hash,
+                    diagnostics=[f"tikal exited {proc.returncode}",
+                                 proc.stdout[-300:], proc.stderr[-300:]],
+                )
+            # Tikal writes <input>.txt next to the INPUT file (confirmed empirically
+            # during TC-ORACLE-001 acquisition — -od does not redirect -2tbl output).
+            out_path = sample_path.with_name(sample_path.name + ".txt")
+            if not out_path.exists():
+                return make_verdict(
+                    **common, result=RESULT_FAIL, depth_level=DEPTH_D3, input_hash=input_hash,
+                    diagnostics=[f"tikal produced no output at expected path {out_path}"],
+                )
+            try:
+                csv_text = out_path.read_text(encoding="utf-8")
+            finally:
+                out_path.unlink(missing_ok=True)
+            okapi_pairs = [tuple(row) for row in _csv.reader(_io.StringIO(csv_text)) if row]
+    except subprocess.TimeoutExpired:
+        return make_verdict(
+            **common, result=RESULT_INCONCLUSIVE, depth_level=DEPTH_D3, input_hash=input_hash,
+            diagnostics=["tikal timed out after 60s"],
+        )
+    except Exception as e:
+        return make_verdict(
+            **common, result=RESULT_INCONCLUSIVE, depth_level=DEPTH_D0, input_hash=input_hash,
+            diagnostics=[f"Exception invoking tikal: {type(e).__name__}: {e}"],
+        )
+
+    # 3. Compare plain-text source/target content, segment-by-segment, in order.
+    deviations = []
+    if len(own_pairs) != len(okapi_pairs):
+        deviations.append(
+            f"segment count mismatch: libxliff={len(own_pairs)} okapi={len(okapi_pairs)}"
+        )
+    for i, (own_src, own_tgt) in enumerate(own_pairs):
+        oka_row = okapi_pairs[i] if i < len(okapi_pairs) else ()
+        oka_src = oka_row[0] if len(oka_row) > 0 else None
+        oka_tgt = oka_row[1] if len(oka_row) > 1 else None
+        if own_src != oka_src:
+            deviations.append(f"segment {i} source mismatch: libxliff={own_src!r} okapi={oka_src!r}")
+        if own_tgt != oka_tgt:
+            deviations.append(f"segment {i} target mismatch: libxliff={own_tgt!r} okapi={oka_tgt!r}")
+
+    return make_verdict(
+        **common, result=RESULT_FAIL if deviations else RESULT_PASS,
+        depth_level=DEPTH_D3, input_hash=input_hash,
+        observed={"libxliff_pairs": own_pairs, "okapi_pairs": okapi_pairs},
+        deviations=deviations,
+        diagnostics=[
+            f"Compared {len(own_pairs)} segment(s) plain-text source/target equivalence "
+            f"between libxliff's own parse and Okapi Tikal {okapi_filter}'s independent "
+            "parse of the same document."
+        ],
+    )
+
+
 def execute_zst_lossless_case(case: dict, pkg: dict) -> dict:
     """Execute ZST compress→decompress round-trip lossless case."""
     case_id = case["case_id"]
@@ -1948,8 +2125,8 @@ def _check_case_coverage(pkg: dict, format_id: str) -> list[str]:
         n = len(pkg["roundtrip_cases"])
         warnings.append(f"COVERAGE_GAP: {n} roundtrip_cases defined but no executor wired for {format_id}")
 
-    # Interoperability cases — only fods is wired
-    if pkg.get("interoperability_cases") and format_id != "fods":
+    # Interoperability cases — wired for fods and xliff
+    if pkg.get("interoperability_cases") and format_id not in ("fods", "xliff"):
         n = len(pkg["interoperability_cases"])
         warnings.append(f"COVERAGE_GAP: {n} interoperability_cases defined but no executor wired for {format_id}")
 
@@ -2108,6 +2285,22 @@ def run_oracle_for_format(format_id: str, profile_filter: str = None, case_filte
             if case_filter and case_id != case_filter:
                 continue
             verdict = execute_fods_libreoffice_case(case, pkg)
+            verdicts.append(verdict)
+            save_verdict(verdict, format_id)
+            result = verdict["result"]
+            counts[result] = counts.get(result, 0) + 1
+            status_icon = "OK" if result == "PASS" else ("~~" if result == RESULT_SKIPPED_MISSING_PROVIDER else "FAIL")
+            print(f"  [{status_icon}] {case_id}: {result}")
+
+    # Execute XLIFF<->Okapi interoperability cases (TC-ORACLE-002/003/004)
+    if format_id == "xliff":
+        for case in pkg.get("interoperability_cases", []):
+            case_id = case.get("case_id", "")
+            if case_filter and case_id != case_filter:
+                continue
+            if profile_filter and profile_filter != "INTEROPERABILITY":
+                continue
+            verdict = execute_xliff_okapi_interop_case(case, pkg)
             verdicts.append(verdict)
             save_verdict(verdict, format_id)
             result = verdict["result"]
