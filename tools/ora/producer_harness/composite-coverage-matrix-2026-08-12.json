@@ -331,7 +331,31 @@
     "pixel_comparison_result": "MISMATCH (max_delta=51, real import-formula difference)",
     "evidence_type": "INDEPENDENT_CONSUMER_RENDER",
     "coverage_status": "NOT_COVERED",
-    "defect_classification": "producer import limitation (Krita's own OpenRaster reader does not correctly implement svg:plus/Lighter -- its own reported alpha at the overlap sample point exactly matches the Source-Over alpha formula (0.801->204), not the true unclamped-additive Porter-Duff Lighter formula (1.102->255 after clamping), confirmed by direct computation against composite_oracle.py, not assumed)"
+    "defect_classification": "producer import limitation (Krita's own OpenRaster reader does not correctly implement svg:plus/Lighter -- its own reported alpha at the overlap sample point exactly matches the Source-Over alpha formula (0.801->204), not the true unclamped-additive Porter-Duff Lighter formula (1.102->255 after clamping), confirmed by direct computation against composite_oracle.py, not assumed)",
+    "coverage_status_2026_08_12b": "TIER_C_ACCEPTED (policy exception; producer coverage_status above is unchanged and remains authoritative for the ALL-2-independent-producers literal policy question)",
+    "policy_determination_2026_08_12b": "tools/ora/producer_harness/POLICY-DETERMINATION-tier-c-svg-plus-2026-08-12b.md",
+    "reference_oracle_evidence_2026_08_12b": [
+      {
+        "implementation": "GEGL 0.4.48 (operations/generated/plus.c)",
+        "result": [
+          158,
+          96,
+          139,
+          255
+        ],
+        "verdict": "EXACT_MATCH"
+      },
+      {
+        "implementation": "Cairo 1.29.1 (CAIRO_OPERATOR_ADD, via pycairo)",
+        "result": [
+          158,
+          96,
+          139,
+          255
+        ],
+        "verdict": "EXACT_MATCH"
+      }
+    ]
   },
   {
     "canonical_id": "Destination In",
@@ -352,7 +376,18 @@
     "pixel_comparison_result": "MATCHES except transparent-pixel RGB payload (alpha=0 in both; RGB under full transparency is not visually meaningful)",
     "evidence_type": "INDEPENDENT_CONSUMER_RENDER",
     "coverage_status": "COVERED_SINGLE_PRODUCER",
-    "defect_classification": null
+    "defect_classification": null,
+    "reference_oracle_evidence_2026_08_12b": [
+      {
+        "implementation": "GEGL 0.4.48",
+        "verdict": "EXACT_MATCH"
+      },
+      {
+        "implementation": "blendmodes 2025 (PyPI, FHPythonUtils)",
+        "verdict": "EXACT_MATCH"
+      }
+    ],
+    "reference_oracle_note_2026_08_12b": "Corroborating evidence only -- coverage_status/evidence_type above (single producer/consumer) is unchanged; no second PRODUCER was found this cycle."
   },
   {
     "canonical_id": "Destination Out",
@@ -373,7 +408,18 @@
     "pixel_comparison_result": "EXACT",
     "evidence_type": "INDEPENDENT_CONSUMER_RENDER",
     "coverage_status": "COVERED_SINGLE_PRODUCER",
-    "defect_classification": null
+    "defect_classification": null,
+    "reference_oracle_evidence_2026_08_12b": [
+      {
+        "implementation": "GEGL 0.4.48",
+        "verdict": "EXACT_MATCH"
+      },
+      {
+        "implementation": "blendmodes 2025 (PyPI, FHPythonUtils)",
+        "verdict": "EXACT_MATCH"
+      }
+    ],
+    "reference_oracle_note_2026_08_12b": "Corroborating evidence only -- coverage_status/evidence_type above (single producer/consumer) is unchanged; no second PRODUCER was found this cycle."
   },
   {
     "canonical_id": "Source Atop",
@@ -394,7 +440,18 @@
     "pixel_comparison_result": "MATCHES except transparent-pixel RGB payload (alpha=0 in both; RGB under full transparency is not visually meaningful)",
     "evidence_type": "INDEPENDENT_CONSUMER_RENDER",
     "coverage_status": "COVERED_SINGLE_PRODUCER",
-    "defect_classification": null
+    "defect_classification": null,
+    "reference_oracle_evidence_2026_08_12b": [
+      {
+        "implementation": "GEGL 0.4.48",
+        "verdict": "EXACT_MATCH"
+      },
+      {
+        "implementation": "blendmodes 2025 (PyPI, FHPythonUtils)",
+        "verdict": "EXACT_MATCH"
+      }
+    ],
+    "reference_oracle_note_2026_08_12b": "Corroborating evidence only -- coverage_status/evidence_type above (single producer/consumer) is unchanged; no second PRODUCER was found this cycle."
   },
   {
     "canonical_id": "Destination Atop",
@@ -415,6 +472,17 @@
     "pixel_comparison_result": "MATCHES except transparent-pixel RGB payload (alpha=0 in both; RGB under full transparency is not visually meaningful)",
     "evidence_type": "INDEPENDENT_CONSUMER_RENDER",
     "coverage_status": "COVERED_SINGLE_PRODUCER",
-    "defect_classification": null
+    "defect_classification": null,
+    "reference_oracle_evidence_2026_08_12b": [
+      {
+        "implementation": "GEGL 0.4.48",
+        "verdict": "EXACT_MATCH"
+      },
+      {
+        "implementation": "blendmodes 2025 (PyPI, FHPythonUtils)",
+        "verdict": "EXACT_MATCH"
+      }
+    ],
+    "reference_oracle_note_2026_08_12b": "Corroborating evidence only -- coverage_status/evidence_type above (single producer/consumer) is unchanged; no second PRODUCER was found this cycle."
   }
 ]
