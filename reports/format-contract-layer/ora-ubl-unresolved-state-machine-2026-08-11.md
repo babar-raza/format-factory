@@ -7,25 +7,29 @@ exact remaining action, executable command where one exists, expected
 artifact, completion criteria, responsible lane, and whether human action is
 genuinely unavoidable.
 
-**Updated 2026-08-12, third continuation (ORA-COMPOSITE-001 third-
-candidate attempt: GIMP 3.x + jsora, both executed, no new coverage,
-NOT declared irreducible).** Current counts (fresh,
-`contract_reconciler.py --exact-obligations`): **ubl 0/195 unresolved**
-(closed via a governed tiered-evidence-policy amendment, independently
-reviewed — commit `6df67b3d6`), **ora 1/134 unresolved** (unchanged this
-cycle — `ORA-BASELINEASSET-001` stays closed from the prior continuation;
-`ORA-COMPOSITE-001` stays `partial`, its own coverage numbers genuinely
-unchanged (9/20 two-producer, 10/20 single-producer, 1/20 uncovered)
-despite a real, substantial, independently-reviewed attempt this cycle —
-see its own row below for the full account). Prior-continuation summary,
-still accurate for that scope: `ORA-COMPOSITE-001` was substantially
-narrowed from 1-of-15-blend/1-of-6-Porter-Duff producer-verified to
-19-of-20 operations with at least one producer's agreement and 9-of-20
-with two, but stays `partial` against its own literal "ALL claimed
-operations" gate, with the
-single remaining operation and 10 single-producer operations named
-precisely). `promotion.*` in `plans/strategic/ff6/controller-state.yaml`
-is untouched by every item below.
+**Updated 2026-08-12, fourth continuation (jsora root-caused as a
+genuine upstream defect; ora.js rejected; GEGL and Cairo evaluated as
+reference oracles; svg:plus's own Tier C policy exception
+independently reviewed twice and ACCEPTED; a real product bug found and
+fixed).** Current counts (fresh, `contract_reconciler.py
+--exact-obligations`): **ubl 0/195 unresolved** (unchanged, closed via a
+governed tiered-evidence-policy amendment from a prior continuation —
+commit `6df67b3d6`), **ora 1/134 unresolved** (the literal reconciler
+count is UNCHANGED this cycle — `ORA-COMPOSITE-001` still counts as
+unresolved under the reconciler's own literal "ALL claimed operations
+have 2 producers" check, since only 1 of the 10 gap operations gained a
+governed exception and the other 9 remain single-producer. This is
+expected, not a sign of no progress: see the row below for what actually
+changed). `ORA-BASELINEASSET-001` stays closed from an earlier
+continuation. `promotion.*` in `plans/strategic/ff6/controller-state.yaml`
+is untouched by every item below, this cycle included.
+
+Prior-continuation summary, still accurate for that scope:
+`ORA-COMPOSITE-001` was substantially narrowed from
+1-of-15-blend/1-of-6-Porter-Duff producer-verified to 19-of-20
+operations with at least one producer's agreement and 9-of-20 with two,
+but stays `partial` against its own literal "ALL claimed operations"
+gate.
 
 ---
 
@@ -67,11 +71,18 @@ not touched this continuation.)
 | Responsible lane | Closed this session — Track 2 |
 | Human action unavoidable? | No |
 
-## ORA-COMPOSITE-001 — `SAL-ORA-OBL-2CC875865800D528` — **stays PARTIAL (third-candidate attempt executed, no new coverage, NOT declared irreducible)**
+## ORA-COMPOSITE-001 — `SAL-ORA-OBL-2CC875865800D528` — **stays PARTIAL under the literal policy (fourth continuation: svg:plus gains an accepted governed Tier C exception, real product bug fixed, NOT declared irreducible)**
 
 | Field | Value |
 |---|---|
-| State | `PARTIAL` — unchanged this cycle: 9 of 20 registered operations have two-producer agreement, 10 have single-producer agreement, 1 (Lighter/`svg:plus`) has none |
+| State | `PARTIAL` under the literal reconciler check — 9 of 20 registered operations have two-producer agreement (unchanged), 10 have single-producer agreement (unchanged, though 4 of the 10 gained 2x independent reference-oracle corroboration this cycle without gaining a second producer), 1 (Lighter/`svg:plus`) has a governed, independently-reviewed-twice Tier C exception ACCEPTED this cycle (`tools/ora/producer_harness/POLICY-DETERMINATION-tier-c-svg-plus-2026-08-12b.md`) — a real, evidence-backed resolution distinct from "0 producers," but not itself a second PRODUCER, so the reconciler's own literal count is unchanged pending formal adoption of the exception into the machine-readable policy YAML (disclosed as a pending mechanical step, not silently skipped) |
+| Work completed this cycle (2026-08-12, fourth continuation) | jsora root-caused (not merely re-tested) as a genuine upstream WebGL read/write-same-resource hazard in its own `render.js`, confirmed via 4 independent evidence lines including running jsora's own real, unmodified upstream tutorial — not recovered, not patched to manufacture evidence. `ora.js` rejected pre-container on pure source inspection. Bounded candidate discovery found and dispositioned 6 new candidates (PyShop, PhotoDemon, pyora, blendmodes, GEGL, Cairo) with primary-source evidence for every verdict; `pyora` rejected on LINEAGE (same npm/GitLab author as jsora, `InkLab`/`inklabapp`), not capability. GEGL and Cairo — neither an ORA producer, both real, differently-authored compositing-math libraries — both independently confirm format-factory's own `svg:plus` output exactly. While comparing against GEGL, found and fixed a genuine product bug: the Lighter operator's own combined alpha could exceed 1.0 and was used unclamped as the unpremultiply divisor in both `render.py` and `composite_oracle.py`, producing silently-wrong RGB; fixed with failing-test-first discipline, 4 new regression tests, full 449-test ORA suite re-passing, governed skill transcript recorded (commit `b3d6470b0`). The resulting Tier A/B/C policy-amendment proposal for `svg:plus` was independently reviewed TWICE (not self-certified): round 1 found real gaps (an incomplete search-record disclosure, an internally-inconsistent Tier C draft citing only one implementation while claiming "two... where possible"); both repaired with genuinely new evidence (Cairo's own real `OPERATOR_ADD`, confirmed via real `pycairo` execution), not just rewording; round 2 independently re-verified the new evidence files' own actual contents and accepted, conditioned on converting the proposal's own re-evaluation cadence into a tracked mechanism (done: `.local/taskcards/ORA-COMPOSITE-001-TIER-C-REEVAL-20260812.yaml`). Also self-corrected an over-broad rejection of PhotoDemon mid-cycle after re-reading its own source more carefully — it genuinely implements all 4 nonseparable blend functions (a real, unpursued second-producer candidate for `svg:hue`/`svg:saturation`/`svg:color`/`svg:luminosity`), explicitly flagged as not chased this cycle (VB6/.NET desktop-app automation was judged out of scope for this cycle's own remaining time), not dismissed on the merits. 6 local, unsubmitted upstream issue packages drafted (jsora x2, GIMP3 x2, GEGL, blendmodes). Full accounts: `tools/ora/producer_harness/jsora/ROOT-CAUSE-jsora-upstream-defect-2026-08-12b.md`, `tools/ora/producer_harness/gegl/GEGL-CANDIDATE-AUDIT-2026-08-12b.md`, `tools/ora/producer_harness/CANDIDATE-LEDGER-2026-08-12b.md`, `tools/ora/producer_harness/POLICY-DETERMINATION-tier-c-svg-plus-2026-08-12b.md`. |
+| Exact remaining action (fourth continuation) | (1) Audit `schemas/format-contracts/format-contract.schema.json` and formally adopt the accepted Tier C exception into `shared/format-contracts/policy/family-packs/layered_raster_archive.yaml` — deliberately NOT done this cycle to avoid a schema-blind edit to a machine-validated governance file under time pressure. (2) Pursue PhotoDemon as a real second producer for the 4 nonseparable-blend single-producer operations. (3) Honor the re-evaluation taskcard's own trigger conditions. |
+
+<details><summary>Third-continuation history (2026-08-12, prior cycle — preserved, not superseded)</summary>
+
+| Field | Value |
+|---|---|
 | Normative/policy source | `POL-LRA-COMPOSITE-01` — rule_text names the "**complete** compositing-operation inventory"; release gate says "**All** claimed operations match pinned rendering references within declared tolerances" |
 | Blocker classification | Same 9/20 stay closed. For the remaining 11, this cycle specifically tested whether a 3rd producer could close them — see below. |
 | Work completed this cycle (2026-08-12, third continuation) | Resolved "what counts as an independent producer" via a fresh, governed review (concluded: separate implementation with zero shared code, not installability as a desktop app — a library can qualify). Executed 2 new candidates: **GIMP 3.x** (current, 3.0.4) — sourced its own live master-branch OpenRaster plugin directly, confirmed the 4 Porter-Duff operators remain entirely unmapped even in current GIMP, and empirically **confirmed a real MISMATCH** for `svg:plus` (GIMP's own current "Addition" mode still does not implement true Porter-Duff Lighter — a disclosed GIMP 3.0.4 defect, not a format-factory issue). **jsora** (InkLab, npm 0.3.0) — independently reviewed and confirmed to QUALIFY as a full independent producer, but its own rendering pipeline produced spatially-incorrect output for every multi-layer scene tested in a real, pinned, official headless-Chromium+WebGL2 environment, confirmed via 3 independent diagnostics that ruled out both this project's own driver and the specific composite-op as the cause — a genuine execution/environment feasibility blocker, not a policy failure. Also found and disclosed (not patched) a second, distinct jsora defect: absolute ZIP member paths in its own native export, refused by format-factory's own reader. Evaluated 4 bounded fallbacks (MyPaint, Scribus, Drawpile, Pinta) via source-level research only; rejected all 4 with cited reasons — most substantively, Drawpile's own live wiki source-confirms it cannot help with 9 of the 10 needed single-producer operations. See `tools/ora/producer_harness/gimp3/PROVENANCE-gimp3-svg-plus-spike-2026-08-12.md`, `tools/ora/producer_harness/jsora/PROVENANCE-jsora-feasibility-spike-2026-08-12.md`, and `tools/ora/producer_harness/bounded-fallback-candidates-2026-08-12.md` for full accounts. |
@@ -81,6 +92,8 @@ not touched this continuation.)
 | Completion criteria | Producer agreement for the remaining 11 operations, or a reviewed policy amendment narrowing the gate's own scope |
 | Responsible lane | Future session |
 | Human action unavoidable? | No — either a further, broader producer search, an upstream bug report to jsora (whose own compositing math was independently verified correct, only its rendering pipeline under headless/software WebGL2 failed), or a policy amendment, all fully within agent capability |
+
+</details>
 
 ## ORA-BASELINEASSET-001 — `SAL-ORA-OBL-52746ABC41B3E790` — **CLOSED (via a traced, independently-reviewed amendment)**
 
