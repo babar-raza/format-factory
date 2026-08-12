@@ -1,0 +1,41 @@
+{
+  "schema": "ora-producer-harness/composite-third-candidate-attempt-summary@1",
+  "result": "NO_NEW_COVERAGE",
+  "candidates_attempted": [
+    {
+      "candidate": "GIMP 3.0.4 (minidocks/gimp, Alpine 3.23.5)",
+      "target_operation": "svg:plus",
+      "result": "CONFIRMED_MISMATCH",
+      "path": "tools/ora/producer_harness/gimp3/PROVENANCE-gimp3-svg-plus-spike-2026-08-12.md"
+    },
+    {
+      "candidate": "jsora 0.3.0 (InkLab, npm)",
+      "target_operations": [
+        "svg:plus",
+        "svg:overlay",
+        "svg:dst-in"
+      ],
+      "result": "FEASIBILITY_SPIKE_FAILED",
+      "path": "tools/ora/producer_harness/jsora/PROVENANCE-jsora-feasibility-spike-2026-08-12.md"
+    }
+  ],
+  "bounded_fallbacks_evaluated": [
+    "MyPaint (already rejected, prior session)",
+    "Scribus (presumptive reject, wrong tool class)",
+    "Drawpile (source-confirmed reject for 9/10 ops, presumptive for svg:plus)",
+    "Pinta (reject, no automation surface + unconfirmed coverage)"
+  ],
+  "fallback_report_path": "tools/ora/producer_harness/bounded-fallback-candidates-2026-08-12.md",
+  "independent_reviews": [
+    {
+      "subject": "independent-producer policy interpretation + jsora qualification",
+      "verdict": "jsora qualifies as full independent producer"
+    },
+    {
+      "subject": "GIMP 3.x / jsora / bounded-fallback findings",
+      "verdict": "ACCEPTED_WITH_CHANGES, 4 repairs applied"
+    }
+  ],
+  "coverage_change": "none -- still 9 COVERED, 10 COVERED_SINGLE_PRODUCER, 1 NOT_COVERED (Lighter/svg:plus) of 20 registered operations",
+  "not_yet_evaluated": "a fifth, not-yet-identified independent OpenRaster implementation may exist; not searched for exhaustively this cycle"
+}
