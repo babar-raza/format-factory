@@ -110,7 +110,7 @@ clear signal of the mistake, not a real result), exported via
 |---|---|---|---|
 | dest-only (5,5) | (230,60,40,153) | (230,60,40,153) | exact |
 | source-only (25,25) | **(0,0,0,0)** | (40,120,230,128)† | **MISMATCH** |
-| overlap (16,16) | (231,104,173,**153**) | (143,87,127,**255**) | **MISMATCH** |
+| overlap (16,16) | (231,104,173,**153**) | (158,96,139,**255**)‡ | **MISMATCH** |
 | transparent (2,28) | (0,0,0,0) | (0,0,0,0) | exact |
 
 † the source layer's own straight (non-premultiplied) RGBA, unchanged —
@@ -124,6 +124,23 @@ review that re-ran `composite(Pixel(0,0,0,0), source, 'Normal',
 'Lighter')` directly and got `(40,120,230,128)`; corrected here rather
 than left standing. The MISMATCH verdict itself is unaffected — GIMP's
 real `(0,0,0,0)` output matches neither the wrong nor the corrected value.
+
+‡ **Second correction (2026-08-12, fourth continuation)**: the original
+value shown here, `(143,87,127,255)`, was itself computed by a genuinely
+buggy `composite_oracle.py` — `composite_porter_duff()` divided by the
+Lighter operator's own *unclamped* combined alpha (1.102, since
+0.502+0.6 > 1) when unpremultiplying color, rather than clamping to 1.0
+first. Found by comparing against GEGL's own real, independent
+`svg:plus` implementation (`operations/generated/plus.c`), whose real
+output for this identical fixture, `(158,96,139,255)`, did not match
+this oracle's own prior output; hand-verified against the Porter & Duff
+(1984) formula directly and confirmed GEGL was right. Fixed in
+`composite_oracle.py` (see its own updated docstring for the full
+account) with 3 new regression tests
+(`tests/tools/test_ora_composite_oracle.py`). The `MISMATCH` verdict for
+GIMP 3.0.4 is unaffected either way (GIMP's real alpha=153 matches
+neither 255 value); this correction affects only the cited "expected"
+RGB figures, not any obligation-level conclusion.
 
 **Root cause — confirmed for the RGB channels, genuinely unexplained for
 alpha; stated precisely rather than claimed as fully solved**: GIMP's own

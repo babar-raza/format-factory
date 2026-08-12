@@ -1,0 +1,34 @@
+{
+  "schema": "ora-composite-001/gegl-reference-oracle-comparison@1",
+  "date": "2026-08-12",
+  "gegl_version": "1:0.4.48-2.4build2",
+  "container_image": "ora-harness-gegl:pinned-2026-08-12b",
+  "container_digest": "sha256:c702bb576395cded7bd0cc50e143a4eb6ef1de78903e1fa622e3f360e6f31bf3",
+  "invocation_pattern": "gegl <dest.png> -o <result.png> -- <op> srgb=true aux=[load path=<src.png>]",
+  "porter_duff_family": {
+    "fixture": "tools/ora/producer_harness/composite_matrix.py::PORTER_DUFF_SCENES",
+    "overlap_point": [16, 16],
+    "results": [
+      {"op": "svg:plus", "format_factory": [158, 96, 139, 255], "oracle": [158, 96, 139, 255], "gegl": [158, 96, 139, 255], "verdict": "ALL_MATCH"},
+      {"op": "svg:dst-in", "format_factory": [230, 60, 40, 77], "oracle": [230, 60, 40, 77], "gegl": [230, 60, 40, 77], "verdict": "ALL_MATCH"},
+      {"op": "svg:dst-out", "format_factory": [230, 60, 40, 76], "oracle": [230, 60, 40, 76], "gegl": [230, 60, 40, 76], "verdict": "ALL_MATCH"},
+      {"op": "svg:src-atop", "format_factory": [135, 90, 135, 153], "oracle": [135, 90, 135, 153], "gegl": [135, 90, 135, 153], "verdict": "ALL_MATCH"},
+      {"op": "svg:dst-atop", "format_factory": [154, 84, 116, 128], "oracle": [154, 84, 116, 128], "gegl": [154, 84, 116, 128], "verdict": "ALL_MATCH"}
+    ],
+    "evidence_classification": "REFERENCE_ORACLE_ONLY",
+    "usable_for_tier_c": true
+  },
+  "separable_blend_family": {
+    "fixture": "tools/ora/producer_harness/composite_matrix.py::BLEND_SCENES (composite-blend-overlay, composite-blend-soft-light)",
+    "overlap_point": [4, 4],
+    "results": [
+      {"op": "svg:overlay", "format_factory": [44, 175, 76, 255], "oracle": [44, 175, 76, 255], "gegl": [136, 111, 112, 255], "verdict": "MISMATCH_GEGL_DEFECTIVE"},
+      {"op": "svg:soft-light", "format_factory": [56, 181, 77, 255], "oracle": [56, 181, 77, 255], "gegl": [4, 219, 77, 255], "verdict": "MISMATCH_GEGL_DEFECTIVE"}
+    ],
+    "root_cause": "operations/generated/overlay.c and hard-light.c share an ELSE-branch premultiplied formula 'aA*aB - 2*(aB-cB)*(aA-cA) + cA*(1-aB) + cB*(1-aA)' that does not algebraically reduce to the W3C Compositing and Blending Level 1 spec's own normative combined formula (section 10, https://www.w3.org/TR/compositing-1/#blending). Confirmed via two independent fully-opaque numeric sanity checks not derived from the project's own fixture: (Cb=0.3,Cs=0.3) expected 0.18 vs GEGL 0.02; (Cb=0.2,Cs=0.9) expected 0.36 vs GEGL 0.84. soft-light.c spot-checked the same way (Cb=0.1,Cs=0.2, both opaque) expected 0.046 vs GEGL 0.154 -- same defect class.",
+    "format_factory_verdict": "CONFIRMED CORRECT against the W3C spec's own normative text, independently of GEGL",
+    "evidence_classification": "EXCLUDED -- GEGL is not usable as a reference oracle for this operator family",
+    "usable_for_tier_c": false,
+    "out_of_scope_note": "svg:overlay and svg:soft-light are not among ORA-COMPOSITE-001's 11 deficient operations; no format-factory source change required or made."
+  }
+}
