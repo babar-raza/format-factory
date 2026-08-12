@@ -175,16 +175,29 @@ def apply_mutation(source: str, mutation: dict) -> str:
     return ast.unparse(new_tree)
 
 
-def run_tests(test_dir: str, timeout: int = 60, deselect: tuple[str, ...] = ()) -> bool:
-    """Run pytest on test_dir. Returns True if tests pass (mutation survived)."""
-    command = [VENV_PYTEST, test_dir, "-x", "-q", "--tb=no", "--no-header", "--timeout=30"]
+def run_tests(
+    test_dir: str,
+    timeout: int = 60,
+    deselect: tuple[str, ...] = (),
+    *,
+    pytest_bin: str = VENV_PYTEST,
+    cwd: Path = REPO_ROOT,
+) -> bool:
+    """Run pytest on test_dir. Returns True if tests pass (mutation survived).
+
+    ``pytest_bin``/``cwd`` default to this repo's own venv/root (unchanged
+    behavior for every existing FF-internal caller) but can be overridden to
+    point at an externally-checked-out standalone library's own venv/root —
+    see ``--repo-root``/``--pytest-bin`` on the CLI.
+    """
+    command = [pytest_bin, test_dir, "-x", "-q", "--tb=no", "--no-header", "--timeout=30"]
     for selector in deselect:
         command += ["--deselect", selector]
     try:
         result = subprocess.run(
             command,
             capture_output=True, text=True, timeout=timeout,
-            cwd=str(REPO_ROOT),
+            cwd=str(cwd),
         )
         return result.returncode == 0
     except subprocess.TimeoutExpired:
@@ -212,9 +225,15 @@ class BaselineNotGreen(RuntimeError):
     """
 
 
-def assert_baseline_green(test_dir: str, deselect: tuple[str, ...] = ()) -> None:
+def assert_baseline_green(
+    test_dir: str,
+    deselect: tuple[str, ...] = (),
+    *,
+    pytest_bin: str = VENV_PYTEST,
+    cwd: Path = REPO_ROOT,
+) -> None:
     """Refuse to run a campaign whose result could not be anything but 100%."""
-    if not run_tests(test_dir, timeout=600, deselect=deselect):
+    if not run_tests(test_dir, timeout=600, deselect=deselect, pytest_bin=pytest_bin, cwd=cwd):
         raise BaselineNotGreen(
             f"{test_dir} does not pass on unmutated source"
             + (f" (with {len(deselect)} deselected)" if deselect else "")
@@ -228,14 +247,22 @@ def run_mutation_testing(
     test_dir: str,
     max_mutations: int = 50,
     deselect: tuple[str, ...] = (),
+    *,
+    pytest_bin: str = VENV_PYTEST,
+    cwd: Path = REPO_ROOT,
 ) -> dict:
-    """Run mutation testing on target module."""
+    """Run mutation testing on target module.
+
+    ``pytest_bin``/``cwd`` default to this repo's own venv/root — every
+    existing caller is unaffected. Pass overrides to run this against an
+    externally-checked-out standalone library's own venv/root instead.
+    """
     target = Path(target_path)
     original_source = target.read_text(encoding="utf-8")
 
     # Before touching the source: prove the suite can pass. Without this the
     # kill rate is unfalsifiable. See BaselineNotGreen.
-    assert_baseline_green(test_dir, deselect)
+    assert_baseline_green(test_dir, deselect, pytest_bin=pytest_bin, cwd=cwd)
 
     mutations = collect_mutations(original_source)
     print(f"Found {len(mutations)} possible mutations in {target.name}")
@@ -268,7 +295,7 @@ def run_mutation_testing(
         target.write_text(mutated_source, encoding="utf-8")
 
         try:
-            tests_pass = run_tests(test_dir, deselect=deselect)
+            tests_pass = run_tests(test_dir, deselect=deselect, pytest_bin=pytest_bin, cwd=cwd)
             if tests_pass:
                 mut_record["status"] = "survived"
                 survived += 1
@@ -320,14 +347,43 @@ def main():
             "every use in the gate document."
         ),
     )
+    parser.add_argument(
+        "--repo-root",
+        default=str(REPO_ROOT),
+        help=(
+            "Working directory to run pytest from. Defaults to this repo's own root "
+            "(unchanged behavior). Pass an externally-checked-out standalone library's "
+            "root to mutation-test it in place instead."
+        ),
+    )
+    parser.add_argument(
+        "--pytest-bin",
+        default=None,
+        help=(
+            "pytest executable to invoke. Defaults to this repo's own .venv pytest, or "
+            "<repo-root>/.venv/Scripts/pytest.exe when --repo-root is overridden and "
+            "--pytest-bin is not given explicitly."
+        ),
+    )
     args = parser.parse_args()
+
+    repo_root = Path(args.repo_root)
+    pytest_bin = args.pytest_bin or str(repo_root / ".venv" / "Scripts" / "pytest.exe")
 
     print(f"Mutation testing: {args.target}")
     print(f"Test suite: {args.tests}")
+    if repo_root != REPO_ROOT:
+        print(f"Repo root override: {repo_root}")
+        print(f"pytest binary: {pytest_bin}")
 
     try:
         result = run_mutation_testing(
-            args.target, args.tests, args.max_mutations, tuple(args.deselect)
+            args.target,
+            args.tests,
+            args.max_mutations,
+            tuple(args.deselect),
+            pytest_bin=pytest_bin,
+            cwd=repo_root,
         )
     except BaselineNotGreen as exc:
         print(f"\nBASELINE NOT GREEN -- refusing to report a kill rate:\n  {exc}", file=sys.stderr)
