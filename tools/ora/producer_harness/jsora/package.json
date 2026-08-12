@@ -1,0 +1,9 @@
+{
+  "name": "ora-jsora-evidence-driver",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Reproduction recipe for the jsora feasibility spike (see PROVENANCE-jsora-feasibility-spike-2026-08-12.md). Pins the exact jsora and playwright versions used; jsora.min.js itself is NOT committed here (a 1.3MB third-party dist bundle) -- `npm pack jsora@0.3.0` reproduces it byte-for-byte, independently checksum-verifiable against the npm registry's own reported integrity hash, matching this repo's own existing convention of pinning Docker image digests rather than committing pulled binaries.",
+  "dependencies": {
+    "playwright": "1.62.1"
+  }
+}
