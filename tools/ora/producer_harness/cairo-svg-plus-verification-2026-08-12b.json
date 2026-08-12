@@ -1,0 +1,17 @@
+{
+  "schema": "ora-composite-001/cairo-reference-oracle-verification@1",
+  "date": "2026-08-12",
+  "trigger": "Independent Section-11 policy review flagged that Tier C's own 'at least two implementations where possible' language was unsatisfied for svg:plus (only GEGL confirmed at review time) and identified Cairo's CAIRO_OPERATOR_ADD as a documented, easily-obtainable second candidate.",
+  "library": "cairo (via pycairo 1.29.1 real bindings, pip-installed)",
+  "cairo_version": "1.29.1",
+  "operator_used": "cairo.OPERATOR_ADD",
+  "documentation_basis": "cairographics.org/operators/ documents ADD as the Porter-Duff 'plus' compositing operator",
+  "fixture": "tools/ora/producer_harness/composite_matrix.py::PORTER_DUFF_SCENES (composite-porterduff-lighter): destination (230,60,40) alpha 153/255 at (0,0)-(20,20); source (40,120,230) alpha 128/255 at (12,12)-(32,32), 32x32 canvas",
+  "method": "Real cairo.ImageSurface(FORMAT_ARGB32) + cairo.Context; destination painted via OPERATOR_OVER, source painted via OPERATOR_ADD, both via set_source_rgba+rectangle+fill so Cairo's own code performs premultiplication; result read back from the surface's own raw premultiplied buffer and unpremultiplied for comparison -- no part of the compositing math was computed by this project.",
+  "overlap_point": [16, 16],
+  "result_straight_rgba": [158, 96, 139, 255],
+  "expected": [158, 96, 139, 255],
+  "verdict": "EXACT_MATCH",
+  "independence": "Cairo (freedesktop.org, originally Carl Worth/Keith Packard) shares no authorship or codebase with GEGL (GNOME), jsora/pyora (InkLab), blendmodes (FHPythonUtils/Paul Jewell), GIMP, Krita, or format-factory.",
+  "producer_status": "NONE -- pure 2D graphics/compositing library, zero ORA-container awareness, classified REFERENCE_ORACLE_ONLY per this project's own independent-producer policy interpretation, consistent with GEGL and blendmodes."
+}

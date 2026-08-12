@@ -20,6 +20,8 @@ these searches were excluded on sight for that reason, not re-evaluated.
 | **pyora** (via LayeredImage) | `gitlab.com/inklabapp/pyora` | MIT | active (last activity 2025-07-12) | real reader/writer, delegated to by `FHPythonUtils/LayeredImage` | Exposes all `composite_op` strings including all 5 Porter-Duff — but see lineage | **NOT independent**: npm registry confirms jsora's own package author/maintainer is `InkLab` / `inklabapp@gmail.com` — the exact same organization as pyora's own GitLab namespace `inklabapp`. Same author's two ports (JS + Python) of the same underlying design. | **REJECTED on lineage** per directive Section 8's explicit instruction not to treat same-author ports as independent, before any container/render work was attempted |
 | **blendmodes** (`FHPythonUtils/BlendModes`, PyPI `blendmodes`) | `github.com/FHPythonUtils/BlendModes` | MIT | active (PyPI version `2025`) | **none** — pure pixel-math library, no ORA container awareness at all (same non-producer classification as GEGL, decided up front) | `destin`/`destout`/`srcatop`/`destatop` implement the 4 non-Lighter Porter-Duff operators with explicit Porter-Duff-coefficient docstrings (`Fa=0; Fb=as` etc.); `additive` exists as an RGB blend function name but is NOT wired into the module's own special-cased `alphaFunc` dict, so `BlendType.ADDITIVE` (svg:plus) falls through to the generic Source-Over alpha formula instead of the correct clamped-additive one — a real, disclosed bug distinct from GEGL's own (GEGL's plus.c is correct; blendmodes' own ADDITIVE alpha handling is not) | credited lineage: "Paul Jewell (2019), implementing blending from the Open Raster Image Spec" — independent of jsora/pyora (InkLab), GEGL (GNOME), GIMP, Krita, and format-factory | **ACCEPTED as `REFERENCE_ORACLE_ONLY`** for `svg:dst-in`, `svg:dst-out`, `svg:src-atop`, `svg:dst-atop` only. Installed via real `pip install blendmodes` (PyPI, not vendored/reimplemented) and run against the established discriminating fixture: all 4 produce pixel-exact matches with format-factory/`composite_oracle.py`/GEGL. **EXCLUDED for `svg:plus`** — its own real Source-Over-alpha bug there means it cannot corroborate that operator (though it independently reinforces this whole investigation's own finding that Lighter/svg:plus's additive-alpha semantics are an easy, recurring mistake across unrelated codebases: this project's own former bug, GIMP's own semantic mismatch, and now blendmodes'). |
 
+| **Cairo** (`cairographics.org`, via `pycairo` 1.29.1 real bindings) | `gitlab.freedesktop.org/cairo/cairo` | LGPL-2.1/MPL-1.1 dual | active, foundational Linux graphics library (freedesktop.org, originally Carl Worth/Keith Packard — no shared authorship with GEGL/GNOME, jsora/pyora (InkLab), blendmodes (FHPythonUtils), or format-factory) | **none** — pure 2D graphics/compositing library, no ORA-container awareness (same non-producer classification as GEGL/blendmodes, decided before any evaluation) | `CAIRO_OPERATOR_ADD` documented (`cairographics.org/operators/`) as the Porter-Duff "plus" operator | independent of every other candidate in this ledger | **ACCEPTED as `REFERENCE_ORACLE_ONLY`** for `svg:plus` specifically. Installed via real `pip install pycairo` (not vendored/reimplemented) and run against the established discriminating fixture using Cairo's own real `ImageSurface`/`Context`/`OPERATOR_ADD` API (source premultiplication and unpremultiplication both performed by Cairo's own code, not hand-computed by this project): produces `(158,96,139,255)` at the overlap point, an EXACT match with format-factory, `composite_oracle.py`, and GEGL. This is the **second** independent, differently-authored implementation confirming `svg:plus`, closing the single-confirmation gap flagged by an independent policy review (below) — found and verified in direct response to that review, not before it. |
+
 ## Net effect on Tier-C-relevant evidence (directive Section 11 preparatory note, not itself a policy determination)
 
 For `svg:dst-in`, `svg:dst-out`, `svg:src-atop`, `svg:dst-atop`: TWO
@@ -30,12 +32,13 @@ independently-structured `composite_oracle.py`. This is the strongest
 evidentiary position any of the 11 deficient operations has reached this
 cycle.
 
-For `svg:plus`: ONE independent implementation (GEGL) agrees pixel-exactly.
-blendmodes was evaluated and found to have its own unrelated defect for
-this specific operator, so it cannot serve as a second confirming
-reference here — disclosed, not hidden, per directive Section 5's "avoid
-carrying speculative explanations" instruction applied to evidence
-selection as well as root-causing.
+For `svg:plus`: **TWO** independent implementations (GEGL and, added after
+an independent policy review requested a second confirmation, Cairo's
+own `OPERATOR_ADD`) agree pixel-exactly. blendmodes was evaluated and
+found to have its own unrelated defect for this specific operator, so it
+cannot serve as a third confirming reference — disclosed, not hidden, per
+directive Section 5's "avoid carrying speculative explanations"
+instruction applied to evidence selection as well as root-causing.
 
 For `svg:overlay`/`svg:soft-light`: GEGL was found defective for this
 family (see its own audit doc) and is excluded; no second reference

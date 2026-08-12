@@ -15,6 +15,7 @@ requiring its own authorization, not granted here.
 | `03-gimp3-svg-plus-semantic-mismatch.md` | GIMP 3.0.4 | Addition layer-mode does not conform to Porter-Duff Lighter |
 | `04-gimp3-missing-version-attribute.md` | GIMP 3.0.4 | exported `<image>` element omits the required `version` attribute |
 | `05-gegl-piecewise-blend-formula-defect.md` | GEGL 0.4.48 | `svg:overlay`/`svg:hard-light`/`gegl:soft-light` premultiplied reformulation does not match the W3C spec |
+| `06-blendmodes-additive-alpha-formula.md` | blendmodes (PyPI, 2025) | `BlendType.ADDITIVE` uses the Source-Over alpha formula instead of the correct clamped-additive one |
 
 Each package includes: a minimal fixture reference (pointing to the
 already-committed evidence, not duplicating binary content), the exact
