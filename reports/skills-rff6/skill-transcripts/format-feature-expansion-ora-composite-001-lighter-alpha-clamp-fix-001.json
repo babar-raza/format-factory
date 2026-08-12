@@ -1,0 +1,65 @@
+{
+  "schema": "skills-first/transcript@1",
+  "skill_id": "format-feature-expansion",
+  "task_id": "TC_FF6_ORA_COMPOSITE_001_LIGHTER_ALPHA_CLAMP_FIX_001",
+  "format_id": "ora",
+  "profile_id": "0.0.4",
+  "capability_id": "ORA-COMPOSITE-001",
+  "obligation_id": "SAL-ORA-OBL-2CC875865800D528",
+  "affected_layer": "src/python/ora/src/format_factory/ora",
+  "goal": "Fix a real compositing defect (Lighter/svg:plus produces incorrect, too-dark RGB output whenever the combined alpha of source+backdrop exceeds 1.0, because the unclamped combined alpha was used directly as the unpremultiply divisor) found during ORA-COMPOSITE-001's own candidate-discovery work this cycle -- discovered by cross-checking format-factory's own render() output against GEGL's real, independent, spec-derived svg:plus implementation (operations/generated/plus.c).",
+  "obligation_confirmed_current": true,
+  "obligation_selection_basis": "Discovered mid-flow while evaluating GEGL as a candidate independent-implementation reference for ORA-COMPOSITE-001's own remaining evidence gap; the discrepancy was between format-factory's own render() output and GEGL's real output, not a fixture or GEGL defect -- confirmed by hand-verifying both against the Porter & Duff (1984) formula directly.",
+  "characterization": {
+    "affected_behavior": "_composite_layer_onto's own Porter-Duff branch (non-Source-Over operators), specifically new_a = fa*alpha_s + fb*alpha_b stored unclamped into the premultiplied canvas, later divided into at output time by _canvas_to_straight_rgba8.",
+    "public_callers_enumerated": [
+      "format_factory.ora.render.render() (via _render_node -> _composite_layer_onto)",
+      "format_factory.ora.render.render_document()",
+      "format_factory.ora.render.W3CCompositingRenderer.render()",
+      "format_factory.ora.render.generate_baseline_assets()"
+    ],
+    "caller_blast_radius": "All public rendering entry points share this one private compositing primitive; no public API signature changed. Only the Lighter (svg:plus) operator is affected -- the other 5 registered Porter-Duff operators (Destination In/Out, Source/Destination Atop, and the already-separate Source Over branch) each algebraically stay within alpha in [0,1] for any valid input, confirmed analytically and by the existing, unaffected regression tests for those operators (test_destination_in_clears_..., test_destination_atop_clears_..., test_destination_out_and_source_atop_correctly_...)."
+  },
+  "failing_test_first": {
+    "tests": [
+      "tests/python/ora/test_obligation_render_and_compositing.py::test_lighter_clamps_combined_alpha_before_unpremultiplying_color"
+    ],
+    "observed_failing_before_fix": true,
+    "failure_mode": "AssertionError: real render() output for the canonical Lighter discriminating fixture's own overlap point was (143,87,127,255), not the correct (158,96,139,255) independently confirmed via GEGL's own real compositing library and hand-verification against Porter & Duff (1984)."
+  },
+  "contrast_tests": {
+    "tests": [
+      "tests/python/ora/test_obligation_render_and_compositing.py::test_destination_in_clears_the_destination_outside_the_source_layers_own_bounds",
+      "tests/python/ora/test_obligation_render_and_compositing.py::test_destination_atop_clears_the_destination_outside_the_source_layers_own_bounds",
+      "tests/python/ora/test_obligation_render_and_compositing.py::test_destination_out_and_source_atop_correctly_leave_destination_unchanged_outside_source_bounds"
+    ],
+    "purpose": "Proves the fix (clamping new_a and the color channels in the Porter-Duff branch) does not affect the 3 already-correct sibling operators whose own alpha never exceeds 1.0 -- all 3 still pass unchanged."
+  },
+  "root_cause": "Lighter is the only one of the 6 registered Porter-Duff operators whose own Fa*alpha_s + Fb*alpha_b combined-alpha sum can genuinely exceed 1.0 (Fa=Fb=1 for Lighter, so combined alpha is a true additive sum, not a Source-Over-shaped or single-product formula like the other 5). _composite_layer_onto stored this UNCLAMPED value directly into the premultiplied canvas's own alpha channel, and _canvas_to_straight_rgba8 later divided premultiplied color by this unclamped value when converting to straight RGBA -- producing mathematically incorrect (too-dark) color whenever the sum exceeded 1.0. The final _clamp255() integer clamp gave no visible sign anything was wrong, since the resulting wrong value still looked like a valid 0-255 number.",
+  "fix": "Clamp new_a to min(fa*alpha_s + fb*alpha_b, 1.0) in the Porter-Duff branch, and additionally clamp each premultiplied color channel to min(new_r, new_a) (etc.), matching GEGL's own real implementation's own CLAMP(cA+cB, 0, aD) approach exactly -- keeps the canvas a physically valid premultiplied state at every intermediate compositing step, not merely correct at final output.",
+  "changed_paths": [
+    "src/python/ora/src/format_factory/ora/render.py",
+    "tests/python/ora/test_obligation_render_and_compositing.py"
+  ],
+  "regression_tests": {
+    "focused_result": "4 passed (1 new + 3 contrast/sibling tests)",
+    "full_ora_suite_result": "446 passed, 0 failed (445 before this fix's own 1 new test)"
+  },
+  "typing_and_lint": {
+    "mypy": "clean (no new errors introduced by this change)",
+    "ruff": "clean"
+  },
+  "proof_inputs": {
+    "independent_reference": "GEGL 0.4 (real, independently-developed C library GIMP itself embeds; operations/generated/plus.c, code-generated from the W3C SVG 1.2 Compositing spec via svg-12-porter-duff.rb, authored by GIMP/GEGL core developers) -- invoked via the real, standalone `gegl` CLI tool (ora-harness-gegl:pinned-2026-08-12b, Ubuntu 24.04, apt package gegl), not reimplemented or approximated by this project.",
+    "discriminating_fixture": "tools/ora/producer_harness/composite_matrix.py::PORTER_DUFF_SCENES (the already-committed, already-independently-reviewed Lighter scene: destination (230,60,40) alpha 153/255 at (0,0)-(20,20); source (40,120,230) alpha 128/255 at (12,12)-(32,32), 32x32 canvas)"
+  },
+  "new_proof_nodes": [
+    "test_lighter_clamps_combined_alpha_before_unpremultiplying_color",
+    "tests/tools/test_ora_composite_oracle.py::test_lighter_clamps_combined_alpha_before_unpremultiplying",
+    "tests/tools/test_ora_composite_oracle.py::test_lighter_combined_alpha_is_clamped_in_the_stored_pixel_not_only_at_display_time",
+    "tests/tools/test_ora_composite_oracle.py::test_destination_in_alpha_never_exceeds_one_so_clamping_never_engages"
+  ],
+  "readiness_note": "Does not itself close SAL-ORA-OBL-2CC875865800D528 -- that obligation's own remaining gap is producer-evidence breadth across the full 20-operation registry. This transcript covers the compositor correctness fix and the parallel fix to this project's own composite_oracle.py test tool (which shared the identical bug class), plus their own regression proof. The obligation's own coverage-status determination for Lighter/svg:plus is tracked separately, re-evaluated using the now-corrected oracle.",
+  "next_queued_obligation": "SAL-ORA-OBL-2CC875865800D528 remains open pending full candidate-discovery/policy reconciliation (in progress, same session).",
+  "verdict": "PASS"
+}

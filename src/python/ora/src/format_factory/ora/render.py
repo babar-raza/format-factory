@@ -670,7 +670,32 @@ def _composite_layer_onto(
                 new_r = fa * sr + fb * rb
                 new_g = fa * sg + fb * gb
                 new_b = fa * sb + fb * bb
-                new_a = fa * alpha_s + fb * alpha_b
+                # Lighter is the only one of the 6 registered Porter-Duff
+                # operators whose own fa*alpha_s + fb*alpha_b combined
+                # alpha can exceed 1.0 (the other 5 each algebraically
+                # stay within [0,1] for any valid alpha_s/alpha_b -- the
+                # standard Source-Over identity, and Destination In/Out/
+                # Source Atop/Destination Atop each reduce to a single
+                # bounded product or a Source-Over-shaped sum). Found via
+                # cross-checking against GEGL's own real, independently-
+                # developed svg:plus implementation (operations/generated/
+                # plus.c, which computes aD = MIN(aA+aB, 1) and clamps
+                # color to that BEFORE it is ever used as a divisor):
+                # storing the UNCLAMPED sum here and dividing by it later
+                # in _canvas_to_straight_rgba8 silently produced incorrect
+                # (too-dark) RGB output whenever alpha_s+alpha_b > 1 --
+                # _clamp255()'s own final integer clamp gave no visible
+                # sign anything was wrong, since the wrong result still
+                # looked like a valid 0-255 value. Clamping both alpha and
+                # color here (not alpha alone) matches GEGL's own
+                # approach exactly and keeps the canvas itself a valid
+                # premultiplied state at every intermediate step, not
+                # merely correct at final output -- relevant if a further
+                # layer is later composited on top of this result.
+                new_a = min(fa * alpha_s + fb * alpha_b, 1.0)
+                new_r = min(new_r, new_a)
+                new_g = min(new_g, new_a)
+                new_b = min(new_b, new_a)
 
             canvas[ci], canvas[ci + 1], canvas[ci + 2], canvas[ci + 3] = (
                 new_r,

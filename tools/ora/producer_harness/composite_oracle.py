@@ -228,17 +228,39 @@ def composite_porter_duff(backdrop: Pixel, source: Pixel, operator: str) -> Pixe
     """Pure Porter-Duff compositing (Normal blend, i.e. Cm=Cs always) in
     premultiplied space (required -- Porter-Duff coefficients are only
     meaningful applied to premultiplied color), then converted back to
-    straight alpha for the final pixel value."""
+    straight alpha for the final pixel value.
+
+    BUG FIX (2026-08-12, fourth continuation): of the 6 registered
+    Porter-Duff operators, Lighter is the only one whose own
+    fa*alpha_s + fb*alpha_b sum can exceed 1.0 (Destination In/Out,
+    Source/Destination Atop, Source Over each algebraically stay within
+    [0,1] for any valid alpha_s/alpha_b -- confirmed analytically, not
+    assumed). This function used the UNCLAMPED sum directly as the
+    unpremultiply divisor, silently producing incorrect (too-dark)
+    straight RGB whenever alpha_s+alpha_b > 1 -- Pixel.rgba8()'s own
+    per-channel clamp masked this by clamping the DISPLAYED alpha to
+    255, hiding that the RGB channels had already been divided by the
+    wrong (too-large) value. Caught by comparing against GEGL's own
+    real, independent svg:plus implementation (operations/generated/
+    plus.c, which correctly computes aD = MIN(aA+aB, 1) and clamps
+    color to that BEFORE it is ever used as a divisor) -- GEGL's real
+    output for this obligation's own canonical Lighter fixture,
+    (158,96,139,255), did not match this function's own prior
+    (143,87,127,255), and hand-verifying both against the Porter & Duff
+    (1984) formula directly confirmed GEGL was right and this function
+    was wrong. Fixed by clamping out_a to 1.0 before using it as the
+    divisor, matching GEGL's own approach exactly."""
     fa, fb = porter_duff_coeffs(operator, source.a, backdrop.a)
     src_premult = (source.a * source.r, source.a * source.g, source.a * source.b)
     dst_premult = (backdrop.a * backdrop.r, backdrop.a * backdrop.g, backdrop.a * backdrop.b)
     out_premult = tuple(fa * src_premult[i] + fb * dst_premult[i] for i in range(3))
     out_a = fa * source.a + fb * backdrop.a
-    if out_a > 0.0:
-        out_rgb = tuple(v / out_a for v in out_premult)
+    out_a_clamped = min(out_a, 1.0)
+    if out_a_clamped > 0.0:
+        out_rgb = tuple(v / out_a_clamped for v in out_premult)
     else:
         out_rgb = (0.0, 0.0, 0.0)
-    return Pixel(out_rgb[0], out_rgb[1], out_rgb[2], out_a)
+    return Pixel(out_rgb[0], out_rgb[1], out_rgb[2], out_a_clamped)
 
 
 def composite(backdrop: Pixel, source: Pixel, blend_name: str, operator: str) -> Pixel:

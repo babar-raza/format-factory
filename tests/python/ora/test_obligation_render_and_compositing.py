@@ -467,6 +467,41 @@ def test_destination_out_and_source_atop_correctly_leave_destination_unchanged_o
         assert result.pixels == expected, f"{composite_op} unexpectedly changed outside source bounds"
 
 
+def test_lighter_clamps_combined_alpha_before_unpremultiplying_color() -> None:
+    """Lighter is the only one of the 6 registered Porter-Duff operators
+    whose own combined alpha (alpha_s + alpha_b) can exceed 1.0 (the
+    other 5 each algebraically stay within [0,1] for any valid input --
+    confirmed analytically, not assumed). render()'s own premultiplied-
+    canvas sweep stored this combined alpha UNCLAMPED and later divided
+    by it directly when converting back to straight color
+    (_canvas_to_straight_rgba8), silently producing incorrect (too-dark)
+    RGB output whenever alpha_s+alpha_b > 1 -- the final _clamp255() call
+    masked this by still producing a valid-looking 0-255 integer, giving
+    no visible sign anything was wrong.
+
+    Found by comparing against GEGL's own real, independent svg:plus
+    implementation (operations/generated/plus.c, a real, separately-
+    developed, spec-derived compositing library, not this project's own
+    code) via a real `gegl` CLI invocation against this obligation's own
+    canonical Lighter discriminating fixture -- GEGL's real output,
+    (158,96,139,255), did not match this renderer's own prior output,
+    (143,87,127,255); hand-verified against the Porter & Duff (1984)
+    formula directly and confirmed GEGL was right."""
+    destination = solid_rgba_png(20, 20, (230, 60, 40, 153))
+    source = solid_rgba_png(20, 20, (40, 120, 230, 128))
+    root = OraStack(
+        children=(
+            OraLayer(src="source.png", composite_op="svg:plus", x=12, y=12),
+            OraLayer(src="destination.png"),
+        )
+    )
+    result = render(
+        root, {"source.png": source, "destination.png": destination}, width=32, height=32
+    )
+    overlap_offset = (16 * 32 + 16) * 4
+    assert tuple(result.pixels[overlap_offset : overlap_offset + 4]) == (158, 96, 139, 255)
+
+
 # ── Isolation ────────────────────────────────────────────────────────────
 
 
