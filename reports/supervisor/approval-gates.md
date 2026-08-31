@@ -1,6 +1,6 @@
 # Approval Gates Classification
-Sprint ID: CERT-LAYER-HEAL-20260710
-Generated: 2026-07-13T18:12:34.500418
+Sprint ID: FF6-UBL-CHARGES-20260805
+Generated: 2026-08-05T11:08:20.902735
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions

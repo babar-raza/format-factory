@@ -115,24 +115,32 @@ def test_functions(path: Path) -> list[str]:
 
 def _existing_implemented_state(
     format_id: str,
-) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
+) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]], list[str]]:
     """Obligations already at ``implemented``, and the execution_evidence
     entries they reference, from the CURRENT evidence file -- empty dicts if
     none exists yet. Read once, before any recomputation, so a downgrade
-    can never happen even transiently."""
+    can never happen even transiently.
+
+    Returns (implemented_by_id, evidence_by_id, evidence_order) where
+    evidence_order is the list of evidence_id strings in the order they
+    appear in the existing file (used by build() to preserve ordering
+    across idempotent rebuilds).
+    """
     existing_path = EVIDENCE_DIR / f"{format_id}.yaml"
     if not existing_path.exists():
-        return {}, {}
+        return {}, {}, []
     existing = yaml.safe_load(existing_path.read_bytes().decode("utf-8")) or {}
     implemented_by_id = {
         row["obligation_id"]: row
         for row in existing.get("obligations") or []
         if row.get("status") == "implemented"
     }
+    evidence_entries = existing.get("execution_evidence") or []
     evidence_by_id = {
-        entry["evidence_id"]: entry for entry in existing.get("execution_evidence") or []
+        entry["evidence_id"]: entry for entry in evidence_entries
     }
-    return implemented_by_id, evidence_by_id
+    evidence_order = [entry["evidence_id"] for entry in evidence_entries]
+    return implemented_by_id, evidence_by_id, evidence_order
 
 
 def build(
@@ -149,8 +157,8 @@ def build(
     Existing ``implemented`` obligations are preserved verbatim unless
     ``allow_downgrade`` is set -- see the module docstring (FI-075/FI-078).
     """
-    preserved_implemented, preserved_evidence = (
-        {} if allow_downgrade else _existing_implemented_state(format_id)
+    preserved_implemented, preserved_evidence, existing_evidence_order = (
+        ({}, {}, []) if allow_downgrade else _existing_implemented_state(format_id)
     )
     map_path = MAP_DIR / f"{format_id}.yaml"
     register_path = REGISTER_DIR / f"{format_id}.yaml"
@@ -300,20 +308,37 @@ def build(
         )
 
     baseline_evidence_id = f"{format_id.upper()}-BASELINE-SUITE"
-    execution_evidence = [
-        {
-            "evidence_id": baseline_evidence_id,
-            "path": evidence_path,
-            "expected_result": evidence_result,
-            "granularity": "suite",
-            "truth_boundary": evidence_boundary,
-        }
-    ]
-    # FI-075/FI-078: any execution_evidence entry a preserved `implemented`
-    # row cites (typically a selector-granularity proof this script never
-    # generates on its own) must survive too, or the reconciler would reject
-    # the preserved row as citing an unknown evidence id.
-    for evidence_id in sorted(carried_evidence_ids - {baseline_evidence_id}):
+    baseline_entry = {
+        "evidence_id": baseline_evidence_id,
+        "path": evidence_path,
+        "expected_result": evidence_result,
+        "granularity": "suite",
+        "truth_boundary": evidence_boundary,
+    }
+    # Preserve the existing evidence order from the committed file so that
+    # rebuilds are idempotent.  Walk the existing order, emitting each entry
+    # in its original position (using the freshly-built baseline for the
+    # BASELINE-SUITE id, and the preserved copy for carried entries).
+    # Genuinely new entries (not in the existing order) are appended at the
+    # end in sorted order for determinism.
+    needed_ids = {baseline_evidence_id} | carried_evidence_ids
+    execution_evidence: list[dict[str, Any]] = []
+    emitted: set[str] = set()
+    for eid in existing_evidence_order:
+        if eid not in needed_ids:
+            continue
+        if eid == baseline_evidence_id:
+            execution_evidence.append(baseline_entry)
+        else:
+            carried = preserved_evidence.get(eid)
+            if carried is not None:
+                execution_evidence.append(carried)
+        emitted.add(eid)
+    # Emit any ids not already in the existing order.
+    if baseline_evidence_id not in emitted:
+        execution_evidence.insert(0, baseline_entry)
+        emitted.add(baseline_evidence_id)
+    for evidence_id in sorted(needed_ids - emitted):
         carried = preserved_evidence.get(evidence_id)
         if carried is not None:
             execution_evidence.append(carried)

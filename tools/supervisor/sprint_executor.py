@@ -86,6 +86,16 @@ _NON_OVERRIDABLE_STRUCTURAL_STOPS = {
     "STRUCTURAL_GOVBLOCK_MUST_BE_RESOLVED_FIRST",
 }
 
+# R16: Non-overridable session-boundary and state-protection stops.
+# These are NOT TRUE_EXTERNAL_GATEs but the Supreme Directive's generic
+# override does not apply to them.  See docs/authority-decision-record.md §9.
+_NON_OVERRIDABLE_SESSION_STOPS = {
+    "SESSION_MISMATCH",
+    "CHAT_ID_MISMATCH",
+    "POST_PLAN_TERMINAL",
+    "PLAN_COMPLETED_IN_SESSION",
+}
+
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -683,6 +693,11 @@ def cmd_run_loop(repo_root: Path, *, max_cycles: int = 12, dry_run: bool = False
                 print("The NEXT sprint must be the analytics-separation refactor for the")
                 print("blocking format (docs/code-quality/production-library-standard-v2.md")
                 print("§8.1) before product deepening may resume. Stopping this loop.")
+                return 1
+            elif reason.upper() in _NON_OVERRIDABLE_SESSION_STOPS:
+                print(f"\nHARD STOP: session-boundary stop — {reason}")
+                print("This is a non-overridable session/state-protection stop.")
+                print("See docs/authority-decision-record.md §9.")
                 return 1
             else:
                 # Supreme Directive: non-external-gate stops are overridden

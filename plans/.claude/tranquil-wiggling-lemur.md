@@ -401,3 +401,12 @@ describing a non-existent askpass mechanism. The fix is:
 
 No runtime code changes. No test file changes. No CI changes. The entire migration
 is documentation and binding-rule edits across 7 files + 1 new memory file.
+
+
+<!--plan_terminal_lock:
+  status: TERMINAL_CLOSED
+  locked_at: "2026-08-31T04:58:30.358483+00:00"
+  locked_by: "585f135481a6"
+  successor_required_for_future_changes: true
+  mutation_policy: "no further plan/hardening/execution writes"
+-->

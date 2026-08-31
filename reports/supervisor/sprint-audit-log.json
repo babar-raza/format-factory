@@ -1,6 +1,6 @@
 {
   "sprint_id": "phase3-gap-coverage-26-formats-2026-07-16",
-  "audit_completed_at": "2026-07-16T09:06:55.365195+00:00",
+  "audit_completed_at": "2026-08-11T20:26:08.009773+00:00",
   "taskcards_audited": [
     "TC-SFE3-002b",
     "TC-SFE3-002c",
@@ -40,6 +40,15 @@
       "findings_count": 0,
       "rework_items": [],
       "notes": "FIOP-FULL-001 TC-FIOP-011 closeout \u2014 18 FI issues disposed, LOC healed, V139 fixed"
+    },
+    {
+      "sprint_id": "TC-ES-001",
+      "consumed_at": "2026-08-10T19:42:03.046519+00:00",
+      "verdict": "ACCEPTED",
+      "grade": "PASS",
+      "findings_count": 0,
+      "rework_items": [],
+      "notes": "Extraction standard integration: 10 files committed (64c11db0af), 19/19 tests PASS, V_CERT_06 live PASS, negative control FAIL correctly"
     }
   ],
   "audit_consumed_at": "2026-07-16T22:52:00.000000",
@@ -50,6 +59,24 @@
       "verdict": "BLOCKED_MISSING_FINAL_VERDICT",
       "consumed_at": "2026-07-16T17:52:00.000000+00:00",
       "notes": "Prior sprint evidence-review (skills-first-sprint). Not related to SWB-2026-07-16 mission. Consumed to clear G4 guard."
+    },
+    {
+      "evidence_review_timestamp": "2026-08-10T19:42:03.046497+00:00",
+      "verdict": "ACCEPTED",
+      "consumed_at": "2026-08-10T19:42:03.046516+00:00",
+      "notes": "Extraction standard integration plan (objective-integrate-the-adaptive-manatee). TC-ES-001 CLOSED (commit 64c11db0af). TC-ES-002/003 CLOSED as deferred. Pre-existing GOV_BLOCKs acknowledged, out of plan scope."
+    }
+  ],
+  "findings_consumed": [
+    {
+      "finding_id": "FIND-GUARD-004",
+      "consumed_at": "2026-08-11T20:26:08.009791+00:00",
+      "resolution": "format-factory supervisor artifact, not related to libipynb extraction plan"
+    },
+    {
+      "finding_id": "FIND-REWORK-001",
+      "consumed_at": "2026-08-11T20:26:08.009794+00:00",
+      "resolution": "advisory rework items are pre-existing format-factory governance blocks, out of scope for libipynb extraction plan"
     }
   ]
 }

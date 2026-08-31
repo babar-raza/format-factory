@@ -2,7 +2,7 @@
   "format_id": "toml",
   "contract_id": "FC-TOML-V1",
   "contract_input_digests": {
-    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "fact_categories_sha256": "aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc",
     "family_pack_sha256": "5f390403816c87da2414f5c424759cb2f17882a71c019a9ade2d370391c33116",
     "qname_registry_sha256": "39e301cf61075bccb2bb1b6c4b8613cb6801b344c21cae40624e3b254047e6a7",
     "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -10,9 +10,9 @@
     "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
   },
   "product_source_present": true,
-  "function_count": 166,
+  "function_count": 163,
   "class_count": 10,
-  "test_file_count": 119,
+  "test_file_count": 116,
   "oracle_status": null,
   "capabilities": [
     {
@@ -31,16 +31,16 @@
         "update_section"
       ],
       "test_files": [
-        "tests/python/abw/test_abw_to_toml.py",
-        "tests/python/csv/test_csv_to_toml.py",
-        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
-        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
-        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
-        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
-        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
-        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
-        "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+        "tests/python/toml/test_mdr_toml_delete_key.py",
+        "tests/python/toml/test_pd_toml_update_section.py",
+        "tests/python/toml/test_ppr_toml_set_value_list_sections.py",
+        "tests/python/toml/test_r160_toml_diff_rename.py",
+        "tests/python/toml/test_r168_toml_update_section.py",
+        "tests/python/toml/test_r169_toml_deep_coverage.py",
+        "tests/python/toml/test_r200_toml_advanced_ops.py",
+        "tests/python/toml/test_toml_conveyor_deepening.py",
+        "tests/python/toml/test_toml_document_mutation.py",
+        "tests/python/toml/test_toml_gap_closure_batch.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -64,16 +64,16 @@
         "write_toml_str"
       ],
       "test_files": [
-        "tests/python/abw/test_abw_to_toml.py",
-        "tests/python/csv/test_csv_to_toml.py",
-        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
-        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
-        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
-        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
-        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
-        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
-        "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+        "tests/python/dogfood/test_dogfood_toml_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_toml_roundtrip_write_ndjson_export.py",
+        "tests/python/toml/test_broad_rnext_toml_codec.py",
+        "tests/python/toml/test_frfh_toml_get_value_merge_json.py",
+        "tests/python/toml/test_ppr_toml_set_value_list_sections.py",
+        "tests/python/toml/test_r167_toml_roundtrip_coverage.py",
+        "tests/python/toml/test_r169_toml_deep_coverage.py",
+        "tests/python/toml/test_r169_toml_has_section.py",
+        "tests/python/toml/test_r200_toml_advanced_ops.py",
+        "tests/python/toml/test_r200_toml_workflow.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -103,8 +103,6 @@
         "Value"
       ],
       "test_files": [
-        "tests/python/abw/test_abw_to_toml.py",
-        "tests/python/csv/test_csv_to_toml.py",
         "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
         "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
         "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
@@ -112,7 +110,9 @@
         "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
         "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
         "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py",
+        "tests/python/dogfood/test_dogfood_toml_remaining_analytics_gaps_ndjson_export.py",
+        "tests/python/toml/test_broad_rnext_toml_codec.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -135,16 +135,16 @@
         "probe_toml"
       ],
       "test_files": [
-        "tests/python/abw/test_abw_to_toml.py",
-        "tests/python/csv/test_csv_to_toml.py",
-        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
-        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
-        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
-        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
-        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
-        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
-        "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+        "tests/python/dogfood/test_dogfood_toml_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_toml_roundtrip_write_ndjson_export.py",
+        "tests/python/toml/test_broad_rnext_toml_codec.py",
+        "tests/python/toml/test_frfh_toml_get_value_merge_json.py",
+        "tests/python/toml/test_ppr_toml_set_value_list_sections.py",
+        "tests/python/toml/test_r1226_toml_classification_properties.py",
+        "tests/python/toml/test_r167_toml_roundtrip_coverage.py",
+        "tests/python/toml/test_r169_toml_deep_coverage.py",
+        "tests/python/toml/test_r169_toml_has_section.py",
+        "tests/python/toml/test_r200_toml_advanced_ops.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -165,16 +165,16 @@
         "roundtrip"
       ],
       "test_files": [
-        "tests/python/abw/test_abw_to_toml.py",
-        "tests/python/csv/test_csv_to_toml.py",
-        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
-        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
-        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
-        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
-        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
-        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
-        "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+        "tests/python/dogfood/test_dogfood_toml_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_toml_roundtrip_write_ndjson_export.py",
+        "tests/python/toml/test_broad_rnext_toml_codec.py",
+        "tests/python/toml/test_ppr_toml_set_value_list_sections.py",
+        "tests/python/toml/test_r157_toml_roundtrip_capability.py",
+        "tests/python/toml/test_r167_toml_roundtrip_coverage.py",
+        "tests/python/toml/test_r200_toml_advanced_ops.py",
+        "tests/python/toml/test_r200_toml_workflow.py",
+        "tests/python/toml/test_r266_toml_workflow.py",
+        "tests/python/toml/test_toml_document_mutation.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -201,16 +201,16 @@
         "toml_max_value_length"
       ],
       "test_files": [
-        "tests/python/abw/test_abw_to_toml.py",
-        "tests/python/csv/test_csv_to_toml.py",
-        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
-        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
-        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
-        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
-        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
         "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
-        "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+        "tests/python/dogfood/test_dogfood_toml_remaining_analytics_gaps_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_toml_zst_analytics_ndjson_export.py",
+        "tests/python/toml/test_r1282_toml_value_type_inventory_properties.py",
+        "tests/python/toml/test_r279_toml_max_value_nested_table.py",
+        "tests/python/toml/test_r285_toml_list_analytics.py",
+        "tests/python/toml/test_r288_toml_numeric_analytics.py",
+        "tests/python/toml/test_r290_toml_analytics_deepening.py",
+        "tests/python/toml/test_toml_gap_coverage.py",
+        "tests/python/toml/test_toml_table_analytics.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -240,8 +240,6 @@
         "Value"
       ],
       "test_files": [
-        "tests/python/abw/test_abw_to_toml.py",
-        "tests/python/csv/test_csv_to_toml.py",
         "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
         "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
         "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
@@ -249,7 +247,9 @@
         "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
         "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
         "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py",
+        "tests/python/dogfood/test_dogfood_toml_remaining_analytics_gaps_ndjson_export.py",
+        "tests/python/toml/test_broad_rnext_toml_codec.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -300,16 +300,16 @@
         "write_toml_str"
       ],
       "test_files": [
-        "tests/python/abw/test_abw_to_toml.py",
-        "tests/python/csv/test_csv_to_toml.py",
-        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
-        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
-        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
-        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
-        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
-        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
-        "tests/python/deepening/test_r292_toml_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r296_toml_fodp_pgm_pbm_deepening.py"
+        "tests/python/dogfood/test_dogfood_toml_roundtrip_write_ndjson_export.py",
+        "tests/python/toml/test_broad_rnext_toml_codec.py",
+        "tests/python/toml/test_frfh_toml_get_value_merge_json.py",
+        "tests/python/toml/test_ppr_toml_set_value_list_sections.py",
+        "tests/python/toml/test_r167_toml_roundtrip_coverage.py",
+        "tests/python/toml/test_r169_toml_deep_coverage.py",
+        "tests/python/toml/test_r200_toml_advanced_ops.py",
+        "tests/python/toml/test_r200_toml_workflow.py",
+        "tests/python/toml/test_r202_toml_advanced_ops.py",
+        "tests/python/toml/test_r266_toml_workflow.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [

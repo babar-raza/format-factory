@@ -1,0 +1,305 @@
+{
+  "format_id": "ppm",
+  "contract_id": "FC-PPM-V1",
+  "contract_input_digests": {
+    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "family_pack_sha256": "5811104a395d9a79ca5edf12d245ad9d699c7c1330f094884fe9d503dc0e0241",
+    "qname_registry_sha256": "ef6b907ba5fc81a4e98fd1e61fbe2642e322d259417ec357952473915b75e89b",
+    "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sal_facts_sha256": "c1d826015fa3823fbebae9af59f4b19698be04b4b13a73f6dda395b14c703f05",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+  },
+  "product_source_present": true,
+  "function_count": 141,
+  "class_count": 13,
+  "test_file_count": 123,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "PPM-CONVERT-001",
+      "category": "transform",
+      "level": "SHOULD",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "convert_ppm_to_pgm"
+      ],
+      "test_files": [
+        "tests/python/ppm/test_ppm_gap_closure_batch2.py",
+        "tests/python/ppm/test_ppm_gap_coverage.py",
+        "tests/python/ppm/test_ppm_to_pgm.py",
+        "tests/python/ppm/test_r90_ppm_to_pgm_dogfood.py",
+        "tests/python/ppm/test_r93_ppm_pgm_workflow.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "PPM-EDIT-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "set_pixel"
+      ],
+      "test_files": [
+        "tests/python/ppm/test_ppm_document_mutation.py",
+        "tests/python/ppm/test_ppm_gap_coverage.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "PPM-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "parse_ppm",
+        "parse_ppm_strict",
+        "save_to_file",
+        "write_ppm"
+      ],
+      "test_files": [
+        "tests/python/dogfood/test_dogfood_ppm_color_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ppm_image_pipeline.py",
+        "tests/python/dogfood/test_dogfood_ppm_pbm_parser_remaining_ndjson_export.py",
+        "tests/python/pbm/test_r86_pbm_to_ppm_dogfood.py",
+        "tests/python/pgm/test_r87_pgm_to_ppm_dogfood.py",
+        "tests/python/ppm/test_ppm_conveyor_deepening.py",
+        "tests/python/ppm/test_ppm_document_mutation.py",
+        "tests/python/ppm/test_ppm_gap_closure_batch.py",
+        "tests/python/ppm/test_ppm_gap_closure_batch2.py",
+        "tests/python/ppm/test_ppm_gap_coverage.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "PPM-MODEL-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Header",
+        "Pixmap",
+        "PpmDecodeError",
+        "PpmDocument",
+        "PpmError",
+        "PpmHeader",
+        "PpmImage",
+        "PpmInvalidHeaderError",
+        "PpmInvalidMagicError",
+        "PpmParseError",
+        "PpmPixmap",
+        "PpmSizeError",
+        "PpmWriteError"
+      ],
+      "test_files": [
+        "tests/python/dogfood/test_dogfood_ppm_image_pipeline.py",
+        "tests/python/dogfood/test_dogfood_ppm_image_structure_ndjson_export.py",
+        "tests/python/ppm/test_ppm_document_mutation.py",
+        "tests/python/ppm/test_ppm_domain_model.py",
+        "tests/python/ppm/test_ppm_gap_closure_batch.py",
+        "tests/python/ppm/test_ppm_gap_coverage.py",
+        "tests/python/ppm/test_ppm_gate7_fuzz_guard.py",
+        "tests/python/ppm/test_ppm_malformed_and_security.py",
+        "tests/python/ppm/test_ppm_parser.py",
+        "tests/python/ppm/test_ppm_spec_qname.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "PPM-PARSE-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "parse_ppm",
+        "parse_ppm_strict",
+        "probe_ppm"
+      ],
+      "test_files": [
+        "tests/python/dogfood/test_dogfood_ppm_color_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ppm_image_pipeline.py",
+        "tests/python/dogfood/test_dogfood_ppm_pbm_parser_remaining_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ppm_remaining2_analytics_ndjson_export.py",
+        "tests/python/pbm/test_r86_pbm_to_ppm_dogfood.py",
+        "tests/python/pgm/test_r87_pgm_to_ppm_dogfood.py",
+        "tests/python/ppm/test_ppm_conveyor_deepening.py",
+        "tests/python/ppm/test_ppm_document_mutation.py",
+        "tests/python/ppm/test_ppm_domain_model.py",
+        "tests/python/ppm/test_ppm_gap_closure_batch.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "PPM-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/deepening/test_r262_pgm_ppm_deepening.py",
+        "tests/python/deepening/test_r264_csv_pbm_pgm_ppm_deepening.py",
+        "tests/python/deepening/test_r271_pbm_pgm_ppm_csv_deepening.py",
+        "tests/python/deepening/test_r276_pbm_pgm_ppm_csv_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r297_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r300_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r304_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r308_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "PPM-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 2,
+      "product_symbols": [
+        "ppm_max_channel_sum",
+        "ppm_max_channel_value",
+        "ppm_max_dimension",
+        "ppm_max_pixel_brightness",
+        "ppm_min_max_brightness"
+      ],
+      "test_files": [
+        "tests/python/deepening/test_r271_pbm_pgm_ppm_csv_deepening.py",
+        "tests/python/deepening/test_r276_pbm_pgm_ppm_csv_deepening.py",
+        "tests/python/deepening/test_r316_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r332_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/dogfood/test_dogfood_ppm_image_structure_ndjson_export.py",
+        "tests/python/ppm/test_ppm_gap_closure_foss.py",
+        "tests/python/ppm/test_ppm_gap_coverage.py",
+        "tests/python/ppm/test_r232_ppm_dominant_channel.py",
+        "tests/python/ppm/test_r253_ppm_pure_black_max_channel_sum.py",
+        "tests/python/ppm/test_r254_ppm_geometry_analytics.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "PPM-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/deepening/test_r262_pgm_ppm_deepening.py",
+        "tests/python/deepening/test_r264_csv_pbm_pgm_ppm_deepening.py",
+        "tests/python/deepening/test_r271_pbm_pgm_ppm_csv_deepening.py",
+        "tests/python/deepening/test_r276_pbm_pgm_ppm_csv_deepening.py",
+        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
+        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r297_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r300_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r304_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r308_ppm_ndjson_sylk_dif_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "PPM-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "save_to_file",
+        "write_ppm"
+      ],
+      "test_files": [
+        "tests/python/dogfood/test_dogfood_ppm_image_pipeline.py",
+        "tests/python/pbm/test_r86_pbm_to_ppm_dogfood.py",
+        "tests/python/pgm/test_r87_pgm_to_ppm_dogfood.py",
+        "tests/python/ppm/test_ppm_conveyor_deepening.py",
+        "tests/python/ppm/test_ppm_document_mutation.py",
+        "tests/python/ppm/test_ppm_gap_closure_batch.py",
+        "tests/python/ppm/test_ppm_gap_closure_batch2.py",
+        "tests/python/ppm/test_ppm_gap_coverage.py",
+        "tests/python/ppm/test_ppm_gate7_fuzz_guard.py",
+        "tests/python/ppm/test_r100_pbm_ppm_pgm_chain.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 9,
+    "with_gap": 3,
+    "by_status": {
+      "NOT_STARTED": 2,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 7,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

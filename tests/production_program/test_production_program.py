@@ -936,10 +936,10 @@ def test_openraster_target_uses_canonical_ora_contract_identity(
     assert TARGETS_BY_PRODUCT["openraster"].contract_format_id == "ora"
     assert snapshot["format_id"] == "openraster"
     assert snapshot["contract_format_id"] == "ora"
-    assert snapshot["source_package_id"] == "openraster"
+    assert snapshot["source_package_id"] == "ora"
     assert snapshot["paths"] == [
-        "src/python/openraster",
-        "tests/python/openraster",
+        "src/python/ora",
+        "tests/python/ora",
         "shared/format-contracts/ora.yaml",
     ]
     assert compiled_paths == [contract]

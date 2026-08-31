@@ -1,0 +1,306 @@
+{
+  "format_id": "xcf",
+  "contract_id": "FC-XCF-V1",
+  "contract_input_digests": {
+    "fact_categories_sha256": "aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc",
+    "family_pack_sha256": "5811104a395d9a79ca5edf12d245ad9d699c7c1330f094884fe9d503dc0e0241",
+    "qname_registry_sha256": "18a87422ea795de7028fbd77bb48ef190ebe5bbd5619f2eb26aca00f38c9c061",
+    "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sal_facts_sha256": "d7abfda33680fa2e9ee3f8fb9225b515146ac14dcdc9e3604c640eb6763625c0",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+  },
+  "product_source_present": true,
+  "function_count": 161,
+  "class_count": 15,
+  "test_file_count": 108,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "XCF-CONVERT-001",
+      "category": "transform",
+      "level": "SHOULD",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/deepening/test_r260_fodp_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r263_fodp_odt_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r265_fodp_odt_qoi_xcf_deepening2.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r275_odt_fodg_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
+        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r295_ods_qoi_xcf_csv_deepening.py",
+        "tests/python/deepening/test_r314_ods_qoi_xcf_csv_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XCF-EDIT-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/deepening/test_r260_fodp_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r263_fodp_odt_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r265_fodp_odt_qoi_xcf_deepening2.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r275_odt_fodg_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
+        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r295_ods_qoi_xcf_csv_deepening.py",
+        "tests/python/deepening/test_r314_ods_qoi_xcf_csv_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XCF-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "parse_xcf",
+        "parse_xcf_strict"
+      ],
+      "test_files": [
+        "tests/python/dogfood/test_dogfood_xcf_remaining2_qoi_remaining2_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_xcf_stats_ndjson_export.py",
+        "tests/python/xcf/test_mdr11_xcf_exports.py",
+        "tests/python/xcf/test_r202_xcf_advanced_ops.py",
+        "tests/python/xcf/test_r230_xcf_has_alpha.py",
+        "tests/python/xcf/test_xcf_conveyor_deepening.py",
+        "tests/python/xcf/test_xcf_gap_closure_batch.py",
+        "tests/python/xcf/test_xcf_gap_coverage.py",
+        "tests/python/xcf/test_xcf_gate6_oracle.py",
+        "tests/python/xcf/test_xcf_gate7_fuzz_guard.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XCF-MODEL-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Channel",
+        "Header",
+        "Layer",
+        "XcfChannel",
+        "XcfDocument",
+        "XcfError",
+        "XcfHeader",
+        "XcfImage",
+        "XcfImageSpec",
+        "XcfInvalidHeaderError",
+        "XcfInvalidMagicError",
+        "XcfLayer",
+        "XcfParseError",
+        "XcfSizeError",
+        "XcfWriteError"
+      ],
+      "test_files": [
+        "tests/python/deepening/test_r263_fodp_odt_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r265_fodp_odt_qoi_xcf_deepening2.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r275_odt_fodg_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
+        "tests/python/deepening/test_r295_ods_qoi_xcf_csv_deepening.py",
+        "tests/python/dogfood/test_dogfood_xcf_image_type_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_xcf_layer_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_xcf_layer_geometry_ndjson_export.py",
+        "tests/python/xcf/test_mdr11_xcf_exports.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XCF-PARSE-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "parse_xcf",
+        "parse_xcf_strict",
+        "probe_xcf"
+      ],
+      "test_files": [
+        "tests/python/dogfood/test_dogfood_xcf_remaining2_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_xcf_remaining2_qoi_remaining2_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_xcf_stats_ndjson_export.py",
+        "tests/python/xcf/test_mdr11_xcf_exports.py",
+        "tests/python/xcf/test_r165_xcf_probe_layer_dims.py",
+        "tests/python/xcf/test_r185_xcf_probe_deepening.py",
+        "tests/python/xcf/test_r202_xcf_advanced_ops.py",
+        "tests/python/xcf/test_r230_xcf_has_alpha.py",
+        "tests/python/xcf/test_r560_xcf_multilayer_property.py",
+        "tests/python/xcf/test_r565_xcf_layer_type_properties.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XCF-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/deepening/test_r260_fodp_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r263_fodp_odt_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r265_fodp_odt_qoi_xcf_deepening2.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r275_odt_fodg_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
+        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r295_ods_qoi_xcf_csv_deepening.py",
+        "tests/python/deepening/test_r314_ods_qoi_xcf_csv_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XCF-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 2,
+      "product_symbols": [
+        "xcf_max_dimension",
+        "xcf_max_layer_area",
+        "xcf_max_layer_dimension",
+        "xcf_max_side_length"
+      ],
+      "test_files": [
+        "tests/python/deepening/test_r275_odt_fodg_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r366_ods_qoi_xcf_csv_deepening.py",
+        "tests/python/dogfood/test_dogfood_qoi_xcf_gnumeric_remaining_analytics_ndjson_export.py",
+        "tests/python/xcf/test_r251_xcf_canvas_area_max_dim.py",
+        "tests/python/xcf/test_r333_xcf_new_analytics.py",
+        "tests/python/xcf/test_xcf_gap_coverage.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XCF-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/deepening/test_r260_fodp_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r263_fodp_odt_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r265_fodp_odt_qoi_xcf_deepening2.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r275_odt_fodg_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
+        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r295_ods_qoi_xcf_csv_deepening.py",
+        "tests/python/deepening/test_r314_ods_qoi_xcf_csv_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "XCF-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/python/deepening/test_r260_fodp_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r263_fodp_odt_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r265_fodp_odt_qoi_xcf_deepening2.py",
+        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
+        "tests/python/deepening/test_r275_odt_fodg_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r282_fodp_csv_toml_xcf_deepening.py",
+        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
+        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
+        "tests/python/deepening/test_r295_ods_qoi_xcf_csv_deepening.py",
+        "tests/python/deepening/test_r314_ods_qoi_xcf_csv_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 9,
+    "with_gap": 6,
+    "by_status": {
+      "NOT_STARTED": 5,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 4,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

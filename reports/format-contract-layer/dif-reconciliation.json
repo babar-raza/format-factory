@@ -5,14 +5,14 @@
     "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
     "family_pack_sha256": "a546af31bd73a7c0001896273606fa87ff836efcc06a9c0dec19158aa0718e53",
     "qname_registry_sha256": "965fe6002595f631e9b19eff3edb9d152980736b9b6c81a6851f093927f1f32d",
-    "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "research_sha256": "f454ff815fab587e9d835df55454e32296a4f835d88673ba5bfcbd2c2f5196e7",
     "sal_facts_sha256": "c717d581af6f17b4fcf93be39bc0ad373888301650e2b9cb3a80b03a25f996f3",
     "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
   },
   "product_source_present": true,
-  "function_count": 169,
+  "function_count": 166,
   "class_count": 14,
-  "test_file_count": 171,
+  "test_file_count": 169,
   "oracle_status": null,
   "capabilities": [
     {
@@ -57,16 +57,14 @@
         "set_cell_value"
       ],
       "test_files": [
-        "tests/canary/test_compilation_diff.py",
-        "tests/playbook/test_diff_golden.py",
-        "tests/playbook/test_diff_playbook_outputs.py",
-        "tests/python/abw/test_abw_to_dif.py",
-        "tests/python/csv/test_csv_to_dif.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dif/test_dif_conveyor_deepening.py",
+        "tests/python/dif/test_dif_document_mutation.py",
+        "tests/python/dif/test_dif_gap_closure_batch.py",
+        "tests/python/dif/test_dif_gap_coverage.py",
+        "tests/python/dif/test_r156_dif_cell_accessors.py",
+        "tests/python/dif/test_r160_dif_row_ops.py",
+        "tests/python/dif/test_r199_dif_advanced_ops.py",
+        "tests/python/dogfood/test_dogfood_dif_mutation_ops_ndjson_export.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -90,16 +88,16 @@
         "probe_dif"
       ],
       "test_files": [
-        "tests/canary/test_compilation_diff.py",
-        "tests/playbook/test_diff_golden.py",
         "tests/playbook/test_diff_playbook_outputs.py",
-        "tests/python/abw/test_abw_to_dif.py",
-        "tests/python/csv/test_csv_to_dif.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dif/test_dif_conveyor_deepening.py",
+        "tests/python/dif/test_dif_document_mutation.py",
+        "tests/python/dif/test_dif_domain_model.py",
+        "tests/python/dif/test_dif_gap_closure_batch.py",
+        "tests/python/dif/test_dif_gap_coverage.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/dif/test_dif_gate7_fuzz_guard.py",
+        "tests/python/dif/test_dif_parser.py",
+        "tests/python/dif/test_dif_probe_gap_closure.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -126,9 +124,6 @@
         "dif_to_ndjson",
         "dif_to_ods",
         "dif_to_odt",
-        "dif_to_pbm",
-        "dif_to_pgm",
-        "dif_to_ppm",
         "dif_to_sylk",
         "dif_to_toml",
         "dif_to_tsv",
@@ -136,16 +131,16 @@
         "save_to_file"
       ],
       "test_files": [
-        "tests/canary/test_compilation_diff.py",
-        "tests/playbook/test_diff_golden.py",
-        "tests/playbook/test_diff_playbook_outputs.py",
-        "tests/python/abw/test_abw_to_dif.py",
-        "tests/python/csv/test_csv_to_dif.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dif/test_dif_conveyor_deepening.py",
+        "tests/python/dif/test_dif_document_mutation.py",
+        "tests/python/dif/test_dif_export_colcount_w113_pipeline.py",
+        "tests/python/dif/test_dif_gap_coverage.py",
+        "tests/python/dif/test_dif_probe_gap_closure.py",
+        "tests/python/dif/test_dif_to_abw.py",
+        "tests/python/dif/test_dif_to_csv.py",
+        "tests/python/dif/test_dif_to_fodg.py",
+        "tests/python/dif/test_dif_to_fods.py",
+        "tests/python/dif/test_dif_to_fodt.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -169,16 +164,16 @@
         "write_dif"
       ],
       "test_files": [
-        "tests/canary/test_compilation_diff.py",
-        "tests/playbook/test_diff_golden.py",
-        "tests/playbook/test_diff_playbook_outputs.py",
-        "tests/python/abw/test_abw_to_dif.py",
-        "tests/python/csv/test_csv_to_dif.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dif/test_dif_conveyor_deepening.py",
+        "tests/python/dif/test_dif_document_mutation.py",
+        "tests/python/dif/test_dif_gap_closure_batch.py",
+        "tests/python/dif/test_dif_gap_coverage.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/dif/test_dif_gate7_fuzz_guard.py",
+        "tests/python/dif/test_dif_parser.py",
+        "tests/python/dif/test_mdr7_dif_write.py",
+        "tests/python/dif/test_r107_dif_roundtrip_proof.py",
+        "tests/python/dif/test_r111_dif_csv_export_hardening.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -212,16 +207,16 @@
         "Vector"
       ],
       "test_files": [
-        "tests/canary/test_compilation_diff.py",
-        "tests/playbook/test_diff_golden.py",
-        "tests/playbook/test_diff_playbook_outputs.py",
-        "tests/python/abw/test_abw_to_dif.py",
-        "tests/python/csv/test_csv_to_dif.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/deepening/test_r297_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/dif/test_dif_document_mutation.py",
+        "tests/python/dif/test_dif_domain_model.py",
+        "tests/python/dif/test_dif_gap_closure_batch.py",
+        "tests/python/dif/test_dif_gap_coverage.py",
+        "tests/python/dif/test_dif_gate7_fuzz_guard.py",
+        "tests/python/dif/test_dif_parser.py",
+        "tests/python/dif/test_dif_spec_qname.py",
+        "tests/python/dif/test_mdr7_dif_write.py",
+        "tests/python/dif/test_r116_dif_probe_csv_pipeline.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -234,9 +229,9 @@
       "capability_id": "DIF-PARSE-001",
       "category": "parse",
       "level": "MUST",
-      "depth_required": 2,
+      "depth_required": 3,
       "observed_status": "TESTED",
-      "observed_depth": 2,
+      "observed_depth": 3,
       "gap_depth": 0,
       "product_symbols": [
         "from_file",
@@ -245,16 +240,16 @@
         "probe_dif"
       ],
       "test_files": [
-        "tests/canary/test_compilation_diff.py",
-        "tests/playbook/test_diff_golden.py",
         "tests/playbook/test_diff_playbook_outputs.py",
-        "tests/python/abw/test_abw_to_dif.py",
-        "tests/python/csv/test_csv_to_dif.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dif/test_dif_conveyor_deepening.py",
+        "tests/python/dif/test_dif_document_mutation.py",
+        "tests/python/dif/test_dif_domain_model.py",
+        "tests/python/dif/test_dif_gap_closure_batch.py",
+        "tests/python/dif/test_dif_gap_coverage.py",
+        "tests/python/dif/test_dif_gate6_oracle.py",
+        "tests/python/dif/test_dif_gate7_fuzz_guard.py",
+        "tests/python/dif/test_dif_parser.py",
+        "tests/python/dif/test_dif_probe_gap_closure.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -309,16 +304,16 @@
         "max_column_value"
       ],
       "test_files": [
-        "tests/canary/test_compilation_diff.py",
-        "tests/playbook/test_diff_golden.py",
-        "tests/playbook/test_diff_playbook_outputs.py",
-        "tests/python/abw/test_abw_to_dif.py",
-        "tests/python/csv/test_csv_to_dif.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/deepening/test_r312_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r332_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/dif/test_dif_conveyor_deepening.py",
+        "tests/python/dif/test_dif_gap_closure_batch.py",
+        "tests/python/dif/test_dif_gap_coverage.py",
+        "tests/python/dif/test_r160_dif_min_max_column.py",
+        "tests/python/dif/test_r169_dif_exact_outputs.py",
+        "tests/python/dif/test_r188_dif_product_sprint4.py",
+        "tests/python/dif/test_r192_dif_max_row_length.py",
+        "tests/python/dif/test_r199_dif_advanced_ops.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -368,16 +363,16 @@
         "write_dif"
       ],
       "test_files": [
-        "tests/canary/test_compilation_diff.py",
-        "tests/playbook/test_diff_golden.py",
-        "tests/playbook/test_diff_playbook_outputs.py",
-        "tests/python/abw/test_abw_to_dif.py",
-        "tests/python/csv/test_csv_to_dif.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dif/test_dif_conveyor_deepening.py",
+        "tests/python/dif/test_dif_document_mutation.py",
+        "tests/python/dif/test_dif_gap_coverage.py",
+        "tests/python/dif/test_dif_gate7_fuzz_guard.py",
+        "tests/python/dif/test_mdr7_dif_write.py",
+        "tests/python/dif/test_r116_dif_probe_csv_pipeline.py",
+        "tests/python/dif/test_r117_dif_write_roundtrip.py",
+        "tests/python/dif/test_r156_dif_cell_accessors.py",
+        "tests/python/dif/test_r156_dif_column_values.py",
+        "tests/python/dif/test_r156_dif_count_nonempty.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [

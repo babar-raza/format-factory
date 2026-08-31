@@ -1,11 +1,11 @@
 {
   "schema": "format-factory-maturity-signal/v1",
   "project_id": "format-factory",
-  "run_id": "CERT-LAYER-HEAL-20260710",
-  "timestamp": "2026-07-13T13:12:35.394036+00:00",
+  "run_id": "FF6-UBL-CHARGES-20260805",
+  "timestamp": "2026-08-05T06:08:26.377068+00:00",
   "sprint_verdict": "ACCEPTED_WITH_REWORK",
   "autonomous_continue": false,
-  "iteration": 6,
+  "iteration": 14,
   "test_results": {
     "total": 0,
     "passed": 0,
@@ -13,70 +13,7 @@
   },
   "work_items": [
     {
-      "id": "TC-LHEAL-001",
-      "grade": "ACCEPTED_WITH_LIMITATIONS",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "TC-LHEAL-002",
-      "grade": "ACCEPTED_WITH_LIMITATIONS",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "TC-LHEAL-003",
-      "grade": "ACCEPTED_WITH_LIMITATIONS",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "TC-LHEAL-004",
-      "grade": "ACCEPTED_WITH_LIMITATIONS",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "TC-LHEAL-005",
-      "grade": "ACCEPTED_WITH_LIMITATIONS",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "TC-LHEAL-006",
-      "grade": "ACCEPTED_WITH_LIMITATIONS",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "TC-LHEAL-007",
-      "grade": "ACCEPTED_WITH_LIMITATIONS",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "TC-LHEAL-008",
-      "grade": "ACCEPTED_WITH_LIMITATIONS",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "TC-LHEAL-009",
-      "grade": "ACCEPTED_WITH_LIMITATIONS",
-      "confidence": 0.0,
-      "llm_used": false,
-      "rework_reason": null
-    },
-    {
-      "id": "TC-LHEAL-010",
+      "id": "WI-UBL-006",
       "grade": "ACCEPTED_WITH_LIMITATIONS",
       "confidence": 0.0,
       "llm_used": false,
@@ -84,7 +21,16 @@
     }
   ],
   "rework_items": [
-    "GOV_BLOCK:monolith_detection_validator"
+    "GOV_BLOCK:validate_source_architecture",
+    "GOV_BLOCK:root_structure_validator",
+    "GOV_BLOCK:V102",
+    "GOV_BLOCK:V104",
+    "GOV_BLOCK:V121",
+    "GOV_BLOCK:validate_package_install_proof_coverage",
+    "GOV_BLOCK:validate_coordination_parity",
+    "GOV_BLOCK:validate_coordination_audit_trail",
+    "GOV_BLOCK:validate_exception_hierarchy_correctness",
+    "GOVERNANCE_DEGRADED:11_validators_skipped"
   ],
   "agentic_maturity_score": 4.4,
   "active_gaps": [],

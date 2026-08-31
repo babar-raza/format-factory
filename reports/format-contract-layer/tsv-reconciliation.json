@@ -2,7 +2,7 @@
   "format_id": "tsv",
   "contract_id": "FC-TSV-V1",
   "contract_input_digests": {
-    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "fact_categories_sha256": "aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc",
     "family_pack_sha256": "a546af31bd73a7c0001896273606fa87ff836efcc06a9c0dec19158aa0718e53",
     "qname_registry_sha256": "9437f89f6dd800e85e178eb40b269f932acd9069721abd65b914f7d146448470",
     "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -10,9 +10,9 @@
     "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
   },
   "product_source_present": true,
-  "function_count": 181,
+  "function_count": 178,
   "class_count": 11,
-  "test_file_count": 187,
+  "test_file_count": 184,
   "oracle_status": null,
   "capabilities": [
     {
@@ -60,16 +60,16 @@
         "set_cell"
       ],
       "test_files": [
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_tsv.py",
-        "tests/python/csv/test_csv_to_tsv.py",
-        "tests/python/deepening/test_r269_ods_fods_fodt_tsv_deepening.py",
-        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
-        "tests/python/deepening/test_r283_tsv_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r288_pgm_pbm_tsv_fodp_deepening.py",
-        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
-        "tests/python/deepening/test_r299_tsv_abw_odt_ods_deepening.py",
-        "tests/python/deepening/test_r305_fods_gnumeric_abw_tsv_deepening.py"
+        "tests/python/dogfood/test_dogfood_tsv_column_ops_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_transform_ops_ndjson_export.py",
+        "tests/python/tsv/test_cap_tsv_append_row.py",
+        "tests/python/tsv/test_r129_tsv_advanced_functions.py",
+        "tests/python/tsv/test_r142_tsv_add_column.py",
+        "tests/python/tsv/test_r142_tsv_rename_column.py",
+        "tests/python/tsv/test_r200_tsv_advanced_ops.py",
+        "tests/python/tsv/test_tsv_add_merge_pipeline.py",
+        "tests/python/tsv/test_tsv_advanced_ops.py",
+        "tests/python/tsv/test_tsv_append_filter_pipeline.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -94,16 +94,16 @@
         "probe_tsv"
       ],
       "test_files": [
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_tsv.py",
-        "tests/python/csv/test_csv_to_tsv.py",
-        "tests/python/deepening/test_r269_ods_fods_fodt_tsv_deepening.py",
-        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
-        "tests/python/deepening/test_r283_tsv_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r288_pgm_pbm_tsv_fodp_deepening.py",
-        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
-        "tests/python/deepening/test_r299_tsv_abw_odt_ods_deepening.py",
-        "tests/python/deepening/test_r305_fods_gnumeric_abw_tsv_deepening.py"
+        "tests/python/dogfood/test_dogfood_ndjson_tsv_remaining_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_metadata_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_ndjson_pipeline.py",
+        "tests/python/dogfood/test_dogfood_tsv_remaining2_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_write_parse.py",
+        "tests/python/dogfood/test_dogfood_zst_tsv_odt_remaining_ndjson_export.py",
+        "tests/python/fods/test_r134_fods_to_tsv_dogfood.py",
+        "tests/python/tsv/test_cap_tsv_append_row.py",
+        "tests/python/tsv/test_r122_tsv_write.py",
+        "tests/python/tsv/test_r125_tsv_load_tsv.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -133,23 +133,20 @@
         "tsv_to_ndjson",
         "tsv_to_ods",
         "tsv_to_odt",
-        "tsv_to_pbm",
-        "tsv_to_pgm",
-        "tsv_to_ppm",
         "tsv_to_sylk",
         "tsv_to_toml"
       ],
       "test_files": [
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_tsv.py",
-        "tests/python/csv/test_csv_to_tsv.py",
-        "tests/python/deepening/test_r269_ods_fods_fodt_tsv_deepening.py",
-        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
-        "tests/python/deepening/test_r283_tsv_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r288_pgm_pbm_tsv_fodp_deepening.py",
-        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
-        "tests/python/deepening/test_r299_tsv_abw_odt_ods_deepening.py",
-        "tests/python/deepening/test_r305_fods_gnumeric_abw_tsv_deepening.py"
+        "tests/python/dogfood/test_dogfood_tsv_analytics_gaps_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_ndjson_pipeline.py",
+        "tests/python/tsv/test_r257_tsv_numeric_sum_avg_duplicates_variance.py",
+        "tests/python/tsv/test_r278_tsv_is_square_cell_to_row_ratio.py",
+        "tests/python/tsv/test_r284_tsv_additional_gaps.py",
+        "tests/python/tsv/test_tsv_document_mutation.py",
+        "tests/python/tsv/test_tsv_gap_closure_foss.py",
+        "tests/python/tsv/test_tsv_gap_coverage.py",
+        "tests/python/tsv/test_tsv_to_abw.py",
+        "tests/python/tsv/test_tsv_to_csv.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -176,16 +173,16 @@
         "write_tsv_strict"
       ],
       "test_files": [
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_tsv.py",
-        "tests/python/csv/test_csv_to_tsv.py",
-        "tests/python/deepening/test_r269_ods_fods_fodt_tsv_deepening.py",
-        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
-        "tests/python/deepening/test_r283_tsv_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r288_pgm_pbm_tsv_fodp_deepening.py",
-        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
-        "tests/python/deepening/test_r299_tsv_abw_odt_ods_deepening.py",
-        "tests/python/deepening/test_r305_fods_gnumeric_abw_tsv_deepening.py"
+        "tests/python/dogfood/test_dogfood_gnumeric_tsv_pipeline.py",
+        "tests/python/dogfood/test_dogfood_tsv_column_ops_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_computation_ops_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_final_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_metadata_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_ndjson_pipeline.py",
+        "tests/python/dogfood/test_dogfood_tsv_remaining2_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_transform_ops_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_utility_ops_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_write_parse.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -216,16 +213,16 @@
         "TsvWriteError"
       ],
       "test_files": [
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_tsv.py",
-        "tests/python/csv/test_csv_to_tsv.py",
-        "tests/python/deepening/test_r269_ods_fods_fodt_tsv_deepening.py",
         "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
         "tests/python/deepening/test_r283_tsv_fodp_pgm_pbm_deepening.py",
         "tests/python/deepening/test_r288_pgm_pbm_tsv_fodp_deepening.py",
         "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
         "tests/python/deepening/test_r299_tsv_abw_odt_ods_deepening.py",
-        "tests/python/deepening/test_r305_fods_gnumeric_abw_tsv_deepening.py"
+        "tests/python/deepening/test_r305_fods_gnumeric_abw_tsv_deepening.py",
+        "tests/python/deepening/test_r309_fods_gnumeric_abw_tsv_deepening.py",
+        "tests/python/deepening/test_r365_fods_gnumeric_abw_tsv_deepening.py",
+        "tests/python/dif/test_dif_to_tsv.py",
+        "tests/python/dogfood/test_dogfood_tsv_row_analytics_ndjson_export.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -250,16 +247,16 @@
         "probe_tsv"
       ],
       "test_files": [
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_tsv.py",
-        "tests/python/csv/test_csv_to_tsv.py",
-        "tests/python/deepening/test_r269_ods_fods_fodt_tsv_deepening.py",
-        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
-        "tests/python/deepening/test_r283_tsv_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r288_pgm_pbm_tsv_fodp_deepening.py",
-        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
-        "tests/python/deepening/test_r299_tsv_abw_odt_ods_deepening.py",
-        "tests/python/deepening/test_r305_fods_gnumeric_abw_tsv_deepening.py"
+        "tests/python/dogfood/test_dogfood_ndjson_tsv_remaining_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_metadata_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_ndjson_pipeline.py",
+        "tests/python/dogfood/test_dogfood_tsv_remaining2_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_write_parse.py",
+        "tests/python/dogfood/test_dogfood_zst_tsv_odt_remaining_ndjson_export.py",
+        "tests/python/fods/test_r134_fods_to_tsv_dogfood.py",
+        "tests/python/tsv/test_cap_tsv_append_row.py",
+        "tests/python/tsv/test_r122_tsv_write.py",
+        "tests/python/tsv/test_r125_tsv_load_tsv.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -280,16 +277,16 @@
         "roundtrip"
       ],
       "test_files": [
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_tsv.py",
-        "tests/python/csv/test_csv_to_tsv.py",
-        "tests/python/deepening/test_r269_ods_fods_fodt_tsv_deepening.py",
-        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
-        "tests/python/deepening/test_r283_tsv_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r288_pgm_pbm_tsv_fodp_deepening.py",
-        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
-        "tests/python/deepening/test_r299_tsv_abw_odt_ods_deepening.py",
-        "tests/python/deepening/test_r305_fods_gnumeric_abw_tsv_deepening.py"
+        "tests/python/dogfood/test_dogfood_tsv_cell_count_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_csv_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_data_quality_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_density_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_metadata_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_row_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_uniformity_row_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_write_parse.py",
+        "tests/python/dogfood/test_dogfood_xcf_tsv_remaining_analytics_ndjson_export.py",
+        "tests/python/fods/test_r134_fods_to_tsv_dogfood.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -307,6 +304,7 @@
       "observed_depth": 3,
       "gap_depth": 2,
       "product_symbols": [
+        "_sanitize",
         "max_column_tsv",
         "tsv_delimiter",
         "tsv_max_cell_length",
@@ -317,16 +315,16 @@
         "tsv_max_row_field_count"
       ],
       "test_files": [
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_tsv.py",
-        "tests/python/csv/test_csv_to_tsv.py",
-        "tests/python/deepening/test_r269_ods_fods_fodt_tsv_deepening.py",
-        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
         "tests/python/deepening/test_r283_tsv_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r288_pgm_pbm_tsv_fodp_deepening.py",
-        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
-        "tests/python/deepening/test_r299_tsv_abw_odt_ods_deepening.py",
-        "tests/python/deepening/test_r305_fods_gnumeric_abw_tsv_deepening.py"
+        "tests/python/deepening/test_r305_fods_gnumeric_abw_tsv_deepening.py",
+        "tests/python/dogfood/test_dogfood_tsv_analytics_gaps_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_computation_ops_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_data_quality_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_density_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_final_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_row_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_uniformity_row_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_xcf_tsv_remaining_analytics_ndjson_export.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -347,16 +345,16 @@
         "validate_headers"
       ],
       "test_files": [
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_tsv.py",
-        "tests/python/csv/test_csv_to_tsv.py",
-        "tests/python/deepening/test_r269_ods_fods_fodt_tsv_deepening.py",
-        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
-        "tests/python/deepening/test_r283_tsv_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r288_pgm_pbm_tsv_fodp_deepening.py",
-        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
-        "tests/python/deepening/test_r299_tsv_abw_odt_ods_deepening.py",
-        "tests/python/deepening/test_r305_fods_gnumeric_abw_tsv_deepening.py"
+        "tests/python/dogfood/test_dogfood_tsv_utility_ops_ndjson_export.py",
+        "tests/python/tsv/test_r128_tsv_expanded_functions.py",
+        "tests/python/tsv/test_r137_tsv_validate_headers.py",
+        "tests/python/tsv/test_r166_tsv_coverage.py",
+        "tests/python/tsv/test_r200_tsv_advanced_ops.py",
+        "tests/python/tsv/test_tsv_gap_coverage.py",
+        "tests/python/tsv/test_tsv_headers_validate_pipeline.py",
+        "tests/python/tsv/test_tsv_roundtrip_validate_pipeline.py",
+        "tests/python/tsv/test_tsv_validate_column_pipeline.py",
+        "tests/python/tsv/test_tsv_validate_probe_pipeline.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -380,16 +378,16 @@
         "write_tsv_strict"
       ],
       "test_files": [
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_tsv.py",
-        "tests/python/csv/test_csv_to_tsv.py",
-        "tests/python/deepening/test_r269_ods_fods_fodt_tsv_deepening.py",
-        "tests/python/deepening/test_r279_fodp_csv_toml_tsv_deepening.py",
-        "tests/python/deepening/test_r283_tsv_fodp_pgm_pbm_deepening.py",
-        "tests/python/deepening/test_r288_pgm_pbm_tsv_fodp_deepening.py",
-        "tests/python/deepening/test_r291_xcf_csv_gnumeric_tsv_deepening.py",
-        "tests/python/deepening/test_r299_tsv_abw_odt_ods_deepening.py",
-        "tests/python/deepening/test_r305_fods_gnumeric_abw_tsv_deepening.py"
+        "tests/python/dogfood/test_dogfood_gnumeric_tsv_pipeline.py",
+        "tests/python/dogfood/test_dogfood_tsv_column_ops_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_computation_ops_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_final_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_transform_ops_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_utility_ops_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_write_parse.py",
+        "tests/python/fods/test_r134_fods_to_tsv_dogfood.py",
+        "tests/python/tsv/test_broad_rnext_tsv_filter_rows.py",
+        "tests/python/tsv/test_cap_tsv_append_row.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [

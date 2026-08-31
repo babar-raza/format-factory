@@ -1,8 +1,8 @@
 {
-  "sprint_id": "supervisor-export-20260713-181234",
-  "timestamp": "2026-07-13T18:12:34.505461",
+  "sprint_id": "supervisor-export-20260805-110820",
+  "timestamp": "2026-08-05T11:08:20.929481",
   "verdict": "ACCEPTED_WITH_REWORK",
-  "source_bundle": ".local/evidences/layer-heal-010",
+  "source_bundle": ".local/evidences/ff6-ubl-charges-20260805",
   "tasks": [
     {
       "task_id": "TASK-001",
@@ -19,7 +19,7 @@
     {
       "task_id": "TASK-002",
       "title": "Prepare commit candidate summary and changed-file manifest",
-      "description": "Modified tracked files detected: 15 file(s) (e.g. .supervisor/state/current-run.json). Build evidence bundle and write commit candidate manifest. Agent-owned preparation \u2014 do NOT self-commit.",
+      "description": "Modified tracked files detected: 3 file(s) (e.g. src/python/ubl/src/format_factory/ubl/__init__.py). Build evidence bundle and write commit candidate manifest. Agent-owned preparation \u2014 do NOT self-commit.",
       "status": "agent-owned",
       "ff_doc_ref": "plans/master-plan.md",
       "supervisor_task_ref": "TC-R79-CLOSURE-001",
@@ -80,7 +80,7 @@
     {
       "task_id": "TASK-007",
       "title": "Execute next taskcard in active per-chat plan",
-      "description": "A per-chat plan is active and must be completed before ledger work. Plan: C:/Users/prora/AppData/Local/Temp/pytest-of-prora/pytest-241/test_reopen_real_lock_structur0/plans/test-plan.md. Last completed taskcard: None. Read the plan file, find the next open taskcard after None, and execute it. Run write_plan_lock.py after each taskcard completes.",
+      "description": "A per-chat plan is active and must be completed before ledger work. Plan: plans/.claude/put-the-select-6-snappy-dijkstra.md. Last completed taskcard: None. Read the plan file, find the next open taskcard after None, and execute it. Run write_plan_lock.py after each taskcard completes.",
       "status": "pending",
       "ff_doc_ref": ".local/supervisor/next-work-items.json",
       "supervisor_task_ref": "PLAN-ACTIVE",
@@ -92,7 +92,7 @@
     {
       "task_id": "TASK-008",
       "title": "Advance one dogfood export path using a Format Factory library",
-      "description": "Product objective: close or verify a selected dogfood export from .local/supervisor/selected-product-gaps.json. Use a Format Factory-produced library and record truthful status.",
+      "description": "Product objective: close or verify a selected dogfood export from .local/supervisor/selected-product-gaps.json. Use a Format Factory-produced library and record truthful status. Only these pairs are registered as COMPATIBLE or PROJECTION and may be generated: abw_to_csv, abw_to_dif, abw_to_fodg, abw_to_fods, abw_to_fodt. Invoke /add-dogfood-export; do not generate a converter for an unlisted pair.",
       "status": "pending",
       "ff_doc_ref": "docs/export/dogfood-export-strategy.md",
       "supervisor_task_ref": "R90-DOGFOOD-LANE",
@@ -126,5 +126,5 @@
       "lane": "C6"
     }
   ],
-  "notes": "Generated from evidence review of sprint CERT-LAYER-HEAL-20260710"
+  "notes": "Generated from evidence review of sprint FF6-UBL-CHARGES-20260805"
 }

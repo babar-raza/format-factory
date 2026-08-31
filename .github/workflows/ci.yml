@@ -177,6 +177,37 @@ jobs:
           name: coverage-report
           path: coverage.xml
 
+  test-gen2:
+    # Gen-2 (FF6) namespace packages require Python >=3.11.
+    # Tests these packages with their declared [test] extras installed,
+    # which include jsonschema, nbformat, numpy, etc. that the root
+    # dev extras do not provide.
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install root dev dependencies
+        run: pip install -e ".[dev]" && pip install zstandard
+      - name: Install gen-2 packages with test extras
+        run: |
+          pip install -e src/python/core
+          pip install -e "src/python/ipynb[test]"
+          pip install -e "src/python/nrrd[test]"
+          pip install -e "src/python/ora[test]"
+          pip install -e "src/python/safetensors[test]"
+          pip install -e "src/python/ubl[test]"
+          pip install -e "src/python/xliff[test]"
+      - name: Run gen-2 format tests
+        run: |
+          pytest tests/python/core/ tests/python/ipynb/ tests/python/nrrd/ \
+                 tests/python/ora/ tests/python/safetensors/ \
+                 tests/python/ubl/ tests/python/xliff/ -q --tb=short
+
   oracle-obligations:
     # TC-ORC-005: Validate oracle obligation coverage for all registered formats.
     # Every format in registry/format-registry.yaml must have an entry in

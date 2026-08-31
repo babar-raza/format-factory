@@ -109,7 +109,7 @@ class ProductTarget:
 
 TARGETS = (
     ProductTarget("ipynb", "ipynb", "ipynb"),
-    ProductTarget("openraster", "ora", "openraster"),
+    ProductTarget("openraster", "ora", "ora"),
     ProductTarget("nrrd", "nrrd", "nrrd"),
     ProductTarget("xliff", "xliff", "xliff"),
     ProductTarget("safetensors", "safetensors", "safetensors"),

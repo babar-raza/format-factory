@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-07-13T18:11:56.170299
-# Source: Supervisor autonomous-cycle review of CERT-LAYER-HEAL-20260710
+# Generated: 2026-08-05T11:07:18.725860
+# Source: Supervisor autonomous-cycle review of FF6-UBL-CHARGES-20260805
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,7 +27,7 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: CERT-LAYER-HEAL-20260710
+- Prior sprint: FF6-UBL-CHARGES-20260805
 - Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: False
@@ -61,7 +61,17 @@ Read these files before writing any code:
 3. No direct ad-hoc `src/` edits are permitted. Use a governed skill or generated execution handoff.
 4. Every `src/` edit MUST be recorded in `reports/r90/product-code-change-ledger.json`.
 5. Run `python tools/supervisor/validate_product_code_ledger.py --ledger reports/r90/product-code-change-ledger.json` after product-code changes.
-6. Include at least one dogfood export lane and one package/install proof lane.
+6. Include one package/install proof lane. Include a dogfood export lane **only if** a
+   source-target pair is registered as `COMPATIBLE`, or as `PROJECTION` with a `loss_note`,
+   in `registry/converter-compatibility-matrix.yaml`. If no such pair is available, **omit the
+   dogfood lane** — do not substitute another pair to fill it.
+   Rationale (TC-PA-009 / PF-002): this rule previously read "include at least one dogfood
+   export lane", which mandated a converter every sprint regardless of whether a meaningful
+   pair existed. That mandate is the root cause of ~45 meaningless projections among the 222
+   converters under `src/python` (e.g. spreadsheet → 1-bit bitmap). A sprint with no
+   compatible pair left is a sprint with no dogfood work, not a sprint that needs a new
+   format pair invented for it. `/add-dogfood-export`'s Step 0 gate enforces this
+   independently and will block a converter for an unregistered or INCOMPATIBLE pair.
 
 ---
 
@@ -606,9 +616,9 @@ Address escalated failures with priority.
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 132x, last: ff-r570-model-deepening-daf8d8b4)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 219x, last: cert-integration-healing)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_governed_direct_execution_validator_failed (seen 6x, last: r556-zst-skippable)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 354x, last: CERT-LAYER-HEAL-20260710)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 394x, last: layer-heal-010)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 19x, last: capability-convergence-iteration-3-20260624)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_monolith_detection_validator_failed (seen 360x, last: FCL-MACHINERY-2026-07-16)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): exit_code_3_rework_required (seen 406x, last: ff6-ubl-temporal-20260805)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_source_architecture_failed (seen 28x, last: FF6-UBL-CHARGES-20260805)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_skill_transcript_present_failed (seen 27x, last: ff-r570-model-deepening-daf8d8b4)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_qname_class_names_failed (seen 5x, last: r561-csv-tsv-ndjson-odt)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_error_fallback_safety_failed (seen 7x, last: convergence-test-repair-20260624-999bb7)
@@ -616,24 +626,29 @@ Address escalated failures with priority.
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_forbidden_module_names_failed (seen 3x, last: PROD-GOVERNANCE-001)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_spec_fact_refs_in_sal_output_failed (seen 14x, last: cert-integration-healing)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_ledger_continuation_gate_failed (seen 9x, last: r561-csv-tsv-ndjson-odt)
-- ESCALATED FAILURE (OVERCLAIM_FAILURE):  (seen 56x, last: TC-ACP-016)
+- ESCALATED FAILURE (OVERCLAIM_FAILURE):  (seen 70x, last: FF6-ORA-LIFECYCLE-20260805)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_dotnet_loc_cap_failed (seen 5x, last: ff-sprint-s450-dotnet-fodt-deepening-20260701)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_readme_freshness_failed (seen 87x, last: stateless-juggling-robin-sprint2)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_dependency_direction_failed (seen 5x, last: r560-xcf-gnumeric-abw-dif)
 - ESCALATED FAILURE (OVERCLAIM_FAILURE): Stub evidence detected (was ACCEPTED_WITH_LIMITATIONS): ['Evidence consists only of a planning markdown document; no actual execution artifacts (e.g., git commit logs, diff outputs, or build reports) are provided.', 'No concrete proof that the dirty working tree was audited, changes were committed, or that product gaps were selected and validated.', 'Missing the required product‑gap selection file (e.g., selected-product-gaps.json) or any verification that it was created/used.', 'No build or installation evidence to satisfy mandatory outcomes such as package artifacts built or dogfood export path advanced.', 'Claims are listed with dispositions but lack supporting data (e.g., test results, command output, screenshots) to verify those dispositions.'] (seen 3x, last: ff-gates-advancement-20260702)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_V102_failed (seen 9x, last: SYLK-TOML-FOSS-ANALYTICS-BATCH-001)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_V102_failed (seen 19x, last: FF6-UBL-CHARGES-20260805)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_V104_failed (seen 10x, last: FF6-UBL-CHARGES-20260805)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_analytics_naming_enforced_failed (seen 4x, last: honey-heal-20260704)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_V121_failed (seen 3x, last: FODG-DIF-PYTHON-MUTATION-001)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_root_structure_validator_failed (seen 6x, last: GNUMERIC-TO-NDJSON-DOGFOOD-001)
-- WARNING: 36 unresolved failures in failure memory
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_V121_failed (seen 29x, last: FF6-UBL-CHARGES-20260805)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_root_structure_validator_failed (seen 15x, last: FF6-UBL-CHARGES-20260805)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_package_install_proof_coverage_failed (seen 11x, last: FF6-UBL-CHARGES-20260805)
+- ESCALATED FAILURE (GOVERNANCE_FALSE_TRIGGER): governance_validator_validate_sal_store_reconciliation_failed (seen 10x, last: FF6-UBL-CHARGES-20260805)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_coordination_parity_failed (seen 9x, last: FF6-UBL-CHARGES-20260805)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_coordination_audit_trail_failed (seen 9x, last: FF6-UBL-CHARGES-20260805)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_validate_exception_hierarchy_correctness_failed (seen 9x, last: FF6-UBL-CHARGES-20260805)
+- WARNING: 41 unresolved failures in failure memory
 
 
 
 ## Learning-Based Governance Advisories
 
-- **SPRINT_CLOSEOUT_PATTERN** (seen 573x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
-- **TEST_FAILURE** (seen 340x): Sprint ended with 1 test failures (0 new) — *Action:* Fix test failures before closing sprint; never carry forward new failures
-- **TEST_FAILURE** (seen 4x): Sprint ended with 2 test failures (0 new) — *Action:* Fix test failures before closing sprint; never carry forward new failures
+- **SPRINT_CLOSEOUT_PATTERN** (seen 73x): Sprint declaration validated PASS with sprint_executor_validate.py — *Action:* Continue using sprint_executor_validate.py --repair before closeout
+- **INCOMPLETE_WORK** (seen 4x): Work item not completed: no ubl obligation is `implemented`; 156 are `partial` and the goal driver correc — *Action:* Break into smaller taskcards; ensure unblock conditions are met before sprint start
 
 ## Spec-Parity Requirements (from skill registry)
 

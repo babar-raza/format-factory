@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0",
-  "generated_at": "2026-07-15T12:45:37.986474+00:00",
+  "generated_at": "2026-08-04T17:15:27.266073+00:00",
   "generator": "tools/capability_layer/capability_compiler.py",
   "generator_version": "2.0",
   "authority": "SAL_FACTS_PRIMARY",
@@ -29,8 +29,8 @@
   ],
   "total_capabilities": 161,
   "state_breakdown": {
-    "test_verified": 93,
-    "missing": 68
+    "test_verified": 87,
+    "missing": 74
   },
   "validation": {
     "capabilities_without_obligation_provenance": 0,
@@ -164,6 +164,7 @@
       ],
       "implementation_refs": [],
       "test_refs": [
+        "tests/python/abw/test_abw_gap_coverage.py",
         "tests/python/abw/test_r270_abw_workflow.py",
         "tests/python/abw/test_r287_abw_workflow.py"
       ],
@@ -203,9 +204,7 @@
         "FACT-CSV-048",
         "FACT-CSV-049"
       ],
-      "implementation_refs": [
-        "src/python/csv/csv_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
         "tests/python/csv/test_csv_advanced_roundtrip.py",
         "tests/python/csv/test_csv_conveyor_deepening.py",
@@ -217,9 +216,9 @@
       "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ec5b7b769e73c7b6",
-      "current_state": "test_verified",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -247,9 +246,7 @@
         "FACT-CSV-042",
         "FACT-CSV-043"
       ],
-      "implementation_refs": [
-        "src/python/csv/csv_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
         "tests/python/csv/test_csv_gate6_oracle.py",
         "tests/python/csv/test_mdr9_csv_exports.py",
@@ -261,9 +258,9 @@
       "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ec5b7b769e73c7b6",
-      "current_state": "test_verified",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -291,9 +288,7 @@
         "FACT-CSV-051",
         "FACT-CSV-053"
       ],
-      "implementation_refs": [
-        "src/python/csv/csv_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
         "tests/python/csv/test_csv_analytics_ext.py",
         "tests/python/csv/test_csv_document_mutation.py",
@@ -305,9 +300,9 @@
       "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ec5b7b769e73c7b6",
-      "current_state": "test_verified",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -335,9 +330,7 @@
         "FACT-CSV-043",
         "FACT-CSV-044"
       ],
-      "implementation_refs": [
-        "src/python/csv/csv_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
         "tests/python/csv/test_csv_advanced_roundtrip.py",
         "tests/python/csv/test_csv_analytics_ext.py",
@@ -349,9 +342,9 @@
       "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ec5b7b769e73c7b6",
-      "current_state": "test_verified",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -379,9 +372,7 @@
         "FACT-CSV-050",
         "FACT-CSV-051"
       ],
-      "implementation_refs": [
-        "src/python/csv/csv_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
         "tests/python/csv/test_csv_analytics_ext.py",
         "tests/python/csv/test_csv_conveyor_deepening.py",
@@ -393,9 +384,9 @@
       "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ec5b7b769e73c7b6",
-      "current_state": "test_verified",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -461,9 +452,7 @@
         "FACT-CSV-020",
         "FACT-CSV-032"
       ],
-      "implementation_refs": [
-        "src/python/csv/csv_parser.py"
-      ],
+      "implementation_refs": [],
       "test_refs": [
         "tests/python/csv/test_csv_document_mutation.py",
         "tests/python/csv/test_csv_to_abw.py",
@@ -475,9 +464,9 @@
       "package_refs": [],
       "oracle_evidence": [],
       "sal_facts_hash": "ec5b7b769e73c7b6",
-      "current_state": "test_verified",
+      "current_state": "missing",
       "confidence_level": "high",
-      "evidence_note": "STRONG: test file + source implementation evidence",
+      "evidence_note": "MISSING: no source implementation found for this operation",
       "derived_from": "SAL_FACTS",
       "authority_note": "Capability derived from SAL fact match; NOT from poc-targets.yaml prose",
       "generated_by": "tools/capability_layer/capability_compiler.py"
@@ -899,7 +888,7 @@
       "test_refs": [
         "tests/python/fodg/test_fodg_document_mutation.py",
         "tests/python/fodg/test_fodg_export_csv_pipeline.py",
-        "tests/python/fodg/test_fodg_load_gap_closure.py"
+        "tests/python/fodg/test_fodg_gap_coverage.py"
       ],
       "example_refs": [
         "examples/python/fodg/consumer_roundtrip.py"
@@ -1442,7 +1431,7 @@
       "test_refs": [
         "tests/python/fodp/test_fodp_codec.py",
         "tests/python/fodp/test_fodp_conveyor_deepening.py",
-        "tests/python/fodp/test_fodp_roundtrip.py"
+        "tests/python/fodp/test_fodp_gap_coverage.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -1485,8 +1474,8 @@
       ],
       "test_refs": [
         "tests/python/fodp/test_exception_coverage.py",
-        "tests/python/fodp/test_fodp_roundtrip.py",
-        "tests/python/fodp/test_fodp_write_stub.py"
+        "tests/python/fodp/test_fodp_gap_coverage.py",
+        "tests/python/fodp/test_fodp_roundtrip.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -1526,6 +1515,7 @@
       ],
       "implementation_refs": [],
       "test_refs": [
+        "tests/python/fodp/test_fodp_gap_coverage.py",
         "tests/python/fodp/test_fodp_roundtrip.py"
       ],
       "example_refs": [
@@ -1565,7 +1555,9 @@
         "FACT-FODP-EX-0170"
       ],
       "implementation_refs": [],
-      "test_refs": [],
+      "test_refs": [
+        "tests/python/fodp/test_fodp_gap_coverage.py"
+      ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
       ],
@@ -1604,9 +1596,9 @@
       ],
       "implementation_refs": [],
       "test_refs": [
+        "tests/python/fodp/test_fodp_gap_coverage.py",
         "tests/python/fodp/test_fodp_to_fods.py",
-        "tests/python/fodp/test_fodp_to_ods.py",
-        "tests/python/fodp/test_fodp_to_toml.py"
+        "tests/python/fodp/test_fodp_to_ods.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -1685,8 +1677,8 @@
       "implementation_refs": [],
       "test_refs": [
         "tests/python/fodp/test_fodp_export_functions.py",
-        "tests/python/fodp/test_fodp_to_csv.py",
-        "tests/python/fodp/test_fodp_to_dif.py"
+        "tests/python/fodp/test_fodp_gap_coverage.py",
+        "tests/python/fodp/test_fodp_to_csv.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -1854,8 +1846,8 @@
       "implementation_refs": [],
       "test_refs": [
         "tests/python/fodp/test_fodp_conveyor_deepening.py",
-        "tests/python/fodp/test_r281_fodp_workflow.py",
-        "tests/python/fodp/test_r567_fodp_presentation_analysis_properties.py"
+        "tests/python/fodp/test_fodp_gap_coverage.py",
+        "tests/python/fodp/test_r281_fodp_workflow.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -1939,7 +1931,7 @@
       "test_refs": [
         "tests/python/fodp/test_fodp_codec.py",
         "tests/python/fodp/test_fodp_conveyor_deepening.py",
-        "tests/python/fodp/test_r202_fodp_advanced_ops.py"
+        "tests/python/fodp/test_fodp_gap_coverage.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -1981,6 +1973,7 @@
         "src/python/fodp/fodp_codec.py"
       ],
       "test_refs": [
+        "tests/python/fodp/test_fodp_gap_coverage.py",
         "tests/python/fodp/test_r232_fodp_max_text_has_images.py",
         "tests/python/fodp/test_rnext_fodp_image_count.py"
       ],
@@ -2025,8 +2018,8 @@
       ],
       "test_refs": [
         "tests/python/fodp/test_fodp_conveyor_deepening.py",
-        "tests/python/fodp/test_fodp_slide_analytics_ext.py",
-        "tests/python/fodp/test_fodp_slide_analytics_ext2.py"
+        "tests/python/fodp/test_fodp_gap_coverage.py",
+        "tests/python/fodp/test_fodp_slide_analytics_ext.py"
       ],
       "example_refs": [
         "examples/python/fodp/consumer_inspect.py"
@@ -2070,7 +2063,7 @@
       "test_refs": [
         "tests/python/fods/test_fods_file_analytics_ext.py",
         "tests/python/fods/test_fods_gap_closure_batch.py",
-        "tests/python/fods/test_fods_install_proof.py"
+        "tests/python/fods/test_fods_gap_coverage.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2112,9 +2105,9 @@
         "src/python/fods/fods_codec.py"
       ],
       "test_refs": [
+        "tests/python/fods/test_fods_gap_coverage.py",
         "tests/python/fods/test_fods_install_proof.py",
-        "tests/python/fods/test_fods_primary_api.py",
-        "tests/python/fods/test_pqlm_016_fods_rebuild_roundtrip.py"
+        "tests/python/fods/test_fods_primary_api.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2190,9 +2183,9 @@
       ],
       "implementation_refs": [],
       "test_refs": [
+        "tests/python/fods/test_fods_gap_coverage.py",
         "tests/python/fods/test_r125_fact_traceability.py",
-        "tests/python/fods/test_r238_fods_avg_cells_empty_sheets.py",
-        "tests/python/fods/test_r62_fods_deepening.py"
+        "tests/python/fods/test_r238_fods_avg_cells_empty_sheets.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2367,8 +2360,8 @@
       ],
       "test_refs": [
         "tests/python/fods/test_fods_document_mutation.py",
-        "tests/python/fods/test_fods_to_ndjson.py",
-        "tests/python/fods/test_parser_mutation_hardening.py"
+        "tests/python/fods/test_fods_gap_coverage.py",
+        "tests/python/fods/test_fods_to_ndjson.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2496,8 +2489,8 @@
       ],
       "test_refs": [
         "tests/python/fods/test_fods_gap_closure_batch.py",
-        "tests/python/fods/test_fods_property.py",
-        "tests/python/fods/test_neutral_model.py"
+        "tests/python/fods/test_fods_gap_coverage.py",
+        "tests/python/fods/test_fods_property.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2541,7 +2534,7 @@
       "test_refs": [
         "tests/python/fods/test_fods_file_analytics_ext.py",
         "tests/python/fods/test_fods_gap_closure_foss.py",
-        "tests/python/fods/test_fods_pywrite_deepening.py"
+        "tests/python/fods/test_fods_gap_coverage.py"
       ],
       "example_refs": [
         "examples/python/fods/consumer_roundtrip.py"
@@ -2581,6 +2574,7 @@
       ],
       "implementation_refs": [],
       "test_refs": [
+        "tests/python/fods/test_fods_gap_coverage.py",
         "tests/python/fods/test_r163_fods_col_style_validation.py"
       ],
       "example_refs": [
@@ -2659,6 +2653,7 @@
       ],
       "implementation_refs": [],
       "test_refs": [
+        "tests/python/fods/test_fods_gap_coverage.py",
         "tests/python/fods/test_parser_mutation_hardening.py",
         "tests/python/fods/test_parser_security.py"
       ],
@@ -2748,7 +2743,7 @@
       "test_refs": [
         "tests/python/fodt/test_compat_bootstrap.py",
         "tests/python/fodt/test_fodt_gap_closure_batch.py",
-        "tests/python/fodt/test_fodt_install_proof.py"
+        "tests/python/fodt/test_fodt_gap_coverage.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -2869,7 +2864,7 @@
       "test_refs": [
         "tests/python/fodt/test_fodt_gap_closure_batch.py",
         "tests/python/fodt/test_fodt_gap_closure_foss.py",
-        "tests/python/fodt/test_fodt_install_proof.py"
+        "tests/python/fodt/test_fodt_gap_coverage.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -2911,9 +2906,9 @@
         "src/python/fodt/fodt_codec.py"
       ],
       "test_refs": [
+        "tests/python/fodt/test_fodt_gap_coverage.py",
         "tests/python/fodt/test_parser_basic.py",
-        "tests/python/fodt/test_r163_fodt_section_change_image.py",
-        "tests/python/fodt/test_r192_fodt_table_cell_count.py"
+        "tests/python/fodt/test_r163_fodt_section_change_image.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -2955,9 +2950,9 @@
         "src/python/fodt/fodt_codec.py"
       ],
       "test_refs": [
+        "tests/python/fodt/test_fodt_gap_coverage.py",
         "tests/python/fodt/test_fodt_to_csv.py",
-        "tests/python/fodt/test_fodt_to_dif.py",
-        "tests/python/fodt/test_fodt_to_fods.py"
+        "tests/python/fodt/test_fodt_to_dif.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -3132,8 +3127,8 @@
       ],
       "test_refs": [
         "tests/python/fodt/test_fodt_gap_closure_batch.py",
-        "tests/python/fodt/test_neutral_model.py",
-        "tests/python/fodt/test_parser_basic.py"
+        "tests/python/fodt/test_fodt_gap_coverage.py",
+        "tests/python/fodt/test_neutral_model.py"
       ],
       "example_refs": [
         "examples/python/fodt/consumer_roundtrip.py"
@@ -3213,6 +3208,7 @@
       ],
       "implementation_refs": [],
       "test_refs": [
+        "tests/python/fodt/test_fodt_gap_coverage.py",
         "tests/python/fodt/test_r162_fodt_language_paragraph.py",
         "tests/python/fodt/test_r75_fodt_new_apis.py"
       ],
@@ -4117,8 +4113,8 @@
       "implementation_refs": [],
       "test_refs": [
         "tests/python/ods/test_mdr10_ods_exports.py",
-        "tests/python/ods/test_ods_gate7_fuzz_guard.py",
-        "tests/python/ods/test_ods_probe_capabilities.py"
+        "tests/python/ods/test_ods_gap_coverage.py",
+        "tests/python/ods/test_ods_gate7_fuzz_guard.py"
       ],
       "example_refs": [
         "examples/python/ods/clean_consumer_roundtrip.py"
@@ -4492,9 +4488,9 @@
         "src/python/odt/odt_parser.py"
       ],
       "test_refs": [
+        "tests/python/odt/test_odt_gap_coverage.py",
         "tests/python/odt/test_odt_gate5_neutral_model.py",
-        "tests/python/odt/test_odt_to_fods.py",
-        "tests/python/odt/test_odt_to_ods.py"
+        "tests/python/odt/test_odt_to_fods.py"
       ],
       "example_refs": [
         "examples/python/odt/consumer_roundtrip.py"
@@ -4931,8 +4927,8 @@
       ],
       "test_refs": [
         "tests/python/pbm/test_pbm_conveyor_deepening.py",
-        "tests/python/pbm/test_pbm_gate6_oracle.py",
-        "tests/python/pbm/test_pbm_malformed_and_security.py"
+        "tests/python/pbm/test_pbm_gap_coverage.py",
+        "tests/python/pbm/test_pbm_gate6_oracle.py"
       ],
       "example_refs": [
         "examples/python/pbm/consumer_roundtrip.py"
@@ -4967,8 +4963,8 @@
       ],
       "test_refs": [
         "tests/python/pbm/test_pbm_bitmap_analytics_ext2.py",
-        "tests/python/pbm/test_pbm_gate5_neutral_model.py",
-        "tests/python/pbm/test_r282_pbm_workflow.py"
+        "tests/python/pbm/test_pbm_gap_coverage.py",
+        "tests/python/pbm/test_pbm_gate5_neutral_model.py"
       ],
       "example_refs": [
         "examples/python/pbm/consumer_roundtrip.py"
@@ -5003,8 +4999,8 @@
       ],
       "test_refs": [
         "tests/python/pgm/test_pgm_conveyor_deepening.py",
-        "tests/python/pgm/test_pgm_gate6_oracle.py",
-        "tests/python/pgm/test_pgm_malformed_and_security.py"
+        "tests/python/pgm/test_pgm_gap_coverage.py",
+        "tests/python/pgm/test_pgm_gate6_oracle.py"
       ],
       "example_refs": [
         "examples/python/pgm/consumer_roundtrip.py"
@@ -5036,6 +5032,7 @@
       ],
       "implementation_refs": [],
       "test_refs": [
+        "tests/python/pgm/test_pgm_gap_coverage.py",
         "tests/python/pgm/test_pgm_gate5_neutral_model.py",
         "tests/python/pgm/test_r283_pgm_workflow.py"
       ],
@@ -5072,8 +5069,8 @@
       ],
       "test_refs": [
         "tests/python/ppm/test_ppm_conveyor_deepening.py",
-        "tests/python/ppm/test_ppm_gate6_oracle.py",
-        "tests/python/ppm/test_ppm_malformed_and_security.py"
+        "tests/python/ppm/test_ppm_gap_coverage.py",
+        "tests/python/ppm/test_ppm_gate6_oracle.py"
       ],
       "example_refs": [
         "examples/python/ppm/consumer_roundtrip.py"
@@ -5105,9 +5102,9 @@
       ],
       "implementation_refs": [],
       "test_refs": [
+        "tests/python/ppm/test_ppm_gap_coverage.py",
         "tests/python/ppm/test_ppm_gate5_neutral_model.py",
-        "tests/python/ppm/test_r101_netpbm_installed_chain.py",
-        "tests/python/ppm/test_r113_ppm_grayscale_roundtrip.py"
+        "tests/python/ppm/test_r101_netpbm_installed_chain.py"
       ],
       "example_refs": [
         "examples/python/ppm/consumer_roundtrip.py"
@@ -5243,6 +5240,7 @@
       ],
       "implementation_refs": [],
       "test_refs": [
+        "tests/python/qoi/test_qoi_gap_coverage.py",
         "tests/python/qoi/test_r202_qoi_advanced_ops.py",
         "tests/python/qoi/test_r276_qoi_workflow.py"
       ],
@@ -5653,7 +5651,7 @@
       "test_refs": [
         "tests/python/toml/test_r1226_toml_classification_properties.py",
         "tests/python/toml/test_r155_toml_flatten_env.py",
-        "tests/python/toml/test_toml_roundtrip_gap_closure.py"
+        "tests/python/toml/test_toml_gap_coverage.py"
       ],
       "example_refs": [
         "examples/python/toml/consumer_roundtrip.py"
@@ -6300,7 +6298,8 @@
       "implementation_refs": [],
       "test_refs": [
         "tests/python/zst/test_r267_zst_compression_summary.py",
-        "tests/python/zst/test_r280_zst_workflow.py"
+        "tests/python/zst/test_r280_zst_workflow.py",
+        "tests/python/zst/test_zst_analytics_coverage.py"
       ],
       "example_refs": [
         "examples/python/zst/compress_decompress_file.py"

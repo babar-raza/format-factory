@@ -1,6 +1,6 @@
 # Portfolio Certification Report
 
-Generated: 2026-07-14T10:23:51.478931+00:00
+Generated: 2026-08-08T18:28:17.543292+00:00
 Plan: `plans/.claude/crispy-jingling-snail.md`
 
 ## Summary

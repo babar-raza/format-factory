@@ -1,0 +1,411 @@
+{
+  "format_id": "fodt",
+  "contract_id": "FC-FODT-V1",
+  "contract_input_digests": {
+    "fact_categories_sha256": "aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc",
+    "family_pack_sha256": "a0c9e6a36ee0bc426d4a9b2e12de9ce1b0ec10239395c8a492e9bd1feb498d19",
+    "qname_registry_sha256": "e9ffff636120c9cfc8a8a15b06455a133065eb1cb6bc3f8d7123c13fb1bed9ca",
+    "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sal_facts_sha256": "bb1da87e102f9f704c25f10281eef7ec410a8534ace3ed359107b70efa394aae",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+  },
+  "product_source_present": true,
+  "function_count": 232,
+  "class_count": 22,
+  "test_file_count": 199,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "FODT-CONTENT-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "add_paragraph",
+        "set_text"
+      ],
+      "test_files": [
+        "tests/python/fodt/test_fodt_document_mutation.py",
+        "tests/python/fodt/test_fodt_dom_d2_mutation.py",
+        "tests/python/fodt/test_fodt_gap_coverage.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODT-EXPORT-001",
+      "category": "export",
+      "level": "SHOULD",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "document_to_html",
+        "document_to_text",
+        "document_to_xml",
+        "fodt_heading_to_para_ratio",
+        "fodt_heading_to_paragraph_ratio",
+        "fodt_paragraph_to_heading_ratio",
+        "fodt_to_abw",
+        "fodt_to_csv",
+        "fodt_to_dif",
+        "fodt_to_fodg",
+        "fodt_to_fods",
+        "fodt_to_gnumeric",
+        "fodt_to_html",
+        "fodt_to_markdown",
+        "fodt_to_ndjson",
+        "fodt_to_ods",
+        "fodt_to_odt",
+        "fodt_to_sylk",
+        "fodt_to_toml",
+        "fodt_to_tsv"
+      ],
+      "test_files": [
+        "tests/python/deepening/test_r1222_fodt_spec_parity_deepening.py",
+        "tests/python/deepening/test_r307_pbm_pgm_fodp_fodt_deepening.py",
+        "tests/python/deepening/test_r315_pbm_pgm_fodp_fodt_deepening.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_zst_pipeline.py",
+        "tests/python/dogfood/test_dogfood_fodt_block_text_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodt_paragraph_text_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodt_remaining3_csv_remaining3_ndjson_export.py",
+        "tests/python/fodt/test_fodt_document_mutation.py",
+        "tests/python/fodt/test_fodt_exporters.py",
+        "tests/python/fodt/test_fodt_gap_closure_batch.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODT-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "parse_fodt",
+        "parse_fodt_strict",
+        "save_to_file",
+        "write_fodt"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_fodt.py",
+        "tests/packaging/test_r198_fods_fodt_installed_workflow.py",
+        "tests/python/deepening/test_r1222_fodt_spec_parity_deepening.py",
+        "tests/python/dogfood/test_dogfood_fodp_final_fods_fodt_final_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_neutral_remaining_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_remaining_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_zst_pipeline.py",
+        "tests/python/dogfood/test_dogfood_fodt_advanced_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodt_block_text_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodt_depth_analytics_ndjson_export.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODT-META-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 2,
+      "product_symbols": [],
+      "test_files": [
+        "tests/benchmarks/bench_fodt.py",
+        "tests/packaging/test_r198_fods_fodt_installed_workflow.py",
+        "tests/python/abw/test_abw_to_fodt.py",
+        "tests/python/csv/test_csv_to_fodt.py",
+        "tests/python/deepening/test_r1222_fodt_spec_parity_deepening.py",
+        "tests/python/deepening/test_r269_ods_fods_fodt_tsv_deepening.py",
+        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
+        "tests/python/deepening/test_r289_fods_fodt_fodg_zst_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py",
+        "tests/python/deepening/test_r301_fods_fodt_fodg_gnumeric_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODT-MODEL-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Document",
+        "FodtDocument",
+        "FodtError",
+        "FodtHeading",
+        "FodtInputError",
+        "FodtList",
+        "FodtListItem",
+        "FodtParagraph",
+        "FodtParseError",
+        "FodtSizeError",
+        "FodtSpan",
+        "FodtTable",
+        "FodtTableCell",
+        "FodtTableRow",
+        "Heading",
+        "List",
+        "ListItem",
+        "Paragraph",
+        "Span",
+        "Table"
+      ],
+      "test_files": [
+        "tests/python/deepening/test_r1222_fodt_spec_parity_deepening.py",
+        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py",
+        "tests/python/deepening/test_r303_pbm_pgm_fodp_fodt_deepening.py",
+        "tests/python/deepening/test_r307_pbm_pgm_fodp_fodt_deepening.py",
+        "tests/python/deepening/test_r311_pbm_pgm_fodp_fodt_deepening.py",
+        "tests/python/deepening/test_r363_pbm_pgm_fodp_fodt_deepening.py",
+        "tests/python/dogfood/test_dogfood_fodt_document_metrics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodt_heading_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodt_paragraph_text_ndjson_export.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODT-PARSE-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "parse_fodt",
+        "parse_fodt_strict"
+      ],
+      "test_files": [
+        "tests/benchmarks/bench_fodt.py",
+        "tests/packaging/test_r198_fods_fodt_installed_workflow.py",
+        "tests/python/deepening/test_r1222_fodt_spec_parity_deepening.py",
+        "tests/python/dogfood/test_dogfood_fodp_final_fods_fodt_final_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_neutral_remaining_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_remaining_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fods_fodt_zst_pipeline.py",
+        "tests/python/dogfood/test_dogfood_fodt_advanced_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodt_block_text_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodt_depth_analytics_ndjson_export.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODT-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 4,
+      "product_symbols": [],
+      "test_files": [
+        "tests/benchmarks/bench_fodt.py",
+        "tests/packaging/test_r198_fods_fodt_installed_workflow.py",
+        "tests/python/abw/test_abw_to_fodt.py",
+        "tests/python/csv/test_csv_to_fodt.py",
+        "tests/python/deepening/test_r1222_fodt_spec_parity_deepening.py",
+        "tests/python/deepening/test_r269_ods_fods_fodt_tsv_deepening.py",
+        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
+        "tests/python/deepening/test_r289_fods_fodt_fodg_zst_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py",
+        "tests/python/deepening/test_r301_fods_fodt_fodg_gnumeric_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODT-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 2,
+      "product_symbols": [
+        "_safe_int_fodt",
+        "document_max_paragraph_length",
+        "fodt_max_block_text_length",
+        "fodt_max_block_word_count",
+        "fodt_max_heading_depth",
+        "fodt_max_paragraph_length",
+        "fodt_max_run_count",
+        "fodt_max_words_in_heading"
+      ],
+      "test_files": [
+        "tests/python/deepening/test_r311_pbm_pgm_fodp_fodt_deepening.py",
+        "tests/python/dogfood/test_dogfood_fodt_block_text_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodt_para_depth_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodt_structure_analytics_ndjson_export.py",
+        "tests/python/fodt/test_fodt_gap_closure_batch.py",
+        "tests/python/fodt/test_fodt_gap_closure_foss.py",
+        "tests/python/fodt/test_r132_fodt_structure_analytics.py",
+        "tests/python/fodt/test_r133_fodt_remaining_analytics.py",
+        "tests/python/fodt/test_r189_fodt_max_paragraph_length.py",
+        "tests/python/fodt/test_r202_fodt_advanced_ops.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODT-STYLE-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Document",
+        "FodtDocument",
+        "FodtError",
+        "FodtHeading",
+        "FodtInputError",
+        "FodtList",
+        "FodtListItem",
+        "FodtParagraph",
+        "FodtParseError",
+        "FodtSizeError",
+        "FodtSpan",
+        "FodtTable",
+        "FodtTableCell",
+        "FodtTableRow",
+        "Heading",
+        "List",
+        "ListItem",
+        "Paragraph",
+        "Span",
+        "Table"
+      ],
+      "test_files": [
+        "tests/python/deepening/test_r1222_fodt_spec_parity_deepening.py",
+        "tests/python/deepening/test_r274_fodt_ods_fodp_toml_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py",
+        "tests/python/deepening/test_r303_pbm_pgm_fodp_fodt_deepening.py",
+        "tests/python/deepening/test_r307_pbm_pgm_fodp_fodt_deepening.py",
+        "tests/python/deepening/test_r311_pbm_pgm_fodp_fodt_deepening.py",
+        "tests/python/deepening/test_r363_pbm_pgm_fodp_fodt_deepening.py",
+        "tests/python/dogfood/test_dogfood_fodt_document_metrics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodt_heading_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodt_paragraph_text_ndjson_export.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODT-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 5,
+      "gap_depth": 0,
+      "product_symbols": [
+        "validate_document"
+      ],
+      "test_files": [
+        "tests/python/dogfood/test_dogfood_fodp_final_fods_fodt_final_ndjson_export.py",
+        "tests/python/fodt/test_fodt_gap_coverage.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODT-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "save_to_file",
+        "write_fodt"
+      ],
+      "test_files": [
+        "tests/python/deepening/test_r1222_fodt_spec_parity_deepening.py",
+        "tests/python/dogfood/test_dogfood_fodt_mutation_ops_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodt_text_pipeline.py",
+        "tests/python/fodt/test_fodt_document_mutation.py",
+        "tests/python/fodt/test_fodt_gap_closure_batch.py",
+        "tests/python/fodt/test_fodt_gap_coverage.py",
+        "tests/python/fodt/test_fodt_install_proof.py",
+        "tests/python/fodt/test_fodt_pywrite_deepening.py",
+        "tests/python/fodt/test_fodt_semantic_roundtrip.py",
+        "tests/python/fodt/test_r202_fodt_advanced_ops.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 11,
+    "with_gap": 3,
+    "by_status": {
+      "NOT_STARTED": 2,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 9,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

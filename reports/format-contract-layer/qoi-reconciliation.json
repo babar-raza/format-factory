@@ -5,8 +5,8 @@
     "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
     "family_pack_sha256": "5811104a395d9a79ca5edf12d245ad9d699c7c1330f094884fe9d503dc0e0241",
     "qname_registry_sha256": "ec4940c11965b71fa208b42caa6952a6620d37bcd9b55fa044ab1de53d3dcf5f",
-    "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "sal_facts_sha256": "1467650c1564b32f817f025031bfb5e41b118db2bf790c58fb776dfc0142dc15",
+    "research_sha256": "71485818d56195ec1e5e97815381fc14a8356988f34f9b5a54c838da8ca460be",
+    "sal_facts_sha256": "257d9fe64fb1ebd424168a1c01a988454eee56155dec7024b2a514f7f3ec7188",
     "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
   },
   "product_source_present": true,
@@ -55,16 +55,9 @@
         "set_pixel"
       ],
       "test_files": [
-        "tests/python/deepening/test_r260_fodp_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r263_fodp_odt_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r265_fodp_odt_qoi_xcf_deepening2.py",
-        "tests/python/deepening/test_r270_odt_fodg_qoi_fodp_deepening.py",
-        "tests/python/deepening/test_r275_odt_fodg_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
-        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
-        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
-        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
-        "tests/python/deepening/test_r290_odt_abw_ods_qoi_deepening.py"
+        "tests/python/qoi/test_qoi_document_mutation.py",
+        "tests/python/qoi/test_qoi_gap_coverage.py",
+        "tests/python/qoi/test_qoi_sample_roundtrip.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -87,16 +80,16 @@
         "save_to_file"
       ],
       "test_files": [
-        "tests/python/deepening/test_r260_fodp_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r263_fodp_odt_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r265_fodp_odt_qoi_xcf_deepening2.py",
-        "tests/python/deepening/test_r270_odt_fodg_qoi_fodp_deepening.py",
-        "tests/python/deepening/test_r275_odt_fodg_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
-        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
-        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
-        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
-        "tests/python/deepening/test_r290_odt_abw_ods_qoi_deepening.py"
+        "tests/python/dogfood/test_dogfood_qoi_color_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_qoi_metadata_export.py",
+        "tests/python/dogfood/test_dogfood_qoi_remaining3_analytics_ndjson_export.py",
+        "tests/python/qoi/test_mdr10_qoi_exports.py",
+        "tests/python/qoi/test_qoi_conveyor_deepening.py",
+        "tests/python/qoi/test_qoi_document_mutation.py",
+        "tests/python/qoi/test_qoi_encoder.py",
+        "tests/python/qoi/test_qoi_gap_closure_batch.py",
+        "tests/python/qoi/test_qoi_gap_coverage.py",
+        "tests/python/qoi/test_qoi_gate5_neutral_model.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -132,16 +125,16 @@
         "QoiWriteError"
       ],
       "test_files": [
-        "tests/python/deepening/test_r260_fodp_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r263_fodp_odt_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r265_fodp_odt_qoi_xcf_deepening2.py",
-        "tests/python/deepening/test_r270_odt_fodg_qoi_fodp_deepening.py",
-        "tests/python/deepening/test_r275_odt_fodg_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
-        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
-        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
-        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
-        "tests/python/deepening/test_r290_odt_abw_ods_qoi_deepening.py"
+        "tests/python/deepening/test_r295_ods_qoi_xcf_csv_deepening.py",
+        "tests/python/qoi/test_mdr10_qoi_exports.py",
+        "tests/python/qoi/test_qoi_conveyor_deepening.py",
+        "tests/python/qoi/test_qoi_document_mutation.py",
+        "tests/python/qoi/test_qoi_domain_model.py",
+        "tests/python/qoi/test_qoi_encoder.py",
+        "tests/python/qoi/test_qoi_gap_closure_batch.py",
+        "tests/python/qoi/test_qoi_gap_coverage.py",
+        "tests/python/qoi/test_qoi_gate5_neutral_model.py",
+        "tests/python/qoi/test_qoi_gate7_fuzz_guard.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -154,9 +147,9 @@
       "capability_id": "QOI-PARSE-001",
       "category": "parse",
       "level": "MUST",
-      "depth_required": 2,
+      "depth_required": 3,
       "observed_status": "TESTED",
-      "observed_depth": 2,
+      "observed_depth": 3,
       "gap_depth": 0,
       "product_symbols": [
         "from_file",
@@ -165,16 +158,16 @@
         "probe_qoi"
       ],
       "test_files": [
-        "tests/python/deepening/test_r260_fodp_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r263_fodp_odt_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r265_fodp_odt_qoi_xcf_deepening2.py",
-        "tests/python/deepening/test_r270_odt_fodg_qoi_fodp_deepening.py",
-        "tests/python/deepening/test_r275_odt_fodg_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
-        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
-        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
-        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
-        "tests/python/deepening/test_r290_odt_abw_ods_qoi_deepening.py"
+        "tests/python/dogfood/test_dogfood_ppm_qoi_xcf_remaining_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_qoi_color_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_qoi_metadata_export.py",
+        "tests/python/dogfood/test_dogfood_qoi_remaining3_analytics_ndjson_export.py",
+        "tests/python/qoi/test_mdr10_qoi_exports.py",
+        "tests/python/qoi/test_qoi_conveyor_deepening.py",
+        "tests/python/qoi/test_qoi_document_mutation.py",
+        "tests/python/qoi/test_qoi_domain_model.py",
+        "tests/python/qoi/test_qoi_encoder.py",
+        "tests/python/qoi/test_qoi_gap_closure_batch.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -227,16 +220,16 @@
         "qoi_min_max_brightness"
       ],
       "test_files": [
-        "tests/python/deepening/test_r260_fodp_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r263_fodp_odt_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r265_fodp_odt_qoi_xcf_deepening2.py",
         "tests/python/deepening/test_r270_odt_fodg_qoi_fodp_deepening.py",
         "tests/python/deepening/test_r275_odt_fodg_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
-        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
-        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
-        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
-        "tests/python/deepening/test_r290_odt_abw_ods_qoi_deepening.py"
+        "tests/python/dogfood/test_dogfood_qoi_analytics_gaps_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_qoi_grayscale_variance_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_qoi_xcf_gnumeric_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_qoi_zst_remaining_analytics_ndjson_export.py",
+        "tests/python/qoi/test_qoi_gap_coverage.py",
+        "tests/python/qoi/test_qoi_image_analytics_ext.py",
+        "tests/python/qoi/test_r230_qoi_dominant_channel.py",
+        "tests/python/qoi/test_r253_qoi_any_black_max_channel_avg.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -287,16 +280,16 @@
         "save_to_file"
       ],
       "test_files": [
-        "tests/python/deepening/test_r260_fodp_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r263_fodp_odt_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r265_fodp_odt_qoi_xcf_deepening2.py",
-        "tests/python/deepening/test_r270_odt_fodg_qoi_fodp_deepening.py",
-        "tests/python/deepening/test_r275_odt_fodg_qoi_xcf_deepening.py",
-        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
-        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
-        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
-        "tests/python/deepening/test_r286_odt_toml_xcf_qoi_deepening.py",
-        "tests/python/deepening/test_r290_odt_abw_ods_qoi_deepening.py"
+        "tests/python/qoi/test_mdr10_qoi_exports.py",
+        "tests/python/qoi/test_qoi_conveyor_deepening.py",
+        "tests/python/qoi/test_qoi_document_mutation.py",
+        "tests/python/qoi/test_qoi_encoder.py",
+        "tests/python/qoi/test_qoi_gap_closure_batch.py",
+        "tests/python/qoi/test_qoi_gap_coverage.py",
+        "tests/python/qoi/test_qoi_sample_roundtrip.py",
+        "tests/python/qoi/test_r202_qoi_advanced_ops.py",
+        "tests/python/qoi/test_r232_qoi_grayscale_variance.py",
+        "tests/python/qoi/test_r232_qoi_green_blue_avg.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [

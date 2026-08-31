@@ -2,7 +2,7 @@
   "format_id": "sylk",
   "contract_id": "FC-SYLK-V1",
   "contract_input_digests": {
-    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "fact_categories_sha256": "aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc",
     "family_pack_sha256": "a546af31bd73a7c0001896273606fa87ff836efcc06a9c0dec19158aa0718e53",
     "qname_registry_sha256": "947a08cd9e0d665ae73036c9332a0b286aecb203dbb15b372b7a85613e61cc51",
     "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -10,9 +10,9 @@
     "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
   },
   "product_source_present": true,
-  "function_count": 176,
+  "function_count": 173,
   "class_count": 13,
-  "test_file_count": 175,
+  "test_file_count": 172,
   "oracle_status": null,
   "capabilities": [
     {
@@ -58,16 +58,16 @@
         "set_cell_value_on_model"
       ],
       "test_files": [
-        "tests/packaging/test_r210_ods_sylk_wheel_proof.py",
-        "tests/python/abw/test_abw_to_sylk.py",
-        "tests/python/csv/test_csv_to_sylk.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py",
-        "tests/python/deepening/test_r297_ppm_ndjson_sylk_dif_deepening.py",
-        "tests/python/deepening/test_r300_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dogfood/test_dogfood_abw_remaining3_sylk_remaining_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_sylk_final_ops_ndjson_export.py",
+        "tests/python/sylk/test_r156_sylk_accessors_mutation.py",
+        "tests/python/sylk/test_r159_sylk_row_ops.py",
+        "tests/python/sylk/test_r165_sylk_accessor_deepening.py",
+        "tests/python/sylk/test_r200_sylk_advanced_ops.py",
+        "tests/python/sylk/test_sylk_conveyor_deepening.py",
+        "tests/python/sylk/test_sylk_document_mutation.py",
+        "tests/python/sylk/test_sylk_gap_closure_batch.py",
+        "tests/python/sylk/test_sylk_gap_closure_batch2.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -92,15 +92,15 @@
       ],
       "test_files": [
         "tests/packaging/test_r210_ods_sylk_wheel_proof.py",
-        "tests/python/abw/test_abw_to_sylk.py",
-        "tests/python/csv/test_csv_to_sylk.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py",
-        "tests/python/deepening/test_r297_ppm_ndjson_sylk_dif_deepening.py",
-        "tests/python/deepening/test_r300_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dogfood/test_dogfood_sylk_dif_csv_pipeline.py",
+        "tests/python/dogfood/test_dogfood_sylk_ndjson_pipeline.py",
+        "tests/python/dogfood/test_dogfood_sylk_remaining_ops_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_sylk_stats_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_sylk_write_roundtrip.py",
+        "tests/python/sylk/test_mdr7_sylk_write.py",
+        "tests/python/sylk/test_r100_sylk_csv_malformed.py",
+        "tests/python/sylk/test_r101_sylk_strict_edge.py",
+        "tests/python/sylk/test_r104_sylk_complex_grid.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -131,23 +131,20 @@
         "sylk_to_ndjson",
         "sylk_to_ods",
         "sylk_to_odt",
-        "sylk_to_pbm",
-        "sylk_to_pgm",
-        "sylk_to_ppm",
         "sylk_to_toml",
         "sylk_to_tsv"
       ],
       "test_files": [
-        "tests/packaging/test_r210_ods_sylk_wheel_proof.py",
-        "tests/python/abw/test_abw_to_sylk.py",
-        "tests/python/csv/test_csv_to_sylk.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py",
-        "tests/python/deepening/test_r297_ppm_ndjson_sylk_dif_deepening.py",
-        "tests/python/deepening/test_r300_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dogfood/test_dogfood_sylk_csv_pipeline.py",
+        "tests/python/dogfood/test_dogfood_sylk_dif_csv_pipeline.py",
+        "tests/python/dogfood/test_dogfood_sylk_remaining_ops_ndjson_export.py",
+        "tests/python/sylk/test_r100_sylk_csv_malformed.py",
+        "tests/python/sylk/test_r101_sylk_strict_edge.py",
+        "tests/python/sylk/test_r104_sylk_complex_grid.py",
+        "tests/python/sylk/test_r104_sylk_csv_export_hardening.py",
+        "tests/python/sylk/test_r107_sylk_csv_export.py",
+        "tests/python/sylk/test_r107_sylk_dogfood_csv_pipeline.py",
+        "tests/python/sylk/test_r108_sylk_workflow.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -173,15 +170,15 @@
       ],
       "test_files": [
         "tests/packaging/test_r210_ods_sylk_wheel_proof.py",
-        "tests/python/abw/test_abw_to_sylk.py",
-        "tests/python/csv/test_csv_to_sylk.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py",
-        "tests/python/deepening/test_r297_ppm_ndjson_sylk_dif_deepening.py",
-        "tests/python/deepening/test_r300_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dogfood/test_dogfood_sylk_csv_pipeline.py",
+        "tests/python/dogfood/test_dogfood_sylk_dif_csv_pipeline.py",
+        "tests/python/dogfood/test_dogfood_sylk_ndjson_pipeline.py",
+        "tests/python/dogfood/test_dogfood_sylk_stats_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_sylk_write_roundtrip.py",
+        "tests/python/sylk/test_mdr7_sylk_write.py",
+        "tests/python/sylk/test_mdr_sylk_get_column_values.py",
+        "tests/python/sylk/test_ppr_sylk_cell_row_access.py",
+        "tests/python/sylk/test_r100_sylk_csv_malformed.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -214,16 +211,16 @@
         "SylkWriteError"
       ],
       "test_files": [
-        "tests/packaging/test_r210_ods_sylk_wheel_proof.py",
-        "tests/python/abw/test_abw_to_sylk.py",
-        "tests/python/csv/test_csv_to_sylk.py",
         "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
         "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
         "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
         "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py",
         "tests/python/deepening/test_r297_ppm_ndjson_sylk_dif_deepening.py",
-        "tests/python/deepening/test_r300_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/deepening/test_r300_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r304_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r308_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r364_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/dogfood/test_dogfood_sylk_cell_dist_analytics_ndjson_export.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -248,15 +245,15 @@
       ],
       "test_files": [
         "tests/packaging/test_r210_ods_sylk_wheel_proof.py",
-        "tests/python/abw/test_abw_to_sylk.py",
-        "tests/python/csv/test_csv_to_sylk.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py",
-        "tests/python/deepening/test_r297_ppm_ndjson_sylk_dif_deepening.py",
-        "tests/python/deepening/test_r300_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dogfood/test_dogfood_sylk_dif_csv_pipeline.py",
+        "tests/python/dogfood/test_dogfood_sylk_ndjson_pipeline.py",
+        "tests/python/dogfood/test_dogfood_sylk_remaining_ops_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_sylk_stats_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_sylk_write_roundtrip.py",
+        "tests/python/sylk/test_mdr7_sylk_write.py",
+        "tests/python/sylk/test_r100_sylk_csv_malformed.py",
+        "tests/python/sylk/test_r101_sylk_strict_edge.py",
+        "tests/python/sylk/test_r104_sylk_complex_grid.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -313,16 +310,16 @@
         "sylk_max_string_length"
       ],
       "test_files": [
-        "tests/packaging/test_r210_ods_sylk_wheel_proof.py",
-        "tests/python/abw/test_abw_to_sylk.py",
-        "tests/python/csv/test_csv_to_sylk.py",
         "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py",
-        "tests/python/deepening/test_r297_ppm_ndjson_sylk_dif_deepening.py",
-        "tests/python/deepening/test_r300_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/deepening/test_r308_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/dogfood/test_dogfood_fodt_abw_sylk_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_sylk_cell_dist_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_sylk_density_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_sylk_density_header_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_sylk_ndjson_gap_analytics_export.py",
+        "tests/python/dogfood/test_dogfood_sylk_remaining3_csv_remaining2_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_sylk_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_sylk_sparsity_analytics_ndjson_export.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -373,16 +370,16 @@
         "write_sylk_str"
       ],
       "test_files": [
-        "tests/packaging/test_r210_ods_sylk_wheel_proof.py",
-        "tests/python/abw/test_abw_to_sylk.py",
-        "tests/python/csv/test_csv_to_sylk.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r273_dif_sylk_abw_fods_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py",
-        "tests/python/deepening/test_r297_ppm_ndjson_sylk_dif_deepening.py",
-        "tests/python/deepening/test_r300_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dogfood/test_dogfood_sylk_csv_pipeline.py",
+        "tests/python/dogfood/test_dogfood_sylk_dif_csv_pipeline.py",
+        "tests/python/dogfood/test_dogfood_sylk_write_roundtrip.py",
+        "tests/python/sylk/test_mdr7_sylk_write.py",
+        "tests/python/sylk/test_mdr_sylk_get_column_values.py",
+        "tests/python/sylk/test_ppr_sylk_cell_row_access.py",
+        "tests/python/sylk/test_r100_sylk_csv_malformed.py",
+        "tests/python/sylk/test_r101_sylk_strict_edge.py",
+        "tests/python/sylk/test_r104_sylk_complex_grid.py",
+        "tests/python/sylk/test_r104_sylk_csv_export_hardening.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [

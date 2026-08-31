@@ -78,13 +78,13 @@ ALLOWED_PRODUCT_SOURCE_PATCH_PATHS = [
 # any exact path under these roots; it may never authorize a path outside them.
 FF6_GOVERNED_PRODUCT_ROOTS = [
     "src/python/ipynb/",
-    "src/python/openraster/",
+    "src/python/ora/",
     "src/python/nrrd/",
     "src/python/xliff/",
     "src/python/safetensors/",
     "src/python/ubl/",
     "tests/python/ipynb/",
-    "tests/python/openraster/",
+    "tests/python/ora/",
     "tests/python/nrrd/",
     "tests/python/xliff/",
     "tests/python/safetensors/",

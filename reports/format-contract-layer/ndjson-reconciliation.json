@@ -2,7 +2,7 @@
   "format_id": "ndjson",
   "contract_id": "FC-NDJSON-V1",
   "contract_input_digests": {
-    "fact_categories_sha256": "27df19fbe852ccb0b9d305711469f5ad02f686862e1dc453b53924b510e92468",
+    "fact_categories_sha256": "aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc",
     "family_pack_sha256": "5f390403816c87da2414f5c424759cb2f17882a71c019a9ade2d370391c33116",
     "qname_registry_sha256": "f6203a007a2782dab8a90996b8369085af40bc989c14fc138ac988b4be7cac28",
     "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -10,9 +10,9 @@
     "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
   },
   "product_source_present": true,
-  "function_count": 191,
+  "function_count": 188,
   "class_count": 8,
-  "test_file_count": 497,
+  "test_file_count": 494,
   "oracle_status": null,
   "capabilities": [
     {
@@ -28,16 +28,16 @@
         "rename_field"
       ],
       "test_files": [
-        "tests/benchmarks/bench_ndjson.py",
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_ndjson.py",
-        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
-        "tests/python/csv/test_csv_to_ndjson.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dogfood/test_dogfood_ndjson_transforms2_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_transforms4_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_tsv_ndjson_aggregate_ndjson_export.py",
+        "tests/python/ndjson/test_mdr3_ndjson_exports.py",
+        "tests/python/ndjson/test_ndjson_append_filter_pipeline.py",
+        "tests/python/ndjson/test_ndjson_append_record_roundtrip.py",
+        "tests/python/ndjson/test_ndjson_export_pipeline.py",
+        "tests/python/ndjson/test_ndjson_field_ops_advancement.py",
+        "tests/python/ndjson/test_ndjson_gap_coverage.py",
+        "tests/python/ndjson/test_ndjson_rename_distinct_pipeline.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -63,15 +63,15 @@
       ],
       "test_files": [
         "tests/benchmarks/bench_ndjson.py",
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_ndjson.py",
         "tests/python/abw/test_abw_typed_children_to_ndjson.py",
-        "tests/python/csv/test_csv_to_ndjson.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dogfood/test_dogfood_abw_export_convert_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_export_pipeline_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_final_ndjson_final_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_gnumeric_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_metadata_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_paragraph_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_punctuation_analytics_ndjson_export.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -99,16 +99,16 @@
         "Record"
       ],
       "test_files": [
-        "tests/benchmarks/bench_ndjson.py",
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_ndjson.py",
-        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
-        "tests/python/csv/test_csv_to_ndjson.py",
         "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
         "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
         "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
         "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/deepening/test_r297_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r308_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r364_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/dif/test_dif_to_ndjson.py",
+        "tests/python/dogfood/test_dogfood_fodt_span_field_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_analytics.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -132,15 +132,15 @@
       ],
       "test_files": [
         "tests/benchmarks/bench_ndjson.py",
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_ndjson.py",
         "tests/python/abw/test_abw_typed_children_to_ndjson.py",
-        "tests/python/csv/test_csv_to_ndjson.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dogfood/test_dogfood_abw_export_convert_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_export_pipeline_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_final_ndjson_final_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_gnumeric_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_metadata_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_paragraph_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_remaining2_fods_neutral_ndjson_export.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -161,16 +161,16 @@
         "roundtrip"
       ],
       "test_files": [
-        "tests/benchmarks/bench_ndjson.py",
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_ndjson.py",
-        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
-        "tests/python/csv/test_csv_to_ndjson.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dogfood/test_dogfood_abw_export_convert_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_export_pipeline_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_final_ndjson_final_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_metadata_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_paragraph_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_search_pattern_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_structure_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_text_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_text_operations_ndjson_export.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -202,16 +202,16 @@
         "ndjson_max_string_length"
       ],
       "test_files": [
-        "tests/benchmarks/bench_ndjson.py",
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_ndjson.py",
-        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
-        "tests/python/csv/test_csv_to_ndjson.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
         "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/deepening/test_r300_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r308_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r364_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/dogfood/test_dogfood_abw_final_ndjson_final_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_gnumeric_final_ndjson_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_gnumeric_remaining5_ndjson_remaining2_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_analytics_batch1_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_analytics_batch2_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_field_type_analytics_ndjson_export.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -239,16 +239,16 @@
         "Record"
       ],
       "test_files": [
-        "tests/benchmarks/bench_ndjson.py",
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_ndjson.py",
-        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
-        "tests/python/csv/test_csv_to_ndjson.py",
         "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
         "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
         "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
         "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/deepening/test_r297_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r308_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/deepening/test_r364_ppm_ndjson_sylk_dif_deepening.py",
+        "tests/python/dif/test_dif_to_ndjson.py",
+        "tests/python/dogfood/test_dogfood_fodt_span_field_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_analytics.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -269,16 +269,16 @@
         "validate_schema"
       ],
       "test_files": [
-        "tests/benchmarks/bench_ndjson.py",
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_ndjson.py",
-        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
-        "tests/python/csv/test_csv_to_ndjson.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dogfood/test_dogfood_ndjson_remaining3_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_ndjson_transforms4_ndjson_export.py",
+        "tests/python/ndjson/test_ndjson_batch_pipeline.py",
+        "tests/python/ndjson/test_ndjson_deduplicate_pipeline.py",
+        "tests/python/ndjson/test_ndjson_gap_coverage.py",
+        "tests/python/ndjson/test_ndjson_schema_validation.py",
+        "tests/python/ndjson/test_ndjson_validate_pluck_pipeline.py",
+        "tests/python/ndjson/test_ndjson_validate_schema_pipeline.py",
+        "tests/python/ndjson/test_r200_ndjson_advanced_ops.py",
+        "tests/python/ndjson/test_rnext2_ndjson_validate_schema.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [
@@ -302,16 +302,16 @@
         "write_ndjson_str"
       ],
       "test_files": [
-        "tests/benchmarks/bench_ndjson.py",
-        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
-        "tests/python/abw/test_abw_to_ndjson.py",
-        "tests/python/abw/test_abw_typed_children_to_ndjson.py",
-        "tests/python/csv/test_csv_to_ndjson.py",
-        "tests/python/deepening/test_r268_ndjson_sylk_dif_abw_deepening.py",
-        "tests/python/deepening/test_r272_xcf_toml_gnumeric_ndjson_deepening.py",
-        "tests/python/deepening/test_r277_ndjson_gnumeric_dif_sylk_deepening.py",
-        "tests/python/deepening/test_r287_sylk_dif_ndjson_ppm_deepening.py",
-        "tests/python/deepening/test_r293_ppm_ndjson_sylk_dif_deepening.py"
+        "tests/python/dogfood/test_dogfood_abw_export_convert_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_export_pipeline_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_final_ndjson_final_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_gnumeric_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_metadata_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_paragraph_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_punctuation_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_remaining2_fods_neutral_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_remaining2_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_abw_remaining3_sylk_remaining_ndjson_export.py"
       ],
       "oracle_status": null,
       "false_claim_rules_applied": [

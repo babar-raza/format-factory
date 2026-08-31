@@ -2,20 +2,20 @@
 
 A per-chat plan is active. Complete ALL plan taskcards before any ledger/product work.
 
-- **Plan:** `C:/Users/prora/AppData/Local/Temp/pytest-of-prora/pytest-241/test_reopen_real_lock_structur0/plans/test-plan.md`
+- **Plan:** `plans/.claude/put-the-select-6-snappy-dijkstra.md`
 - **Last completed taskcard:** `None`
 - **Action:** Read the plan file. Find the next open taskcard after `None`. Execute it.
-  After each: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/AppData/Local/Temp/pytest-of-prora/pytest-241/test_reopen_real_lock_structur0/plans/test-plan.md" --last-taskcard <TC_ID>`
-  When ALL done: `python tools/supervisor/write_plan_lock.py --plan-path "C:/Users/prora/AppData/Local/Temp/pytest-of-prora/pytest-241/test_reopen_real_lock_structur0/plans/test-plan.md" --complete`
+  After each: `python tools/supervisor/write_plan_lock.py --plan-path "plans/.claude/put-the-select-6-snappy-dijkstra.md" --last-taskcard <TC_ID>`
+  When ALL done: `python tools/supervisor/write_plan_lock.py --plan-path "plans/.claude/put-the-select-6-snappy-dijkstra.md" --complete`
 
 **Do NOT start system ledger / product hardening work until plan status = COMPLETE.**
 
 ---
 
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: CERT-LAYER-HEAL-20260710
+# Source sprint: FF6-UBL-CHARGES-20260805
 # Stream: mainstream
-# Generated: 2026-07-13T18:12:34.499254
+# Generated: 2026-08-05T11:08:20.894492
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -25,9 +25,9 @@ A per-chat plan is active. Complete ALL plan taskcards before any ledger/product
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: CERT-LAYER-HEAL-20260710
+- Sprint ID: FF6-UBL-CHARGES-20260805
 - Evidence verdict: ACCEPTED_WITH_REWORK
-- Tests: 29 passed, 0 failed, 0 skipped
+- Tests: 475 passed, 0 failed, 0 skipped
 - Autonomous continue: False
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
@@ -53,6 +53,9 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 - [pending] TASK-001: Select governed product gaps and validate the product-code ledger
 - [agent-owned] TASK-002: Prepare commit candidate summary and changed-file manifest
 - [external-gate] TASK-003: Execute git commit (SCM Agent task — AGENTS.md §AG4.1)
+- [pending] TASK-004: Work on open taskcard: TC-0015-spec-retrieval-strategy-evaluation
+- [pending] TASK-005: Work on open taskcard: TC-0016-fods-vector-index-pilot
+- [pending] TASK-006: Work on open taskcard: TC-0020-spec-workbench-core
 - [pending] TASK-007: Execute next taskcard in active per-chat plan
 - [pending] TASK-008: Advance one dogfood export path using a Format Factory library
 - [pending] TASK-009: Build package artifacts and run installed-workflow proof

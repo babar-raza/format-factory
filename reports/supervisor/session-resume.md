@@ -1,17 +1,22 @@
-<!-- generated_at: 2026-07-13T18:12:34.504370 | source_sprint: CERT-LAYER-HEAL-20260710 -->
+<!-- generated_at: 2026-08-05T11:08:20.923265 | source_sprint: FF6-UBL-CHARGES-20260805 -->
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-07-13T18:12:34.504370
+# Generated: 2026-08-05T11:08:20.923265
 
 ## Quick State
-- Last sprint: CERT-LAYER-HEAL-20260710
+- Last sprint: FF6-UBL-CHARGES-20260805
 - Evidence verdict: ACCEPTED_WITH_REWORK
-- Tests: 29 passed / 0 failed
+- Tests: 475 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
 - Autonomous continue: False
 - Current supervisor mode: MODE 4
 - MCP status: ACTIVE (.vscode/mcp.json present)
+
+## Maintenance Obligations Due
+| obligation_id | type | scheduled_date | action | owner |
+|---|---|---|---|---|
+| MO-BGG-001 | observation_window | 2026-08-05 | run check_tombstone_records.py in tools/supervisor/; classify external_host_loop | governance |
 
 ## What Was Done Last Sprint
 (Read reports/supervisor/evidence-review.md for full details)
@@ -24,7 +29,7 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: .local/evidences/layer-heal-010
+- Last evidence bundle: .local/evidences/ff6-ubl-charges-20260805
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
@@ -88,8 +93,15 @@
 - Gates 1-10: agent-owned policy gates (AGENTS.md §AG5). Gate 11 G11-G: Babar Raza only.
 - MCP activation (MODE 4): COMPLETE.
 
+## Aging Visibility (V252)
+
+- known_gaps entry SKILL-GAP-008 has been status: open for 41 days (> 14 day visibility threshold)
+- known_gaps entry EP-002-GAP has been status: open for 41 days (> 14 day visibility threshold)
+- known_gaps entry EP-008-GAP has been status: open for 41 days (> 14 day visibility threshold)
+- known_gaps entry EP-009-GAP has been status: open for 41 days (> 14 day visibility threshold)
+
 
 ## Maturity Trend
 
 Maturity trend written: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\reports\supervisor\maturity-trend.json
-  Sprints: 840, avg quality: 0.756, trend: stable
+  Sprints: 849, avg quality: 0.755, trend: declining

@@ -1,0 +1,403 @@
+{
+  "format_id": "fodg",
+  "contract_id": "FC-FODG-V1",
+  "contract_input_digests": {
+    "fact_categories_sha256": "aedd4c838073695752c724e8f53fd189f58653ca22e01b88f5932ebe9fe376bc",
+    "family_pack_sha256": "a0c9e6a36ee0bc426d4a9b2e12de9ce1b0ec10239395c8a492e9bd1feb498d19",
+    "qname_registry_sha256": "f7df7ac6e30f965e978cfd99e7abc42468c4f6f891ba578ce52837cc57f53336",
+    "research_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sal_facts_sha256": "e04df0985d5299262219970c183fbffa200ada8ff7207ead7e73efa2c23b9d1e",
+    "shared_contract_sha256": "ccbe09bb0e785355a742cdc36efd6d33a990cadd11b83b349d4218de6f9ca494"
+  },
+  "product_source_present": true,
+  "function_count": 185,
+  "class_count": 8,
+  "test_file_count": 155,
+  "oracle_status": null,
+  "capabilities": [
+    {
+      "capability_id": "FODG-CONTENT-001",
+      "category": "edit",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "add_page",
+        "clear_page",
+        "remove_page",
+        "rename_page"
+      ],
+      "test_files": [
+        "tests/python/dogfood/test_dogfood_fodg_final_remaining_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_page_ops_ndjson_export.py",
+        "tests/python/fodg/test_fodg_add_page_metadata_pipeline.py",
+        "tests/python/fodg/test_fodg_all_text_pipeline.py",
+        "tests/python/fodg/test_fodg_all_text_probe_pipeline.py",
+        "tests/python/fodg/test_fodg_batch_pages_pipeline.py",
+        "tests/python/fodg/test_fodg_clear_page_count_w109_pipeline.py",
+        "tests/python/fodg/test_fodg_clear_roundtrip.py",
+        "tests/python/fodg/test_fodg_clear_swap_pages_pipeline.py",
+        "tests/python/fodg/test_fodg_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODG-EXPORT-001",
+      "category": "export",
+      "level": "SHOULD",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "export_page_to_json",
+        "export_to_csv",
+        "export_to_json",
+        "export_to_txt",
+        "fodg_shape_to_page_variance",
+        "fodg_text_to_shape_ratio",
+        "fodg_to_abw",
+        "fodg_to_csv",
+        "fodg_to_dif",
+        "fodg_to_fods",
+        "fodg_to_fodt",
+        "fodg_to_gnumeric",
+        "fodg_to_ndjson",
+        "fodg_to_ods",
+        "fodg_to_odt",
+        "fodg_to_pbm",
+        "fodg_to_pgm",
+        "fodg_to_ppm",
+        "fodg_to_sylk",
+        "fodg_to_toml"
+      ],
+      "test_files": [
+        "tests/python/deepening/test_r266_odt_fodg_fodp_csv_deepening.py",
+        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/dogfood/test_dogfood_fodg_element_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_model_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_remaining_analytics_ndjson_export.py",
+        "tests/python/fodg/test_cap_fodg_export_csv.py",
+        "tests/python/fodg/test_fodg_batch_pages_pipeline.py",
+        "tests/python/fodg/test_fodg_clear_roundtrip.py",
+        "tests/python/fodg/test_fodg_document_mutation.py",
+        "tests/python/fodg/test_fodg_export_csv_pipeline.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODG-LIFECYCLE-001",
+      "category": "lifecycle",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "load",
+        "save_to_file",
+        "write_fodg"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
+        "tests/python/dogfood/test_dogfood_fodg_element_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_final_remaining_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_model_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_page_metadata_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_page_ops_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_page_shape_text_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_stats_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodp_fodg_remaining_analytics_ndjson_export.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODG-META-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "roundtrip"
+      ],
+      "test_files": [
+        "tests/python/dogfood/test_dogfood_fodg_element_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_model_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_page_metadata_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_page_shape_text_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_stats_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodp_fodg_remaining_analytics_ndjson_export.py",
+        "tests/python/fodg/test_fodg_batch_pages_pipeline.py",
+        "tests/python/fodg/test_fodg_clear_roundtrip.py",
+        "tests/python/fodg/test_fodg_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODG-MODEL-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Document",
+        "FodgDocument",
+        "FodgError",
+        "FodgPage",
+        "FodgParseError",
+        "FodgWriteError",
+        "Frame",
+        "Page"
+      ],
+      "test_files": [
+        "tests/python/deepening/test_r266_odt_fodg_fodp_csv_deepening.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r270_odt_fodg_qoi_fodp_deepening.py",
+        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
+        "tests/python/deepening/test_r289_fods_fodt_fodg_zst_deepening.py",
+        "tests/python/deepening/test_r294_zst_fodg_odt_abw_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py",
+        "tests/python/deepening/test_r301_fods_fodt_fodg_gnumeric_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODG-PARSE-001",
+      "category": "parse",
+      "level": "MUST",
+      "depth_required": 2,
+      "observed_status": "TESTED",
+      "observed_depth": 2,
+      "gap_depth": 0,
+      "product_symbols": [
+        "from_file",
+        "load",
+        "probe_fodg"
+      ],
+      "test_files": [
+        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
+        "tests/python/dogfood/test_dogfood_fodg_element_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_final_remaining_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_model_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_page_metadata_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_page_ops_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_page_shape_text_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_stats_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodp_fodg_remaining_analytics_ndjson_export.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODG-PRESERVE-001",
+      "category": "preserve",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 1,
+      "product_symbols": [
+        "roundtrip"
+      ],
+      "test_files": [
+        "tests/python/dogfood/test_dogfood_fodg_element_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_model_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_page_metadata_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_page_shape_text_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_remaining_analytics_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodg_stats_ndjson_export.py",
+        "tests/python/dogfood/test_dogfood_fodp_fodg_remaining_analytics_ndjson_export.py",
+        "tests/python/fodg/test_fodg_batch_pages_pipeline.py",
+        "tests/python/fodg/test_fodg_clear_roundtrip.py",
+        "tests/python/fodg/test_fodg_document_mutation.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODG-SEC-001",
+      "category": "security",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 2,
+      "product_symbols": [
+        "fodg_max_shape_count",
+        "fodg_max_shape_text_length",
+        "fodg_max_shapes_per_page",
+        "fodg_max_text_item_length",
+        "fodg_max_text_per_page",
+        "max_shapes_on_page"
+      ],
+      "test_files": [
+        "tests/python/deepening/test_r266_odt_fodg_fodp_csv_deepening.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/dogfood/test_dogfood_fodg_remaining_analytics_ndjson_export.py",
+        "tests/python/fodg/test_fodg_gap_coverage.py",
+        "tests/python/fodg/test_r1246_fodg_density_complexity_properties.py",
+        "tests/python/fodg/test_r1266_fodg_shape_distribution_properties.py",
+        "tests/python/fodg/test_r288_fodg_text_analytics.py",
+        "tests/python/fodg/test_r290_fodg_analytics_deepening.py",
+        "tests/python/fodg/test_r299_fodg_new_analytics.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODG-STYLE-001",
+      "category": "model",
+      "level": "MUST",
+      "depth_required": 3,
+      "observed_status": "TESTED",
+      "observed_depth": 3,
+      "gap_depth": 0,
+      "product_symbols": [
+        "Document",
+        "FodgDocument",
+        "FodgError",
+        "FodgPage",
+        "FodgParseError",
+        "FodgWriteError",
+        "Frame",
+        "Page"
+      ],
+      "test_files": [
+        "tests/python/deepening/test_r266_odt_fodg_fodp_csv_deepening.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r270_odt_fodg_qoi_fodp_deepening.py",
+        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py",
+        "tests/python/deepening/test_r289_fods_fodt_fodg_zst_deepening.py",
+        "tests/python/deepening/test_r294_zst_fodg_odt_abw_deepening.py",
+        "tests/python/deepening/test_r298_fods_fodt_fodg_gnumeric_deepening.py",
+        "tests/python/deepening/test_r301_fods_fodt_fodg_gnumeric_deepening.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODG-VALIDATE-001",
+      "category": "validate",
+      "level": "MUST",
+      "depth_required": 5,
+      "observed_status": "NOT_STARTED",
+      "observed_depth": 0,
+      "gap_depth": 5,
+      "product_symbols": [],
+      "test_files": [
+        "tests/packaging/test_r1221_fodg_ndjson_tsv_installed_workflow.py",
+        "tests/python/abw/test_abw_to_fodg.py",
+        "tests/python/csv/test_csv_to_fodg.py",
+        "tests/python/deepening/test_r266_odt_fodg_fodp_csv_deepening.py",
+        "tests/python/deepening/test_r267_odt_fodg_toml_gnumeric_deepening.py",
+        "tests/python/deepening/test_r270_odt_fodg_qoi_fodp_deepening.py",
+        "tests/python/deepening/test_r275_odt_fodg_qoi_xcf_deepening.py",
+        "tests/python/deepening/test_r278_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r281_odt_zst_fodg_qoi_deepening.py",
+        "tests/python/deepening/test_r284_odt_zst_fodg_qoi_deepening2.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    },
+    {
+      "capability_id": "FODG-WRITE-001",
+      "category": "write",
+      "level": "MUST",
+      "depth_required": 4,
+      "observed_status": "TESTED",
+      "observed_depth": 4,
+      "gap_depth": 0,
+      "product_symbols": [
+        "save_to_file",
+        "write_fodg"
+      ],
+      "test_files": [
+        "tests/python/dogfood/test_dogfood_fodg_page_ops_ndjson_export.py",
+        "tests/python/fodg/test_cap_fodg_export_csv.py",
+        "tests/python/fodg/test_fodg_add_page_metadata_pipeline.py",
+        "tests/python/fodg/test_fodg_all_text_pipeline.py",
+        "tests/python/fodg/test_fodg_all_text_probe_pipeline.py",
+        "tests/python/fodg/test_fodg_batch_pages_pipeline.py",
+        "tests/python/fodg/test_fodg_clear_roundtrip.py",
+        "tests/python/fodg/test_fodg_document_mutation.py",
+        "tests/python/fodg/test_fodg_export_csv_pipeline.py",
+        "tests/python/fodg/test_fodg_export_probe_pipeline.py"
+      ],
+      "oracle_status": null,
+      "false_claim_rules_applied": [
+        "symbol presence is capability surface, not proof",
+        "test-file presence marks TESTED at most; execution evidence belongs to the evidence layer",
+        "oracle credit only for VERIFIED status and oracle-provable categories"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 11,
+    "with_gap": 3,
+    "by_status": {
+      "NOT_STARTED": 1,
+      "IMPLEMENTED_UNPROVEN": 0,
+      "TESTED": 10,
+      "ORACLE_PROVEN": 0
+    }
+  }
+}

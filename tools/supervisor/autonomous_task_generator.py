@@ -24,6 +24,11 @@ _REPO_ROOT = _here.parent.parent
 # Default output path
 DEFAULT_OUTPUT = _REPO_ROOT / "product-task-candidates.json"
 
+# FF6-governed formats: task selection for these is owned exclusively by
+# tools/ff6/goal_driver.py.  The generic deepening pipeline MUST NOT
+# select work for them.  See docs/authority-decision-record.md §2-3.
+_FF6_GOVERNED_FORMATS = frozenset({"ipynb", "ora", "nrrd", "xliff", "safetensors", "ubl"})
+
 # Per-format capability expansion goals: (format_name, function_name, action_type, pattern)
 # These are functions known to be valuable but not yet in poc-targets.yaml
 _EXPANSION_GOALS: List[Dict[str, Any]] = [
@@ -1695,14 +1700,15 @@ def generate_task_candidates(
     """Generate product task candidates from expansion goals.
 
     Args:
-        output_path: Where to write product-task-candidates.json (None = DEFAULT_OUTPUT)
+        output_path: Where to write product-task-candidates.json (None = dry-run, no write)
         max_candidates: Maximum number of candidates to generate
         skip_existing: If True, skip functions already in source
 
     Returns:
         List of queue-item-v2 dicts (sorted by score)
     """
-    output_path = output_path or DEFAULT_OUTPUT
+    # NOTE: output_path=None is the dry-run sentinel — do NOT resolve to
+    # DEFAULT_OUTPUT here; the caller passes None to suppress all disk writes.
 
     # Load failure exclusions from failure memory (RC-02 fix)
     _excluded_gap_ids: "set[str]" = set()
@@ -1788,14 +1794,17 @@ def generate_task_candidates(
         del _sys_guard
         # Do NOT add any hardcoded goals â€” they will be blocked by TC-GUARD-001.
 
+    # R15 boundary: reject any goal targeting an FF6-governed format.
+    all_goals = [g for g in all_goals if g.get(“format”, “”) not in _FF6_GOVERNED_FORMATS]
+
     candidates = []
     advisory_skipped = 0
     for goal in all_goals:
-        fn = goal["function_name"]
-        source_file = goal["source_file"]
+        fn = goal[“function_name”]
+        source_file = goal[“source_file”]
 
         # Lane 6: Skip advisory-only items â€” they cannot be executed as product work
-        if goal.get("advisory_only", False):
+        if goal.get(“advisory_only”, False):
             advisory_skipped += 1
             continue
 
@@ -1877,55 +1886,57 @@ def generate_task_candidates(
         pass  # Route enrichment unavailable â€” items remain unenriched
 
     # SUP-RECT-005: Circuit breaker for zero-task loops
-    zero_task_tracker_path = Path(output_path).parent / ".zero-task-counter.json"
-    if len(queue_items) == 0:
-        zero_count = 0
-        if zero_task_tracker_path.exists():
-            try:
-                zt = json.loads(zero_task_tracker_path.read_text(encoding="utf-8"))
-                zero_count = zt.get("consecutive_zero_count", 0)
-            except Exception:
-                pass
-        zero_count += 1
-        zero_task_tracker_path.parent.mkdir(parents=True, exist_ok=True)
-        zero_task_tracker_path.write_text(json.dumps({
-            "consecutive_zero_count": zero_count,
-            "last_zero_at": _now_iso(),
-            "escalation_threshold": 3,
-            "escalated": zero_count >= 3,
-        }, indent=2), encoding="utf-8")
-        if zero_count >= 3:
-            print(f"CIRCUIT_BREAKER: {zero_count} consecutive zero-task cycles. "
-                  "Escalation triggered â€” inspect gap-ledger and _EXPANSION_GOALS.",
-                  file=sys.stderr)
-    else:
-        # Reset counter on successful generation
-        if zero_task_tracker_path.exists():
-            try:
-                zero_task_tracker_path.unlink()
-            except Exception:
-                pass
+    if output_path is not None:
+        zero_task_tracker_path = Path(output_path).parent / “.zero-task-counter.json”
+        if len(queue_items) == 0:
+            zero_count = 0
+            if zero_task_tracker_path.exists():
+                try:
+                    zt = json.loads(zero_task_tracker_path.read_text(encoding=”utf-8”))
+                    zero_count = zt.get(“consecutive_zero_count”, 0)
+                except Exception:
+                    pass
+            zero_count += 1
+            zero_task_tracker_path.parent.mkdir(parents=True, exist_ok=True)
+            zero_task_tracker_path.write_text(json.dumps({
+                “consecutive_zero_count”: zero_count,
+                “last_zero_at”: _now_iso(),
+                “escalation_threshold”: 3,
+                “escalated”: zero_count >= 3,
+            }, indent=2), encoding=”utf-8”)
+            if zero_count >= 3:
+                print(f”CIRCUIT_BREAKER: {zero_count} consecutive zero-task cycles. “
+                      “Escalation triggered â€” inspect gap-ledger and _EXPANSION_GOALS.”,
+                      file=sys.stderr)
+        else:
+            # Reset counter on successful generation
+            if zero_task_tracker_path.exists():
+                try:
+                    zero_task_tracker_path.unlink()
+                except Exception:
+                    pass
 
-    # Write output
-    output = {
-        "generated_at": _now_iso(),
-        "generator_version": "1.4",
-        "total_candidates": len(queue_items),
-        "gap_ledger_goals_available": len(gap_ledger_goals),
-        "hardcoded_fallback_goals_used": sum(1 for g in all_goals if g.get("gap_source") != "gap_ledger"),
-        # TC-EXT-009-05: count of capability_compiler-compiled taskcards merged into
-        # this run's candidate pool (distinct from hardcoded_fallback_goals_used).
-        "compiled_taskcards_merged": _compiled_merged_count,
-        "advisory_only_skipped": advisory_skipped,
-        "source": "gap_ledger_primary+expansion_goals_fallback+capability_compiler",
-        "expansion_goal_fallback": _expansion_goal_fallback,
-        "excluded_gap_ids_count": len(_excluded_gap_ids),
-        "zero_task_circuit_breaker": len(queue_items) == 0,
-        "tasks": queue_items,
-    }
-    output_path = Path(output_path)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(json.dumps(output, indent=2), encoding="utf-8")
+    # Write output (skip entirely when output_path is None, i.e. dry-run)
+    if output_path is not None:
+        output = {
+            "generated_at": _now_iso(),
+            "generator_version": "1.4",
+            "total_candidates": len(queue_items),
+            "gap_ledger_goals_available": len(gap_ledger_goals),
+            "hardcoded_fallback_goals_used": sum(1 for g in all_goals if g.get("gap_source") != "gap_ledger"),
+            # TC-EXT-009-05: count of capability_compiler-compiled taskcards merged into
+            # this run's candidate pool (distinct from hardcoded_fallback_goals_used).
+            "compiled_taskcards_merged": _compiled_merged_count,
+            "advisory_only_skipped": advisory_skipped,
+            "source": "gap_ledger_primary+expansion_goals_fallback+capability_compiler",
+            "expansion_goal_fallback": _expansion_goal_fallback,
+            "excluded_gap_ids_count": len(_excluded_gap_ids),
+            "zero_task_circuit_breaker": len(queue_items) == 0,
+            "tasks": queue_items,
+        }
+        resolved = Path(output_path)
+        resolved.parent.mkdir(parents=True, exist_ok=True)
+        resolved.write_text(json.dumps(output, indent=2), encoding="utf-8")
 
     return queue_items
 

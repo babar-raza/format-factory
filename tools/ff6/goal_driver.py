@@ -111,6 +111,62 @@ def _reconciliation(format_id: str) -> dict[str, Any] | None:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _evidence_is_fresh(report: dict[str, Any]) -> bool:
+    """Check whether referenced source/test files still match stored hashes.
+
+    The reconciler stores SHA-256 hashes of every referenced file in
+    ``referenced_input_digests``.  If any file has changed since the
+    reconciliation was produced, the evidence is stale.
+
+    Returns True when all hashes match or when no hashes are stored
+    (legacy reconciliation — conservative: treated as stale via the
+    proof_strength check elsewhere).
+    """
+    import hashlib
+    digests = report.get("referenced_input_digests") or {}
+    if not digests:
+        return True
+    for rel_path, stored_hash in digests.items():
+        file_path = REPO_ROOT / rel_path
+        if not file_path.exists():
+            return False
+        current = hashlib.sha256(file_path.read_bytes()).hexdigest()
+        if current != stored_hash:
+            return False
+    return True
+
+
+def _is_certified(format_id: str, total: int | None, report: dict[str, Any] | None) -> bool:
+    """Derive certification from evidence, not promotion labels.
+
+    A format is certified when:
+    1. It has a known positive obligation count
+    2. Reconciliation has been run
+    3. All obligations are resolved (0 unresolved)
+    4. Reconciliation proof_strength is promoting (not supporting_nonpromoting)
+    5. Evidence is fresh (referenced file hashes match current files)
+
+    Returns False when any input is missing or insufficient — fail-closed.
+    """
+    if not isinstance(total, int) or total <= 0:
+        return False
+    if report is None:
+        return False
+    summary = report.get("summary") or {}
+    unresolved = summary.get("unresolved")
+    if not isinstance(unresolved, int) or unresolved > 0:
+        return False
+    proof_strength = report.get("proof_strength", "")
+    if "nonpromoting" in str(proof_strength).lower():
+        return False
+    promotion_effect = report.get("promotion_effect", "")
+    if promotion_effect == "none":
+        return False
+    if not _evidence_is_fresh(report):
+        return False
+    return True
+
+
 def format_progress(format_id: str, promotion: dict[str, Any]) -> dict[str, Any]:
     """Evidence-backed progress for one format. Never optimistic by default."""
     total = _obligation_total(format_id)
@@ -118,7 +174,7 @@ def format_progress(format_id: str, promotion: dict[str, Any]) -> dict[str, Any]
     entry: dict[str, Any] = {
         "format_id": format_id,
         "promotion": promotion.get(format_id, "UNKNOWN"),
-        "certified": promotion.get(format_id) == CERTIFIED,
+        "certified": _is_certified(format_id, total, report),
         "obligations_total": total,
     }
     if report is None:

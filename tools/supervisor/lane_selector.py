@@ -115,6 +115,9 @@ def check_starvation(format_name: str, ledger_path: Path | None = None,
     return result
 
 
+_FF6_GOVERNED_FORMATS = frozenset({"ipynb", "ora", "nrrd", "xliff", "safetensors", "ubl"})
+
+
 def select_lane(
     format_name: str,
     mode: str | None = None,
@@ -125,6 +128,13 @@ def select_lane(
 
     Returns {selected_lane, mode, reason, starvation_warning}.
     """
+    if format_name in _FF6_GOVERNED_FORMATS:
+        return {
+            "error": f"Format '{format_name}' is FF6-governed; use tools.ff6.goal_driver",
+            "selected_lane": None,
+            "mode": mode or "AUTO",
+            "reason": "ff6_governed_boundary",
+        }
     ledger = _load_ledger(ledger_path)
     entry = _find_entry(ledger, format_name)
     if entry is None:

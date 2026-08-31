@@ -1,459 +1,19 @@
-- item_id: TC-LHEAL-001
-  item_title: "Forensics baseline \u2014 7 findings documented"
+- item_id: WI-UBL-006
+  item_title: Temporal projection and the remaining cac aggregates
   declared_status: completed
   supervisor_grade: ACCEPTED_WITH_LIMITATIONS
   evidence_found: true
   evidence_paths:
-  - .local/evidences/layer-heal-001/original-state/baseline.yaml
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-LHEAL-001'
-  purpose_check:
-    item_type: ''
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  skill_ids_check:
-    verdict: NOT_APPLICABLE
-    note: skill_ids_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  semantic_verification:
-    adequate: false
-    confidence: 0.0
-    stub_detected: false
-    deficiencies:
-    - 'few key fields found: [''sprint_id''] (expected >=3)'
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_verify
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidences\layer-heal-001\original-state\baseline.yaml
-      exists: true
-      content_ok: false
-      detail: 'few key fields found: [''sprint_id''] (expected >=3)'
-      check_type: yaml_content
-    summary: 0/1 evidence files passed content check
-    fallback_grade_cap: ACCEPTED_WITH_LIMITATIONS
-    _cached_at: '2026-07-13T13:09:20.572632+00:00'
-    _from_cache: true
-- item_id: TC-LHEAL-002
-  item_title: V88 terminal gate in write_plan_lock.py and governance_validators_layers.py
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - tools/supervisor/governance_validators_layers.py
-  - tools/supervisor/write_plan_lock.py
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-LHEAL-002'
-  purpose_check:
-    item_type: ''
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  skill_ids_check:
-    verdict: NOT_APPLICABLE
-    note: skill_ids_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  semantic_verification:
-    adequate: true
-    confidence: 0.7
-    stub_detected: false
-    deficiencies: []
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_verify
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\governance_validators_layers.py
-      exists: true
-      content_ok: true
-      detail: 'non-empty (14315 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\governance_validators_layers.py'
-      check_type: nonzero_existence
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\write_plan_lock.py
-      exists: true
-      content_ok: true
-      detail: 'non-empty (43278 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\write_plan_lock.py'
-      check_type: nonzero_existence
-    summary: 2/2 evidence files passed content check
-    fallback_grade_cap: ACCEPTED_WITH_LIMITATIONS
-    _cached_at: '2026-07-13T13:09:20.707710+00:00'
-    _from_cache: true
-- item_id: TC-LHEAL-003
-  item_title: "layer_promotion.py \u2014 4 subcommands, 9 eligibility checks, idempotent"
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - tools/supervisor/layer_promotion.py
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-LHEAL-003'
-  purpose_check:
-    item_type: ''
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  skill_ids_check:
-    verdict: NOT_APPLICABLE
-    note: skill_ids_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  semantic_verification:
-    adequate: true
-    confidence: 0.7
-    stub_detected: false
-    deficiencies: []
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_verify
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\layer_promotion.py
-      exists: true
-      content_ok: true
-      detail: 'non-empty (20591 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\layer_promotion.py'
-      check_type: nonzero_existence
-    summary: 1/1 evidence files passed content check
-    fallback_grade_cap: ACCEPTED_WITH_LIMITATIONS
-    _cached_at: '2026-07-13T13:09:20.841402+00:00'
-    _from_cache: true
-- item_id: TC-LHEAL-004
-  item_title: L28 skill linkage (9 skills) + TC-CERT-L-003 CLOSED
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - plans/layers/index.yaml
-  - plans/layers/certification-audit-layer.md
-  - plans/layers/task-register.yaml
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-LHEAL-004'
-  purpose_check:
-    item_type: ''
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  skill_ids_check:
-    verdict: NOT_APPLICABLE
-    note: skill_ids_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  semantic_verification:
-    adequate: false
-    confidence: 0.2333333333333333
-    stub_detected: false
-    deficiencies:
-    - 'few key fields found: [] (expected >=3)'
-    - 'few key fields found: [''sprint_id''] (expected >=3)'
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_verify
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\layers\index.yaml
-      exists: true
-      content_ok: false
-      detail: 'few key fields found: [] (expected >=3)'
-      check_type: yaml_content
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\layers\certification-audit-layer.md
-      exists: true
-      content_ok: true
-      detail: markdown with 248 lines, header=yes
-      check_type: markdown_content
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\layers\task-register.yaml
-      exists: true
-      content_ok: false
-      detail: 'few key fields found: [''sprint_id''] (expected >=3)'
-      check_type: yaml_content
-    summary: 1/3 evidence files passed content check
-    fallback_grade_cap: ACCEPTED_WITH_LIMITATIONS
-    _cached_at: '2026-07-13T13:09:20.967661+00:00'
-    _from_cache: true
-- item_id: TC-LHEAL-005
-  item_title: plan-header-contract.md canonical reference created
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - docs/governance/plan-header-contract.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-LHEAL-005'
-  purpose_check:
-    item_type: ''
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  skill_ids_check:
-    verdict: NOT_APPLICABLE
-    note: skill_ids_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  semantic_verification:
-    adequate: true
-    confidence: 0.7
-    stub_detected: false
-    deficiencies: []
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_verify
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\docs\governance\plan-header-contract.md
-      exists: true
-      content_ok: true
-      detail: markdown with 46 lines, header=yes
-      check_type: markdown_content
-    summary: 1/1 evidence files passed content check
-    fallback_grade_cap: ACCEPTED_WITH_LIMITATIONS
-    _cached_at: '2026-07-13T13:09:21.101197+00:00'
-    _from_cache: true
-- item_id: TC-LHEAL-006
-  item_title: skill-registry.yaml updated with layer_promotion.py reference
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - .supervisor/skill-registry.yaml
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-LHEAL-006'
-  purpose_check:
-    item_type: ''
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  skill_ids_check:
-    verdict: NOT_APPLICABLE
-    note: skill_ids_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  semantic_verification:
-    adequate: true
-    confidence: 0.7
-    stub_detected: false
-    deficiencies: []
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_verify
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.supervisor\skill-registry.yaml
-      exists: true
-      content_ok: true
-      detail: YAML has 3/6 expected fields
-      check_type: yaml_content
-    summary: 1/1 evidence files passed content check
-    fallback_grade_cap: ACCEPTED_WITH_LIMITATIONS
-    _cached_at: '2026-07-13T13:09:21.234883+00:00'
-    _from_cache: true
-- item_id: TC-LHEAL-007
-  item_title: GAP-SUP-002 documented in master.md and layer-promotion-guide.md
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - plans/layers/master.md
-  - docs/governance/layer-promotion-guide.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-LHEAL-007'
-  purpose_check:
-    item_type: ''
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  skill_ids_check:
-    verdict: NOT_APPLICABLE
-    note: skill_ids_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  semantic_verification:
-    adequate: true
-    confidence: 0.7
-    stub_detected: false
-    deficiencies: []
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_verify
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\plans\layers\master.md
-      exists: true
-      content_ok: true
-      detail: markdown with 374 lines, header=yes
-      check_type: markdown_content
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\docs\governance\layer-promotion-guide.md
-      exists: true
-      content_ok: true
-      detail: markdown with 90 lines, header=yes
-      check_type: markdown_content
-    summary: 2/2 evidence files passed content check
-    fallback_grade_cap: ACCEPTED_WITH_LIMITATIONS
-    _cached_at: '2026-07-13T13:09:21.388123+00:00'
-    _from_cache: true
-- item_id: TC-LHEAL-008
-  item_title: "Pilot + 4 negative controls \u2014 all REJECTED correctly, idempotency\
-    \ PASS"
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - tests/fixtures/layers/pilot-request.yaml
-  - tests/fixtures/layers/pilot-request-duplicate-l28.yaml
-  - tests/fixtures/layers/pilot-request-no-evidence.yaml
-  - tests/fixtures/layers/pilot-request-bad-skill.yaml
-  - tests/fixtures/layers/pilot-request-bad-upstream.yaml
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-LHEAL-008'
-  purpose_check:
-    item_type: ''
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  skill_ids_check:
-    verdict: NOT_APPLICABLE
-    note: skill_ids_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  semantic_verification:
-    adequate: false
-    confidence: 0.0
-    stub_detected: false
-    deficiencies:
-    - 'few key fields found: [] (expected >=3)'
-    - 'few key fields found: [] (expected >=3)'
-    - 'few key fields found: [] (expected >=3)'
-    - 'few key fields found: [] (expected >=3)'
-    - 'few key fields found: [] (expected >=3)'
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_verify
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\fixtures\layers\pilot-request.yaml
-      exists: true
-      content_ok: false
-      detail: 'few key fields found: [] (expected >=3)'
-      check_type: yaml_content
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\fixtures\layers\pilot-request-duplicate-l28.yaml
-      exists: true
-      content_ok: false
-      detail: 'few key fields found: [] (expected >=3)'
-      check_type: yaml_content
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\fixtures\layers\pilot-request-no-evidence.yaml
-      exists: true
-      content_ok: false
-      detail: 'few key fields found: [] (expected >=3)'
-      check_type: yaml_content
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\fixtures\layers\pilot-request-bad-skill.yaml
-      exists: true
-      content_ok: false
-      detail: 'few key fields found: [] (expected >=3)'
-      check_type: yaml_content
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\fixtures\layers\pilot-request-bad-upstream.yaml
-      exists: true
-      content_ok: false
-      detail: 'few key fields found: [] (expected >=3)'
-      check_type: yaml_content
-    summary: 0/5 evidence files passed content check
-    fallback_grade_cap: ACCEPTED_WITH_LIMITATIONS
-    _cached_at: '2026-07-13T13:09:21.526966+00:00'
-    _from_cache: true
-- item_id: TC-LHEAL-009
-  item_title: "Tests \u2014 16/16 new PASS + 13/13 V83-V86 regression PASS = 29 total"
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - tests/supervisor/test_v88_terminal_gate.py
-  - tests/supervisor/test_layer_promotion.py
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py
+  - src/python/ubl/src/format_factory/ubl/model/charges.py
+  - src/python/ubl/src/format_factory/ubl/model/typed.py
   tests_supporting: &id001
-  - tests/supervisor/test_v88_terminal_gate.py
-  - tests/supervisor/test_layer_promotion.py
+  - tests/python/ubl/test_obligation_temporal_projection_and_charges.py
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
+  - Test content verified (1 files)
   acceptance_criteria_failed:
   - 'grade_capped_to_ACCEPTED_WITH_LIMITATIONS: LLM unavailable; only intermediate
     verification used'
@@ -474,87 +34,61 @@
     note: skill_ids_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
   semantic_verification:
     adequate: true
-    confidence: 0.75
+    confidence: 0.55
     stub_detected: false
     deficiencies: []
     llm_used: false
     intermediate_verified: true
-    source: intermediate_verify
+    source: intermediate_content_check
     checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\supervisor\test_v88_terminal_gate.py
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\python\ubl\test_obligation_temporal_projection_and_charges.py
       exists: true
       content_ok: true
-      detail: STRONG_PROOF (8 tests, 8 strong / 0 weak, strong_ratio=1.00)
+      detail: 'PARTIAL_PROOF (20 tests, 7 strong / 13 weak, strong_ratio=0.35; weak:
+        test_an_issue_time_projects_and_keeps_its_zone, test_a_date_time_projects_and_keeps_its_exact_lexical_form,
+        test_projecting_a_missing_temporal_element_is_refused)'
       check_type: python_test_content
-      strong_ratio: 1.0
-      overall_classification: STRONG_PROOF
-      weak_tests: []
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tests\supervisor\test_layer_promotion.py
+      strong_ratio: 0.35
+      overall_classification: PARTIAL_PROOF
+      weak_tests: &id002
+      - name: test_an_issue_time_projects_and_keeps_its_zone
+        max_level: 2
+      - name: test_a_date_time_projects_and_keeps_its_exact_lexical_form
+        max_level: 2
+      - name: test_projecting_a_missing_temporal_element_is_refused
+        max_level: 1
+      - name: test_a_malformed_date_in_a_document_is_refused_not_coerced
+        max_level: 1
+      - name: test_surrounding_whitespace_in_the_element_is_tolerated
+        max_level: 2
+      - name: test_the_charge_indicator_distinguishes_a_charge_from_an_allowance
+        max_level: 1
+      - name: test_an_ambiguous_charge_indicator_is_refused
+        max_level: 1
+      - name: test_an_allowance_charge_requires_an_indicator_and_amount
+        max_level: 1
+      - name: test_a_price_requires_an_amount
+        max_level: 1
+      - name: test_a_base_quantity_is_optional
+        max_level: 2
+      - name: test_payment_means_requires_a_code
+        max_level: 1
+      - name: test_a_payment_due_date_is_optional
+        max_level: 2
+      - name: test_a_malformed_due_date_is_refused
+        max_level: 1
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\ubl\src\format_factory\ubl\model\charges.py
       exists: true
       content_ok: true
-      detail: STRONG_PROOF (8 tests, 8 strong / 0 weak, strong_ratio=1.00)
-      check_type: python_test_content
-      strong_ratio: 1.0
-      overall_classification: STRONG_PROOF
-      weak_tests: []
-    summary: 2/2 evidence files passed content check
+      detail: 'non-empty (4910 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\ubl\src\format_factory\ubl\model\charges.py'
+      check_type: nonzero_existence
+    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\ubl\src\format_factory\ubl\model\typed.py
+      exists: true
+      content_ok: true
+      detail: 'non-empty (7821 bytes): C:\Users\prora\OneDrive\Documents\GitHub\format-factory\src\python\ubl\src\format_factory\ubl\model\typed.py'
+      check_type: nonzero_existence
+    summary: 3/3 evidence files passed content check
     fallback_grade_cap: ACCEPTED_WITH_LIMITATIONS
-    strong_ratio: 1.0
-    overall_classification: STRONG_PROOF
-    weak_tests: []
-    _cached_at: '2026-07-13T13:09:21.670188+00:00'
-    _from_cache: true
-- item_id: TC-LHEAL-010
-  item_title: Evidence declaration + healing report
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - reports/layer-governance/certification-layer-healing-report.md
-  - .local/evidences/layer-heal-010/evidence-declaration.yaml
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - No concrete test/criteria proof (path-only acceptance)
-  acceptance_criteria_failed:
-  - No raw proof, test content, or acceptance criteria verified
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
-    TC-LHEAL-010'
-  purpose_check:
-    item_type: ''
-    has_gap_ref: null
-    verdict: NOT_APPLICABLE
-    note: purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  test_layer_check:
-    inadequate: false
-    note: non-product item, skip
-  skill_ids_check:
-    verdict: NOT_APPLICABLE
-    note: skill_ids_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items
-  semantic_verification:
-    adequate: true
-    confidence: 0.7
-    stub_detected: false
-    deficiencies: []
-    llm_used: false
-    intermediate_verified: true
-    source: intermediate_verify
-    checks:
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\reports\layer-governance\certification-layer-healing-report.md
-      exists: true
-      content_ok: true
-      detail: markdown with 91 lines, header=yes
-      check_type: markdown_content
-    - path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidences\layer-heal-010\evidence-declaration.yaml
-      exists: true
-      content_ok: true
-      detail: YAML has 6/6 expected fields
-      check_type: yaml_content
-    summary: 2/2 evidence files passed content check
-    fallback_grade_cap: ACCEPTED_WITH_LIMITATIONS
-    _cached_at: '2026-07-13T13:09:21.792525+00:00'
-    _from_cache: true
+    strong_ratio: 0.35
+    overall_classification: PARTIAL_PROOF
+    weak_tests: *id002

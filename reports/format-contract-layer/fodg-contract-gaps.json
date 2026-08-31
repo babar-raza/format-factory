@@ -1,0 +1,62 @@
+{
+  "format_id": "fodg",
+  "gaps": [
+    {
+      "gap_id": "GAP-FCL-FODG-001",
+      "format": "FODG",
+      "product_type": "foss_reduced",
+      "capability_name": "contract:FODG-PRESERVE-001",
+      "current_state": "tested",
+      "gap_type": "missing_implementation",
+      "status": "open",
+      "blocks_poc": false,
+      "blocks_readiness": true,
+      "commercial_impact": "medium",
+      "foss_impact": "high",
+      "priority": "P1",
+      "owning_lane": "product_deepening",
+      "suggested_taskcard": "TC-FCLGAP-FODG-001",
+      "suggested_verification": "Raise observed depth from 3 to required 4 with executed tests; rerun contract_reconciler",
+      "related_capability_id": "FODG-PRESERVE-001",
+      "notes": "L30 contract gap: shared/format-contracts/fodg.yaml capability FODG-PRESERVE-001 requires depth 4, observed 3 (TESTED). Origin: contract_reconciler."
+    },
+    {
+      "gap_id": "GAP-FCL-FODG-002",
+      "format": "FODG",
+      "product_type": "foss_reduced",
+      "capability_name": "contract:FODG-SEC-001",
+      "current_state": "tested",
+      "gap_type": "missing_implementation",
+      "status": "open",
+      "blocks_poc": false,
+      "blocks_readiness": true,
+      "commercial_impact": "medium",
+      "foss_impact": "high",
+      "priority": "P1",
+      "owning_lane": "product_deepening",
+      "suggested_taskcard": "TC-FCLGAP-FODG-002",
+      "suggested_verification": "Raise observed depth from 3 to required 5 with executed tests; rerun contract_reconciler",
+      "related_capability_id": "FODG-SEC-001",
+      "notes": "L30 contract gap: shared/format-contracts/fodg.yaml capability FODG-SEC-001 requires depth 5, observed 3 (TESTED). Origin: contract_reconciler."
+    },
+    {
+      "gap_id": "GAP-FCL-FODG-003",
+      "format": "FODG",
+      "product_type": "foss_reduced",
+      "capability_name": "contract:FODG-VALIDATE-001",
+      "current_state": "not_started",
+      "gap_type": "missing_implementation",
+      "status": "open",
+      "blocks_poc": false,
+      "blocks_readiness": true,
+      "commercial_impact": "medium",
+      "foss_impact": "high",
+      "priority": "P1",
+      "owning_lane": "product_deepening",
+      "suggested_taskcard": "TC-FCLGAP-FODG-003",
+      "suggested_verification": "Raise observed depth from 0 to required 5 with executed tests; rerun contract_reconciler",
+      "related_capability_id": "FODG-VALIDATE-001",
+      "notes": "L30 contract gap: shared/format-contracts/fodg.yaml capability FODG-VALIDATE-001 requires depth 5, observed 0 (NOT_STARTED). Origin: contract_reconciler."
+    }
+  ]
+}

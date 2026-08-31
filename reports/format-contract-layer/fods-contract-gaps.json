@@ -1,0 +1,62 @@
+{
+  "format_id": "fods",
+  "gaps": [
+    {
+      "gap_id": "GAP-FCL-FODS-001",
+      "format": "FODS",
+      "product_type": "foss_reduced",
+      "capability_name": "contract:FODS-META-001",
+      "current_state": "not_started",
+      "gap_type": "missing_implementation",
+      "status": "open",
+      "blocks_poc": false,
+      "blocks_readiness": true,
+      "commercial_impact": "medium",
+      "foss_impact": "high",
+      "priority": "P1",
+      "owning_lane": "product_deepening",
+      "suggested_taskcard": "TC-FCLGAP-FODS-001",
+      "suggested_verification": "Raise observed depth from 0 to required 2 with executed tests; rerun contract_reconciler",
+      "related_capability_id": "FODS-META-001",
+      "notes": "L30 contract gap: shared/format-contracts/fods.yaml capability FODS-META-001 requires depth 2, observed 0 (NOT_STARTED). Origin: contract_reconciler."
+    },
+    {
+      "gap_id": "GAP-FCL-FODS-002",
+      "format": "FODS",
+      "product_type": "foss_reduced",
+      "capability_name": "contract:FODS-PRESERVE-001",
+      "current_state": "not_started",
+      "gap_type": "missing_implementation",
+      "status": "open",
+      "blocks_poc": false,
+      "blocks_readiness": true,
+      "commercial_impact": "medium",
+      "foss_impact": "high",
+      "priority": "P1",
+      "owning_lane": "product_deepening",
+      "suggested_taskcard": "TC-FCLGAP-FODS-002",
+      "suggested_verification": "Raise observed depth from 0 to required 4 with executed tests; rerun contract_reconciler",
+      "related_capability_id": "FODS-PRESERVE-001",
+      "notes": "L30 contract gap: shared/format-contracts/fods.yaml capability FODS-PRESERVE-001 requires depth 4, observed 0 (NOT_STARTED). Origin: contract_reconciler."
+    },
+    {
+      "gap_id": "GAP-FCL-FODS-003",
+      "format": "FODS",
+      "product_type": "foss_reduced",
+      "capability_name": "contract:FODS-SEC-001",
+      "current_state": "tested",
+      "gap_type": "missing_implementation",
+      "status": "open",
+      "blocks_poc": false,
+      "blocks_readiness": true,
+      "commercial_impact": "medium",
+      "foss_impact": "high",
+      "priority": "P1",
+      "owning_lane": "product_deepening",
+      "suggested_taskcard": "TC-FCLGAP-FODS-003",
+      "suggested_verification": "Raise observed depth from 3 to required 5 with executed tests; rerun contract_reconciler",
+      "related_capability_id": "FODS-SEC-001",
+      "notes": "L30 contract gap: shared/format-contracts/fods.yaml capability FODS-SEC-001 requires depth 5, observed 3 (TESTED). Origin: contract_reconciler."
+    }
+  ]
+}
