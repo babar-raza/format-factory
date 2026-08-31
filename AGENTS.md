@@ -1231,12 +1231,14 @@ When credentials are unavailable or branch protection blocks the agent identity:
 `EXTERNAL_BLOCKER: git_push_credentials_unavailable` and record in the gap register. Never claim
 "human must push" as the universal default — classify the specific blocker.
 
-**AG4.2a Push Credentials (verified 2026-07-03).** Use these env-var-based push commands:
+**AG4.2a Push Credentials (verified 2026-08-31).** Use these env-var-based push commands:
 
 - **GitHub** (`github` remote): `git push "https://${GH_TOKEN}@github.com/babar-raza/format-factory.git" main`
   — `GH_TOKEN` is available in the shell environment.
-- **GitLab** (`origin` remote — `gitlab.recruitize.ai`): `git push "https://${gl_username}:${gl_pat}@gitlab.recruitize.ai/sialkot/cantt-smallize/format-factory.git" main`
-  — `gl_username` and `gl_pat` are available in the shell environment. Note: GitLab host may be unreachable from CI runners; classify as `EXTERNAL_BLOCKER: gitlab_host_unreachable` if DNS fails.
+- **GitLab** (`origin` remote — `gitlab.recruitize.ai`): `[ -n "$gitlab_token" ] || { echo "EXTERNAL_BLOCKER: gitlab_token not set"; false; } && git push "https://oauth2:${gitlab_token}@gitlab.recruitize.ai/sialkot/cantt-smallize/format-factory.git" main`
+  — `gitlab_token` (all lowercase, machine-level Windows system env var) is the sole
+  authorized GitLab credential variable. See CLAUDE.md §"GitLab Credential Variable Rule"
+  for the full binding, retired names, and security rules.
 - **Do NOT** use `git push origin` or `git push github` directly — the GCM dialog blocks in headless mode.
 - **Do NOT** hardcode any token values in committed files (AGENTS.md §AC6).
 

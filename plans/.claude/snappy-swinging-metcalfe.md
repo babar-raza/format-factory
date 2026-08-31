@@ -52,7 +52,7 @@ correctly.
 
 **Unknown State (determined at runtime):**
 - Validity of GitHub credential candidates: `GH_TOKEN`, `GITHUB_PAT`, `GITHUB_TOKEN`, `GITHUB_GIST_TOKEN`
-- Validity of GitLab credential candidates: `gitlab_pat`, `gl_pat`, `gl_username`+`gl_password`
+- Validity of GitLab credential: `gitlab_token` (canonical; formerly `gitlab_pat`, `gl_pat`, `gl_username`+`gl_password`)
 - Docker daemon availability
 - GitLab runner container health
 - Current remote pipeline status (both GitHub and GitLab)
@@ -135,28 +135,19 @@ GH_TOKEN="$CANDIDATE" gh api /repos/babar-raza/format-factory/actions/runs --jq 
 ### TC-CRED-GL — GitLab Credential Validation
 **Status:** OPEN
 **Objective:** Identify working GitLab credential, establish canonical reference.
-**Candidates to test (names only):**
-- `gitlab_pat` (expected primary)
-- `gl_pat` (alias)
-- `gl_username` + `gl_password` (basic auth)
-- `gl_ssh` (SSH — cannot authenticate API calls but can for git ops)
+**Canonical variable:** `gitlab_token` (all lowercase, machine-level Windows system env var).
+Former candidates (`gitlab_pat`, `gl_pat`, `gl_username`+`gl_password`) are retired.
 
-**Steps for PAT candidates:**
+**Steps to test:**
 ```bash
 # Test PAT against GitLab API — use curl or glab
-curl -s --header "PRIVATE-TOKEN: $gitlab_pat" \
+curl -s --header "PRIVATE-TOKEN: $gitlab_token" \
   "https://gitlab.recruitize.ai/api/v4/user" | python -c "import sys,json; u=json.load(sys.stdin); print(u.get('username','FAIL'))"
 
 # Or via glab:
-GITLAB_TOKEN="$gitlab_pat" glab auth status
-GITLAB_TOKEN="$gitlab_pat" glab api /user --field username
-GITLAB_TOKEN="$gitlab_pat" glab repo view sialkot/cantt-smallize/format-factory
-```
-
-**For username+password (basic auth):**
-```bash
-curl -s --user "$gl_username:$gl_password" \
-  "https://gitlab.recruitize.ai/api/v4/user" | python -c "import sys,json; print(json.load(sys.stdin).get('username','FAIL'))"
+GITLAB_TOKEN="$gitlab_token" glab auth status
+GITLAB_TOKEN="$gitlab_token" glab api /user --field username
+GITLAB_TOKEN="$gitlab_token" glab repo view sialkot/cantt-smallize/format-factory
 ```
 
 **Canonical reference:** Document selected variable name (not value).
@@ -207,7 +198,7 @@ docker exec gitlab-runner gitlab-runner verify
 docker exec gitlab-runner cat /etc/gitlab-runner/config.toml
 
 # 3. Check runner registration status via API (using validated GL credential)
-curl -s --header "PRIVATE-TOKEN: $gitlab_pat" \
+curl -s --header "PRIVATE-TOKEN: $gitlab_token" \
   "https://gitlab.recruitize.ai/api/v4/projects/<PROJECT_ID>/runners" | \
   python -c "import sys,json; [print(r['id'],r['status'],r['description']) for r in json.load(sys.stdin)]"
 
@@ -218,14 +209,14 @@ docker logs gitlab-runner --tail 50
 docker start gitlab-runner
 
 # 6. If runner unhealthy/absent, obtain registration token via API
-curl -s --header "PRIVATE-TOKEN: $gitlab_pat" \
+curl -s --header "PRIVATE-TOKEN: $gitlab_token" \
   "https://gitlab.recruitize.ai/api/v4/projects/<PROJECT_ID>/runners/all" | python -m json.tool
 ```
 
 **If runner needs registration:**
 ```bash
 # Get runner token via API (never print — capture to env)
-RUNNER_TOKEN=$(curl -s --header "PRIVATE-TOKEN: $gitlab_pat" \
+RUNNER_TOKEN=$(curl -s --header "PRIVATE-TOKEN: $gitlab_token" \
   "https://gitlab.recruitize.ai/api/v4/user/runners" \
   --data "runner_type=project_type&project_id=<ID>&description=format-factory-local&tag_list=docker,local" \
   | python -c "import sys,json; print(json.load(sys.stdin).get('token',''))")
@@ -483,7 +474,7 @@ actionlint .github/workflows/ci.yml .github/workflows/release.yml
 **GitLab CI validation:**
 ```bash
 # Validate via GitLab API
-cat .gitlab-ci.yml | curl -s --header "PRIVATE-TOKEN: $gitlab_pat" \
+cat .gitlab-ci.yml | curl -s --header "PRIVATE-TOKEN: $gitlab_token" \
   --header "Content-Type: application/json" \
   --data '{"content": "'$(cat .gitlab-ci.yml | python -c "import sys,json; print(json.dumps(sys.stdin.read()))" )'"' \
   "https://gitlab.recruitize.ai/api/v4/ci/lint" | \
@@ -569,7 +560,7 @@ git push "https://${GH_TOKEN}@github.com/babar-raza/format-factory.git" main
 
 **GitLab push:**
 ```bash
-git push "https://${gl_username}:${gl_pat}@gitlab.recruitize.ai/sialkot/cantt-smallize/format-factory.git" main
+git push "https://oauth2:${gitlab_token}@gitlab.recruitize.ai/sialkot/cantt-smallize/format-factory.git" main
 ```
 
 **Monitor GitHub:**

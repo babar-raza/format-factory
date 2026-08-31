@@ -79,8 +79,8 @@ conformance manifest — then re-certifies and re-releases.
 - **Namespace:** `libxliff`
 - **Central document type:** `XliffDocument`
 
-Authentication uses the `gl_token` environment variable via a transient credential/askpass
-mechanism. Never print, log, commit, or embed the token in the remote URL. Leave `origin`
+Authentication uses the `gitlab_token` environment variable via inline URL with `oauth2`
+pseudo-username. Never print, log, commit, or embed the token in the remote URL. Leave `origin`
 as the clean HTTPS URL. Never force push. Respect protected branches. Push every accepted
 checkpoint. Do not publish externally without separate authorization.
 
@@ -398,7 +398,7 @@ byte-level regex scanning after encoding normalization.
 ### TC-REPO-001-01: Clone GitLab repository
 
 **Action:** `git clone https://gitlab.recruitize.ai/sialkot/cantt-smallize/libxliff`
-using `gl_token` via transient askpass. If repo is empty, that's expected.
+using `gitlab_token` via inline URL with `oauth2` pseudo-username. If repo is empty, that's expected.
 **Verification:** Local clone exists with `.git/`.
 **Failure handling:** If clone fails due to demonstrated network/auth failure,
 `git init libxliff` locally, configure remote, and record the blocker as
@@ -2606,9 +2606,9 @@ The Mission 2 scope ends only when ALL of the following are verified:
 - [x] Wheel + sdist build cleanly; installed-wheel smoke test passes outside the source tree (verified this session in two fresh venvs under the scratchpad, zero format-factory packages present, CLI entry point works, all 20 schema files + v12 present in the wheel)
 - [x] Version bumped from 0.1.0 (e.g. 0.2.0) reflecting the MVP scope increase (0.2.0)
 - [ ] All Mission 2 commits pushed to GitLab — **TRUE_EXTERNAL_GATE:
-      `EXTERNAL_BLOCKER: git_push_credentials_unavailable`.** The `gl_pat`
-      token is invalid/expired/improperly-scoped — verified via 4 distinct
-      checks across this session: (1) direct `git push` → GCM dialog
+      `EXTERNAL_BLOCKER: git_push_credentials_unavailable`.** The `gitlab_token`
+      (formerly `gl_pat`) was invalid/expired/improperly-scoped — verified via 4
+      distinct checks across this session: (1) direct `git push` → GCM dialog
       cancelled; (2) `credential.helper=` override with askpass → server
       rejection; (3) `git ls-remote` (read-only diagnostic) → identical
       "HTTP Basic: Access denied" error; (4) re-checked `git ls-remote`
@@ -2617,7 +2617,7 @@ The Mission 2 scope ends only when ALL of the following are verified:
       exist locally on `master`, none pushed. This is recorded here per
       the plan's own rule: "Never close the product goal with unpublished
       local commits unless GitLab is genuinely externally unavailable and
-      the blocker is explicitly recorded." A human with a valid `gl_pat`
+      the blocker is explicitly recorded." A human with a valid `gitlab_token`
       (or corrected credential) must run `git push origin master` from
       `c:\Users\prora\OneDrive\Documents\GitHub\libxliff` to complete this
       item — no other lane in this plan can resolve it.
@@ -2788,7 +2788,7 @@ separate report-generation machinery built inside libxliff). Additional evidence
 | TC-ADR-001 | CLOSED |
 | TC-DOCS-001 | CLOSED |
 | TC-CI-002 | CLOSED |
-| TC-GATE-002 | BLOCKED_EXTERNAL (20/21 checklist items verified; GitLab push blocked on invalid `gl_pat` credential — `EXTERNAL_BLOCKER: git_push_credentials_unavailable`, verified 4x this session, see TC-GATE-002's own checklist entry above for full detail) |
+| TC-GATE-002 | BLOCKED_EXTERNAL (20/21 checklist items verified; GitLab push blocked on invalid `gitlab_token` credential — `EXTERNAL_BLOCKER: git_push_credentials_unavailable`, verified 4x this session, see TC-GATE-002's own checklist entry above for full detail) |
 
 ---
 
@@ -2818,8 +2818,8 @@ requires a fresh, non-terminal lock).
 7. Mark taskcard VERIFIED → CLOSED; update this plan's Taskcard Status Summary table.
 8. Continue to the next eligible taskcard — do not stop between taskcards for approval.
 9. Commit and push at each parent-taskcard completion (GitLab, per Mission 1's verified
-   push mechanism — `gl_token` env var via transient askpass, never printed/logged/
-   embedded in the remote URL, never force-pushed).
+   push mechanism — `gitlab_token` env var via inline URL with `oauth2` pseudo-username,
+   never printed/logged/embedded in the remote URL, never force-pushed).
 10. When all Stage 10-14 must-have/should-have taskcards are CLOSED → verify TC-GATE-002.
 11. Only a genuine external blocker (unavailable credentials, a legally restricted
     fixture, an inaccessible external system, a mandatory publication-approval gate)

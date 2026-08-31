@@ -81,7 +81,7 @@ git push origin main
 Per `MEMORY.md`, the credential-embedded form verified for this host is:
 
 ```
-git push "https://${gl_username}:${gl_pat}@gitlab.recruitize.ai/sialkot/cantt-smallize/format-factory.git" main
+git push "https://oauth2:${gitlab_token}@gitlab.recruitize.ai/sialkot/cantt-smallize/format-factory.git" main
 ```
 
 Do **not** use `git push origin` interactively in a headless context — the

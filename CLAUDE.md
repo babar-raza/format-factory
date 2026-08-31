@@ -482,11 +482,26 @@ Apply the Human Task Conversion Rule (AGENTS.md §AG1) before treating any of th
   policy authorizes. Classify honestly: `EXTERNAL_BLOCKER: git_push_credentials_unavailable` or
   `EXTERNAL_BLOCKER: branch_protection_requires_unavailable_identity`. Never say "human must push"
   as a universal default.
-  **Verified push commands (2026-07-03):**
+  **Verified push commands (2026-08-31):**
   - GitHub: `git push "https://${GH_TOKEN}@github.com/babar-raza/format-factory.git" main`
-  - GitLab: `git push "https://${gl_username}:${gl_pat}@gitlab.recruitize.ai/sialkot/cantt-smallize/format-factory.git" main`
+  - GitLab: `[ -n "$gitlab_token" ] || { echo "EXTERNAL_BLOCKER: gitlab_token not set"; false; } && git push "https://oauth2:${gitlab_token}@gitlab.recruitize.ai/sialkot/cantt-smallize/format-factory.git" main`
     (if GitLab host unreachable: classify as `EXTERNAL_BLOCKER: gitlab_host_unreachable`)
   - Do NOT use `git push origin` or `git push github` directly (GCM dialog blocks headless mode).
+
+  **GitLab Credential Variable Rule (BINDING — NON-NEGOTIABLE):**
+  `gitlab_token` (all lowercase) is the SOLE authorized environment variable for GitLab
+  authentication in this repository and any repository extracted from it. It MUST be set
+  as a machine-level Windows system environment variable containing a GitLab PAT.
+  No other variable name is permitted for any purpose. This rule is permanent.
+  - **Push:** `https://oauth2:${gitlab_token}@...` — `oauth2` is the pseudo-username.
+  - **API (curl):** `--header "PRIVATE-TOKEN: $gitlab_token"`
+  - **glab CLI:** `GITLAB_TOKEN="$gitlab_token" glab ...` (transient per-command only;
+    `GITLAB_TOKEN` uppercase MUST NOT exist as a persistent environment variable.)
+  - **Retired (NEVER use):** `gl_pat`, `gl_username`, `gl_password`, `gl_token`,
+    `gitlab_pat`, and any persistent `GITLAB_TOKEN`. These names are dead.
+  - **Security:** Never print, log, commit, or embed the token value. The inline-URL
+    approach (not askpass) is the actual push mechanism on this repository.
+  - **Pre-push guard:** Always validate `[ -n "$gitlab_token" ]` before push attempts.
 - **Gate 8 or Gate 11 EXECUTION approval:** Legitimate external gate — Babar Raza's business decision
   for commercial release. PREPARATION is always agent-owned (prepare packet, assess readiness, verify).
   Only the final commercial sign-off requires human business authority.

@@ -654,14 +654,13 @@ Rules:
 
 ### GitLab Authentication
 
-When `gl_token` is provided through the environment:
+When `gitlab_token` is provided through the environment:
 
 - never print it;
 - never log it;
 - never commit it;
 - never embed it in `origin`;
-- use transient credential/askpass handling;
-- remove temporary helper files;
+- push via inline URL with `oauth2` pseudo-username;
 - keep `origin` as the clean HTTPS URL.
 
 Respect protected branches.

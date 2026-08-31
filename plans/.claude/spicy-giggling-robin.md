@@ -26,7 +26,7 @@ The `libsafetensors` library was extracted from the format-factory monorepo (13 
 This plan completes all 9 features from `plans/research.md` §Product Recommendation.
 
 ### Git execution policy
-- Use `gl_pat`/`gl_username` from environment via temporary `GIT_ASKPASS`; never print/log/commit tokens
+- Use `gitlab_token` from environment (oauth2 pseudo-username); never print/log/commit tokens
 - No force push; respect branch protection; keep remote URL clean
 - Push every accepted checkpoint to GitLab (normal execution, not exceptional)
 - Local-only fallback only after demonstrated GitLab/network/auth failure
@@ -816,7 +816,7 @@ Evidence:
     claim; full test suite copied out of the source tree and run against the installed
     wheel (not the editable checkout) per the plan's Verification section: 0 failures
   - EXCEPTION: GitLab push blocked every attempt this session with
-    "Authentication failed" against gl_username/gl_pat -- classified as
+    "Authentication failed" against gitlab_token -- classified as
     EXTERNAL_BLOCKER: git_push_credentials_unavailable per CLAUDE.md. All 8 commits
     (93f53de..37a16a2..9b0a100) are complete and correct locally; nothing is lost,
     push is the only remaining step once credentials are available
