@@ -1493,6 +1493,37 @@ TC-FODT-GAP-001, TC-FODT-AUDIT-001, TC-FODT-AUDIT-002, TC-RCAL-001
 2. post-exec-audit-1.json and -2.json missing — iteration 1/2 proofs are Level 2 (from mission-ledger.json), not Level 1 file evidence
 3. autonomous-loop.md Step 4 still lacks explicit field list for required declaration fields — separate governance sprint
 
+### GITLAB-TOKEN-CONSOLIDATION-001 — CLOSED 2026-08-31
+
+**Mission:** Consolidate GitLab credential variables to single canonical `gitlab_token`.
+**Plan:** `plans/.claude/tranquil-wiggling-lemur.md`
+**Commit:** `884c90285`
+
+**What was completed:**
+- Binding rule added to CLAUDE.md §"GitLab Credential Variable Rule (BINDING — NON-NEGOTIABLE)"
+- Push command migrated from two-variable (`gl_username`+`gl_pat`) to single-variable (`oauth2:${gitlab_token}`)
+- Pre-push guard `[ -n "$gitlab_token" ]` added to push command templates in CLAUDE.md and AGENTS.md
+- AGENTS.md AG4.2a cross-references CLAUDE.md as authority
+- `docs/governance/python-library-extraction-standard.md` updated; askpass reference replaced with actual inline-URL mechanism
+- 3 plan files updated (crystalline-sauteeing-cupcake, snappy-swinging-metcalfe, spicy-giggling-robin)
+- 1 report updated (mainline-sync-verification-20260804.md)
+- Memory entry `gitlab-token-canonical-var.md` created (type: feedback)
+- 6 retired variable names permanently prohibited: `gl_pat`, `gl_username`, `gl_password`, `gl_token`, `gitlab_pat`, persistent `GITLAB_TOKEN`
+
+**Verification performed:**
+- Zero retired names outside retirement lists (grep-verified)
+- `gitlab_token` present in all 3 authority files
+- Push URL format `oauth2:${gitlab_token}` in exactly 2 files
+- Pre-push guard in exactly 2 files
+- Zero source/test/tool file changes
+- Functional smoke test: `git ls-remote` with `oauth2:${gitlab_token}` returned HEAD ref `dd909cf3a`
+- Safety rails unchanged (autonomous_loop_runner: 4 hits, autonomous_host_runner: 2 hits)
+
+**Root causes addressed:** RC-1 (no canonical declaration), RC-2 (two-variable push), RC-3 (no pre-push validation)
+
+**Follow-ups (non-blocking):**
+1. Governance validator V227+ for retired-name scanning — deferred, memory entry provides session-level enforcement
+
 ---
 
 ## Section 26 — Unresolved Gap Register (Post-Audit Taskcards)
